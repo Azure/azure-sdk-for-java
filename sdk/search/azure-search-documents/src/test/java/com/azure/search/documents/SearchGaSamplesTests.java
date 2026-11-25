@@ -9,7 +9,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.search.documents.indexes.CreateSkillsetExample;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
-import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter;
+import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventSerializer;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
 import com.azure.search.documents.models.ContentUnderstandingSkillChunkingMethod;
 import org.junit.jupiter.api.Test;
@@ -90,7 +90,7 @@ public class SearchGaSamplesTests {
     @Test
     @ResourceLock(Resources.SYSTEM_OUT)
     public void streamSampleLogsErrorPayloadBeforeThrowing() throws IOException {
-        KnowledgeBaseRetrievalStreamEvent error = KnowledgeBaseRetrievalStreamEventConverter.convert("error",
+        KnowledgeBaseRetrievalStreamEvent error = KnowledgeBaseRetrievalStreamEventSerializer.deserialize("error",
             "{\"error\":{\"code\":\"BadRequest\",\"message\":\"invalid request\"}}");
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         PrintStream original = System.out;
@@ -129,12 +129,12 @@ public class SearchGaSamplesTests {
             "{\"statusCode\":200,\"response\":{}}" };
         for (int i = 0; i < names.length; i++) {
             KnowledgeBaseRetrievalStreamEvent event
-                = KnowledgeBaseRetrievalStreamEventConverter.convert(names[i], payloads[i]);
+                = KnowledgeBaseRetrievalStreamEventSerializer.deserialize(names[i], payloads[i]);
             KnowledgeBaseRetrievalStreamExample.inspectEvent(event, started, completed);
         }
         assertTrue(started.get());
         assertTrue(completed.get());
-        KnowledgeBaseRetrievalStreamEvent error = KnowledgeBaseRetrievalStreamEventConverter.convert("error",
+        KnowledgeBaseRetrievalStreamEvent error = KnowledgeBaseRetrievalStreamEventSerializer.deserialize("error",
             "{\"error\":{\"code\":\"BadRequest\",\"message\":\"invalid request\"}}");
         assertThrows(IllegalStateException.class,
             () -> KnowledgeBaseRetrievalStreamExample.inspectEvent(error, started, completed));

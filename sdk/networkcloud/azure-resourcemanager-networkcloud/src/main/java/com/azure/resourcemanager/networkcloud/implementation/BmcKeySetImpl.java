@@ -152,11 +152,7 @@ public final class BmcKeySetImpl implements BmcKeySet, BmcKeySet.Definition, Bmc
     }
 
     public BmcKeySet create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBmcKeySets()
-            .createOrUpdate(resourceGroupName, clusterName, bmcKeySetName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BmcKeySet create(Context context) {
@@ -183,11 +179,7 @@ public final class BmcKeySetImpl implements BmcKeySet, BmcKeySet.Definition, Bmc
     }
 
     public BmcKeySet apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBmcKeySets()
-            .update(resourceGroupName, clusterName, bmcKeySetName, updateIfMatch, updateIfNoneMatch,
-                updateBmcKeySetUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BmcKeySet apply(Context context) {
@@ -214,11 +206,7 @@ public final class BmcKeySetImpl implements BmcKeySet, BmcKeySet.Definition, Bmc
     }
 
     public BmcKeySet refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBmcKeySets()
-            .getWithResponse(resourceGroupName, clusterName, bmcKeySetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BmcKeySet refresh(Context context) {

@@ -114,19 +114,7 @@ public final class NodesClientImpl implements NodesClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a node allocated to a HorizonDB pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param nodeName The name of the Node.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a node allocated to a HorizonDB pool along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NodeInner>> getWithResponseAsync(String resourceGroupName, String clusterName, String poolName,
         String nodeName) {
@@ -137,37 +125,14 @@ public final class NodesClientImpl implements NodesClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets a node allocated to a HorizonDB pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param nodeName The name of the Node.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a node allocated to a HorizonDB pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NodeInner> getAsync(String resourceGroupName, String clusterName, String poolName, String nodeName) {
         return getWithResponseAsync(resourceGroupName, clusterName, poolName, nodeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a node allocated to a HorizonDB pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param nodeName The name of the Node.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a node allocated to a HorizonDB pool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NodeInner> getWithResponse(String resourceGroupName, String clusterName, String poolName,
         String nodeName, Context context) {
@@ -176,18 +141,7 @@ public final class NodesClientImpl implements NodesClient {
             resourceGroupName, clusterName, poolName, nodeName, accept, context);
     }
 
-    /**
-     * Gets a node allocated to a HorizonDB pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param nodeName The name of the Node.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a node allocated to a HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodeInner get(String resourceGroupName, String clusterName, String poolName, String nodeName) {
         return getWithResponse(resourceGroupName, clusterName, poolName, nodeName, Context.NONE).getValue();
@@ -217,17 +171,7 @@ public final class NodesClientImpl implements NodesClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists the nodes allocated to a HorizonDB pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Node list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NodeInner> listAsync(String resourceGroupName, String clusterName, String poolName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName, poolName),
@@ -247,11 +191,7 @@ public final class NodesClientImpl implements NodesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeInner> listSinglePage(String resourceGroupName, String clusterName, String poolName) {
-        final String accept = "application/json";
-        Response<NodeListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, poolName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
     /**
@@ -276,35 +216,13 @@ public final class NodesClientImpl implements NodesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the nodes allocated to a HorizonDB pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Node list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NodeInner> list(String resourceGroupName, String clusterName, String poolName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, poolName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
-    /**
-     * Lists the nodes allocated to a HorizonDB pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Node list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NodeInner> list(String resourceGroupName, String clusterName, String poolName,
         Context context) {
@@ -342,10 +260,7 @@ public final class NodesClientImpl implements NodesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NodeListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

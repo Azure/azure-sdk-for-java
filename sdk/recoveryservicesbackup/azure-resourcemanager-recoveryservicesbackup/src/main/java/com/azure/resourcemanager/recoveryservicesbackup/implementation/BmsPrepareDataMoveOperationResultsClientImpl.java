@@ -117,18 +117,7 @@ public final class BmsPrepareDataMoveOperationResultsClientImpl implements BmsPr
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetches operation status for data move operation on vault.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operationId The name of the BackupResourceConfigResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation result response for Vault Storage Config along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VaultStorageConfigOperationResultResponseInner> getWithResponse(String vaultName,
         String resourceGroupName, String operationId, Context context) {
@@ -137,17 +126,7 @@ public final class BmsPrepareDataMoveOperationResultsClientImpl implements BmsPr
             resourceGroupName, vaultName, operationId, accept, context);
     }
 
-    /**
-     * Fetches operation status for data move operation on vault.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operationId The name of the BackupResourceConfigResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation result response for Vault Storage Config.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VaultStorageConfigOperationResultResponseInner get(String vaultName, String resourceGroupName,
         String operationId) {

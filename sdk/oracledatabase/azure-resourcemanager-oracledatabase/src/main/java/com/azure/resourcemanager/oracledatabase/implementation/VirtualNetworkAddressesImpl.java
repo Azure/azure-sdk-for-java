@@ -47,7 +47,7 @@ public final class VirtualNetworkAddressesImpl implements VirtualNetworkAddresse
     }
 
     public void delete(String resourceGroupName, String cloudvmclustername, String virtualnetworkaddressname) {
-        this.serviceClient().delete(resourceGroupName, cloudvmclustername, virtualnetworkaddressname);
+        this.delete(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String cloudvmclustername, String virtualnetworkaddressname,
@@ -57,9 +57,7 @@ public final class VirtualNetworkAddressesImpl implements VirtualNetworkAddresse
 
     public PagedIterable<VirtualNetworkAddress> listByCloudVmCluster(String resourceGroupName,
         String cloudvmclustername) {
-        PagedIterable<VirtualNetworkAddressInner> inner
-            = this.serviceClient().listByCloudVmCluster(resourceGroupName, cloudvmclustername);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualNetworkAddressImpl(inner1, this.manager()));
+        return this.listByCloudVmCluster(resourceGroupName, cloudvmclustername, Context.NONE);
     }
 
     public PagedIterable<VirtualNetworkAddress> listByCloudVmCluster(String resourceGroupName,
@@ -70,103 +68,36 @@ public final class VirtualNetworkAddressesImpl implements VirtualNetworkAddresse
     }
 
     public VirtualNetworkAddress getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudvmclustername = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
-            "cloudvmclustername");
-        if (cloudvmclustername == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudVmClusters'.", id)));
-        }
-        String virtualnetworkaddressname = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
-            "virtualnetworkaddressname");
-        if (virtualnetworkaddressname == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworkAddresses'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<VirtualNetworkAddress> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudvmclustername = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String cloudvmclustername = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
-            "cloudvmclustername");
-        if (cloudvmclustername == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudVmClusters'.", id)));
-        }
-        String virtualnetworkaddressname = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "cloudvmclustername", "cloudVmClusters", LOGGER);
+        String virtualnetworkaddressname = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
-            "virtualnetworkaddressname");
-        if (virtualnetworkaddressname == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworkAddresses'.", id)));
-        }
+            "virtualnetworkaddressname", "virtualNetworkAddresses", LOGGER);
         return this.getWithResponse(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudvmclustername = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
-            "cloudvmclustername");
-        if (cloudvmclustername == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudVmClusters'.", id)));
-        }
-        String virtualnetworkaddressname = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
-            "virtualnetworkaddressname");
-        if (virtualnetworkaddressname == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworkAddresses'.", id)));
-        }
-        this.delete(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudvmclustername = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String cloudvmclustername = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
-            "cloudvmclustername");
-        if (cloudvmclustername == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudVmClusters'.", id)));
-        }
-        String virtualnetworkaddressname = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "cloudvmclustername", "cloudVmClusters", LOGGER);
+        String virtualnetworkaddressname = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
-            "virtualnetworkaddressname");
-        if (virtualnetworkaddressname == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworkAddresses'.", id)));
-        }
+            "virtualnetworkaddressname", "virtualNetworkAddresses", LOGGER);
         this.delete(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, context);
     }
 

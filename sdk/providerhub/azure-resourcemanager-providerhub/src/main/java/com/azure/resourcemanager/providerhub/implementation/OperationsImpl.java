@@ -30,8 +30,7 @@ public final class OperationsImpl implements Operations {
     }
 
     public PagedIterable<OperationsDefinition> list() {
-        PagedIterable<OperationsDefinitionInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationsDefinitionImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<OperationsDefinition> list(Context context) {
@@ -79,7 +78,7 @@ public final class OperationsImpl implements Operations {
     }
 
     public void delete(String providerNamespace) {
-        this.serviceClient().delete(providerNamespace);
+        this.deleteWithResponse(providerNamespace, Context.NONE);
     }
 
     private OperationsClient serviceClient() {

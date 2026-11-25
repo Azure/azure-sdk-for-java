@@ -149,17 +149,7 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information about the specified application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified application security group along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ApplicationSecurityGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String applicationSecurityGroupName) {
@@ -225,16 +215,7 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             resourceGroupName, applicationSecurityGroupName, accept, context);
     }
 
-    /**
-     * Gets information about the specified application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified application security group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationSecurityGroupInner> getByResourceGroupAsync(String resourceGroupName,
         String applicationSecurityGroupName) {
@@ -242,51 +223,21 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about the specified application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified application security group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationSecurityGroupInner> getByResourceGroupWithResponse(String resourceGroupName,
         String applicationSecurityGroupName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, applicationSecurityGroupName, context).block();
     }
 
-    /**
-     * Gets information about the specified application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified application security group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationSecurityGroupInner getByResourceGroup(String resourceGroupName,
         String applicationSecurityGroupName) {
         return getByResourceGroupWithResponse(resourceGroupName, applicationSecurityGroupName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application security group in a resource group along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters) {
@@ -366,17 +317,7 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             resourceGroupName, applicationSecurityGroupName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates an application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an application security group in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String applicationSecurityGroupName,
@@ -412,17 +353,7 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             context);
     }
 
-    /**
-     * Creates or updates an application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an application security group in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters) {
@@ -430,18 +361,7 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an application security group in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters,
@@ -450,17 +370,7 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application security group in a resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationSecurityGroupInner> createOrUpdateAsync(String resourceGroupName,
         String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters) {
@@ -487,53 +397,21 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application security group in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationSecurityGroupInner createOrUpdate(String resourceGroupName, String applicationSecurityGroupName,
         ApplicationSecurityGroupInner parameters) {
         return createOrUpdateAsync(resourceGroupName, applicationSecurityGroupName, parameters).block();
     }
 
-    /**
-     * Creates or updates an application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application security group in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationSecurityGroupInner createOrUpdate(String resourceGroupName, String applicationSecurityGroupName,
         ApplicationSecurityGroupInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, applicationSecurityGroupName, parameters, context).block();
     }
 
-    /**
-     * Updates an application security group's tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param parameters Parameters supplied to update application security group tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application security group in a resource group along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ApplicationSecurityGroupInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String applicationSecurityGroupName, TagsObject parameters) {
@@ -613,17 +491,7 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             resourceGroupName, applicationSecurityGroupName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates an application security group's tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param parameters Parameters supplied to update application security group tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application security group in a resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationSecurityGroupInner> updateTagsAsync(String resourceGroupName,
         String applicationSecurityGroupName, TagsObject parameters) {
@@ -631,18 +499,7 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates an application security group's tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param parameters Parameters supplied to update application security group tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application security group in a resource group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationSecurityGroupInner> updateTagsWithResponse(String resourceGroupName,
         String applicationSecurityGroupName, TagsObject parameters, Context context) {
@@ -650,17 +507,7 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             .block();
     }
 
-    /**
-     * Updates an application security group's tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param parameters Parameters supplied to update application security group tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application security group in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationSecurityGroupInner updateTags(String resourceGroupName, String applicationSecurityGroupName,
         TagsObject parameters) {
@@ -668,16 +515,7 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             .getValue();
     }
 
-    /**
-     * Deletes the specified application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String applicationSecurityGroupName) {
@@ -740,16 +578,7 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             applicationSecurityGroupName, context);
     }
 
-    /**
-     * Deletes the specified application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
         String applicationSecurityGroupName) {
@@ -780,49 +609,21 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             context);
     }
 
-    /**
-     * Deletes the specified application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String applicationSecurityGroupName) {
         return this.beginDeleteAsync(resourceGroupName, applicationSecurityGroupName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String applicationSecurityGroupName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, applicationSecurityGroupName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String applicationSecurityGroupName) {
         return beginDeleteAsync(resourceGroupName, applicationSecurityGroupName).last()
@@ -846,30 +647,13 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String applicationSecurityGroupName) {
         deleteAsync(resourceGroupName, applicationSecurityGroupName).block();
     }
 
-    /**
-     * Deletes the specified application security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String applicationSecurityGroupName, Context context) {
         deleteAsync(resourceGroupName, applicationSecurityGroupName, context).block();
@@ -946,15 +730,7 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the application security groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the application security groups in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationSecurityGroupInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -978,30 +754,13 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the application security groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the application security groups in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationSecurityGroupInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets all the application security groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the application security groups in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationSecurityGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1063,13 +822,7 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all application security groups in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application security groups in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationSecurityGroupInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -1090,27 +843,13 @@ public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsG
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all application security groups in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application security groups in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationSecurityGroupInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all application security groups in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application security groups in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationSecurityGroupInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

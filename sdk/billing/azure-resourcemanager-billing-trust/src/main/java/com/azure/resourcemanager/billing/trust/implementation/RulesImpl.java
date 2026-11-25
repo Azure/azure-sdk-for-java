@@ -43,8 +43,7 @@ public final class RulesImpl implements Rules {
     }
 
     public PagedIterable<Rule> list(String resourceUri) {
-        PagedIterable<RuleInner> inner = this.serviceClient().list(resourceUri);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RuleImpl(inner1, this.manager()));
+        return this.list(resourceUri, Context.NONE);
     }
 
     public PagedIterable<Rule> list(String resourceUri, Context context) {
@@ -53,34 +52,16 @@ public final class RulesImpl implements Rules {
     }
 
     public Rule getById(String id) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.BillingTrust/assessments/default/rules/{ruleName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String ruleName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.BillingTrust/assessments/default/rules/{ruleName}", "ruleName");
-        if (ruleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'rules'.", id)));
-        }
-        return this.getWithResponse(resourceUri, ruleName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Rule> getByIdWithResponse(String id, Context context) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.BillingTrust/assessments/default/rules/{ruleName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String ruleName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.BillingTrust/assessments/default/rules/{ruleName}", "ruleName");
-        if (ruleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'rules'.", id)));
-        }
+        String resourceUri = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.BillingTrust/assessments/default/rules/{ruleName}", "resourceUri",
+            "resourceUri", LOGGER);
+        String ruleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.BillingTrust/assessments/default/rules/{ruleName}", "ruleName", "rules",
+            LOGGER);
         return this.getWithResponse(resourceUri, ruleName, context);
     }
 

@@ -93,10 +93,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusters()
-            .createOrUpdate(resourceGroupName, privateCloudName, clusterName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Cluster create(Context context) {
@@ -118,10 +115,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusters()
-            .update(resourceGroupName, privateCloudName, clusterName, updateClusterUpdate, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Cluster apply(Context context) {
@@ -146,11 +140,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusters()
-            .getWithResponse(resourceGroupName, privateCloudName, clusterName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Cluster refresh(Context context) {

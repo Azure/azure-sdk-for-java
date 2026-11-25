@@ -69,13 +69,11 @@ public final class ScopingConfigurationsImpl implements ScopingConfigurations {
     }
 
     public void deleteByResourceGroup(String reportName, String scopingConfigurationName) {
-        this.serviceClient().delete(reportName, scopingConfigurationName);
+        this.deleteByResourceGroupWithResponse(reportName, scopingConfigurationName, Context.NONE);
     }
 
     public PagedIterable<ScopingConfigurationResource> list(String reportName) {
-        PagedIterable<ScopingConfigurationResourceInner> inner = this.serviceClient().list(reportName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ScopingConfigurationResourceImpl(inner1, this.manager()));
+        return this.list(reportName, Context.NONE);
     }
 
     public PagedIterable<ScopingConfigurationResource> list(String reportName, Context context) {

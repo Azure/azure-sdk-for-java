@@ -92,17 +92,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a recoverable managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param recoverableDatabaseName The recoverableDatabaseName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecoverableManagedDatabaseInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String recoverableDatabaseName) {
@@ -175,17 +165,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
             resourceGroupName, managedInstanceName, recoverableDatabaseName, accept, context);
     }
 
-    /**
-     * Gets a recoverable managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param recoverableDatabaseName The recoverableDatabaseName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecoverableManagedDatabaseInner> getAsync(String resourceGroupName, String managedInstanceName,
         String recoverableDatabaseName) {
@@ -193,35 +173,14 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a recoverable managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param recoverableDatabaseName The recoverableDatabaseName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoverableManagedDatabaseInner> getWithResponse(String resourceGroupName,
         String managedInstanceName, String recoverableDatabaseName, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, recoverableDatabaseName, context).block();
     }
 
-    /**
-     * Gets a recoverable managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param recoverableDatabaseName The recoverableDatabaseName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoverableManagedDatabaseInner get(String resourceGroupName, String managedInstanceName,
         String recoverableDatabaseName) {
@@ -308,16 +267,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of recoverable managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable managed databases as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RecoverableManagedDatabaseInner> listByInstanceAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -343,33 +293,14 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
             nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of recoverable managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable managed databases as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoverableManagedDatabaseInner> listByInstance(String resourceGroupName,
         String managedInstanceName) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
-    /**
-     * Gets a list of recoverable managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable managed databases as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoverableManagedDatabaseInner> listByInstance(String resourceGroupName,
         String managedInstanceName, Context context) {

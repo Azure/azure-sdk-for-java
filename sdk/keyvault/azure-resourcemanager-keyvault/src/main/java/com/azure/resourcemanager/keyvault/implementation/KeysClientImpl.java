@@ -126,18 +126,7 @@ public final class KeysClientImpl implements KeysClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the current version of the specified key from the specified key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key to be retrieved.
-     * @param keyName The name of the key to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current version of the specified key from the specified key vault along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyInner>> getWithResponseAsync(String resourceGroupName, String vaultName, String keyName) {
         if (this.client.getEndpoint() == null) {
@@ -205,72 +194,27 @@ public final class KeysClientImpl implements KeysClient {
             resourceGroupName, vaultName, keyName, accept, context);
     }
 
-    /**
-     * Gets the current version of the specified key from the specified key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key to be retrieved.
-     * @param keyName The name of the key to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current version of the specified key from the specified key vault on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyInner> getAsync(String resourceGroupName, String vaultName, String keyName) {
         return getWithResponseAsync(resourceGroupName, vaultName, keyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the current version of the specified key from the specified key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key to be retrieved.
-     * @param keyName The name of the key to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current version of the specified key from the specified key vault along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyInner> getWithResponse(String resourceGroupName, String vaultName, String keyName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, vaultName, keyName, context).block();
     }
 
-    /**
-     * Gets the current version of the specified key from the specified key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key to be retrieved.
-     * @param keyName The name of the key to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current version of the specified key from the specified key vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyInner get(String resourceGroupName, String vaultName, String keyName) {
         return getWithResponse(resourceGroupName, vaultName, keyName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates the first version of a new key if it does not exist. If it already exists, then the existing key is
-     * returned without any write operations being performed. This API does not create subsequent versions, and does not
-     * update existing keys.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key to be retrieved.
-     * @param keyName The name of the key to be retrieved.
-     * @param parameters The parameters used to create the specified key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the key resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyInner>> createIfNotExistWithResponseAsync(String resourceGroupName, String vaultName,
         String keyName, KeyCreateParameters parameters) {
@@ -355,20 +299,7 @@ public final class KeysClientImpl implements KeysClient {
             context);
     }
 
-    /**
-     * Creates the first version of a new key if it does not exist. If it already exists, then the existing key is
-     * returned without any write operations being performed. This API does not create subsequent versions, and does not
-     * update existing keys.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key to be retrieved.
-     * @param keyName The name of the key to be retrieved.
-     * @param parameters The parameters used to create the specified key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the key resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyInner> createIfNotExistAsync(String resourceGroupName, String vaultName, String keyName,
         KeyCreateParameters parameters) {
@@ -376,41 +307,14 @@ public final class KeysClientImpl implements KeysClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates the first version of a new key if it does not exist. If it already exists, then the existing key is
-     * returned without any write operations being performed. This API does not create subsequent versions, and does not
-     * update existing keys.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key to be retrieved.
-     * @param keyName The name of the key to be retrieved.
-     * @param parameters The parameters used to create the specified key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the key resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyInner> createIfNotExistWithResponse(String resourceGroupName, String vaultName, String keyName,
         KeyCreateParameters parameters, Context context) {
         return createIfNotExistWithResponseAsync(resourceGroupName, vaultName, keyName, parameters, context).block();
     }
 
-    /**
-     * Creates the first version of a new key if it does not exist. If it already exists, then the existing key is
-     * returned without any write operations being performed. This API does not create subsequent versions, and does not
-     * update existing keys.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key to be retrieved.
-     * @param keyName The name of the key to be retrieved.
-     * @param parameters The parameters used to create the specified key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the key resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyInner createIfNotExist(String resourceGroupName, String vaultName, String keyName,
         KeyCreateParameters parameters) {
@@ -493,16 +397,7 @@ public final class KeysClientImpl implements KeysClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the keys in the specified key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Key list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyInner> listAsync(String resourceGroupName, String vaultName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vaultName),
@@ -526,50 +421,19 @@ public final class KeysClientImpl implements KeysClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the keys in the specified key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Key list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyInner> list(String resourceGroupName, String vaultName) {
         return new PagedIterable<>(listAsync(resourceGroupName, vaultName));
     }
 
-    /**
-     * Lists the keys in the specified key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Key list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyInner> list(String resourceGroupName, String vaultName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, vaultName, context));
     }
 
-    /**
-     * Gets the specified version of the specified key in the specified key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key version to be retrieved.
-     * @param keyName The name of the key version to be retrieved.
-     * @param keyVersion The version of the key to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified version of the specified key in the specified key vault along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyInner>> getVersionWithResponseAsync(String resourceGroupName, String vaultName,
         String keyName, String keyVersion) {
@@ -645,19 +509,7 @@ public final class KeysClientImpl implements KeysClient {
             this.client.getSubscriptionId(), resourceGroupName, vaultName, keyName, keyVersion, accept, context);
     }
 
-    /**
-     * Gets the specified version of the specified key in the specified key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key version to be retrieved.
-     * @param keyName The name of the key version to be retrieved.
-     * @param keyVersion The version of the key to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified version of the specified key in the specified key vault on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyInner> getVersionAsync(String resourceGroupName, String vaultName, String keyName,
         String keyVersion) {
@@ -665,37 +517,14 @@ public final class KeysClientImpl implements KeysClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified version of the specified key in the specified key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key version to be retrieved.
-     * @param keyName The name of the key version to be retrieved.
-     * @param keyVersion The version of the key to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified version of the specified key in the specified key vault along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyInner> getVersionWithResponse(String resourceGroupName, String vaultName, String keyName,
         String keyVersion, Context context) {
         return getVersionWithResponseAsync(resourceGroupName, vaultName, keyName, keyVersion, context).block();
     }
 
-    /**
-     * Gets the specified version of the specified key in the specified key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key version to be retrieved.
-     * @param keyName The name of the key version to be retrieved.
-     * @param keyVersion The version of the key to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified version of the specified key in the specified key vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyInner getVersion(String resourceGroupName, String vaultName, String keyName, String keyVersion) {
         return getVersionWithResponse(resourceGroupName, vaultName, keyName, keyVersion, Context.NONE).getValue();
@@ -786,17 +615,7 @@ public final class KeysClientImpl implements KeysClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the keys in the specified key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key version to be retrieved.
-     * @param keyName The name of the key version to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Key list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyInner> listVersionsAsync(String resourceGroupName, String vaultName, String keyName) {
         return new PagedFlux<>(() -> listVersionsSinglePageAsync(resourceGroupName, vaultName, keyName),
@@ -822,34 +641,13 @@ public final class KeysClientImpl implements KeysClient {
             nextLink -> listVersionsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the keys in the specified key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key version to be retrieved.
-     * @param keyName The name of the key version to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Key list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyInner> listVersions(String resourceGroupName, String vaultName, String keyName) {
         return new PagedIterable<>(listVersionsAsync(resourceGroupName, vaultName, keyName));
     }
 
-    /**
-     * Lists the keys in the specified key vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the vault which contains the key version to be retrieved.
-     * @param keyName The name of the key version to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Key list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyInner> listVersions(String resourceGroupName, String vaultName, String keyName,
         Context context) {

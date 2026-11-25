@@ -510,17 +510,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get properties of the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided bare metal machine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BareMetalMachineInner> getByResourceGroupWithResponse(String resourceGroupName,
         String bareMetalMachineName, Context context) {
@@ -529,16 +519,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName, accept, context);
     }
 
-    /**
-     * Get properties of the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided bare metal machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BareMetalMachineInner getByResourceGroup(String resourceGroupName, String bareMetalMachineName) {
         return getByResourceGroupWithResponse(resourceGroupName, bareMetalMachineName, Context.NONE).getValue();
@@ -593,11 +574,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineInner bareMetalMachineParameters, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch, contentType,
-            accept, bareMetalMachineParameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, bareMetalMachineName, bareMetalMachineParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -698,52 +676,21 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     private SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginCreateOrUpdate(
         String resourceGroupName, String bareMetalMachineName, BareMetalMachineInner bareMetalMachineParameters,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, bareMetalMachineName,
-            bareMetalMachineParameters, ifMatch, ifNoneMatch);
-        return this.client.<BareMetalMachineInner, BareMetalMachineInner>getLroResult(response,
-            BareMetalMachineInner.class, BareMetalMachineInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, bareMetalMachineName, bareMetalMachineParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of bareMetalMachine represents the physical machine in the rack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginCreateOrUpdate(
         String resourceGroupName, String bareMetalMachineName, BareMetalMachineInner bareMetalMachineParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, bareMetalMachineName,
-            bareMetalMachineParameters, ifMatch, ifNoneMatch);
-        return this.client.<BareMetalMachineInner, BareMetalMachineInner>getLroResult(response,
-            BareMetalMachineInner.class, BareMetalMachineInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, bareMetalMachineName, bareMetalMachineParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of bareMetalMachine represents the physical machine in the rack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginCreateOrUpdate(
         String resourceGroupName, String bareMetalMachineName, BareMetalMachineInner bareMetalMachineParameters,
@@ -798,49 +745,22 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachine represents the physical machine in the rack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BareMetalMachineInner createOrUpdate(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineInner bareMetalMachineParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, bareMetalMachineName, bareMetalMachineParameters, ifMatch,
-            ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, bareMetalMachineName, bareMetalMachineParameters, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachine represents the physical machine in the rack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BareMetalMachineInner createOrUpdate(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineInner bareMetalMachineParameters, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, bareMetalMachineName, bareMetalMachineParameters, ifMatch,
-            ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, bareMetalMachineName,
+            bareMetalMachineParameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -891,9 +811,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String bareMetalMachineName,
         String ifMatch, String ifNoneMatch, BareMetalMachinePatchParameters bareMetalMachineUpdateParameters) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch, accept,
+        return updateWithResponse(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch,
             bareMetalMachineUpdateParameters, Context.NONE);
     }
 
@@ -995,52 +913,22 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     private SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginUpdate(String resourceGroupName,
         String bareMetalMachineName, String ifMatch, String ifNoneMatch,
         BareMetalMachinePatchParameters bareMetalMachineUpdateParameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, bareMetalMachineName, ifMatch,
-            ifNoneMatch, bareMetalMachineUpdateParameters);
-        return this.client.<BareMetalMachineInner, BareMetalMachineInner>getLroResult(response,
-            BareMetalMachineInner.class, BareMetalMachineInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch,
+            bareMetalMachineUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
-     * Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of bareMetalMachine represents the physical machine in the rack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginUpdate(String resourceGroupName,
         String bareMetalMachineName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final BareMetalMachinePatchParameters bareMetalMachineUpdateParameters = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, bareMetalMachineName, ifMatch,
-            ifNoneMatch, bareMetalMachineUpdateParameters);
-        return this.client.<BareMetalMachineInner, BareMetalMachineInner>getLroResult(response,
-            BareMetalMachineInner.class, BareMetalMachineInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch,
+            bareMetalMachineUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
-     * Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param bareMetalMachineUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of bareMetalMachine represents the physical machine in the rack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginUpdate(String resourceGroupName,
         String bareMetalMachineName, String ifMatch, String ifNoneMatch,
@@ -1094,48 +982,22 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             bareMetalMachineUpdateParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
-     * Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachine represents the physical machine in the rack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BareMetalMachineInner update(String resourceGroupName, String bareMetalMachineName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final BareMetalMachinePatchParameters bareMetalMachineUpdateParameters = null;
-        return beginUpdate(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch,
-            bareMetalMachineUpdateParameters).getFinalResult();
+        return update(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch, bareMetalMachineUpdateParameters,
+            Context.NONE);
     }
 
-    /**
-     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
-     * Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param bareMetalMachineUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachine represents the physical machine in the rack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BareMetalMachineInner update(String resourceGroupName, String bareMetalMachineName, String ifMatch,
         String ifNoneMatch, BareMetalMachinePatchParameters bareMetalMachineUpdateParameters, Context context) {
-        return beginUpdate(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch,
-            bareMetalMachineUpdateParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, bareMetalMachineName, ifMatch,
+            ifNoneMatch, bareMetalMachineUpdateParameters, context));
     }
 
     /**
@@ -1179,9 +1041,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String bareMetalMachineName,
         String ifMatch, String ifNoneMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -1270,47 +1130,18 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bareMetalMachineName,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bareMetalMachineName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bareMetalMachineName,
         String ifMatch, String ifNoneMatch, Context context) {
@@ -1360,42 +1191,20 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String bareMetalMachineName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        beginDelete(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch).getFinalResult();
+        delete(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String bareMetalMachineName, String ifMatch, String ifNoneMatch,
         Context context) {
-        beginDelete(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -1476,12 +1285,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BareMetalMachineInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
         String skipToken) {
-        final String accept = "application/json";
-        Response<BareMetalMachineList> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -1508,38 +1312,15 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of bare metal machines in the provided resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machines in the provided resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BareMetalMachineInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of bare metal machines in the provided resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machines in the provided resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BareMetalMachineInner> listByResourceGroup(String resourceGroupName, Integer top,
         String skipToken, Context context) {
@@ -1615,11 +1396,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BareMetalMachineInner> listSinglePage(Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<BareMetalMachineList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(top, skipToken, Context.NONE);
     }
 
     /**
@@ -1643,35 +1420,15 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of bare metal machines in the provided subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machines in the provided subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BareMetalMachineInner> list() {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(top, skipToken),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of bare metal machines in the provided subscription.
-     * 
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machines in the provided subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BareMetalMachineInner> list(Integer top, String skipToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(top, skipToken, context),
@@ -1713,8 +1470,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> cordonWithResponse(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineCordonParameters bareMetalMachineCordonParameters) {
-        return service.cordonSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters,
+        return cordonWithResponse(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters,
             Context.NONE);
     }
 
@@ -1795,44 +1551,18 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginCordon(String resourceGroupName,
         String bareMetalMachineName, BareMetalMachineCordonParameters bareMetalMachineCordonParameters) {
-        Response<BinaryData> response
-            = cordonWithResponse(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginCordon(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters, Context.NONE);
     }
 
-    /**
-     * Cordon the provided bare metal machine's Kubernetes node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginCordon(String resourceGroupName,
         String bareMetalMachineName) {
         final BareMetalMachineCordonParameters bareMetalMachineCordonParameters = null;
-        Response<BinaryData> response
-            = cordonWithResponse(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginCordon(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters, Context.NONE);
     }
 
-    /**
-     * Cordon the provided bare metal machine's Kubernetes node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineCordonParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginCordon(String resourceGroupName,
         String bareMetalMachineName, BareMetalMachineCordonParameters bareMetalMachineCordonParameters,
@@ -1878,39 +1608,19 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Cordon the provided bare metal machine's Kubernetes node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult cordon(String resourceGroupName, String bareMetalMachineName) {
         final BareMetalMachineCordonParameters bareMetalMachineCordonParameters = null;
-        return beginCordon(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters).getFinalResult();
+        return cordon(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters, Context.NONE);
     }
 
-    /**
-     * Cordon the provided bare metal machine's Kubernetes node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineCordonParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult cordon(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineCordonParameters bareMetalMachineCordonParameters, Context context) {
-        return beginCordon(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCordon(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters, context));
     }
 
     /**
@@ -1948,9 +1658,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> powerOffWithResponse(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters) {
-        return service.powerOffSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName,
-            bareMetalMachinePowerOffParameters, Context.NONE);
+        return powerOffWithResponse(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters,
+            Context.NONE);
     }
 
     /**
@@ -2030,44 +1739,18 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginPowerOff(String resourceGroupName,
         String bareMetalMachineName, BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters) {
-        Response<BinaryData> response
-            = powerOffWithResponse(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginPowerOff(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters, Context.NONE);
     }
 
-    /**
-     * Power off the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginPowerOff(String resourceGroupName,
         String bareMetalMachineName) {
         final BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters = null;
-        Response<BinaryData> response
-            = powerOffWithResponse(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginPowerOff(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters, Context.NONE);
     }
 
-    /**
-     * Power off the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachinePowerOffParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginPowerOff(String resourceGroupName,
         String bareMetalMachineName, BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters,
@@ -2113,40 +1796,19 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Power off the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult powerOff(String resourceGroupName, String bareMetalMachineName) {
         final BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters = null;
-        return beginPowerOff(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters)
-            .getFinalResult();
+        return powerOff(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters, Context.NONE);
     }
 
-    /**
-     * Power off the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachinePowerOffParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult powerOff(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters, Context context) {
-        return beginPowerOff(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginPowerOff(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters, context));
     }
 
     /**
@@ -2183,8 +1845,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> reimageWithResponse(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineReimageParameters body) {
-        return service.reimageSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName, body, Context.NONE);
+        return reimageWithResponse(resourceGroupName, bareMetalMachineName, body, Context.NONE);
     }
 
     /**
@@ -2260,42 +1921,18 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginReimage(String resourceGroupName,
         String bareMetalMachineName, BareMetalMachineReimageParameters body) {
-        Response<BinaryData> response = reimageWithResponse(resourceGroupName, bareMetalMachineName, body);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginReimage(resourceGroupName, bareMetalMachineName, body, Context.NONE);
     }
 
-    /**
-     * Reimage the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginReimage(String resourceGroupName,
         String bareMetalMachineName) {
         final BareMetalMachineReimageParameters body = null;
-        Response<BinaryData> response = reimageWithResponse(resourceGroupName, bareMetalMachineName, body);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginReimage(resourceGroupName, bareMetalMachineName, body, Context.NONE);
     }
 
-    /**
-     * Reimage the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginReimage(String resourceGroupName,
         String bareMetalMachineName, BareMetalMachineReimageParameters body, Context context) {
@@ -2339,38 +1976,19 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reimage the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult reimage(String resourceGroupName, String bareMetalMachineName) {
         final BareMetalMachineReimageParameters body = null;
-        return beginReimage(resourceGroupName, bareMetalMachineName, body).getFinalResult();
+        return reimage(resourceGroupName, bareMetalMachineName, body, Context.NONE);
     }
 
-    /**
-     * Reimage the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult reimage(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineReimageParameters body, Context context) {
-        return beginReimage(resourceGroupName, bareMetalMachineName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginReimage(resourceGroupName, bareMetalMachineName, body, context));
     }
 
     /**
@@ -2408,8 +2026,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> replaceWithResponse(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters) {
-        return service.replaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters,
+        return replaceWithResponse(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters,
             Context.NONE);
     }
 
@@ -2490,44 +2107,18 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginReplace(String resourceGroupName,
         String bareMetalMachineName, BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters) {
-        Response<BinaryData> response
-            = replaceWithResponse(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginReplace(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters, Context.NONE);
     }
 
-    /**
-     * Replace the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginReplace(String resourceGroupName,
         String bareMetalMachineName) {
         final BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters = null;
-        Response<BinaryData> response
-            = replaceWithResponse(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginReplace(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters, Context.NONE);
     }
 
-    /**
-     * Replace the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineReplaceParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginReplace(String resourceGroupName,
         String bareMetalMachineName, BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters,
@@ -2573,40 +2164,19 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Replace the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult replace(String resourceGroupName, String bareMetalMachineName) {
         final BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters = null;
-        return beginReplace(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters)
-            .getFinalResult();
+        return replace(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters, Context.NONE);
     }
 
-    /**
-     * Replace the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineReplaceParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult replace(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters, Context context) {
-        return beginReplace(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginReplace(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters, context));
     }
 
     /**
@@ -2640,8 +2210,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restartWithResponse(String resourceGroupName, String bareMetalMachineName) {
-        return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName, Context.NONE);
+        return restartWithResponse(resourceGroupName, bareMetalMachineName, Context.NONE);
     }
 
     /**
@@ -2681,35 +2250,14 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             this.client.getContext());
     }
 
-    /**
-     * Restart the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginRestart(String resourceGroupName,
         String bareMetalMachineName) {
-        Response<BinaryData> response = restartWithResponse(resourceGroupName, bareMetalMachineName);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginRestart(resourceGroupName, bareMetalMachineName, Context.NONE);
     }
 
-    /**
-     * Restart the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginRestart(String resourceGroupName,
         String bareMetalMachineName, Context context) {
@@ -2734,35 +2282,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restart the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult restart(String resourceGroupName, String bareMetalMachineName) {
-        return beginRestart(resourceGroupName, bareMetalMachineName).getFinalResult();
+        return restart(resourceGroupName, bareMetalMachineName, Context.NONE);
     }
 
-    /**
-     * Restart the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult restart(String resourceGroupName, String bareMetalMachineName, Context context) {
-        return beginRestart(resourceGroupName, bareMetalMachineName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginRestart(resourceGroupName, bareMetalMachineName, context));
     }
 
     /**
@@ -2803,10 +2332,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> runCommandWithResponse(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters) {
-        final String contentType = "application/json";
-        return service.runCommandSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName, contentType,
-            bareMetalMachineRunCommandParameters, Context.NONE);
+        return runCommandWithResponse(resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters,
+            Context.NONE);
     }
 
     /**
@@ -2854,41 +2381,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             this.client.getContext());
     }
 
-    /**
-     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
-     * execution results and the command exit code can be retrieved from the operation status API once available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineRunCommandParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginRunCommand(
         String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters) {
-        Response<BinaryData> response
-            = runCommandWithResponse(resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginRunCommand(resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters,
+            Context.NONE);
     }
 
-    /**
-     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
-     * execution results and the command exit code can be retrieved from the operation status API once available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineRunCommandParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginRunCommand(
         String resourceGroupName, String bareMetalMachineName,
@@ -2919,43 +2421,19 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
-     * execution results and the command exit code can be retrieved from the operation status API once available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineRunCommandParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult runCommand(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters) {
-        return beginRunCommand(resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters)
-            .getFinalResult();
+        return runCommand(resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters, Context.NONE);
     }
 
-    /**
-     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
-     * execution results and the command exit code can be retrieved from the operation status API once available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineRunCommandParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult runCommand(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters, Context context) {
-        return beginRunCommand(resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginRunCommand(resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters, context));
     }
 
     /**
@@ -2997,9 +2475,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> runDataExtractsWithResponse(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters) {
-        final String contentType = "application/json";
-        return service.runDataExtractsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName, contentType,
+        return runDataExtractsWithResponse(resourceGroupName, bareMetalMachineName,
             bareMetalMachineRunDataExtractsParameters, Context.NONE);
     }
 
@@ -3048,41 +2524,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             this.client.getContext());
     }
 
-    /**
-     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
-     * execution results and the command exit code can be retrieved from the operation status API once available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineRunDataExtractsParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginRunDataExtracts(
         String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters) {
-        Response<BinaryData> response = runDataExtractsWithResponse(resourceGroupName, bareMetalMachineName,
-            bareMetalMachineRunDataExtractsParameters);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginRunDataExtracts(resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters,
+            Context.NONE);
     }
 
-    /**
-     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
-     * execution results and the command exit code can be retrieved from the operation status API once available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineRunDataExtractsParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginRunDataExtracts(
         String resourceGroupName, String bareMetalMachineName,
@@ -3112,43 +2563,20 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             bareMetalMachineRunDataExtractsParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
-     * execution results and the command exit code can be retrieved from the operation status API once available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineRunDataExtractsParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult runDataExtracts(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters) {
-        return beginRunDataExtracts(resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters)
-            .getFinalResult();
+        return runDataExtracts(resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters,
+            Context.NONE);
     }
 
-    /**
-     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
-     * execution results and the command exit code can be retrieved from the operation status API once available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineRunDataExtractsParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult runDataExtracts(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters, Context context) {
-        return beginRunDataExtracts(resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginRunDataExtracts(resourceGroupName, bareMetalMachineName,
+            bareMetalMachineRunDataExtractsParameters, context));
     }
 
     /**
@@ -3193,9 +2621,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     private Response<BinaryData> runDataExtractsRestrictedWithResponse(String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters) {
-        final String contentType = "application/json";
-        return service.runDataExtractsRestrictedSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName, contentType,
+        return runDataExtractsRestrictedWithResponse(resourceGroupName, bareMetalMachineName,
             bareMetalMachineRunDataExtractsRestrictedParameters, Context.NONE);
     }
 
@@ -3248,43 +2674,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             this.client.getContext());
     }
 
-    /**
-     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
-     * the command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginRunDataExtractsRestricted(
         String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters) {
-        Response<BinaryData> response = runDataExtractsRestrictedWithResponse(resourceGroupName, bareMetalMachineName,
-            bareMetalMachineRunDataExtractsRestrictedParameters);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginRunDataExtractsRestricted(resourceGroupName, bareMetalMachineName,
+            bareMetalMachineRunDataExtractsRestrictedParameters, Context.NONE);
     }
 
-    /**
-     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
-     * the command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginRunDataExtractsRestricted(
         String resourceGroupName, String bareMetalMachineName,
@@ -3317,46 +2716,21 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             bareMetalMachineRunDataExtractsRestrictedParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
-     * the command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult runDataExtractsRestricted(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters) {
-        return beginRunDataExtractsRestricted(resourceGroupName, bareMetalMachineName,
-            bareMetalMachineRunDataExtractsRestrictedParameters).getFinalResult();
+        return runDataExtractsRestricted(resourceGroupName, bareMetalMachineName,
+            bareMetalMachineRunDataExtractsRestrictedParameters, Context.NONE);
     }
 
-    /**
-     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
-     * the command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult runDataExtractsRestricted(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters,
         Context context) {
-        return beginRunDataExtractsRestricted(resourceGroupName, bareMetalMachineName,
-            bareMetalMachineRunDataExtractsRestrictedParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginRunDataExtractsRestricted(resourceGroupName,
+            bareMetalMachineName, bareMetalMachineRunDataExtractsRestrictedParameters, context));
     }
 
     /**
@@ -3400,9 +2774,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> runReadCommandsWithResponse(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters) {
-        final String contentType = "application/json";
-        return service.runReadCommandsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName, contentType,
+        return runReadCommandsWithResponse(resourceGroupName, bareMetalMachineName,
             bareMetalMachineRunReadCommandsParameters, Context.NONE);
     }
 
@@ -3453,43 +2825,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             this.client.getContext());
     }
 
-    /**
-     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineRunReadCommandsParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginRunReadCommands(
         String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters) {
-        Response<BinaryData> response = runReadCommandsWithResponse(resourceGroupName, bareMetalMachineName,
-            bareMetalMachineRunReadCommandsParameters);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginRunReadCommands(resourceGroupName, bareMetalMachineName, bareMetalMachineRunReadCommandsParameters,
+            Context.NONE);
     }
 
-    /**
-     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineRunReadCommandsParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginRunReadCommands(
         String resourceGroupName, String bareMetalMachineName,
@@ -3520,45 +2865,20 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             bareMetalMachineRunReadCommandsParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineRunReadCommandsParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult runReadCommands(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters) {
-        return beginRunReadCommands(resourceGroupName, bareMetalMachineName, bareMetalMachineRunReadCommandsParameters)
-            .getFinalResult();
+        return runReadCommands(resourceGroupName, bareMetalMachineName, bareMetalMachineRunReadCommandsParameters,
+            Context.NONE);
     }
 
-    /**
-     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineRunReadCommandsParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult runReadCommands(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters, Context context) {
-        return beginRunReadCommands(resourceGroupName, bareMetalMachineName, bareMetalMachineRunReadCommandsParameters,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginRunReadCommands(resourceGroupName, bareMetalMachineName,
+            bareMetalMachineRunReadCommandsParameters, context));
     }
 
     /**
@@ -3592,8 +2912,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String bareMetalMachineName) {
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName, Context.NONE);
+        return startWithResponse(resourceGroupName, bareMetalMachineName, Context.NONE);
     }
 
     /**
@@ -3633,35 +2952,14 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             this.client.getContext());
     }
 
-    /**
-     * Start the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginStart(String resourceGroupName,
         String bareMetalMachineName) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, bareMetalMachineName);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginStart(resourceGroupName, bareMetalMachineName, Context.NONE);
     }
 
-    /**
-     * Start the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginStart(String resourceGroupName,
         String bareMetalMachineName, Context context) {
@@ -3686,35 +2984,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Start the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult start(String resourceGroupName, String bareMetalMachineName) {
-        return beginStart(resourceGroupName, bareMetalMachineName).getFinalResult();
+        return start(resourceGroupName, bareMetalMachineName, Context.NONE);
     }
 
-    /**
-     * Start the provided bare metal machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult start(String resourceGroupName, String bareMetalMachineName, Context context) {
-        return beginStart(resourceGroupName, bareMetalMachineName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginStart(resourceGroupName, bareMetalMachineName, context));
     }
 
     /**
@@ -3748,8 +3027,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> uncordonWithResponse(String resourceGroupName, String bareMetalMachineName) {
-        return service.uncordonSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bareMetalMachineName, Context.NONE);
+        return uncordonWithResponse(resourceGroupName, bareMetalMachineName, Context.NONE);
     }
 
     /**
@@ -3789,35 +3067,14 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             this.client.getContext());
     }
 
-    /**
-     * Uncordon the provided bare metal machine's Kubernetes node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginUncordon(String resourceGroupName,
         String bareMetalMachineName) {
-        Response<BinaryData> response = uncordonWithResponse(resourceGroupName, bareMetalMachineName);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginUncordon(resourceGroupName, bareMetalMachineName, Context.NONE);
     }
 
-    /**
-     * Uncordon the provided bare metal machine's Kubernetes node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginUncordon(String resourceGroupName,
         String bareMetalMachineName, Context context) {
@@ -3842,35 +3099,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Uncordon the provided bare metal machine's Kubernetes node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult uncordon(String resourceGroupName, String bareMetalMachineName) {
-        return beginUncordon(resourceGroupName, bareMetalMachineName).getFinalResult();
+        return uncordon(resourceGroupName, bareMetalMachineName, Context.NONE);
     }
 
-    /**
-     * Uncordon the provided bare metal machine's Kubernetes node.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult uncordon(String resourceGroupName, String bareMetalMachineName, Context context) {
-        return beginUncordon(resourceGroupName, bareMetalMachineName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUncordon(resourceGroupName, bareMetalMachineName, context));
     }
 
     /**
@@ -3905,11 +3143,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BareMetalMachineInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BareMetalMachineList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3963,11 +3197,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BareMetalMachineInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BareMetalMachineList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

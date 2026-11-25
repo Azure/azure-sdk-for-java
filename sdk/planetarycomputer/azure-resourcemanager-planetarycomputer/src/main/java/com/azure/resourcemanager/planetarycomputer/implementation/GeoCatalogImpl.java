@@ -90,10 +90,7 @@ public final class GeoCatalogImpl implements GeoCatalog, GeoCatalog.Definition, 
     }
 
     public GeoCatalog create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGeoCatalogs()
-            .create(resourceGroupName, catalogName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public GeoCatalog create(Context context) {
@@ -115,10 +112,7 @@ public final class GeoCatalogImpl implements GeoCatalog, GeoCatalog.Definition, 
     }
 
     public GeoCatalog apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGeoCatalogs()
-            .update(resourceGroupName, catalogName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public GeoCatalog apply(Context context) {
@@ -141,11 +135,7 @@ public final class GeoCatalogImpl implements GeoCatalog, GeoCatalog.Definition, 
     }
 
     public GeoCatalog refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGeoCatalogs()
-            .getByResourceGroupWithResponse(resourceGroupName, catalogName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public GeoCatalog refresh(Context context) {

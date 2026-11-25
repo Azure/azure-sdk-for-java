@@ -226,18 +226,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an Endpoint resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param endpointName The name of the Endpoint resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Endpoint resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointInner> getWithResponse(String resourceGroupName, String storageMoverName,
         String endpointName, Context context) {
@@ -246,17 +235,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             resourceGroupName, storageMoverName, endpointName, accept, context);
     }
 
-    /**
-     * Gets an Endpoint resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param endpointName The name of the Endpoint resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Endpoint resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointInner get(String resourceGroupName, String storageMoverName, String endpointName) {
         return getWithResponse(resourceGroupName, storageMoverName, endpointName, Context.NONE).getValue();
@@ -307,20 +286,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates an Endpoint resource, which represents a data transfer source or destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param endpointName The name of the Endpoint resource.
-     * @param endpointParam The endpointParam parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Endpoint resource, which contains information about file sources and targets along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointInner> createOrUpdateWithResponse(String resourceGroupName, String storageMoverName,
         String endpointName, EndpointInner endpointParam, Context context) {
@@ -331,18 +297,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             endpointParam, context);
     }
 
-    /**
-     * Creates or updates an Endpoint resource, which represents a data transfer source or destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param endpointName The name of the Endpoint resource.
-     * @param endpointParam The endpointParam parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Endpoint resource, which contains information about file sources and targets.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointInner createOrUpdate(String resourceGroupName, String storageMoverName, String endpointName,
         EndpointInner endpointParam) {
@@ -395,20 +350,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates properties for an Endpoint resource. Properties not specified in the request body will be unchanged.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param endpointName The name of the Endpoint resource.
-     * @param endpointParam The endpointParam parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Endpoint resource, which contains information about file sources and targets along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointInner> updateWithResponse(String resourceGroupName, String storageMoverName,
         String endpointName, EndpointBaseUpdateParameters endpointParam, Context context) {
@@ -419,18 +361,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             endpointParam, context);
     }
 
-    /**
-     * Updates properties for an Endpoint resource. Properties not specified in the request body will be unchanged.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param endpointName The name of the Endpoint resource.
-     * @param endpointParam The endpointParam parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Endpoint resource, which contains information about file sources and targets.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointInner update(String resourceGroupName, String storageMoverName, String endpointName,
         EndpointBaseUpdateParameters endpointParam) {
@@ -472,8 +403,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageMoverName,
         String endpointName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageMoverName, endpointName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, storageMoverName, endpointName, Context.NONE);
     }
 
     /**
@@ -515,36 +445,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes an Endpoint resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param endpointName The name of the Endpoint resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
         String endpointName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, storageMoverName, endpointName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storageMoverName, endpointName, Context.NONE);
     }
 
-    /**
-     * Deletes an Endpoint resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param endpointName The name of the Endpoint resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
         String endpointName, Context context) {
@@ -569,35 +477,16 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an Endpoint resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param endpointName The name of the Endpoint resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageMoverName, String endpointName) {
-        beginDelete(resourceGroupName, storageMoverName, endpointName).getFinalResult();
+        delete(resourceGroupName, storageMoverName, endpointName, Context.NONE);
     }
 
-    /**
-     * Deletes an Endpoint resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param endpointName The name of the Endpoint resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageMoverName, String endpointName, Context context) {
-        beginDelete(resourceGroupName, storageMoverName, endpointName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, storageMoverName, endpointName, context));
     }
 
     /**
@@ -649,11 +538,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointInner> listSinglePage(String resourceGroupName, String storageMoverName) {
-        final String accept = "application/json";
-        Response<EndpointList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageMoverName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, storageMoverName, Context.NONE);
     }
 
     /**
@@ -677,33 +562,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all Endpoints in a Storage Mover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Endpoints as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointInner> list(String resourceGroupName, String storageMoverName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, storageMoverName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, storageMoverName, Context.NONE);
     }
 
-    /**
-     * Lists all Endpoints in a Storage Mover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Endpoints as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointInner> list(String resourceGroupName, String storageMoverName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, storageMoverName, context),
@@ -739,10 +604,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EndpointList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

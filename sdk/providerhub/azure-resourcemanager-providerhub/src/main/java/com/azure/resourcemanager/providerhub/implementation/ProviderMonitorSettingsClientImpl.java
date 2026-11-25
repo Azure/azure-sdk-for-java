@@ -274,17 +274,7 @@ public final class ProviderMonitorSettingsClientImpl implements ProviderMonitorS
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the provider monitor setting details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerMonitorSettingName The name of the provider monitor setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the provider monitor setting details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProviderMonitorSettingInner> getByResourceGroupWithResponse(String resourceGroupName,
         String providerMonitorSettingName, Context context) {
@@ -312,16 +302,7 @@ public final class ProviderMonitorSettingsClientImpl implements ProviderMonitorS
             this.client.getSubscriptionId(), resourceGroupName, providerMonitorSettingName, accept, context);
     }
 
-    /**
-     * Gets the provider monitor setting details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerMonitorSettingName The name of the provider monitor setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the provider monitor setting details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderMonitorSettingInner getByResourceGroup(String resourceGroupName, String providerMonitorSettingName) {
         return getByResourceGroupWithResponse(resourceGroupName, providerMonitorSettingName, Context.NONE).getValue();
@@ -387,36 +368,7 @@ public final class ProviderMonitorSettingsClientImpl implements ProviderMonitorS
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String providerMonitorSettingName,
         ProviderMonitorSettingInner properties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (providerMonitorSettingName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter providerMonitorSettingName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, providerMonitorSettingName, contentType, accept,
-            properties, Context.NONE);
+        return createWithResponse(resourceGroupName, providerMonitorSettingName, properties, Context.NONE);
     }
 
     /**
@@ -489,39 +441,14 @@ public final class ProviderMonitorSettingsClientImpl implements ProviderMonitorS
             this.client.getContext());
     }
 
-    /**
-     * Creates the provider monitor setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerMonitorSettingName The name of the provider monitor setting.
-     * @param properties The provider monitor setting properties supplied to the create operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProviderMonitorSettingInner>, ProviderMonitorSettingInner> beginCreate(
         String resourceGroupName, String providerMonitorSettingName, ProviderMonitorSettingInner properties) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, providerMonitorSettingName, properties);
-        return this.client.<ProviderMonitorSettingInner, ProviderMonitorSettingInner>getLroResult(response,
-            ProviderMonitorSettingInner.class, ProviderMonitorSettingInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, providerMonitorSettingName, properties, Context.NONE);
     }
 
-    /**
-     * Creates the provider monitor setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerMonitorSettingName The name of the provider monitor setting.
-     * @param properties The provider monitor setting properties supplied to the create operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProviderMonitorSettingInner>, ProviderMonitorSettingInner> beginCreate(
         String resourceGroupName, String providerMonitorSettingName, ProviderMonitorSettingInner properties,
@@ -551,39 +478,19 @@ public final class ProviderMonitorSettingsClientImpl implements ProviderMonitorS
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates the provider monitor setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerMonitorSettingName The name of the provider monitor setting.
-     * @param properties The provider monitor setting properties supplied to the create operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderMonitorSettingInner create(String resourceGroupName, String providerMonitorSettingName,
         ProviderMonitorSettingInner properties) {
-        return beginCreate(resourceGroupName, providerMonitorSettingName, properties).getFinalResult();
+        return create(resourceGroupName, providerMonitorSettingName, properties, Context.NONE);
     }
 
-    /**
-     * Creates the provider monitor setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerMonitorSettingName The name of the provider monitor setting.
-     * @param properties The provider monitor setting properties supplied to the create operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderMonitorSettingInner create(String resourceGroupName, String providerMonitorSettingName,
         ProviderMonitorSettingInner properties, Context context) {
-        return beginCreate(resourceGroupName, providerMonitorSettingName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, providerMonitorSettingName, properties, context));
     }
 
     /**
@@ -642,19 +549,7 @@ public final class ProviderMonitorSettingsClientImpl implements ProviderMonitorS
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates the provider monitor setting properties as specified in the request body. Update fails if the specified
-     * provider monitor setting does not already exist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerMonitorSettingName The name of the provider monitor setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProviderMonitorSettingInner> updateWithResponse(String resourceGroupName,
         String providerMonitorSettingName, Context context) {
@@ -682,17 +577,7 @@ public final class ProviderMonitorSettingsClientImpl implements ProviderMonitorS
             this.client.getSubscriptionId(), resourceGroupName, providerMonitorSettingName, accept, context);
     }
 
-    /**
-     * Updates the provider monitor setting properties as specified in the request body. Update fails if the specified
-     * provider monitor setting does not already exist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerMonitorSettingName The name of the provider monitor setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderMonitorSettingInner update(String resourceGroupName, String providerMonitorSettingName) {
         return updateWithResponse(resourceGroupName, providerMonitorSettingName, Context.NONE).getValue();
@@ -747,17 +632,7 @@ public final class ProviderMonitorSettingsClientImpl implements ProviderMonitorS
         return deleteWithResponseAsync(resourceGroupName, providerMonitorSettingName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a provider monitor setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerMonitorSettingName The name of the provider monitor setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String providerMonitorSettingName,
         Context context) {
@@ -784,15 +659,7 @@ public final class ProviderMonitorSettingsClientImpl implements ProviderMonitorS
             this.client.getSubscriptionId(), resourceGroupName, providerMonitorSettingName, context);
     }
 
-    /**
-     * Deletes a provider monitor setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerMonitorSettingName The name of the provider monitor setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String providerMonitorSettingName) {
         deleteWithResponse(resourceGroupName, providerMonitorSettingName, Context.NONE);
@@ -859,26 +726,7 @@ public final class ProviderMonitorSettingsClientImpl implements ProviderMonitorS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProviderMonitorSettingInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ProviderMonitorSettingArrayResponseWithContinuation> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -916,33 +764,13 @@ public final class ProviderMonitorSettingsClientImpl implements ProviderMonitorS
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of the provider monitor settings in the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the provider monitor settings in the resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderMonitorSettingInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets the list of the provider monitor settings in the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the provider monitor settings in the resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderMonitorSettingInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -999,21 +827,7 @@ public final class ProviderMonitorSettingsClientImpl implements ProviderMonitorS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProviderMonitorSettingInner> listSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ProviderMonitorSettingArrayResponseWithContinuation> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1044,29 +858,13 @@ public final class ProviderMonitorSettingsClientImpl implements ProviderMonitorS
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of the provider monitor settings in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the provider monitor settings in the subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderMonitorSettingInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets the list of the provider monitor settings in the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the provider monitor settings in the subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderMonitorSettingInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1112,20 +910,7 @@ public final class ProviderMonitorSettingsClientImpl implements ProviderMonitorS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProviderMonitorSettingInner> listByResourceGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ProviderMonitorSettingArrayResponseWithContinuation> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1196,20 +981,7 @@ public final class ProviderMonitorSettingsClientImpl implements ProviderMonitorS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProviderMonitorSettingInner> listBySubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ProviderMonitorSettingArrayResponseWithContinuation> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

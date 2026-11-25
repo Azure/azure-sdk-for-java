@@ -93,18 +93,7 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a restorable dropped managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restorable dropped managed database along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RestorableDroppedManagedDatabaseInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String restorableDroppedDatabaseId) {
@@ -178,17 +167,7 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
             resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, accept, context);
     }
 
-    /**
-     * Gets a restorable dropped managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restorable dropped managed database on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RestorableDroppedManagedDatabaseInner> getAsync(String resourceGroupName, String managedInstanceName,
         String restorableDroppedDatabaseId) {
@@ -196,18 +175,7 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a restorable dropped managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restorable dropped managed database along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RestorableDroppedManagedDatabaseInner> getWithResponse(String resourceGroupName,
         String managedInstanceName, String restorableDroppedDatabaseId, Context context) {
@@ -215,17 +183,7 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
             .block();
     }
 
-    /**
-     * Gets a restorable dropped managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restorable dropped managed database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RestorableDroppedManagedDatabaseInner get(String resourceGroupName, String managedInstanceName,
         String restorableDroppedDatabaseId) {
@@ -312,16 +270,7 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of restorable dropped managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of restorable dropped managed databases as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableDroppedManagedDatabaseInner> listByInstanceAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -347,33 +296,14 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
             nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of restorable dropped managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of restorable dropped managed databases as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableDroppedManagedDatabaseInner> listByInstance(String resourceGroupName,
         String managedInstanceName) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
-    /**
-     * Gets a list of restorable dropped managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of restorable dropped managed databases as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableDroppedManagedDatabaseInner> listByInstance(String resourceGroupName,
         String managedInstanceName, Context context) {

@@ -1,6 +1,6 @@
 # Release History
 
-## 7.5.0-beta.1 (Unreleased)
+## 7.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,7 +10,9 @@
 
 ### Other Changes
 
-- Aligned Reactor version resolution and test HTTP transport dependencies with Netty 4.2, and added offline transport compatibility tests.
+## 7.5.0 (2026-11-24)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#750-2026-11-24) for more details.
 
 ## 7.4.0 (2026-07-24)
 

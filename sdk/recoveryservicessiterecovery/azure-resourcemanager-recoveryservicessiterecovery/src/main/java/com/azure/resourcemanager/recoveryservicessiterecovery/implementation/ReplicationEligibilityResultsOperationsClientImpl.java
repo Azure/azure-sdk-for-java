@@ -164,22 +164,7 @@ public final class ReplicationEligibilityResultsOperationsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the validation errors in case the VM is unsuitable for protection.
-     * 
-     * Validates whether a given VM can be protected or not in which case returns list of errors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName Virtual Machine name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validation errors in case the VM is unsuitable for protection.
-     * 
-     * Validates whether a given VM can be protected or not in which case returns list of errors along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicationEligibilityResultsInner> getWithResponse(String resourceGroupName,
         String virtualMachineName, Context context) {
@@ -206,20 +191,7 @@ public final class ReplicationEligibilityResultsOperationsClientImpl
             resourceGroupName, virtualMachineName, accept, context);
     }
 
-    /**
-     * Gets the validation errors in case the VM is unsuitable for protection.
-     * 
-     * Validates whether a given VM can be protected or not in which case returns list of errors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName Virtual Machine name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validation errors in case the VM is unsuitable for protection.
-     * 
-     * Validates whether a given VM can be protected or not in which case returns list of errors.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationEligibilityResultsInner get(String resourceGroupName, String virtualMachineName) {
         return getWithResponse(resourceGroupName, virtualMachineName, Context.NONE).getValue();
@@ -288,22 +260,7 @@ public final class ReplicationEligibilityResultsOperationsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the validation errors in case the VM is unsuitable for protection.
-     * 
-     * Validates whether a given VM can be protected or not in which case returns list of errors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName Virtual Machine name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validation errors in case the VM is unsuitable for protection.
-     * 
-     * Validates whether a given VM can be protected or not in which case returns list of errors along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicationEligibilityResultsCollectionInner> listWithResponse(String resourceGroupName,
         String virtualMachineName, Context context) {
@@ -330,20 +287,7 @@ public final class ReplicationEligibilityResultsOperationsClientImpl
             resourceGroupName, virtualMachineName, accept, context);
     }
 
-    /**
-     * Gets the validation errors in case the VM is unsuitable for protection.
-     * 
-     * Validates whether a given VM can be protected or not in which case returns list of errors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName Virtual Machine name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validation errors in case the VM is unsuitable for protection.
-     * 
-     * Validates whether a given VM can be protected or not in which case returns list of errors.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationEligibilityResultsCollectionInner list(String resourceGroupName, String virtualMachineName) {
         return listWithResponse(resourceGroupName, virtualMachineName, Context.NONE).getValue();

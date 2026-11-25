@@ -254,17 +254,7 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a cloud validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cloud validation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CloudValidationInner> getByResourceGroupWithResponse(String resourceGroupName,
         String cloudValidationName, Context context) {
@@ -273,16 +263,7 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
             this.client.getSubscriptionId(), resourceGroupName, cloudValidationName, accept, context);
     }
 
-    /**
-     * Get a cloud validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cloud validation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudValidationInner getByResourceGroup(String resourceGroupName, String cloudValidationName) {
         return getByResourceGroupWithResponse(resourceGroupName, cloudValidationName, Context.NONE).getValue();
@@ -325,11 +306,7 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String cloudValidationName,
         CloudValidationInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudValidationName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, cloudValidationName, resource, Context.NONE);
     }
 
     /**
@@ -374,37 +351,14 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
             CloudValidationInner.class, CloudValidationInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a cloud validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloud Validation Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudValidationInner>, CloudValidationInner>
         beginCreateOrUpdate(String resourceGroupName, String cloudValidationName, CloudValidationInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, cloudValidationName, resource);
-        return this.client.<CloudValidationInner, CloudValidationInner>getLroResult(response,
-            CloudValidationInner.class, CloudValidationInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, cloudValidationName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a cloud validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloud Validation Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudValidationInner>, CloudValidationInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudValidationName, CloudValidationInner resource, Context context) {
@@ -432,39 +386,19 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a cloud validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloud Validation Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudValidationInner createOrUpdate(String resourceGroupName, String cloudValidationName,
         CloudValidationInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, cloudValidationName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, cloudValidationName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a cloud validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloud Validation Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudValidationInner createOrUpdate(String resourceGroupName, String cloudValidationName,
         CloudValidationInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, cloudValidationName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, cloudValidationName, resource, context));
     }
 
     /**
@@ -504,11 +438,7 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String cloudValidationName,
         CloudValidationUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudValidationName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, cloudValidationName, properties, Context.NONE);
     }
 
     /**
@@ -553,37 +483,14 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
             CloudValidationInner.class, CloudValidationInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a cloud validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloud Validation Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudValidationInner>, CloudValidationInner> beginUpdate(String resourceGroupName,
         String cloudValidationName, CloudValidationUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, cloudValidationName, properties);
-        return this.client.<CloudValidationInner, CloudValidationInner>getLroResult(response,
-            CloudValidationInner.class, CloudValidationInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, cloudValidationName, properties, Context.NONE);
     }
 
-    /**
-     * Update a cloud validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloud Validation Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudValidationInner>, CloudValidationInner> beginUpdate(String resourceGroupName,
         String cloudValidationName, CloudValidationUpdate properties, Context context) {
@@ -610,39 +517,19 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a cloud validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloud Validation Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudValidationInner update(String resourceGroupName, String cloudValidationName,
         CloudValidationUpdate properties) {
-        return beginUpdate(resourceGroupName, cloudValidationName, properties).getFinalResult();
+        return update(resourceGroupName, cloudValidationName, properties, Context.NONE);
     }
 
-    /**
-     * Update a cloud validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloud Validation Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudValidationInner update(String resourceGroupName, String cloudValidationName,
         CloudValidationUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, cloudValidationName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, cloudValidationName, properties, context));
     }
 
     /**
@@ -676,8 +563,7 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cloudValidationName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudValidationName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, cloudValidationName, Context.NONE);
     }
 
     /**
@@ -715,33 +601,13 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a cloud validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudValidationName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, cloudValidationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, cloudValidationName, Context.NONE);
     }
 
-    /**
-     * Delete a cloud validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudValidationName,
         Context context) {
@@ -765,33 +631,16 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a cloud validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudValidationName) {
-        beginDelete(resourceGroupName, cloudValidationName).getFinalResult();
+        delete(resourceGroupName, cloudValidationName, Context.NONE);
     }
 
-    /**
-     * Delete a cloud validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudValidationName, Context context) {
-        beginDelete(resourceGroupName, cloudValidationName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, cloudValidationName, context));
     }
 
     /**
@@ -861,12 +710,7 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudValidationInner> listByResourceGroupSinglePage(String resourceGroupName, String filter) {
-        final String accept = "application/json";
-        Response<CloudValidationListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, filter, Context.NONE);
     }
 
     /**
@@ -890,33 +734,14 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List cloud validations by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudValidation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudValidationInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, filter),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, filter, Context.NONE);
     }
 
-    /**
-     * List cloud validations by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param filter The OData filter expression to apply to the list operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudValidation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudValidationInner> listByResourceGroup(String resourceGroupName, String filter,
         Context context) {
@@ -985,11 +810,7 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudValidationInner> listSinglePage(String filter) {
-        final String accept = "application/json";
-        Response<CloudValidationListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, Context.NONE);
     }
 
     /**
@@ -1011,30 +832,14 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List cloud validations by subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudValidation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudValidationInner> list() {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(filter),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(filter, Context.NONE);
     }
 
-    /**
-     * List cloud validations by subscription.
-     * 
-     * @param filter The OData filter expression to apply to the list operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudValidation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudValidationInner> list(String filter, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, context),
@@ -1073,11 +878,7 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudValidationInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CloudValidationListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1131,11 +932,7 @@ public final class CloudValidationsClientImpl implements CloudValidationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudValidationInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CloudValidationListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

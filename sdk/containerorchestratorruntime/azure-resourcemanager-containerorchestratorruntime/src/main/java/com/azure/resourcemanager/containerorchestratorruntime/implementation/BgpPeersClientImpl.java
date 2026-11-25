@@ -192,17 +192,7 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
         return getWithResponseAsync(resourceUri, bgpPeerName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a BgpPeer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param bgpPeerName The name of the BgpPeer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a BgpPeer along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BgpPeerInner> getWithResponse(String resourceUri, String bgpPeerName, Context context) {
         final String accept = "application/json";
@@ -210,16 +200,7 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
             context);
     }
 
-    /**
-     * Get a BgpPeer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param bgpPeerName The name of the BgpPeer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a BgpPeer.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BgpPeerInner get(String resourceUri, String bgpPeerName) {
         return getWithResponse(resourceUri, bgpPeerName, Context.NONE).getValue();
@@ -263,10 +244,7 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceUri, String bgpPeerName,
         BgpPeerInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-            bgpPeerName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceUri, bgpPeerName, resource, Context.NONE);
     }
 
     /**
@@ -311,39 +289,14 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
             BgpPeerInner.class, BgpPeerInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a BgpPeer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param bgpPeerName The name of the BgpPeer.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a BgpPeer resource for an Arc connected cluster
-     * (Microsoft.Kubernetes/connectedClusters).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BgpPeerInner>, BgpPeerInner> beginCreateOrUpdate(String resourceUri,
         String bgpPeerName, BgpPeerInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceUri, bgpPeerName, resource);
-        return this.client.<BgpPeerInner, BgpPeerInner>getLroResult(response, BgpPeerInner.class, BgpPeerInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceUri, bgpPeerName, resource, Context.NONE);
     }
 
-    /**
-     * Create a BgpPeer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param bgpPeerName The name of the BgpPeer.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a BgpPeer resource for an Arc connected cluster
-     * (Microsoft.Kubernetes/connectedClusters).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BgpPeerInner>, BgpPeerInner> beginCreateOrUpdate(String resourceUri,
         String bgpPeerName, BgpPeerInner resource, Context context) {
@@ -370,37 +323,16 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a BgpPeer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param bgpPeerName The name of the BgpPeer.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a BgpPeer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BgpPeerInner createOrUpdate(String resourceUri, String bgpPeerName, BgpPeerInner resource) {
-        return beginCreateOrUpdate(resourceUri, bgpPeerName, resource).getFinalResult();
+        return createOrUpdate(resourceUri, bgpPeerName, resource, Context.NONE);
     }
 
-    /**
-     * Create a BgpPeer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param bgpPeerName The name of the BgpPeer.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a BgpPeer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BgpPeerInner createOrUpdate(String resourceUri, String bgpPeerName, BgpPeerInner resource, Context context) {
-        return beginCreateOrUpdate(resourceUri, bgpPeerName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceUri, bgpPeerName, resource, context));
     }
 
     /**
@@ -436,32 +368,14 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
         return deleteWithResponseAsync(resourceUri, bgpPeerName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a BgpPeer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param bgpPeerName The name of the BgpPeer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceUri, String bgpPeerName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, bgpPeerName,
             context);
     }
 
-    /**
-     * Delete a BgpPeer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param bgpPeerName The name of the BgpPeer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, String bgpPeerName) {
         deleteWithResponse(resourceUri, bgpPeerName, Context.NONE);
@@ -513,11 +427,7 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BgpPeerInner> listSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<BgpPeerListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceUri, Context.NONE);
     }
 
     /**
@@ -539,30 +449,13 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List BgpPeer resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a BgpPeer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BgpPeerInner> list(String resourceUri) {
-        return new PagedIterable<>(() -> listSinglePage(resourceUri), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceUri, Context.NONE);
     }
 
-    /**
-     * List BgpPeer resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a BgpPeer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BgpPeerInner> list(String resourceUri, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceUri, context),
@@ -599,11 +492,7 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BgpPeerInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BgpPeerListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

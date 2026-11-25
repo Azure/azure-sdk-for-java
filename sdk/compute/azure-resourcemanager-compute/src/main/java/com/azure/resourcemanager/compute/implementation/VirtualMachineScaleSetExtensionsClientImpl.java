@@ -133,19 +133,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * The operation to get the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param expand The expand expression to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualMachineScaleSetExtensionInner>> getWithResponseAsync(String resourceGroupName,
         String vmScaleSetName, String vmssExtensionName, String expand) {
@@ -219,17 +207,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             vmScaleSetName, vmssExtensionName, expand, accept, context);
     }
 
-    /**
-     * The operation to get the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineScaleSetExtensionInner> getAsync(String resourceGroupName, String vmScaleSetName,
         String vmssExtensionName) {
@@ -238,36 +216,14 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to get the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param expand The expand expression to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineScaleSetExtensionInner> getWithResponse(String resourceGroupName,
         String vmScaleSetName, String vmssExtensionName, String expand, Context context) {
         return getWithResponseAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, expand, context).block();
     }
 
-    /**
-     * The operation to get the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineScaleSetExtensionInner get(String resourceGroupName, String vmScaleSetName,
         String vmssExtensionName) {
@@ -275,19 +231,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         return getWithResponse(resourceGroupName, vmScaleSetName, vmssExtensionName, expand, Context.NONE).getValue();
     }
 
-    /**
-     * The operation to create or update an extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String vmScaleSetName, String vmssExtensionName, VirtualMachineScaleSetExtensionInner extensionParameters) {
@@ -377,18 +321,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             resourceGroupName, vmScaleSetName, vmssExtensionName, contentType, accept, extensionParameters, context);
     }
 
-    /**
-     * The operation to create or update an extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a Virtual Machine Scale Set Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String vmScaleSetName, String vmssExtensionName,
@@ -425,18 +358,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             VirtualMachineScaleSetExtensionInner.class, context);
     }
 
-    /**
-     * The operation to create or update an extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Virtual Machine Scale Set Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginCreateOrUpdate(String resourceGroupName, String vmScaleSetName, String vmssExtensionName,
@@ -445,19 +367,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             .getSyncPoller();
     }
 
-    /**
-     * The operation to create or update an extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Virtual Machine Scale Set Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginCreateOrUpdate(String resourceGroupName, String vmScaleSetName, String vmssExtensionName,
@@ -468,18 +378,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             .getSyncPoller();
     }
 
-    /**
-     * The operation to create or update an extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineScaleSetExtensionInner> createOrUpdateAsync(String resourceGroupName,
         String vmScaleSetName, String vmssExtensionName, VirtualMachineScaleSetExtensionInner extensionParameters) {
@@ -509,37 +408,14 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update an extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineScaleSetExtensionInner createOrUpdate(String resourceGroupName, String vmScaleSetName,
         String vmssExtensionName, VirtualMachineScaleSetExtensionInner extensionParameters) {
         return createOrUpdateAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters).block();
     }
 
-    /**
-     * The operation to create or update an extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineScaleSetExtensionInner createOrUpdate(String resourceGroupName, String vmScaleSetName,
         String vmssExtensionName, VirtualMachineScaleSetExtensionInner extensionParameters, Context context) {
@@ -547,19 +423,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             .block();
     }
 
-    /**
-     * The operation to update an extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vmScaleSetName,
         String vmssExtensionName, VirtualMachineScaleSetExtensionUpdate extensionParameters) {
@@ -648,18 +512,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             vmScaleSetName, vmssExtensionName, contentType, accept, extensionParameters, context);
     }
 
-    /**
-     * The operation to update an extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a Virtual Machine Scale Set Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginUpdateAsync(String resourceGroupName, String vmScaleSetName, String vmssExtensionName,
@@ -696,18 +549,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             VirtualMachineScaleSetExtensionInner.class, context);
     }
 
-    /**
-     * The operation to update an extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Virtual Machine Scale Set Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginUpdate(String resourceGroupName, String vmScaleSetName, String vmssExtensionName,
@@ -716,19 +558,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             .getSyncPoller();
     }
 
-    /**
-     * The operation to update an extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Virtual Machine Scale Set Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginUpdate(String resourceGroupName, String vmScaleSetName, String vmssExtensionName,
@@ -737,18 +567,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             .getSyncPoller();
     }
 
-    /**
-     * The operation to update an extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineScaleSetExtensionInner> updateAsync(String resourceGroupName, String vmScaleSetName,
         String vmssExtensionName, VirtualMachineScaleSetExtensionUpdate extensionParameters) {
@@ -777,54 +596,21 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update an extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineScaleSetExtensionInner update(String resourceGroupName, String vmScaleSetName,
         String vmssExtensionName, VirtualMachineScaleSetExtensionUpdate extensionParameters) {
         return updateAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters).block();
     }
 
-    /**
-     * The operation to update an extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineScaleSetExtensionInner update(String resourceGroupName, String vmScaleSetName,
         String vmssExtensionName, VirtualMachineScaleSetExtensionUpdate extensionParameters, Context context) {
         return updateAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, context).block();
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vmScaleSetName,
         String vmssExtensionName) {
@@ -894,17 +680,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             vmScaleSetName, vmssExtensionName, context);
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmScaleSetName,
         String vmssExtensionName) {
@@ -936,52 +712,21 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             context);
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmScaleSetName,
         String vmssExtensionName) {
         return this.beginDeleteAsync(resourceGroupName, vmScaleSetName, vmssExtensionName).getSyncPoller();
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmScaleSetName,
         String vmssExtensionName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, context).getSyncPoller();
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String vmScaleSetName, String vmssExtensionName) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, vmssExtensionName).last()
@@ -1007,32 +752,13 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vmScaleSetName, String vmssExtensionName) {
         deleteAsync(resourceGroupName, vmScaleSetName, vmssExtensionName).block();
     }
 
-    /**
-     * The operation to delete the extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vmScaleSetName, String vmssExtensionName, Context context) {
         deleteAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, context).block();
@@ -1117,16 +843,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of all extensions in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all extensions in a VM scale set as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineScaleSetExtensionInner> listAsync(String resourceGroupName, String vmScaleSetName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vmScaleSetName),
@@ -1151,32 +868,13 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of all extensions in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all extensions in a VM scale set as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineScaleSetExtensionInner> list(String resourceGroupName, String vmScaleSetName) {
         return new PagedIterable<>(listAsync(resourceGroupName, vmScaleSetName));
     }
 
-    /**
-     * Gets a list of all extensions in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all extensions in a VM scale set as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineScaleSetExtensionInner> list(String resourceGroupName, String vmScaleSetName,
         Context context) {

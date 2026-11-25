@@ -236,18 +236,7 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a SecurityPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param securityPolicyName SecurityPolicy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SecurityPolicy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityPolicyInner> getWithResponse(String resourceGroupName, String trafficControllerName,
         String securityPolicyName, Context context) {
@@ -256,17 +245,7 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
             resourceGroupName, trafficControllerName, securityPolicyName, accept, context);
     }
 
-    /**
-     * Get a SecurityPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param securityPolicyName SecurityPolicy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SecurityPolicy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityPolicyInner get(String resourceGroupName, String trafficControllerName, String securityPolicyName) {
         return getWithResponse(resourceGroupName, trafficControllerName, securityPolicyName, Context.NONE).getValue();
@@ -312,11 +291,8 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String trafficControllerName,
         String securityPolicyName, SecurityPolicyInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, securityPolicyName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, trafficControllerName, securityPolicyName, resource,
+            Context.NONE);
     }
 
     /**
@@ -364,41 +340,16 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
             SecurityPolicyInner.class, SecurityPolicyInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a SecurityPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param securityPolicyName SecurityPolicy.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of securityPolicy Subresource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String trafficControllerName, String securityPolicyName,
         SecurityPolicyInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, trafficControllerName, securityPolicyName, resource);
-        return this.client.<SecurityPolicyInner, SecurityPolicyInner>getLroResult(response, SecurityPolicyInner.class,
-            SecurityPolicyInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, securityPolicyName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create a SecurityPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param securityPolicyName SecurityPolicy.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of securityPolicy Subresource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String trafficControllerName, String securityPolicyName, SecurityPolicyInner resource,
@@ -428,43 +379,19 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a SecurityPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param securityPolicyName SecurityPolicy.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return securityPolicy Subresource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityPolicyInner createOrUpdate(String resourceGroupName, String trafficControllerName,
         String securityPolicyName, SecurityPolicyInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, securityPolicyName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, trafficControllerName, securityPolicyName, resource, Context.NONE);
     }
 
-    /**
-     * Create a SecurityPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param securityPolicyName SecurityPolicy.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return securityPolicy Subresource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityPolicyInner createOrUpdate(String resourceGroupName, String trafficControllerName,
         String securityPolicyName, SecurityPolicyInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, securityPolicyName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, trafficControllerName, securityPolicyName, resource, context));
     }
 
     /**
@@ -511,19 +438,7 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a SecurityPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param securityPolicyName SecurityPolicy.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return securityPolicy Subresource of Traffic Controller along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityPolicyInner> updateWithResponse(String resourceGroupName, String trafficControllerName,
         String securityPolicyName, SecurityPolicyUpdate properties, Context context) {
@@ -534,18 +449,7 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
             accept, properties, context);
     }
 
-    /**
-     * Update a SecurityPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param securityPolicyName SecurityPolicy.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return securityPolicy Subresource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityPolicyInner update(String resourceGroupName, String trafficControllerName, String securityPolicyName,
         SecurityPolicyUpdate properties) {
@@ -587,9 +491,7 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String trafficControllerName,
         String securityPolicyName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, securityPolicyName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, trafficControllerName, securityPolicyName, Context.NONE);
     }
 
     /**
@@ -631,37 +533,14 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
             this.client.getContext());
     }
 
-    /**
-     * Delete a SecurityPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param securityPolicyName SecurityPolicy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
         String securityPolicyName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, trafficControllerName, securityPolicyName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, trafficControllerName, securityPolicyName, Context.NONE);
     }
 
-    /**
-     * Delete a SecurityPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param securityPolicyName SecurityPolicy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
         String securityPolicyName, Context context) {
@@ -687,36 +566,18 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a SecurityPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param securityPolicyName SecurityPolicy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trafficControllerName, String securityPolicyName) {
-        beginDelete(resourceGroupName, trafficControllerName, securityPolicyName).getFinalResult();
+        delete(resourceGroupName, trafficControllerName, securityPolicyName, Context.NONE);
     }
 
-    /**
-     * Delete a SecurityPolicy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param securityPolicyName SecurityPolicy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trafficControllerName, String securityPolicyName,
         Context context) {
-        beginDelete(resourceGroupName, trafficControllerName, securityPolicyName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, trafficControllerName, securityPolicyName, context));
     }
 
     /**
@@ -773,12 +634,7 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecurityPolicyInner> listByTrafficControllerSinglePage(String resourceGroupName,
         String trafficControllerName) {
-        final String accept = "application/json";
-        Response<SecurityPolicyListResult> res
-            = service.listByTrafficControllerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTrafficControllerSinglePage(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
     /**
@@ -803,34 +659,14 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List SecurityPolicy resources by TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SecurityPolicy list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityPolicyInner> listByTrafficController(String resourceGroupName,
         String trafficControllerName) {
-        return new PagedIterable<>(() -> listByTrafficControllerSinglePage(resourceGroupName, trafficControllerName),
-            nextLink -> listByTrafficControllerNextSinglePage(nextLink));
+        return listByTrafficController(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
-    /**
-     * List SecurityPolicy resources by TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SecurityPolicy list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityPolicyInner> listByTrafficController(String resourceGroupName,
         String trafficControllerName, Context context) {
@@ -871,11 +707,7 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecurityPolicyInner> listByTrafficControllerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SecurityPolicyListResult> res
-            = service.listByTrafficControllerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTrafficControllerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

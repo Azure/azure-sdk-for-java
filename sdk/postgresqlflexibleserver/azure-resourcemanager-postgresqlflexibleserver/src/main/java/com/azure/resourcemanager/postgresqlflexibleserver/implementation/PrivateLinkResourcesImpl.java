@@ -45,9 +45,7 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
     }
 
     public PagedIterable<PrivateLinkResource> listByServer(String resourceGroupName, String serverName) {
-        PagedIterable<PrivateLinkResourceInner> inner
-            = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return this.listByServer(resourceGroupName, serverName, Context.NONE);
     }
 
     public PagedIterable<PrivateLinkResource> listByServer(String resourceGroupName, String serverName,

@@ -164,17 +164,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specific Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Pool resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IpamPoolInner>> getWithResponseAsync(String resourceGroupName, String networkManagerName,
         String poolName) {
@@ -246,71 +236,27 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             networkManagerName, poolName, accept, context);
     }
 
-    /**
-     * Gets the specific Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Pool resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IpamPoolInner> getAsync(String resourceGroupName, String networkManagerName, String poolName) {
         return getWithResponseAsync(resourceGroupName, networkManagerName, poolName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specific Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Pool resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IpamPoolInner> getWithResponse(String resourceGroupName, String networkManagerName, String poolName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, networkManagerName, poolName, context).block();
     }
 
-    /**
-     * Gets the specific Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Pool resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpamPoolInner get(String resourceGroupName, String networkManagerName, String poolName) {
         return getWithResponse(resourceGroupName, networkManagerName, poolName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates/Updates the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param body Pool resource object to create/update.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Pool resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String networkManagerName,
         String poolName, IpamPoolInner body, String ifMatch) {
@@ -398,20 +344,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             networkManagerName, poolName, ifMatch, contentType, accept, body, context);
     }
 
-    /**
-     * Creates/Updates the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param body Pool resource object to create/update.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of instance of Pool resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<IpamPoolInner>, IpamPoolInner> beginCreateAsync(String resourceGroupName,
         String networkManagerName, String poolName, IpamPoolInner body, String ifMatch) {
@@ -421,18 +354,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             IpamPoolInner.class, IpamPoolInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates/Updates the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param body Pool resource object to create/update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of instance of Pool resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<IpamPoolInner>, IpamPoolInner> beginCreateAsync(String resourceGroupName,
         String networkManagerName, String poolName, IpamPoolInner body) {
@@ -468,18 +390,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             IpamPoolInner.class, IpamPoolInner.class, context);
     }
 
-    /**
-     * Creates/Updates the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param body Pool resource object to create/update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of instance of Pool resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpamPoolInner>, IpamPoolInner> beginCreate(String resourceGroupName,
         String networkManagerName, String poolName, IpamPoolInner body) {
@@ -487,21 +398,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         return this.beginCreateAsync(resourceGroupName, networkManagerName, poolName, body, ifMatch).getSyncPoller();
     }
 
-    /**
-     * Creates/Updates the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param body Pool resource object to create/update.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of instance of Pool resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpamPoolInner>, IpamPoolInner> beginCreate(String resourceGroupName,
         String networkManagerName, String poolName, IpamPoolInner body, String ifMatch, Context context) {
@@ -509,20 +406,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates/Updates the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param body Pool resource object to create/update.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Pool resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IpamPoolInner> createAsync(String resourceGroupName, String networkManagerName, String poolName,
         IpamPoolInner body, String ifMatch) {
@@ -530,18 +414,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates/Updates the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param body Pool resource object to create/update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Pool resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IpamPoolInner> createAsync(String resourceGroupName, String networkManagerName, String poolName,
         IpamPoolInner body) {
@@ -572,18 +445,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates/Updates the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param body Pool resource object to create/update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Pool resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpamPoolInner create(String resourceGroupName, String networkManagerName, String poolName,
         IpamPoolInner body) {
@@ -591,41 +453,14 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         return createAsync(resourceGroupName, networkManagerName, poolName, body, ifMatch).block();
     }
 
-    /**
-     * Creates/Updates the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param body Pool resource object to create/update.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Pool resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpamPoolInner create(String resourceGroupName, String networkManagerName, String poolName,
         IpamPoolInner body, String ifMatch, Context context) {
         return createAsync(resourceGroupName, networkManagerName, poolName, body, ifMatch, context).block();
     }
 
-    /**
-     * Updates the specific Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @param body Pool resource object to update partially.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Pool resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IpamPoolInner>> updateWithResponseAsync(String resourceGroupName, String networkManagerName,
         String poolName, String ifMatch, IpamPoolUpdate body) {
@@ -707,17 +542,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             networkManagerName, poolName, ifMatch, accept, body, context);
     }
 
-    /**
-     * Updates the specific Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Pool resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IpamPoolInner> updateAsync(String resourceGroupName, String networkManagerName, String poolName) {
         final String ifMatch = null;
@@ -726,38 +551,14 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates the specific Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @param body Pool resource object to update partially.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Pool resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IpamPoolInner> updateWithResponse(String resourceGroupName, String networkManagerName,
         String poolName, String ifMatch, IpamPoolUpdate body, Context context) {
         return updateWithResponseAsync(resourceGroupName, networkManagerName, poolName, ifMatch, body, context).block();
     }
 
-    /**
-     * Updates the specific Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Pool resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpamPoolInner update(String resourceGroupName, String networkManagerName, String poolName) {
         final String ifMatch = null;
@@ -766,19 +567,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             .getValue();
     }
 
-    /**
-     * Delete the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
         String poolName, String ifMatch) {
@@ -850,19 +639,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             networkManagerName, poolName, ifMatch, context);
     }
 
-    /**
-     * Delete the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
         String poolName, String ifMatch) {
@@ -872,17 +649,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
         String poolName) {
@@ -917,17 +684,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             context);
     }
 
-    /**
-     * Delete the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String poolName) {
@@ -935,39 +692,14 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         return this.beginDeleteAsync(resourceGroupName, networkManagerName, poolName, ifMatch).getSyncPoller();
     }
 
-    /**
-     * Delete the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String poolName, String ifMatch, Context context) {
         return this.beginDeleteAsync(resourceGroupName, networkManagerName, poolName, ifMatch, context).getSyncPoller();
     }
 
-    /**
-     * Delete the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String poolName,
         String ifMatch) {
@@ -975,17 +707,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String poolName) {
         final String ifMatch = null;
@@ -1014,35 +736,14 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String poolName) {
         final String ifMatch = null;
         deleteAsync(resourceGroupName, networkManagerName, poolName, ifMatch).block();
     }
 
-    /**
-     * Delete the Pool resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String poolName, String ifMatch,
         Context context) {
@@ -1140,21 +841,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets list of Pool resources at Network Manager level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param skipToken Optional skip token.
-     * @param skip Optional num entries to skip.
-     * @param top Optional num entries to show.
-     * @param sortKey Optional key by which to sort.
-     * @param sortValue Optional sort value for pagination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Pool resources at Network Manager level as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IpamPoolInner> listAsync(String resourceGroupName, String networkManagerName, String skipToken,
         Integer skip, Integer top, String sortKey, String sortValue) {
@@ -1163,16 +850,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets list of Pool resources at Network Manager level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Pool resources at Network Manager level as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IpamPoolInner> listAsync(String resourceGroupName, String networkManagerName) {
         final String skipToken = null;
@@ -1208,16 +886,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             sortKey, sortValue, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets list of Pool resources at Network Manager level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Pool resources at Network Manager level as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpamPoolInner> list(String resourceGroupName, String networkManagerName) {
         final String skipToken = null;
@@ -1229,22 +898,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             listAsync(resourceGroupName, networkManagerName, skipToken, skip, top, sortKey, sortValue));
     }
 
-    /**
-     * Gets list of Pool resources at Network Manager level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param skipToken Optional skip token.
-     * @param skip Optional num entries to skip.
-     * @param top Optional num entries to show.
-     * @param sortKey Optional key by which to sort.
-     * @param sortValue Optional sort value for pagination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Pool resources at Network Manager level as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpamPoolInner> list(String resourceGroupName, String networkManagerName, String skipToken,
         Integer skip, Integer top, String sortKey, String sortValue, Context context) {
@@ -1252,17 +906,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             listAsync(resourceGroupName, networkManagerName, skipToken, skip, top, sortKey, sortValue, context));
     }
 
-    /**
-     * Get the Pool Usage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Pool Usage along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PoolUsageInner>> getPoolUsageWithResponseAsync(String resourceGroupName,
         String networkManagerName, String poolName) {
@@ -1334,17 +978,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             resourceGroupName, networkManagerName, poolName, accept, context);
     }
 
-    /**
-     * Get the Pool Usage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Pool Usage on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PoolUsageInner> getPoolUsageAsync(String resourceGroupName, String networkManagerName,
         String poolName) {
@@ -1352,35 +986,14 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the Pool Usage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Pool Usage along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PoolUsageInner> getPoolUsageWithResponse(String resourceGroupName, String networkManagerName,
         String poolName, Context context) {
         return getPoolUsageWithResponseAsync(resourceGroupName, networkManagerName, poolName, context).block();
     }
 
-    /**
-     * Get the Pool Usage.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Pool Usage.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolUsageInner getPoolUsage(String resourceGroupName, String networkManagerName, String poolName) {
         return getPoolUsageWithResponse(resourceGroupName, networkManagerName, poolName, Context.NONE).getValue();
@@ -1473,17 +1086,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List Associated Resource in the Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of PoolAssociation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PoolAssociationInner> listAssociatedResourcesAsync(String resourceGroupName,
         String networkManagerName, String poolName) {
@@ -1512,35 +1115,14 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             nextLink -> listAssociatedResourcesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List Associated Resource in the Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of PoolAssociation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PoolAssociationInner> listAssociatedResources(String resourceGroupName,
         String networkManagerName, String poolName) {
         return new PagedIterable<>(listAssociatedResourcesAsync(resourceGroupName, networkManagerName, poolName));
     }
 
-    /**
-     * List Associated Resource in the Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of PoolAssociation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PoolAssociationInner> listAssociatedResources(String resourceGroupName,
         String networkManagerName, String poolName, Context context) {

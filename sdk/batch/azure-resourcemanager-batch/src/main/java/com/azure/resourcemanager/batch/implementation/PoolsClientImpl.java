@@ -288,21 +288,7 @@ public final class PoolsClientImpl implements PoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about the specified pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param poolName The pool name. This must be unique within the account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolsGetResponse getWithResponse(String resourceGroupName, String accountName, String poolName,
         Context context) {
@@ -333,20 +319,7 @@ public final class PoolsClientImpl implements PoolsClient {
             resourceGroupName, accountName, poolName, accept, context);
     }
 
-    /**
-     * Gets information about the specified pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param poolName The pool name. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolInner get(String resourceGroupName, String accountName, String poolName) {
         return getWithResponse(resourceGroupName, accountName, poolName, Context.NONE).getValue();
@@ -430,26 +403,7 @@ public final class PoolsClientImpl implements PoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates a new pool inside the specified account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param poolName The pool name. This must be unique within the account.
-     * @param parameters Additional parameters for pool creation.
-     * @param ifMatch The entity state (ETag) version of the pool to update. A value of "*" can be used to apply the
-     * operation only if the pool already exists. If omitted, this operation will always be applied.
-     * @param ifNoneMatch Set to '*' to allow a new pool to be created, but to prevent updating an existing pool. Other
-     * values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolsCreateResponse createWithResponse(String resourceGroupName, String accountName, String poolName,
         PoolInner parameters, String ifMatch, String ifNoneMatch, Context context) {
@@ -488,21 +442,7 @@ public final class PoolsClientImpl implements PoolsClient {
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates a new pool inside the specified account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param poolName The pool name. This must be unique within the account.
-     * @param parameters Additional parameters for pool creation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolInner create(String resourceGroupName, String accountName, String poolName, PoolInner parameters) {
         final String ifMatch = null;
@@ -588,25 +528,7 @@ public final class PoolsClientImpl implements PoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates the properties of an existing pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param poolName The pool name. This must be unique within the account.
-     * @param parameters Pool properties that should be updated. Properties that are supplied will be updated, any
-     * property not supplied will be unchanged.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolsUpdateResponse updateWithResponse(String resourceGroupName, String accountName, String poolName,
         PoolInner parameters, String ifMatch, Context context) {
@@ -645,22 +567,7 @@ public final class PoolsClientImpl implements PoolsClient {
             parameters, context);
     }
 
-    /**
-     * Updates the properties of an existing pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param poolName The pool name. This must be unique within the account.
-     * @param parameters Pool properties that should be updated. Properties that are supplied will be updated, any
-     * property not supplied will be unchanged.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolInner update(String resourceGroupName, String accountName, String poolName, PoolInner parameters) {
         final String ifMatch = null;
@@ -725,30 +632,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String poolName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, poolName, Context.NONE);
     }
 
     /**
@@ -817,42 +701,14 @@ public final class PoolsClientImpl implements PoolsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param poolName The pool name. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String poolName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, poolName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, poolName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param poolName The pool name. This must be unique within the account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
         Context context) {
@@ -880,41 +736,16 @@ public final class PoolsClientImpl implements PoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param poolName The pool name. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String poolName) {
-        beginDelete(resourceGroupName, accountName, poolName).getFinalResult();
+        delete(resourceGroupName, accountName, poolName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param poolName The pool name. This must be unique within the account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String poolName, Context context) {
-        beginDelete(resourceGroupName, accountName, poolName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, poolName, context));
     }
 
     /**
@@ -1067,30 +898,7 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PoolInner> listByBatchAccountSinglePage(String resourceGroupName, String accountName,
         Integer maxresults, String select, String filter) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ListPoolsResult> res = service.listByBatchAccountSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accountName, maxresults,
-            select, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBatchAccountSinglePage(resourceGroupName, accountName, maxresults, select, filter, Context.NONE);
     }
 
     /**
@@ -1152,59 +960,16 @@ public final class PoolsClientImpl implements PoolsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the pools in the specified account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PoolInner> listByBatchAccount(String resourceGroupName, String accountName) {
         final Integer maxresults = null;
         final String select = null;
         final String filter = null;
-        return new PagedIterable<>(
-            () -> listByBatchAccountSinglePage(resourceGroupName, accountName, maxresults, select, filter),
-            nextLink -> listByBatchAccountNextSinglePage(nextLink));
+        return listByBatchAccount(resourceGroupName, accountName, maxresults, select, filter, Context.NONE);
     }
 
-    /**
-     * Lists all of the pools in the specified account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param maxresults The maximum number of items to return in the response.
-     * @param select Comma separated list of properties that should be returned. e.g. "properties/provisioningState".
-     * Only top level properties under properties/ are valid for selection.
-     * @param filter OData filter expression. Valid properties for filtering are:
-     * 
-     * name
-     * properties/allocationState
-     * properties/allocationStateTransitionTime
-     * properties/creationTime
-     * properties/provisioningState
-     * properties/provisioningStateTransitionTime
-     * properties/lastModified
-     * properties/vmSize
-     * properties/interNodeCommunication
-     * properties/scaleSettings/autoScale
-     * properties/scaleSettings/fixedScale.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PoolInner> listByBatchAccount(String resourceGroupName, String accountName, Integer maxresults,
         String select, String filter, Context context) {
@@ -1275,21 +1040,7 @@ public final class PoolsClientImpl implements PoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Disables automatic scaling for a pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param poolName The pool name. This must be unique within the account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolsDisableAutoScaleResponse disableAutoScaleWithResponse(String resourceGroupName, String accountName,
         String poolName, Context context) {
@@ -1320,20 +1071,7 @@ public final class PoolsClientImpl implements PoolsClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, accept, context);
     }
 
-    /**
-     * Disables automatic scaling for a pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param poolName The pool name. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolInner disableAutoScale(String resourceGroupName, String accountName, String poolName) {
         return disableAutoScaleWithResponse(resourceGroupName, accountName, poolName, Context.NONE).getValue();
@@ -1413,27 +1151,7 @@ public final class PoolsClientImpl implements PoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Stops an ongoing resize operation on the pool.
-     * 
-     * This does not restore the pool to its previous state before the resize operation: it only stops any further
-     * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
-     * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
-     * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
-     * can also be used to halt the initial sizing of the pool when it is created.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param poolName The pool name. This must be unique within the account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolsStopResizeResponse stopResizeWithResponse(String resourceGroupName, String accountName, String poolName,
         Context context) {
@@ -1464,26 +1182,7 @@ public final class PoolsClientImpl implements PoolsClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, accept, context);
     }
 
-    /**
-     * Stops an ongoing resize operation on the pool.
-     * 
-     * This does not restore the pool to its previous state before the resize operation: it only stops any further
-     * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
-     * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
-     * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
-     * can also be used to halt the initial sizing of the pool when it is created.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param poolName The pool name. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolInner stopResize(String resourceGroupName, String accountName, String poolName) {
         return stopResizeWithResponse(resourceGroupName, accountName, poolName, Context.NONE).getValue();
@@ -1528,20 +1227,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PoolInner> listByBatchAccountNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ListPoolsResult> res
-            = service.listByBatchAccountNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBatchAccountNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -364,17 +364,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Network Bootstrap Device resource details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Network Bootstrap Device resource details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkBootstrapDeviceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String networkBootstrapDeviceName, Context context) {
@@ -383,16 +373,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
             this.client.getSubscriptionId(), resourceGroupName, networkBootstrapDeviceName, accept, context);
     }
 
-    /**
-     * Gets a Network Bootstrap Device resource details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Network Bootstrap Device resource details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceInner getByResourceGroup(String resourceGroupName, String networkBootstrapDeviceName) {
         return getByResourceGroupWithResponse(resourceGroupName, networkBootstrapDeviceName, Context.NONE).getValue();
@@ -436,11 +417,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String networkBootstrapDeviceName,
         NetworkBootstrapDeviceInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkBootstrapDeviceName, contentType, accept, body,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, networkBootstrapDeviceName, body, Context.NONE);
     }
 
     /**
@@ -486,37 +463,14 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
             this.client.getContext());
     }
 
-    /**
-     * Creates a Network Bootstrap Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Bootstrap Device resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkBootstrapDeviceInner>, NetworkBootstrapDeviceInner>
         beginCreate(String resourceGroupName, String networkBootstrapDeviceName, NetworkBootstrapDeviceInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, networkBootstrapDeviceName, body);
-        return this.client.<NetworkBootstrapDeviceInner, NetworkBootstrapDeviceInner>getLroResult(response,
-            NetworkBootstrapDeviceInner.class, NetworkBootstrapDeviceInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, networkBootstrapDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Creates a Network Bootstrap Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Bootstrap Device resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkBootstrapDeviceInner>, NetworkBootstrapDeviceInner> beginCreate(
         String resourceGroupName, String networkBootstrapDeviceName, NetworkBootstrapDeviceInner body,
@@ -545,39 +499,19 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a Network Bootstrap Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Bootstrap Device resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceInner create(String resourceGroupName, String networkBootstrapDeviceName,
         NetworkBootstrapDeviceInner body) {
-        return beginCreate(resourceGroupName, networkBootstrapDeviceName, body).getFinalResult();
+        return create(resourceGroupName, networkBootstrapDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Creates a Network Bootstrap Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Bootstrap Device resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceInner create(String resourceGroupName, String networkBootstrapDeviceName,
         NetworkBootstrapDeviceInner body, Context context) {
-        return beginCreate(resourceGroupName, networkBootstrapDeviceName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, networkBootstrapDeviceName, body, context));
     }
 
     /**
@@ -618,11 +552,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String networkBootstrapDeviceName,
         NetworkBootstrapDevicePatch body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkBootstrapDeviceName, contentType, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, networkBootstrapDeviceName, body, Context.NONE);
     }
 
     /**
@@ -668,37 +598,14 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
             this.client.getContext());
     }
 
-    /**
-     * Update certain properties of the Network Bootstrap Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param body Network Bootstrap Device properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Bootstrap Device resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkBootstrapDeviceInner>, NetworkBootstrapDeviceInner>
         beginUpdate(String resourceGroupName, String networkBootstrapDeviceName, NetworkBootstrapDevicePatch body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, networkBootstrapDeviceName, body);
-        return this.client.<NetworkBootstrapDeviceInner, NetworkBootstrapDeviceInner>getLroResult(response,
-            NetworkBootstrapDeviceInner.class, NetworkBootstrapDeviceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, networkBootstrapDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Update certain properties of the Network Bootstrap Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param body Network Bootstrap Device properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Bootstrap Device resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkBootstrapDeviceInner>, NetworkBootstrapDeviceInner> beginUpdate(
         String resourceGroupName, String networkBootstrapDeviceName, NetworkBootstrapDevicePatch body,
@@ -727,39 +634,19 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update certain properties of the Network Bootstrap Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param body Network Bootstrap Device properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Bootstrap Device resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceInner update(String resourceGroupName, String networkBootstrapDeviceName,
         NetworkBootstrapDevicePatch body) {
-        return beginUpdate(resourceGroupName, networkBootstrapDeviceName, body).getFinalResult();
+        return update(resourceGroupName, networkBootstrapDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Update certain properties of the Network Bootstrap Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param body Network Bootstrap Device properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Bootstrap Device resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceInner update(String resourceGroupName, String networkBootstrapDeviceName,
         NetworkBootstrapDevicePatch body, Context context) {
-        return beginUpdate(resourceGroupName, networkBootstrapDeviceName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, networkBootstrapDeviceName, body, context));
     }
 
     /**
@@ -793,8 +680,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String networkBootstrapDeviceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkBootstrapDeviceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
     /**
@@ -833,33 +719,13 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
             this.client.getContext());
     }
 
-    /**
-     * Deletes a Network Bootstrap Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkBootstrapDeviceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, networkBootstrapDeviceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
-    /**
-     * Deletes a Network Bootstrap Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkBootstrapDeviceName,
         Context context) {
@@ -883,33 +749,16 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Network Bootstrap Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkBootstrapDeviceName) {
-        beginDelete(resourceGroupName, networkBootstrapDeviceName).getFinalResult();
+        delete(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
-    /**
-     * Deletes a Network Bootstrap Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkBootstrapDeviceName, Context context) {
-        beginDelete(resourceGroupName, networkBootstrapDeviceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, networkBootstrapDeviceName, context));
     }
 
     /**
@@ -960,11 +809,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkBootstrapDeviceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<NetworkBootstrapDeviceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -987,31 +832,13 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the Network Bootstrap Device resources in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkBootstrapDevice list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkBootstrapDeviceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all the Network Bootstrap Device resources in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkBootstrapDevice list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkBootstrapDeviceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1059,11 +886,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkBootstrapDeviceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<NetworkBootstrapDeviceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1084,27 +907,13 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all the Network Bootstrap Device resources in a given subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkBootstrapDevice list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkBootstrapDeviceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List all the Network Bootstrap Device resources in a given subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkBootstrapDevice list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkBootstrapDeviceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1144,9 +953,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> rebootWithResponse(String resourceGroupName, String networkBootstrapDeviceName) {
-        final String accept = "application/json";
-        return service.rebootSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkBootstrapDeviceName, accept, Context.NONE);
+        return rebootWithResponse(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
     /**
@@ -1188,37 +995,14 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
                 NetworkBootstrapDeviceRebootResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Reboot the Network Bootstrap Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network Bootstrap Device reboot Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkBootstrapDeviceRebootResponseInner>, NetworkBootstrapDeviceRebootResponseInner>
         beginReboot(String resourceGroupName, String networkBootstrapDeviceName) {
-        Response<BinaryData> response = rebootWithResponse(resourceGroupName, networkBootstrapDeviceName);
-        return this.client
-            .<NetworkBootstrapDeviceRebootResponseInner, NetworkBootstrapDeviceRebootResponseInner>getLroResult(
-                response, NetworkBootstrapDeviceRebootResponseInner.class,
-                NetworkBootstrapDeviceRebootResponseInner.class, Context.NONE);
+        return beginReboot(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
-    /**
-     * Reboot the Network Bootstrap Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network Bootstrap Device reboot Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkBootstrapDeviceRebootResponseInner>, NetworkBootstrapDeviceRebootResponseInner>
         beginReboot(String resourceGroupName, String networkBootstrapDeviceName, Context context) {
@@ -1246,37 +1030,19 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reboot the Network Bootstrap Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Bootstrap Device reboot Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceRebootResponseInner reboot(String resourceGroupName,
         String networkBootstrapDeviceName) {
-        return beginReboot(resourceGroupName, networkBootstrapDeviceName).getFinalResult();
+        return reboot(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
-    /**
-     * Reboot the Network Bootstrap Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Bootstrap Device reboot Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceRebootResponseInner reboot(String resourceGroupName, String networkBootstrapDeviceName,
         Context context) {
-        return beginReboot(resourceGroupName, networkBootstrapDeviceName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginReboot(resourceGroupName, networkBootstrapDeviceName, context));
     }
 
     /**
@@ -1313,9 +1079,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> refreshConfigurationWithResponse(String resourceGroupName,
         String networkBootstrapDeviceName) {
-        final String accept = "application/json";
-        return service.refreshConfigurationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkBootstrapDeviceName, accept, Context.NONE);
+        return refreshConfigurationWithResponse(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
     /**
@@ -1359,38 +1123,15 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
                 NetworkBootstrapDeviceRefreshConfigurationResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Refreshes the configuration of Network Bootstrap Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the current status of an refresh configuration async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NetworkBootstrapDeviceRefreshConfigurationResponseInner>, NetworkBootstrapDeviceRefreshConfigurationResponseInner>
         beginRefreshConfiguration(String resourceGroupName, String networkBootstrapDeviceName) {
-        Response<BinaryData> response = refreshConfigurationWithResponse(resourceGroupName, networkBootstrapDeviceName);
-        return this.client
-            .<NetworkBootstrapDeviceRefreshConfigurationResponseInner, NetworkBootstrapDeviceRefreshConfigurationResponseInner>getLroResult(
-                response, NetworkBootstrapDeviceRefreshConfigurationResponseInner.class,
-                NetworkBootstrapDeviceRefreshConfigurationResponseInner.class, Context.NONE);
+        return beginRefreshConfiguration(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
-    /**
-     * Refreshes the configuration of Network Bootstrap Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the current status of an refresh configuration async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NetworkBootstrapDeviceRefreshConfigurationResponseInner>, NetworkBootstrapDeviceRefreshConfigurationResponseInner>
@@ -1420,37 +1161,19 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Refreshes the configuration of Network Bootstrap Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an refresh configuration async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceRefreshConfigurationResponseInner refreshConfiguration(String resourceGroupName,
         String networkBootstrapDeviceName) {
-        return beginRefreshConfiguration(resourceGroupName, networkBootstrapDeviceName).getFinalResult();
+        return refreshConfiguration(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
-    /**
-     * Refreshes the configuration of Network Bootstrap Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an refresh configuration async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceRefreshConfigurationResponseInner refreshConfiguration(String resourceGroupName,
         String networkBootstrapDeviceName, Context context) {
-        return beginRefreshConfiguration(resourceGroupName, networkBootstrapDeviceName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginRefreshConfiguration(resourceGroupName, networkBootstrapDeviceName, context));
     }
 
     /**
@@ -1491,11 +1214,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> upgradeWithResponse(String resourceGroupName, String networkBootstrapDeviceName,
         UpdateVersion body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.upgradeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkBootstrapDeviceName, contentType, accept, body,
-            Context.NONE);
+        return upgradeWithResponse(resourceGroupName, networkBootstrapDeviceName, body, Context.NONE);
     }
 
     /**
@@ -1543,40 +1262,15 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
                 NetworkBootstrapDeviceUpgradeResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Upgrades the version of the Network Bootstrap Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network Bootstrap Device upgrade Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NetworkBootstrapDeviceUpgradeResponseInner>, NetworkBootstrapDeviceUpgradeResponseInner>
         beginUpgrade(String resourceGroupName, String networkBootstrapDeviceName, UpdateVersion body) {
-        Response<BinaryData> response = upgradeWithResponse(resourceGroupName, networkBootstrapDeviceName, body);
-        return this.client
-            .<NetworkBootstrapDeviceUpgradeResponseInner, NetworkBootstrapDeviceUpgradeResponseInner>getLroResult(
-                response, NetworkBootstrapDeviceUpgradeResponseInner.class,
-                NetworkBootstrapDeviceUpgradeResponseInner.class, Context.NONE);
+        return beginUpgrade(resourceGroupName, networkBootstrapDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Upgrades the version of the Network Bootstrap Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network Bootstrap Device upgrade Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NetworkBootstrapDeviceUpgradeResponseInner>, NetworkBootstrapDeviceUpgradeResponseInner>
@@ -1607,39 +1301,19 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Upgrades the version of the Network Bootstrap Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Bootstrap Device upgrade Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceUpgradeResponseInner upgrade(String resourceGroupName,
         String networkBootstrapDeviceName, UpdateVersion body) {
-        return beginUpgrade(resourceGroupName, networkBootstrapDeviceName, body).getFinalResult();
+        return upgrade(resourceGroupName, networkBootstrapDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Upgrades the version of the Network Bootstrap Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Bootstrap Device upgrade Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceUpgradeResponseInner upgrade(String resourceGroupName,
         String networkBootstrapDeviceName, UpdateVersion body, Context context) {
-        return beginUpgrade(resourceGroupName, networkBootstrapDeviceName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpgrade(resourceGroupName, networkBootstrapDeviceName, body, context));
     }
 
     /**
@@ -1680,11 +1354,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateAdministrativeStateWithResponse(String resourceGroupName,
         String networkBootstrapDeviceName, UpdateDeviceAdministrativeState body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateAdministrativeStateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkBootstrapDeviceName, contentType, accept, body,
-            Context.NONE);
+        return updateAdministrativeStateWithResponse(resourceGroupName, networkBootstrapDeviceName, body, Context.NONE);
     }
 
     /**
@@ -1733,42 +1403,16 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
                 NetworkBootstrapDeviceUpdateAdministrativeStateResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates the Administrative state of the Network Bootstrap Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network Bootstrap Device Administrative State Update Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NetworkBootstrapDeviceUpdateAdministrativeStateResponseInner>, NetworkBootstrapDeviceUpdateAdministrativeStateResponseInner>
         beginUpdateAdministrativeState(String resourceGroupName, String networkBootstrapDeviceName,
             UpdateDeviceAdministrativeState body) {
-        Response<BinaryData> response
-            = updateAdministrativeStateWithResponse(resourceGroupName, networkBootstrapDeviceName, body);
-        return this.client
-            .<NetworkBootstrapDeviceUpdateAdministrativeStateResponseInner, NetworkBootstrapDeviceUpdateAdministrativeStateResponseInner>getLroResult(
-                response, NetworkBootstrapDeviceUpdateAdministrativeStateResponseInner.class,
-                NetworkBootstrapDeviceUpdateAdministrativeStateResponseInner.class, Context.NONE);
+        return beginUpdateAdministrativeState(resourceGroupName, networkBootstrapDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Updates the Administrative state of the Network Bootstrap Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network Bootstrap Device Administrative State Update Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NetworkBootstrapDeviceUpdateAdministrativeStateResponseInner>, NetworkBootstrapDeviceUpdateAdministrativeStateResponseInner>
@@ -1800,41 +1444,20 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the Administrative state of the Network Bootstrap Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Bootstrap Device Administrative State Update Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceUpdateAdministrativeStateResponseInner updateAdministrativeState(
         String resourceGroupName, String networkBootstrapDeviceName, UpdateDeviceAdministrativeState body) {
-        return beginUpdateAdministrativeState(resourceGroupName, networkBootstrapDeviceName, body).getFinalResult();
+        return updateAdministrativeState(resourceGroupName, networkBootstrapDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Updates the Administrative state of the Network Bootstrap Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Bootstrap Device Administrative State Update Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceUpdateAdministrativeStateResponseInner updateAdministrativeState(
         String resourceGroupName, String networkBootstrapDeviceName, UpdateDeviceAdministrativeState body,
         Context context) {
-        return beginUpdateAdministrativeState(resourceGroupName, networkBootstrapDeviceName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdateAdministrativeState(resourceGroupName, networkBootstrapDeviceName, body, context));
     }
 
     /**
@@ -1877,9 +1500,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resyncPasswordsWithResponse(String resourceGroupName,
         String networkBootstrapDeviceName) {
-        final String accept = "application/json";
-        return service.resyncPasswordsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkBootstrapDeviceName, accept, Context.NONE);
+        return resyncPasswordsWithResponse(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
     /**
@@ -1930,46 +1551,15 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
                 NetworkBootstrapDeviceResyncPasswordsResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Resync the latest passwords to the Network Bootstrap Device.
-     * 
-     * Updates the Network Bootstrap Device to use the latest passwords. Does not generate new passwords. Allows network
-     * bootstrap devices missed during a previous password rotation to be brought back into sync.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body for a ResyncPasswords request on a Network Bootstrap
-     * Device.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NetworkBootstrapDeviceResyncPasswordsResponseInner>, NetworkBootstrapDeviceResyncPasswordsResponseInner>
         beginResyncPasswords(String resourceGroupName, String networkBootstrapDeviceName) {
-        Response<BinaryData> response = resyncPasswordsWithResponse(resourceGroupName, networkBootstrapDeviceName);
-        return this.client
-            .<NetworkBootstrapDeviceResyncPasswordsResponseInner, NetworkBootstrapDeviceResyncPasswordsResponseInner>getLroResult(
-                response, NetworkBootstrapDeviceResyncPasswordsResponseInner.class,
-                NetworkBootstrapDeviceResyncPasswordsResponseInner.class, Context.NONE);
+        return beginResyncPasswords(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
-    /**
-     * Resync the latest passwords to the Network Bootstrap Device.
-     * 
-     * Updates the Network Bootstrap Device to use the latest passwords. Does not generate new passwords. Allows network
-     * bootstrap devices missed during a previous password rotation to be brought back into sync.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body for a ResyncPasswords request on a Network Bootstrap
-     * Device.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NetworkBootstrapDeviceResyncPasswordsResponseInner>, NetworkBootstrapDeviceResyncPasswordsResponseInner>
@@ -2003,43 +1593,19 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resync the latest passwords to the Network Bootstrap Device.
-     * 
-     * Updates the Network Bootstrap Device to use the latest passwords. Does not generate new passwords. Allows network
-     * bootstrap devices missed during a previous password rotation to be brought back into sync.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for a ResyncPasswords request on a Network Bootstrap Device.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceResyncPasswordsResponseInner resyncPasswords(String resourceGroupName,
         String networkBootstrapDeviceName) {
-        return beginResyncPasswords(resourceGroupName, networkBootstrapDeviceName).getFinalResult();
+        return resyncPasswords(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
-    /**
-     * Resync the latest passwords to the Network Bootstrap Device.
-     * 
-     * Updates the Network Bootstrap Device to use the latest passwords. Does not generate new passwords. Allows network
-     * bootstrap devices missed during a previous password rotation to be brought back into sync.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkBootstrapDeviceName Name of the Network Bootstrap Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for a ResyncPasswords request on a Network Bootstrap Device.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceResyncPasswordsResponseInner resyncPasswords(String resourceGroupName,
         String networkBootstrapDeviceName, Context context) {
-        return beginResyncPasswords(resourceGroupName, networkBootstrapDeviceName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginResyncPasswords(resourceGroupName, networkBootstrapDeviceName, context));
     }
 
     /**
@@ -2074,11 +1640,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkBootstrapDeviceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkBootstrapDeviceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2133,11 +1695,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkBootstrapDeviceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkBootstrapDeviceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

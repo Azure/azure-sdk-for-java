@@ -202,18 +202,7 @@ public final class RaiBlocklistsClientImpl implements RaiBlocklistsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified custom blocklist associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified custom blocklist associated with the Azure OpenAI account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiBlocklistInner> getWithResponse(String resourceGroupName, String accountName,
         String raiBlocklistName, Context context) {
@@ -222,17 +211,7 @@ public final class RaiBlocklistsClientImpl implements RaiBlocklistsClient {
             resourceGroupName, accountName, raiBlocklistName, accept, context);
     }
 
-    /**
-     * Gets the specified custom blocklist associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified custom blocklist associated with the Azure OpenAI account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiBlocklistInner get(String resourceGroupName, String accountName, String raiBlocklistName) {
         return getWithResponse(resourceGroupName, accountName, raiBlocklistName, Context.NONE).getValue();
@@ -281,19 +260,7 @@ public final class RaiBlocklistsClientImpl implements RaiBlocklistsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update the state of specified blocklist associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklist Properties describing the custom blocklist.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services RaiBlocklist along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiBlocklistInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String raiBlocklistName, RaiBlocklistInner raiBlocklist, Context context) {
@@ -304,18 +271,7 @@ public final class RaiBlocklistsClientImpl implements RaiBlocklistsClient {
             raiBlocklist, context);
     }
 
-    /**
-     * Update the state of specified blocklist associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklist Properties describing the custom blocklist.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services RaiBlocklist.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiBlocklistInner createOrUpdate(String resourceGroupName, String accountName, String raiBlocklistName,
         RaiBlocklistInner raiBlocklist) {
@@ -357,8 +313,7 @@ public final class RaiBlocklistsClientImpl implements RaiBlocklistsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
         String raiBlocklistName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, raiBlocklistName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, raiBlocklistName, Context.NONE);
     }
 
     /**
@@ -400,36 +355,14 @@ public final class RaiBlocklistsClientImpl implements RaiBlocklistsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified custom blocklist associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String raiBlocklistName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, raiBlocklistName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, raiBlocklistName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified custom blocklist associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String raiBlocklistName, Context context) {
@@ -454,35 +387,16 @@ public final class RaiBlocklistsClientImpl implements RaiBlocklistsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified custom blocklist associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String raiBlocklistName) {
-        beginDelete(resourceGroupName, accountName, raiBlocklistName).getFinalResult();
+        delete(resourceGroupName, accountName, raiBlocklistName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified custom blocklist associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String raiBlocklistName, Context context) {
-        beginDelete(resourceGroupName, accountName, raiBlocklistName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, raiBlocklistName, context));
     }
 
     /**
@@ -536,11 +450,7 @@ public final class RaiBlocklistsClientImpl implements RaiBlocklistsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RaiBlocklistInner> listSinglePage(String resourceGroupName, String accountName) {
-        final String accept = "application/json";
-        Response<RaiBlockListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -564,35 +474,13 @@ public final class RaiBlocklistsClientImpl implements RaiBlocklistsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the custom blocklists associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom blocklists associated with the Azure OpenAI account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RaiBlocklistInner> list(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Gets the custom blocklists associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom blocklists associated with the Azure OpenAI account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RaiBlocklistInner> list(String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, context),
@@ -629,11 +517,7 @@ public final class RaiBlocklistsClientImpl implements RaiBlocklistsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RaiBlocklistInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RaiBlockListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -70,7 +70,7 @@ public final class BookmarkRelationsImpl implements BookmarkRelations {
     }
 
     public void delete(String resourceGroupName, String workspaceName, String bookmarkId, String relationName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, bookmarkId, relationName);
+        this.deleteWithResponse(resourceGroupName, workspaceName, bookmarkId, relationName, Context.NONE);
     }
 
     public PagedIterable<Relation> list(String resourceGroupName, String workspaceName, String bookmarkId) {

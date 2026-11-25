@@ -176,11 +176,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccountInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<AccountListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -201,29 +197,13 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns all the resources of a particular type belonging to a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccountInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Returns all the resources of a particular type belonging to a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccountInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -269,19 +249,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a Cognitive Services account specified by the parameters.
-     * 
-     * @param location The location name.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
-     * and SKU along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccountInner> getWithResponse(String location, String resourceGroupName, String accountName,
         Context context) {
@@ -290,18 +258,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
             location, resourceGroupName, accountName, accept, context);
     }
 
-    /**
-     * Returns a Cognitive Services account specified by the parameters.
-     * 
-     * @param location The location name.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
-     * and SKU.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccountInner get(String location, String resourceGroupName, String accountName) {
         return getWithResponse(location, resourceGroupName, accountName, Context.NONE).getValue();
@@ -340,8 +297,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> purgeWithResponse(String location, String resourceGroupName, String accountName) {
-        return service.purgeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, resourceGroupName, accountName, Context.NONE);
+        return purgeWithResponse(location, resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -382,36 +338,14 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a Cognitive Services account from the resource group.
-     * 
-     * @param location The location name.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(String location, String resourceGroupName,
         String accountName) {
-        Response<BinaryData> response = purgeWithResponse(location, resourceGroupName, accountName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginPurge(location, resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Deletes a Cognitive Services account from the resource group.
-     * 
-     * @param location The location name.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(String location, String resourceGroupName, String accountName,
         Context context) {
@@ -436,35 +370,16 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Cognitive Services account from the resource group.
-     * 
-     * @param location The location name.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purge(String location, String resourceGroupName, String accountName) {
-        beginPurge(location, resourceGroupName, accountName).getFinalResult();
+        purge(location, resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Deletes a Cognitive Services account from the resource group.
-     * 
-     * @param location The location name.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purge(String location, String resourceGroupName, String accountName, Context context) {
-        beginPurge(location, resourceGroupName, accountName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginPurge(location, resourceGroupName, accountName, context));
     }
 
     /**
@@ -497,11 +412,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccountInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AccountListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

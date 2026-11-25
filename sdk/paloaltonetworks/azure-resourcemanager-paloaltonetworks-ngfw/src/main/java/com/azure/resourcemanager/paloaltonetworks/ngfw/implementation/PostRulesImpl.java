@@ -49,12 +49,7 @@ public final class PostRulesImpl implements PostRules {
 
     public PostRulesResource createOrUpdate(String globalRulestackName, String priority,
         PostRulesResourceInner resource) {
-        PostRulesResourceInner inner = this.serviceClient().createOrUpdate(globalRulestackName, priority, resource);
-        if (inner != null) {
-            return new PostRulesResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(globalRulestackName, priority, resource, Context.NONE);
     }
 
     public PostRulesResource createOrUpdate(String globalRulestackName, String priority,
@@ -69,7 +64,7 @@ public final class PostRulesImpl implements PostRules {
     }
 
     public void deleteByResourceGroup(String globalRulestackName, String priority) {
-        this.serviceClient().delete(globalRulestackName, priority);
+        this.delete(globalRulestackName, priority, Context.NONE);
     }
 
     public void delete(String globalRulestackName, String priority, Context context) {
@@ -77,8 +72,7 @@ public final class PostRulesImpl implements PostRules {
     }
 
     public PagedIterable<PostRulesResource> list(String globalRulestackName) {
-        PagedIterable<PostRulesResourceInner> inner = this.serviceClient().list(globalRulestackName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PostRulesResourceImpl(inner1, this.manager()));
+        return this.list(globalRulestackName, Context.NONE);
     }
 
     public PagedIterable<PostRulesResource> list(String globalRulestackName, Context context) {

@@ -143,16 +143,7 @@ public final class UsagesClientImpl implements UsagesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the current usage count and the limit for the resources of the location under the subscription.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage count and the limit for the resources of the location under the subscription as
-     * paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listByLocationAsync(String location) {
         return new PagedFlux<>(() -> listByLocationSinglePageAsync(location),
@@ -176,32 +167,13 @@ public final class UsagesClientImpl implements UsagesClient {
             nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the current usage count and the limit for the resources of the location under the subscription.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage count and the limit for the resources of the location under the subscription as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listByLocation(String location) {
         return new PagedIterable<>(listByLocationAsync(location));
     }
 
-    /**
-     * Gets the current usage count and the limit for the resources of the location under the subscription.
-     * 
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage count and the limit for the resources of the location under the subscription as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listByLocation(String location, Context context) {
         return new PagedIterable<>(listByLocationAsync(location, context));

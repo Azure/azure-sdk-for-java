@@ -189,10 +189,7 @@ public final class BatchAccountImpl implements BatchAccount, BatchAccount.Defini
     }
 
     public BatchAccount create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBatchAccounts()
-            .create(resourceGroupName, accountName, createParameters, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BatchAccount create(Context context) {
@@ -214,11 +211,7 @@ public final class BatchAccountImpl implements BatchAccount, BatchAccount.Defini
     }
 
     public BatchAccount apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBatchAccounts()
-            .updateWithResponse(resourceGroupName, accountName, updateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BatchAccount apply(Context context) {
@@ -241,11 +234,7 @@ public final class BatchAccountImpl implements BatchAccount, BatchAccount.Defini
     }
 
     public BatchAccount refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBatchAccounts()
-            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BatchAccount refresh(Context context) {

@@ -153,18 +153,7 @@ public final class AlertRuleTemplatesClientImpl implements AlertRuleTemplatesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the alert rule template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param alertRuleTemplateId Alert rule template ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the alert rule template along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AlertRuleTemplateInner> getWithResponse(String resourceGroupName, String workspaceName,
         String alertRuleTemplateId, Context context) {
@@ -173,17 +162,7 @@ public final class AlertRuleTemplatesClientImpl implements AlertRuleTemplatesCli
             resourceGroupName, workspaceName, alertRuleTemplateId, accept, context);
     }
 
-    /**
-     * Gets the alert rule template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param alertRuleTemplateId Alert rule template ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the alert rule template.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AlertRuleTemplateInner get(String resourceGroupName, String workspaceName, String alertRuleTemplateId) {
         return getWithResponse(resourceGroupName, workspaceName, alertRuleTemplateId, Context.NONE).getValue();
@@ -239,11 +218,7 @@ public final class AlertRuleTemplatesClientImpl implements AlertRuleTemplatesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AlertRuleTemplateInner> listSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<AlertRuleTemplatesList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -267,33 +242,13 @@ public final class AlertRuleTemplatesClientImpl implements AlertRuleTemplatesCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all alert rule templates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all alert rule templates as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertRuleTemplateInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Gets all alert rule templates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all alert rule templates as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertRuleTemplateInner> list(String resourceGroupName, String workspaceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, context),
@@ -329,11 +284,7 @@ public final class AlertRuleTemplatesClientImpl implements AlertRuleTemplatesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AlertRuleTemplateInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AlertRuleTemplatesList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

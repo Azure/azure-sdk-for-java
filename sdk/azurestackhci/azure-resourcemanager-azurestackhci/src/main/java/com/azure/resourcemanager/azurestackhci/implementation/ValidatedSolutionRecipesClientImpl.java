@@ -153,17 +153,7 @@ public final class ValidatedSolutionRecipesClientImpl implements ValidatedSoluti
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a validated solution recipe.
-     * 
-     * @param location The name of the Azure region.
-     * @param validatedSolutionRecipeName The name of the ValidatedSolutionRecipe.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a validated solution recipe along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidatedSolutionRecipeInner> getWithResponse(String location, String validatedSolutionRecipeName,
         Context context) {
@@ -172,16 +162,7 @@ public final class ValidatedSolutionRecipesClientImpl implements ValidatedSoluti
             location, validatedSolutionRecipeName, accept, context);
     }
 
-    /**
-     * Get a validated solution recipe.
-     * 
-     * @param location The name of the Azure region.
-     * @param validatedSolutionRecipeName The name of the ValidatedSolutionRecipe.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a validated solution recipe.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidatedSolutionRecipeInner get(String location, String validatedSolutionRecipeName) {
         return getWithResponse(location, validatedSolutionRecipeName, Context.NONE).getValue();
@@ -235,12 +216,7 @@ public final class ValidatedSolutionRecipesClientImpl implements ValidatedSoluti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ValidatedSolutionRecipeInner> listBySubscriptionLocationResourceSinglePage(String location) {
-        final String accept = "application/json";
-        Response<ValidatedSolutionRecipeListResult> res
-            = service.listBySubscriptionLocationResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionLocationResourceSinglePage(location, Context.NONE);
     }
 
     /**
@@ -264,33 +240,13 @@ public final class ValidatedSolutionRecipesClientImpl implements ValidatedSoluti
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all validated solution recipes.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ValidatedSolutionRecipe list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ValidatedSolutionRecipeInner> listBySubscriptionLocationResource(String location) {
-        return new PagedIterable<>(() -> listBySubscriptionLocationResourceSinglePage(location),
-            nextLink -> listBySubscriptionLocationResourceNextSinglePage(nextLink));
+        return listBySubscriptionLocationResource(location, Context.NONE);
     }
 
-    /**
-     * List all validated solution recipes.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ValidatedSolutionRecipe list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ValidatedSolutionRecipeInner> listBySubscriptionLocationResource(String location,
         Context context) {
@@ -332,11 +288,7 @@ public final class ValidatedSolutionRecipesClientImpl implements ValidatedSoluti
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ValidatedSolutionRecipeInner>
         listBySubscriptionLocationResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ValidatedSolutionRecipeListResult> res = service.listBySubscriptionLocationResourceNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionLocationResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

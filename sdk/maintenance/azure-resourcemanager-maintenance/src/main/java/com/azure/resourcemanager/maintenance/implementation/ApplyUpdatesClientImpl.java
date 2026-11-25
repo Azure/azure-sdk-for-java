@@ -257,22 +257,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
             resourceType, resourceName, applyUpdateName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Track maintenance updates to resource with parent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource name.
-     * @param applyUpdateName The name of the ApplyUpdate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplyUpdateInner> getParentWithResponse(String resourceGroupName, String providerName,
         String resourceParentType, String resourceParentName, String resourceType, String resourceName,
@@ -283,21 +268,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
             resourceType, resourceName, applyUpdateName, accept, context);
     }
 
-    /**
-     * Track maintenance updates to resource with parent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource name.
-     * @param applyUpdateName The name of the ApplyUpdate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplyUpdateInner getParent(String resourceGroupName, String providerName, String resourceParentType,
         String resourceParentName, String resourceType, String resourceName, String applyUpdateName) {
@@ -349,20 +320,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Track maintenance updates to resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource parent type.
-     * @param resourceName Resource parent name.
-     * @param applyUpdateName The name of the ApplyUpdate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplyUpdateInner> getWithResponse(String resourceGroupName, String providerName,
         String resourceType, String resourceName, String applyUpdateName, Context context) {
@@ -371,19 +329,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
             resourceGroupName, providerName, resourceType, resourceName, applyUpdateName, accept, context);
     }
 
-    /**
-     * Track maintenance updates to resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource parent type.
-     * @param resourceName Resource parent name.
-     * @param applyUpdateName The name of the ApplyUpdate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplyUpdateInner get(String resourceGroupName, String providerName, String resourceType, String resourceName,
         String applyUpdateName) {
@@ -439,21 +385,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
             applyUpdateName, applyUpdate).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Apply maintenance updates to resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource parent type.
-     * @param resourceName Resource parent name.
-     * @param applyUpdateName The name of the ApplyUpdate.
-     * @param applyUpdate The ApplyUpdate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplyUpdateInner> createOrUpdateOrCancelWithResponse(String resourceGroupName, String providerName,
         String resourceType, String resourceName, String applyUpdateName, ApplyUpdateInner applyUpdate,
@@ -465,20 +397,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
             applyUpdateName, contentType, accept, applyUpdate, context);
     }
 
-    /**
-     * Apply maintenance updates to resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource parent type.
-     * @param resourceName Resource parent name.
-     * @param applyUpdateName The name of the ApplyUpdate.
-     * @param applyUpdate The ApplyUpdate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplyUpdateInner createOrUpdateOrCancel(String resourceGroupName, String providerName, String resourceType,
         String resourceName, String applyUpdateName, ApplyUpdateInner applyUpdate) {
@@ -526,11 +445,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplyUpdateInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ListApplyUpdate> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -551,27 +466,13 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get Configuration records within a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplyUpdateInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Get Configuration records within a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplyUpdateInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -628,23 +529,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
             resourceParentName, resourceType, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Apply Updates to resource with parent
-     * 
-     * Apply maintenance updates to resource with parent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent identifier.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplyUpdatesCreateOrUpdateParentResponse createOrUpdateParentWithResponse(String resourceGroupName,
         String providerName, String resourceParentType, String resourceParentName, String resourceType,
@@ -655,22 +540,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
             resourceType, resourceName, accept, context);
     }
 
-    /**
-     * Apply Updates to resource with parent
-     * 
-     * Apply maintenance updates to resource with parent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent identifier.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplyUpdateInner createOrUpdateParent(String resourceGroupName, String providerName,
         String resourceParentType, String resourceParentName, String resourceType, String resourceName) {
@@ -724,21 +594,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Apply Updates to resource
-     * 
-     * Apply maintenance updates to resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplyUpdatesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String providerName,
         String resourceType, String resourceName, Context context) {
@@ -748,20 +604,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
             context);
     }
 
-    /**
-     * Apply Updates to resource
-     * 
-     * Apply maintenance updates to resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplyUpdateInner createOrUpdate(String resourceGroupName, String providerName, String resourceType,
         String resourceName) {
@@ -799,10 +642,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplyUpdateInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ListApplyUpdate> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

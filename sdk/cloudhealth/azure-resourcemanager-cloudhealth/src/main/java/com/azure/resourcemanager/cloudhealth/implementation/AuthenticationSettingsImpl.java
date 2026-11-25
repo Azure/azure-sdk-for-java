@@ -47,7 +47,7 @@ public final class AuthenticationSettingsImpl implements AuthenticationSettings 
     }
 
     public void delete(String resourceGroupName, String healthModelName, String authenticationSettingName) {
-        this.serviceClient().delete(resourceGroupName, healthModelName, authenticationSettingName);
+        this.delete(resourceGroupName, healthModelName, authenticationSettingName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String healthModelName, String authenticationSettingName,
@@ -56,9 +56,7 @@ public final class AuthenticationSettingsImpl implements AuthenticationSettings 
     }
 
     public PagedIterable<AuthenticationSetting> listByHealthModel(String resourceGroupName, String healthModelName) {
-        PagedIterable<AuthenticationSettingInner> inner
-            = this.serviceClient().listByHealthModel(resourceGroupName, healthModelName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AuthenticationSettingImpl(inner1, this.manager()));
+        return this.listByHealthModel(resourceGroupName, healthModelName, Context.NONE);
     }
 
     public PagedIterable<AuthenticationSetting> listByHealthModel(String resourceGroupName, String healthModelName,
@@ -69,103 +67,36 @@ public final class AuthenticationSettingsImpl implements AuthenticationSettings 
     }
 
     public AuthenticationSetting getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
-            "healthModelName");
-        if (healthModelName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
-        }
-        String authenticationSettingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
-            "authenticationSettingName");
-        if (authenticationSettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'authenticationsettings'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, healthModelName, authenticationSettingName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AuthenticationSetting> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String healthModelName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
-            "healthModelName");
-        if (healthModelName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
-        }
-        String authenticationSettingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "healthModelName", "healthmodels", LOGGER);
+        String authenticationSettingName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
-            "authenticationSettingName");
-        if (authenticationSettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'authenticationsettings'.", id)));
-        }
+            "authenticationSettingName", "authenticationsettings", LOGGER);
         return this.getWithResponse(resourceGroupName, healthModelName, authenticationSettingName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
-            "healthModelName");
-        if (healthModelName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
-        }
-        String authenticationSettingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
-            "authenticationSettingName");
-        if (authenticationSettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'authenticationsettings'.", id)));
-        }
-        this.delete(resourceGroupName, healthModelName, authenticationSettingName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String healthModelName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
-            "healthModelName");
-        if (healthModelName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
-        }
-        String authenticationSettingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "healthModelName", "healthmodels", LOGGER);
+        String authenticationSettingName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
-            "authenticationSettingName");
-        if (authenticationSettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'authenticationsettings'.", id)));
-        }
+            "authenticationSettingName", "authenticationsettings", LOGGER);
         this.delete(resourceGroupName, healthModelName, authenticationSettingName, context);
     }
 

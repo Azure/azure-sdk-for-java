@@ -218,20 +218,7 @@ public final class TopicsClientImpl implements TopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get confluent topic by Name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param topicName Confluent kafka or schema registry topic name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confluent topic by Name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicRecordInner> getWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, String topicName, Context context) {
@@ -240,19 +227,7 @@ public final class TopicsClientImpl implements TopicsClient {
             resourceGroupName, organizationName, environmentId, clusterId, topicName, accept, context);
     }
 
-    /**
-     * Get confluent topic by Name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param topicName Confluent kafka or schema registry topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confluent topic by Name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicRecordInner get(String resourceGroupName, String organizationName, String environmentId,
         String clusterId, String topicName) {
@@ -306,21 +281,7 @@ public final class TopicsClientImpl implements TopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create confluent topics by Name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param topicName Confluent kafka or schema registry topic name.
-     * @param body Confluent Topics resource model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of topic record along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicRecordInner> createWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, String topicName, TopicRecordInner body, Context context) {
@@ -330,19 +291,7 @@ public final class TopicsClientImpl implements TopicsClient {
             accept, body, context);
     }
 
-    /**
-     * Create confluent topics by Name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param topicName Confluent kafka or schema registry topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of topic record.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicRecordInner create(String resourceGroupName, String organizationName, String environmentId,
         String clusterId, String topicName) {
@@ -390,8 +339,7 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, String topicName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, clusterId, topicName,
+        return deleteWithResponse(resourceGroupName, organizationName, environmentId, clusterId, topicName,
             Context.NONE);
     }
 
@@ -439,41 +387,14 @@ public final class TopicsClientImpl implements TopicsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete confluent topic by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param topicName Confluent kafka or schema registry topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, String topicName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, organizationName, environmentId, clusterId, topicName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, organizationName, environmentId, clusterId, topicName, Context.NONE);
     }
 
-    /**
-     * Delete confluent topic by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param topicName Confluent kafka or schema registry topic name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, String topicName, Context context) {
@@ -502,41 +423,19 @@ public final class TopicsClientImpl implements TopicsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete confluent topic by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param topicName Confluent kafka or schema registry topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String environmentId, String clusterId,
         String topicName) {
-        beginDelete(resourceGroupName, organizationName, environmentId, clusterId, topicName).getFinalResult();
+        delete(resourceGroupName, organizationName, environmentId, clusterId, topicName, Context.NONE);
     }
 
-    /**
-     * Delete confluent topic by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param topicName Confluent kafka or schema registry topic name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String environmentId, String clusterId,
         String topicName, Context context) {
-        beginDelete(resourceGroupName, organizationName, environmentId, clusterId, topicName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, organizationName, environmentId, clusterId, topicName, context));
     }
 
     /**
@@ -629,12 +528,8 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TopicRecordInner> listSinglePage(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, Integer pageSize, String pageToken) {
-        final String accept = "application/json";
-        Response<ListTopicsSuccessResponse> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, organizationName,
-            environmentId, clusterId, pageSize, pageToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, organizationName, environmentId, clusterId, pageSize, pageToken,
+            Context.NONE);
     }
 
     /**
@@ -664,45 +559,16 @@ public final class TopicsClientImpl implements TopicsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists of all the topics in a clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list topics in the cluster of a confluent organization as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopicRecordInner> list(String resourceGroupName, String organizationName, String environmentId,
         String clusterId) {
         final Integer pageSize = null;
         final String pageToken = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, organizationName, environmentId, clusterId, pageSize, pageToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, organizationName, environmentId, clusterId, pageSize, pageToken, Context.NONE);
     }
 
-    /**
-     * Lists of all the topics in a clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param pageSize Pagination size.
-     * @param pageToken An opaque pagination token to fetch the next set of records.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list topics in the cluster of a confluent organization as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopicRecordInner> list(String resourceGroupName, String organizationName, String environmentId,
         String clusterId, Integer pageSize, String pageToken, Context context) {
@@ -741,11 +607,7 @@ public final class TopicsClientImpl implements TopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TopicRecordInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ListTopicsSuccessResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -45,7 +45,7 @@ public final class DynamicSchemasImpl implements DynamicSchemas {
     }
 
     public void delete(String resourceGroupName, String schemaName, String dynamicSchemaName) {
-        this.serviceClient().delete(resourceGroupName, schemaName, dynamicSchemaName);
+        this.delete(resourceGroupName, schemaName, dynamicSchemaName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String schemaName, String dynamicSchemaName, Context context) {
@@ -53,8 +53,7 @@ public final class DynamicSchemasImpl implements DynamicSchemas {
     }
 
     public PagedIterable<DynamicSchema> listBySchema(String resourceGroupName, String schemaName) {
-        PagedIterable<DynamicSchemaInner> inner = this.serviceClient().listBySchema(resourceGroupName, schemaName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DynamicSchemaImpl(inner1, this.manager()));
+        return this.listBySchema(resourceGroupName, schemaName, Context.NONE);
     }
 
     public PagedIterable<DynamicSchema> listBySchema(String resourceGroupName, String schemaName, Context context) {
@@ -64,102 +63,36 @@ public final class DynamicSchemasImpl implements DynamicSchemas {
     }
 
     public DynamicSchema getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schemaName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}",
-            "schemaName");
-        if (schemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
-        }
-        String dynamicSchemaName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}",
-            "dynamicSchemaName");
-        if (dynamicSchemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dynamicSchemas'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, schemaName, dynamicSchemaName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DynamicSchema> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schemaName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String schemaName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}",
-            "schemaName");
-        if (schemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
-        }
-        String dynamicSchemaName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "schemaName", "schemas", LOGGER);
+        String dynamicSchemaName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}",
-            "dynamicSchemaName");
-        if (dynamicSchemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dynamicSchemas'.", id)));
-        }
+            "dynamicSchemaName", "dynamicSchemas", LOGGER);
         return this.getWithResponse(resourceGroupName, schemaName, dynamicSchemaName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schemaName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}",
-            "schemaName");
-        if (schemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
-        }
-        String dynamicSchemaName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}",
-            "dynamicSchemaName");
-        if (dynamicSchemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dynamicSchemas'.", id)));
-        }
-        this.delete(resourceGroupName, schemaName, dynamicSchemaName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schemaName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String schemaName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}",
-            "schemaName");
-        if (schemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
-        }
-        String dynamicSchemaName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "schemaName", "schemas", LOGGER);
+        String dynamicSchemaName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}",
-            "dynamicSchemaName");
-        if (dynamicSchemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dynamicSchemas'.", id)));
-        }
+            "dynamicSchemaName", "dynamicSchemas", LOGGER);
         this.delete(resourceGroupName, schemaName, dynamicSchemaName, context);
     }
 

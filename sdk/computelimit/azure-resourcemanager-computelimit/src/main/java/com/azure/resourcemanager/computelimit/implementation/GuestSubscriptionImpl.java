@@ -19,6 +19,12 @@ public final class GuestSubscriptionImpl implements GuestSubscription, GuestSubs
         com.azure.resourcemanager.computelimit.ComputeLimitManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.location = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/guestSubscriptions/{guestSubscriptionId}",
+            "location");
+        this.guestSubscriptionId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/guestSubscriptions/{guestSubscriptionId}",
+            "guestSubscriptionId");
     }
 
     public String id() {
@@ -59,11 +65,7 @@ public final class GuestSubscriptionImpl implements GuestSubscription, GuestSubs
     }
 
     public GuestSubscription create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGuestSubscriptions()
-            .createWithResponse(location, guestSubscriptionId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public GuestSubscription create(Context context) {
@@ -81,11 +83,7 @@ public final class GuestSubscriptionImpl implements GuestSubscription, GuestSubs
     }
 
     public GuestSubscription refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGuestSubscriptions()
-            .getWithResponse(location, guestSubscriptionId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public GuestSubscription refresh(Context context) {

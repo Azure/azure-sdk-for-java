@@ -209,12 +209,8 @@ public final class UpdatesClientImpl implements UpdatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UpdateInner> listParentSinglePage(String resourceGroupName, String providerName,
         String resourceParentType, String resourceParentName, String resourceType, String resourceName) {
-        final String accept = "application/json";
-        Response<ListUpdatesResult> res = service.listParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, providerName, resourceParentType, resourceParentName,
-            resourceType, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listParentSinglePage(resourceGroupName, providerName, resourceParentType, resourceParentName,
+            resourceType, resourceName, Context.NONE);
     }
 
     /**
@@ -248,50 +244,15 @@ public final class UpdatesClientImpl implements UpdatesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get Updates to resource
-     * 
-     * Get updates to resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent identifier.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resource
-     * 
-     * Get updates to resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateInner> listParent(String resourceGroupName, String providerName,
         String resourceParentType, String resourceParentName, String resourceType, String resourceName) {
-        return new PagedIterable<>(() -> listParentSinglePage(resourceGroupName, providerName, resourceParentType,
-            resourceParentName, resourceType, resourceName), nextLink -> listParentNextSinglePage(nextLink));
+        return listParent(resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType,
+            resourceName, Context.NONE);
     }
 
-    /**
-     * Get Updates to resource
-     * 
-     * Get updates to resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent identifier.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resource
-     * 
-     * Get updates to resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateInner> listParent(String resourceGroupName, String providerName,
         String resourceParentType, String resourceParentName, String resourceType, String resourceName,
@@ -372,12 +333,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UpdateInner> listSinglePage(String resourceGroupName, String providerName,
         String resourceType, String resourceName) {
-        final String accept = "application/json";
-        Response<ListUpdatesResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, providerName, resourceType, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, providerName, resourceType, resourceName, Context.NONE);
     }
 
     /**
@@ -408,46 +364,14 @@ public final class UpdatesClientImpl implements UpdatesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get Updates to resource
-     * 
-     * Get updates to resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resource
-     * 
-     * Get updates to resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateInner> list(String resourceGroupName, String providerName, String resourceType,
         String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, providerName, resourceType, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, providerName, resourceType, resourceName, Context.NONE);
     }
 
-    /**
-     * Get Updates to resource
-     * 
-     * Get updates to resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resource
-     * 
-     * Get updates to resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateInner> list(String resourceGroupName, String providerName, String resourceType,
         String resourceName, Context context) {
@@ -494,11 +418,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UpdateInner> listParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ListUpdatesResult> res
-            = service.listParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -561,11 +481,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UpdateInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ListUpdatesResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

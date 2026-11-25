@@ -64,12 +64,11 @@ public final class TraceAssociationsAtSubscriptionsImpl implements TraceAssociat
     }
 
     public void delete() {
-        this.serviceClient().delete();
+        this.deleteWithResponse(Context.NONE);
     }
 
     public PagedIterable<TraceAssociationResource> list() {
-        PagedIterable<TraceAssociationResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TraceAssociationResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<TraceAssociationResource> list(Context context) {

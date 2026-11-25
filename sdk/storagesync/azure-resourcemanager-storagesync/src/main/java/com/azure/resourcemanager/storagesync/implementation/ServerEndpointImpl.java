@@ -158,11 +158,7 @@ public final class ServerEndpointImpl implements ServerEndpoint, ServerEndpoint.
     }
 
     public ServerEndpoint create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServerEndpoints()
-            .create(resourceGroupName, storageSyncServiceName, syncGroupName, serverEndpointName, createParameters,
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ServerEndpoint create(Context context) {
@@ -185,11 +181,7 @@ public final class ServerEndpointImpl implements ServerEndpoint, ServerEndpoint.
     }
 
     public ServerEndpoint apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServerEndpoints()
-            .update(resourceGroupName, storageSyncServiceName, syncGroupName, serverEndpointName, updateParameters,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ServerEndpoint apply(Context context) {
@@ -219,11 +211,7 @@ public final class ServerEndpointImpl implements ServerEndpoint, ServerEndpoint.
     }
 
     public ServerEndpoint refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServerEndpoints()
-            .getWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, serverEndpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ServerEndpoint refresh(Context context) {

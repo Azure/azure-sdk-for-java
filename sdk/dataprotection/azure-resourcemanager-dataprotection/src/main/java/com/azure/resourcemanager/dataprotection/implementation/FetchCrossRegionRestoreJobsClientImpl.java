@@ -117,18 +117,7 @@ public final class FetchCrossRegionRestoreJobsClientImpl implements FetchCrossRe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetches the Cross Region Restore Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBackup Job Resource Class along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureBackupJobResourceInner> getWithResponse(String resourceGroupName, String location,
         CrossRegionRestoreJobRequest parameters, Context context) {
@@ -138,17 +127,7 @@ public final class FetchCrossRegionRestoreJobsClientImpl implements FetchCrossRe
             this.client.getSubscriptionId(), location, contentType, accept, parameters, context);
     }
 
-    /**
-     * Fetches the Cross Region Restore Job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBackup Job Resource Class.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureBackupJobResourceInner get(String resourceGroupName, String location,
         CrossRegionRestoreJobRequest parameters) {

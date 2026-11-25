@@ -219,23 +219,7 @@ public final class ReplicationNetworksClientImpl implements ReplicationNetworksC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a network with specified server id and network name.
-     * 
-     * Gets the details of a network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network with specified server id and network name.
-     * 
-     * Gets the details of a network along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkInner> getWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String networkName, Context context) {
@@ -270,22 +254,7 @@ public final class ReplicationNetworksClientImpl implements ReplicationNetworksC
             resourceGroupName, resourceName, fabricName, networkName, accept, context);
     }
 
-    /**
-     * Gets a network with specified server id and network name.
-     * 
-     * Gets the details of a network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param networkName Primary network name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network with specified server id and network name.
-     * 
-     * Gets the details of a network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInner get(String resourceGroupName, String resourceName, String fabricName, String networkName) {
         return getWithResponse(resourceGroupName, resourceName, fabricName, networkName, Context.NONE).getValue();
@@ -379,34 +348,7 @@ public final class ReplicationNetworksClientImpl implements ReplicationNetworksC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkInner> listByReplicationFabricsSinglePage(String resourceGroupName,
         String resourceName, String fabricName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<NetworkCollection> res
-            = service.listByReplicationFabricsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationFabricsSinglePage(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
     /**
@@ -458,45 +400,14 @@ public final class ReplicationNetworksClientImpl implements ReplicationNetworksC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of networks under a fabric.
-     * 
-     * Lists the networks available for a fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of networks under a fabric.
-     * 
-     * Lists the networks available for a fabric as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInner> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName) {
-        return new PagedIterable<>(
-            () -> listByReplicationFabricsSinglePage(resourceGroupName, resourceName, fabricName),
-            nextLink -> listByReplicationFabricsNextSinglePage(nextLink));
+        return listByReplicationFabrics(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
-    /**
-     * Gets the list of networks under a fabric.
-     * 
-     * Lists the networks available for a fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of networks under a fabric.
-     * 
-     * Lists the networks available for a fabric as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInner> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName, Context context) {
@@ -575,29 +486,7 @@ public final class ReplicationNetworksClientImpl implements ReplicationNetworksC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkInner> listSinglePage(String resourceGroupName, String resourceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<NetworkCollection> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -640,37 +529,13 @@ public final class ReplicationNetworksClientImpl implements ReplicationNetworksC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of networks. View-only API.
-     * 
-     * Lists the networks available in a vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of networks as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInner> list(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Gets the list of networks. View-only API.
-     * 
-     * Lists the networks available in a vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of networks as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInner> list(String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, context),
@@ -724,20 +589,7 @@ public final class ReplicationNetworksClientImpl implements ReplicationNetworksC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkInner> listByReplicationFabricsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<NetworkCollection> res
-            = service.listByReplicationFabricsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationFabricsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -812,20 +664,7 @@ public final class ReplicationNetworksClientImpl implements ReplicationNetworksC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<NetworkCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

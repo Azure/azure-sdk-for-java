@@ -1,0 +1,13 @@
+diff --git a/sdk/widgets/azure-resourcemanager-widgets/CHANGELOG.md b/sdk/widgets/azure-resourcemanager-widgets/CHANGELOG.md
+--- a/sdk/widgets/azure-resourcemanager-widgets/CHANGELOG.md
++++ b/sdk/widgets/azure-resourcemanager-widgets/CHANGELOG.md
+@@ -5 +5,2 @@
+ - Removed `WidgetManager.withLegacyMode(boolean)`.
++- Removed `WidgetManager.withAuditMode(boolean)`.
+diff --git a/sdk/widgets/azure-resourcemanager-widgets/src/main/java/com/azure/resourcemanager/widgets/WidgetManager.java b/sdk/widgets/azure-resourcemanager-widgets/src/main/java/com/azure/resourcemanager/widgets/WidgetManager.java
+--- a/sdk/widgets/azure-resourcemanager-widgets/src/main/java/com/azure/resourcemanager/widgets/WidgetManager.java
++++ b/sdk/widgets/azure-resourcemanager-widgets/src/main/java/com/azure/resourcemanager/widgets/WidgetManager.java
+@@ -24,3 +24,2 @@ public final class WidgetManager {
+-    public WidgetManager withAuditMode(boolean enabled);
+     public WidgetTags tags();
+ }

@@ -46,9 +46,7 @@ public final class ReplicationNetworksImpl implements ReplicationNetworks {
 
     public PagedIterable<Network> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName) {
-        PagedIterable<NetworkInner> inner
-            = this.serviceClient().listByReplicationFabrics(resourceGroupName, resourceName, fabricName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkImpl(inner1, this.manager()));
+        return this.listByReplicationFabrics(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
     public PagedIterable<Network> listByReplicationFabrics(String resourceGroupName, String resourceName,
@@ -59,8 +57,7 @@ public final class ReplicationNetworksImpl implements ReplicationNetworks {
     }
 
     public PagedIterable<Network> list(String resourceGroupName, String resourceName) {
-        PagedIterable<NetworkInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, resourceName, Context.NONE);
     }
 
     public PagedIterable<Network> list(String resourceGroupName, String resourceName, Context context) {

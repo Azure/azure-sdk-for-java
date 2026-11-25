@@ -60,10 +60,7 @@ public final class CommvaultPlanImpl implements CommvaultPlan, CommvaultPlan.Def
     }
 
     public CommvaultPlan create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPlans()
-            .createOrupdate(resourceGroupName, cloudAccountName, planName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CommvaultPlan create(Context context) {
@@ -85,10 +82,7 @@ public final class CommvaultPlanImpl implements CommvaultPlan, CommvaultPlan.Def
     }
 
     public CommvaultPlan apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPlans()
-            .createOrupdate(resourceGroupName, cloudAccountName, planName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CommvaultPlan apply(Context context) {
@@ -114,11 +108,7 @@ public final class CommvaultPlanImpl implements CommvaultPlan, CommvaultPlan.Def
     }
 
     public CommvaultPlan refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPlans()
-            .getWithResponse(resourceGroupName, cloudAccountName, planName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CommvaultPlan refresh(Context context) {

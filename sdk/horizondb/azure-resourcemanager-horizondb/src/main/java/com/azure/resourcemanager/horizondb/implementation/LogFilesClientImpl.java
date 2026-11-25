@@ -132,18 +132,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets metadata for a captured HorizonDB log file.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logFileName The name of the LogFile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata for a captured HorizonDB log file along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LogFileInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
         String logFileName) {
@@ -154,35 +143,14 @@ public final class LogFilesClientImpl implements LogFilesClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets metadata for a captured HorizonDB log file.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logFileName The name of the LogFile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata for a captured HorizonDB log file on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogFileInner> getAsync(String resourceGroupName, String clusterName, String logFileName) {
         return getWithResponseAsync(resourceGroupName, clusterName, logFileName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets metadata for a captured HorizonDB log file.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logFileName The name of the LogFile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata for a captured HorizonDB log file along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogFileInner> getWithResponse(String resourceGroupName, String clusterName, String logFileName,
         Context context) {
@@ -191,17 +159,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
             resourceGroupName, clusterName, logFileName, accept, context);
     }
 
-    /**
-     * Gets metadata for a captured HorizonDB log file.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logFileName The name of the LogFile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata for a captured HorizonDB log file.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogFileInner get(String resourceGroupName, String clusterName, String logFileName) {
         return getWithResponse(resourceGroupName, clusterName, logFileName, Context.NONE).getValue();
@@ -229,16 +187,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists captured log files for a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LogFile list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LogFileInner> listAsync(String resourceGroupName, String clusterName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName),
@@ -257,11 +206,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LogFileInner> listSinglePage(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        Response<LogFileListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -284,52 +229,20 @@ public final class LogFilesClientImpl implements LogFilesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists captured log files for a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LogFile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogFileInner> list(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Lists captured log files for a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LogFile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogFileInner> list(String resourceGroupName, String clusterName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, context),
             nextLink -> listNextSinglePage(nextLink, context));
     }
 
-    /**
-     * Gets a short-lived signed URL for downloading a captured log file. The signed URL is returned only by this action
-     * so routine resource GET and LIST responses do not expose bearer credentials.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logFileName The name of the LogFile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short-lived signed URL for downloading a captured log file along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LogFileDownloadUrlInner>> listDownloadUrlsWithResponseAsync(String resourceGroupName,
         String clusterName, String logFileName) {
@@ -340,18 +253,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets a short-lived signed URL for downloading a captured log file. The signed URL is returned only by this action
-     * so routine resource GET and LIST responses do not expose bearer credentials.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logFileName The name of the LogFile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short-lived signed URL for downloading a captured log file on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogFileDownloadUrlInner> listDownloadUrlsAsync(String resourceGroupName, String clusterName,
         String logFileName) {
@@ -359,19 +261,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a short-lived signed URL for downloading a captured log file. The signed URL is returned only by this action
-     * so routine resource GET and LIST responses do not expose bearer credentials.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logFileName The name of the LogFile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short-lived signed URL for downloading a captured log file along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogFileDownloadUrlInner> listDownloadUrlsWithResponse(String resourceGroupName, String clusterName,
         String logFileName, Context context) {
@@ -380,18 +270,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, logFileName, accept, context);
     }
 
-    /**
-     * Gets a short-lived signed URL for downloading a captured log file. The signed URL is returned only by this action
-     * so routine resource GET and LIST responses do not expose bearer credentials.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param logFileName The name of the LogFile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short-lived signed URL for downloading a captured log file.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogFileDownloadUrlInner listDownloadUrls(String resourceGroupName, String clusterName, String logFileName) {
         return listDownloadUrlsWithResponse(resourceGroupName, clusterName, logFileName, Context.NONE).getValue();
@@ -427,11 +306,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LogFileInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LogFileListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

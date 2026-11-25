@@ -61,10 +61,7 @@ public final class SignalDefinitionImpl
     }
 
     public SignalDefinition create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSignalDefinitions()
-            .createOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SignalDefinition create(Context context) {
@@ -85,10 +82,7 @@ public final class SignalDefinitionImpl
     }
 
     public SignalDefinition apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSignalDefinitions()
-            .createOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SignalDefinition apply(Context context) {
@@ -114,11 +108,7 @@ public final class SignalDefinitionImpl
     }
 
     public SignalDefinition refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSignalDefinitions()
-            .getWithResponse(resourceGroupName, healthModelName, signalDefinitionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SignalDefinition refresh(Context context) {

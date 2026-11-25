@@ -26,8 +26,7 @@ public final class ManagedComputeUsagesOperationGroupsImpl implements ManagedCom
     }
 
     public PagedIterable<ManagedComputeUsage> list(String location) {
-        PagedIterable<ManagedComputeUsageInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedComputeUsageImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<ManagedComputeUsage> list(String location, Context context) {

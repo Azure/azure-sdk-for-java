@@ -180,12 +180,7 @@ public final class BackupProtectableItemsClientImpl implements BackupProtectable
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadProtectableItemResourceInner> listSinglePage(String vaultName,
         String resourceGroupName, String filter, String skipToken) {
-        final String accept = "application/json";
-        Response<WorkloadProtectableItemResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
-                this.client.getSubscriptionId(), filter, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(vaultName, resourceGroupName, filter, skipToken, Context.NONE);
     }
 
     /**
@@ -213,39 +208,15 @@ public final class BackupProtectableItemsClientImpl implements BackupProtectable
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Provides a pageable list of protectable objects within your subscription according to the query filter and the
-     * pagination parameters.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of WorkloadProtectableItem resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadProtectableItemResourceInner> list(String vaultName, String resourceGroupName) {
         final String filter = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, filter, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(vaultName, resourceGroupName, filter, skipToken, Context.NONE);
     }
 
-    /**
-     * Provides a pageable list of protectable objects within your subscription according to the query filter and the
-     * pagination parameters.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param filter OData filter options.
-     * @param skipToken skipToken Filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of WorkloadProtectableItem resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadProtectableItemResourceInner> list(String vaultName, String resourceGroupName,
         String filter, String skipToken, Context context) {
@@ -283,11 +254,7 @@ public final class BackupProtectableItemsClientImpl implements BackupProtectable
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadProtectableItemResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkloadProtectableItemResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

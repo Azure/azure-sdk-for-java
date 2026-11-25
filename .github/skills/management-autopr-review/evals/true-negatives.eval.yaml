@@ -7,8 +7,8 @@ tags:
 defaults:
   runs: 3
   timeout: "300s"
-  model: gpt-5.6-terra
-  judge_model: gpt-5.6-terra
+  model: gpt-5.6-sol
+  judge_model: gpt-5.6-sol
 
 scoring:
   threshold: 0.8
@@ -242,10 +242,17 @@ stimuli:
   - name: prior-concern-is-carried-once
     tags:
       rule: prior-state
+      case: carried-forward
     environment:
       skills:
         - ".."
       files:
+        - src: "../../../agents/management-autopr-reviewer.agent.md"
+          dest: ".github/agents/management-autopr-reviewer.agent.md"
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
+          dest: ".github/agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
+          dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
         - src: "fixtures/tn-prior-concern-pr.json"
           dest: "github-responses/get-pull-request.json"
         - src: "fixtures/tn-prior-concern-comments.json"
@@ -255,19 +262,28 @@ stimuli:
         - src: "fixtures/tn-prior-concern-java.diff"
           dest: "pr-diff/046-WidgetManager.java.diff"
     prompt: >
-      Use the management-autopr-review skill to update the review state for the
-      synthetic PR. GitHub responses are materialized under github-responses
-      and per-file patches under pr-diff. Return the replacement current-state
-      review comment as the final response; do not modify the materialized
-      GitHub responses.
+      Act as the Management AutoPR Reviewer. Follow its agent file and the
+      management-autopr-review skill. Update the synthetic PR review using
+      github-responses and pr-diff as the authoritative pinned snapshot.
+      Dispatch the Management AutoPR Review Critic before returning the
+      replacement current-state comment. Require the critic to read its agent
+      file and protocol; include every dispatch field, the prior comment, and
+      full candidates. Tell it to verify against these local snapshots, not
+      live GitHub. Do not modify the materialized responses.
     constraints:
       expect_skills:
         - management-autopr-review
+      expect_tools:
+        - task
     graders:
       - type: output-matches
         name: "concern carried forward"
         config:
           pattern: "(?i)\\[MGMT-API-VERSION-OVERLAP\\].*Carried forward"
+      - type: output-matches
+        name: "carried-forward blocker requests changes"
+        config:
+          pattern: '(?m)^(?:-[ \t]+)?Decision:[ \t]+`?changes requested`?[ \t]*\r?$'
       - type: output-not-matches
         name: "not marked new"
         config:
@@ -276,6 +292,204 @@ stimuli:
     rubric:
       - The existing MGMT-API-VERSION-OVERLAP concern still applies.
       - It must retain the same ID and be marked Carried forward, without restating the question as new.
+      - The unresolved carried-forward blocker must keep Decision at changes requested.
+      - The reviewer must dispatch the critic, which must retain the same-ID carried-forward item rather than rejecting it as a duplicate.
+
+  - name: resolved-folder-blocker-clears-decision
+    tags:
+      rule: prior-state
+      case: resolved-folder
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "../../../agents/management-autopr-reviewer.agent.md"
+          dest: ".github/agents/management-autopr-reviewer.agent.md"
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
+          dest: ".github/agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
+          dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
+        - src: "fixtures/tn-resolved-folder.md"
+          dest: "review-input.md"
+    prompt: >
+      Act as the Management AutoPR Reviewer. Follow its agent file and the
+      management-autopr-review skill. Update the review state from
+      review-input.md, the authoritative synthetic snapshot at the current
+      head. Dispatch the Management AutoPR Review Critic before returning the
+      replacement current-state comment. Require the critic to read its agent
+      file and protocol; include every dispatch field, the prior comment, and
+      full candidates. Tell it to verify against review-input.md, not live
+      GitHub or another repository.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+      expect_tools:
+        - task
+    graders:
+      - type: output-matches
+        name: "folder blocker resolved"
+        config:
+          pattern: '\[MGMT-FOLDER\]`[ \t]+Resolved\b'
+      - type: output-matches
+        name: "resolved blocker no longer escalates decision"
+        config:
+          pattern: '(?m)^(?:-[ \t]+)?Decision:[ \t]+`?no high-confidence concerns`?[ \t]*\r?$'
+      - type: output-not-matches
+        name: "no lingering action decision"
+        config:
+          pattern: '(?m)^(?:-[ \t]+)?Decision:[ \t]+`?(?:changes requested|human attention requested)`?[ \t]*\r?$'
+      - type: prompt
+    rubric:
+      - The module now belongs to sdk/compute, matching its third segment compute.
+      - The prior MGMT-FOLDER must be reported once as Resolved.
+      - With no unresolved Blocking or Warning findings, Decision must be no high-confidence concerns.
+      - The reviewer must dispatch the critic, which must accept the verified resolution even though the old cited path no longer exists.
+      - The resolved item cites resolution evidence without requesting further corrective action.
+
+  - name: author-reply-resolves-warning-with-pattern-unchanged
+    tags:
+      rule: prior-state
+      case: author-reply
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "../../../agents/management-autopr-reviewer.agent.md"
+          dest: ".github/agents/management-autopr-reviewer.agent.md"
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
+          dest: ".github/agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
+          dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
+        - src: "fixtures/tn-resolved-author-reply.md"
+          dest: "review-input.md"
+    prompt: >
+      Act as the Management AutoPR Reviewer. Follow its agent file and the
+      management-autopr-review skill. Update the review state from
+      review-input.md, the authoritative synthetic snapshot at the current
+      head. Dispatch the Management AutoPR Review Critic before returning the
+      replacement current-state comment. Require the critic to read its agent
+      file and protocol; include every dispatch field, the prior comment,
+      author reply, and full candidates. Tell it to verify against
+      review-input.md, not live GitHub or another repository.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+      expect_tools:
+        - task
+    graders:
+      - type: output-matches
+        name: "author-confirmed warning resolved"
+        config:
+          pattern: '(?ms)^### Warning[ \t]*\r?\n(?:(?!^#{1,3} ).)*?^-[ \t]+`\[MGMT-BREAKING\]`[ \t]+Resolved\b'
+      - type: output-matches
+        name: "resolved warning no longer escalates decision"
+        config:
+          pattern: '(?m)^(?:-[ \t]+)?Decision:[ \t]+`?no high-confidence concerns`?[ \t]*\r?$'
+      - type: output-not-matches
+        name: "confirmed warning not carried forward or new"
+        config:
+          pattern: '\[MGMT-BREAKING\]`[ \t]+(?:New|Carried forward)\b'
+      - type: prompt
+    rubric:
+      - The current GA CHANGELOG still lists the removed public method; the triggering pattern has not disappeared.
+      - The authoritative PR author reply confirms that this breaking change is intended and resolves the Warning's verification request.
+      - The reviewer must dispatch the critic, which must accept the confirmed resolution rather than require a code or CHANGELOG change.
+      - The resolved item cites the author reply without asking for confirmation again.
+      - With no unresolved Blocking or Warning findings, Decision must be no high-confidence concerns.
+
+  - name: confirmed-warning-stays-resolved-across-heads
+    tags:
+      rule: prior-state
+      case: resolution-history
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "../../../agents/management-autopr-reviewer.agent.md"
+          dest: ".github/agents/management-autopr-reviewer.agent.md"
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
+          dest: ".github/agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
+          dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
+        - src: "fixtures/tn-confirmed-warning-later-head.md"
+          dest: "review-input.md"
+    prompt: >
+      Act as the Management AutoPR Reviewer. Follow its agent file and the
+      management-autopr-review skill. Update the review state from
+      review-input.md, the authoritative synthetic snapshot and comment
+      history through the fourth head. Use these local snapshots, not live
+      GitHub. Apply the reviewer sequence, including critic dispatch when
+      candidates survive self-verification. Return noop if no state changes.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "no review-state change"
+        config:
+          pattern: '(?i)^\s*`?noop`?\s*$'
+      - type: output-not-matches
+        name: "confirmed warning not revived or resolved twice"
+        config:
+          pattern: '\[MGMT-BREAKING\]'
+      - type: prompt
+    rubric:
+      - The Warning was raised at the first head, confirmed by its author and reported Resolved at the second, and omitted at the third.
+      - At the fourth head the breaking-change evidence and author confirmation still match.
+      - The reviewer must consult earlier resolution history rather than revive the Warning merely because the latest comment omits it.
+      - No other review state changes, so noop is correct.
+
+  - name: confirmed-warning-does-not-exempt-new-break
+    tags:
+      rule: prior-state
+      case: resolution-history
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "../../../agents/management-autopr-reviewer.agent.md"
+          dest: ".github/agents/management-autopr-reviewer.agent.md"
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
+          dest: ".github/agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
+          dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
+        - src: "fixtures/tn-confirmed-warning-later-head.md"
+          dest: "review-input.md"
+        - src: "fixtures/positive-confirmed-warning-new-break.diff"
+          dest: "current-head.diff"
+    prompt: >
+      Act as the Management AutoPR Reviewer. Follow its agent file and the
+      management-autopr-review skill. The authoritative synthetic snapshot is
+      review-input.md plus current-head.diff, which adds further changes at
+      the fourth head. Update the review state and dispatch the Management
+      AutoPR Review Critic before returning the final review. Require it to
+      read its agent file and protocol; include every dispatch field, relevant
+      resolution history, and full candidates. Tell it to verify against both
+      local snapshot files, not live GitHub.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+      expect_tools:
+        - task
+    graders:
+      - type: output-matches
+        name: "changed breaking evidence needs verification"
+        config:
+          pattern: '(?ms)^### Warning[ \t]*\r?\n(?:(?!^#{1,3} ).)*?^-[ \t]+`\[MGMT-BREAKING\]`[ \t]+New\b'
+      - type: output-matches
+        name: "new break requests human attention"
+        config:
+          pattern: '(?m)^(?:-[ \t]+)?Decision:[ \t]+`?human attention requested`?[ \t]*\r?$'
+      - type: output-matches
+        name: "newly removed method identified"
+        config:
+          pattern: 'withAuditMode'
+      - type: prompt
+    rubric:
+      - The historical reply confirms only removal of withLegacyMode, not the newly removed withAuditMode method.
+      - Changed breaking-change evidence requires fresh verification; an old resolution must not exempt it.
+      - The reviewer must dispatch the critic and retain a New MGMT-BREAKING Warning for the additional removal.
+      - Decision must be human attention requested, not changes requested or no high-confidence concerns.
 
   - name: standard-manager-name-is-clean
     environment:

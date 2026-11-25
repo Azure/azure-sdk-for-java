@@ -117,19 +117,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves the details of a RouteMap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RouteMap child resource of a Virtual hub along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouteMapInner>> getWithResponseAsync(String resourceGroupName, String virtualHubName,
         String routeMapName) {
@@ -201,74 +189,27 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
             virtualHubName, routeMapName, accept, context);
     }
 
-    /**
-     * Retrieves the details of a RouteMap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RouteMap child resource of a Virtual hub on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteMapInner> getAsync(String resourceGroupName, String virtualHubName, String routeMapName) {
         return getWithResponseAsync(resourceGroupName, virtualHubName, routeMapName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the details of a RouteMap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RouteMap child resource of a Virtual hub along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouteMapInner> getWithResponse(String resourceGroupName, String virtualHubName, String routeMapName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, virtualHubName, routeMapName, context).block();
     }
 
-    /**
-     * Retrieves the details of a RouteMap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RouteMap child resource of a Virtual hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouteMapInner get(String resourceGroupName, String virtualHubName, String routeMapName) {
         return getWithResponse(resourceGroupName, virtualHubName, routeMapName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param routeMapParameters Parameters supplied to create or update a RouteMap.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RouteMap child resource of a Virtual hub along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String virtualHubName, String routeMapName, RouteMapInner routeMapParameters) {
@@ -356,19 +297,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
             resourceGroupName, virtualHubName, routeMapName, contentType, accept, routeMapParameters, context);
     }
 
-    /**
-     * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param routeMapParameters Parameters supplied to create or update a RouteMap.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the RouteMap child resource of a Virtual hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RouteMapInner>, RouteMapInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String virtualHubName, String routeMapName, RouteMapInner routeMapParameters) {
@@ -402,19 +331,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
             RouteMapInner.class, RouteMapInner.class, context);
     }
 
-    /**
-     * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param routeMapParameters Parameters supplied to create or update a RouteMap.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the RouteMap child resource of a Virtual hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RouteMapInner>, RouteMapInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualHubName, String routeMapName, RouteMapInner routeMapParameters) {
@@ -422,20 +339,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param routeMapParameters Parameters supplied to create or update a RouteMap.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the RouteMap child resource of a Virtual hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RouteMapInner>, RouteMapInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualHubName, String routeMapName, RouteMapInner routeMapParameters, Context context) {
@@ -444,19 +348,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param routeMapParameters Parameters supplied to create or update a RouteMap.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RouteMap child resource of a Virtual hub on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteMapInner> createOrUpdateAsync(String resourceGroupName, String virtualHubName, String routeMapName,
         RouteMapInner routeMapParameters) {
@@ -486,39 +378,14 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param routeMapParameters Parameters supplied to create or update a RouteMap.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RouteMap child resource of a Virtual hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouteMapInner createOrUpdate(String resourceGroupName, String virtualHubName, String routeMapName,
         RouteMapInner routeMapParameters) {
         return createOrUpdateAsync(resourceGroupName, virtualHubName, routeMapName, routeMapParameters).block();
     }
 
-    /**
-     * Creates a RouteMap if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param routeMapParameters Parameters supplied to create or update a RouteMap.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RouteMap child resource of a Virtual hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouteMapInner createOrUpdate(String resourceGroupName, String virtualHubName, String routeMapName,
         RouteMapInner routeMapParameters, Context context) {
@@ -526,18 +393,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
             .block();
     }
 
-    /**
-     * Deletes a RouteMap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualHubName,
         String routeMapName) {
@@ -606,18 +462,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
             virtualHubName, routeMapName, context);
     }
 
-    /**
-     * Deletes a RouteMap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName,
         String routeMapName) {
@@ -650,55 +495,21 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
             context);
     }
 
-    /**
-     * Deletes a RouteMap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
         String routeMapName) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, routeMapName).getSyncPoller();
     }
 
-    /**
-     * Deletes a RouteMap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
         String routeMapName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, routeMapName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a RouteMap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, String routeMapName) {
         return beginDeleteAsync(resourceGroupName, virtualHubName, routeMapName).last()
@@ -725,34 +536,13 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a RouteMap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualHubName, String routeMapName) {
         deleteAsync(resourceGroupName, virtualHubName, routeMapName).block();
     }
 
-    /**
-     * Deletes a RouteMap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeMapName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualHubName, String routeMapName, Context context) {
         deleteAsync(resourceGroupName, virtualHubName, routeMapName, context).block();
@@ -836,17 +626,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves the details of all RouteMaps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RouteMaps and a URL nextLink to get the next set of results as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouteMapInner> listAsync(String resourceGroupName, String virtualHubName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualHubName),
@@ -871,34 +651,13 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves the details of all RouteMaps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RouteMaps and a URL nextLink to get the next set of results as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RouteMapInner> list(String resourceGroupName, String virtualHubName) {
         return new PagedIterable<>(listAsync(resourceGroupName, virtualHubName));
     }
 
-    /**
-     * Retrieves the details of all RouteMaps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RouteMaps and a URL nextLink to get the next set of results as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RouteMapInner> list(String resourceGroupName, String virtualHubName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, virtualHubName, context));

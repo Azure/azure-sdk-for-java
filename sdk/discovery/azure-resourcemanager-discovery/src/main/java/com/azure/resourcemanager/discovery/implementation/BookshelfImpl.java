@@ -81,10 +81,7 @@ public final class BookshelfImpl implements Bookshelf, Bookshelf.Definition, Boo
     }
 
     public Bookshelf create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookshelves()
-            .createOrUpdate(resourceGroupName, bookshelfName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Bookshelf create(Context context) {
@@ -105,10 +102,7 @@ public final class BookshelfImpl implements Bookshelf, Bookshelf.Definition, Boo
     }
 
     public Bookshelf apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookshelves()
-            .update(resourceGroupName, bookshelfName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Bookshelf apply(Context context) {
@@ -130,11 +124,7 @@ public final class BookshelfImpl implements Bookshelf, Bookshelf.Definition, Boo
     }
 
     public Bookshelf refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookshelves()
-            .getByResourceGroupWithResponse(resourceGroupName, bookshelfName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Bookshelf refresh(Context context) {

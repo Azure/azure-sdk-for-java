@@ -122,19 +122,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the current ledger digest upload configuration for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current ledger digest upload configuration for a database along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LedgerDigestUploadsInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, LedgerDigestUploadsName ledgerDigestUploads) {
@@ -213,18 +201,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
             resourceGroupName, serverName, databaseName, ledgerDigestUploads, accept, context);
     }
 
-    /**
-     * Gets the current ledger digest upload configuration for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current ledger digest upload configuration for a database on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LedgerDigestUploadsInner> getAsync(String resourceGroupName, String serverName, String databaseName,
         LedgerDigestUploadsName ledgerDigestUploads) {
@@ -232,37 +209,14 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the current ledger digest upload configuration for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current ledger digest upload configuration for a database along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LedgerDigestUploadsInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, LedgerDigestUploadsName ledgerDigestUploads, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, context).block();
     }
 
-    /**
-     * Gets the current ledger digest upload configuration for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current ledger digest upload configuration for a database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LedgerDigestUploadsInner get(String resourceGroupName, String serverName, String databaseName,
         LedgerDigestUploadsName ledgerDigestUploads) {
@@ -270,20 +224,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
             .getValue();
     }
 
-    /**
-     * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure SQL Database ledger digest upload settings along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, LedgerDigestUploadsName ledgerDigestUploads, LedgerDigestUploadsInner parameters) {
@@ -377,19 +318,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of azure SQL Database ledger digest upload settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads,
@@ -426,19 +355,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
             this.client.getHttpPipeline(), LedgerDigestUploadsInner.class, LedgerDigestUploadsInner.class, context);
     }
 
-    /**
-     * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure SQL Database ledger digest upload settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads,
@@ -448,20 +365,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
             .getSyncPoller();
     }
 
-    /**
-     * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure SQL Database ledger digest upload settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads,
@@ -472,19 +376,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
             .getSyncPoller();
     }
 
-    /**
-     * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure SQL Database ledger digest upload settings on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LedgerDigestUploadsInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String databaseName, LedgerDigestUploadsName ledgerDigestUploads, LedgerDigestUploadsInner parameters) {
@@ -515,19 +407,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure SQL Database ledger digest upload settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LedgerDigestUploadsInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         LedgerDigestUploadsName ledgerDigestUploads, LedgerDigestUploadsInner parameters) {
@@ -535,20 +415,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
             .block();
     }
 
-    /**
-     * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure SQL Database ledger digest upload settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LedgerDigestUploadsInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         LedgerDigestUploadsName ledgerDigestUploads, LedgerDigestUploadsInner parameters, Context context) {
@@ -641,17 +508,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all ledger digest upload settings on a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ledger digest upload settings on a database as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LedgerDigestUploadsInner> listByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName) {
@@ -679,54 +536,21 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all ledger digest upload settings on a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ledger digest upload settings on a database as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LedgerDigestUploadsInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
     }
 
-    /**
-     * Gets all ledger digest upload settings on a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ledger digest upload settings on a database as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LedgerDigestUploadsInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName, Context context) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName, context));
     }
 
-    /**
-     * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure SQL Database ledger digest upload settings along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> disableWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, LedgerDigestUploadsName ledgerDigestUploads) {
@@ -805,18 +629,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
             resourceGroupName, serverName, databaseName, ledgerDigestUploads, accept, context);
     }
 
-    /**
-     * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of azure SQL Database ledger digest upload settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginDisableAsync(
         String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads) {
@@ -851,37 +664,14 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
             this.client.getHttpPipeline(), LedgerDigestUploadsInner.class, LedgerDigestUploadsInner.class, context);
     }
 
-    /**
-     * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure SQL Database ledger digest upload settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginDisable(
         String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads) {
         return this.beginDisableAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads).getSyncPoller();
     }
 
-    /**
-     * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure SQL Database ledger digest upload settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginDisable(
         String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads,
@@ -890,18 +680,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
             .getSyncPoller();
     }
 
-    /**
-     * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure SQL Database ledger digest upload settings on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LedgerDigestUploadsInner> disableAsync(String resourceGroupName, String serverName, String databaseName,
         LedgerDigestUploadsName ledgerDigestUploads) {
@@ -929,37 +708,14 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure SQL Database ledger digest upload settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LedgerDigestUploadsInner disable(String resourceGroupName, String serverName, String databaseName,
         LedgerDigestUploadsName ledgerDigestUploads) {
         return disableAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads).block();
     }
 
-    /**
-     * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure SQL Database ledger digest upload settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LedgerDigestUploadsInner disable(String resourceGroupName, String serverName, String databaseName,
         LedgerDigestUploadsName ledgerDigestUploads, Context context) {

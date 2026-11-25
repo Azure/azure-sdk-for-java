@@ -151,18 +151,7 @@ public final class DrillResourcesClientImpl implements DrillResourcesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DrillResource.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param drillResourceName The name of the DrillResource (GUID).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DrillResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DrillResourceInner> getWithResponse(String serviceGroupName, String drillName,
         String drillResourceName, Context context) {
@@ -171,17 +160,7 @@ public final class DrillResourcesClientImpl implements DrillResourcesClient {
             drillResourceName, accept, context);
     }
 
-    /**
-     * Get a DrillResource.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param drillResourceName The name of the DrillResource (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DrillResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DrillResourceInner get(String serviceGroupName, String drillName, String drillResourceName) {
         return getWithResponse(serviceGroupName, drillName, drillResourceName, Context.NONE).getValue();
@@ -264,11 +243,7 @@ public final class DrillResourcesClientImpl implements DrillResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DrillResourceInner> listSinglePage(String serviceGroupName, String drillName,
         String skipToken, Integer top) {
-        final String accept = "application/json";
-        Response<DrillResourceListResult> res = service.listSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), skipToken, top, drillName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(serviceGroupName, drillName, skipToken, top, Context.NONE);
     }
 
     /**
@@ -294,37 +269,15 @@ public final class DrillResourcesClientImpl implements DrillResourcesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DrillResource resources by Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DrillResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DrillResourceInner> list(String serviceGroupName, String drillName) {
         final String skipToken = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(serviceGroupName, drillName, skipToken, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(serviceGroupName, drillName, skipToken, top, Context.NONE);
     }
 
-    /**
-     * List DrillResource resources by Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param skipToken Skip over when retrieving results.
-     * @param top Number of elements to return when retrieving results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DrillResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DrillResourceInner> list(String serviceGroupName, String drillName, String skipToken,
         Integer top, Context context) {
@@ -362,11 +315,7 @@ public final class DrillResourcesClientImpl implements DrillResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DrillResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DrillResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

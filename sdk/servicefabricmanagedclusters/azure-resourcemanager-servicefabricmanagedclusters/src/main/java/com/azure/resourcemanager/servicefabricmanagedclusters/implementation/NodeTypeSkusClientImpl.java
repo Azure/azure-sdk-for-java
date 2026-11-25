@@ -151,11 +151,7 @@ public final class NodeTypeSkusClientImpl implements NodeTypeSkusClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeTypeAvailableSkuInner> listSinglePage(String resourceGroupName, String clusterName,
         String nodeTypeName) {
-        final String accept = "application/json";
-        Response<NodeTypeListSkuResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, nodeTypeName, Context.NONE);
     }
 
     /**
@@ -180,36 +176,14 @@ public final class NodeTypeSkusClientImpl implements NodeTypeSkusClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a Service Fabric node type supported SKUs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric node type supported SKUs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NodeTypeAvailableSkuInner> list(String resourceGroupName, String clusterName,
         String nodeTypeName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, nodeTypeName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, nodeTypeName, Context.NONE);
     }
 
-    /**
-     * Get a Service Fabric node type supported SKUs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric node type supported SKUs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NodeTypeAvailableSkuInner> list(String resourceGroupName, String clusterName,
         String nodeTypeName, Context context) {
@@ -247,11 +221,7 @@ public final class NodeTypeSkusClientImpl implements NodeTypeSkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeTypeAvailableSkuInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NodeTypeListSkuResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

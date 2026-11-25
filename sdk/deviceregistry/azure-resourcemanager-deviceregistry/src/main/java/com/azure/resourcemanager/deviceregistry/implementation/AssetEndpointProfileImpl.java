@@ -91,10 +91,7 @@ public final class AssetEndpointProfileImpl
     }
 
     public AssetEndpointProfile create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssetEndpointProfiles()
-            .createOrReplace(resourceGroupName, assetEndpointProfileName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AssetEndpointProfile create(Context context) {
@@ -117,10 +114,7 @@ public final class AssetEndpointProfileImpl
     }
 
     public AssetEndpointProfile apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssetEndpointProfiles()
-            .update(resourceGroupName, assetEndpointProfileName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AssetEndpointProfile apply(Context context) {
@@ -143,11 +137,7 @@ public final class AssetEndpointProfileImpl
     }
 
     public AssetEndpointProfile refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssetEndpointProfiles()
-            .getByResourceGroupWithResponse(resourceGroupName, assetEndpointProfileName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AssetEndpointProfile refresh(Context context) {

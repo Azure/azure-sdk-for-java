@@ -147,11 +147,7 @@ public final class VMHostsClientImpl implements VMHostsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VMResourcesInner> listSinglePage(String resourceGroupName, String monitorName) {
-        final String accept = "application/json";
-        Response<VMHostListResponse> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, monitorName, Context.NONE);
     }
 
     /**
@@ -176,35 +172,13 @@ public final class VMHostsClientImpl implements VMHostsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all VM resources currently being monitored by the Elastic monitor resource, helping you manage
-     * observability.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VMResourcesInner> list(String resourceGroupName, String monitorName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, monitorName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, monitorName, Context.NONE);
     }
 
-    /**
-     * List all VM resources currently being monitored by the Elastic monitor resource, helping you manage
-     * observability.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VMResourcesInner> list(String resourceGroupName, String monitorName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, monitorName, context),
@@ -240,11 +214,7 @@ public final class VMHostsClientImpl implements VMHostsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VMResourcesInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VMHostListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

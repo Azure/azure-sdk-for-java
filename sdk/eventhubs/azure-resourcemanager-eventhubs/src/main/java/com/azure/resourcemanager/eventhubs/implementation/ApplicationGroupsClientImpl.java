@@ -112,17 +112,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets an ApplicationGroup for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param applicationGroupName The Application Group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an ApplicationGroup for a Namespace along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ApplicationGroupInner>> getWithResponseAsync(String resourceGroupName, String namespaceName,
         String applicationGroupName) {
@@ -191,17 +181,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
             resourceGroupName, namespaceName, applicationGroupName, accept, context);
     }
 
-    /**
-     * Gets an ApplicationGroup for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param applicationGroupName The Application Group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an ApplicationGroup for a Namespace on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGroupInner> getAsync(String resourceGroupName, String namespaceName,
         String applicationGroupName) {
@@ -209,52 +189,20 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an ApplicationGroup for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param applicationGroupName The Application Group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an ApplicationGroup for a Namespace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationGroupInner> getWithResponse(String resourceGroupName, String namespaceName,
         String applicationGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, namespaceName, applicationGroupName, context).block();
     }
 
-    /**
-     * Gets an ApplicationGroup for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param applicationGroupName The Application Group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an ApplicationGroup for a Namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGroupInner get(String resourceGroupName, String namespaceName, String applicationGroupName) {
         return getWithResponse(resourceGroupName, namespaceName, applicationGroupName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an ApplicationGroup for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param applicationGroupName The Application Group name.
-     * @param parameters The ApplicationGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Application Group object along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ApplicationGroupInner>> createOrUpdateApplicationGroupWithResponseAsync(
         String resourceGroupName, String namespaceName, String applicationGroupName, ApplicationGroupInner parameters) {
@@ -340,18 +288,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
             accept, parameters, context);
     }
 
-    /**
-     * Creates or updates an ApplicationGroup for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param applicationGroupName The Application Group name.
-     * @param parameters The ApplicationGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Application Group object on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGroupInner> createOrUpdateApplicationGroupAsync(String resourceGroupName,
         String namespaceName, String applicationGroupName, ApplicationGroupInner parameters) {
@@ -359,19 +296,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates an ApplicationGroup for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param applicationGroupName The Application Group name.
-     * @param parameters The ApplicationGroup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Application Group object along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationGroupInner> createOrUpdateApplicationGroupWithResponse(String resourceGroupName,
         String namespaceName, String applicationGroupName, ApplicationGroupInner parameters, Context context) {
@@ -379,18 +304,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
             parameters, context).block();
     }
 
-    /**
-     * Creates or updates an ApplicationGroup for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param applicationGroupName The Application Group name.
-     * @param parameters The ApplicationGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Application Group object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGroupInner createOrUpdateApplicationGroup(String resourceGroupName, String namespaceName,
         String applicationGroupName, ApplicationGroupInner parameters) {
@@ -398,17 +312,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
             parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes an ApplicationGroup for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param applicationGroupName The Application Group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
         String applicationGroupName) {
@@ -476,51 +380,21 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
             resourceGroupName, namespaceName, applicationGroupName, context);
     }
 
-    /**
-     * Deletes an ApplicationGroup for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param applicationGroupName The Application Group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String applicationGroupName) {
         return deleteWithResponseAsync(resourceGroupName, namespaceName, applicationGroupName)
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes an ApplicationGroup for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param applicationGroupName The Application Group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String namespaceName,
         String applicationGroupName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, namespaceName, applicationGroupName, context).block();
     }
 
-    /**
-     * Deletes an ApplicationGroup for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param applicationGroupName The Application Group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String applicationGroupName) {
         deleteWithResponse(resourceGroupName, namespaceName, applicationGroupName, Context.NONE);
@@ -603,16 +477,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of application groups for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of application groups for a Namespace as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationGroupInner> listByNamespaceAsync(String resourceGroupName, String namespaceName) {
         return new PagedFlux<>(() -> listByNamespaceSinglePageAsync(resourceGroupName, namespaceName),
@@ -637,32 +502,13 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
             nextLink -> listByNamespaceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of application groups for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of application groups for a Namespace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGroupInner> listByNamespace(String resourceGroupName, String namespaceName) {
         return new PagedIterable<>(listByNamespaceAsync(resourceGroupName, namespaceName));
     }
 
-    /**
-     * Gets a list of application groups for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of application groups for a Namespace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGroupInner> listByNamespace(String resourceGroupName, String namespaceName,
         Context context) {

@@ -125,22 +125,7 @@ public final class ProtectionPolicyOperationStatusesClientImpl implements Protec
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Provides the status of the asynchronous operations like backup, restore. The status can be in progress, completed
-     * or failed. You can refer to the Operation Status enum for all the possible states of an operation. Some
-     * operations
-     * create jobs. This method returns the list of jobs associated with operation.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the ProtectionPolicyResource.
-     * @param operationId The name of the ProtectionPolicyResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusInner> getWithResponse(String vaultName, String resourceGroupName, String policyName,
         String operationId, Context context) {
@@ -149,21 +134,7 @@ public final class ProtectionPolicyOperationStatusesClientImpl implements Protec
             resourceGroupName, vaultName, policyName, operationId, accept, context);
     }
 
-    /**
-     * Provides the status of the asynchronous operations like backup, restore. The status can be in progress, completed
-     * or failed. You can refer to the Operation Status enum for all the possible states of an operation. Some
-     * operations
-     * create jobs. This method returns the list of jobs associated with operation.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the ProtectionPolicyResource.
-     * @param operationId The name of the ProtectionPolicyResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusInner get(String vaultName, String resourceGroupName, String policyName, String operationId) {
         return getWithResponse(vaultName, resourceGroupName, policyName, operationId, Context.NONE).getValue();
