@@ -81,12 +81,20 @@ public final class PatchUtil {
                         PatchConstants.PropertyNames_Path,
                         ((PatchOperationCore)patchOperation).getPath()
                     );
-                    operationJsonSerializable.set(
-                        PatchConstants.PropertyNames_Value,
-                        ((PatchOperationCore)patchOperation).getResource(),
-                        effectiveItemSerializer,
-                        true
-                    );
+
+                    if (patchOperation.getOperationType() == PatchOperationType.INCREMENT) {
+                        operationJsonSerializable.set(
+                            PatchConstants.PropertyNames_Value,
+                            ((PatchOperationCore)patchOperation).getResource()
+                        );
+                    } else {
+                        operationJsonSerializable.set(
+                            PatchConstants.PropertyNames_Value,
+                            ((PatchOperationCore)patchOperation).getResource(),
+                            effectiveItemSerializer,
+                            true
+                        );
+                    }
                 }
             } else {
                 throw new IllegalArgumentException("Invalid patch operation type");

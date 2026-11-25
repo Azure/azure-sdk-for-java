@@ -94,6 +94,54 @@ public class PatchUnitTest {
     }
 
     @Test(groups = { "unit" })
+    public void incrementOperationValueBypassesCustomItemSerializerForLong() {
+        long incr = new Random().nextLong();
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create().increment(path, incr);
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setEffectiveItemSerializer(new MarkerCosmosItemSerializer());
+
+        JsonSerializable serialized = PatchUtil.serializableBatchPatchOperation(cosmosPatchOperations, requestOptions);
+        ObjectNode operation = (ObjectNode) serialized.getPropertyBag().get(PatchConstants.OPERATIONS).get(0);
+
+        assertThat(operation.get(PatchConstants.PropertyNames_Value).isObject()).isFalse();
+        assertThat(operation.get(PatchConstants.PropertyNames_Value).isNumber()).isTrue();
+        assertThat(operation.get(PatchConstants.PropertyNames_Value).longValue()).isEqualTo(incr);
+    }
+
+    @Test(groups = { "unit" })
+    public void incrementOperationValueBypassesCustomItemSerializerForDouble() {
+        double incr = new Random().nextDouble();
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create().increment(path, incr);
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setEffectiveItemSerializer(new MarkerCosmosItemSerializer());
+
+        JsonSerializable serialized = PatchUtil.serializableBatchPatchOperation(cosmosPatchOperations, requestOptions);
+        ObjectNode operation = (ObjectNode) serialized.getPropertyBag().get(PatchConstants.OPERATIONS).get(0);
+
+        assertThat(operation.get(PatchConstants.PropertyNames_Value).isObject()).isFalse();
+        assertThat(operation.get(PatchConstants.PropertyNames_Value).isNumber()).isTrue();
+        assertThat(operation.get(PatchConstants.PropertyNames_Value).doubleValue()).isEqualTo(incr);
+    }
+
+    @Test(groups = { "unit" })
+    public void incrementOperationValueBypassesExplicitEffectiveItemSerializer() {
+        long incr = new Random().nextLong();
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create().increment(path, incr);
+
+        RequestOptions requestOptions = new RequestOptions();
+
+        JsonSerializable serialized = PatchUtil.serializableBatchPatchOperation(
+            cosmosPatchOperations, requestOptions, new MarkerCosmosItemSerializer());
+        ObjectNode operation = (ObjectNode) serialized.getPropertyBag().get(PatchConstants.OPERATIONS).get(0);
+
+        assertThat(operation.get(PatchConstants.PropertyNames_Value).isObject()).isFalse();
+        assertThat(operation.get(PatchConstants.PropertyNames_Value).isNumber()).isTrue();
+        assertThat(operation.get(PatchConstants.PropertyNames_Value).longValue()).isEqualTo(incr);
+    }
+
+    @Test(groups = { "unit" })
     public void patchOperationValueFallsBackToDefaultSerializerWhenNoCustomSerializerConfigured() {
         CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create().replace(path, "originalValue");
 
