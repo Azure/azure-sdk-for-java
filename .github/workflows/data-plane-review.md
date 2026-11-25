@@ -100,6 +100,36 @@ steps:
         $manifest | ConvertTo-Json -Depth 6 |
           Set-Content -LiteralPath $manifestPath -Encoding utf8
       }
+      function Assert-SafeReviewPath {
+        param(
+          [Parameter(Mandatory)][string]$Path,
+          [Parameter(Mandatory)][string]$Root
+        )
+        $fullRoot = [IO.Path]::GetFullPath($Root).TrimEnd(
+          [IO.Path]::DirectorySeparatorChar, [IO.Path]::AltDirectorySeparatorChar)
+        $fullPath = [IO.Path]::GetFullPath($Path)
+        if ($fullPath -ne $fullRoot -and
+            -not $fullPath.StartsWith(
+              "$fullRoot$([IO.Path]::DirectorySeparatorChar)",
+              [StringComparison]::Ordinal)) {
+          throw "API review path is outside the pinned PR checkout: $Path"
+        }
+        $current = $fullPath
+        while ($true) {
+          if ((Get-Item -LiteralPath $current -Force).LinkType) {
+            throw "Symbolic links are not allowed in API review inputs: $Path"
+          }
+          if ($current -eq $fullRoot) {
+            break
+          }
+          $parent = [IO.Directory]::GetParent($current)
+          if (-not $parent) {
+            throw "API review path does not descend from the pinned PR checkout: $Path"
+          }
+          $current = $parent.FullName
+        }
+        return $fullPath
+      }
 
       try {
         if ($env:DATA_PLANE_REVIEW_PR_NUMBER -notmatch '^[1-9][0-9]*$') {
@@ -169,9 +199,7 @@ steps:
             if (-not (Test-Path -LiteralPath $pomPath -PathType Leaf)) {
               continue
             }
-            if ((Get-Item -LiteralPath $pomPath -Force).LinkType) {
-              throw "Symbolic links are not allowed for the package POM."
-            }
+            $pomPath = Assert-SafeReviewPath -Path $pomPath -Root $prRoot
             $pom = [xml](Get-Content -LiteralPath $pomPath -Raw)
             $artifact = $pom.SelectSingleNode(
               "/*[local-name()='project']/*[local-name()='artifactId']").InnerText.Trim()
@@ -198,6 +226,7 @@ steps:
             foreach ($relativeSource in @('src/main/java', 'src/main/resources')) {
               $sourcePath = Join-Path $packageRoot $relativeSource
               if (Test-Path -LiteralPath $sourcePath -PathType Container) {
+                $sourcePath = Assert-SafeReviewPath -Path $sourcePath -Root $prRoot
                 $links = @(
                   Get-ChildItem -LiteralPath $sourcePath -Recurse -Force |
                     Where-Object { $_.LinkType }
