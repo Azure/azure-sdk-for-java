@@ -350,19 +350,7 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about the specified job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param expand $expand is supported on details parameter for job, which provides details on the job stages.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified job along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String jobName,
         String expand, Context context) {
@@ -371,17 +359,7 @@ public final class JobsClientImpl implements JobsClient {
             this.client.getSubscriptionId(), resourceGroupName, jobName, expand, accept, context);
     }
 
-    /**
-     * Gets information about the specified job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobResourceInner getByResourceGroup(String resourceGroupName, String jobName) {
         final String expand = null;
@@ -428,11 +406,7 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String jobName,
         JobResourceInner jobResource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, jobName, contentType, accept, jobResource,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, jobName, jobResource, Context.NONE);
     }
 
     /**
@@ -479,41 +453,14 @@ public final class JobsClientImpl implements JobsClient {
             JobResourceInner.class, JobResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
-     * be updated with the Update job API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param jobResource Job details from request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of job Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginCreate(String resourceGroupName,
         String jobName, JobResourceInner jobResource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, jobName, jobResource);
-        return this.client.<JobResourceInner, JobResourceInner>getLroResult(response, JobResourceInner.class,
-            JobResourceInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, jobName, jobResource, Context.NONE);
     }
 
-    /**
-     * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
-     * be updated with the Update job API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param jobResource Job details from request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of job Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginCreate(String resourceGroupName,
         String jobName, JobResourceInner jobResource, Context context) {
@@ -541,42 +488,17 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
-     * be updated with the Update job API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param jobResource Job details from request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return job Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobResourceInner create(String resourceGroupName, String jobName, JobResourceInner jobResource) {
-        return beginCreate(resourceGroupName, jobName, jobResource).getFinalResult();
+        return create(resourceGroupName, jobName, jobResource, Context.NONE);
     }
 
-    /**
-     * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
-     * be updated with the Update job API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param jobResource Job details from request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return job Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobResourceInner create(String resourceGroupName, String jobName, JobResourceInner jobResource,
         Context context) {
-        return beginCreate(resourceGroupName, jobName, jobResource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, jobName, jobResource, context));
     }
 
     /**
@@ -622,11 +544,7 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String jobName,
         JobResourceUpdateParameter jobResourceUpdateParameter, String ifMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, jobName, ifMatch, contentType, accept,
-            jobResourceUpdateParameter, Context.NONE);
+        return updateWithResponse(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch, Context.NONE);
     }
 
     /**
@@ -716,49 +634,18 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginUpdate(String resourceGroupName,
         String jobName, JobResourceUpdateParameter jobResourceUpdateParameter, String ifMatch) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch);
-        return this.client.<JobResourceInner, JobResourceInner>getLroResult(response, JobResourceInner.class,
-            JobResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates the properties of an existing job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param jobResourceUpdateParameter Job update parameters from request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of job Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginUpdate(String resourceGroupName,
         String jobName, JobResourceUpdateParameter jobResourceUpdateParameter) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch);
-        return this.client.<JobResourceInner, JobResourceInner>getLroResult(response, JobResourceInner.class,
-            JobResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates the properties of an existing job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param jobResourceUpdateParameter Job update parameters from request body.
-     * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     * server matches this value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of job Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginUpdate(String resourceGroupName,
         String jobName, JobResourceUpdateParameter jobResourceUpdateParameter, String ifMatch, Context context) {
@@ -809,44 +696,20 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the properties of an existing job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param jobResourceUpdateParameter Job update parameters from request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return job Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobResourceInner update(String resourceGroupName, String jobName,
         JobResourceUpdateParameter jobResourceUpdateParameter) {
         final String ifMatch = null;
-        return beginUpdate(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch).getFinalResult();
+        return update(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates the properties of an existing job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param jobResourceUpdateParameter Job update parameters from request body.
-     * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     * server matches this value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return job Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobResourceInner update(String resourceGroupName, String jobName,
         JobResourceUpdateParameter jobResourceUpdateParameter, String ifMatch, Context context) {
-        return beginUpdate(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch, context));
     }
 
     /**
@@ -881,8 +744,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String jobName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, jobName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, jobName, Context.NONE);
     }
 
     /**
@@ -921,35 +783,13 @@ public final class JobsClientImpl implements JobsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String jobName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, jobName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, jobName, Context.NONE);
     }
 
-    /**
-     * Deletes a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String jobName, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, jobName, context);
@@ -972,35 +812,16 @@ public final class JobsClientImpl implements JobsClient {
         return beginDeleteAsync(resourceGroupName, jobName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String jobName) {
-        beginDelete(resourceGroupName, jobName).getFinalResult();
+        delete(resourceGroupName, jobName, Context.NONE);
     }
 
-    /**
-     * Deletes a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String jobName, Context context) {
-        beginDelete(resourceGroupName, jobName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, jobName, context));
     }
 
     /**
@@ -1069,12 +890,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobResourceInner> listByResourceGroupSinglePage(String resourceGroupName, String skipToken) {
-        final String accept = "application/json";
-        Response<JobResourceList> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, skipToken, Context.NONE);
     }
 
     /**
@@ -1099,33 +915,14 @@ public final class JobsClientImpl implements JobsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the jobs available under the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return job Resource Collection as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobResourceInner> listByResourceGroup(String resourceGroupName) {
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, skipToken),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, skipToken, Context.NONE);
     }
 
-    /**
-     * Lists all the jobs available under the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return job Resource Collection as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobResourceInner> listByResourceGroup(String resourceGroupName, String skipToken,
         Context context) {
@@ -1191,11 +988,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobResourceInner> listSinglePage(String skipToken) {
-        final String accept = "application/json";
-        Response<JobResourceList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(skipToken, Context.NONE);
     }
 
     /**
@@ -1217,29 +1010,14 @@ public final class JobsClientImpl implements JobsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the jobs available under the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return job Resource Collection as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobResourceInner> list() {
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(skipToken), nextLink -> listNextSinglePage(nextLink));
+        return list(skipToken, Context.NONE);
     }
 
-    /**
-     * Lists all the jobs available under the subscription.
-     * 
-     * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return job Resource Collection as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobResourceInner> list(String skipToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(skipToken, context),
@@ -1289,19 +1067,7 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Book shipment pick up.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param shipmentPickUpRequest Details of shipment pick up request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shipment pick up response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShipmentPickUpResponseInner> bookShipmentPickUpWithResponse(String resourceGroupName,
         String jobName, ShipmentPickUpRequest shipmentPickUpRequest, Context context) {
@@ -1312,18 +1078,7 @@ public final class JobsClientImpl implements JobsClient {
             context);
     }
 
-    /**
-     * Book shipment pick up.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param shipmentPickUpRequest Details of shipment pick up request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shipment pick up response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShipmentPickUpResponseInner bookShipmentPickUp(String resourceGroupName, String jobName,
         ShipmentPickUpRequest shipmentPickUpRequest) {
@@ -1370,19 +1125,7 @@ public final class JobsClientImpl implements JobsClient {
         return cancelWithResponseAsync(resourceGroupName, jobName, cancellationReason).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * CancelJob.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param cancellationReason Reason for cancellation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelWithResponse(String resourceGroupName, String jobName,
         CancellationReason cancellationReason, Context context) {
@@ -1391,17 +1134,7 @@ public final class JobsClientImpl implements JobsClient {
             this.client.getSubscriptionId(), resourceGroupName, jobName, contentType, cancellationReason, context);
     }
 
-    /**
-     * CancelJob.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param cancellationReason Reason for cancellation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String jobName, CancellationReason cancellationReason) {
         cancelWithResponse(resourceGroupName, jobName, cancellationReason, Context.NONE);
@@ -1462,12 +1195,7 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UnencryptedCredentialsInner> listCredentialsSinglePage(String resourceGroupName,
         String jobName) {
-        final String accept = "application/json";
-        Response<UnencryptedCredentialsList> res
-            = service.listCredentialsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, jobName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listCredentialsSinglePage(resourceGroupName, jobName, Context.NONE);
     }
 
     /**
@@ -1492,35 +1220,13 @@ public final class JobsClientImpl implements JobsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * This method gets the unencrypted secrets related to the job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of unencrypted credentials for accessing device as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UnencryptedCredentialsInner> listCredentials(String resourceGroupName, String jobName) {
-        return new PagedIterable<>(() -> listCredentialsSinglePage(resourceGroupName, jobName),
-            nextLink -> listCredentialsNextSinglePage(nextLink));
+        return listCredentials(resourceGroupName, jobName, Context.NONE);
     }
 
-    /**
-     * This method gets the unencrypted secrets related to the job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of unencrypted credentials for accessing device as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UnencryptedCredentialsInner> listCredentials(String resourceGroupName, String jobName,
         Context context) {
@@ -1570,19 +1276,7 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Request to mark devices for a given job as shipped.
-     * 
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param markDevicesShippedRequest Mark Devices Shipped Request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> markDevicesShippedWithResponse(String jobName, String resourceGroupName,
         MarkDevicesShippedRequest markDevicesShippedRequest, Context context) {
@@ -1592,17 +1286,7 @@ public final class JobsClientImpl implements JobsClient {
             context);
     }
 
-    /**
-     * Request to mark devices for a given job as shipped.
-     * 
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param markDevicesShippedRequest Mark Devices Shipped Request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void markDevicesShipped(String jobName, String resourceGroupName,
         MarkDevicesShippedRequest markDevicesShippedRequest) {
@@ -1640,11 +1324,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<JobResourceList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1695,10 +1375,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<JobResourceList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1750,11 +1427,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UnencryptedCredentialsInner> listCredentialsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<UnencryptedCredentialsList> res
-            = service.listCredentialsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listCredentialsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

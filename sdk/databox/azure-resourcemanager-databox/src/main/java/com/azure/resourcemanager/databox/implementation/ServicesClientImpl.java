@@ -238,17 +238,7 @@ public final class ServicesClientImpl implements ServicesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This API provides configuration details specific to given region/location at Subscription level.
-     * 
-     * @param location The name of the Azure region.
-     * @param regionConfigurationRequest The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration response specific to a region along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RegionConfigurationResponseInner> regionConfigurationWithResponse(String location,
         RegionConfigurationRequest regionConfigurationRequest, Context context) {
@@ -258,16 +248,7 @@ public final class ServicesClientImpl implements ServicesClient {
             this.client.getSubscriptionId(), location, contentType, accept, regionConfigurationRequest, context);
     }
 
-    /**
-     * This API provides configuration details specific to given region/location at Subscription level.
-     * 
-     * @param location The name of the Azure region.
-     * @param regionConfigurationRequest The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration response specific to a region.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegionConfigurationResponseInner regionConfiguration(String location,
         RegionConfigurationRequest regionConfigurationRequest) {
@@ -314,18 +295,7 @@ public final class ServicesClientImpl implements ServicesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
-     * provide alternate addresses if any.
-     * 
-     * @param location The name of the Azure region.
-     * @param validateAddress The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the address validation api along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AddressValidationOutputInner> validateAddressWithResponse(String location,
         ValidateAddress validateAddress, Context context) {
@@ -335,17 +305,7 @@ public final class ServicesClientImpl implements ServicesClient {
             this.client.getSubscriptionId(), location, contentType, accept, validateAddress, context);
     }
 
-    /**
-     * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
-     * provide alternate addresses if any.
-     * 
-     * @param location The name of the Azure region.
-     * @param validateAddress The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the address validation api.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AddressValidationOutputInner validateAddress(String location, ValidateAddress validateAddress) {
         return validateAddressWithResponse(location, validateAddress, Context.NONE).getValue();
@@ -389,17 +349,7 @@ public final class ServicesClientImpl implements ServicesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This method does all necessary pre-job creation validation under subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param validationRequest The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidationResponseInner> validateInputsWithResponse(String location,
         ValidationRequest validationRequest, Context context) {
@@ -409,16 +359,7 @@ public final class ServicesClientImpl implements ServicesClient {
             this.client.getSubscriptionId(), location, contentType, accept, validationRequest, context);
     }
 
-    /**
-     * This method does all necessary pre-job creation validation under subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param validationRequest The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidationResponseInner validateInputs(String location, ValidationRequest validationRequest) {
         return validateInputsWithResponse(location, validationRequest, Context.NONE).getValue();
@@ -482,12 +423,8 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SkuInformationInner> listAvailableSkusByResourceGroupSinglePage(String resourceGroupName,
         String location, AvailableSkuRequest availableSkuRequest) {
-        final String accept = "application/json";
-        Response<AvailableSkusResult> res = service.listAvailableSkusByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, location, accept,
-            availableSkuRequest, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAvailableSkusByResourceGroupSinglePage(resourceGroupName, location, availableSkuRequest,
+            Context.NONE);
     }
 
     /**
@@ -513,37 +450,14 @@ public final class ServicesClientImpl implements ServicesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * This method provides the list of available skus for the given subscription, resource group and location.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param availableSkuRequest Filters for showing the available skus.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuInformationInner> listAvailableSkusByResourceGroup(String resourceGroupName,
         String location, AvailableSkuRequest availableSkuRequest) {
-        return new PagedIterable<>(
-            () -> listAvailableSkusByResourceGroupSinglePage(resourceGroupName, location, availableSkuRequest),
-            nextLink -> listAvailableSkusByResourceGroupNextSinglePage(nextLink));
+        return listAvailableSkusByResourceGroup(resourceGroupName, location, availableSkuRequest, Context.NONE);
     }
 
-    /**
-     * This method provides the list of available skus for the given subscription, resource group and location.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param availableSkuRequest Filters for showing the available skus.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuInformationInner> listAvailableSkusByResourceGroup(String resourceGroupName,
         String location, AvailableSkuRequest availableSkuRequest, Context context) {
@@ -594,18 +508,7 @@ public final class ServicesClientImpl implements ServicesClient {
             regionConfigurationRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This API provides configuration details specific to given region/location at Resource group level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration response specific to a region along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RegionConfigurationResponseInner> regionConfigurationByResourceGroupWithResponse(
         String resourceGroupName, String location, RegionConfigurationRequest regionConfigurationRequest,
@@ -617,17 +520,7 @@ public final class ServicesClientImpl implements ServicesClient {
             regionConfigurationRequest, context);
     }
 
-    /**
-     * This API provides configuration details specific to given region/location at Resource group level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration response specific to a region.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegionConfigurationResponseInner regionConfigurationByResourceGroup(String resourceGroupName,
         String location, RegionConfigurationRequest regionConfigurationRequest) {
@@ -677,18 +570,7 @@ public final class ServicesClientImpl implements ServicesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This method does all necessary pre-job creation validation under resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param validationRequest Inputs of the customer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidationResponseInner> validateInputsByResourceGroupWithResponse(String resourceGroupName,
         String location, ValidationRequest validationRequest, Context context) {
@@ -699,17 +581,7 @@ public final class ServicesClientImpl implements ServicesClient {
             context);
     }
 
-    /**
-     * This method does all necessary pre-job creation validation under resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param validationRequest Inputs of the customer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidationResponseInner validateInputsByResourceGroup(String resourceGroupName, String location,
         ValidationRequest validationRequest) {
@@ -750,11 +622,7 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SkuInformationInner> listAvailableSkusByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AvailableSkusResult> res = service.listAvailableSkusByResourceGroupNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAvailableSkusByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

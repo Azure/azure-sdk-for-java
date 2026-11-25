@@ -176,10 +176,7 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
     }
 
     public JobResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJobs()
-            .create(resourceGroupName, jobName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public JobResource create(Context context) {
@@ -201,10 +198,7 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
     }
 
     public JobResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJobs()
-            .update(resourceGroupName, jobName, updateJobResourceUpdateParameter, updateIfMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public JobResource apply(Context context) {
@@ -226,12 +220,7 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
     }
 
     public JobResource refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getJobs()
-            .getByResourceGroupWithResponse(resourceGroupName, jobName, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public JobResource refresh(Context context) {

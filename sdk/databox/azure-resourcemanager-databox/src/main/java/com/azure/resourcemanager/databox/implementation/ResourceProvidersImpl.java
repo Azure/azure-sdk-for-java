@@ -30,7 +30,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
     }
 
     public void mitigate(String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest) {
-        this.serviceClient().mitigate(jobName, resourceGroupName, mitigateJobRequest);
+        this.mitigateWithResponse(jobName, resourceGroupName, mitigateJobRequest, Context.NONE);
     }
 
     private ResourceProvidersClient serviceClient() {

@@ -119,19 +119,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Request to mitigate for a given job.
-     * 
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mitigateJobRequest Mitigation Request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> mitigateWithResponse(String jobName, String resourceGroupName,
         MitigateJobRequest mitigateJobRequest, Context context) {
@@ -140,17 +128,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             this.client.getSubscriptionId(), resourceGroupName, jobName, contentType, mitigateJobRequest, context);
     }
 
-    /**
-     * Request to mitigate for a given job.
-     * 
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     * 24 characters in length and use any alphanumeric and underscore only.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mitigateJobRequest Mitigation Request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void mitigate(String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest) {
         mitigateWithResponse(jobName, resourceGroupName, mitigateJobRequest, Context.NONE);

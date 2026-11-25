@@ -91,9 +91,7 @@ public final class ServicesImpl implements Services {
 
     public PagedIterable<SkuInformation> listAvailableSkusByResourceGroup(String resourceGroupName, String location,
         AvailableSkuRequest availableSkuRequest) {
-        PagedIterable<SkuInformationInner> inner
-            = this.serviceClient().listAvailableSkusByResourceGroup(resourceGroupName, location, availableSkuRequest);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuInformationImpl(inner1, this.manager()));
+        return this.listAvailableSkusByResourceGroup(resourceGroupName, location, availableSkuRequest, Context.NONE);
     }
 
     public PagedIterable<SkuInformation> listAvailableSkusByResourceGroup(String resourceGroupName, String location,

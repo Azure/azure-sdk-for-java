@@ -51,7 +51,7 @@ public final class JobsImpl implements Jobs {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String jobName) {
-        this.serviceClient().delete(resourceGroupName, jobName);
+        this.delete(resourceGroupName, jobName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String jobName, Context context) {
@@ -104,13 +104,11 @@ public final class JobsImpl implements Jobs {
     }
 
     public void cancel(String resourceGroupName, String jobName, CancellationReason cancellationReason) {
-        this.serviceClient().cancel(resourceGroupName, jobName, cancellationReason);
+        this.cancelWithResponse(resourceGroupName, jobName, cancellationReason, Context.NONE);
     }
 
     public PagedIterable<UnencryptedCredentials> listCredentials(String resourceGroupName, String jobName) {
-        PagedIterable<UnencryptedCredentialsInner> inner
-            = this.serviceClient().listCredentials(resourceGroupName, jobName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new UnencryptedCredentialsImpl(inner1, this.manager()));
+        return this.listCredentials(resourceGroupName, jobName, Context.NONE);
     }
 
     public PagedIterable<UnencryptedCredentials> listCredentials(String resourceGroupName, String jobName,
@@ -128,79 +126,35 @@ public final class JobsImpl implements Jobs {
 
     public void markDevicesShipped(String jobName, String resourceGroupName,
         MarkDevicesShippedRequest markDevicesShippedRequest) {
-        this.serviceClient().markDevicesShipped(jobName, resourceGroupName, markDevicesShippedRequest);
+        this.markDevicesShippedWithResponse(jobName, resourceGroupName, markDevicesShippedRequest, Context.NONE);
     }
 
     public JobResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String jobName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}",
-            "jobName");
-        if (jobName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
-        }
         String localExpand = null;
-        return this.getByResourceGroupWithResponse(resourceGroupName, jobName, localExpand, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, localExpand, Context.NONE).getValue();
     }
 
     public Response<JobResource> getByIdWithResponse(String id, String expand, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String jobName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String jobName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}",
-            "jobName");
-        if (jobName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
-        }
+            "jobName", "jobs", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, jobName, expand, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String jobName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}",
-            "jobName");
-        if (jobName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
-        }
-        this.delete(resourceGroupName, jobName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String jobName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String jobName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}",
-            "jobName");
-        if (jobName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
-        }
+            "jobName", "jobs", LOGGER);
         this.delete(resourceGroupName, jobName, context);
     }
 
