@@ -5,20 +5,31 @@ package com.azure.messaging.webpubsub.chat;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.Context;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -160,6 +171,128 @@ public class WebPubSubChatServiceClientBuilderTests {
                 .buildClient());
         assertThrows(IllegalStateException.class,
             () -> new WebPubSubChatServiceClientBuilder().endpoint(ENDPOINT).hub("chat").buildClient());
+    }
+
+    @ParameterizedTest
+    @MethodSource("pathSegments")
+    public void validatesPathSegmentsBeforeTransport(String parameter, String value, boolean customPipeline,
+        boolean async, boolean invalid) {
+        AtomicReference<HttpRequest> sentRequest = new AtomicReference<>();
+        HttpClient transport = new HttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                assertTrue(async);
+                return Mono.defer(() -> {
+                    sentRequest.set(request);
+                    return Mono.just(new MockHttpResponse(request, 404));
+                });
+            }
+
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                assertTrue(!async);
+                sentRequest.set(request);
+                return new MockHttpResponse(request, 404);
+            }
+        };
+        WebPubSubChatServiceClientBuilder builder
+            = new WebPubSubChatServiceClientBuilder().endpoint(ENDPOINT).hub("chat");
+        if (customPipeline) {
+            HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(transport)
+                .policies(
+                    new AddHeadersPolicy(
+                        new HttpHeaders().set("custom-policy", "first").set("first-policy", "preserved")),
+                    new AddHeadersPolicy(new HttpHeaders().set("custom-policy", "second")))
+                .build();
+            builder.pipeline(pipeline);
+        } else {
+            builder.credential(new MockTokenCredential()).httpClient(transport);
+        }
+        Class<? extends RuntimeException> exception
+            = invalid ? IllegalArgumentException.class : ResourceNotFoundException.class;
+        if (async) {
+            WebPubSubChatServiceAsyncClient client = builder.buildAsyncClient();
+            assertThrows(exception, () -> getAsync(client, parameter, value).block());
+        } else {
+            WebPubSubChatServiceClient client = builder.buildClient();
+            assertThrows(exception, () -> getSync(client, parameter, value));
+        }
+        if (invalid) {
+            assertNull(sentRequest.get());
+        } else {
+            assertNotNull(sentRequest.get());
+            assertTrue(sentRequest.get().getUrl().getPath().endsWith("/" + value.replace("%", "%25")));
+            if (customPipeline) {
+                assertEquals("second", sentRequest.get().getHeaders().getValue("custom-policy"));
+                assertEquals("preserved", sentRequest.get().getHeaders().getValue("first-policy"));
+            }
+        }
+    }
+
+    private static Stream<Arguments> pathSegments() {
+        return Stream.of("userId", "roomId", "topicId", "conversationId", "roleName")
+            .flatMap(
+                parameter -> Stream.of(false, true)
+                    .flatMap(
+                        custom -> Stream.of(false, true)
+                            .flatMap(async -> Stream.concat(
+                                Stream
+                                    .of(".", "..", "%2e", "%2E", "%2e%2e", "%2E%2e", ".%2e", "%2E.", "%252e",
+                                        "%252e%2e")
+                                    .map(value -> Arguments.of(parameter, value, custom, async, true)),
+                                Stream
+                                    .of("...", "alice.smith", "c.room.default", "room.reader", ".leading", "trailing.",
+                                        "part%2ename", "%2e%2e%2e")
+                                    .map(value -> Arguments.of(parameter, value, custom, async, false))))));
+    }
+
+    private static void getSync(WebPubSubChatServiceClient client, String parameter, String value) {
+        switch (parameter) {
+            case "userId":
+                client.getUser(value);
+                break;
+
+            case "roomId":
+                client.getRoomWithResponse(value, new RequestOptions());
+                break;
+
+            case "topicId":
+                client.getTopic("room", value);
+                break;
+
+            case "conversationId":
+                client.getConversationWithResponse(value, new RequestOptions());
+                break;
+
+            case "roleName":
+                client.getRole(value);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unknown parameter: " + parameter);
+        }
+    }
+
+    private static Mono<?> getAsync(WebPubSubChatServiceAsyncClient client, String parameter, String value) {
+        switch (parameter) {
+            case "userId":
+                return client.getUser(value);
+
+            case "roomId":
+                return client.getRoomWithResponse(value, new RequestOptions());
+
+            case "topicId":
+                return client.getTopic("room", value);
+
+            case "conversationId":
+                return client.getConversationWithResponse(value, new RequestOptions());
+
+            case "roleName":
+                return client.getRole(value);
+
+            default:
+                throw new IllegalArgumentException("Unknown parameter: " + parameter);
+        }
     }
 
     private static WebPubSubChatServiceClient createClient(AzureKeyCredential credential,

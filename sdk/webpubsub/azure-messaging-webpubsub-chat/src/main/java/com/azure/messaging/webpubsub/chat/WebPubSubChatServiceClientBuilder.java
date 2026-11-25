@@ -18,6 +18,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
@@ -32,12 +34,14 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.messaging.webpubsub.chat.implementation.WebPubSubChatServiceClientImpl;
+import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -283,15 +287,38 @@ public final class WebPubSubChatServiceClientBuilder implements HttpTrait<WebPub
      *
      * @return an instance of WebPubSubChatServiceClientImpl.
      */
-    @Generated
     private WebPubSubChatServiceClientImpl buildInnerClient() {
         this.validateClient();
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        HttpPipeline localPipeline = (pipeline != null) ? withPathValidation(pipeline) : createHttpPipeline();
         WebPubSubChatServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : WebPubSubChatServiceVersion.getLatest();
         WebPubSubChatServiceClientImpl client = new WebPubSubChatServiceClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, this.hub, localServiceVersion);
         return client;
+    }
+
+    private HttpPipeline withPathValidation(HttpPipeline pipeline) {
+        // Delegate to the original pipeline without reinitializing its policies or tracing configuration.
+        HttpClient pipelineTransport = new HttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return pipeline.send(request);
+            }
+
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request, Context context) {
+                return pipeline.send(request, context);
+            }
+
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                return pipeline.sendSync(request, context);
+            }
+        };
+        return new HttpPipelineBuilder().policies(new PathSegmentValidationPolicy())
+            .httpClient(pipelineTransport)
+            .tracer(pipeline.getTracer())
+            .build();
     }
 
     // Not marked @Generated so partial-update preserves the custom hub validation.
@@ -310,6 +337,7 @@ public final class WebPubSubChatServiceClientBuilder implements HttpTrait<WebPub
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
+        policies.add(new PathSegmentValidationPolicy());
         String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
         String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);

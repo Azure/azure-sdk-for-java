@@ -1,14 +1,10 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for service API version `2026-11-01`, now the default service version.
 
 ## 1.0.0-beta.2 (2026-11-12)
 
