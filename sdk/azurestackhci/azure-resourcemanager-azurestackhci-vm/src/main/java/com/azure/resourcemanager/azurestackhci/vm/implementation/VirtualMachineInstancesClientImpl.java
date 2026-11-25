@@ -1292,10 +1292,7 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> powerOffWithResponse(String resourceUri, PowerOffVirtualMachineOptions body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.powerOffSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, contentType,
-            accept, body, Context.NONE);
+        return powerOffWithResponse(resourceUri, body, Context.NONE);
     }
 
     /**
@@ -1337,35 +1334,14 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
             this.client.getContext());
     }
 
-    /**
-     * The operation to power off a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginPowerOff(String resourceUri, PowerOffVirtualMachineOptions body) {
-        Response<BinaryData> response = powerOffWithResponse(resourceUri, body);
-        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
-            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
+        return beginPowerOff(resourceUri, body, Context.NONE);
     }
 
-    /**
-     * The operation to power off a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginPowerOff(String resourceUri, PowerOffVirtualMachineOptions body, Context context) {
@@ -1389,36 +1365,17 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
         return beginPowerOffAsync(resourceUri, body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to power off a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner powerOff(String resourceUri, PowerOffVirtualMachineOptions body) {
-        return beginPowerOff(resourceUri, body).getFinalResult();
+        return powerOff(resourceUri, body, Context.NONE);
     }
 
-    /**
-     * The operation to power off a virtual machine instance.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner powerOff(String resourceUri, PowerOffVirtualMachineOptions body,
         Context context) {
-        return beginPowerOff(resourceUri, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginPowerOff(resourceUri, body, context));
     }
 
     /**

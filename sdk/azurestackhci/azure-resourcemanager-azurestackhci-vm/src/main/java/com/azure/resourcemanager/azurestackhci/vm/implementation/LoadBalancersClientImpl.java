@@ -254,17 +254,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to get a loadBalancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName Name of the load balancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LoadBalancer resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LoadBalancerInner> getByResourceGroupWithResponse(String resourceGroupName, String loadBalancerName,
         Context context) {
@@ -273,16 +263,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             this.client.getSubscriptionId(), resourceGroupName, loadBalancerName, accept, context);
     }
 
-    /**
-     * The operation to get a loadBalancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName Name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LoadBalancer resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancerInner getByResourceGroup(String resourceGroupName, String loadBalancerName) {
         return getByResourceGroupWithResponse(resourceGroupName, loadBalancerName, Context.NONE).getValue();
@@ -328,11 +309,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String loadBalancerName,
         LoadBalancerInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, loadBalancerName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, loadBalancerName, resource, Context.NONE);
     }
 
     /**
@@ -379,39 +356,14 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             LoadBalancerInner.class, LoadBalancerInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to create or update a loadBalancer. Please note some properties can be set only during LoadBalancer
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName Name of the load balancer.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the LoadBalancer resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(String resourceGroupName,
         String loadBalancerName, LoadBalancerInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, loadBalancerName, resource);
-        return this.client.<LoadBalancerInner, LoadBalancerInner>getLroResult(response, LoadBalancerInner.class,
-            LoadBalancerInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, loadBalancerName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a loadBalancer. Please note some properties can be set only during LoadBalancer
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName Name of the load balancer.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the LoadBalancer resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(String resourceGroupName,
         String loadBalancerName, LoadBalancerInner resource, Context context) {
@@ -440,41 +392,19 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a loadBalancer. Please note some properties can be set only during LoadBalancer
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName Name of the load balancer.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LoadBalancer resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancerInner createOrUpdate(String resourceGroupName, String loadBalancerName,
         LoadBalancerInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, loadBalancerName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, loadBalancerName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a loadBalancer. Please note some properties can be set only during LoadBalancer
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName Name of the load balancer.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LoadBalancer resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancerInner createOrUpdate(String resourceGroupName, String loadBalancerName,
         LoadBalancerInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, loadBalancerName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, loadBalancerName, resource, context));
     }
 
     /**
@@ -515,11 +445,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateTagsWithResponse(String resourceGroupName, String loadBalancerName,
         LoadBalancerTagsUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateTagsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, loadBalancerName, contentType, accept, properties,
-            Context.NONE);
+        return updateTagsWithResponse(resourceGroupName, loadBalancerName, properties, Context.NONE);
     }
 
     /**
@@ -564,37 +490,14 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             LoadBalancerInner.class, LoadBalancerInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates a loadBalancer tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName Name of the load balancer.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the LoadBalancer resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginUpdateTags(String resourceGroupName,
         String loadBalancerName, LoadBalancerTagsUpdate properties) {
-        Response<BinaryData> response = updateTagsWithResponse(resourceGroupName, loadBalancerName, properties);
-        return this.client.<LoadBalancerInner, LoadBalancerInner>getLroResult(response, LoadBalancerInner.class,
-            LoadBalancerInner.class, Context.NONE);
+        return beginUpdateTags(resourceGroupName, loadBalancerName, properties, Context.NONE);
     }
 
-    /**
-     * Updates a loadBalancer tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName Name of the load balancer.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the LoadBalancer resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginUpdateTags(String resourceGroupName,
         String loadBalancerName, LoadBalancerTagsUpdate properties, Context context) {
@@ -622,39 +525,19 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a loadBalancer tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName Name of the load balancer.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LoadBalancer resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancerInner updateTags(String resourceGroupName, String loadBalancerName,
         LoadBalancerTagsUpdate properties) {
-        return beginUpdateTags(resourceGroupName, loadBalancerName, properties).getFinalResult();
+        return updateTags(resourceGroupName, loadBalancerName, properties, Context.NONE);
     }
 
-    /**
-     * Updates a loadBalancer tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName Name of the load balancer.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LoadBalancer resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancerInner updateTags(String resourceGroupName, String loadBalancerName,
         LoadBalancerTagsUpdate properties, Context context) {
-        return beginUpdateTags(resourceGroupName, loadBalancerName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdateTags(resourceGroupName, loadBalancerName, properties, context));
     }
 
     /**
@@ -688,8 +571,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String loadBalancerName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, loadBalancerName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, loadBalancerName, Context.NONE);
     }
 
     /**
@@ -727,33 +609,13 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a loadBalancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName Name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadBalancerName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, loadBalancerName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, loadBalancerName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a loadBalancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName Name of the load balancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadBalancerName,
         Context context) {
@@ -777,33 +639,16 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a loadBalancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName Name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String loadBalancerName) {
-        beginDelete(resourceGroupName, loadBalancerName).getFinalResult();
+        delete(resourceGroupName, loadBalancerName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a loadBalancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName Name of the load balancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String loadBalancerName, Context context) {
-        beginDelete(resourceGroupName, loadBalancerName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, loadBalancerName, context));
     }
 
     /**
@@ -856,11 +701,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LoadBalancerInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<LoadBalancerListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -883,33 +724,13 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the loadBalancers in the specified resource group. Use the nextLink property in the response to get
-     * the next page of LoadBalancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LoadBalancer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancerInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all of the loadBalancers in the specified resource group. Use the nextLink property in the response to get
-     * the next page of LoadBalancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LoadBalancer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancerInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -959,11 +780,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LoadBalancerInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<LoadBalancerListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -985,29 +802,13 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the loadBalancers in the specified subscription. Use the nextLink property in the response to get
-     * the next page of LoadBalancer.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LoadBalancer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancerInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listAllNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all of the loadBalancers in the specified subscription. Use the nextLink property in the response to get
-     * the next page of LoadBalancer.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LoadBalancer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancerInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listAllNextSinglePage(nextLink, context));
@@ -1045,11 +846,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LoadBalancerInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LoadBalancerListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1102,11 +899,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LoadBalancerInner> listAllNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LoadBalancerListResult> res
-            = service.listAllNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

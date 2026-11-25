@@ -70,10 +70,7 @@ public final class VirtualNetworkSubnetImpl
     }
 
     public VirtualNetworkSubnet create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworkSubnets()
-            .createOrUpdate(resourceGroupName, virtualNetworkName, subnetName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VirtualNetworkSubnet create(Context context) {
@@ -96,10 +93,7 @@ public final class VirtualNetworkSubnetImpl
     }
 
     public VirtualNetworkSubnet apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworkSubnets()
-            .update(resourceGroupName, virtualNetworkName, subnetName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VirtualNetworkSubnet apply(Context context) {
@@ -125,11 +119,7 @@ public final class VirtualNetworkSubnetImpl
     }
 
     public VirtualNetworkSubnet refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworkSubnets()
-            .getWithResponse(resourceGroupName, virtualNetworkName, subnetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VirtualNetworkSubnet refresh(Context context) {

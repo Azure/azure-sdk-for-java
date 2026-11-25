@@ -132,12 +132,7 @@ public final class VirtualMachineInstancesImpl implements VirtualMachineInstance
     }
 
     public OperationStatusResult powerOff(String resourceUri, PowerOffVirtualMachineOptions body) {
-        OperationStatusResultInner inner = this.serviceClient().powerOff(resourceUri, body);
-        if (inner != null) {
-            return new OperationStatusResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.powerOff(resourceUri, body, Context.NONE);
     }
 
     public OperationStatusResult powerOff(String resourceUri, PowerOffVirtualMachineOptions body, Context context) {

@@ -89,10 +89,7 @@ public final class LoadBalancerImpl implements LoadBalancer, LoadBalancer.Defini
     }
 
     public LoadBalancer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLoadBalancers()
-            .createOrUpdate(resourceGroupName, loadBalancerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LoadBalancer create(Context context) {
@@ -114,10 +111,7 @@ public final class LoadBalancerImpl implements LoadBalancer, LoadBalancer.Defini
     }
 
     public LoadBalancer apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLoadBalancers()
-            .updateTags(resourceGroupName, loadBalancerName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LoadBalancer apply(Context context) {
@@ -140,11 +134,7 @@ public final class LoadBalancerImpl implements LoadBalancer, LoadBalancer.Defini
     }
 
     public LoadBalancer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLoadBalancers()
-            .getByResourceGroupWithResponse(resourceGroupName, loadBalancerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LoadBalancer refresh(Context context) {

@@ -45,7 +45,7 @@ public final class InboundRulesImpl implements InboundRules {
     }
 
     public void delete(String resourceGroupName, String natGatewayName, String inboundRuleName) {
-        this.serviceClient().delete(resourceGroupName, natGatewayName, inboundRuleName);
+        this.delete(resourceGroupName, natGatewayName, inboundRuleName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String natGatewayName, String inboundRuleName, Context context) {
@@ -53,9 +53,7 @@ public final class InboundRulesImpl implements InboundRules {
     }
 
     public PagedIterable<InboundRule> listByNatGateway(String resourceGroupName, String natGatewayName) {
-        PagedIterable<InboundRuleInner> inner
-            = this.serviceClient().listByNatGateway(resourceGroupName, natGatewayName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new InboundRuleImpl(inner1, this.manager()));
+        return this.listByNatGateway(resourceGroupName, natGatewayName, Context.NONE);
     }
 
     public PagedIterable<InboundRule> listByNatGateway(String resourceGroupName, String natGatewayName,
@@ -66,102 +64,36 @@ public final class InboundRulesImpl implements InboundRules {
     }
 
     public InboundRule getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/natGateways/{natGatewayName}/inboundRules/{inboundRuleName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String natGatewayName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/natGateways/{natGatewayName}/inboundRules/{inboundRuleName}",
-            "natGatewayName");
-        if (natGatewayName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'natGateways'.", id)));
-        }
-        String inboundRuleName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/natGateways/{natGatewayName}/inboundRules/{inboundRuleName}",
-            "inboundRuleName");
-        if (inboundRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'inboundRules'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, natGatewayName, inboundRuleName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<InboundRule> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/natGateways/{natGatewayName}/inboundRules/{inboundRuleName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String natGatewayName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String natGatewayName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/natGateways/{natGatewayName}/inboundRules/{inboundRuleName}",
-            "natGatewayName");
-        if (natGatewayName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'natGateways'.", id)));
-        }
-        String inboundRuleName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "natGatewayName", "natGateways", LOGGER);
+        String inboundRuleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/natGateways/{natGatewayName}/inboundRules/{inboundRuleName}",
-            "inboundRuleName");
-        if (inboundRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'inboundRules'.", id)));
-        }
+            "inboundRuleName", "inboundRules", LOGGER);
         return this.getWithResponse(resourceGroupName, natGatewayName, inboundRuleName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/natGateways/{natGatewayName}/inboundRules/{inboundRuleName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String natGatewayName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/natGateways/{natGatewayName}/inboundRules/{inboundRuleName}",
-            "natGatewayName");
-        if (natGatewayName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'natGateways'.", id)));
-        }
-        String inboundRuleName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/natGateways/{natGatewayName}/inboundRules/{inboundRuleName}",
-            "inboundRuleName");
-        if (inboundRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'inboundRules'.", id)));
-        }
-        this.delete(resourceGroupName, natGatewayName, inboundRuleName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/natGateways/{natGatewayName}/inboundRules/{inboundRuleName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String natGatewayName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String natGatewayName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/natGateways/{natGatewayName}/inboundRules/{inboundRuleName}",
-            "natGatewayName");
-        if (natGatewayName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'natGateways'.", id)));
-        }
-        String inboundRuleName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "natGatewayName", "natGateways", LOGGER);
+        String inboundRuleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/natGateways/{natGatewayName}/inboundRules/{inboundRuleName}",
-            "inboundRuleName");
-        if (inboundRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'inboundRules'.", id)));
-        }
+            "inboundRuleName", "inboundRules", LOGGER);
         this.delete(resourceGroupName, natGatewayName, inboundRuleName, context);
     }
 

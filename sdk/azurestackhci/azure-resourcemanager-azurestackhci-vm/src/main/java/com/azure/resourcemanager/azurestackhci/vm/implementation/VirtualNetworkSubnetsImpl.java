@@ -45,7 +45,7 @@ public final class VirtualNetworkSubnetsImpl implements VirtualNetworkSubnets {
     }
 
     public void delete(String resourceGroupName, String virtualNetworkName, String subnetName) {
-        this.serviceClient().delete(resourceGroupName, virtualNetworkName, subnetName);
+        this.delete(resourceGroupName, virtualNetworkName, subnetName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
@@ -54,9 +54,7 @@ public final class VirtualNetworkSubnetsImpl implements VirtualNetworkSubnets {
 
     public PagedIterable<VirtualNetworkSubnet> listByVirtualNetwork(String resourceGroupName,
         String virtualNetworkName) {
-        PagedIterable<VirtualNetworkSubnetInner> inner
-            = this.serviceClient().listByVirtualNetwork(resourceGroupName, virtualNetworkName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualNetworkSubnetImpl(inner1, this.manager()));
+        return this.listByVirtualNetwork(resourceGroupName, virtualNetworkName, Context.NONE);
     }
 
     public PagedIterable<VirtualNetworkSubnet> listByVirtualNetwork(String resourceGroupName, String virtualNetworkName,
@@ -67,102 +65,36 @@ public final class VirtualNetworkSubnetsImpl implements VirtualNetworkSubnets {
     }
 
     public VirtualNetworkSubnet getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualNetworkName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}",
-            "virtualNetworkName");
-        if (virtualNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
-        }
-        String subnetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}",
-            "subnetName");
-        if (subnetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'subnets'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, virtualNetworkName, subnetName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<VirtualNetworkSubnet> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualNetworkName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String virtualNetworkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}",
-            "virtualNetworkName");
-        if (virtualNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
-        }
-        String subnetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "virtualNetworkName", "virtualNetworks", LOGGER);
+        String subnetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}",
-            "subnetName");
-        if (subnetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'subnets'.", id)));
-        }
+            "subnetName", "subnets", LOGGER);
         return this.getWithResponse(resourceGroupName, virtualNetworkName, subnetName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualNetworkName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}",
-            "virtualNetworkName");
-        if (virtualNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
-        }
-        String subnetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}",
-            "subnetName");
-        if (subnetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'subnets'.", id)));
-        }
-        this.delete(resourceGroupName, virtualNetworkName, subnetName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualNetworkName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String virtualNetworkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}",
-            "virtualNetworkName");
-        if (virtualNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
-        }
-        String subnetName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "virtualNetworkName", "virtualNetworks", LOGGER);
+        String subnetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}",
-            "subnetName");
-        if (subnetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'subnets'.", id)));
-        }
+            "subnetName", "subnets", LOGGER);
         this.delete(resourceGroupName, virtualNetworkName, subnetName, context);
     }
 

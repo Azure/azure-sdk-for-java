@@ -89,10 +89,7 @@ public final class PublicIPAddressImpl implements PublicIPAddress, PublicIPAddre
     }
 
     public PublicIPAddress create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPublicIPAddresses()
-            .createOrUpdate(resourceGroupName, publicIPAddressName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PublicIPAddress create(Context context) {
@@ -114,10 +111,7 @@ public final class PublicIPAddressImpl implements PublicIPAddress, PublicIPAddre
     }
 
     public PublicIPAddress apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPublicIPAddresses()
-            .updateTags(resourceGroupName, publicIPAddressName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PublicIPAddress apply(Context context) {
@@ -140,11 +134,7 @@ public final class PublicIPAddressImpl implements PublicIPAddress, PublicIPAddre
     }
 
     public PublicIPAddress refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPublicIPAddresses()
-            .getByResourceGroupWithResponse(resourceGroupName, publicIPAddressName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PublicIPAddress refresh(Context context) {

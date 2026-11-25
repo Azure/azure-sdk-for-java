@@ -65,10 +65,7 @@ public final class InboundRuleImpl implements InboundRule, InboundRule.Definitio
     }
 
     public InboundRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInboundRules()
-            .createOrUpdate(resourceGroupName, natGatewayName, inboundRuleName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public InboundRule create(Context context) {
@@ -89,10 +86,7 @@ public final class InboundRuleImpl implements InboundRule, InboundRule.Definitio
     }
 
     public InboundRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInboundRules()
-            .createOrUpdate(resourceGroupName, natGatewayName, inboundRuleName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public InboundRule apply(Context context) {
@@ -118,11 +112,7 @@ public final class InboundRuleImpl implements InboundRule, InboundRule.Definitio
     }
 
     public InboundRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInboundRules()
-            .getWithResponse(resourceGroupName, natGatewayName, inboundRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public InboundRule refresh(Context context) {

@@ -246,17 +246,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param snapshotName Name of the snapshot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a snapshot along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SnapshotInner> getByResourceGroupWithResponse(String resourceGroupName, String snapshotName,
         Context context) {
@@ -265,16 +255,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             this.client.getSubscriptionId(), resourceGroupName, snapshotName, accept, context);
     }
 
-    /**
-     * Gets a snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param snapshotName Name of the snapshot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a snapshot.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SnapshotInner getByResourceGroup(String resourceGroupName, String snapshotName) {
         return getByResourceGroupWithResponse(resourceGroupName, snapshotName, Context.NONE).getValue();
@@ -319,11 +300,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String snapshotName,
         SnapshotInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, snapshotName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, snapshotName, resource, Context.NONE);
     }
 
     /**
@@ -369,39 +346,14 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             SnapshotInner.class, SnapshotInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to create or update a snapshot. Please note some properties can be set only during snapshot
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param snapshotName Name of the snapshot.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the snapshot resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreateOrUpdate(String resourceGroupName,
         String snapshotName, SnapshotInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, snapshotName, resource);
-        return this.client.<SnapshotInner, SnapshotInner>getLroResult(response, SnapshotInner.class,
-            SnapshotInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, snapshotName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a snapshot. Please note some properties can be set only during snapshot
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param snapshotName Name of the snapshot.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the snapshot resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreateOrUpdate(String resourceGroupName,
         String snapshotName, SnapshotInner resource, Context context) {
@@ -429,40 +381,18 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a snapshot. Please note some properties can be set only during snapshot
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param snapshotName Name of the snapshot.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the snapshot resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SnapshotInner createOrUpdate(String resourceGroupName, String snapshotName, SnapshotInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, snapshotName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, snapshotName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a snapshot. Please note some properties can be set only during snapshot
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param snapshotName Name of the snapshot.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the snapshot resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SnapshotInner createOrUpdate(String resourceGroupName, String snapshotName, SnapshotInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, snapshotName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, snapshotName, resource, context));
     }
 
     /**
@@ -500,11 +430,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String snapshotName,
         SnapshotTagsUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, snapshotName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, snapshotName, properties, Context.NONE);
     }
 
     /**
@@ -547,37 +473,14 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             SnapshotInner.class, SnapshotInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to update a snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param snapshotName Name of the snapshot.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the snapshot resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdate(String resourceGroupName,
         String snapshotName, SnapshotTagsUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, snapshotName, properties);
-        return this.client.<SnapshotInner, SnapshotInner>getLroResult(response, SnapshotInner.class,
-            SnapshotInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, snapshotName, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update a snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param snapshotName Name of the snapshot.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the snapshot resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdate(String resourceGroupName,
         String snapshotName, SnapshotTagsUpdate properties, Context context) {
@@ -604,38 +507,17 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update a snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param snapshotName Name of the snapshot.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the snapshot resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SnapshotInner update(String resourceGroupName, String snapshotName, SnapshotTagsUpdate properties) {
-        return beginUpdate(resourceGroupName, snapshotName, properties).getFinalResult();
+        return update(resourceGroupName, snapshotName, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update a snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param snapshotName Name of the snapshot.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the snapshot resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SnapshotInner update(String resourceGroupName, String snapshotName, SnapshotTagsUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, snapshotName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, snapshotName, properties, context));
     }
 
     /**
@@ -668,8 +550,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String snapshotName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, snapshotName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, snapshotName, Context.NONE);
     }
 
     /**
@@ -706,33 +587,13 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param snapshotName Name of the snapshot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String snapshotName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, snapshotName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, snapshotName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param snapshotName Name of the snapshot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String snapshotName,
         Context context) {
@@ -755,33 +616,16 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
         return beginDeleteAsync(resourceGroupName, snapshotName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param snapshotName Name of the snapshot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String snapshotName) {
-        beginDelete(resourceGroupName, snapshotName).getFinalResult();
+        delete(resourceGroupName, snapshotName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param snapshotName Name of the snapshot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String snapshotName, Context context) {
-        beginDelete(resourceGroupName, snapshotName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, snapshotName, context));
     }
 
     /**
@@ -834,11 +678,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SnapshotInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<SnapshotListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -861,33 +701,13 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the snapshots in the specified resource group. Use the nextLink property in the response to get the
-     * next page of snapshots.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Snapshot list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SnapshotInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all of the snapshots in the specified resource group. Use the nextLink property in the response to get the
-     * next page of snapshots.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Snapshot list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SnapshotInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -937,11 +757,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SnapshotInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<SnapshotListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -963,29 +779,13 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the snapshots in the specified subscription. Use the nextLink property in the response to get the
-     * next page of snapshots.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Snapshot list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SnapshotInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listAllNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all of the snapshots in the specified subscription. Use the nextLink property in the response to get the
-     * next page of snapshots.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Snapshot list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SnapshotInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listAllNextSinglePage(nextLink, context));
@@ -1023,11 +823,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SnapshotInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SnapshotListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1080,11 +876,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SnapshotInner> listAllNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SnapshotListResult> res
-            = service.listAllNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

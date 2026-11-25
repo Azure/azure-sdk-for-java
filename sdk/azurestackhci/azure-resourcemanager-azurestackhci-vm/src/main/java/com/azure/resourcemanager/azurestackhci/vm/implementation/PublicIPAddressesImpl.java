@@ -45,7 +45,7 @@ public final class PublicIPAddressesImpl implements PublicIPAddresses {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String publicIPAddressName) {
-        this.serviceClient().delete(resourceGroupName, publicIPAddressName);
+        this.delete(resourceGroupName, publicIPAddressName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String publicIPAddressName, Context context) {
@@ -53,8 +53,7 @@ public final class PublicIPAddressesImpl implements PublicIPAddresses {
     }
 
     public PagedIterable<PublicIPAddress> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<PublicIPAddressInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PublicIPAddressImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<PublicIPAddress> listByResourceGroup(String resourceGroupName, Context context) {
@@ -64,8 +63,7 @@ public final class PublicIPAddressesImpl implements PublicIPAddresses {
     }
 
     public PagedIterable<PublicIPAddress> list() {
-        PagedIterable<PublicIPAddressInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PublicIPAddressImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<PublicIPAddress> list(Context context) {
@@ -74,74 +72,30 @@ public final class PublicIPAddressesImpl implements PublicIPAddresses {
     }
 
     public PublicIPAddress getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/publicIPAddresses/{publicIPAddressName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String publicIPAddressName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/publicIPAddresses/{publicIPAddressName}",
-            "publicIPAddressName");
-        if (publicIPAddressName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'publicIPAddresses'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, publicIPAddressName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<PublicIPAddress> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/publicIPAddresses/{publicIPAddressName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String publicIPAddressName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String publicIPAddressName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/publicIPAddresses/{publicIPAddressName}",
-            "publicIPAddressName");
-        if (publicIPAddressName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'publicIPAddresses'.", id)));
-        }
+            "publicIPAddressName", "publicIPAddresses", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, publicIPAddressName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/publicIPAddresses/{publicIPAddressName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String publicIPAddressName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/publicIPAddresses/{publicIPAddressName}",
-            "publicIPAddressName");
-        if (publicIPAddressName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'publicIPAddresses'.", id)));
-        }
-        this.delete(resourceGroupName, publicIPAddressName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/publicIPAddresses/{publicIPAddressName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String publicIPAddressName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String publicIPAddressName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/publicIPAddresses/{publicIPAddressName}",
-            "publicIPAddressName");
-        if (publicIPAddressName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'publicIPAddresses'.", id)));
-        }
+            "publicIPAddressName", "publicIPAddresses", LOGGER);
         this.delete(resourceGroupName, publicIPAddressName, context);
     }
 

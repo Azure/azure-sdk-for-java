@@ -250,17 +250,7 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to get a natGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName Name of the nat gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NatGateway resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NatGatewayInner> getByResourceGroupWithResponse(String resourceGroupName, String natGatewayName,
         Context context) {
@@ -269,16 +259,7 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
             this.client.getSubscriptionId(), resourceGroupName, natGatewayName, accept, context);
     }
 
-    /**
-     * The operation to get a natGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName Name of the nat gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NatGateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NatGatewayInner getByResourceGroup(String resourceGroupName, String natGatewayName) {
         return getByResourceGroupWithResponse(resourceGroupName, natGatewayName, Context.NONE).getValue();
@@ -323,11 +304,7 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String natGatewayName,
         NatGatewayInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, natGatewayName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, natGatewayName, resource, Context.NONE);
     }
 
     /**
@@ -373,39 +350,14 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
             NatGatewayInner.class, NatGatewayInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to create or update a natGateway. Please note some properties can be set only during NatGateway
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName Name of the nat gateway.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NatGateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NatGatewayInner>, NatGatewayInner> beginCreateOrUpdate(String resourceGroupName,
         String natGatewayName, NatGatewayInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, natGatewayName, resource);
-        return this.client.<NatGatewayInner, NatGatewayInner>getLroResult(response, NatGatewayInner.class,
-            NatGatewayInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, natGatewayName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a natGateway. Please note some properties can be set only during NatGateway
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName Name of the nat gateway.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NatGateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NatGatewayInner>, NatGatewayInner> beginCreateOrUpdate(String resourceGroupName,
         String natGatewayName, NatGatewayInner resource, Context context) {
@@ -434,40 +386,18 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a natGateway. Please note some properties can be set only during NatGateway
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName Name of the nat gateway.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NatGateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NatGatewayInner createOrUpdate(String resourceGroupName, String natGatewayName, NatGatewayInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, natGatewayName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, natGatewayName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a natGateway. Please note some properties can be set only during NatGateway
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName Name of the nat gateway.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NatGateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NatGatewayInner createOrUpdate(String resourceGroupName, String natGatewayName, NatGatewayInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, natGatewayName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, natGatewayName, resource, context));
     }
 
     /**
@@ -507,11 +437,7 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateTagsWithResponse(String resourceGroupName, String natGatewayName,
         NatGatewayTagsUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateTagsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, natGatewayName, contentType, accept, properties,
-            Context.NONE);
+        return updateTagsWithResponse(resourceGroupName, natGatewayName, properties, Context.NONE);
     }
 
     /**
@@ -556,37 +482,14 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
             NatGatewayInner.class, NatGatewayInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates a natGateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName Name of the nat gateway.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NatGateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NatGatewayInner>, NatGatewayInner> beginUpdateTags(String resourceGroupName,
         String natGatewayName, NatGatewayTagsUpdate properties) {
-        Response<BinaryData> response = updateTagsWithResponse(resourceGroupName, natGatewayName, properties);
-        return this.client.<NatGatewayInner, NatGatewayInner>getLroResult(response, NatGatewayInner.class,
-            NatGatewayInner.class, Context.NONE);
+        return beginUpdateTags(resourceGroupName, natGatewayName, properties, Context.NONE);
     }
 
-    /**
-     * Updates a natGateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName Name of the nat gateway.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NatGateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NatGatewayInner>, NatGatewayInner> beginUpdateTags(String resourceGroupName,
         String natGatewayName, NatGatewayTagsUpdate properties, Context context) {
@@ -613,39 +516,19 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a natGateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName Name of the nat gateway.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NatGateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NatGatewayInner updateTags(String resourceGroupName, String natGatewayName,
         NatGatewayTagsUpdate properties) {
-        return beginUpdateTags(resourceGroupName, natGatewayName, properties).getFinalResult();
+        return updateTags(resourceGroupName, natGatewayName, properties, Context.NONE);
     }
 
-    /**
-     * Updates a natGateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName Name of the nat gateway.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NatGateway resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NatGatewayInner updateTags(String resourceGroupName, String natGatewayName, NatGatewayTagsUpdate properties,
         Context context) {
-        return beginUpdateTags(resourceGroupName, natGatewayName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdateTags(resourceGroupName, natGatewayName, properties, context));
     }
 
     /**
@@ -678,8 +561,7 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String natGatewayName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, natGatewayName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, natGatewayName, Context.NONE);
     }
 
     /**
@@ -716,33 +598,13 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a natGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName Name of the nat gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String natGatewayName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, natGatewayName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, natGatewayName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a natGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName Name of the nat gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String natGatewayName,
         Context context) {
@@ -766,33 +628,16 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a natGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName Name of the nat gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String natGatewayName) {
-        beginDelete(resourceGroupName, natGatewayName).getFinalResult();
+        delete(resourceGroupName, natGatewayName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a natGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param natGatewayName Name of the nat gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String natGatewayName, Context context) {
-        beginDelete(resourceGroupName, natGatewayName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, natGatewayName, context));
     }
 
     /**
@@ -845,11 +690,7 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NatGatewayInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<NatGatewayListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -872,33 +713,13 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the natGateways in the specified resource group. Use the nextLink property in the response to get
-     * the next page of NatGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NatGateway list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NatGatewayInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all of the natGateways in the specified resource group. Use the nextLink property in the response to get
-     * the next page of NatGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NatGateway list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NatGatewayInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -948,11 +769,7 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NatGatewayInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<NatGatewayListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -974,29 +791,13 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the natGateways in the specified subscription. Use the nextLink property in the response to get the
-     * next page of NatGateway.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NatGateway list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NatGatewayInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listAllNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all of the natGateways in the specified subscription. Use the nextLink property in the response to get the
-     * next page of NatGateway.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NatGateway list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NatGatewayInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listAllNextSinglePage(nextLink, context));
@@ -1034,11 +835,7 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NatGatewayInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NatGatewayListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1091,11 +888,7 @@ public final class NatGatewaysClientImpl implements NatGatewaysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NatGatewayInner> listAllNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NatGatewayListResult> res
-            = service.listAllNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -254,17 +254,7 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to get a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIPAddressName Name of the public IP.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the publicIP resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PublicIPAddressInner> getByResourceGroupWithResponse(String resourceGroupName,
         String publicIPAddressName, Context context) {
@@ -273,16 +263,7 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
             this.client.getSubscriptionId(), resourceGroupName, publicIPAddressName, accept, context);
     }
 
-    /**
-     * The operation to get a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIPAddressName Name of the public IP.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the publicIP resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIPAddressInner getByResourceGroup(String resourceGroupName, String publicIPAddressName) {
         return getByResourceGroupWithResponse(resourceGroupName, publicIPAddressName, Context.NONE).getValue();
@@ -327,11 +308,7 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String publicIPAddressName,
         PublicIPAddressInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, publicIPAddressName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, publicIPAddressName, resource, Context.NONE);
     }
 
     /**
@@ -378,39 +355,14 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
             PublicIPAddressInner.class, PublicIPAddressInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to create or update a publicIPAddress. Please note some properties can be set only during PublicIP
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIPAddressName Name of the public IP.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the publicIP resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PublicIPAddressInner>, PublicIPAddressInner>
         beginCreateOrUpdate(String resourceGroupName, String publicIPAddressName, PublicIPAddressInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, publicIPAddressName, resource);
-        return this.client.<PublicIPAddressInner, PublicIPAddressInner>getLroResult(response,
-            PublicIPAddressInner.class, PublicIPAddressInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, publicIPAddressName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a publicIPAddress. Please note some properties can be set only during PublicIP
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIPAddressName Name of the public IP.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the publicIP resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PublicIPAddressInner>, PublicIPAddressInner> beginCreateOrUpdate(
         String resourceGroupName, String publicIPAddressName, PublicIPAddressInner resource, Context context) {
@@ -439,41 +391,19 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a publicIPAddress. Please note some properties can be set only during PublicIP
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIPAddressName Name of the public IP.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the publicIP resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIPAddressInner createOrUpdate(String resourceGroupName, String publicIPAddressName,
         PublicIPAddressInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, publicIPAddressName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, publicIPAddressName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a publicIPAddress. Please note some properties can be set only during PublicIP
-     * creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIPAddressName Name of the public IP.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the publicIP resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIPAddressInner createOrUpdate(String resourceGroupName, String publicIPAddressName,
         PublicIPAddressInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, publicIPAddressName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, publicIPAddressName, resource, context));
     }
 
     /**
@@ -513,11 +443,7 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateTagsWithResponse(String resourceGroupName, String publicIPAddressName,
         PublicIPAddressTagsUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateTagsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, publicIPAddressName, contentType, accept, properties,
-            Context.NONE);
+        return updateTagsWithResponse(resourceGroupName, publicIPAddressName, properties, Context.NONE);
     }
 
     /**
@@ -562,37 +488,14 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
             PublicIPAddressInner.class, PublicIPAddressInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates a publicIPAddress tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIPAddressName Name of the public IP.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the publicIP resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PublicIPAddressInner>, PublicIPAddressInner> beginUpdateTags(String resourceGroupName,
         String publicIPAddressName, PublicIPAddressTagsUpdate properties) {
-        Response<BinaryData> response = updateTagsWithResponse(resourceGroupName, publicIPAddressName, properties);
-        return this.client.<PublicIPAddressInner, PublicIPAddressInner>getLroResult(response,
-            PublicIPAddressInner.class, PublicIPAddressInner.class, Context.NONE);
+        return beginUpdateTags(resourceGroupName, publicIPAddressName, properties, Context.NONE);
     }
 
-    /**
-     * Updates a publicIPAddress tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIPAddressName Name of the public IP.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the publicIP resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PublicIPAddressInner>, PublicIPAddressInner> beginUpdateTags(String resourceGroupName,
         String publicIPAddressName, PublicIPAddressTagsUpdate properties, Context context) {
@@ -620,39 +523,19 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a publicIPAddress tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIPAddressName Name of the public IP.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the publicIP resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIPAddressInner updateTags(String resourceGroupName, String publicIPAddressName,
         PublicIPAddressTagsUpdate properties) {
-        return beginUpdateTags(resourceGroupName, publicIPAddressName, properties).getFinalResult();
+        return updateTags(resourceGroupName, publicIPAddressName, properties, Context.NONE);
     }
 
-    /**
-     * Updates a publicIPAddress tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIPAddressName Name of the public IP.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the publicIP resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicIPAddressInner updateTags(String resourceGroupName, String publicIPAddressName,
         PublicIPAddressTagsUpdate properties, Context context) {
-        return beginUpdateTags(resourceGroupName, publicIPAddressName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdateTags(resourceGroupName, publicIPAddressName, properties, context));
     }
 
     /**
@@ -686,8 +569,7 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String publicIPAddressName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, publicIPAddressName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, publicIPAddressName, Context.NONE);
     }
 
     /**
@@ -725,33 +607,13 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a publicIPAddresses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIPAddressName Name of the public IP.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String publicIPAddressName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, publicIPAddressName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, publicIPAddressName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a publicIPAddresses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIPAddressName Name of the public IP.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String publicIPAddressName,
         Context context) {
@@ -775,33 +637,16 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a publicIPAddresses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIPAddressName Name of the public IP.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String publicIPAddressName) {
-        beginDelete(resourceGroupName, publicIPAddressName).getFinalResult();
+        delete(resourceGroupName, publicIPAddressName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a publicIPAddresses.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param publicIPAddressName Name of the public IP.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String publicIPAddressName, Context context) {
-        beginDelete(resourceGroupName, publicIPAddressName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, publicIPAddressName, context));
     }
 
     /**
@@ -854,11 +699,7 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PublicIPAddressInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<PublicIPAddressListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -882,33 +723,13 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the publicIPAddresses in the specified resource group. Use the nextLink property in the response to
-     * get the next page of PublicIP.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PublicIPAddress list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIPAddressInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all of the publicIPAddresses in the specified resource group. Use the nextLink property in the response to
-     * get the next page of PublicIP.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PublicIPAddress list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIPAddressInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -958,11 +779,7 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PublicIPAddressInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<PublicIPAddressListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -984,29 +801,13 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the publicIPAddresses in the specified subscription. Use the nextLink property in the response to
-     * get the next page of PublicIP.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PublicIPAddress list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIPAddressInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listAllNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all of the publicIPAddresses in the specified subscription. Use the nextLink property in the response to
-     * get the next page of PublicIP.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PublicIPAddress list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PublicIPAddressInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listAllNextSinglePage(nextLink, context));
@@ -1044,11 +845,7 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PublicIPAddressInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PublicIPAddressListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1101,11 +898,7 @@ public final class PublicIPAddressesClientImpl implements PublicIPAddressesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PublicIPAddressInner> listAllNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PublicIPAddressListResult> res
-            = service.listAllNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

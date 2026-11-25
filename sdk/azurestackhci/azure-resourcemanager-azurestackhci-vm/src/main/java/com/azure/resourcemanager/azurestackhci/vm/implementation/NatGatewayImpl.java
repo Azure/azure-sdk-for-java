@@ -89,10 +89,7 @@ public final class NatGatewayImpl implements NatGateway, NatGateway.Definition, 
     }
 
     public NatGateway create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNatGateways()
-            .createOrUpdate(resourceGroupName, natGatewayName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NatGateway create(Context context) {
@@ -114,10 +111,7 @@ public final class NatGatewayImpl implements NatGateway, NatGateway.Definition, 
     }
 
     public NatGateway apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNatGateways()
-            .updateTags(resourceGroupName, natGatewayName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NatGateway apply(Context context) {
@@ -140,11 +134,7 @@ public final class NatGatewayImpl implements NatGateway, NatGateway.Definition, 
     }
 
     public NatGateway refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNatGateways()
-            .getByResourceGroupWithResponse(resourceGroupName, natGatewayName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NatGateway refresh(Context context) {
