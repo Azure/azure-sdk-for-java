@@ -238,11 +238,7 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationDetailInner> listByReservationOrderSinglePage(String reservationOrderId,
         String filter) {
-        final String accept = "application/json";
-        Response<ReservationDetailsListResult> res = service.listByReservationOrderSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), reservationOrderId, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReservationOrderSinglePage(reservationOrderId, filter, Context.NONE);
     }
 
     /**
@@ -271,43 +267,13 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
-     * callers get 400 when the response size exceeds the ARM limit. If the data size is too large, customers may also
-     * get 504 as the API timed out preparing the data. In such cases, API call should be made with smaller date ranges
-     * or a call to Generate Reservation Details Report API should be made as it is asynchronous and will not run into
-     * response size time outs.
-     * 
-     * @param reservationOrderId Order Id of the reservation.
-     * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     * filter supports 'le' and 'ge'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationDetailInner> listByReservationOrder(String reservationOrderId, String filter) {
-        return new PagedIterable<>(() -> listByReservationOrderSinglePage(reservationOrderId, filter),
-            nextLink -> listByReservationOrderNextSinglePage(nextLink));
+        return listByReservationOrder(reservationOrderId, filter, Context.NONE);
     }
 
-    /**
-     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
-     * callers get 400 when the response size exceeds the ARM limit. If the data size is too large, customers may also
-     * get 504 as the API timed out preparing the data. In such cases, API call should be made with smaller date ranges
-     * or a call to Generate Reservation Details Report API should be made as it is asynchronous and will not run into
-     * response size time outs.
-     * 
-     * @param reservationOrderId Order Id of the reservation.
-     * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     * filter supports 'le' and 'ge'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationDetailInner> listByReservationOrder(String reservationOrderId, String filter,
         Context context) {
@@ -387,12 +353,7 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationDetailInner>
         listByReservationOrderAndReservationSinglePage(String reservationOrderId, String reservationId, String filter) {
-        final String accept = "application/json";
-        Response<ReservationDetailsListResult> res
-            = service.listByReservationOrderAndReservationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                reservationOrderId, reservationId, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReservationOrderAndReservationSinglePage(reservationOrderId, reservationId, filter, Context.NONE);
     }
 
     /**
@@ -423,47 +384,14 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
-     * callers get 400 when the response size exceeds the ARM limit. If the data size is too large, customers may also
-     * get 504 as the API timed out preparing the data. In such cases, API call should be made with smaller date ranges
-     * or a call to Generate Reservation Details Report API should be made as it is asynchronous and will not run into
-     * response size time outs.
-     * 
-     * @param reservationOrderId Order Id of the reservation.
-     * @param reservationId Id of the reservation.
-     * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     * filter supports 'le' and 'ge'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationDetailInner> listByReservationOrderAndReservation(String reservationOrderId,
         String reservationId, String filter) {
-        return new PagedIterable<>(
-            () -> listByReservationOrderAndReservationSinglePage(reservationOrderId, reservationId, filter),
-            nextLink -> listByReservationOrderAndReservationNextSinglePage(nextLink));
+        return listByReservationOrderAndReservation(reservationOrderId, reservationId, filter, Context.NONE);
     }
 
-    /**
-     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
-     * callers get 400 when the response size exceeds the ARM limit. If the data size is too large, customers may also
-     * get 504 as the API timed out preparing the data. In such cases, API call should be made with smaller date ranges
-     * or a call to Generate Reservation Details Report API should be made as it is asynchronous and will not run into
-     * response size time outs.
-     * 
-     * @param reservationOrderId Order Id of the reservation.
-     * @param reservationId Id of the reservation.
-     * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     * filter supports 'le' and 'ge'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationDetailInner> listByReservationOrderAndReservation(String reservationOrderId,
         String reservationId, String filter, Context context) {
@@ -584,12 +512,8 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationDetailInner> listSinglePage(String resourceScope, String startDate, String endDate,
         String filter, String reservationId, String reservationOrderId) {
-        final String accept = "application/json";
-        Response<ReservationDetailsListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceScope, startDate,
-                endDate, filter, reservationId, reservationOrderId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceScope, startDate, endDate, filter, reservationId, reservationOrderId,
+            Context.NONE);
     }
 
     /**
@@ -625,19 +549,7 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
-     * callers get 400 when the response size exceeds the ARM limit. If the data size is too large, customers may also
-     * get 504 as the API timed out preparing the data. In such cases, API call should be made with smaller date ranges
-     * or a call to Generate Reservation Details Report API should be made as it is asynchronous and will not run into
-     * response size time outs.
-     * 
-     * @param resourceScope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationDetailInner> list(String resourceScope) {
         final String startDate = null;
@@ -645,33 +557,10 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
         final String filter = null;
         final String reservationId = null;
         final String reservationOrderId = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceScope, startDate, endDate, filter, reservationId, reservationOrderId),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceScope, startDate, endDate, filter, reservationId, reservationOrderId, Context.NONE);
     }
 
-    /**
-     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
-     * callers get 400 when the response size exceeds the ARM limit. If the data size is too large, customers may also
-     * get 504 as the API timed out preparing the data. In such cases, API call should be made with smaller date ranges
-     * or a call to Generate Reservation Details Report API should be made as it is asynchronous and will not run into
-     * response size time outs.
-     * 
-     * @param resourceScope The fully qualified Azure Resource manager identifier of the resource.
-     * @param startDate Start date. Only applicable when querying with billing profile.
-     * @param endDate End date. Only applicable when querying with billing profile.
-     * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     * filter supports 'le' and 'ge'. Not applicable when querying with billing profile.
-     * @param reservationId Reservation Id GUID. Only valid if reservationOrderId is also provided. Filter to a specific
-     * reservation.
-     * @param reservationOrderId Reservation Order Id GUID. Required if reservationId is provided. Filter to a specific
-     * reservation order.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationDetailInner> list(String resourceScope, String startDate, String endDate,
         String filter, String reservationId, String reservationOrderId, Context context) {
@@ -712,11 +601,7 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationDetailInner> listByReservationOrderNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ReservationDetailsListResult> res
-            = service.listByReservationOrderNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReservationOrderNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -772,11 +657,7 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationDetailInner> listByReservationOrderAndReservationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ReservationDetailsListResult> res = service.listByReservationOrderAndReservationNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReservationOrderAndReservationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -829,11 +710,7 @@ public final class ReservationsDetailsClientImpl implements ReservationsDetailsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationDetailInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ReservationDetailsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

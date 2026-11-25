@@ -61,13 +61,7 @@ public final class PriceSheetsImpl implements PriceSheets {
     }
 
     public OperationStatus downloadByBillingAccountPeriod(String billingAccountId, String billingPeriodName) {
-        OperationStatusInner inner
-            = this.serviceClient().downloadByBillingAccountPeriod(billingAccountId, billingPeriodName);
-        if (inner != null) {
-            return new OperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.downloadByBillingAccountPeriod(billingAccountId, billingPeriodName, Context.NONE);
     }
 
     public OperationStatus downloadByBillingAccountPeriod(String billingAccountId, String billingPeriodName,

@@ -99,11 +99,7 @@ public final class BudgetImpl implements Budget, Budget.Definition, Budget.Updat
     }
 
     public Budget create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBudgets()
-            .createOrUpdateWithResponse(scope, budgetName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Budget create(Context context) {
@@ -125,11 +121,7 @@ public final class BudgetImpl implements Budget, Budget.Definition, Budget.Updat
     }
 
     public Budget apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBudgets()
-            .createOrUpdateWithResponse(scope, budgetName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Budget apply(Context context) {
@@ -150,9 +142,7 @@ public final class BudgetImpl implements Budget, Budget.Definition, Budget.Updat
     }
 
     public Budget refresh() {
-        this.innerObject
-            = serviceManager.serviceClient().getBudgets().getWithResponse(scope, budgetName, Context.NONE).getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Budget refresh(Context context) {

@@ -26,9 +26,7 @@ public final class LotsOperationsImpl implements LotsOperations {
     }
 
     public PagedIterable<LotSummary> listByBillingProfile(String billingAccountId, String billingProfileId) {
-        PagedIterable<LotSummaryInner> inner
-            = this.serviceClient().listByBillingProfile(billingAccountId, billingProfileId);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LotSummaryImpl(inner1, this.manager()));
+        return this.listByBillingProfile(billingAccountId, billingProfileId, Context.NONE);
     }
 
     public PagedIterable<LotSummary> listByBillingProfile(String billingAccountId, String billingProfileId,

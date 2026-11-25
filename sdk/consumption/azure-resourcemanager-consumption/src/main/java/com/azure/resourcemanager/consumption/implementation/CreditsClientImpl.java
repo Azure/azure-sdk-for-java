@@ -110,17 +110,7 @@ public final class CreditsClientImpl implements CreditsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The credit summary by billingAccountId and billingProfileId.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId Azure Billing Profile ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a credit summary resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreditSummaryInner> getWithResponse(String billingAccountId, String billingProfileId,
         Context context) {
@@ -129,16 +119,7 @@ public final class CreditsClientImpl implements CreditsClient {
             billingProfileId, accept, context);
     }
 
-    /**
-     * The credit summary by billingAccountId and billingProfileId.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId Azure Billing Profile ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a credit summary resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreditSummaryInner get(String billingAccountId, String billingProfileId) {
         return getWithResponse(billingAccountId, billingProfileId, Context.NONE).getValue();

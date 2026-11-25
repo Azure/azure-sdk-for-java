@@ -188,11 +188,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSummaryInner> listByBillingProfileSinglePage(String billingAccountId,
         String billingProfileId, String startDate, String endDate) {
-        final String accept = "application/json";
-        Response<Events> res = service.listByBillingProfileSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            billingAccountId, billingProfileId, startDate, endDate, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBillingProfileSinglePage(billingAccountId, billingProfileId, startDate, endDate, Context.NONE);
     }
 
     /**
@@ -219,41 +215,14 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the events that decrements Azure credits or Microsoft Azure consumption commitment for a billing account or
-     * a billing profile for a given start and end date.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId Azure Billing Profile ID.
-     * @param startDate Start date.
-     * @param endDate End date.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing event summary as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSummaryInner> listByBillingProfile(String billingAccountId, String billingProfileId,
         String startDate, String endDate) {
-        return new PagedIterable<>(
-            () -> listByBillingProfileSinglePage(billingAccountId, billingProfileId, startDate, endDate),
-            nextLink -> listByBillingProfileNextSinglePage(nextLink));
+        return listByBillingProfile(billingAccountId, billingProfileId, startDate, endDate, Context.NONE);
     }
 
-    /**
-     * Lists the events that decrements Azure credits or Microsoft Azure consumption commitment for a billing account or
-     * a billing profile for a given start and end date.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId Azure Billing Profile ID.
-     * @param startDate Start date.
-     * @param endDate End date.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing event summary as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSummaryInner> listByBillingProfile(String billingAccountId, String billingProfileId,
         String startDate, String endDate, Context context) {
@@ -339,11 +308,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSummaryInner> listByBillingAccountSinglePage(String billingAccountId, String filter) {
-        final String accept = "application/json";
-        Response<Events> res = service.listByBillingAccountSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            billingAccountId, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBillingAccountSinglePage(billingAccountId, filter, Context.NONE);
     }
 
     /**
@@ -370,37 +335,14 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the events that decrements Azure credits or Microsoft Azure consumption commitment for a billing account or
-     * a billing profile for a given start and end date.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing event summary as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSummaryInner> listByBillingAccount(String billingAccountId) {
         final String filter = null;
-        return new PagedIterable<>(() -> listByBillingAccountSinglePage(billingAccountId, filter),
-            nextLink -> listByBillingAccountNextSinglePage(nextLink));
+        return listByBillingAccount(billingAccountId, filter, Context.NONE);
     }
 
-    /**
-     * Lists the events that decrements Azure credits or Microsoft Azure consumption commitment for a billing account or
-     * a billing profile for a given start and end date.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param filter May be used to filter the events by lotId, lotSource etc. The filter supports 'eq', 'lt', 'gt',
-     * 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string
-     * where key and value is separated by a colon (:).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing event summary as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSummaryInner> listByBillingAccount(String billingAccountId, String filter,
         Context context) {
@@ -440,11 +382,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSummaryInner> listByBillingProfileNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<Events> res
-            = service.listByBillingProfileNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBillingProfileNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -498,11 +436,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSummaryInner> listByBillingAccountNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<Events> res
-            = service.listByBillingAccountNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBillingAccountNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

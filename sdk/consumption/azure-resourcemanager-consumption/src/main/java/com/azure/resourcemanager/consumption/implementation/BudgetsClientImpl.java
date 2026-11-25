@@ -180,17 +180,7 @@ public final class BudgetsClientImpl implements BudgetsClient {
         return getWithResponseAsync(scope, budgetName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the budget for the scope by budget name.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param budgetName Budget Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the budget for the scope by budget name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BudgetInner> getWithResponse(String scope, String budgetName, Context context) {
         final String accept = "application/json";
@@ -198,16 +188,7 @@ public final class BudgetsClientImpl implements BudgetsClient {
             context);
     }
 
-    /**
-     * Gets the budget for the scope by budget name.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param budgetName Budget Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the budget for the scope by budget name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BudgetInner get(String scope, String budgetName) {
         return getWithResponse(scope, budgetName, Context.NONE).getValue();
@@ -256,20 +237,7 @@ public final class BudgetsClientImpl implements BudgetsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to create or update a budget. You can optionally provide an eTag if desired as a form of
-     * concurrency control. To obtain the latest eTag for a given budget, perform a get operation prior to your put
-     * operation.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param budgetName Budget Name.
-     * @param parameters Parameters supplied to the Create Budget operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a budget resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BudgetInner> createOrUpdateWithResponse(String scope, String budgetName, BudgetInner parameters,
         Context context) {
@@ -279,19 +247,7 @@ public final class BudgetsClientImpl implements BudgetsClient {
             contentType, accept, parameters, context);
     }
 
-    /**
-     * The operation to create or update a budget. You can optionally provide an eTag if desired as a form of
-     * concurrency control. To obtain the latest eTag for a given budget, perform a get operation prior to your put
-     * operation.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param budgetName Budget Name.
-     * @param parameters Parameters supplied to the Create Budget operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a budget resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BudgetInner createOrUpdate(String scope, String budgetName, BudgetInner parameters) {
         return createOrUpdateWithResponse(scope, budgetName, parameters, Context.NONE).getValue();
@@ -330,31 +286,13 @@ public final class BudgetsClientImpl implements BudgetsClient {
         return deleteWithResponseAsync(scope, budgetName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * The operation to delete a budget.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param budgetName Budget Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String scope, String budgetName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, budgetName, context);
     }
 
-    /**
-     * The operation to delete a budget.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param budgetName Budget Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String scope, String budgetName) {
         deleteWithResponse(scope, budgetName, Context.NONE);
@@ -405,11 +343,7 @@ public final class BudgetsClientImpl implements BudgetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BudgetInner> listSinglePage(String scope) {
-        final String accept = "application/json";
-        Response<BudgetsListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(scope, Context.NONE);
     }
 
     /**
@@ -431,30 +365,13 @@ public final class BudgetsClientImpl implements BudgetsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all budgets for the defined scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing budgets as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BudgetInner> list(String scope) {
-        return new PagedIterable<>(() -> listSinglePage(scope), nextLink -> listNextSinglePage(nextLink));
+        return list(scope, Context.NONE);
     }
 
-    /**
-     * Lists all budgets for the defined scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing budgets as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BudgetInner> list(String scope, Context context) {
         return new PagedIterable<>(() -> listSinglePage(scope, context),
@@ -490,11 +407,7 @@ public final class BudgetsClientImpl implements BudgetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BudgetInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BudgetsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

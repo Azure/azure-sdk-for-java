@@ -26,9 +26,7 @@ public final class ReservationsDetailsImpl implements ReservationsDetails {
     }
 
     public PagedIterable<ReservationDetail> listByReservationOrder(String reservationOrderId, String filter) {
-        PagedIterable<ReservationDetailInner> inner
-            = this.serviceClient().listByReservationOrder(reservationOrderId, filter);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationDetailImpl(inner1, this.manager()));
+        return this.listByReservationOrder(reservationOrderId, filter, Context.NONE);
     }
 
     public PagedIterable<ReservationDetail> listByReservationOrder(String reservationOrderId, String filter,
@@ -40,9 +38,7 @@ public final class ReservationsDetailsImpl implements ReservationsDetails {
 
     public PagedIterable<ReservationDetail> listByReservationOrderAndReservation(String reservationOrderId,
         String reservationId, String filter) {
-        PagedIterable<ReservationDetailInner> inner
-            = this.serviceClient().listByReservationOrderAndReservation(reservationOrderId, reservationId, filter);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationDetailImpl(inner1, this.manager()));
+        return this.listByReservationOrderAndReservation(reservationOrderId, reservationId, filter, Context.NONE);
     }
 
     public PagedIterable<ReservationDetail> listByReservationOrderAndReservation(String reservationOrderId,

@@ -211,11 +211,7 @@ public final class LotsOperationsClientImpl implements LotsOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LotSummaryInner> listByBillingProfileSinglePage(String billingAccountId,
         String billingProfileId) {
-        final String accept = "application/json";
-        Response<Lots> res = service.listByBillingProfileSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            billingAccountId, billingProfileId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBillingProfileSinglePage(billingAccountId, billingProfileId, Context.NONE);
     }
 
     /**
@@ -240,35 +236,13 @@ public final class LotsOperationsClientImpl implements LotsOperationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all Azure credits for a billing account or a billing profile. The API is only supported for Microsoft
-     * Customer Agreements (MCA) billing accounts.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId Azure Billing Profile ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing lot summary as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LotSummaryInner> listByBillingProfile(String billingAccountId, String billingProfileId) {
-        return new PagedIterable<>(() -> listByBillingProfileSinglePage(billingAccountId, billingProfileId),
-            nextLink -> listByBillingProfileNextSinglePage(nextLink));
+        return listByBillingProfile(billingAccountId, billingProfileId, Context.NONE);
     }
 
-    /**
-     * Lists all Azure credits for a billing account or a billing profile. The API is only supported for Microsoft
-     * Customer Agreements (MCA) billing accounts.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId Azure Billing Profile ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing lot summary as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LotSummaryInner> listByBillingProfile(String billingAccountId, String billingProfileId,
         Context context) {
@@ -352,11 +326,7 @@ public final class LotsOperationsClientImpl implements LotsOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LotSummaryInner> listByBillingAccountSinglePage(String billingAccountId, String filter) {
-        final String accept = "application/json";
-        Response<Lots> res = service.listByBillingAccountSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            billingAccountId, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBillingAccountSinglePage(billingAccountId, filter, Context.NONE);
     }
 
     /**
@@ -383,37 +353,14 @@ public final class LotsOperationsClientImpl implements LotsOperationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all Microsoft Azure consumption commitments for a billing account. The API is only supported for Microsoft
-     * Customer Agreements (MCA) and Direct Enterprise Agreement (EA) billing accounts.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing lot summary as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LotSummaryInner> listByBillingAccount(String billingAccountId) {
         final String filter = null;
-        return new PagedIterable<>(() -> listByBillingAccountSinglePage(billingAccountId, filter),
-            nextLink -> listByBillingAccountNextSinglePage(nextLink));
+        return listByBillingAccount(billingAccountId, filter, Context.NONE);
     }
 
-    /**
-     * Lists all Microsoft Azure consumption commitments for a billing account. The API is only supported for Microsoft
-     * Customer Agreements (MCA) and Direct Enterprise Agreement (EA) billing accounts.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param filter May be used to filter the lots by Status, Source etc. The filter supports 'eq', 'lt', 'gt', 'le',
-     * 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where
-     * key and value is separated by a colon (:).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing lot summary as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LotSummaryInner> listByBillingAccount(String billingAccountId, String filter,
         Context context) {
@@ -499,11 +446,7 @@ public final class LotsOperationsClientImpl implements LotsOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LotSummaryInner> listByCustomerSinglePage(String billingAccountId, String customerId,
         String filter) {
-        final String accept = "application/json";
-        Response<Lots> res = service.listByCustomerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            billingAccountId, customerId, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCustomerSinglePage(billingAccountId, customerId, filter, Context.NONE);
     }
 
     /**
@@ -530,38 +473,14 @@ public final class LotsOperationsClientImpl implements LotsOperationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all Azure credits for a customer. The API is only supported for Microsoft Partner Agreements (MPA) billing
-     * accounts.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param customerId Customer ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing lot summary as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LotSummaryInner> listByCustomer(String billingAccountId, String customerId) {
         final String filter = null;
-        return new PagedIterable<>(() -> listByCustomerSinglePage(billingAccountId, customerId, filter),
-            nextLink -> listByCustomerNextSinglePage(nextLink));
+        return listByCustomer(billingAccountId, customerId, filter, Context.NONE);
     }
 
-    /**
-     * Lists all Azure credits for a customer. The API is only supported for Microsoft Partner Agreements (MPA) billing
-     * accounts.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param customerId Customer ID.
-     * @param filter May be used to filter the lots by Status, Source etc. The filter supports 'eq', 'lt', 'gt', 'le',
-     * 'ge', and 'and'. Tag filter is a key value pair string where key and value is separated by a colon (:).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing lot summary as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LotSummaryInner> listByCustomer(String billingAccountId, String customerId, String filter,
         Context context) {
@@ -600,11 +519,7 @@ public final class LotsOperationsClientImpl implements LotsOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LotSummaryInner> listByBillingProfileNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<Lots> res
-            = service.listByBillingProfileNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBillingProfileNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -656,11 +571,7 @@ public final class LotsOperationsClientImpl implements LotsOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LotSummaryInner> listByBillingAccountNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<Lots> res
-            = service.listByBillingAccountNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBillingAccountNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -711,10 +622,7 @@ public final class LotsOperationsClientImpl implements LotsOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LotSummaryInner> listByCustomerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<Lots> res = service.listByCustomerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCustomerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

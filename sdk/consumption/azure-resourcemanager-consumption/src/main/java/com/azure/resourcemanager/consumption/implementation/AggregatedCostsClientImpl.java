@@ -134,18 +134,7 @@ public final class AggregatedCostsClientImpl implements AggregatedCostsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Provides the aggregate cost of a management group and all child management groups by current billing period.
-     * 
-     * @param managementGroupId Order Id of the reservation.
-     * @param filter Required only for daily grain. The properties/UsageDate for start date and end date. The filter
-     * supports 'le' and 'ge'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management group aggregated cost resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagementGroupAggregatedCostResultInner> getByManagementGroupWithResponse(String managementGroupId,
         String filter, Context context) {
@@ -154,15 +143,7 @@ public final class AggregatedCostsClientImpl implements AggregatedCostsClient {
             managementGroupId, filter, accept, context);
     }
 
-    /**
-     * Provides the aggregate cost of a management group and all child management groups by current billing period.
-     * 
-     * @param managementGroupId Order Id of the reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management group aggregated cost resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagementGroupAggregatedCostResultInner getByManagementGroup(String managementGroupId) {
         final String filter = null;
@@ -207,17 +188,7 @@ public final class AggregatedCostsClientImpl implements AggregatedCostsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Provides the aggregate cost of a management group and all child management groups by specified billing period.
-     * 
-     * @param managementGroupId Order Id of the reservation.
-     * @param billingPeriodName Billing Period Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management group aggregated cost resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagementGroupAggregatedCostResultInner> getForBillingPeriodByManagementGroupWithResponse(
         String managementGroupId, String billingPeriodName, Context context) {
@@ -226,16 +197,7 @@ public final class AggregatedCostsClientImpl implements AggregatedCostsClient {
             managementGroupId, billingPeriodName, accept, context);
     }
 
-    /**
-     * Provides the aggregate cost of a management group and all child management groups by specified billing period.
-     * 
-     * @param managementGroupId Order Id of the reservation.
-     * @param billingPeriodName Billing Period Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management group aggregated cost resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagementGroupAggregatedCostResultInner getForBillingPeriodByManagementGroup(String managementGroupId,
         String billingPeriodName) {

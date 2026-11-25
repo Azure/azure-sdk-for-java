@@ -232,11 +232,7 @@ public final class UsageDetailsClientImpl implements UsageDetailsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UsageDetailInner> listSinglePage(String scope, String expand, String filter, String skiptoken,
         Integer top, Metrictype metric) {
-        final String accept = "application/json";
-        Response<UsageDetailsListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            scope, expand, filter, skiptoken, top, metric, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(scope, expand, filter, skiptoken, top, metric, Context.NONE);
     }
 
     /**
@@ -278,22 +274,7 @@ public final class UsageDetailsClientImpl implements UsageDetailsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the usage details for the defined scope. Usage details are available via this API only for May 1, 2014 or
-     * later.
-     * 
-     * **Note:Microsoft will be retiring the Consumption Usage Details API at some point in the future. We do not
-     * recommend that you take a new dependency on this API. Please use the Cost Details API instead. We will notify
-     * customers once a date for retirement has been determined.For Learn more,see [Generate Cost Details Report -
-     * Create
-     * Operation](https://learn.microsoft.com/en-us/rest/api/cost-management/generate-cost-details-report/create-operation?tabs=HTTP)**.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing usage details as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageDetailInner> list(String scope) {
         final String expand = null;
@@ -301,39 +282,10 @@ public final class UsageDetailsClientImpl implements UsageDetailsClient {
         final String skiptoken = null;
         final Integer top = null;
         final Metrictype metric = null;
-        return new PagedIterable<>(() -> listSinglePage(scope, expand, filter, skiptoken, top, metric),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(scope, expand, filter, skiptoken, top, metric, Context.NONE);
     }
 
-    /**
-     * Lists the usage details for the defined scope. Usage details are available via this API only for May 1, 2014 or
-     * later.
-     * 
-     * **Note:Microsoft will be retiring the Consumption Usage Details API at some point in the future. We do not
-     * recommend that you take a new dependency on this API. Please use the Cost Details API instead. We will notify
-     * customers once a date for retirement has been determined.For Learn more,see [Generate Cost Details Report -
-     * Create
-     * Operation](https://learn.microsoft.com/en-us/rest/api/cost-management/generate-cost-details-report/create-operation?tabs=HTTP)**.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param expand May be used to expand the properties/additionalInfo or properties/meterDetails within a list of
-     * usage details. By default, these fields are not included when listing usage details.
-     * @param filter May be used to filter usageDetails by properties/resourceGroup, properties/resourceName,
-     * properties/resourceId, properties/chargeType, properties/reservationId, properties/publisherType or tags. The
-     * filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag
-     * filter is a key value pair string where key and value is separated by a colon (:). PublisherType Filter accepts
-     * two values azure and marketplace and it is currently supported for Web Direct Offer Type.
-     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @param top May be used to limit the number of results to the most recent N usageDetails.
-     * @param metric Allows to select different type of cost/usage records.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing usage details as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageDetailInner> list(String scope, String expand, String filter, String skiptoken,
         Integer top, Metrictype metric, Context context) {
@@ -371,11 +323,7 @@ public final class UsageDetailsClientImpl implements UsageDetailsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UsageDetailInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<UsageDetailsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

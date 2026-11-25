@@ -242,12 +242,7 @@ public final class ReservationTransactionsClientImpl implements ReservationTrans
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationTransactionInner> listSinglePage(String billingAccountId, String filter,
         Boolean useMarkupIfPartner, BigDecimal previewMarkupPercentage) {
-        final String accept = "application/json";
-        Response<ReservationTransactionsListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), billingAccountId, filter,
-                useMarkupIfPartner, previewMarkupPercentage, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(billingAccountId, filter, useMarkupIfPartner, previewMarkupPercentage, Context.NONE);
     }
 
     /**
@@ -281,49 +276,16 @@ public final class ReservationTransactionsClientImpl implements ReservationTrans
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List of transactions for reserved instances on billing account scope. Note: The refund transactions are posted
-     * along with its purchase transaction (i.e. in the purchase billing month). For example, The refund is requested in
-     * May 2021. This refund transaction will have event date as May 2021 but the billing month as April 2020 when the
-     * reservation purchase was made. Note: ARM has a payload size limit of 12MB, so currently callers get 400 when the
-     * response size exceeds the ARM limit. In such cases, API call should be made with smaller date ranges.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation recommendations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationTransactionInner> list(String billingAccountId) {
         final String filter = null;
         final Boolean useMarkupIfPartner = null;
         final BigDecimal previewMarkupPercentage = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(billingAccountId, filter, useMarkupIfPartner, previewMarkupPercentage),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(billingAccountId, filter, useMarkupIfPartner, previewMarkupPercentage, Context.NONE);
     }
 
-    /**
-     * List of transactions for reserved instances on billing account scope. Note: The refund transactions are posted
-     * along with its purchase transaction (i.e. in the purchase billing month). For example, The refund is requested in
-     * May 2021. This refund transaction will have event date as May 2021 but the billing month as April 2020 when the
-     * reservation purchase was made. Note: ARM has a payload size limit of 12MB, so currently callers get 400 when the
-     * response size exceeds the ARM limit. In such cases, API call should be made with smaller date ranges.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param filter Filter reservation transactions by date range. The properties/EventDate for start date and end
-     * date. The filter supports 'le' and 'ge'. Note: API returns data for the entire start date's and end date's
-     * billing month. For example, filter properties/eventDate+ge+2020-01-01+AND+properties/eventDate+le+2020-12-29 will
-     * include data for the entire December 2020 month (i.e. will contain records for dates December 30 and 31).
-     * @param useMarkupIfPartner Applies mark up to the transactions if the caller is a partner.
-     * @param previewMarkupPercentage Preview markup percentage to be applied.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation recommendations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationTransactionInner> list(String billingAccountId, String filter,
         Boolean useMarkupIfPartner, BigDecimal previewMarkupPercentage, Context context) {
@@ -431,12 +393,7 @@ public final class ReservationTransactionsClientImpl implements ReservationTrans
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ModernReservationTransactionInner> listByBillingProfileSinglePage(String billingAccountId,
         String billingProfileId, String filter) {
-        final String accept = "application/json";
-        Response<ModernReservationTransactionsListResult> res
-            = service.listByBillingProfileSync(this.client.getEndpoint(), this.client.getApiVersion(), billingAccountId,
-                billingProfileId, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBillingProfileSinglePage(billingAccountId, billingProfileId, filter, Context.NONE);
     }
 
     /**
@@ -469,47 +426,15 @@ public final class ReservationTransactionsClientImpl implements ReservationTrans
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List of transactions for reserved instances on billing profile scope. The refund transactions are posted along
-     * with its purchase transaction (i.e. in the purchase billing month). For example, The refund is requested in May
-     * 2021. This refund transaction will have event date as May 2021 but the billing month as April 2020 when the
-     * reservation purchase was made. Note: ARM has a payload size limit of 12MB, so currently callers get 400 when the
-     * response size exceeds the ARM limit. In such cases, API call should be made with smaller date ranges.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId Azure Billing Profile ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation recommendations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ModernReservationTransactionInner> listByBillingProfile(String billingAccountId,
         String billingProfileId) {
         final String filter = null;
-        return new PagedIterable<>(() -> listByBillingProfileSinglePage(billingAccountId, billingProfileId, filter),
-            nextLink -> listByBillingProfileNextSinglePage(nextLink));
+        return listByBillingProfile(billingAccountId, billingProfileId, filter, Context.NONE);
     }
 
-    /**
-     * List of transactions for reserved instances on billing profile scope. The refund transactions are posted along
-     * with its purchase transaction (i.e. in the purchase billing month). For example, The refund is requested in May
-     * 2021. This refund transaction will have event date as May 2021 but the billing month as April 2020 when the
-     * reservation purchase was made. Note: ARM has a payload size limit of 12MB, so currently callers get 400 when the
-     * response size exceeds the ARM limit. In such cases, API call should be made with smaller date ranges.
-     * 
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId Azure Billing Profile ID.
-     * @param filter Filter reservation transactions by date range. The properties/EventDate for start date and end
-     * date. The filter supports 'le' and 'ge'. Note: API returns data for the entire start date's and end date's
-     * billing month. For example, filter properties/eventDate+ge+2020-01-01+AND+properties/eventDate+le+2020-12-29 will
-     * include data for entire December 2020 month (i.e. will contain records for dates December 30 and 31).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation recommendations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ModernReservationTransactionInner> listByBillingProfile(String billingAccountId,
         String billingProfileId, String filter, Context context) {
@@ -548,11 +473,7 @@ public final class ReservationTransactionsClientImpl implements ReservationTrans
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationTransactionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ReservationTransactionsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -607,11 +528,7 @@ public final class ReservationTransactionsClientImpl implements ReservationTrans
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ModernReservationTransactionInner> listByBillingProfileNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ModernReservationTransactionsListResult> res
-            = service.listByBillingProfileNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBillingProfileNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -123,24 +123,7 @@ public final class ChargesClientImpl implements ChargesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists the charges based for the defined scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param startDate Start date.
-     * @param endDate End date.
-     * @param filter May be used to filter charges by properties/usageEnd (Utc time), properties/usageStart (Utc time).
-     * The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
-     * Tag filter is a key value pair string where key and value is separated by a colon (:).
-     * @param apply May be used to group charges for billingAccount scope by properties/billingProfileId,
-     * properties/invoiceSectionId, properties/customerId (specific for Partner Led), or for billingProfile scope by
-     * properties/invoiceSectionId.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing charge summary along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChargesListResultInner> listWithResponse(String scope, String startDate, String endDate,
         String filter, String apply, Context context) {
@@ -149,15 +132,7 @@ public final class ChargesClientImpl implements ChargesClient {
             filter, apply, accept, context);
     }
 
-    /**
-     * Lists the charges based for the defined scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing charge summary.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChargesListResultInner list(String scope) {
         final String startDate = null;

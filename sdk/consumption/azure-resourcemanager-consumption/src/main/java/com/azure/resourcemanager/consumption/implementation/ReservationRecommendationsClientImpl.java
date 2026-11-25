@@ -179,11 +179,7 @@ public final class ReservationRecommendationsClientImpl implements ReservationRe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationRecommendationInner> listSinglePage(String resourceScope, String filter) {
-        final String accept = "application/json";
-        Response<ReservationRecommendationsListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceScope, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceScope, filter, Context.NONE);
     }
 
     /**
@@ -212,38 +208,14 @@ public final class ReservationRecommendationsClientImpl implements ReservationRe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List of recommendations for purchasing reserved instances.
-     * 
-     * @param resourceScope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation recommendations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationRecommendationInner> list(String resourceScope) {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceScope, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceScope, filter, Context.NONE);
     }
 
-    /**
-     * List of recommendations for purchasing reserved instances.
-     * 
-     * @param resourceScope The fully qualified Azure Resource manager identifier of the resource.
-     * @param filter May be used to filter reservationRecommendations by: properties/scope with allowed values
-     * ['Single', 'Shared'] and default value 'Single'; properties/resourceType with allowed values ['VirtualMachines',
-     * 'SQLDatabases', 'PostgreSQL', 'ManagedDisk', 'MySQL', 'RedHat', 'MariaDB', 'RedisCache', 'CosmosDB',
-     * 'SqlDataWarehouse', 'SUSELinux', 'AppService', 'BlockBlob', 'AzureDataExplorer', 'VMwareCloudSimple'] and default
-     * value 'VirtualMachines'; and properties/lookBackPeriod with allowed values ['Last7Days', 'Last30Days',
-     * 'Last60Days'] and default value 'Last7Days'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation recommendations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationRecommendationInner> list(String resourceScope, String filter, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceScope, filter, context),
@@ -280,11 +252,7 @@ public final class ReservationRecommendationsClientImpl implements ReservationRe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationRecommendationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ReservationRecommendationsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

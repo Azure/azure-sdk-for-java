@@ -260,11 +260,7 @@ public final class ReservationsSummariesClientImpl implements ReservationsSummar
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationSummaryInner> listByReservationOrderSinglePage(String reservationOrderId,
         Datagrain grain, String filter) {
-        final String accept = "application/json";
-        Response<ReservationSummariesListResult> res = service.listByReservationOrderSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), reservationOrderId, grain, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReservationOrderSinglePage(reservationOrderId, grain, filter, Context.NONE);
     }
 
     /**
@@ -292,40 +288,14 @@ public final class ReservationsSummariesClientImpl implements ReservationsSummar
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the reservations summaries for daily or monthly grain. Note: ARM has a payload size limit of 12MB, so
-     * currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made
-     * with smaller date ranges.
-     * 
-     * @param reservationOrderId Order Id of the reservation.
-     * @param grain Can be daily or monthly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationSummaryInner> listByReservationOrder(String reservationOrderId, Datagrain grain) {
         final String filter = null;
-        return new PagedIterable<>(() -> listByReservationOrderSinglePage(reservationOrderId, grain, filter),
-            nextLink -> listByReservationOrderNextSinglePage(nextLink));
+        return listByReservationOrder(reservationOrderId, grain, filter, Context.NONE);
     }
 
-    /**
-     * Lists the reservations summaries for daily or monthly grain. Note: ARM has a payload size limit of 12MB, so
-     * currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made
-     * with smaller date ranges.
-     * 
-     * @param reservationOrderId Order Id of the reservation.
-     * @param grain Can be daily or monthly.
-     * @param filter Required only for daily grain. The properties/UsageDate for start date and end date. The filter
-     * supports 'le' and 'ge'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationSummaryInner> listByReservationOrder(String reservationOrderId, Datagrain grain,
         String filter, Context context) {
@@ -424,12 +394,8 @@ public final class ReservationsSummariesClientImpl implements ReservationsSummar
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationSummaryInner> listByReservationOrderAndReservationSinglePage(
         String reservationOrderId, String reservationId, Datagrain grain, String filter) {
-        final String accept = "application/json";
-        Response<ReservationSummariesListResult> res
-            = service.listByReservationOrderAndReservationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                reservationOrderId, reservationId, grain, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReservationOrderAndReservationSinglePage(reservationOrderId, reservationId, grain, filter,
+            Context.NONE);
     }
 
     /**
@@ -459,44 +425,15 @@ public final class ReservationsSummariesClientImpl implements ReservationsSummar
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the reservations summaries for daily or monthly grain. Note: ARM has a payload size limit of 12MB, so
-     * currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made
-     * with smaller date ranges.
-     * 
-     * @param reservationOrderId Order Id of the reservation.
-     * @param reservationId Id of the reservation.
-     * @param grain Can be daily or monthly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationSummaryInner> listByReservationOrderAndReservation(String reservationOrderId,
         String reservationId, Datagrain grain) {
         final String filter = null;
-        return new PagedIterable<>(
-            () -> listByReservationOrderAndReservationSinglePage(reservationOrderId, reservationId, grain, filter),
-            nextLink -> listByReservationOrderAndReservationNextSinglePage(nextLink));
+        return listByReservationOrderAndReservation(reservationOrderId, reservationId, grain, filter, Context.NONE);
     }
 
-    /**
-     * Lists the reservations summaries for daily or monthly grain. Note: ARM has a payload size limit of 12MB, so
-     * currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made
-     * with smaller date ranges.
-     * 
-     * @param reservationOrderId Order Id of the reservation.
-     * @param reservationId Id of the reservation.
-     * @param grain Can be daily or monthly.
-     * @param filter Required only for daily grain. The properties/UsageDate for start date and end date. The filter
-     * supports 'le' and 'ge'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationSummaryInner> listByReservationOrderAndReservation(String reservationOrderId,
         String reservationId, Datagrain grain, String filter, Context context) {
@@ -611,12 +548,8 @@ public final class ReservationsSummariesClientImpl implements ReservationsSummar
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationSummaryInner> listSinglePage(String resourceScope, Datagrain grain,
         String startDate, String endDate, String filter, String reservationId, String reservationOrderId) {
-        final String accept = "application/json";
-        Response<ReservationSummariesListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceScope, grain, startDate,
-                endDate, filter, reservationId, reservationOrderId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceScope, grain, startDate, endDate, filter, reservationId, reservationOrderId,
+            Context.NONE);
     }
 
     /**
@@ -652,18 +585,7 @@ public final class ReservationsSummariesClientImpl implements ReservationsSummar
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the reservations summaries for the defined scope daily or monthly grain. Note: ARM has a payload size limit
-     * of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call
-     * should be made with smaller date ranges.
-     * 
-     * @param resourceScope The fully qualified Azure Resource manager identifier of the resource.
-     * @param grain Can be daily or monthly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationSummaryInner> list(String resourceScope, Datagrain grain) {
         final String startDate = null;
@@ -671,32 +593,10 @@ public final class ReservationsSummariesClientImpl implements ReservationsSummar
         final String filter = null;
         final String reservationId = null;
         final String reservationOrderId = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceScope, grain, startDate, endDate, filter, reservationId, reservationOrderId),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceScope, grain, startDate, endDate, filter, reservationId, reservationOrderId, Context.NONE);
     }
 
-    /**
-     * Lists the reservations summaries for the defined scope daily or monthly grain. Note: ARM has a payload size limit
-     * of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call
-     * should be made with smaller date ranges.
-     * 
-     * @param resourceScope The fully qualified Azure Resource manager identifier of the resource.
-     * @param grain Can be daily or monthly.
-     * @param startDate Start date. Only applicable when querying with billing profile.
-     * @param endDate End date. Only applicable when querying with billing profile.
-     * @param filter Required only for daily grain. The properties/UsageDate for start date and end date. The filter
-     * supports 'le' and 'ge'. Not applicable when querying with billing profile.
-     * @param reservationId Reservation Id GUID. Only valid if reservationOrderId is also provided. Filter to a specific
-     * reservation.
-     * @param reservationOrderId Reservation Order Id GUID. Required if reservationId is provided. Filter to a specific
-     * reservation order.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation summaries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationSummaryInner> list(String resourceScope, Datagrain grain, String startDate,
         String endDate, String filter, String reservationId, String reservationOrderId, Context context) {
@@ -736,11 +636,7 @@ public final class ReservationsSummariesClientImpl implements ReservationsSummar
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationSummaryInner> listByReservationOrderNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ReservationSummariesListResult> res
-            = service.listByReservationOrderNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReservationOrderNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -796,11 +692,7 @@ public final class ReservationsSummariesClientImpl implements ReservationsSummar
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationSummaryInner> listByReservationOrderAndReservationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ReservationSummariesListResult> res = service.listByReservationOrderAndReservationNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReservationOrderAndReservationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -853,11 +745,7 @@ public final class ReservationsSummariesClientImpl implements ReservationsSummar
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReservationSummaryInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ReservationSummariesListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
