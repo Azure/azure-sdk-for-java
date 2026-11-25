@@ -1660,18 +1660,7 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
         restartWebAppsWithResponse(resourceGroupName, name, softRestart, Context.NONE);
     }
 
-    /**
-     * Start all apps in an App Service plan.
-     * 
-     * Description for Start all apps in an App Service plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startWebAppsWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
@@ -1730,69 +1719,25 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             this.client.getSubscriptionId(), resourceGroupName, name, context);
     }
 
-    /**
-     * Start all apps in an App Service plan.
-     * 
-     * Description for Start all apps in an App Service plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startWebAppsAsync(String resourceGroupName, String name) {
         return startWebAppsWithResponseAsync(resourceGroupName, name).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Start all apps in an App Service plan.
-     * 
-     * Description for Start all apps in an App Service plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the App Service plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> startWebAppsWithResponse(String resourceGroupName, String name, Context context) {
         return startWebAppsWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Start all apps in an App Service plan.
-     * 
-     * Description for Start all apps in an App Service plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void startWebApps(String resourceGroupName, String name) {
         startWebAppsWithResponse(resourceGroupName, name, Context.NONE);
     }
 
-    /**
-     * Stop all apps in an App Service plan.
-     * 
-     * Description for Stop all apps in an App Service plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopWebAppsWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
@@ -1851,52 +1796,19 @@ public final class AppServicePlansClientImpl implements InnerSupportsGet<AppServ
             this.client.getSubscriptionId(), resourceGroupName, name, context);
     }
 
-    /**
-     * Stop all apps in an App Service plan.
-     * 
-     * Description for Stop all apps in an App Service plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopWebAppsAsync(String resourceGroupName, String name) {
         return stopWebAppsWithResponseAsync(resourceGroupName, name).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Stop all apps in an App Service plan.
-     * 
-     * Description for Stop all apps in an App Service plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the App Service plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopWebAppsWithResponse(String resourceGroupName, String name, Context context) {
         return stopWebAppsWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Stop all apps in an App Service plan.
-     * 
-     * Description for Stop all apps in an App Service plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopWebApps(String resourceGroupName, String name) {
         stopWebAppsWithResponse(resourceGroupName, name, Context.NONE);

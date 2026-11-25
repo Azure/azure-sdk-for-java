@@ -176,16 +176,7 @@ public final class LastKnownGoodResourcesClientImpl implements LastKnownGoodReso
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the last known good revision state for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of last known good resources as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LastKnownGoodResourceInner> listLastKnownGoodsAsync(String resourceGroupName, String name) {
         return new PagedFlux<>(() -> listLastKnownGoodsSinglePageAsync(resourceGroupName, name),
@@ -210,49 +201,20 @@ public final class LastKnownGoodResourcesClientImpl implements LastKnownGoodReso
             nextLink -> listLastKnownGoodsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the last known good revision state for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of last known good resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LastKnownGoodResourceInner> listLastKnownGoods(String resourceGroupName, String name) {
         return new PagedIterable<>(listLastKnownGoodsAsync(resourceGroupName, name));
     }
 
-    /**
-     * Lists the last known good revision state for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of last known good resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LastKnownGoodResourceInner> listLastKnownGoods(String resourceGroupName, String name,
         Context context) {
         return new PagedIterable<>(listLastKnownGoodsAsync(resourceGroupName, name, context));
     }
 
-    /**
-     * Gets the last known good revision state for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the last known good revision state for a Web App along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LastKnownGoodResourceInner>> getLastKnownGoodWithResponseAsync(String resourceGroupName,
         String name) {
@@ -314,64 +276,27 @@ public final class LastKnownGoodResourcesClientImpl implements LastKnownGoodReso
             this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
-    /**
-     * Gets the last known good revision state for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the last known good revision state for a Web App on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LastKnownGoodResourceInner> getLastKnownGoodAsync(String resourceGroupName, String name) {
         return getLastKnownGoodWithResponseAsync(resourceGroupName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the last known good revision state for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the last known good revision state for a Web App along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LastKnownGoodResourceInner> getLastKnownGoodWithResponse(String resourceGroupName, String name,
         Context context) {
         return getLastKnownGoodWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Gets the last known good revision state for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the last known good revision state for a Web App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LastKnownGoodResourceInner getLastKnownGood(String resourceGroupName, String name) {
         return getLastKnownGoodWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
-    /**
-     * Marks the current Web App state as last known good.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return last known good singleton resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LastKnownGoodResourceInner>> markLastKnownGoodWithResponseAsync(String resourceGroupName,
         String name) {
@@ -432,49 +357,21 @@ public final class LastKnownGoodResourcesClientImpl implements LastKnownGoodReso
             this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
-    /**
-     * Marks the current Web App state as last known good.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return last known good singleton resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LastKnownGoodResourceInner> markLastKnownGoodAsync(String resourceGroupName, String name) {
         return markLastKnownGoodWithResponseAsync(resourceGroupName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Marks the current Web App state as last known good.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return last known good singleton resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LastKnownGoodResourceInner> markLastKnownGoodWithResponse(String resourceGroupName, String name,
         Context context) {
         return markLastKnownGoodWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Marks the current Web App state as last known good.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return last known good singleton resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LastKnownGoodResourceInner markLastKnownGood(String resourceGroupName, String name) {
         return markLastKnownGoodWithResponse(resourceGroupName, name, Context.NONE).getValue();

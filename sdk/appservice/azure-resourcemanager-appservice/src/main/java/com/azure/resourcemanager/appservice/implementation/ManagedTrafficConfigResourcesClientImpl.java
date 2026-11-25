@@ -184,18 +184,7 @@ public final class ManagedTrafficConfigResourcesClientImpl implements ManagedTra
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists managed traffic configuration resources for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param expand Set to `endpoints` to return the endpoint collection without projection, including both weight and
-     * priority for every endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of managed traffic configurations as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedTrafficConfigResourceInner> listManagedTrafficConfigsAsync(String resourceGroupName,
         String name, String expand) {
@@ -203,16 +192,7 @@ public final class ManagedTrafficConfigResourcesClientImpl implements ManagedTra
             nextLink -> listManagedTrafficConfigsNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists managed traffic configuration resources for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of managed traffic configurations as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedTrafficConfigResourceInner> listManagedTrafficConfigsAsync(String resourceGroupName,
         String name) {
@@ -241,16 +221,7 @@ public final class ManagedTrafficConfigResourcesClientImpl implements ManagedTra
             nextLink -> listManagedTrafficConfigsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists managed traffic configuration resources for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of managed traffic configurations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedTrafficConfigResourceInner> listManagedTrafficConfigs(String resourceGroupName,
         String name) {
@@ -258,36 +229,14 @@ public final class ManagedTrafficConfigResourcesClientImpl implements ManagedTra
         return new PagedIterable<>(listManagedTrafficConfigsAsync(resourceGroupName, name, expand));
     }
 
-    /**
-     * Lists managed traffic configuration resources for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param expand Set to `endpoints` to return the endpoint collection without projection, including both weight and
-     * priority for every endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of managed traffic configurations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedTrafficConfigResourceInner> listManagedTrafficConfigs(String resourceGroupName,
         String name, String expand, Context context) {
         return new PagedIterable<>(listManagedTrafficConfigsAsync(resourceGroupName, name, expand, context));
     }
 
-    /**
-     * Gets managed traffic configuration for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed traffic configuration for a Web App along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedTrafficConfigResourceInner>>
         getManagedTrafficConfigWithResponseAsync(String resourceGroupName, String name) {
@@ -349,66 +298,27 @@ public final class ManagedTrafficConfigResourcesClientImpl implements ManagedTra
             this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
-    /**
-     * Gets managed traffic configuration for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed traffic configuration for a Web App on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedTrafficConfigResourceInner> getManagedTrafficConfigAsync(String resourceGroupName, String name) {
         return getManagedTrafficConfigWithResponseAsync(resourceGroupName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets managed traffic configuration for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed traffic configuration for a Web App along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedTrafficConfigResourceInner> getManagedTrafficConfigWithResponse(String resourceGroupName,
         String name, Context context) {
         return getManagedTrafficConfigWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Gets managed traffic configuration for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed traffic configuration for a Web App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedTrafficConfigResourceInner getManagedTrafficConfig(String resourceGroupName, String name) {
         return getManagedTrafficConfigWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
-    /**
-     * Updates managed traffic configuration for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed traffic configuration singleton resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedTrafficConfigResourceInner>> updateManagedTrafficConfigWithResponseAsync(
         String resourceGroupName, String name, ManagedTrafficConfigResourceInner resource) {
@@ -484,17 +394,7 @@ public final class ManagedTrafficConfigResourcesClientImpl implements ManagedTra
             this.client.getSubscriptionId(), resourceGroupName, name, contentType, accept, resource, context);
     }
 
-    /**
-     * Updates managed traffic configuration for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed traffic configuration singleton resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedTrafficConfigResourceInner> updateManagedTrafficConfigAsync(String resourceGroupName,
         String name, ManagedTrafficConfigResourceInner resource) {
@@ -502,35 +402,14 @@ public final class ManagedTrafficConfigResourcesClientImpl implements ManagedTra
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates managed traffic configuration for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed traffic configuration singleton resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedTrafficConfigResourceInner> updateManagedTrafficConfigWithResponse(String resourceGroupName,
         String name, ManagedTrafficConfigResourceInner resource, Context context) {
         return updateManagedTrafficConfigWithResponseAsync(resourceGroupName, name, resource, context).block();
     }
 
-    /**
-     * Updates managed traffic configuration for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed traffic configuration singleton resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedTrafficConfigResourceInner updateManagedTrafficConfig(String resourceGroupName, String name,
         ManagedTrafficConfigResourceInner resource) {

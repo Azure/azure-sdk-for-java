@@ -174,18 +174,7 @@ public final class SitesClientImpl implements SitesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all Network Security Perimeter Association Configurations for the site.
-     * 
-     * Description for Gets all Network Security Perimeter Association Configurations for the site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Network Security Perimeter Configurations as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkSecurityPerimeterConfigurationInner>
         listNetworkSecurityPerimeterConfigurationsAsync(String resourceGroupName, String name) {
@@ -214,64 +203,21 @@ public final class SitesClientImpl implements SitesClient {
             nextLink -> listNetworkSecurityPerimeterConfigurationsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all Network Security Perimeter Association Configurations for the site.
-     * 
-     * Description for Gets all Network Security Perimeter Association Configurations for the site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Network Security Perimeter Configurations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityPerimeterConfigurationInner>
         listNetworkSecurityPerimeterConfigurations(String resourceGroupName, String name) {
         return new PagedIterable<>(listNetworkSecurityPerimeterConfigurationsAsync(resourceGroupName, name));
     }
 
-    /**
-     * Lists all Network Security Perimeter Association Configurations for the site.
-     * 
-     * Description for Gets all Network Security Perimeter Association Configurations for the site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Network Security Perimeter Configurations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityPerimeterConfigurationInner>
         listNetworkSecurityPerimeterConfigurations(String resourceGroupName, String name, Context context) {
         return new PagedIterable<>(listNetworkSecurityPerimeterConfigurationsAsync(resourceGroupName, name, context));
     }
 
-    /**
-     * Gets the Network Security Perimeter Association Configuration for the site for the specified Network Security
-     * Perimeter Association reference.
-     * 
-     * Description for Gets the Network Security Perimeter Association Configuration for the site for the specified
-     * Network Security Perimeter Association reference.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param networkSecurityPerimeterReference AssociationName and PerimeterGuid of the Network Security Perimeter
-     * Association.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Security Perimeter Association Configuration for the site for the specified Network Security
-     * Perimeter Association reference.
-     * 
-     * Description for Gets the Network Security Perimeter Association Configuration for the site for the specified
-     * Network Security Perimeter Association reference along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkSecurityPerimeterConfigurationInner>>
         getNetworkSecurityPerimeterConfigurationWithResponseAsync(String resourceGroupName, String name,
@@ -355,26 +301,7 @@ public final class SitesClientImpl implements SitesClient {
             context);
     }
 
-    /**
-     * Gets the Network Security Perimeter Association Configuration for the site for the specified Network Security
-     * Perimeter Association reference.
-     * 
-     * Description for Gets the Network Security Perimeter Association Configuration for the site for the specified
-     * Network Security Perimeter Association reference.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param networkSecurityPerimeterReference AssociationName and PerimeterGuid of the Network Security Perimeter
-     * Association.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Security Perimeter Association Configuration for the site for the specified Network Security
-     * Perimeter Association reference.
-     * 
-     * Description for Gets the Network Security Perimeter Association Configuration for the site for the specified
-     * Network Security Perimeter Association reference on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkSecurityPerimeterConfigurationInner> getNetworkSecurityPerimeterConfigurationAsync(
         String resourceGroupName, String name, String networkSecurityPerimeterReference) {
@@ -382,27 +309,7 @@ public final class SitesClientImpl implements SitesClient {
             networkSecurityPerimeterReference).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the Network Security Perimeter Association Configuration for the site for the specified Network Security
-     * Perimeter Association reference.
-     * 
-     * Description for Gets the Network Security Perimeter Association Configuration for the site for the specified
-     * Network Security Perimeter Association reference.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param networkSecurityPerimeterReference AssociationName and PerimeterGuid of the Network Security Perimeter
-     * Association.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Security Perimeter Association Configuration for the site for the specified Network Security
-     * Perimeter Association reference.
-     * 
-     * Description for Gets the Network Security Perimeter Association Configuration for the site for the specified
-     * Network Security Perimeter Association reference along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkSecurityPerimeterConfigurationInner> getNetworkSecurityPerimeterConfigurationWithResponse(
         String resourceGroupName, String name, String networkSecurityPerimeterReference, Context context) {
@@ -410,26 +317,7 @@ public final class SitesClientImpl implements SitesClient {
             networkSecurityPerimeterReference, context).block();
     }
 
-    /**
-     * Gets the Network Security Perimeter Association Configuration for the site for the specified Network Security
-     * Perimeter Association reference.
-     * 
-     * Description for Gets the Network Security Perimeter Association Configuration for the site for the specified
-     * Network Security Perimeter Association reference.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param networkSecurityPerimeterReference AssociationName and PerimeterGuid of the Network Security Perimeter
-     * Association.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Security Perimeter Association Configuration for the site for the specified Network Security
-     * Perimeter Association reference.
-     * 
-     * Description for Gets the Network Security Perimeter Association Configuration for the site for the specified
-     * Network Security Perimeter Association reference.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityPerimeterConfigurationInner getNetworkSecurityPerimeterConfiguration(String resourceGroupName,
         String name, String networkSecurityPerimeterReference) {

@@ -211,16 +211,7 @@ public final class SiteSiloResourcesClientImpl implements SiteSiloResourcesClien
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all silos for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all silos for a Web App as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SiteSiloInner> listSiteSilosAsync(String resourceGroupName, String name) {
         return new PagedFlux<>(() -> listSiteSilosSinglePageAsync(resourceGroupName, name),
@@ -244,48 +235,19 @@ public final class SiteSiloResourcesClientImpl implements SiteSiloResourcesClien
             nextLink -> listSiteSilosNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all silos for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all silos for a Web App as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SiteSiloInner> listSiteSilos(String resourceGroupName, String name) {
         return new PagedIterable<>(listSiteSilosAsync(resourceGroupName, name));
     }
 
-    /**
-     * Gets all silos for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all silos for a Web App as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SiteSiloInner> listSiteSilos(String resourceGroupName, String name, Context context) {
         return new PagedIterable<>(listSiteSilosAsync(resourceGroupName, name, context));
     }
 
-    /**
-     * Gets a specific silo for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific silo for a Web App along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SiteSiloInner>> getSiteSiloWithResponseAsync(String resourceGroupName, String name,
         String siloName) {
@@ -353,70 +315,27 @@ public final class SiteSiloResourcesClientImpl implements SiteSiloResourcesClien
             this.client.getSubscriptionId(), resourceGroupName, name, siloName, accept, context);
     }
 
-    /**
-     * Gets a specific silo for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific silo for a Web App on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SiteSiloInner> getSiteSiloAsync(String resourceGroupName, String name, String siloName) {
         return getSiteSiloWithResponseAsync(resourceGroupName, name, siloName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a specific silo for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific silo for a Web App along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SiteSiloInner> getSiteSiloWithResponse(String resourceGroupName, String name, String siloName,
         Context context) {
         return getSiteSiloWithResponseAsync(resourceGroupName, name, siloName, context).block();
     }
 
-    /**
-     * Gets a specific silo for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific silo for a Web App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteSiloInner getSiteSilo(String resourceGroupName, String name, String siloName) {
         return getSiteSiloWithResponse(resourceGroupName, name, siloName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a silo for a Web App. Returns 202 with polling headers when background work is queued, or 200
-     * when no update is needed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a silo of a Web App resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateSiteSiloWithResponseAsync(String resourceGroupName,
         String name, String siloName, SiteSiloInner resource) {
@@ -499,19 +418,7 @@ public final class SiteSiloResourcesClientImpl implements SiteSiloResourcesClien
             this.client.getSubscriptionId(), resourceGroupName, name, siloName, contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or updates a silo for a Web App. Returns 202 with polling headers when background work is queued, or 200
-     * when no update is needed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a silo of a Web App resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SiteSiloInner>, SiteSiloInner> beginCreateOrUpdateSiteSiloAsync(
         String resourceGroupName, String name, String siloName, SiteSiloInner resource) {
@@ -545,39 +452,14 @@ public final class SiteSiloResourcesClientImpl implements SiteSiloResourcesClien
             SiteSiloInner.class, SiteSiloInner.class, context);
     }
 
-    /**
-     * Creates or updates a silo for a Web App. Returns 202 with polling headers when background work is queued, or 200
-     * when no update is needed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a silo of a Web App resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SiteSiloInner>, SiteSiloInner> beginCreateOrUpdateSiteSilo(String resourceGroupName,
         String name, String siloName, SiteSiloInner resource) {
         return this.beginCreateOrUpdateSiteSiloAsync(resourceGroupName, name, siloName, resource).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a silo for a Web App. Returns 202 with polling headers when background work is queued, or 200
-     * when no update is needed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a silo of a Web App resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SiteSiloInner>, SiteSiloInner> beginCreateOrUpdateSiteSilo(String resourceGroupName,
         String name, String siloName, SiteSiloInner resource, Context context) {
@@ -585,19 +467,7 @@ public final class SiteSiloResourcesClientImpl implements SiteSiloResourcesClien
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a silo for a Web App. Returns 202 with polling headers when background work is queued, or 200
-     * when no update is needed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a silo of a Web App resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SiteSiloInner> createOrUpdateSiteSiloAsync(String resourceGroupName, String name, String siloName,
         SiteSiloInner resource) {
@@ -626,57 +496,21 @@ public final class SiteSiloResourcesClientImpl implements SiteSiloResourcesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a silo for a Web App. Returns 202 with polling headers when background work is queued, or 200
-     * when no update is needed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a silo of a Web App resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteSiloInner createOrUpdateSiteSilo(String resourceGroupName, String name, String siloName,
         SiteSiloInner resource) {
         return createOrUpdateSiteSiloAsync(resourceGroupName, name, siloName, resource).block();
     }
 
-    /**
-     * Creates or updates a silo for a Web App. Returns 202 with polling headers when background work is queued, or 200
-     * when no update is needed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a silo of a Web App resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteSiloInner createOrUpdateSiteSilo(String resourceGroupName, String name, String siloName,
         SiteSiloInner resource, Context context) {
         return createOrUpdateSiteSiloAsync(resourceGroupName, name, siloName, resource, context).block();
     }
 
-    /**
-     * Updates only the tags of a Web App silo. Silo configuration and provisioning state are not modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a silo of a Web App resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SiteSiloInner>> updateSiteSiloWithResponseAsync(String resourceGroupName, String name,
         String siloName, SiteSiloTagsUpdate properties) {
@@ -759,18 +593,7 @@ public final class SiteSiloResourcesClientImpl implements SiteSiloResourcesClien
             context);
     }
 
-    /**
-     * Updates only the tags of a Web App silo. Silo configuration and provisioning state are not modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a silo of a Web App resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SiteSiloInner> updateSiteSiloAsync(String resourceGroupName, String name, String siloName,
         SiteSiloTagsUpdate properties) {
@@ -778,54 +601,21 @@ public final class SiteSiloResourcesClientImpl implements SiteSiloResourcesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates only the tags of a Web App silo. Silo configuration and provisioning state are not modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a silo of a Web App resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SiteSiloInner> updateSiteSiloWithResponse(String resourceGroupName, String name, String siloName,
         SiteSiloTagsUpdate properties, Context context) {
         return updateSiteSiloWithResponseAsync(resourceGroupName, name, siloName, properties, context).block();
     }
 
-    /**
-     * Updates only the tags of a Web App silo. Silo configuration and provisioning state are not modified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a silo of a Web App resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteSiloInner updateSiteSilo(String resourceGroupName, String name, String siloName,
         SiteSiloTagsUpdate properties) {
         return updateSiteSiloWithResponse(resourceGroupName, name, siloName, properties, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a silo for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteSiteSiloWithResponseAsync(String resourceGroupName, String name,
         String siloName) {
@@ -891,17 +681,7 @@ public final class SiteSiloResourcesClientImpl implements SiteSiloResourcesClien
             this.client.getSubscriptionId(), resourceGroupName, name, siloName, context);
     }
 
-    /**
-     * Deletes a silo for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteSiteSiloAsync(String resourceGroupName, String name,
         String siloName) {
@@ -932,52 +712,21 @@ public final class SiteSiloResourcesClientImpl implements SiteSiloResourcesClien
             context);
     }
 
-    /**
-     * Deletes a silo for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSiteSilo(String resourceGroupName, String name,
         String siloName) {
         return this.beginDeleteSiteSiloAsync(resourceGroupName, name, siloName).getSyncPoller();
     }
 
-    /**
-     * Deletes a silo for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSiteSilo(String resourceGroupName, String name,
         String siloName, Context context) {
         return this.beginDeleteSiteSiloAsync(resourceGroupName, name, siloName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a silo for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSiteSiloAsync(String resourceGroupName, String name, String siloName) {
         return beginDeleteSiteSiloAsync(resourceGroupName, name, siloName).last()
@@ -1002,49 +751,19 @@ public final class SiteSiloResourcesClientImpl implements SiteSiloResourcesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a silo for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSiteSilo(String resourceGroupName, String name, String siloName) {
         deleteSiteSiloAsync(resourceGroupName, name, siloName).block();
     }
 
-    /**
-     * Deletes a silo for a Web App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param siloName The name of the SiteSilo.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSiteSilo(String resourceGroupName, String name, String siloName, Context context) {
         deleteSiteSiloAsync(resourceGroupName, name, siloName, context).block();
     }
 
-    /**
-     * Forces a fresh revision for an Active Backup primary Web App and re-syncs all of its silos. The refresh request
-     * is recorded synchronously; silos then converge asynchronously — track progress through each silo's
-     * revisionNumber.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> refreshSiteSilosWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
@@ -1104,52 +823,19 @@ public final class SiteSiloResourcesClientImpl implements SiteSiloResourcesClien
             this.client.getSubscriptionId(), resourceGroupName, name, context);
     }
 
-    /**
-     * Forces a fresh revision for an Active Backup primary Web App and re-syncs all of its silos. The refresh request
-     * is recorded synchronously; silos then converge asynchronously — track progress through each silo's
-     * revisionNumber.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> refreshSiteSilosAsync(String resourceGroupName, String name) {
         return refreshSiteSilosWithResponseAsync(resourceGroupName, name).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Forces a fresh revision for an Active Backup primary Web App and re-syncs all of its silos. The refresh request
-     * is recorded synchronously; silos then converge asynchronously — track progress through each silo's
-     * revisionNumber.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> refreshSiteSilosWithResponse(String resourceGroupName, String name, Context context) {
         return refreshSiteSilosWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Forces a fresh revision for an Active Backup primary Web App and re-syncs all of its silos. The refresh request
-     * is recorded synchronously; silos then converge asynchronously — track progress through each silo's
-     * revisionNumber.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void refreshSiteSilos(String resourceGroupName, String name) {
         refreshSiteSilosWithResponse(resourceGroupName, name, Context.NONE);

@@ -81,17 +81,7 @@ public final class StaticSitesAsyncOperationsClientImpl implements StaticSitesAs
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the status of a static site async operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a static site async operation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSitesOperationStatusInner>> getOperationStatusWithResponseAsync(String location,
         String operationId) {
@@ -151,65 +141,27 @@ public final class StaticSitesAsyncOperationsClientImpl implements StaticSitesAs
             this.client.getSubscriptionId(), location, operationId, accept, context);
     }
 
-    /**
-     * Gets the status of a static site async operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a static site async operation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSitesOperationStatusInner> getOperationStatusAsync(String location, String operationId) {
         return getOperationStatusWithResponseAsync(location, operationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the status of a static site async operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a static site async operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSitesOperationStatusInner> getOperationStatusWithResponse(String location, String operationId,
         Context context) {
         return getOperationStatusWithResponseAsync(location, operationId, context).block();
     }
 
-    /**
-     * Gets the status of a static site async operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a static site async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSitesOperationStatusInner getOperationStatus(String location, String operationId) {
         return getOperationStatusWithResponse(location, operationId, Context.NONE).getValue();
     }
 
-    /**
-     * Gets the result of a static site async operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a static site async operation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getOperationResultWithResponseAsync(String location, String operationId) {
         if (this.client.getEndpoint() == null) {
@@ -268,16 +220,7 @@ public final class StaticSitesAsyncOperationsClientImpl implements StaticSitesAs
             this.client.getSubscriptionId(), location, operationId, accept, context);
     }
 
-    /**
-     * Gets the result of a static site async operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the result of a static site async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginGetOperationResultAsync(String location, String operationId) {
         Mono<Response<Flux<ByteBuffer>>> mono = getOperationResultWithResponseAsync(location, operationId);
@@ -305,48 +248,20 @@ public final class StaticSitesAsyncOperationsClientImpl implements StaticSitesAs
             context);
     }
 
-    /**
-     * Gets the result of a static site async operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the result of a static site async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGetOperationResult(String location, String operationId) {
         return this.beginGetOperationResultAsync(location, operationId).getSyncPoller();
     }
 
-    /**
-     * Gets the result of a static site async operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the result of a static site async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGetOperationResult(String location, String operationId,
         Context context) {
         return this.beginGetOperationResultAsync(location, operationId, context).getSyncPoller();
     }
 
-    /**
-     * Gets the result of a static site async operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a static site async operation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> getOperationResultAsync(String location, String operationId) {
         return beginGetOperationResultAsync(location, operationId).last()
@@ -370,30 +285,13 @@ public final class StaticSitesAsyncOperationsClientImpl implements StaticSitesAs
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the result of a static site async operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getOperationResult(String location, String operationId) {
         getOperationResultAsync(location, operationId).block();
     }
 
-    /**
-     * Gets the result of a static site async operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getOperationResult(String location, String operationId, Context context) {
         getOperationResultAsync(location, operationId, context).block();

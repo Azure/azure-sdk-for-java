@@ -149,16 +149,7 @@ public final class AiGatewaysClientImpl implements InnerSupportsGet<AiGatewayInn
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get a AiGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the AI gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AiGateway along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AiGatewayInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
@@ -218,65 +209,27 @@ public final class AiGatewaysClientImpl implements InnerSupportsGet<AiGatewayInn
             this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
-    /**
-     * Get a AiGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the AI gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AiGateway on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AiGatewayInner> getByResourceGroupAsync(String resourceGroupName, String name) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a AiGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the AI gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AiGateway along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AiGatewayInner> getByResourceGroupWithResponse(String resourceGroupName, String name,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Get a AiGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the AI gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AiGateway.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AiGatewayInner getByResourceGroup(String resourceGroupName, String name) {
         return getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
-    /**
-     * Create a AiGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the AI gateway.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AI gateway resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AiGatewayInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String name,
         AiGatewayInner resource) {
@@ -350,68 +303,27 @@ public final class AiGatewaysClientImpl implements InnerSupportsGet<AiGatewayInn
             this.client.getSubscriptionId(), resourceGroupName, name, contentType, accept, resource, context);
     }
 
-    /**
-     * Create a AiGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the AI gateway.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AI gateway resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AiGatewayInner> createOrUpdateAsync(String resourceGroupName, String name, AiGatewayInner resource) {
         return createOrUpdateWithResponseAsync(resourceGroupName, name, resource)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a AiGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the AI gateway.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AI gateway resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AiGatewayInner> createOrUpdateWithResponse(String resourceGroupName, String name,
         AiGatewayInner resource, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, name, resource, context).block();
     }
 
-    /**
-     * Create a AiGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the AI gateway.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AI gateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AiGatewayInner createOrUpdate(String resourceGroupName, String name, AiGatewayInner resource) {
         return createOrUpdateWithResponse(resourceGroupName, name, resource, Context.NONE).getValue();
     }
 
-    /**
-     * Update a AiGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the AI gateway.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AI gateway resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AiGatewayInner>> patchWithResponseAsync(String resourceGroupName, String name,
         AiGatewayTagsUpdate properties) {
@@ -485,67 +397,27 @@ public final class AiGatewaysClientImpl implements InnerSupportsGet<AiGatewayInn
             resourceGroupName, name, contentType, accept, properties, context);
     }
 
-    /**
-     * Update a AiGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the AI gateway.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AI gateway resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AiGatewayInner> patchAsync(String resourceGroupName, String name, AiGatewayTagsUpdate properties) {
         return patchWithResponseAsync(resourceGroupName, name, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a AiGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the AI gateway.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AI gateway resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AiGatewayInner> patchWithResponse(String resourceGroupName, String name,
         AiGatewayTagsUpdate properties, Context context) {
         return patchWithResponseAsync(resourceGroupName, name, properties, context).block();
     }
 
-    /**
-     * Update a AiGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the AI gateway.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AI gateway resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AiGatewayInner patch(String resourceGroupName, String name, AiGatewayTagsUpdate properties) {
         return patchWithResponse(resourceGroupName, name, properties, Context.NONE).getValue();
     }
 
-    /**
-     * Delete a AiGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the AI gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
@@ -602,46 +474,19 @@ public final class AiGatewaysClientImpl implements InnerSupportsGet<AiGatewayInn
             resourceGroupName, name, context);
     }
 
-    /**
-     * Delete a AiGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the AI gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String name) {
         return deleteWithResponseAsync(resourceGroupName, name).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a AiGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the AI gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String name, Context context) {
         return deleteWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Delete a AiGateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the AI gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name) {
         deleteWithResponse(resourceGroupName, name, Context.NONE);
@@ -703,13 +548,7 @@ public final class AiGatewaysClientImpl implements InnerSupportsGet<AiGatewayInn
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List AiGateway resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AiGateway list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AiGatewayInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(),
@@ -731,27 +570,13 @@ public final class AiGatewaysClientImpl implements InnerSupportsGet<AiGatewayInn
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List AiGateway resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AiGateway list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AiGatewayInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * List AiGateway resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AiGateway list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AiGatewayInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
@@ -862,22 +687,7 @@ public final class AiGatewaysClientImpl implements InnerSupportsGet<AiGatewayInn
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List AiGateway resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top The number of result items to return.
-     * @param skip The number of result items to skip.
-     * @param maxPageSize The maximum number of result items per page.
-     * @param filter Filter the result list using the given expression.
-     * @param select Select the specified fields to be included in the response.
-     * @param expand Expand the indicated resources into the response.
-     * @param orderBy Expressions that specify the order of returned results.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AiGateway list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AiGatewayInner> listByResourceGroupAsync(String resourceGroupName, Integer top, Integer skip,
         Integer maxPageSize, String filter, List<String> select, List<String> expand, List<String> orderBy) {
@@ -885,15 +695,7 @@ public final class AiGatewaysClientImpl implements InnerSupportsGet<AiGatewayInn
             filter, select, expand, orderBy), nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List AiGateway resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AiGateway list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AiGatewayInner> listByResourceGroupAsync(String resourceGroupName) {
         final Integer top = null;
@@ -933,15 +735,7 @@ public final class AiGatewaysClientImpl implements InnerSupportsGet<AiGatewayInn
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List AiGateway resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AiGateway list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AiGatewayInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
@@ -955,23 +749,7 @@ public final class AiGatewaysClientImpl implements InnerSupportsGet<AiGatewayInn
             listByResourceGroupAsync(resourceGroupName, top, skip, maxPageSize, filter, select, expand, orderBy));
     }
 
-    /**
-     * List AiGateway resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top The number of result items to return.
-     * @param skip The number of result items to skip.
-     * @param maxPageSize The maximum number of result items per page.
-     * @param filter Filter the result list using the given expression.
-     * @param select Select the specified fields to be included in the response.
-     * @param expand Expand the indicated resources into the response.
-     * @param orderBy Expressions that specify the order of returned results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AiGateway list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AiGatewayInner> listByResourceGroup(String resourceGroupName, Integer top, Integer skip,
         Integer maxPageSize, String filter, List<String> select, List<String> expand, List<String> orderBy,
