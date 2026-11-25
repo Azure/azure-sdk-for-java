@@ -19,6 +19,54 @@ extends:
       - stage: Validate
         displayName: Cosmos v5 validation
         jobs:
+          - job: NativeDistributionLinux
+            displayName: Native loading and pinned emulator validation
+            timeoutInMinutes: 45
+            pool:
+              name: azsdk-pool
+              image: ubuntu-24.04
+              os: linux
+            steps:
+              - checkout: self
+              - task: JavaToolInstaller@0
+                inputs:
+                  versionSpec: '17'
+                  jdkArchitectureOption: x64
+                  jdkSourceOption: PreInstalled
+              - script: |
+                  set -euo pipefail
+                  python3 -B -m unittest discover -s sdk/cosmos-v5/azure-cosmos -p 'test_*.py'
+                  python3 -B sdk/cosmos-v5/azure-cosmos/verify-native.py
+                displayName: Verify pinned distribution and relocated JNI runtime
+                workingDirectory: $(Build.SourcesDirectory)
+              - script: |
+                  set -euo pipefail
+                  if ! command -v rustup >/dev/null 2>&1; then
+                    curl --fail --show-error --silent --location --proto '=https' --tlsv1.2 \
+                      https://sh.rustup.rs -o "$(Agent.TempDirectory)/cosmos-rustup-init.sh"
+                    sh "$(Agent.TempDirectory)/cosmos-rustup-init.sh" \
+                      -y --no-modify-path --profile minimal --default-toolchain none
+                    export PATH="$HOME/.cargo/bin:$PATH"
+                    echo "##vso[task.prependpath]$HOME/.cargo/bin"
+                  fi
+                  version=$(python3 -c 'import json; print(json.load(open("sdk/cosmos-v5/azure-cosmos/emulator.json"))["rustVersion"])')
+                  rustup toolchain install "$version" --profile minimal
+                  python3 -B sdk/cosmos-v5/azure-cosmos/verify-emulator.py --prepare-only --configure-feed
+                displayName: Prepare independently pinned emulator source and toolchain
+                workingDirectory: $(Build.SourcesDirectory)
+              # Match the Rust/Go pipelines' endpoint-token workaround for public/fork builds.
+              - task: NuGetAuthenticate@1
+                displayName: Acquire the Azure Artifacts endpoint token
+              - task: CargoAuthenticate@0
+                inputs:
+                  configFile: $(Build.SourcesDirectory)/sdk/cosmos-v5/azure-cosmos/target/emulator/cargo/config.toml
+                env:
+                  SYSTEM_ACCESSTOKEN: $(VSS_NUGET_ACCESSTOKEN)
+              - script: |
+                  set -euo pipefail
+                  python3 -B sdk/cosmos-v5/azure-cosmos/verify-emulator.py
+                displayName: Build, start, health-check and stop the pinned emulator
+                workingDirectory: $(Build.SourcesDirectory)
           - ${{ each javaVersion in parameters.JavaVersions }}:
               - job: Java${{ javaVersion }}
                 timeoutInMinutes: 60

@@ -49,7 +49,7 @@ class BuildMetadataTests {
     }
 
     @Test
-    void moduleHasNoPublicApiOrNativeImplementation() throws IOException {
+    void moduleHasNoPublicApiExports() throws IOException {
         try (InputStream stream = Files.newInputStream(Path.of("target", "classes", "module-info.class"))) {
             ModuleDescriptor descriptor = ModuleDescriptor.read(stream);
             assertEquals("com.azure.v2.cosmos", descriptor.name());

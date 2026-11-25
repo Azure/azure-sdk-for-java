@@ -1,0 +1,20 @@
+{
+  "account": {
+    "id": "cosmos-java-native-smoke",
+    "writeMode": "single",
+    "consistency": "session",
+    "perPartitionFailover": false,
+    "throttling": false,
+    "regions": [
+      {
+        "name": "East US",
+        "gatewayPort": 0,
+        "regionId": 0
+      }
+    ]
+  },
+  "management": {
+    "port": 0
+  },
+  "databases": []
+}

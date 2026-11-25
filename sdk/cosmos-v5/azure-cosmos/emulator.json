@@ -1,0 +1,5 @@
+{
+  "repository": "https://github.com/Azure/azure-sdk-for-rust.git",
+  "sourceRevision": "408c4eb145b189cb14771ed7ae1f52626e5873ef",
+  "rustVersion": "1.95.0"
+}
