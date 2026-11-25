@@ -18,44 +18,54 @@ public final class ElasticSanUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticSanUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"baseSizeTiB\":4764420434211011454,\"extendedCapacitySizeTiB\":7229748892246039848,\"publicNetworkAccess\":\"Enabled\",\"autoScaleProperties\":{\"scaleUpProperties\":{\"unusedSizeTiB\":6336997568573422553,\"increaseCapacityUnitByTiB\":5546315024826838939,\"capacityUnitScaleUpLimitTiB\":6205752976373058223,\"autoScalePolicyEnforcement\":\"None\"}}},\"tags\":{\"dmgloug\":\"zsm\",\"wtmutduq\":\"b\"}}")
+            "{\"properties\":{\"baseSizeTiB\":3347246282518860825,\"extendedCapacitySizeTiB\":2052497777970965260,\"publicNetworkAccess\":\"Disabled\",\"autoScaleProperties\":{\"scaleUpProperties\":{\"unusedSizeTiB\":9221150832525333730,\"increaseCapacityUnitByTiB\":3697879033073094167,\"capacityUnitScaleUpLimitTiB\":6857493203334050846,\"autoScalePolicyEnforcement\":\"Enabled\"}},\"totalIops\":5204551903368459862,\"totalMBps\":3522578365119708871,\"totalSizeTiB\":1311446085292256773},\"tags\":{\"flnrosfqpteehzz\":\"wmdwzjeiachboo\",\"swjdkirso\":\"ypyqrimzinp\"}}")
             .toObject(ElasticSanUpdate.class);
-        Assertions.assertEquals("zsm", model.tags().get("dmgloug"));
-        Assertions.assertEquals(4764420434211011454L, model.baseSizeTiB());
-        Assertions.assertEquals(7229748892246039848L, model.extendedCapacitySizeTiB());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
-        Assertions.assertEquals(6336997568573422553L, model.autoScaleProperties().scaleUpProperties().unusedSizeTiB());
-        Assertions.assertEquals(5546315024826838939L,
+        Assertions.assertEquals("wmdwzjeiachboo", model.tags().get("flnrosfqpteehzz"));
+        Assertions.assertEquals(3347246282518860825L, model.baseSizeTiB());
+        Assertions.assertEquals(2052497777970965260L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(9221150832525333730L, model.autoScaleProperties().scaleUpProperties().unusedSizeTiB());
+        Assertions.assertEquals(3697879033073094167L,
             model.autoScaleProperties().scaleUpProperties().increaseCapacityUnitByTiB());
-        Assertions.assertEquals(6205752976373058223L,
+        Assertions.assertEquals(6857493203334050846L,
             model.autoScaleProperties().scaleUpProperties().capacityUnitScaleUpLimitTiB());
-        Assertions.assertEquals(AutoScalePolicyEnforcement.NONE,
+        Assertions.assertEquals(AutoScalePolicyEnforcement.ENABLED,
             model.autoScaleProperties().scaleUpProperties().autoScalePolicyEnforcement());
+        Assertions.assertEquals(5204551903368459862L, model.totalIops());
+        Assertions.assertEquals(3522578365119708871L, model.totalMBps());
+        Assertions.assertEquals(1311446085292256773L, model.totalSizeTiB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticSanUpdate model = new ElasticSanUpdate().withTags(mapOf("dmgloug", "zsm", "wtmutduq", "b"))
-            .withBaseSizeTiB(4764420434211011454L)
-            .withExtendedCapacitySizeTiB(7229748892246039848L)
-            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-            .withAutoScaleProperties(new AutoScaleProperties()
-                .withScaleUpProperties(new ScaleUpProperties().withUnusedSizeTiB(6336997568573422553L)
-                    .withIncreaseCapacityUnitByTiB(5546315024826838939L)
-                    .withCapacityUnitScaleUpLimitTiB(6205752976373058223L)
-                    .withAutoScalePolicyEnforcement(AutoScalePolicyEnforcement.NONE)));
+        ElasticSanUpdate model
+            = new ElasticSanUpdate().withTags(mapOf("flnrosfqpteehzz", "wmdwzjeiachboo", "swjdkirso", "ypyqrimzinp"))
+                .withBaseSizeTiB(3347246282518860825L)
+                .withExtendedCapacitySizeTiB(2052497777970965260L)
+                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+                .withAutoScaleProperties(new AutoScaleProperties()
+                    .withScaleUpProperties(new ScaleUpProperties().withUnusedSizeTiB(9221150832525333730L)
+                        .withIncreaseCapacityUnitByTiB(3697879033073094167L)
+                        .withCapacityUnitScaleUpLimitTiB(6857493203334050846L)
+                        .withAutoScalePolicyEnforcement(AutoScalePolicyEnforcement.ENABLED)))
+                .withTotalIops(5204551903368459862L)
+                .withTotalMBps(3522578365119708871L)
+                .withTotalSizeTiB(1311446085292256773L);
         model = BinaryData.fromObject(model).toObject(ElasticSanUpdate.class);
-        Assertions.assertEquals("zsm", model.tags().get("dmgloug"));
-        Assertions.assertEquals(4764420434211011454L, model.baseSizeTiB());
-        Assertions.assertEquals(7229748892246039848L, model.extendedCapacitySizeTiB());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
-        Assertions.assertEquals(6336997568573422553L, model.autoScaleProperties().scaleUpProperties().unusedSizeTiB());
-        Assertions.assertEquals(5546315024826838939L,
+        Assertions.assertEquals("wmdwzjeiachboo", model.tags().get("flnrosfqpteehzz"));
+        Assertions.assertEquals(3347246282518860825L, model.baseSizeTiB());
+        Assertions.assertEquals(2052497777970965260L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(9221150832525333730L, model.autoScaleProperties().scaleUpProperties().unusedSizeTiB());
+        Assertions.assertEquals(3697879033073094167L,
             model.autoScaleProperties().scaleUpProperties().increaseCapacityUnitByTiB());
-        Assertions.assertEquals(6205752976373058223L,
+        Assertions.assertEquals(6857493203334050846L,
             model.autoScaleProperties().scaleUpProperties().capacityUnitScaleUpLimitTiB());
-        Assertions.assertEquals(AutoScalePolicyEnforcement.NONE,
+        Assertions.assertEquals(AutoScalePolicyEnforcement.ENABLED,
             model.autoScaleProperties().scaleUpProperties().autoScalePolicyEnforcement());
+        Assertions.assertEquals(5204551903368459862L, model.totalIops());
+        Assertions.assertEquals(3522578365119708871L, model.totalMBps());
+        Assertions.assertEquals(1311446085292256773L, model.totalSizeTiB());
     }
 
     // Use "Map.of" if available

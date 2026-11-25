@@ -206,11 +206,7 @@ public final class KubernetesClusterImpl
     }
 
     public KubernetesCluster create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getKubernetesClusters()
-            .createOrUpdate(resourceGroupName, kubernetesClusterName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public KubernetesCluster create(Context context) {
@@ -237,11 +233,7 @@ public final class KubernetesClusterImpl
     }
 
     public KubernetesCluster apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getKubernetesClusters()
-            .update(resourceGroupName, kubernetesClusterName, updateIfMatch, updateIfNoneMatch,
-                updateKubernetesClusterUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public KubernetesCluster apply(Context context) {
@@ -256,16 +248,16 @@ public final class KubernetesClusterImpl
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.kubernetesClusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "kubernetesClusters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}",
+            "resourceGroupName");
+        this.kubernetesClusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}",
+            "kubernetesClusterName");
     }
 
     public KubernetesCluster refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getKubernetesClusters()
-            .getByResourceGroupWithResponse(resourceGroupName, kubernetesClusterName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public KubernetesCluster refresh(Context context) {

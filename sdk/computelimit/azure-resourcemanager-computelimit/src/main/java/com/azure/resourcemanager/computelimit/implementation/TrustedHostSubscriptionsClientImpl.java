@@ -204,23 +204,7 @@ public final class TrustedHostSubscriptionsClientImpl implements TrustedHostSubs
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Adds a host subscription to the guest subscription's list of trusted hosts. A guest
-     * subscription can trust multiple host subscriptions; this only establishes trust and
-     * does not check the guest in to the host. Guest-to-host association is determined at
-     * check-in time, where a subscription can be a guest of at most one host per region.
-     * 
-     * @param location The name of the Azure region.
-     * @param hostSubscriptionId The name of the TrustedHostSubscription.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a host subscription that a guest subscription trusts for sharing compute limits.
-     * A guest subscription can trust multiple host subscriptions; establishing trust does
-     * not by itself associate the guest with a host along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TrustedHostSubscriptionInner> createWithResponse(String location, String hostSubscriptionId,
         TrustedHostSubscriptionInner resource, Context context) {
@@ -230,22 +214,7 @@ public final class TrustedHostSubscriptionsClientImpl implements TrustedHostSubs
             this.client.getSubscriptionId(), location, hostSubscriptionId, contentType, accept, resource, context);
     }
 
-    /**
-     * Adds a host subscription to the guest subscription's list of trusted hosts. A guest
-     * subscription can trust multiple host subscriptions; this only establishes trust and
-     * does not check the guest in to the host. Guest-to-host association is determined at
-     * check-in time, where a subscription can be a guest of at most one host per region.
-     * 
-     * @param location The name of the Azure region.
-     * @param hostSubscriptionId The name of the TrustedHostSubscription.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a host subscription that a guest subscription trusts for sharing compute limits.
-     * A guest subscription can trust multiple host subscriptions; establishing trust does
-     * not by itself associate the guest with a host.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrustedHostSubscriptionInner create(String location, String hostSubscriptionId,
         TrustedHostSubscriptionInner resource) {
@@ -288,17 +257,7 @@ public final class TrustedHostSubscriptionsClientImpl implements TrustedHostSubs
         return getWithResponseAsync(location, hostSubscriptionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a host subscription that the guest subscription trusts.
-     * 
-     * @param location The name of the Azure region.
-     * @param hostSubscriptionId The name of the TrustedHostSubscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a host subscription that the guest subscription trusts along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TrustedHostSubscriptionInner> getWithResponse(String location, String hostSubscriptionId,
         Context context) {
@@ -307,16 +266,7 @@ public final class TrustedHostSubscriptionsClientImpl implements TrustedHostSubs
             location, hostSubscriptionId, accept, context);
     }
 
-    /**
-     * Gets a host subscription that the guest subscription trusts.
-     * 
-     * @param location The name of the Azure region.
-     * @param hostSubscriptionId The name of the TrustedHostSubscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a host subscription that the guest subscription trusts.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrustedHostSubscriptionInner get(String location, String hostSubscriptionId) {
         return getWithResponse(location, hostSubscriptionId, Context.NONE).getValue();
@@ -355,32 +305,14 @@ public final class TrustedHostSubscriptionsClientImpl implements TrustedHostSubs
         return deleteWithResponseAsync(location, hostSubscriptionId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Removes a host subscription from the guest subscription's list of trusted hosts.
-     * 
-     * @param location The name of the Azure region.
-     * @param hostSubscriptionId The name of the TrustedHostSubscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String location, String hostSubscriptionId, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), location, hostSubscriptionId, context);
     }
 
-    /**
-     * Removes a host subscription from the guest subscription's list of trusted hosts.
-     * 
-     * @param location The name of the Azure region.
-     * @param hostSubscriptionId The name of the TrustedHostSubscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String location, String hostSubscriptionId) {
         deleteWithResponse(location, hostSubscriptionId, Context.NONE);
@@ -434,12 +366,7 @@ public final class TrustedHostSubscriptionsClientImpl implements TrustedHostSubs
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TrustedHostSubscriptionInner> listBySubscriptionLocationResourceSinglePage(String location) {
-        final String accept = "application/json";
-        Response<TrustedHostSubscriptionListResult> res
-            = service.listBySubscriptionLocationResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionLocationResourceSinglePage(location, Context.NONE);
     }
 
     /**
@@ -463,33 +390,13 @@ public final class TrustedHostSubscriptionsClientImpl implements TrustedHostSubs
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all host subscriptions that the guest subscription trusts in a location.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TrustedHostSubscription list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrustedHostSubscriptionInner> listBySubscriptionLocationResource(String location) {
-        return new PagedIterable<>(() -> listBySubscriptionLocationResourceSinglePage(location),
-            nextLink -> listBySubscriptionLocationResourceNextSinglePage(nextLink));
+        return listBySubscriptionLocationResource(location, Context.NONE);
     }
 
-    /**
-     * Lists all host subscriptions that the guest subscription trusts in a location.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TrustedHostSubscription list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrustedHostSubscriptionInner> listBySubscriptionLocationResource(String location,
         Context context) {
@@ -531,11 +438,7 @@ public final class TrustedHostSubscriptionsClientImpl implements TrustedHostSubs
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TrustedHostSubscriptionInner>
         listBySubscriptionLocationResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TrustedHostSubscriptionListResult> res = service.listBySubscriptionLocationResourceNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionLocationResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

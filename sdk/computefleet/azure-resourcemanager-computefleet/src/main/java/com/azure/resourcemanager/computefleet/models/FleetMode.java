@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class FleetMode extends ExpandableStringEnum<FleetMode> {
     /**
-     * Default. Managed is the default mode for Compute Fleet where VMs are provisioned via virtual machine scale sets.
+     * Default. Managed mode where Compute Fleet provisions the VMs, manages them and their lifecycle.
      */
     public static final FleetMode MANAGED = fromString("Managed");
 
     /**
-     * Launch mode for Compute Fleet will directly launch VM instances to be managed by the customer.
+     * Launch mode where Compute Fleet launches the VMs and the customer manages them and their lifecycle.
      */
     public static final FleetMode LAUNCH = fromString("Launch");
 

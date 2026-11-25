@@ -54,12 +54,7 @@ public final class NotificationRegistrationImpl
     }
 
     public NotificationRegistration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNotificationRegistrations()
-            .createOrUpdateWithResponse(providerNamespace, notificationRegistrationName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NotificationRegistration create(Context context) {
@@ -81,12 +76,7 @@ public final class NotificationRegistrationImpl
     }
 
     public NotificationRegistration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNotificationRegistrations()
-            .createOrUpdateWithResponse(providerNamespace, notificationRegistrationName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NotificationRegistration apply(Context context) {
@@ -101,17 +91,16 @@ public final class NotificationRegistrationImpl
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.providerNamespace = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
-        this.notificationRegistrationName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "notificationRegistrations");
+        this.providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}",
+            "providerNamespace");
+        this.notificationRegistrationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}",
+            "notificationRegistrationName");
     }
 
     public NotificationRegistration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNotificationRegistrations()
-            .getWithResponse(providerNamespace, notificationRegistrationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NotificationRegistration refresh(Context context) {

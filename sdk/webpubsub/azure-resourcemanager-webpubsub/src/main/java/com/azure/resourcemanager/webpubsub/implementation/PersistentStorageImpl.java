@@ -66,10 +66,7 @@ public final class PersistentStorageImpl
     }
 
     public PersistentStorage create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubPersistentStorages()
-            .createOrUpdate(resourceGroupName, resourceName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PersistentStorage create(Context context) {
@@ -90,10 +87,7 @@ public final class PersistentStorageImpl
     }
 
     public PersistentStorage apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubPersistentStorages()
-            .createOrUpdate(resourceGroupName, resourceName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PersistentStorage apply(Context context) {
@@ -107,17 +101,19 @@ public final class PersistentStorageImpl
         com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "webPubSub");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "persistentStorages");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/persistentStorages/{name}",
+            "resourceGroupName");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/persistentStorages/{name}",
+            "resourceName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/persistentStorages/{name}",
+            "name");
     }
 
     public PersistentStorage refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubPersistentStorages()
-            .getWithResponse(resourceGroupName, resourceName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PersistentStorage refresh(Context context) {

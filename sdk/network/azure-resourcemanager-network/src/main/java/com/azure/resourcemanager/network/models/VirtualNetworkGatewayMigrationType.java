@@ -18,6 +18,18 @@ public final class VirtualNetworkGatewayMigrationType extends ExpandableStringEn
         = fromString("UpgradeDeploymentToStandardIP");
 
     /**
+     * Indicates a migration process to upgrade the virtual network gateway to dual stack (IPv4 and IPv6).
+     */
+    public static final VirtualNetworkGatewayMigrationType UPGRADE_GATEWAY_TO_DUAL_STACK
+        = fromString("UpgradeGatewayToDualStack");
+
+    /**
+     * Indicates a migration process for the virtual network gateway's point-to-site profile.
+     */
+    public static final VirtualNetworkGatewayMigrationType MIGRATE_GATEWAY_FOR_POINT_TO_SITE_PROFILE
+        = fromString("MigrateGatewayForPointToSiteProfile");
+
+    /**
      * Creates a new instance of VirtualNetworkGatewayMigrationType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

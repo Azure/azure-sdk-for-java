@@ -46,9 +46,7 @@ public final class InventoriesImpl implements Inventories {
 
     public PagedIterable<InventoryResource> listBySolutionConfiguration(String resourceUri,
         String solutionConfiguration) {
-        PagedIterable<InventoryResourceInner> inner
-            = this.serviceClient().listBySolutionConfiguration(resourceUri, solutionConfiguration);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new InventoryResourceImpl(inner1, this.manager()));
+        return this.listBySolutionConfiguration(resourceUri, solutionConfiguration, Context.NONE);
     }
 
     public PagedIterable<InventoryResource> listBySolutionConfiguration(String resourceUri,

@@ -91,11 +91,7 @@ public final class VirtualNetworkLinkImpl
     }
 
     public VirtualNetworkLink create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworkLinks()
-            .createOrUpdate(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, this.innerModel(),
-                createIfMatch, createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VirtualNetworkLink create(Context context) {
@@ -121,11 +117,7 @@ public final class VirtualNetworkLinkImpl
     }
 
     public VirtualNetworkLink apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworkLinks()
-            .update(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, updateParameters,
-                updateIfMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VirtualNetworkLink apply(Context context) {
@@ -140,19 +132,19 @@ public final class VirtualNetworkLinkImpl
         com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dnsForwardingRulesetName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsForwardingRulesets");
-        this.virtualNetworkLinkName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualNetworkLinks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/virtualNetworkLinks/{virtualNetworkLinkName}",
+            "resourceGroupName");
+        this.dnsForwardingRulesetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/virtualNetworkLinks/{virtualNetworkLinkName}",
+            "dnsForwardingRulesetName");
+        this.virtualNetworkLinkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/virtualNetworkLinks/{virtualNetworkLinkName}",
+            "virtualNetworkLinkName");
     }
 
     public VirtualNetworkLink refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworkLinks()
-            .getWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VirtualNetworkLink refresh(Context context) {

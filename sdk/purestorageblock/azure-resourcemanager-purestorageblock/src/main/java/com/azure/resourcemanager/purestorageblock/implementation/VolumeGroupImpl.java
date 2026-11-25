@@ -92,10 +92,7 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
     }
 
     public VolumeGroup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeGroups()
-            .create(resourceGroupName, storagePoolName, volumeGroupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VolumeGroup create(Context context) {
@@ -117,10 +114,7 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
     }
 
     public VolumeGroup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeGroups()
-            .update(resourceGroupName, storagePoolName, volumeGroupName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VolumeGroup apply(Context context) {
@@ -134,17 +128,19 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
         com.azure.resourcemanager.purestorageblock.PureStorageBlockManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storagePoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storagePools");
-        this.volumeGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "volumeGroups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}",
+            "resourceGroupName");
+        this.storagePoolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}",
+            "storagePoolName");
+        this.volumeGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}",
+            "volumeGroupName");
     }
 
     public VolumeGroup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeGroups()
-            .getWithResponse(resourceGroupName, storagePoolName, volumeGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VolumeGroup refresh(Context context) {

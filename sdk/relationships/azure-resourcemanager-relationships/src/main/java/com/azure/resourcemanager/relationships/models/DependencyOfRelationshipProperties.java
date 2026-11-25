@@ -156,17 +156,17 @@ public final class DependencyOfRelationshipProperties implements JsonSerializabl
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("sourceId".equals(fieldName)) {
-                    deserializedDependencyOfRelationshipProperties.sourceId = reader.getString();
-                } else if ("targetId".equals(fieldName)) {
+                if ("targetId".equals(fieldName)) {
                     deserializedDependencyOfRelationshipProperties.targetId = reader.getString();
+                } else if ("sourceId".equals(fieldName)) {
+                    deserializedDependencyOfRelationshipProperties.sourceId = reader.getString();
+                } else if ("targetTenant".equals(fieldName)) {
+                    deserializedDependencyOfRelationshipProperties.targetTenant = reader.getString();
                 } else if ("originInformation".equals(fieldName)) {
                     deserializedDependencyOfRelationshipProperties.originInformation
                         = RelationshipOriginInformation.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {
                     deserializedDependencyOfRelationshipProperties.metadata = RelationshipMetadata.fromJson(reader);
-                } else if ("targetTenant".equals(fieldName)) {
-                    deserializedDependencyOfRelationshipProperties.targetTenant = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDependencyOfRelationshipProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

@@ -56,11 +56,7 @@ public final class SharedLimitCapImpl implements SharedLimitCap, SharedLimitCap.
     }
 
     public SharedLimitCap create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSharedLimitCaps()
-            .createOrUpdateWithResponse(location, vmFamilyName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SharedLimitCap create(Context context) {
@@ -82,11 +78,7 @@ public final class SharedLimitCapImpl implements SharedLimitCap, SharedLimitCap.
     }
 
     public SharedLimitCap apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSharedLimitCaps()
-            .createOrUpdateWithResponse(location, vmFamilyName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SharedLimitCap apply(Context context) {
@@ -101,16 +93,16 @@ public final class SharedLimitCapImpl implements SharedLimitCap, SharedLimitCap.
         com.azure.resourcemanager.computelimit.ComputeLimitManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.location = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "locations");
-        this.vmFamilyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sharedLimitCaps");
+        this.location = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}",
+            "location");
+        this.vmFamilyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}",
+            "vmFamilyName");
     }
 
     public SharedLimitCap refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSharedLimitCaps()
-            .getWithResponse(location, vmFamilyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SharedLimitCap refresh(Context context) {

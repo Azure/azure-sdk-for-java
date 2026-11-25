@@ -66,16 +66,7 @@ public final class ExpressRouteProviderPortsLocationsClientImpl implements Expre
             @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves all the ExpressRouteProviderPorts in a subscription.
-     * 
-     * @param filter The filter to apply on the operation. For example, you can use $filter=location eq '{state}'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteProviderPort API service call along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteProviderPortListResultInner>> listWithResponseAsync(String filter) {
         if (this.client.getEndpoint() == null) {
@@ -86,7 +77,7 @@ public final class ExpressRouteProviderPortsLocationsClientImpl implements Expre
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -116,48 +107,27 @@ public final class ExpressRouteProviderPortsLocationsClientImpl implements Expre
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), filter, accept,
             context);
     }
 
-    /**
-     * Retrieves all the ExpressRouteProviderPorts in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteProviderPort API service call on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteProviderPortListResultInner> listAsync() {
         final String filter = null;
         return listWithResponseAsync(filter).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves all the ExpressRouteProviderPorts in a subscription.
-     * 
-     * @param filter The filter to apply on the operation. For example, you can use $filter=location eq '{state}'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteProviderPort API service call along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteProviderPortListResultInner> listWithResponse(String filter, Context context) {
         return listWithResponseAsync(filter, context).block();
     }
 
-    /**
-     * Retrieves all the ExpressRouteProviderPorts in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteProviderPort API service call.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteProviderPortListResultInner list() {
         final String filter = null;

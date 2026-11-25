@@ -91,10 +91,7 @@ public final class EdgeActionImpl implements EdgeAction, EdgeAction.Definition, 
     }
 
     public EdgeAction create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeActions()
-            .create(resourceGroupName, edgeActionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EdgeAction create(Context context) {
@@ -116,10 +113,7 @@ public final class EdgeActionImpl implements EdgeAction, EdgeAction.Definition, 
     }
 
     public EdgeAction apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeActions()
-            .update(resourceGroupName, edgeActionName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EdgeAction apply(Context context) {
@@ -133,16 +127,16 @@ public final class EdgeActionImpl implements EdgeAction, EdgeAction.Definition, 
         com.azure.resourcemanager.edgeactions.EdgeActionsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.edgeActionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "edgeActions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}",
+            "resourceGroupName");
+        this.edgeActionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}",
+            "edgeActionName");
     }
 
     public EdgeAction refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeActions()
-            .getByResourceGroupWithResponse(resourceGroupName, edgeActionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EdgeAction refresh(Context context) {

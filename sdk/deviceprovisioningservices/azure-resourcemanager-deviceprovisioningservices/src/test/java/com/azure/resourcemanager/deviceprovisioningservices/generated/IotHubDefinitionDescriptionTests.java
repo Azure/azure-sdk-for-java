@@ -13,33 +13,33 @@ public final class IotHubDefinitionDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotHubDefinitionDescription model = BinaryData.fromString(
-            "{\"applyAllocationPolicy\":true,\"allocationWeight\":1054800376,\"name\":\"c\",\"hostName\":\"ierhhbcsglummaj\",\"authenticationType\":\"UserAssigned\",\"selectedUserAssignedIdentityResourceId\":\"dxob\",\"connectionString\":\"dxkqpx\",\"location\":\"kajionpim\"}")
+            "{\"applyAllocationPolicy\":false,\"allocationWeight\":1570785735,\"name\":\"qdrabhjybigehoqf\",\"hostName\":\"wska\",\"authenticationType\":\"UserAssigned\",\"selectedUserAssignedIdentityResourceId\":\"zlcuiywgqywgndrv\",\"connectionString\":\"hzgpphrcgyncocpe\",\"location\":\"fvm\"}")
             .toObject(IotHubDefinitionDescription.class);
-        Assertions.assertTrue(model.applyAllocationPolicy());
-        Assertions.assertEquals(1054800376, model.allocationWeight());
-        Assertions.assertEquals("ierhhbcsglummaj", model.hostName());
+        Assertions.assertFalse(model.applyAllocationPolicy());
+        Assertions.assertEquals(1570785735, model.allocationWeight());
+        Assertions.assertEquals("wska", model.hostName());
         Assertions.assertEquals(IotHubAuthenticationType.USER_ASSIGNED, model.authenticationType());
-        Assertions.assertEquals("dxob", model.selectedUserAssignedIdentityResourceId());
-        Assertions.assertEquals("dxkqpx", model.connectionString());
-        Assertions.assertEquals("kajionpim", model.location());
+        Assertions.assertEquals("zlcuiywgqywgndrv", model.selectedUserAssignedIdentityResourceId());
+        Assertions.assertEquals("hzgpphrcgyncocpe", model.connectionString());
+        Assertions.assertEquals("fvm", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IotHubDefinitionDescription model = new IotHubDefinitionDescription().withApplyAllocationPolicy(true)
-            .withAllocationWeight(1054800376)
-            .withHostName("ierhhbcsglummaj")
+        IotHubDefinitionDescription model = new IotHubDefinitionDescription().withApplyAllocationPolicy(false)
+            .withAllocationWeight(1570785735)
+            .withHostName("wska")
             .withAuthenticationType(IotHubAuthenticationType.USER_ASSIGNED)
-            .withSelectedUserAssignedIdentityResourceId("dxob")
-            .withConnectionString("dxkqpx")
-            .withLocation("kajionpim");
+            .withSelectedUserAssignedIdentityResourceId("zlcuiywgqywgndrv")
+            .withConnectionString("hzgpphrcgyncocpe")
+            .withLocation("fvm");
         model = BinaryData.fromObject(model).toObject(IotHubDefinitionDescription.class);
-        Assertions.assertTrue(model.applyAllocationPolicy());
-        Assertions.assertEquals(1054800376, model.allocationWeight());
-        Assertions.assertEquals("ierhhbcsglummaj", model.hostName());
+        Assertions.assertFalse(model.applyAllocationPolicy());
+        Assertions.assertEquals(1570785735, model.allocationWeight());
+        Assertions.assertEquals("wska", model.hostName());
         Assertions.assertEquals(IotHubAuthenticationType.USER_ASSIGNED, model.authenticationType());
-        Assertions.assertEquals("dxob", model.selectedUserAssignedIdentityResourceId());
-        Assertions.assertEquals("dxkqpx", model.connectionString());
-        Assertions.assertEquals("kajionpim", model.location());
+        Assertions.assertEquals("zlcuiywgqywgndrv", model.selectedUserAssignedIdentityResourceId());
+        Assertions.assertEquals("hzgpphrcgyncocpe", model.connectionString());
+        Assertions.assertEquals("fvm", model.location());
     }
 }

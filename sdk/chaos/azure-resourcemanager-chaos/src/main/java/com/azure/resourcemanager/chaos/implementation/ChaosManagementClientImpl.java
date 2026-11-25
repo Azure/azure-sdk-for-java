@@ -22,6 +22,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -36,12 +37,15 @@ import com.azure.resourcemanager.chaos.fluent.DiscoveredResourcesClient;
 import com.azure.resourcemanager.chaos.fluent.ExperimentsClient;
 import com.azure.resourcemanager.chaos.fluent.OperationStatusesClient;
 import com.azure.resourcemanager.chaos.fluent.OperationsClient;
-import com.azure.resourcemanager.chaos.fluent.PrivateAccessesClient;
 import com.azure.resourcemanager.chaos.fluent.ScenarioConfigurationsClient;
 import com.azure.resourcemanager.chaos.fluent.ScenarioRunsClient;
+import com.azure.resourcemanager.chaos.fluent.ScenarioTemplateVersionsClient;
+import com.azure.resourcemanager.chaos.fluent.ScenarioTemplatesClient;
 import com.azure.resourcemanager.chaos.fluent.ScenariosClient;
 import com.azure.resourcemanager.chaos.fluent.TargetTypesClient;
 import com.azure.resourcemanager.chaos.fluent.TargetsClient;
+import com.azure.resourcemanager.chaos.fluent.WorkspaceDiscoveriesClient;
+import com.azure.resourcemanager.chaos.fluent.WorkspaceEvaluationsClient;
 import com.azure.resourcemanager.chaos.fluent.WorkspacesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -212,20 +216,6 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
     }
 
     /**
-     * The PrivateAccessesClient object to access its operations.
-     */
-    private final PrivateAccessesClient privateAccesses;
-
-    /**
-     * Gets the PrivateAccessesClient object to access its operations.
-     * 
-     * @return the PrivateAccessesClient object.
-     */
-    public PrivateAccessesClient getPrivateAccesses() {
-        return this.privateAccesses;
-    }
-
-    /**
      * The ActionsClient object to access its operations.
      */
     private final ActionsClient actions;
@@ -296,6 +286,34 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
     }
 
     /**
+     * The WorkspaceDiscoveriesClient object to access its operations.
+     */
+    private final WorkspaceDiscoveriesClient workspaceDiscoveries;
+
+    /**
+     * Gets the WorkspaceDiscoveriesClient object to access its operations.
+     * 
+     * @return the WorkspaceDiscoveriesClient object.
+     */
+    public WorkspaceDiscoveriesClient getWorkspaceDiscoveries() {
+        return this.workspaceDiscoveries;
+    }
+
+    /**
+     * The WorkspaceEvaluationsClient object to access its operations.
+     */
+    private final WorkspaceEvaluationsClient workspaceEvaluations;
+
+    /**
+     * Gets the WorkspaceEvaluationsClient object to access its operations.
+     * 
+     * @return the WorkspaceEvaluationsClient object.
+     */
+    public WorkspaceEvaluationsClient getWorkspaceEvaluations() {
+        return this.workspaceEvaluations;
+    }
+
+    /**
      * The DiscoveredResourcesClient object to access its operations.
      */
     private final DiscoveredResourcesClient discoveredResources;
@@ -321,6 +339,34 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
      */
     public ScenariosClient getScenarios() {
         return this.scenarios;
+    }
+
+    /**
+     * The ScenarioTemplatesClient object to access its operations.
+     */
+    private final ScenarioTemplatesClient scenarioTemplates;
+
+    /**
+     * Gets the ScenarioTemplatesClient object to access its operations.
+     * 
+     * @return the ScenarioTemplatesClient object.
+     */
+    public ScenarioTemplatesClient getScenarioTemplates() {
+        return this.scenarioTemplates;
+    }
+
+    /**
+     * The ScenarioTemplateVersionsClient object to access its operations.
+     */
+    private final ScenarioTemplateVersionsClient scenarioTemplateVersions;
+
+    /**
+     * Gets the ScenarioTemplateVersionsClient object to access its operations.
+     * 
+     * @return the ScenarioTemplateVersionsClient object.
+     */
+    public ScenarioTemplateVersionsClient getScenarioTemplateVersions() {
+        return this.scenarioTemplateVersions;
     }
 
     /**
@@ -382,20 +428,23 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-08-01-preview";
+        this.apiVersion = "2026-11-01";
         this.capabilities = new CapabilitiesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.targets = new TargetsClientImpl(this);
         this.capabilityTypes = new CapabilityTypesClientImpl(this);
         this.experiments = new ExperimentsClientImpl(this);
-        this.privateAccesses = new PrivateAccessesClientImpl(this);
         this.actions = new ActionsClientImpl(this);
         this.actionVersions = new ActionVersionsClientImpl(this);
         this.targetTypes = new TargetTypesClientImpl(this);
         this.operationStatuses = new OperationStatusesClientImpl(this);
         this.workspaces = new WorkspacesClientImpl(this);
+        this.workspaceDiscoveries = new WorkspaceDiscoveriesClientImpl(this);
+        this.workspaceEvaluations = new WorkspaceEvaluationsClientImpl(this);
         this.discoveredResources = new DiscoveredResourcesClientImpl(this);
         this.scenarios = new ScenariosClientImpl(this);
+        this.scenarioTemplates = new ScenarioTemplatesClientImpl(this);
+        this.scenarioTemplateVersions = new ScenarioTemplateVersionsClientImpl(this);
         this.scenarioConfigurations = new ScenarioConfigurationsClientImpl(this);
         this.scenarioRuns = new ScenarioRunsClientImpl(this);
         this.connections = new ConnectionsClientImpl(this);
@@ -456,6 +505,24 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
     }
 
     /**
+     * Waits for completion and gets the final result, or throws an error.
+     * 
+     * @param poller the synchronous poller.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return the final result.
+     * @throws ManagementException if the long running operation fails.
+     */
+    public <T, U> U getLroFinalResultOrError(SyncPoller<PollResult<T>, U> poller) {
+        PollResponse<PollResult<T>> response = poller.waitForCompletion();
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            throw exception;
+        }
+        return poller.getFinalResult();
+    }
+
+    /**
      * Gets the final result, or an error, based on last async poll response.
      * 
      * @param response the last async poll response.
@@ -464,17 +531,25 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
      * @return the final result, or an error.
      */
     public <T, U> Mono<U> getLroFinalResultOrError(AsyncPollResponse<PollResult<T>, U> response) {
-        if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            return Mono.error(exception);
+        }
+        return response.getFinalResult();
+    }
+
+    private ManagementException getLroException(LongRunningOperationStatus status, PollResult<?> result) {
+        PollResult.Error lroError = result == null ? null : result.getError();
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED || lroError != null) {
             String errorMessage;
             ManagementError managementError = null;
             HttpResponse errorResponse = null;
-            PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
                 errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
                     lroError.getResponseBody());
 
-                errorMessage = response.getValue().getError().getMessage();
-                String errorBody = response.getValue().getError().getResponseBody();
+                errorMessage = lroError.getMessage();
+                String errorBody = lroError.getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
@@ -493,12 +568,11 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
             }
             if (managementError == null) {
                 // fallback to default ManagementError
-                managementError = new ManagementError(response.getStatus().toString(), errorMessage);
+                managementError = new ManagementError(status.toString(), errorMessage);
             }
-            return Mono.error(new ManagementException(errorMessage, errorResponse, managementError));
-        } else {
-            return response.getFinalResult();
+            return new ManagementException(errorMessage, errorResponse, managementError);
         }
+        return null;
     }
 
     private static final class HttpResponseImpl extends HttpResponse {

@@ -86,10 +86,7 @@ public final class StandbyVirtualMachinePoolResourceImpl implements StandbyVirtu
     }
 
     public StandbyVirtualMachinePoolResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStandbyVirtualMachinePools()
-            .createOrUpdate(resourceGroupName, standbyVirtualMachinePoolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StandbyVirtualMachinePoolResource create(Context context) {
@@ -112,11 +109,7 @@ public final class StandbyVirtualMachinePoolResourceImpl implements StandbyVirtu
     }
 
     public StandbyVirtualMachinePoolResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStandbyVirtualMachinePools()
-            .updateWithResponse(resourceGroupName, standbyVirtualMachinePoolName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StandbyVirtualMachinePoolResource apply(Context context) {
@@ -131,17 +124,16 @@ public final class StandbyVirtualMachinePoolResourceImpl implements StandbyVirtu
         com.azure.resourcemanager.standbypool.StandbyPoolManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.standbyVirtualMachinePoolName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "standbyVirtualMachinePools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}",
+            "resourceGroupName");
+        this.standbyVirtualMachinePoolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}",
+            "standbyVirtualMachinePoolName");
     }
 
     public StandbyVirtualMachinePoolResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStandbyVirtualMachinePools()
-            .getByResourceGroupWithResponse(resourceGroupName, standbyVirtualMachinePoolName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StandbyVirtualMachinePoolResource refresh(Context context) {

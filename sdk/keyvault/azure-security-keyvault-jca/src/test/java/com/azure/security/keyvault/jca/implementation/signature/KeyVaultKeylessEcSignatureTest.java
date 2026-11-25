@@ -5,73 +5,59 @@ package com.azure.security.keyvault.jca.implementation.signature;
 
 import com.azure.security.keyvault.jca.KeyVaultEncode;
 import com.azure.security.keyvault.jca.KeyVaultJcaPropertyNames;
-import com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
+import com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey;
+import com.azure.security.keyvault.jca.implementation.MockKeyVaultClient;
+import com.azure.security.keyvault.jca.implementation.mocking.MockPrivateKey;
+import com.azure.security.keyvault.jca.implementation.mocking.MockPublicKey;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@ResourceLock(Resources.SYSTEM_PROPERTIES)
 public class KeyVaultKeylessEcSignatureTest {
 
     KeyVaultKeylessEcSignature keyVaultKeylessEcSignature;
 
-    private final KeyVaultClient keyVaultClient = mock(KeyVaultClient.class);
-
-    private final KeyVaultPrivateKey keyVaultPrivateKey = mock(KeyVaultPrivateKey.class);
+    private KeyVaultClient keyVaultClient;
 
     private final byte[] signedWithES256 = "fake256Value".getBytes();
     private final byte[] signedWithES384 = "fake384Value".getBytes();
+    private final PublicKey publicKey = new MockPublicKey();
+    private final PrivateKey privateKey = new MockPrivateKey();
 
     static final String KEY_VAULT_TEST_URI_GLOBAL = "https://fake.vault.azure.net/";
 
+    private String previousKeyVaultUri;
+
     @BeforeEach
     public void before() {
+        previousKeyVaultUri = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI);
         System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI, KEY_VAULT_TEST_URI_GLOBAL);
         keyVaultKeylessEcSignature = new KeyVaultKeylessEcSha256Signature();
     }
 
-    private final PublicKey publicKey = new PublicKey() {
-        @Override
-        public String getAlgorithm() {
-            return null;
-        }
+    @AfterEach
+    public void after() {
+        restoreKeyVaultUri(previousKeyVaultUri);
+    }
 
-        @Override
-        public String getFormat() {
-            return null;
+    private static void restoreKeyVaultUri(String value) {
+        if (value == null) {
+            System.clearProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI);
+        } else {
+            System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI, value);
         }
-
-        @Override
-        public byte[] getEncoded() {
-            return new byte[0];
-        }
-    };
-
-    private final PrivateKey privateKey = new PrivateKey() {
-        @Override
-        public String getAlgorithm() {
-            return null;
-        }
-
-        @Override
-        public String getFormat() {
-            return null;
-        }
-
-        @Override
-        public byte[] getEncoded() {
-            return new byte[0];
-        }
-    };
+    }
 
     @Test
     public void engineInitVerifyTest() {
@@ -102,18 +88,31 @@ public class KeyVaultKeylessEcSignatureTest {
 
     @Test
     public void setDigestNameAndEngineSignTest() {
+        keyVaultClient = new MockKeyVaultClient() {
+            @Override
+            public byte[] getSignedWithPrivateKey(String digestName, String digestValue, String keyId) {
+                return "ES256".equals(digestName) ? signedWithES256 : null;
+            }
+        };
+        KeyVaultPrivateKey keyVaultPrivateKey = new KeyVaultPrivateKey("algorithm", "kid") {
+            @Override
+            public KeyVaultClient getKeyVaultClient() {
+                return keyVaultClient;
+            }
+        };
         keyVaultKeylessEcSignature = new KeyVaultKeylessEcSha256Signature();
-        when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("ES256"), anyString(),
-            ArgumentMatchers.eq(null))).thenReturn(signedWithES256);
-        when(keyVaultPrivateKey.getKeyVaultClient()).thenReturn(keyVaultClient);
         keyVaultKeylessEcSignature.engineInitSign(keyVaultPrivateKey, null);
         Assertions.assertArrayEquals(KeyVaultEncode.encodeByte(signedWithES256),
             keyVaultKeylessEcSignature.engineSign());
 
+        keyVaultClient = new MockKeyVaultClient() {
+            @Override
+            public byte[] getSignedWithPrivateKey(String digestName, String digestValue, String keyId) {
+                return "ES384".equals(digestName) ? signedWithES384 : null;
+            }
+        };
         keyVaultKeylessEcSignature = new KeyVaultKeylessEcSha384Signature();
         keyVaultKeylessEcSignature.engineInitSign(keyVaultPrivateKey, null);
-        when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("ES384"), anyString(),
-            ArgumentMatchers.eq(null))).thenReturn(signedWithES384);
         assertArrayEquals(KeyVaultEncode.encodeByte(signedWithES384), keyVaultKeylessEcSignature.engineSign());
     }
 

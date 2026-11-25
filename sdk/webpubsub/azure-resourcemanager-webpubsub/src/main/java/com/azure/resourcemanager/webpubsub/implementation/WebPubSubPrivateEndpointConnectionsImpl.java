@@ -66,7 +66,7 @@ public final class WebPubSubPrivateEndpointConnectionsImpl implements WebPubSubP
     }
 
     public void delete(String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        this.serviceClient().delete(resourceGroupName, resourceName, privateEndpointConnectionName);
+        this.delete(resourceGroupName, resourceName, privateEndpointConnectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String resourceName, String privateEndpointConnectionName,
@@ -75,9 +75,7 @@ public final class WebPubSubPrivateEndpointConnectionsImpl implements WebPubSubP
     }
 
     public PagedIterable<PrivateEndpointConnection> list(String resourceGroupName, String resourceName) {
-        PagedIterable<PrivateEndpointConnectionInner> inner
-            = this.serviceClient().list(resourceGroupName, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, resourceName, Context.NONE);
     }
 
     public PagedIterable<PrivateEndpointConnection> list(String resourceGroupName, String resourceName,

@@ -75,12 +75,7 @@ public final class EncryptionScopeImpl implements EncryptionScope, EncryptionSco
     }
 
     public EncryptionScope create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEncryptionScopes()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, encryptionScopeName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EncryptionScope create(Context context) {
@@ -103,12 +98,7 @@ public final class EncryptionScopeImpl implements EncryptionScope, EncryptionSco
     }
 
     public EncryptionScope apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEncryptionScopes()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, encryptionScopeName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EncryptionScope apply(Context context) {
@@ -123,17 +113,19 @@ public final class EncryptionScopeImpl implements EncryptionScope, EncryptionSco
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.encryptionScopeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "encryptionScopes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/encryptionScopes/{encryptionScopeName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/encryptionScopes/{encryptionScopeName}",
+            "accountName");
+        this.encryptionScopeName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/encryptionScopes/{encryptionScopeName}",
+            "encryptionScopeName");
     }
 
     public EncryptionScope refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEncryptionScopes()
-            .getWithResponse(resourceGroupName, accountName, encryptionScopeName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EncryptionScope refresh(Context context) {

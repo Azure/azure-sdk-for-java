@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.relationships.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -43,74 +44,45 @@ public final class DependencyOfRelationshipsImpl implements DependencyOfRelation
     }
 
     public void deleteByResourceGroup(String resourceUri, String name) {
-        this.serviceClient().delete(resourceUri, name);
+        this.delete(resourceUri, name, Context.NONE);
     }
 
     public void delete(String resourceUri, String name, Context context) {
         this.serviceClient().delete(resourceUri, name, context);
     }
 
+    public PagedIterable<DependencyOfRelationship> listByParent(String resourceUri) {
+        return this.listByParent(resourceUri, Context.NONE);
+    }
+
+    public PagedIterable<DependencyOfRelationship> listByParent(String resourceUri, Context context) {
+        PagedIterable<DependencyOfRelationshipInner> inner = this.serviceClient().listByParent(resourceUri, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DependencyOfRelationshipImpl(inner1, this.manager()));
+    }
+
     public DependencyOfRelationship getById(String id) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}", "name");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dependencyOf'.", id)));
-        }
-        return this.getWithResponse(resourceUri, name, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DependencyOfRelationship> getByIdWithResponse(String id, Context context) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}", "name");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dependencyOf'.", id)));
-        }
+        String resourceUri = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}", "resourceUri", "resourceUri",
+            LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}", "name", "dependencyOf", LOGGER);
         return this.getWithResponse(resourceUri, name, context);
     }
 
     public void deleteById(String id) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}", "name");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dependencyOf'.", id)));
-        }
-        this.delete(resourceUri, name, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}", "name");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dependencyOf'.", id)));
-        }
+        String resourceUri = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}", "resourceUri", "resourceUri",
+            LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}", "name", "dependencyOf", LOGGER);
         this.delete(resourceUri, name, context);
     }
 

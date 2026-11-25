@@ -43,8 +43,7 @@ public final class ManagedOpsImpl implements ManagedOps {
     }
 
     public PagedIterable<ManagedOp> list() {
-        PagedIterable<ManagedOpInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedOpImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ManagedOp> list(Context context) {
@@ -53,7 +52,7 @@ public final class ManagedOpsImpl implements ManagedOps {
     }
 
     public void delete(String managedOpsName) {
-        this.serviceClient().delete(managedOpsName);
+        this.delete(managedOpsName, Context.NONE);
     }
 
     public void delete(String managedOpsName, Context context) {
@@ -61,38 +60,24 @@ public final class ManagedOpsImpl implements ManagedOps {
     }
 
     public ManagedOp getById(String id) {
-        String managedOpsName = ResourceManagerUtils.getValueFromIdByName(id, "managedOps");
-        if (managedOpsName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedOps'.", id)));
-        }
-        return this.getWithResponse(managedOpsName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ManagedOp> getByIdWithResponse(String id, Context context) {
-        String managedOpsName = ResourceManagerUtils.getValueFromIdByName(id, "managedOps");
-        if (managedOpsName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedOps'.", id)));
-        }
+        String managedOpsName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedOps/managedOps/{managedOpsName}",
+            "managedOpsName", "managedOps", LOGGER);
         return this.getWithResponse(managedOpsName, context);
     }
 
     public void deleteById(String id) {
-        String managedOpsName = ResourceManagerUtils.getValueFromIdByName(id, "managedOps");
-        if (managedOpsName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedOps'.", id)));
-        }
-        this.delete(managedOpsName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String managedOpsName = ResourceManagerUtils.getValueFromIdByName(id, "managedOps");
-        if (managedOpsName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'managedOps'.", id)));
-        }
+        String managedOpsName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedOps/managedOps/{managedOpsName}",
+            "managedOpsName", "managedOps", LOGGER);
         this.delete(managedOpsName, context);
     }
 

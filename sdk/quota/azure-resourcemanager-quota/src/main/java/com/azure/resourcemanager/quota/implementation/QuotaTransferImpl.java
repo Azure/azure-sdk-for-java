@@ -62,10 +62,7 @@ public final class QuotaTransferImpl implements QuotaTransfer, QuotaTransfer.Def
     }
 
     public QuotaTransfer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getQuotaTransfers()
-            .createOrUpdate(targetProvider, region, transferName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public QuotaTransfer create(Context context) {
@@ -86,10 +83,7 @@ public final class QuotaTransferImpl implements QuotaTransfer, QuotaTransfer.Def
     }
 
     public QuotaTransfer apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getQuotaTransfers()
-            .createOrUpdate(targetProvider, region, transferName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public QuotaTransfer apply(Context context) {
@@ -102,17 +96,19 @@ public final class QuotaTransferImpl implements QuotaTransfer, QuotaTransfer.Def
     QuotaTransferImpl(QuotaTransferInner innerObject, com.azure.resourcemanager.quota.QuotaManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.targetProvider = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "providers");
-        this.region = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "locations");
-        this.transferName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "quotaTransfers");
+        this.targetProvider = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}",
+            "targetProvider");
+        this.region = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}",
+            "region");
+        this.transferName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}",
+            "transferName");
     }
 
     public QuotaTransfer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getQuotaTransfers()
-            .getWithResponse(targetProvider, region, transferName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public QuotaTransfer refresh(Context context) {

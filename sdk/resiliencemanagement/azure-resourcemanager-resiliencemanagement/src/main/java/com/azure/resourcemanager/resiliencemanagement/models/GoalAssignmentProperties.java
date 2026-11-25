@@ -14,19 +14,14 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Definition of goal assignment property.
+ * Properties of a goal assignment.
  */
 @Fluent
 public final class GoalAssignmentProperties implements JsonSerializable<GoalAssignmentProperties> {
     /*
-     * Arm id of the goal template.
+     * Whether zonal resiliency is required for this goal assignment.
      */
-    private String goalTemplateId;
-
-    /*
-     * The type of goal assignment.
-     */
-    private GoalAssignmentType goalAssignmentType;
+    private boolean requireZonalResiliency;
 
     /*
      * List of service level resources.
@@ -34,7 +29,7 @@ public final class GoalAssignmentProperties implements JsonSerializable<GoalAssi
     private List<ServiceLevelResource> serviceLevelResources;
 
     /*
-     * Provisioning state
+     * The provisioning state of the goal assignment.
      */
     private ProvisioningState provisioningState;
 
@@ -50,42 +45,22 @@ public final class GoalAssignmentProperties implements JsonSerializable<GoalAssi
     }
 
     /**
-     * Get the goalTemplateId property: Arm id of the goal template.
+     * Get the requireZonalResiliency property: Whether zonal resiliency is required for this goal assignment.
      * 
-     * @return the goalTemplateId value.
+     * @return the requireZonalResiliency value.
      */
-    public String goalTemplateId() {
-        return this.goalTemplateId;
+    public boolean requireZonalResiliency() {
+        return this.requireZonalResiliency;
     }
 
     /**
-     * Set the goalTemplateId property: Arm id of the goal template.
+     * Set the requireZonalResiliency property: Whether zonal resiliency is required for this goal assignment.
      * 
-     * @param goalTemplateId the goalTemplateId value to set.
+     * @param requireZonalResiliency the requireZonalResiliency value to set.
      * @return the GoalAssignmentProperties object itself.
      */
-    public GoalAssignmentProperties withGoalTemplateId(String goalTemplateId) {
-        this.goalTemplateId = goalTemplateId;
-        return this;
-    }
-
-    /**
-     * Get the goalAssignmentType property: The type of goal assignment.
-     * 
-     * @return the goalAssignmentType value.
-     */
-    public GoalAssignmentType goalAssignmentType() {
-        return this.goalAssignmentType;
-    }
-
-    /**
-     * Set the goalAssignmentType property: The type of goal assignment.
-     * 
-     * @param goalAssignmentType the goalAssignmentType value to set.
-     * @return the GoalAssignmentProperties object itself.
-     */
-    public GoalAssignmentProperties withGoalAssignmentType(GoalAssignmentType goalAssignmentType) {
-        this.goalAssignmentType = goalAssignmentType;
+    public GoalAssignmentProperties withRequireZonalResiliency(boolean requireZonalResiliency) {
+        this.requireZonalResiliency = requireZonalResiliency;
         return this;
     }
 
@@ -110,7 +85,7 @@ public final class GoalAssignmentProperties implements JsonSerializable<GoalAssi
     }
 
     /**
-     * Get the provisioningState property: Provisioning state.
+     * Get the provisioningState property: The provisioning state of the goal assignment.
      * 
      * @return the provisioningState value.
      */
@@ -133,9 +108,7 @@ public final class GoalAssignmentProperties implements JsonSerializable<GoalAssi
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("goalTemplateId", this.goalTemplateId);
-        jsonWriter.writeStringField("goalAssignmentType",
-            this.goalAssignmentType == null ? null : this.goalAssignmentType.toString());
+        jsonWriter.writeBooleanField("requireZonalResiliency", this.requireZonalResiliency);
         jsonWriter.writeArrayField("serviceLevelResources", this.serviceLevelResources,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -157,11 +130,8 @@ public final class GoalAssignmentProperties implements JsonSerializable<GoalAssi
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("goalTemplateId".equals(fieldName)) {
-                    deserializedGoalAssignmentProperties.goalTemplateId = reader.getString();
-                } else if ("goalAssignmentType".equals(fieldName)) {
-                    deserializedGoalAssignmentProperties.goalAssignmentType
-                        = GoalAssignmentType.fromString(reader.getString());
+                if ("requireZonalResiliency".equals(fieldName)) {
+                    deserializedGoalAssignmentProperties.requireZonalResiliency = reader.getBoolean();
                 } else if ("serviceLevelResources".equals(fieldName)) {
                     List<ServiceLevelResource> serviceLevelResources
                         = reader.readArray(reader1 -> ServiceLevelResource.fromJson(reader1));

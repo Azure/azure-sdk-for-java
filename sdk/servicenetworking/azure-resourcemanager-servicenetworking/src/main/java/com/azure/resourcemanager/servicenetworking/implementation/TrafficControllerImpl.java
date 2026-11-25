@@ -86,10 +86,7 @@ public final class TrafficControllerImpl
     }
 
     public TrafficController create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTrafficControllerInterfaces()
-            .createOrUpdate(resourceGroupName, trafficControllerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TrafficController create(Context context) {
@@ -112,11 +109,7 @@ public final class TrafficControllerImpl
     }
 
     public TrafficController apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTrafficControllerInterfaces()
-            .updateWithResponse(resourceGroupName, trafficControllerName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public TrafficController apply(Context context) {
@@ -131,16 +124,16 @@ public final class TrafficControllerImpl
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.trafficControllerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "trafficControllers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}",
+            "resourceGroupName");
+        this.trafficControllerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}",
+            "trafficControllerName");
     }
 
     public TrafficController refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTrafficControllerInterfaces()
-            .getByResourceGroupWithResponse(resourceGroupName, trafficControllerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TrafficController refresh(Context context) {

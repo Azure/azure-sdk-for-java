@@ -333,17 +333,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get properties of the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided storage appliance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageApplianceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String storageApplianceName, Context context) {
@@ -352,16 +342,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, accept, context);
     }
 
-    /**
-     * Get properties of the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided storage appliance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageApplianceInner getByResourceGroup(String resourceGroupName, String storageApplianceName) {
         return getByResourceGroupWithResponse(resourceGroupName, storageApplianceName, Context.NONE).getValue();
@@ -416,11 +397,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String storageApplianceName,
         StorageApplianceInner storageApplianceParameters, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, contentType,
-            accept, storageApplianceParameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, storageApplianceName, storageApplianceParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -521,57 +499,24 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(
         String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, storageApplianceName,
-            storageApplianceParameters, ifMatch, ifNoneMatch);
-        return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(response,
-            StorageApplianceInner.class, StorageApplianceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, storageApplianceName, storageApplianceParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
-     * be rejected as the life cycle of this resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storageAppliance represents on-premises Network Cloud storage
-     * appliance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(
         String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, storageApplianceName,
-            storageApplianceParameters, ifMatch, ifNoneMatch);
-        return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(response,
-            StorageApplianceInner.class, StorageApplianceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, storageApplianceName, storageApplianceParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
-     * be rejected as the life cycle of this resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storageAppliance represents on-premises Network Cloud storage
-     * appliance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(
         String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters,
@@ -628,49 +573,22 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
-     * be rejected as the life cycle of this resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageAppliance represents on-premises Network Cloud storage appliance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageApplianceInner createOrUpdate(String resourceGroupName, String storageApplianceName,
         StorageApplianceInner storageApplianceParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, storageApplianceName, storageApplianceParameters, ifMatch,
-            ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, storageApplianceName, storageApplianceParameters, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
-     * be rejected as the life cycle of this resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageAppliance represents on-premises Network Cloud storage appliance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageApplianceInner createOrUpdate(String resourceGroupName, String storageApplianceName,
         StorageApplianceInner storageApplianceParameters, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, storageApplianceName, storageApplianceParameters, ifMatch,
-            ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, storageApplianceName,
+            storageApplianceParameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -721,9 +639,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String storageApplianceName,
         String ifMatch, String ifNoneMatch, StorageAppliancePatchParameters storageApplianceUpdateParameters) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, accept,
+        return updateWithResponse(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch,
             storageApplianceUpdateParameters, Context.NONE);
     }
 
@@ -825,57 +741,25 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
         String storageApplianceName, String ifMatch, String ifNoneMatch,
         StorageAppliancePatchParameters storageApplianceUpdateParameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, storageApplianceName, ifMatch,
-            ifNoneMatch, storageApplianceUpdateParameters);
-        return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(response,
-            StorageApplianceInner.class, StorageApplianceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch,
+            storageApplianceUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
-     * Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storageAppliance represents on-premises Network Cloud storage
-     * appliance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
         String storageApplianceName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final StorageAppliancePatchParameters storageApplianceUpdateParameters = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, storageApplianceName, ifMatch,
-            ifNoneMatch, storageApplianceUpdateParameters);
-        return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(response,
-            StorageApplianceInner.class, StorageApplianceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch,
+            storageApplianceUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
-     * Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param storageApplianceUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of storageAppliance represents on-premises Network Cloud storage
-     * appliance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
         String storageApplianceName, String ifMatch, String ifNoneMatch,
@@ -931,48 +815,22 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             storageApplianceUpdateParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
-     * Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageAppliance represents on-premises Network Cloud storage appliance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageApplianceInner update(String resourceGroupName, String storageApplianceName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final StorageAppliancePatchParameters storageApplianceUpdateParameters = null;
-        return beginUpdate(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch,
-            storageApplianceUpdateParameters).getFinalResult();
+        return update(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, storageApplianceUpdateParameters,
+            Context.NONE);
     }
 
-    /**
-     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
-     * Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param storageApplianceUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageAppliance represents on-premises Network Cloud storage appliance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageApplianceInner update(String resourceGroupName, String storageApplianceName, String ifMatch,
         String ifNoneMatch, StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context) {
-        return beginUpdate(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch,
-            storageApplianceUpdateParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, storageApplianceName, ifMatch,
+            ifNoneMatch, storageApplianceUpdateParameters, context));
     }
 
     /**
@@ -1016,9 +874,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageApplianceName,
         String ifMatch, String ifNoneMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -1105,49 +961,20 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageApplianceName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageApplianceName,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
-     * resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageApplianceName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
-     * resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageApplianceName,
         String ifMatch, String ifNoneMatch, Context context) {
@@ -1197,42 +1024,20 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
-     * resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageApplianceName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        beginDelete(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch).getFinalResult();
+        delete(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
-     * resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageApplianceName, String ifMatch, String ifNoneMatch,
         Context context) {
-        beginDelete(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -1311,12 +1116,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageApplianceInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
         String skipToken) {
-        final String accept = "application/json";
-        Response<StorageApplianceList> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -1343,38 +1143,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of storage appliances in the provided resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of storage appliances in the provided resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageApplianceInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of storage appliances in the provided resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of storage appliances in the provided resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageApplianceInner> listByResourceGroup(String resourceGroupName, Integer top,
         String skipToken, Context context) {
@@ -1450,11 +1227,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageApplianceInner> listSinglePage(Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<StorageApplianceList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(top, skipToken, Context.NONE);
     }
 
     /**
@@ -1478,35 +1251,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of storage appliances in the provided subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of storage appliances in the provided subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageApplianceInner> list() {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(top, skipToken),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of storage appliances in the provided subscription.
-     * 
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of storage appliances in the provided subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageApplianceInner> list(Integer top, String skipToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(top, skipToken, context),
@@ -1546,8 +1299,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> disableRemoteVendorManagementWithResponse(String resourceGroupName,
         String storageApplianceName) {
-        return service.disableRemoteVendorManagementSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, Context.NONE);
+        return disableRemoteVendorManagementWithResponse(resourceGroupName, storageApplianceName, Context.NONE);
     }
 
     /**
@@ -1588,36 +1340,14 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             this.client.getContext());
     }
 
-    /**
-     * Disable remote vendor management of the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult>
         beginDisableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
-        Response<BinaryData> response
-            = disableRemoteVendorManagementWithResponse(resourceGroupName, storageApplianceName);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginDisableRemoteVendorManagement(resourceGroupName, storageApplianceName, Context.NONE);
     }
 
-    /**
-     * Disable remote vendor management of the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult>
         beginDisableRemoteVendorManagement(String resourceGroupName, String storageApplianceName, Context context) {
@@ -1644,36 +1374,18 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Disable remote vendor management of the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult disableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
-        return beginDisableRemoteVendorManagement(resourceGroupName, storageApplianceName).getFinalResult();
+        return disableRemoteVendorManagement(resourceGroupName, storageApplianceName, Context.NONE);
     }
 
-    /**
-     * Disable remote vendor management of the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult disableRemoteVendorManagement(String resourceGroupName, String storageApplianceName,
         Context context) {
-        return beginDisableRemoteVendorManagement(resourceGroupName, storageApplianceName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginDisableRemoteVendorManagement(resourceGroupName, storageApplianceName, context));
     }
 
     /**
@@ -1713,8 +1425,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     private Response<BinaryData> enableRemoteVendorManagementWithResponse(String resourceGroupName,
         String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters) {
-        return service.enableRemoteVendorManagementSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName,
+        return enableRemoteVendorManagementWithResponse(resourceGroupName, storageApplianceName,
             storageApplianceEnableRemoteVendorManagementParameters, Context.NONE);
     }
 
@@ -1796,48 +1507,24 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginEnableRemoteVendorManagement(
+    private SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginEnableRemoteVendorManagement(
         String resourceGroupName, String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters) {
-        Response<BinaryData> response = enableRemoteVendorManagementWithResponse(resourceGroupName,
-            storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginEnableRemoteVendorManagement(resourceGroupName, storageApplianceName,
+            storageApplianceEnableRemoteVendorManagementParameters, Context.NONE);
     }
 
-    /**
-     * Enable remote vendor management of the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult>
         beginEnableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
         final StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters
             = null;
-        Response<BinaryData> response = enableRemoteVendorManagementWithResponse(resourceGroupName,
-            storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginEnableRemoteVendorManagement(resourceGroupName, storageApplianceName,
+            storageApplianceEnableRemoteVendorManagementParameters, Context.NONE);
     }
 
-    /**
-     * Enable remote vendor management of the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceEnableRemoteVendorManagementParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginEnableRemoteVendorManagement(
         String resourceGroupName, String storageApplianceName,
@@ -1889,42 +1576,22 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enable remote vendor management of the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult enableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
         final StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters
             = null;
-        return beginEnableRemoteVendorManagement(resourceGroupName, storageApplianceName,
-            storageApplianceEnableRemoteVendorManagementParameters).getFinalResult();
+        return enableRemoteVendorManagement(resourceGroupName, storageApplianceName,
+            storageApplianceEnableRemoteVendorManagementParameters, Context.NONE);
     }
 
-    /**
-     * Enable remote vendor management of the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceEnableRemoteVendorManagementParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult enableRemoteVendorManagement(String resourceGroupName, String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
         Context context) {
-        return beginEnableRemoteVendorManagement(resourceGroupName, storageApplianceName,
-            storageApplianceEnableRemoteVendorManagementParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginEnableRemoteVendorManagement(resourceGroupName,
+            storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters, context));
     }
 
     /**
@@ -1964,9 +1631,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> runReadCommandsWithResponse(String resourceGroupName, String storageApplianceName,
         StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
-        final String contentType = "application/json";
-        return service.runReadCommandsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, contentType,
+        return runReadCommandsWithResponse(resourceGroupName, storageApplianceName,
             storageApplianceRunReadCommandsParameters, Context.NONE);
     }
 
@@ -2013,39 +1678,16 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             this.client.getContext());
     }
 
-    /**
-     * Run one or more read-only commands on the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginRunReadCommands(
         String resourceGroupName, String storageApplianceName,
         StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
-        Response<BinaryData> response = runReadCommandsWithResponse(resourceGroupName, storageApplianceName,
-            storageApplianceRunReadCommandsParameters);
-        return this.client.<OperationStatusResult, OperationStatusResult>getLroResult(response,
-            OperationStatusResult.class, OperationStatusResult.class, Context.NONE);
+        return beginRunReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters,
+            Context.NONE);
     }
 
-    /**
-     * Run one or more read-only commands on the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginRunReadCommands(
         String resourceGroupName, String storageApplianceName,
@@ -2074,41 +1716,20 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             storageApplianceRunReadCommandsParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Run one or more read-only commands on the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult runReadCommands(String resourceGroupName, String storageApplianceName,
         StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
-        return beginRunReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters)
-            .getFinalResult();
+        return runReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters,
+            Context.NONE);
     }
 
-    /**
-     * Run one or more read-only commands on the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResult runReadCommands(String resourceGroupName, String storageApplianceName,
         StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context) {
-        return beginRunReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginRunReadCommands(resourceGroupName, storageApplianceName,
+            storageApplianceRunReadCommandsParameters, context));
     }
 
     /**
@@ -2143,11 +1764,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageApplianceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageApplianceList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2201,11 +1818,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageApplianceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageApplianceList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

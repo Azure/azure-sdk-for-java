@@ -18,10 +18,10 @@ import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.message.Message;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -46,19 +46,19 @@ public class BackCompatTest extends ApiTestBase {
     private final Consumer<EventData> validateAmqpPropertiesInEventData = new Consumer<EventData>() {
         @Override
         public void accept(EventData eData) {
-            Assert.assertTrue(eData.getProperties().containsKey(APPLICATION_PROPERTY)
+            Assertions.assertTrue(eData.getProperties().containsKey(APPLICATION_PROPERTY)
                     && eData.getProperties().get(APPLICATION_PROPERTY).equals(ORIGINAL_MESSAGE.getApplicationProperties().getValue().get(APPLICATION_PROPERTY)));
 
-            Assert.assertTrue(eData.getProperties().containsKey(INT_APPLICATION_PROPERTY)
+            Assertions.assertTrue(eData.getProperties().containsKey(INT_APPLICATION_PROPERTY)
                     && eData.getProperties().get(INT_APPLICATION_PROPERTY).equals(ORIGINAL_MESSAGE.getApplicationProperties().getValue().get(INT_APPLICATION_PROPERTY)));
 
-            Assert.assertTrue(eData.getProperties().size() == 2);
+            Assertions.assertTrue(eData.getProperties().size() == 2);
 
-            Assert.assertTrue(new String(eData.getBytes()).equals(PAYLOAD));
+            Assertions.assertTrue(new String(eData.getBytes()).equals(PAYLOAD));
         }
     };
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize() throws EventHubException, IOException, InterruptedException, ExecutionException {
         final ConnectionStringBuilder connStrBuilder = TestContext.getConnectionString();
         final String connectionString = connStrBuilder.toString();
@@ -84,7 +84,7 @@ public class BackCompatTest extends ApiTestBase {
         receivedEvent = receiver.receiveSync(10).iterator().next();
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanup() throws EventHubException {
         if (partitionMsgSender != null) {
             partitionMsgSender.closeSync();

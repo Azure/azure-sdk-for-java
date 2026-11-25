@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class L3NetworksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/L3Networks_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/L3Networks_ListByResourceGroup.json
      */
     /**
      * Sample code: List L3 networks for resource group.

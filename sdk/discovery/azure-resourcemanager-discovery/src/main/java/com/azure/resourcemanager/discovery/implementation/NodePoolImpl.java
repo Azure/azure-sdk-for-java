@@ -84,10 +84,7 @@ public final class NodePoolImpl implements NodePool, NodePool.Definition, NodePo
     }
 
     public NodePool create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNodePools()
-            .createOrUpdate(resourceGroupName, supercomputerName, nodePoolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NodePool create(Context context) {
@@ -108,10 +105,7 @@ public final class NodePoolImpl implements NodePool, NodePool.Definition, NodePo
     }
 
     public NodePool apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNodePools()
-            .update(resourceGroupName, supercomputerName, nodePoolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NodePool apply(Context context) {
@@ -124,17 +118,19 @@ public final class NodePoolImpl implements NodePool, NodePool.Definition, NodePo
     NodePoolImpl(NodePoolInner innerObject, com.azure.resourcemanager.discovery.DiscoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.supercomputerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "supercomputers");
-        this.nodePoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "nodePools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}/nodePools/{nodePoolName}",
+            "resourceGroupName");
+        this.supercomputerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}/nodePools/{nodePoolName}",
+            "supercomputerName");
+        this.nodePoolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}/nodePools/{nodePoolName}",
+            "nodePoolName");
     }
 
     public NodePool refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNodePools()
-            .getWithResponse(resourceGroupName, supercomputerName, nodePoolName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NodePool refresh(Context context) {

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.55.0-beta.2 (Unreleased)
+## 2.57.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,208 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.56.0 (2026-11-06)
+
+- Package api-version 2026-11-01.
+
+### Breaking Changes
+
+#### `models.SearchServiceListResult` was removed
+
+#### `models.PrivateLinkResourcesResult` was removed
+
+#### `models.SharedPrivateLinkResourceListResult` was removed
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.QuotaUsagesListResult` was removed
+
+#### `models.NetworkSecurityPerimeterConfigurationListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.ListQueryKeysResult` was removed
+
+#### `models.NetworkSecurityPerimeterConfigurationProperties` was modified
+
+* `NetworkSecurityPerimeterConfigurationProperties()` was changed to private access
+* `withNetworkSecurityPerimeter(models.NetworkSecurityPerimeter)` was removed
+* `withResourceAssociation(models.ResourceAssociation)` was removed
+* `withProfile(models.NetworkSecurityProfile)` was removed
+
+#### `models.AccessRuleProperties` was modified
+
+* `AccessRuleProperties()` was changed to private access
+* `withAddressPrefixes(java.util.List)` was removed
+* `withPhoneNumbers(java.util.List)` was removed
+* `withFullyQualifiedDomainNames(java.util.List)` was removed
+* `withSubscriptions(java.util.List)` was removed
+* `withNetworkSecurityPerimeters(java.util.List)` was removed
+* `withDirection(models.AccessRuleDirection)` was removed
+* `withEmailAddresses(java.util.List)` was removed
+
+#### `models.ProvisioningIssue` was modified
+
+* `ProvisioningIssue()` was changed to private access
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+
+#### `models.ProvisioningIssueProperties` was modified
+
+* `ProvisioningIssueProperties()` was changed to private access
+
+#### `models.QuotaUsageResultName` was modified
+
+* `QuotaUsageResultName()` was changed to private access
+* `withLocalizedValue(java.lang.String)` was removed
+* `withValue(java.lang.String)` was removed
+
+#### `models.ShareablePrivateLinkResourceProperties` was modified
+
+* `ShareablePrivateLinkResourceProperties()` was changed to private access
+
+#### `models.AccessRulePropertiesSubscriptionsItem` was modified
+
+* `AccessRulePropertiesSubscriptionsItem()` was changed to private access
+* `withId(java.lang.String)` was removed
+
+#### `models.NetworkSecurityProfile` was modified
+
+* `NetworkSecurityProfile()` was changed to private access
+* `withAccessRules(java.util.List)` was removed
+* `withDiagnosticSettingsVersion(java.lang.Integer)` was removed
+* `withName(java.lang.String)` was removed
+* `withEnabledLogCategories(java.util.List)` was removed
+* `withAccessRulesVersion(java.lang.Integer)` was removed
+
+#### `models.AccessRule` was modified
+
+* `AccessRule()` was changed to private access
+* `withProperties(models.AccessRuleProperties)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.NetworkSecurityPerimeter` was modified
+
+* `NetworkSecurityPerimeter()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `withPerimeterGuid(java.util.UUID)` was removed
+* `withLocation(java.lang.String)` was removed
+
+#### `models.ShareablePrivateLinkResourceType` was modified
+
+* `ShareablePrivateLinkResourceType()` was changed to private access
+
+#### `models.CheckNameAvailabilityOutput` was modified
+
+* `CheckNameAvailabilityOutput()` was changed to private access
+
+#### `models.PrivateLinkResourceProperties` was modified
+
+* `PrivateLinkResourceProperties()` was changed to private access
+
+#### `models.PublicNetworkAccess` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `toString()` was removed
+* `models.PublicNetworkAccess[] values()` -> `java.util.Collection values()`
+
+#### `models.ResourceAssociation` was modified
+
+* `ResourceAssociation()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withAccessMode(models.ResourceAssociationAccessMode)` was removed
+
+#### `models.SharedPrivateLinkResourceProvisioningState` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `models.SharedPrivateLinkResourceProvisioningState[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+
+#### `models.SkuName` was modified
+
+* `toString()` was removed
+* `valueOf(java.lang.String)` was removed
+* `models.SkuName[] values()` -> `java.util.Collection values()`
+
+#### `models.SharedPrivateLinkResourceStatus` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `models.SharedPrivateLinkResourceStatus[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+
+#### `models.IdentityType` was modified
+
+* `models.IdentityType[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+* `valueOf(java.lang.String)` was removed
+
+### Features Added
+
+* `models.KnowledgeRetrieval` was added
+
+#### `models.PublicNetworkAccess` was modified
+
+* `PublicNetworkAccess()` was added
+
+#### `models.SearchServiceUpdate` was modified
+
+* `withKnowledgeRetrieval(models.KnowledgeRetrieval)` was added
+* `knowledgeRetrieval()` was added
+
+#### `models.SharedPrivateLinkResourceProvisioningState` was modified
+
+* `SharedPrivateLinkResourceProvisioningState()` was added
+
+#### `models.SkuName` was modified
+
+* `SkuName()` was added
+* `SERVERLESS` was added
+
+#### `models.SharedPrivateLinkResourceStatus` was modified
+
+* `SharedPrivateLinkResourceStatus()` was added
+
+#### `models.IdentityType` was modified
+
+* `IdentityType()` was added
+
+## 2.55.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.1`.
+
+## 2.54.11 (2026-10-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.4` to version `2.55.0`.
+
+## 2.54.10 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.3` to version `2.54.4`.
+
+## 2.55.0-beta.2 (2026-09-17)
+
+### Features Added
+
+* `models.AutoGeneratedDomainNameLabelScope` was added
+
+#### `models.SearchServiceUpdate` was modified
+
+* `autoGeneratedDomainNameLabelScope()` was added
+* `withAutoGeneratedDomainNameLabelScope(models.AutoGeneratedDomainNameLabelScope)` was added
 
 ## 2.54.9 (2026-08-18)
 

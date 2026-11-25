@@ -45,7 +45,7 @@ public final class PrefixListLocalRulestacksImpl implements PrefixListLocalRules
     }
 
     public void delete(String resourceGroupName, String localRulestackName, String name) {
-        this.serviceClient().delete(resourceGroupName, localRulestackName, name);
+        this.delete(resourceGroupName, localRulestackName, name, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String localRulestackName, String name, Context context) {
@@ -54,9 +54,7 @@ public final class PrefixListLocalRulestacksImpl implements PrefixListLocalRules
 
     public PagedIterable<PrefixListResource> listByLocalRulestacks(String resourceGroupName,
         String localRulestackName) {
-        PagedIterable<PrefixListResourceInner> inner
-            = this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrefixListResourceImpl(inner1, this.manager()));
+        return this.listByLocalRulestacks(resourceGroupName, localRulestackName, Context.NONE);
     }
 
     public PagedIterable<PrefixListResource> listByLocalRulestacks(String resourceGroupName, String localRulestackName,
@@ -67,78 +65,36 @@ public final class PrefixListLocalRulestacksImpl implements PrefixListLocalRules
     }
 
     public PrefixListResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
-        if (localRulestackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "prefixlists");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'prefixlists'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<PrefixListResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
-        if (localRulestackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "prefixlists");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'prefixlists'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/prefixlists/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String localRulestackName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/prefixlists/{name}",
+            "localRulestackName", "localRulestacks", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/prefixlists/{name}",
+            "name", "prefixlists", LOGGER);
         return this.getWithResponse(resourceGroupName, localRulestackName, name, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
-        if (localRulestackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "prefixlists");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'prefixlists'.", id)));
-        }
-        this.delete(resourceGroupName, localRulestackName, name, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
-        if (localRulestackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "prefixlists");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'prefixlists'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/prefixlists/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String localRulestackName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/prefixlists/{name}",
+            "localRulestackName", "localRulestacks", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/prefixlists/{name}",
+            "name", "prefixlists", LOGGER);
         this.delete(resourceGroupName, localRulestackName, name, context);
     }
 

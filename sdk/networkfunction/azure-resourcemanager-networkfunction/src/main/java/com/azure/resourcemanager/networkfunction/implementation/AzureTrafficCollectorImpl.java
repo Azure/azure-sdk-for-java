@@ -104,10 +104,7 @@ public final class AzureTrafficCollectorImpl
     }
 
     public AzureTrafficCollector create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureTrafficCollectors()
-            .createOrUpdate(resourceGroupName, azureTrafficCollectorName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AzureTrafficCollector create(Context context) {
@@ -130,11 +127,7 @@ public final class AzureTrafficCollectorImpl
     }
 
     public AzureTrafficCollector apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureTrafficCollectors()
-            .updateTagsWithResponse(resourceGroupName, azureTrafficCollectorName, updateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AzureTrafficCollector apply(Context context) {
@@ -149,17 +142,16 @@ public final class AzureTrafficCollectorImpl
         com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.azureTrafficCollectorName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "azureTrafficCollectors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}",
+            "resourceGroupName");
+        this.azureTrafficCollectorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}",
+            "azureTrafficCollectorName");
     }
 
     public AzureTrafficCollector refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureTrafficCollectors()
-            .getByResourceGroupWithResponse(resourceGroupName, azureTrafficCollectorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AzureTrafficCollector refresh(Context context) {

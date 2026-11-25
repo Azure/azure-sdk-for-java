@@ -120,20 +120,7 @@ public final class BackupOperationStatusesClientImpl implements BackupOperationS
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetches the status of an operation such as triggering a backup, restore. The status can be in progress, completed
-     * or failed. You can refer to the OperationStatus enum for all the possible states of an operation. Some operations
-     * create jobs. This method returns the list of jobs when the operation is complete.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operationId OperationID which represents the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusInner> getWithResponse(String vaultName, String resourceGroupName,
         String operationId, Context context) {
@@ -142,19 +129,7 @@ public final class BackupOperationStatusesClientImpl implements BackupOperationS
             this.client.getSubscriptionId(), operationId, accept, context);
     }
 
-    /**
-     * Fetches the status of an operation such as triggering a backup, restore. The status can be in progress, completed
-     * or failed. You can refer to the OperationStatus enum for all the possible states of an operation. Some operations
-     * create jobs. This method returns the list of jobs when the operation is complete.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operationId OperationID which represents the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusInner get(String vaultName, String resourceGroupName, String operationId) {
         return getWithResponse(vaultName, resourceGroupName, operationId, Context.NONE).getValue();

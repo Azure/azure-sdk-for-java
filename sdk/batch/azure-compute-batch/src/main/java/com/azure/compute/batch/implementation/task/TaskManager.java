@@ -220,8 +220,8 @@ public class TaskManager {
         List<ThreadPairInfo> semaphoreThreads = new ArrayList<>();
         Exception innerException = null;
 
-        // Continue looping while there are still tasks left to submit OR while any active threads are still processing tasks.
-        while (!pendingList.isEmpty() || taskSemaphore.availablePermits() < threadNumber) {
+        // Check workers first so tasks requeued before their permits are released cannot be missed.
+        while (taskSemaphore.availablePermits() < threadNumber || !pendingList.isEmpty()) {
             try {
                 if (taskSemaphore.tryAcquire(30, TimeUnit.SECONDS)) {
                     if (!pendingList.isEmpty()) {

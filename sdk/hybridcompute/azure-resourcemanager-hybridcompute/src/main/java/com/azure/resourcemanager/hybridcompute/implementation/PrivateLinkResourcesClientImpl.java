@@ -155,19 +155,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
-     * @param groupName The name of the private link resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Azure Monitor PrivateLinkScope along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String scopeName,
         String groupName, Context context) {
@@ -176,17 +164,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             resourceGroupName, scopeName, groupName, accept, context);
     }
 
-    /**
-     * Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
-     * @param groupName The name of the private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourceInner get(String resourceGroupName, String scopeName, String groupName) {
         return getWithResponse(resourceGroupName, scopeName, groupName, Context.NONE).getValue();
@@ -248,12 +226,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByPrivateLinkScopeSinglePage(String resourceGroupName,
         String scopeName) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listByPrivateLinkScopeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, scopeName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPrivateLinkScopeSinglePage(resourceGroupName, scopeName, Context.NONE);
     }
 
     /**
@@ -279,35 +252,13 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Azure Monitor PrivateLinkScope as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByPrivateLinkScope(String resourceGroupName, String scopeName) {
-        return new PagedIterable<>(() -> listByPrivateLinkScopeSinglePage(resourceGroupName, scopeName),
-            nextLink -> listByPrivateLinkScopeNextSinglePage(nextLink));
+        return listByPrivateLinkScope(resourceGroupName, scopeName, Context.NONE);
     }
 
-    /**
-     * Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Azure Monitor PrivateLinkScope as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByPrivateLinkScope(String resourceGroupName, String scopeName,
         Context context) {
@@ -348,11 +299,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByPrivateLinkScopeNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listByPrivateLinkScopeNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPrivateLinkScopeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

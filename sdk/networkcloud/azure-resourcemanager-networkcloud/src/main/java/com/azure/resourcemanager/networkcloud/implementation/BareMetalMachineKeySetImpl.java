@@ -170,11 +170,7 @@ public final class BareMetalMachineKeySetImpl
     }
 
     public BareMetalMachineKeySet create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBareMetalMachineKeySets()
-            .createOrUpdate(resourceGroupName, clusterName, bareMetalMachineKeySetName, this.innerModel(),
-                createIfMatch, createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BareMetalMachineKeySet create(Context context) {
@@ -201,11 +197,7 @@ public final class BareMetalMachineKeySetImpl
     }
 
     public BareMetalMachineKeySet apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBareMetalMachineKeySets()
-            .update(resourceGroupName, clusterName, bareMetalMachineKeySetName, updateIfMatch, updateIfNoneMatch,
-                updateBareMetalMachineKeySetUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BareMetalMachineKeySet apply(Context context) {
@@ -220,18 +212,19 @@ public final class BareMetalMachineKeySetImpl
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.bareMetalMachineKeySetName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bareMetalMachineKeySets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bareMetalMachineKeySets/{bareMetalMachineKeySetName}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bareMetalMachineKeySets/{bareMetalMachineKeySetName}",
+            "clusterName");
+        this.bareMetalMachineKeySetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bareMetalMachineKeySets/{bareMetalMachineKeySetName}",
+            "bareMetalMachineKeySetName");
     }
 
     public BareMetalMachineKeySet refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBareMetalMachineKeySets()
-            .getWithResponse(resourceGroupName, clusterName, bareMetalMachineKeySetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BareMetalMachineKeySet refresh(Context context) {

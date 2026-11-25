@@ -47,7 +47,7 @@ public final class PolicyDefinitionsImpl implements PolicyDefinitions {
     }
 
     public void delete(String policyDefinitionName) {
-        this.serviceClient().delete(policyDefinitionName);
+        this.deleteWithResponse(policyDefinitionName, Context.NONE);
     }
 
     public PagedIterable<PolicyDefinition> list() {
@@ -130,7 +130,7 @@ public final class PolicyDefinitionsImpl implements PolicyDefinitions {
     }
 
     public void deleteAtManagementGroup(String managementGroupId, String policyDefinitionName) {
-        this.serviceClient().deleteAtManagementGroup(managementGroupId, policyDefinitionName);
+        this.deleteAtManagementGroupWithResponse(managementGroupId, policyDefinitionName, Context.NONE);
     }
 
     public PagedIterable<PolicyDefinition> listByManagementGroup(String managementGroupId) {
@@ -146,38 +146,24 @@ public final class PolicyDefinitionsImpl implements PolicyDefinitions {
     }
 
     public PolicyDefinition getById(String id) {
-        String policyDefinitionName = ResourceManagerUtils.getValueFromIdByName(id, "policyDefinitions");
-        if (policyDefinitionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policyDefinitions'.", id)));
-        }
-        return this.getWithResponse(policyDefinitionName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<PolicyDefinition> getByIdWithResponse(String id, Context context) {
-        String policyDefinitionName = ResourceManagerUtils.getValueFromIdByName(id, "policyDefinitions");
-        if (policyDefinitionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policyDefinitions'.", id)));
-        }
+        String policyDefinitionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}",
+            "policyDefinitionName", "policyDefinitions", LOGGER);
         return this.getWithResponse(policyDefinitionName, context);
     }
 
     public void deleteById(String id) {
-        String policyDefinitionName = ResourceManagerUtils.getValueFromIdByName(id, "policyDefinitions");
-        if (policyDefinitionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policyDefinitions'.", id)));
-        }
-        this.deleteWithResponse(policyDefinitionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String policyDefinitionName = ResourceManagerUtils.getValueFromIdByName(id, "policyDefinitions");
-        if (policyDefinitionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policyDefinitions'.", id)));
-        }
+        String policyDefinitionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}",
+            "policyDefinitionName", "policyDefinitions", LOGGER);
         return this.deleteWithResponse(policyDefinitionName, context);
     }
 

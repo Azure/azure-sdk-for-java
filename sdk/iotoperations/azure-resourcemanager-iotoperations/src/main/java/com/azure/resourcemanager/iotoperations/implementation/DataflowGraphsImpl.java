@@ -48,7 +48,7 @@ public final class DataflowGraphsImpl implements DataflowGraphs {
 
     public void delete(String resourceGroupName, String instanceName, String dataflowProfileName,
         String dataflowGraphName) {
-        this.serviceClient().delete(resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName);
+        this.delete(resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String instanceName, String dataflowProfileName,
@@ -58,9 +58,7 @@ public final class DataflowGraphsImpl implements DataflowGraphs {
 
     public PagedIterable<DataflowGraphResource> listByDataflowProfile(String resourceGroupName, String instanceName,
         String dataflowProfileName) {
-        PagedIterable<DataflowGraphResourceInner> inner
-            = this.serviceClient().listByDataflowProfile(resourceGroupName, instanceName, dataflowProfileName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataflowGraphResourceImpl(inner1, this.manager()));
+        return this.listByDataflowProfile(resourceGroupName, instanceName, dataflowProfileName, Context.NONE);
     }
 
     public PagedIterable<DataflowGraphResource> listByDataflowProfile(String resourceGroupName, String instanceName,
@@ -71,100 +69,42 @@ public final class DataflowGraphsImpl implements DataflowGraphs {
     }
 
     public DataflowGraphResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String dataflowProfileName = ResourceManagerUtils.getValueFromIdByName(id, "dataflowProfiles");
-        if (dataflowProfileName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dataflowProfiles'.", id)));
-        }
-        String dataflowGraphName = ResourceManagerUtils.getValueFromIdByName(id, "dataflowGraphs");
-        if (dataflowGraphName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dataflowGraphs'.", id)));
-        }
-        return this
-            .getWithResponse(resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DataflowGraphResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String dataflowProfileName = ResourceManagerUtils.getValueFromIdByName(id, "dataflowProfiles");
-        if (dataflowProfileName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dataflowProfiles'.", id)));
-        }
-        String dataflowGraphName = ResourceManagerUtils.getValueFromIdByName(id, "dataflowGraphs");
-        if (dataflowGraphName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dataflowGraphs'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String instanceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}",
+            "instanceName", "instances", LOGGER);
+        String dataflowProfileName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}",
+            "dataflowProfileName", "dataflowProfiles", LOGGER);
+        String dataflowGraphName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}",
+            "dataflowGraphName", "dataflowGraphs", LOGGER);
         return this.getWithResponse(resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String dataflowProfileName = ResourceManagerUtils.getValueFromIdByName(id, "dataflowProfiles");
-        if (dataflowProfileName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dataflowProfiles'.", id)));
-        }
-        String dataflowGraphName = ResourceManagerUtils.getValueFromIdByName(id, "dataflowGraphs");
-        if (dataflowGraphName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dataflowGraphs'.", id)));
-        }
-        this.delete(resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String dataflowProfileName = ResourceManagerUtils.getValueFromIdByName(id, "dataflowProfiles");
-        if (dataflowProfileName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dataflowProfiles'.", id)));
-        }
-        String dataflowGraphName = ResourceManagerUtils.getValueFromIdByName(id, "dataflowGraphs");
-        if (dataflowGraphName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dataflowGraphs'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String instanceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}",
+            "instanceName", "instances", LOGGER);
+        String dataflowProfileName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}",
+            "dataflowProfileName", "dataflowProfiles", LOGGER);
+        String dataflowGraphName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflowGraphs/{dataflowGraphName}",
+            "dataflowGraphName", "dataflowGraphs", LOGGER);
         this.delete(resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, context);
     }
 

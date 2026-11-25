@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class CloudServicesNetworksListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/CloudServicesNetworks_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/CloudServicesNetworks_ListBySubscription.json
      */
     /**
      * Sample code: List cloud services networks for subscription.

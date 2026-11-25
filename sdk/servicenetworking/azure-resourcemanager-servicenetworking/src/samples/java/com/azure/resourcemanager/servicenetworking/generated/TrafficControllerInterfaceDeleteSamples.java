@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicenetworking.generated;
  */
 public final class TrafficControllerInterfaceDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/TrafficControllerDelete.json
+     * x-ms-original-file: 2026-03-01/TrafficControllerDelete.json
      */
     /**
      * Sample code: Delete Traffic Controller.

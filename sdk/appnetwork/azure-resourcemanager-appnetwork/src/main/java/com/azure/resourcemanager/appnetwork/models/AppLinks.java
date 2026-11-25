@@ -13,7 +13,7 @@ import com.azure.core.util.Context;
  */
 public interface AppLinks {
     /**
-     * Get an AppLink.
+     * Get the details of an Azure Kubernetes Application Network.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -21,24 +21,24 @@ public interface AppLinks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AppLink along with {@link Response}.
+     * @return the details of an Azure Kubernetes Application Network along with {@link Response}.
      */
     Response<AppLink> getByResourceGroupWithResponse(String resourceGroupName, String appLinkName, Context context);
 
     /**
-     * Get an AppLink.
+     * Get the details of an Azure Kubernetes Application Network.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AppLink.
+     * @return the details of an Azure Kubernetes Application Network.
      */
     AppLink getByResourceGroup(String resourceGroupName, String appLinkName);
 
     /**
-     * Delete an AppLink.
+     * Delete an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -49,7 +49,7 @@ public interface AppLinks {
     void deleteByResourceGroup(String resourceGroupName, String appLinkName);
 
     /**
-     * Delete an AppLink.
+     * Delete an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -61,7 +61,7 @@ public interface AppLinks {
     void delete(String resourceGroupName, String appLinkName, Context context);
 
     /**
-     * List AppLink resources by resource group.
+     * List Azure Kubernetes Application Network resources by resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -72,7 +72,7 @@ public interface AppLinks {
     PagedIterable<AppLink> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List AppLink resources by resource group.
+     * List Azure Kubernetes Application Network resources by resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -84,7 +84,7 @@ public interface AppLinks {
     PagedIterable<AppLink> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List AppLink resources by subscription.
+     * List Azure Kubernetes Application Network resources by subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -93,7 +93,7 @@ public interface AppLinks {
     PagedIterable<AppLink> list();
 
     /**
-     * List AppLink resources by subscription.
+     * List Azure Kubernetes Application Network resources by subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,30 +104,30 @@ public interface AppLinks {
     PagedIterable<AppLink> list(Context context);
 
     /**
-     * Get an AppLink.
+     * Get the details of an Azure Kubernetes Application Network.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AppLink along with {@link Response}.
+     * @return the details of an Azure Kubernetes Application Network along with {@link Response}.
      */
     AppLink getById(String id);
 
     /**
-     * Get an AppLink.
+     * Get the details of an Azure Kubernetes Application Network.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AppLink along with {@link Response}.
+     * @return the details of an Azure Kubernetes Application Network along with {@link Response}.
      */
     Response<AppLink> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete an AppLink.
+     * Delete an Azure Kubernetes Application Network resource.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +137,7 @@ public interface AppLinks {
     void deleteById(String id);
 
     /**
-     * Delete an AppLink.
+     * Delete an Azure Kubernetes Application Network resource.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.

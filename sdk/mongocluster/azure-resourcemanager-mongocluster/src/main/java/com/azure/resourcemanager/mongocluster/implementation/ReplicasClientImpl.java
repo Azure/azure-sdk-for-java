@@ -98,10 +98,10 @@ public final class ReplicasClientImpl implements ReplicasClient {
     }
 
     /**
-     * List all the replicas for the mongo cluster.
+     * List all the replicas for the DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -121,10 +121,10 @@ public final class ReplicasClientImpl implements ReplicasClient {
     }
 
     /**
-     * List all the replicas for the mongo cluster.
+     * List all the replicas for the DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -137,10 +137,10 @@ public final class ReplicasClientImpl implements ReplicasClient {
     }
 
     /**
-     * List all the replicas for the mongo cluster.
+     * List all the replicas for the DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -148,19 +148,14 @@ public final class ReplicasClientImpl implements ReplicasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicaInner> listByParentSinglePage(String resourceGroupName, String mongoClusterName) {
-        final String accept = "application/json";
-        Response<ReplicaListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, mongoClusterName, Context.NONE);
     }
 
     /**
-     * List all the replicas for the mongo cluster.
+     * List all the replicas for the DocumentDB cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
+     * @param mongoClusterName The name of the DocumentDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -178,33 +173,13 @@ public final class ReplicasClientImpl implements ReplicasClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all the replicas for the mongo cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Replica list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicaInner> listByParent(String resourceGroupName, String mongoClusterName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, mongoClusterName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, mongoClusterName, Context.NONE);
     }
 
-    /**
-     * List all the replicas for the mongo cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mongoClusterName The name of the mongo cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Replica list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicaInner> listByParent(String resourceGroupName, String mongoClusterName,
         Context context) {
@@ -243,11 +218,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicaInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ReplicaListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

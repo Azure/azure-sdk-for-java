@@ -4,6 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.StacAssetUrlSigningMode;
 import com.azure.analytics.planetarycomputer.models.StacCollection;
 import com.azure.analytics.planetarycomputer.models.StacCollectionTemporalExtent;
 import com.azure.analytics.planetarycomputer.models.StacExtensionExtent;
@@ -23,7 +24,7 @@ public final class StacCollectionsGetTests extends PlanetaryComputerProClientTes
     @Disabled
     public void testStacCollectionsGetTests() {
         // method invocation
-        StacCollection response = stacClient.getCollection("naip-atl", null, null);
+        StacCollection response = stacClient.getCollection("naip-atl", (StacAssetUrlSigningMode) null, (Integer) null);
 
         // response assertion
         Assertions.assertNotNull(response);

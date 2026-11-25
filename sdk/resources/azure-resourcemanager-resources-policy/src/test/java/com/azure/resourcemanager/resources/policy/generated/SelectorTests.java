@@ -14,21 +14,24 @@ public final class SelectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Selector model = BinaryData.fromString(
-            "{\"kind\":\"policyDefinitionReferenceId\",\"in\":[\"hcffcyddglmjthjq\",\"wpyeicxmqciwqvh\",\"hix\"],\"notIn\":[\"dtopbob\",\"og\",\"m\"]}")
+            "{\"kind\":\"groupPrincipalId\",\"in\":[\"ez\"],\"notIn\":[\"hxmzsbbzoggig\",\"xwburvjxxjns\",\"ydptkoen\",\"ou\"],\"progress\":1110747875}")
             .toObject(Selector.class);
-        Assertions.assertEquals(SelectorKind.POLICY_DEFINITION_REFERENCE_ID, model.kind());
-        Assertions.assertEquals("hcffcyddglmjthjq", model.in().get(0));
-        Assertions.assertEquals("dtopbob", model.notIn().get(0));
+        Assertions.assertEquals(SelectorKind.GROUP_PRINCIPAL_ID, model.kind());
+        Assertions.assertEquals("ez", model.in().get(0));
+        Assertions.assertEquals("hxmzsbbzoggig", model.notIn().get(0));
+        Assertions.assertEquals(1110747875, model.progress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Selector model = new Selector().withKind(SelectorKind.POLICY_DEFINITION_REFERENCE_ID)
-            .withIn(Arrays.asList("hcffcyddglmjthjq", "wpyeicxmqciwqvh", "hix"))
-            .withNotIn(Arrays.asList("dtopbob", "og", "m"));
+        Selector model = new Selector().withKind(SelectorKind.GROUP_PRINCIPAL_ID)
+            .withIn(Arrays.asList("ez"))
+            .withNotIn(Arrays.asList("hxmzsbbzoggig", "xwburvjxxjns", "ydptkoen", "ou"))
+            .withProgress(1110747875);
         model = BinaryData.fromObject(model).toObject(Selector.class);
-        Assertions.assertEquals(SelectorKind.POLICY_DEFINITION_REFERENCE_ID, model.kind());
-        Assertions.assertEquals("hcffcyddglmjthjq", model.in().get(0));
-        Assertions.assertEquals("dtopbob", model.notIn().get(0));
+        Assertions.assertEquals(SelectorKind.GROUP_PRINCIPAL_ID, model.kind());
+        Assertions.assertEquals("ez", model.in().get(0));
+        Assertions.assertEquals("hxmzsbbzoggig", model.notIn().get(0));
+        Assertions.assertEquals(1110747875, model.progress());
     }
 }

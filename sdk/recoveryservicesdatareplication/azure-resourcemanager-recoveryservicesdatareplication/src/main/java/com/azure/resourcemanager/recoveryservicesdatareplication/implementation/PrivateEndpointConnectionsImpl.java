@@ -66,7 +66,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public void delete(String resourceGroupName, String vaultName, String privateEndpointConnectionName) {
-        this.serviceClient().delete(resourceGroupName, vaultName, privateEndpointConnectionName);
+        this.delete(resourceGroupName, vaultName, privateEndpointConnectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String vaultName, String privateEndpointConnectionName,
@@ -75,8 +75,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public PagedIterable<PrivateEndpointConnection> list(String resourceGroupName, String vaultName) {
-        PagedIterable<PrivateEndpointConnectionInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, vaultName, Context.NONE);
     }
 
     public PagedIterable<PrivateEndpointConnection> list(String resourceGroupName, String vaultName, Context context) {

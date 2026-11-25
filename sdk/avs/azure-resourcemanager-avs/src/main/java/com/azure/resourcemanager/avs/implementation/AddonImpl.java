@@ -60,10 +60,7 @@ public final class AddonImpl implements Addon, Addon.Definition, Addon.Update {
     }
 
     public Addon create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAddons()
-            .createOrUpdate(resourceGroupName, privateCloudName, addonName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Addon create(Context context) {
@@ -84,10 +81,7 @@ public final class AddonImpl implements Addon, Addon.Definition, Addon.Update {
     }
 
     public Addon apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAddons()
-            .createOrUpdate(resourceGroupName, privateCloudName, addonName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Addon apply(Context context) {
@@ -100,17 +94,19 @@ public final class AddonImpl implements Addon, Addon.Definition, Addon.Update {
     AddonImpl(AddonInner innerObject, com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.addonName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "addons");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/addons/{addonName}",
+            "resourceGroupName");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/addons/{addonName}",
+            "privateCloudName");
+        this.addonName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/addons/{addonName}",
+            "addonName");
     }
 
     public Addon refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAddons()
-            .getWithResponse(resourceGroupName, privateCloudName, addonName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Addon refresh(Context context) {

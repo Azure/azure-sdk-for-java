@@ -63,12 +63,7 @@ public final class OpenAIIntegrationRPModelImpl
     }
 
     public OpenAIIntegrationRPModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOpenAIs()
-            .createOrUpdateWithResponse(resourceGroupName, monitorName, integrationName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public OpenAIIntegrationRPModel create(Context context) {
@@ -90,12 +85,7 @@ public final class OpenAIIntegrationRPModelImpl
     }
 
     public OpenAIIntegrationRPModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOpenAIs()
-            .createOrUpdateWithResponse(resourceGroupName, monitorName, integrationName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public OpenAIIntegrationRPModel apply(Context context) {
@@ -110,17 +100,19 @@ public final class OpenAIIntegrationRPModelImpl
         com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.monitorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitors");
-        this.integrationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "openAIIntegrations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/openAIIntegrations/{integrationName}",
+            "resourceGroupName");
+        this.monitorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/openAIIntegrations/{integrationName}",
+            "monitorName");
+        this.integrationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/openAIIntegrations/{integrationName}",
+            "integrationName");
     }
 
     public OpenAIIntegrationRPModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOpenAIs()
-            .getWithResponse(resourceGroupName, monitorName, integrationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public OpenAIIntegrationRPModel refresh(Context context) {

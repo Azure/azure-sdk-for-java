@@ -47,10 +47,7 @@ public final class BookshelfPrivateLinkResourcesImpl implements BookshelfPrivate
     }
 
     public PagedIterable<BookshelfPrivateLinkResource> listByBookshelf(String resourceGroupName, String bookshelfName) {
-        PagedIterable<BookshelfPrivateLinkResourceInner> inner
-            = this.serviceClient().listByBookshelf(resourceGroupName, bookshelfName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new BookshelfPrivateLinkResourceImpl(inner1, this.manager()));
+        return this.listByBookshelf(resourceGroupName, bookshelfName, Context.NONE);
     }
 
     public PagedIterable<BookshelfPrivateLinkResource> listByBookshelf(String resourceGroupName, String bookshelfName,

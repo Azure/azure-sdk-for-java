@@ -272,17 +272,7 @@ public final class FleetsClientImpl implements FleetsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Fleet along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FleetInner> getByResourceGroupWithResponse(String resourceGroupName, String fleetName,
         Context context) {
@@ -291,16 +281,7 @@ public final class FleetsClientImpl implements FleetsClient {
             this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, context);
     }
 
-    /**
-     * Gets a Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Fleet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetInner getByResourceGroup(String resourceGroupName, String fleetName) {
         return getByResourceGroupWithResponse(resourceGroupName, fleetName, Context.NONE).getValue();
@@ -347,11 +328,7 @@ public final class FleetsClientImpl implements FleetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String fleetName, FleetInner resource,
         String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, fleetName, contentType, accept,
-            resource, Context.NONE);
+        return createWithResponse(resourceGroupName, fleetName, resource, ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -436,50 +413,21 @@ public final class FleetsClientImpl implements FleetsClient {
      * @return the {@link SyncPoller} for polling of the Fleet resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FleetInner>, FleetInner> beginCreate(String resourceGroupName, String fleetName,
+    private SyncPoller<PollResult<FleetInner>, FleetInner> beginCreate(String resourceGroupName, String fleetName,
         FleetInner resource, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, fleetName, resource, ifMatch, ifNoneMatch);
-        return this.client.<FleetInner, FleetInner>getLroResult(response, FleetInner.class, FleetInner.class,
-            Context.NONE);
+        return beginCreate(resourceGroupName, fleetName, resource, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Fleet resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FleetInner>, FleetInner> beginCreate(String resourceGroupName, String fleetName,
         FleetInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, fleetName, resource, ifMatch, ifNoneMatch);
-        return this.client.<FleetInner, FleetInner>getLroResult(response, FleetInner.class, FleetInner.class,
-            Context.NONE);
+        return beginCreate(resourceGroupName, fleetName, resource, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Fleet resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FleetInner>, FleetInner> beginCreate(String resourceGroupName, String fleetName,
         FleetInner resource, String ifMatch, String ifNoneMatch, Context context) {
@@ -527,42 +475,20 @@ public final class FleetsClientImpl implements FleetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Fleet resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetInner create(String resourceGroupName, String fleetName, FleetInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreate(resourceGroupName, fleetName, resource, ifMatch, ifNoneMatch).getFinalResult();
+        return create(resourceGroupName, fleetName, resource, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Fleet resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetInner create(String resourceGroupName, String fleetName, FleetInner resource, String ifMatch,
         String ifNoneMatch, Context context) {
-        return beginCreate(resourceGroupName, fleetName, resource, ifMatch, ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, fleetName, resource, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -604,11 +530,7 @@ public final class FleetsClientImpl implements FleetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateAsyncWithResponse(String resourceGroupName, String fleetName,
         FleetPatch properties, String ifMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateAsyncSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, contentType, accept, properties,
-            Context.NONE);
+        return updateAsyncWithResponse(resourceGroupName, fleetName, properties, ifMatch, Context.NONE);
     }
 
     /**
@@ -689,46 +611,20 @@ public final class FleetsClientImpl implements FleetsClient {
      * @return the {@link SyncPoller} for polling of the Fleet resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FleetInner>, FleetInner> beginUpdateAsync(String resourceGroupName, String fleetName,
+    private SyncPoller<PollResult<FleetInner>, FleetInner> beginUpdateAsync(String resourceGroupName, String fleetName,
         FleetPatch properties, String ifMatch) {
-        Response<BinaryData> response = updateAsyncWithResponse(resourceGroupName, fleetName, properties, ifMatch);
-        return this.client.<FleetInner, FleetInner>getLroResult(response, FleetInner.class, FleetInner.class,
-            Context.NONE);
+        return beginUpdateAsync(resourceGroupName, fleetName, properties, ifMatch, Context.NONE);
     }
 
-    /**
-     * Update a Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Fleet resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FleetInner>, FleetInner> beginUpdateAsync(String resourceGroupName, String fleetName,
         FleetPatch properties) {
         final String ifMatch = null;
-        Response<BinaryData> response = updateAsyncWithResponse(resourceGroupName, fleetName, properties, ifMatch);
-        return this.client.<FleetInner, FleetInner>getLroResult(response, FleetInner.class, FleetInner.class,
-            Context.NONE);
+        return beginUpdateAsync(resourceGroupName, fleetName, properties, ifMatch, Context.NONE);
     }
 
-    /**
-     * Update a Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param properties The resource properties to be updated.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Fleet resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FleetInner>, FleetInner> beginUpdateAsync(String resourceGroupName, String fleetName,
         FleetPatch properties, String ifMatch, Context context) {
@@ -774,40 +670,19 @@ public final class FleetsClientImpl implements FleetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Fleet resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetInner updateAsync(String resourceGroupName, String fleetName, FleetPatch properties) {
         final String ifMatch = null;
-        return beginUpdateAsync(resourceGroupName, fleetName, properties, ifMatch).getFinalResult();
+        return updateAsync(resourceGroupName, fleetName, properties, ifMatch, Context.NONE);
     }
 
-    /**
-     * Update a Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param properties The resource properties to be updated.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Fleet resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetInner updateAsync(String resourceGroupName, String fleetName, FleetPatch properties, String ifMatch,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, fleetName, properties, ifMatch, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdateAsync(resourceGroupName, fleetName, properties, ifMatch, context));
     }
 
     /**
@@ -843,8 +718,7 @@ public final class FleetsClientImpl implements FleetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String fleetName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, fleetName, ifMatch, Context.NONE);
     }
 
     /**
@@ -915,40 +789,18 @@ public final class FleetsClientImpl implements FleetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName, String ifMatch) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, fleetName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName, String ifMatch) {
+        return beginDelete(resourceGroupName, fleetName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName) {
         final String ifMatch = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, fleetName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, fleetName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName, String ifMatch,
         Context context) {
@@ -990,35 +842,17 @@ public final class FleetsClientImpl implements FleetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fleetName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, fleetName, ifMatch).getFinalResult();
+        delete(resourceGroupName, fleetName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fleetName, String ifMatch, Context context) {
-        beginDelete(resourceGroupName, fleetName, ifMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, fleetName, ifMatch, context));
     }
 
     /**
@@ -1068,11 +902,7 @@ public final class FleetsClientImpl implements FleetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FleetInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<FleetListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1094,31 +924,13 @@ public final class FleetsClientImpl implements FleetsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists fleets in the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Fleet list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FleetInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists fleets in the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Fleet list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FleetInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1190,11 +1002,7 @@ public final class FleetsClientImpl implements FleetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FleetInner> listSinglePage(Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<FleetListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(top, skipToken, Context.NONE);
     }
 
     /**
@@ -1217,32 +1025,15 @@ public final class FleetsClientImpl implements FleetsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists fleets in the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Fleet list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FleetInner> list() {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(top, skipToken),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(top, skipToken, Context.NONE);
     }
 
-    /**
-     * Lists fleets in the specified subscription.
-     * 
-     * @param top The number of result items to return.
-     * @param skipToken The page-continuation token to use with a paged version of this API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Fleet list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FleetInner> list(Integer top, String skipToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(top, skipToken, context),
@@ -1285,17 +1076,7 @@ public final class FleetsClientImpl implements FleetsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists the user credentials of a Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Credential results response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FleetCredentialResultsInner> listCredentialsWithResponse(String resourceGroupName, String fleetName,
         Context context) {
@@ -1304,16 +1085,7 @@ public final class FleetsClientImpl implements FleetsClient {
             this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, context);
     }
 
-    /**
-     * Lists the user credentials of a Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Credential results response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FleetCredentialResultsInner listCredentials(String resourceGroupName, String fleetName) {
         return listCredentialsWithResponse(resourceGroupName, fleetName, Context.NONE).getValue();
@@ -1351,11 +1123,7 @@ public final class FleetsClientImpl implements FleetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FleetInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FleetListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1409,11 +1177,7 @@ public final class FleetsClientImpl implements FleetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FleetInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FleetListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

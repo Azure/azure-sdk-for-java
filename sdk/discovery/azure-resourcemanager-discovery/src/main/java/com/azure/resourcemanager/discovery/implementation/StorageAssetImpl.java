@@ -84,10 +84,7 @@ public final class StorageAssetImpl implements StorageAsset, StorageAsset.Defini
     }
 
     public StorageAsset create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageAssets()
-            .createOrUpdate(resourceGroupName, storageContainerName, storageAssetName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StorageAsset create(Context context) {
@@ -108,10 +105,7 @@ public final class StorageAssetImpl implements StorageAsset, StorageAsset.Defini
     }
 
     public StorageAsset apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageAssets()
-            .update(resourceGroupName, storageContainerName, storageAssetName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StorageAsset apply(Context context) {
@@ -125,17 +119,19 @@ public final class StorageAssetImpl implements StorageAsset, StorageAsset.Defini
         com.azure.resourcemanager.discovery.DiscoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageContainerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageContainers");
-        this.storageAssetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageAssets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/storageContainers/{storageContainerName}/storageAssets/{storageAssetName}",
+            "resourceGroupName");
+        this.storageContainerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/storageContainers/{storageContainerName}/storageAssets/{storageAssetName}",
+            "storageContainerName");
+        this.storageAssetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/storageContainers/{storageContainerName}/storageAssets/{storageAssetName}",
+            "storageAssetName");
     }
 
     public StorageAsset refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageAssets()
-            .getWithResponse(resourceGroupName, storageContainerName, storageAssetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StorageAsset refresh(Context context) {

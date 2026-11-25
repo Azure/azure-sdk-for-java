@@ -43,6 +43,7 @@ import com.azure.resourcemanager.network.fluent.ApplicationGatewayWafDynamicMani
 import com.azure.resourcemanager.network.fluent.ApplicationGatewayWafDynamicManifestsDefaultsClient;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
 import com.azure.resourcemanager.network.fluent.ApplicationSecurityGroupsClient;
+import com.azure.resourcemanager.network.fluent.AuthenticationPoliciesClient;
 import com.azure.resourcemanager.network.fluent.AvailableDelegationsClient;
 import com.azure.resourcemanager.network.fluent.AvailableEndpointServicesClient;
 import com.azure.resourcemanager.network.fluent.AvailablePrivateEndpointTypesClient;
@@ -70,6 +71,7 @@ import com.azure.resourcemanager.network.fluent.ExpressRouteConnectionsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionPeeringsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRouteGatewaysClient;
+import com.azure.resourcemanager.network.fluent.ExpressRouteLagAuthorizationsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRouteLagsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRouteLinksClient;
 import com.azure.resourcemanager.network.fluent.ExpressRoutePortAuthorizationsClient;
@@ -179,6 +181,7 @@ import com.azure.resourcemanager.network.fluent.VirtualHubBgpConnectionsClient;
 import com.azure.resourcemanager.network.fluent.VirtualHubIpConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.VirtualHubRouteTableV2SClient;
 import com.azure.resourcemanager.network.fluent.VirtualHubsClient;
+import com.azure.resourcemanager.network.fluent.VirtualNetworkApplianceCapabilitiesClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkAppliancesClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayConnectionsClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayNatRulesClient;
@@ -360,6 +363,20 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     public ApplicationSecurityGroupsClient getApplicationSecurityGroups() {
         return this.applicationSecurityGroups;
+    }
+
+    /**
+     * The AuthenticationPoliciesClient object to access its operations.
+     */
+    private final AuthenticationPoliciesClient authenticationPolicies;
+
+    /**
+     * Gets the AuthenticationPoliciesClient object to access its operations.
+     * 
+     * @return the AuthenticationPoliciesClient object.
+     */
+    public AuthenticationPoliciesClient getAuthenticationPolicies() {
+        return this.authenticationPolicies;
     }
 
     /**
@@ -598,6 +615,20 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     public ExpressRouteLagsClient getExpressRouteLags() {
         return this.expressRouteLags;
+    }
+
+    /**
+     * The ExpressRouteLagAuthorizationsClient object to access its operations.
+     */
+    private final ExpressRouteLagAuthorizationsClient expressRouteLagAuthorizations;
+
+    /**
+     * Gets the ExpressRouteLagAuthorizationsClient object to access its operations.
+     * 
+     * @return the ExpressRouteLagAuthorizationsClient object.
+     */
+    public ExpressRouteLagAuthorizationsClient getExpressRouteLagAuthorizations() {
+        return this.expressRouteLagAuthorizations;
     }
 
     /**
@@ -1665,6 +1696,20 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
+     * The VirtualNetworkApplianceCapabilitiesClient object to access its operations.
+     */
+    private final VirtualNetworkApplianceCapabilitiesClient virtualNetworkApplianceCapabilities;
+
+    /**
+     * Gets the VirtualNetworkApplianceCapabilitiesClient object to access its operations.
+     * 
+     * @return the VirtualNetworkApplianceCapabilitiesClient object.
+     */
+    public VirtualNetworkApplianceCapabilitiesClient getVirtualNetworkApplianceCapabilities() {
+        return this.virtualNetworkApplianceCapabilities;
+    }
+
+    /**
      * The ServiceGatewaysClient object to access its operations.
      */
     private final ServiceGatewaysClient serviceGateways;
@@ -2640,6 +2685,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.applicationGatewayPrivateEndpointConnections
             = new ApplicationGatewayPrivateEndpointConnectionsClientImpl(this);
         this.applicationSecurityGroups = new ApplicationSecurityGroupsClientImpl(this);
+        this.authenticationPolicies = new AuthenticationPoliciesClientImpl(this);
         this.azureFirewalls = new AzureFirewallsClientImpl(this);
         this.bastionHosts = new BastionHostsClientImpl(this);
         this.networkInterfaces = new NetworkInterfacesClientImpl(this);
@@ -2657,6 +2703,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.expressRoutePorts = new ExpressRoutePortsClientImpl(this);
         this.expressRoutePortAuthorizations = new ExpressRoutePortAuthorizationsClientImpl(this);
         this.expressRouteLags = new ExpressRouteLagsClientImpl(this);
+        this.expressRouteLagAuthorizations = new ExpressRouteLagAuthorizationsClientImpl(this);
         this.firewallPolicies = new FirewallPoliciesClientImpl(this);
         this.firewallPolicyRuleCollectionGroups = new FirewallPolicyRuleCollectionGroupsClientImpl(this);
         this.firewallPolicyKubeSelectorGroups = new FirewallPolicyKubeSelectorGroupsClientImpl(this);
@@ -2733,6 +2780,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.connectionPolicies = new ConnectionPoliciesClientImpl(this);
         this.webApplicationFirewallPolicies = new WebApplicationFirewallPoliciesClientImpl(this);
         this.virtualNetworkAppliances = new VirtualNetworkAppliancesClientImpl(this);
+        this.virtualNetworkApplianceCapabilities = new VirtualNetworkApplianceCapabilitiesClientImpl(this);
         this.serviceGateways = new ServiceGatewaysClientImpl(this);
         this.interconnectGroups = new InterconnectGroupsClientImpl(this);
         this.subgroups = new SubgroupsClientImpl(this);
@@ -3027,7 +3075,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
             Mono<Response<Flux<ByteBuffer>>> mono = service
@@ -3082,7 +3130,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = service
@@ -3098,17 +3146,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null));
     }
 
-    /**
-     * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BastionShareableLinkInner> putBastionShareableLinkAsync(String resourceGroupName,
         String bastionHostName, BastionShareableLinkListRequest bslRequest) {
@@ -3137,35 +3175,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             nextLink -> putBastionShareableLinkNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BastionShareableLinkInner> putBastionShareableLink(String resourceGroupName,
         String bastionHostName, BastionShareableLinkListRequest bslRequest) {
         return new PagedIterable<>(putBastionShareableLinkAsync(resourceGroupName, bastionHostName, bslRequest));
     }
 
-    /**
-     * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BastionShareableLinkInner> putBastionShareableLink(String resourceGroupName,
         String bastionHostName, BastionShareableLinkListRequest bslRequest, Context context) {
@@ -3173,17 +3190,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             putBastionShareableLinkAsync(resourceGroupName, bastionHostName, bslRequest, context));
     }
 
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteBastionShareableLinkWithResponseAsync(String resourceGroupName,
         String bastionHostName, BastionShareableLinkListRequest bslRequest) {
@@ -3208,7 +3215,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteBastionShareableLink(this.getEndpoint(), apiVersion,
@@ -3252,24 +3259,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         context = this.mergeContext(context);
         return service.deleteBastionShareableLink(this.getEndpoint(), apiVersion, this.getSubscriptionId(),
             resourceGroupName, bastionHostName, contentType, bslRequest, context);
     }
 
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteBastionShareableLinkAsync(String resourceGroupName,
         String bastionHostName, BastionShareableLinkListRequest bslRequest) {
@@ -3299,17 +3296,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.<Void, Void>getLroResult(mono, this.getHttpPipeline(), Void.class, Void.class, context);
     }
 
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(String resourceGroupName,
         String bastionHostName, BastionShareableLinkListRequest bslRequest) {
@@ -3317,18 +3304,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             .getSyncPoller();
     }
 
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(String resourceGroupName,
         String bastionHostName, BastionShareableLinkListRequest bslRequest, Context context) {
@@ -3336,17 +3312,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             .getSyncPoller();
     }
 
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostName,
         BastionShareableLinkListRequest bslRequest) {
@@ -3373,50 +3339,21 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             .flatMap(this::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteBastionShareableLink(String resourceGroupName, String bastionHostName,
         BastionShareableLinkListRequest bslRequest) {
         deleteBastionShareableLinkAsync(resourceGroupName, bastionHostName, bslRequest).block();
     }
 
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteBastionShareableLink(String resourceGroupName, String bastionHostName,
         BastionShareableLinkListRequest bslRequest, Context context) {
         deleteBastionShareableLinkAsync(resourceGroupName, bastionHostName, bslRequest, context).block();
     }
 
-    /**
-     * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteBastionShareableLinkByTokenWithResponseAsync(String resourceGroupName,
         String bastionHostName, BastionShareableLinkTokenListRequest bslTokenRequest) {
@@ -3442,7 +3379,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslTokenRequest.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteBastionShareableLinkByToken(this.getEndpoint(), apiVersion,
@@ -3488,24 +3425,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslTokenRequest.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         context = this.mergeContext(context);
         return service.deleteBastionShareableLinkByToken(this.getEndpoint(), apiVersion, this.getSubscriptionId(),
             resourceGroupName, bastionHostName, contentType, bslTokenRequest, context);
     }
 
-    /**
-     * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteBastionShareableLinkByTokenAsync(String resourceGroupName,
         String bastionHostName, BastionShareableLinkTokenListRequest bslTokenRequest) {
@@ -3535,17 +3462,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.<Void, Void>getLroResult(mono, this.getHttpPipeline(), Void.class, Void.class, context);
     }
 
-    /**
-     * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLinkByToken(String resourceGroupName,
         String bastionHostName, BastionShareableLinkTokenListRequest bslTokenRequest) {
@@ -3553,18 +3470,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             .getSyncPoller();
     }
 
-    /**
-     * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLinkByToken(String resourceGroupName,
         String bastionHostName, BastionShareableLinkTokenListRequest bslTokenRequest, Context context) {
@@ -3573,17 +3479,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             .getSyncPoller();
     }
 
-    /**
-     * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteBastionShareableLinkByTokenAsync(String resourceGroupName, String bastionHostName,
         BastionShareableLinkTokenListRequest bslTokenRequest) {
@@ -3611,33 +3507,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             .flatMap(this::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteBastionShareableLinkByToken(String resourceGroupName, String bastionHostName,
         BastionShareableLinkTokenListRequest bslTokenRequest) {
         deleteBastionShareableLinkByTokenAsync(resourceGroupName, bastionHostName, bslTokenRequest).block();
     }
 
-    /**
-     * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteBastionShareableLinkByToken(String resourceGroupName, String bastionHostName,
         BastionShareableLinkTokenListRequest bslTokenRequest, Context context) {
@@ -3680,7 +3557,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getBastionShareableLink(this.getEndpoint(), apiVersion,
@@ -3727,7 +3604,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -3737,17 +3614,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Return the Bastion Shareable Links for all the VMs specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BastionShareableLinkInner> getBastionShareableLinkAsync(String resourceGroupName,
         String bastionHostName, BastionShareableLinkListRequest bslRequest) {
@@ -3776,35 +3643,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             nextLink -> getBastionShareableLinkNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Return the Bastion Shareable Links for all the VMs specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BastionShareableLinkInner> getBastionShareableLink(String resourceGroupName,
         String bastionHostName, BastionShareableLinkListRequest bslRequest) {
         return new PagedIterable<>(getBastionShareableLinkAsync(resourceGroupName, bastionHostName, bslRequest));
     }
 
-    /**
-     * Return the Bastion Shareable Links for all the VMs specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BastionShareableLinkInner> getBastionShareableLink(String resourceGroupName,
         String bastionHostName, BastionShareableLinkListRequest bslRequest, Context context) {
@@ -3841,7 +3687,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono
                 .error(new IllegalArgumentException("Parameter bastionHostName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
             Mono<Response<Flux<ByteBuffer>>> mono
@@ -3890,7 +3736,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono
                 .error(new IllegalArgumentException("Parameter bastionHostName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
@@ -3907,16 +3753,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null));
     }
 
-    /**
-     * Returns the list of currently active sessions on the Bastion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GetActiveSessions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BastionActiveSessionInner> getActiveSessionsAsync(String resourceGroupName,
         String bastionHostName) {
@@ -3942,33 +3779,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             nextLink -> getActiveSessionsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Returns the list of currently active sessions on the Bastion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GetActiveSessions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BastionActiveSessionInner> getActiveSessions(String resourceGroupName,
         String bastionHostName) {
         return new PagedIterable<>(getActiveSessionsAsync(resourceGroupName, bastionHostName));
     }
 
-    /**
-     * Returns the list of currently active sessions on the Bastion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GetActiveSessions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BastionActiveSessionInner> getActiveSessions(String resourceGroupName, String bastionHostName,
         Context context) {
@@ -4011,7 +3829,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             sessionIds.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.disconnectActiveSessions(this.getEndpoint(), apiVersion,
@@ -4058,7 +3876,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             sessionIds.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -4068,17 +3886,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Returns the list of currently active sessions on the Bastion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param sessionIds The list of sessionids to disconnect.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for DisconnectActiveSessions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BastionSessionStateInner> disconnectActiveSessionsAsync(String resourceGroupName,
         String bastionHostName, SessionIds sessionIds) {
@@ -4107,35 +3915,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             nextLink -> disconnectActiveSessionsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Returns the list of currently active sessions on the Bastion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param sessionIds The list of sessionids to disconnect.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for DisconnectActiveSessions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BastionSessionStateInner> disconnectActiveSessions(String resourceGroupName,
         String bastionHostName, SessionIds sessionIds) {
         return new PagedIterable<>(disconnectActiveSessionsAsync(resourceGroupName, bastionHostName, sessionIds));
     }
 
-    /**
-     * Returns the list of currently active sessions on the Bastion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param sessionIds The list of sessionids to disconnect.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for DisconnectActiveSessions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BastionSessionStateInner> disconnectActiveSessions(String resourceGroupName,
         String bastionHostName, SessionIds sessionIds, Context context) {
@@ -4143,15 +3930,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             disconnectActiveSessionsAsync(resourceGroupName, bastionHostName, sessionIds, context));
     }
 
-    /**
-     * Retrieves detail of a provider port.
-     * 
-     * @param providerport The name of the provider port.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteProviderPort resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteProviderPortInner>>
         expressRouteProviderPortWithResponseAsync(String providerport) {
@@ -4166,7 +3945,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (providerport == null) {
             return Mono.error(new IllegalArgumentException("Parameter providerport is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.expressRouteProviderPort(this.getEndpoint(), apiVersion,
@@ -4198,71 +3977,33 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (providerport == null) {
             return Mono.error(new IllegalArgumentException("Parameter providerport is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.expressRouteProviderPort(this.getEndpoint(), apiVersion, this.getSubscriptionId(), providerport,
             accept, context);
     }
 
-    /**
-     * Retrieves detail of a provider port.
-     * 
-     * @param providerport The name of the provider port.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteProviderPort resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteProviderPortInner> expressRouteProviderPortAsync(String providerport) {
         return expressRouteProviderPortWithResponseAsync(providerport).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves detail of a provider port.
-     * 
-     * @param providerport The name of the provider port.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteProviderPort resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteProviderPortInner> expressRouteProviderPortWithResponse(String providerport,
         Context context) {
         return expressRouteProviderPortWithResponseAsync(providerport, context).block();
     }
 
-    /**
-     * Retrieves detail of a provider port.
-     * 
-     * @param providerport The name of the provider port.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteProviderPort resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteProviderPortInner expressRouteProviderPort(String providerport) {
         return expressRouteProviderPortWithResponse(providerport, Context.NONE).getValue();
     }
 
-    /**
-     * Lists active connectivity configurations in a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Active Configuration Parameter.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active connectivity configurations along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ActiveConnectivityConfigurationsListResultInner>>
         listActiveConnectivityConfigurationsWithResponseAsync(String resourceGroupName, String networkManagerName,
@@ -4288,7 +4029,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -4338,7 +4079,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.mergeContext(context);
@@ -4346,18 +4087,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             resourceGroupName, networkManagerName, top, contentType, accept, parameters, context);
     }
 
-    /**
-     * Lists active connectivity configurations in a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Active Configuration Parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active connectivity configurations on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ActiveConnectivityConfigurationsListResultInner> listActiveConnectivityConfigurationsAsync(
         String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters) {
@@ -4366,20 +4096,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             top).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists active connectivity configurations in a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Active Configuration Parameter.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active connectivity configurations along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ActiveConnectivityConfigurationsListResultInner> listActiveConnectivityConfigurationsWithResponse(
         String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters, Integer top,
@@ -4388,17 +4105,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             top, context).block();
     }
 
-    /**
-     * Lists active connectivity configurations in a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Active Configuration Parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active connectivity configurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActiveConnectivityConfigurationsListResultInner listActiveConnectivityConfigurations(
         String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters) {
@@ -4407,20 +4114,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             Context.NONE).getValue();
     }
 
-    /**
-     * Lists active security admin rules in a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Active Configuration Parameter.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active security admin rules along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ActiveSecurityAdminRulesListResultInner>> listActiveSecurityAdminRulesWithResponseAsync(
         String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters, Integer top) {
@@ -4445,7 +4139,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -4495,7 +4189,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.mergeContext(context);
@@ -4503,17 +4197,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             resourceGroupName, networkManagerName, top, contentType, accept, parameters, context);
     }
 
-    /**
-     * Lists active security admin rules in a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Active Configuration Parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active security admin rules on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ActiveSecurityAdminRulesListResultInner> listActiveSecurityAdminRulesAsync(String resourceGroupName,
         String networkManagerName, ActiveConfigurationParameter parameters) {
@@ -4522,20 +4206,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists active security admin rules in a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Active Configuration Parameter.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active security admin rules along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ActiveSecurityAdminRulesListResultInner> listActiveSecurityAdminRulesWithResponse(
         String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters, Integer top,
@@ -4544,17 +4215,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             context).block();
     }
 
-    /**
-     * Lists active security admin rules in a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Active Configuration Parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active security admin rules.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActiveSecurityAdminRulesListResultInner listActiveSecurityAdminRules(String resourceGroupName,
         String networkManagerName, ActiveConfigurationParameter parameters) {
@@ -4563,20 +4224,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             Context.NONE).getValue();
     }
 
-    /**
-     * List all effective connectivity configurations applied on a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to list correct page.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkManagerEffectiveConnectivityConfigurationListResultInner>>
         listNetworkManagerEffectiveConnectivityConfigurationsWithResponseAsync(String resourceGroupName,
@@ -4602,7 +4250,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -4652,7 +4300,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.mergeContext(context);
@@ -4661,18 +4309,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             context);
     }
 
-    /**
-     * List all effective connectivity configurations applied on a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to list correct page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkManagerEffectiveConnectivityConfigurationListResultInner>
         listNetworkManagerEffectiveConnectivityConfigurationsAsync(String resourceGroupName, String virtualNetworkName,
@@ -4682,21 +4319,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             virtualNetworkName, parameters, top).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List all effective connectivity configurations applied on a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to list correct page.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkManagerEffectiveConnectivityConfigurationListResultInner>
         listNetworkManagerEffectiveConnectivityConfigurationsWithResponse(String resourceGroupName,
@@ -4705,17 +4328,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             virtualNetworkName, parameters, top, context).block();
     }
 
-    /**
-     * List all effective connectivity configurations applied on a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to list correct page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkManagerEffectiveConnectivityConfigurationListResultInner
         listNetworkManagerEffectiveConnectivityConfigurations(String resourceGroupName, String virtualNetworkName,
@@ -4725,20 +4338,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             parameters, top, Context.NONE).getValue();
     }
 
-    /**
-     * List all effective security admin rules applied on a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to list correct page.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list networkManagerEffectiveSecurityAdminRules along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkManagerEffectiveSecurityAdminRulesListResultInner>>
         listNetworkManagerEffectiveSecurityAdminRulesWithResponseAsync(String resourceGroupName,
@@ -4764,7 +4364,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -4814,7 +4414,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.mergeContext(context);
@@ -4823,18 +4423,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             context);
     }
 
-    /**
-     * List all effective security admin rules applied on a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to list correct page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list networkManagerEffectiveSecurityAdminRules on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkManagerEffectiveSecurityAdminRulesListResultInner>
         listNetworkManagerEffectiveSecurityAdminRulesAsync(String resourceGroupName, String virtualNetworkName,
@@ -4844,20 +4433,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             parameters, top).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List all effective security admin rules applied on a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to list correct page.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list networkManagerEffectiveSecurityAdminRules along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkManagerEffectiveSecurityAdminRulesListResultInner>
         listNetworkManagerEffectiveSecurityAdminRulesWithResponse(String resourceGroupName, String virtualNetworkName,
@@ -4866,17 +4442,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             parameters, top, context).block();
     }
 
-    /**
-     * List all effective security admin rules applied on a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to list correct page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list networkManagerEffectiveSecurityAdminRules.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkManagerEffectiveSecurityAdminRulesListResultInner listNetworkManagerEffectiveSecurityAdminRules(
         String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters) {
@@ -4885,16 +4451,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             parameters, top, Context.NONE).getValue();
     }
 
-    /**
-     * Gives the supported security providers for the virtual wan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SecurityProviders along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualWanSecurityProvidersInner>>
         supportedSecurityProvidersWithResponseAsync(String resourceGroupName, String virtualWANName) {
@@ -4913,7 +4470,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (virtualWANName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWANName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.supportedSecurityProviders(this.getEndpoint(), apiVersion,
@@ -4950,23 +4507,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (virtualWANName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWANName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.supportedSecurityProviders(this.getEndpoint(), apiVersion, this.getSubscriptionId(),
             resourceGroupName, virtualWANName, accept, context);
     }
 
-    /**
-     * Gives the supported security providers for the virtual wan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SecurityProviders on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualWanSecurityProvidersInner> supportedSecurityProvidersAsync(String resourceGroupName,
         String virtualWANName) {
@@ -4974,52 +4522,21 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gives the supported security providers for the virtual wan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SecurityProviders along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualWanSecurityProvidersInner> supportedSecurityProvidersWithResponse(String resourceGroupName,
         String virtualWANName, Context context) {
         return supportedSecurityProvidersWithResponseAsync(resourceGroupName, virtualWANName, context).block();
     }
 
-    /**
-     * Gives the supported security providers for the virtual wan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SecurityProviders.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualWanSecurityProvidersInner supportedSecurityProviders(String resourceGroupName,
         String virtualWANName) {
         return supportedSecurityProvidersWithResponse(resourceGroupName, virtualWANName, Context.NONE).getValue();
     }
 
-    /**
-     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
-     * in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN.
-     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> generatevirtualwanvpnserverconfigurationvpnprofileWithResponseAsync(
         String resourceGroupName, String virtualWANName, VirtualWanVpnProfileParameters vpnClientParams) {
@@ -5044,7 +4561,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             vpnClientParams.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -5093,7 +4610,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             vpnClientParams.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.mergeContext(context);
@@ -5101,18 +4618,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             this.getSubscriptionId(), resourceGroupName, virtualWANName, contentType, accept, vpnClientParams, context);
     }
 
-    /**
-     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
-     * in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN.
-     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of vpn Profile Response for package generation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
         beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(String resourceGroupName, String virtualWANName,
@@ -5147,18 +4653,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             VpnProfileResponseInner.class, VpnProfileResponseInner.class, context);
     }
 
-    /**
-     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
-     * in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN.
-     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vpn Profile Response for package generation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
         beginGeneratevirtualwanvpnserverconfigurationvpnprofile(String resourceGroupName, String virtualWANName,
@@ -5169,19 +4664,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             .getSyncPoller();
     }
 
-    /**
-     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
-     * in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN.
-     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vpn Profile Response for package generation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
         beginGeneratevirtualwanvpnserverconfigurationvpnprofile(String resourceGroupName, String virtualWANName,
@@ -5192,18 +4675,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             .getSyncPoller();
     }
 
-    /**
-     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
-     * in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN.
-     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnProfileResponseInner> generatevirtualwanvpnserverconfigurationvpnprofileAsync(
         String resourceGroupName, String virtualWANName, VirtualWanVpnProfileParameters vpnClientParams) {
@@ -5232,18 +4704,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             vpnClientParams, context).last().flatMap(this::getLroFinalResultOrError);
     }
 
-    /**
-     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
-     * in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN.
-     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnProfileResponseInner generatevirtualwanvpnserverconfigurationvpnprofile(String resourceGroupName,
         String virtualWANName, VirtualWanVpnProfileParameters vpnClientParams) {
@@ -5251,19 +4712,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             vpnClientParams).block();
     }
 
-    /**
-     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
-     * in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualWANName The name of the VirtualWAN.
-     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnProfileResponseInner generatevirtualwanvpnserverconfigurationvpnprofile(String resourceGroupName,
         String virtualWANName, VirtualWanVpnProfileParameters vpnClientParams, Context context) {
@@ -5271,18 +4720,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             vpnClientParams, context).block();
     }
 
-    /**
-     * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
-     * 
-     * @param location The location name.
-     * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
-     * ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckDnsNameAvailability API service call along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DnsNameAvailabilityResultInner>> checkDnsNameAvailabilityWithResponseAsync(String location,
         String domainNameLabel) {
@@ -5301,7 +4739,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono
                 .error(new IllegalArgumentException("Parameter domainNameLabel is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkDnsNameAvailability(this.getEndpoint(), apiVersion,
@@ -5340,59 +4778,28 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono
                 .error(new IllegalArgumentException("Parameter domainNameLabel is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.checkDnsNameAvailability(this.getEndpoint(), apiVersion, this.getSubscriptionId(), location,
             domainNameLabel, accept, context);
     }
 
-    /**
-     * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
-     * 
-     * @param location The location name.
-     * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
-     * ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckDnsNameAvailability API service call on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, String domainNameLabel) {
         return checkDnsNameAvailabilityWithResponseAsync(location, domainNameLabel)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
-     * 
-     * @param location The location name.
-     * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
-     * ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckDnsNameAvailability API service call along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityWithResponse(String location,
         String domainNameLabel, Context context) {
         return checkDnsNameAvailabilityWithResponseAsync(location, domainNameLabel, context).block();
     }
 
-    /**
-     * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
-     * 
-     * @param location The location name.
-     * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
-     * ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckDnsNameAvailability API service call.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location, String domainNameLabel) {
         return checkDnsNameAvailabilityWithResponse(location, domainNameLabel, Context.NONE).getValue();

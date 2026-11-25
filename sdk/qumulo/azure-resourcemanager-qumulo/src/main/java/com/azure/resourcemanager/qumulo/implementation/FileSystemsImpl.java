@@ -45,7 +45,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String fileSystemName) {
-        this.serviceClient().delete(resourceGroupName, fileSystemName);
+        this.delete(resourceGroupName, fileSystemName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String fileSystemName, Context context) {
@@ -53,8 +53,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     public PagedIterable<FileSystemResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<FileSystemResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FileSystemResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<FileSystemResource> listByResourceGroup(String resourceGroupName, Context context) {
@@ -64,8 +63,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     public PagedIterable<FileSystemResource> list() {
-        PagedIterable<FileSystemResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FileSystemResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<FileSystemResource> list(Context context) {
@@ -74,58 +72,30 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     public FileSystemResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fileSystemName = ResourceManagerUtils.getValueFromIdByName(id, "fileSystems");
-        if (fileSystemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fileSystems'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, fileSystemName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<FileSystemResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fileSystemName = ResourceManagerUtils.getValueFromIdByName(id, "fileSystems");
-        if (fileSystemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fileSystems'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Qumulo.Storage/fileSystems/{fileSystemName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String fileSystemName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Qumulo.Storage/fileSystems/{fileSystemName}",
+            "fileSystemName", "fileSystems", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, fileSystemName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fileSystemName = ResourceManagerUtils.getValueFromIdByName(id, "fileSystems");
-        if (fileSystemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fileSystems'.", id)));
-        }
-        this.delete(resourceGroupName, fileSystemName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fileSystemName = ResourceManagerUtils.getValueFromIdByName(id, "fileSystems");
-        if (fileSystemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fileSystems'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Qumulo.Storage/fileSystems/{fileSystemName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String fileSystemName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Qumulo.Storage/fileSystems/{fileSystemName}",
+            "fileSystemName", "fileSystems", LOGGER);
         this.delete(resourceGroupName, fileSystemName, context);
     }
 

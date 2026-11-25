@@ -60,7 +60,7 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String monitorName) {
-        this.serviceClient().delete(resourceGroupName, monitorName);
+        this.delete(resourceGroupName, monitorName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String monitorName, Context context) {
@@ -68,8 +68,7 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public PagedIterable<DatadogMonitorResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<DatadogMonitorResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatadogMonitorResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<DatadogMonitorResource> listByResourceGroup(String resourceGroupName, Context context) {
@@ -79,8 +78,7 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public PagedIterable<DatadogMonitorResource> list() {
-        PagedIterable<DatadogMonitorResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatadogMonitorResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<DatadogMonitorResource> list(Context context) {
@@ -126,8 +124,7 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public PagedIterable<DatadogApiKey> listApiKeys(String resourceGroupName, String monitorName) {
-        PagedIterable<DatadogApiKeyInner> inner = this.serviceClient().listApiKeys(resourceGroupName, monitorName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatadogApiKeyImpl(inner1, this.manager()));
+        return this.listApiKeys(resourceGroupName, monitorName, Context.NONE);
     }
 
     public PagedIterable<DatadogApiKey> listApiKeys(String resourceGroupName, String monitorName, Context context) {
@@ -163,8 +160,7 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public PagedIterable<DatadogHost> listHosts(String resourceGroupName, String monitorName) {
-        PagedIterable<DatadogHostInner> inner = this.serviceClient().listHosts(resourceGroupName, monitorName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatadogHostImpl(inner1, this.manager()));
+        return this.listHosts(resourceGroupName, monitorName, Context.NONE);
     }
 
     public PagedIterable<DatadogHost> listHosts(String resourceGroupName, String monitorName, Context context) {
@@ -173,9 +169,7 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public PagedIterable<LinkedResource> listLinkedResources(String resourceGroupName, String monitorName) {
-        PagedIterable<LinkedResourceInner> inner
-            = this.serviceClient().listLinkedResources(resourceGroupName, monitorName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LinkedResourceImpl(inner1, this.manager()));
+        return this.listLinkedResources(resourceGroupName, monitorName, Context.NONE);
     }
 
     public PagedIterable<LinkedResource> listLinkedResources(String resourceGroupName, String monitorName,
@@ -186,9 +180,7 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName) {
-        PagedIterable<MonitoredResourceInner> inner
-            = this.serviceClient().listMonitoredResources(resourceGroupName, monitorName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MonitoredResourceImpl(inner1, this.manager()));
+        return this.listMonitoredResources(resourceGroupName, monitorName, Context.NONE);
     }
 
     public PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName,
@@ -216,58 +208,30 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public DatadogMonitorResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
-        if (monitorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DatadogMonitorResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
-        if (monitorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String monitorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}",
+            "monitorName", "monitors", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, monitorName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
-        if (monitorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
-        }
-        this.delete(resourceGroupName, monitorName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
-        if (monitorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String monitorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}",
+            "monitorName", "monitors", LOGGER);
         this.delete(resourceGroupName, monitorName, context);
     }
 

@@ -66,11 +66,7 @@ public final class AkriConnectorTemplateResourceImpl implements AkriConnectorTem
     }
 
     public AkriConnectorTemplateResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAkriConnectorTemplates()
-            .createOrUpdate(resourceGroupName, instanceName, akriConnectorTemplateName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AkriConnectorTemplateResource create(Context context) {
@@ -92,11 +88,7 @@ public final class AkriConnectorTemplateResourceImpl implements AkriConnectorTem
     }
 
     public AkriConnectorTemplateResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAkriConnectorTemplates()
-            .createOrUpdate(resourceGroupName, instanceName, akriConnectorTemplateName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AkriConnectorTemplateResource apply(Context context) {
@@ -110,18 +102,19 @@ public final class AkriConnectorTemplateResourceImpl implements AkriConnectorTem
         com.azure.resourcemanager.iotoperations.IoTOperationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.instanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "instances");
-        this.akriConnectorTemplateName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "akriConnectorTemplates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}",
+            "resourceGroupName");
+        this.instanceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}",
+            "instanceName");
+        this.akriConnectorTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}",
+            "akriConnectorTemplateName");
     }
 
     public AkriConnectorTemplateResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAkriConnectorTemplates()
-            .getWithResponse(resourceGroupName, instanceName, akriConnectorTemplateName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AkriConnectorTemplateResource refresh(Context context) {

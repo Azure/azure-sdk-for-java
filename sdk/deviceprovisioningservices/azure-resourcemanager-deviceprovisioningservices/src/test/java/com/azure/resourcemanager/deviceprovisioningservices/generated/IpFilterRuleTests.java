@@ -15,24 +15,24 @@ public final class IpFilterRuleTests {
     public void testDeserialize() throws Exception {
         IpFilterRule model = BinaryData
             .fromString(
-                "{\"filterName\":\"i\",\"action\":\"Accept\",\"ipMask\":\"inpvswjdkirsoodq\",\"target\":\"deviceApi\"}")
+                "{\"filterName\":\"ddtocjjxhvp\",\"action\":\"Accept\",\"ipMask\":\"uexhdzx\",\"target\":\"all\"}")
             .toObject(IpFilterRule.class);
-        Assertions.assertEquals("i", model.filterName());
+        Assertions.assertEquals("ddtocjjxhvp", model.filterName());
         Assertions.assertEquals(IpFilterActionType.ACCEPT, model.action());
-        Assertions.assertEquals("inpvswjdkirsoodq", model.ipMask());
-        Assertions.assertEquals(IpFilterTargetType.DEVICE_API, model.target());
+        Assertions.assertEquals("uexhdzx", model.ipMask());
+        Assertions.assertEquals(IpFilterTargetType.ALL, model.target());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpFilterRule model = new IpFilterRule().withFilterName("i")
+        IpFilterRule model = new IpFilterRule().withFilterName("ddtocjjxhvp")
             .withAction(IpFilterActionType.ACCEPT)
-            .withIpMask("inpvswjdkirsoodq")
-            .withTarget(IpFilterTargetType.DEVICE_API);
+            .withIpMask("uexhdzx")
+            .withTarget(IpFilterTargetType.ALL);
         model = BinaryData.fromObject(model).toObject(IpFilterRule.class);
-        Assertions.assertEquals("i", model.filterName());
+        Assertions.assertEquals("ddtocjjxhvp", model.filterName());
         Assertions.assertEquals(IpFilterActionType.ACCEPT, model.action());
-        Assertions.assertEquals("inpvswjdkirsoodq", model.ipMask());
-        Assertions.assertEquals(IpFilterTargetType.DEVICE_API, model.target());
+        Assertions.assertEquals("uexhdzx", model.ipMask());
+        Assertions.assertEquals(IpFilterTargetType.ALL, model.target());
     }
 }

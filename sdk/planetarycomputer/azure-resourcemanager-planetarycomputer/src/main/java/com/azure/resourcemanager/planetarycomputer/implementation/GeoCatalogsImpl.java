@@ -45,7 +45,7 @@ public final class GeoCatalogsImpl implements GeoCatalogs {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String catalogName) {
-        this.serviceClient().delete(resourceGroupName, catalogName);
+        this.delete(resourceGroupName, catalogName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String catalogName, Context context) {
@@ -53,8 +53,7 @@ public final class GeoCatalogsImpl implements GeoCatalogs {
     }
 
     public PagedIterable<GeoCatalog> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<GeoCatalogInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new GeoCatalogImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<GeoCatalog> listByResourceGroup(String resourceGroupName, Context context) {
@@ -63,8 +62,7 @@ public final class GeoCatalogsImpl implements GeoCatalogs {
     }
 
     public PagedIterable<GeoCatalog> list() {
-        PagedIterable<GeoCatalogInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new GeoCatalogImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<GeoCatalog> list(Context context) {
@@ -73,58 +71,30 @@ public final class GeoCatalogsImpl implements GeoCatalogs {
     }
 
     public GeoCatalog getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String catalogName = ResourceManagerUtils.getValueFromIdByName(id, "geoCatalogs");
-        if (catalogName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'geoCatalogs'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, catalogName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<GeoCatalog> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String catalogName = ResourceManagerUtils.getValueFromIdByName(id, "geoCatalogs");
-        if (catalogName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'geoCatalogs'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/geoCatalogs/{catalogName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String catalogName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/geoCatalogs/{catalogName}",
+            "catalogName", "geoCatalogs", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, catalogName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String catalogName = ResourceManagerUtils.getValueFromIdByName(id, "geoCatalogs");
-        if (catalogName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'geoCatalogs'.", id)));
-        }
-        this.delete(resourceGroupName, catalogName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String catalogName = ResourceManagerUtils.getValueFromIdByName(id, "geoCatalogs");
-        if (catalogName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'geoCatalogs'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/geoCatalogs/{catalogName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String catalogName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/geoCatalogs/{catalogName}",
+            "catalogName", "geoCatalogs", LOGGER);
         this.delete(resourceGroupName, catalogName, context);
     }
 

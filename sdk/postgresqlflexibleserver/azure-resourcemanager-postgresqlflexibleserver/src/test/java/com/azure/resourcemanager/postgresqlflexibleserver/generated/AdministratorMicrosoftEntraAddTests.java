@@ -13,22 +13,22 @@ public final class AdministratorMicrosoftEntraAddTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdministratorMicrosoftEntraAdd model = BinaryData.fromString(
-            "{\"properties\":{\"principalType\":\"ServicePrincipal\",\"principalName\":\"xndzwm\",\"tenantId\":\"efajpj\"}}")
+            "{\"properties\":{\"principalType\":\"ServicePrincipal\",\"principalName\":\"dphqamv\",\"tenantId\":\"fwynwcvtbvkay\"}}")
             .toObject(AdministratorMicrosoftEntraAdd.class);
         Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principalType());
-        Assertions.assertEquals("xndzwm", model.principalName());
-        Assertions.assertEquals("efajpj", model.tenantId());
+        Assertions.assertEquals("dphqamv", model.principalName());
+        Assertions.assertEquals("fwynwcvtbvkay", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdministratorMicrosoftEntraAdd model
             = new AdministratorMicrosoftEntraAdd().withPrincipalType(PrincipalType.SERVICE_PRINCIPAL)
-                .withPrincipalName("xndzwm")
-                .withTenantId("efajpj");
+                .withPrincipalName("dphqamv")
+                .withTenantId("fwynwcvtbvkay");
         model = BinaryData.fromObject(model).toObject(AdministratorMicrosoftEntraAdd.class);
         Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principalType());
-        Assertions.assertEquals("xndzwm", model.principalName());
-        Assertions.assertEquals("efajpj", model.tenantId());
+        Assertions.assertEquals("dphqamv", model.principalName());
+        Assertions.assertEquals("fwynwcvtbvkay", model.tenantId());
     }
 }

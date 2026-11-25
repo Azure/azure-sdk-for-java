@@ -30,13 +30,7 @@ public final class AvsVmVolumesImpl implements AvsVmVolumes {
 
     public AvsVmVolume update(String resourceGroupName, String storagePoolName, String avsVmId, String volumeId,
         AvsVmVolumeUpdate properties) {
-        AvsVmVolumeInner inner
-            = this.serviceClient().update(resourceGroupName, storagePoolName, avsVmId, volumeId, properties);
-        if (inner != null) {
-            return new AvsVmVolumeImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, storagePoolName, avsVmId, volumeId, properties, Context.NONE);
     }
 
     public AvsVmVolume update(String resourceGroupName, String storagePoolName, String avsVmId, String volumeId,
@@ -68,7 +62,7 @@ public final class AvsVmVolumesImpl implements AvsVmVolumes {
     }
 
     public void delete(String resourceGroupName, String storagePoolName, String avsVmId, String volumeId) {
-        this.serviceClient().delete(resourceGroupName, storagePoolName, avsVmId, volumeId);
+        this.delete(resourceGroupName, storagePoolName, avsVmId, volumeId, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String storagePoolName, String avsVmId, String volumeId,
@@ -77,9 +71,7 @@ public final class AvsVmVolumesImpl implements AvsVmVolumes {
     }
 
     public PagedIterable<AvsVmVolume> listByAvsVm(String resourceGroupName, String storagePoolName, String avsVmId) {
-        PagedIterable<AvsVmVolumeInner> inner
-            = this.serviceClient().listByAvsVm(resourceGroupName, storagePoolName, avsVmId);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvsVmVolumeImpl(inner1, this.manager()));
+        return this.listByAvsVm(resourceGroupName, storagePoolName, avsVmId, Context.NONE);
     }
 
     public PagedIterable<AvsVmVolume> listByAvsVm(String resourceGroupName, String storagePoolName, String avsVmId,

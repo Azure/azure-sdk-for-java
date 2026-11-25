@@ -21,7 +21,7 @@ public final class ManagedComputeCapacitiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"acceleratorType\":\"ffmwt\",\"availableAccelerators\":343799142,\"deploymentSizeCapacities\":[{\"modelInstanceAcceleratorCount\":949275917,\"totalAvailableCapacity\":282917917,\"largestDeploymentCapacity\":837947153}]},\"id\":\"iefwlnm\",\"name\":\"kffcnuestbsl\",\"type\":\"e\"}]}";
+            = "{\"value\":[{\"properties\":{\"acceleratorType\":\"scctw\",\"offerScope\":\"stnt\",\"scopeId\":\"teufgdgbzftsbpe\",\"availableAccelerators\":257025583,\"totalAvailableAccelerators\":555153629,\"deploymentSizeCapacities\":[{\"modelInstanceAcceleratorCount\":1870763392,\"totalAvailableCapacity\":1852251002,\"largestDeploymentCapacity\":1060554616},{\"modelInstanceAcceleratorCount\":1799607358,\"totalAvailableCapacity\":493340061,\"largestDeploymentCapacity\":765592505}]},\"id\":\"og\",\"name\":\"bwefoxlzrijp\",\"type\":\"brvmzu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ManagedComputeCapacitiesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ManagedComputeCapacity> response = manager.managedComputeCapacities()
-            .list("lxswtdapsm", "rmnrijefmrtwxc", "vdsp", com.azure.core.util.Context.NONE);
+            .list("klbjlnbxouc", "ddplgjfhvia", "oke", "cmadyoctmd", com.azure.core.util.Context.NONE);
 
     }
 }

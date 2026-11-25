@@ -378,7 +378,7 @@ public final class KeyAsyncClient {
      *
      * <p>External keys are mutually exclusive with a {@link KeyType key type}, so no key type is sent to the service.
      * External keys are only supported on Managed HSM configured to use External Key Management (EKM), with service
-     * version {@code 2026-01-01-preview} or newer. They are not supported on a standard Key Vault.</p>
+     * version {@code 2026-04-01} or newer. They are not supported on a standard Key Vault.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Registers an external key which activates in one day and expires in one year. Subscribes to the call
@@ -419,7 +419,7 @@ public final class KeyAsyncClient {
      *
      * <p>External keys are mutually exclusive with a {@link KeyType key type}, so no key type is sent to the service.
      * External keys are only supported on Managed HSM configured to use External Key Management (EKM), with service
-     * version {@code 2026-01-01-preview} or newer. They are not supported on a standard Key Vault.</p>
+     * version {@code 2026-04-01} or newer. They are not supported on a standard Key Vault.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Registers an external key which activates in one day and expires in one year. Subscribes to the call

@@ -83,11 +83,7 @@ public final class AccessPolicyAssignmentImpl
     }
 
     public AccessPolicyAssignment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessPolicyAssignments()
-            .createUpdate(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AccessPolicyAssignment create(Context context) {
@@ -110,11 +106,7 @@ public final class AccessPolicyAssignmentImpl
     }
 
     public AccessPolicyAssignment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessPolicyAssignments()
-            .createUpdate(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AccessPolicyAssignment apply(Context context) {
@@ -129,19 +121,22 @@ public final class AccessPolicyAssignmentImpl
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "redisEnterprise");
-        this.databaseName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "databases");
-        this.accessPolicyAssignmentName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accessPolicyAssignments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments/{accessPolicyAssignmentName}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments/{accessPolicyAssignmentName}",
+            "clusterName");
+        this.databaseName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments/{accessPolicyAssignmentName}",
+            "databaseName");
+        this.accessPolicyAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments/{accessPolicyAssignmentName}",
+            "accessPolicyAssignmentName");
     }
 
     public AccessPolicyAssignment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessPolicyAssignments()
-            .getWithResponse(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AccessPolicyAssignment refresh(Context context) {

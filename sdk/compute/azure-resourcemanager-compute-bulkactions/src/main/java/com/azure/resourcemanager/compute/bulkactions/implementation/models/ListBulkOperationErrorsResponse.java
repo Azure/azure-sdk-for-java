@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The response from listing bulk operation errors.
+ * A paged list of recent bulk action errors.
  */
 @Immutable
 public final class ListBulkOperationErrorsResponse implements JsonSerializable<ListBulkOperationErrorsResponse> {

@@ -45,7 +45,7 @@ public final class IpCommunitiesImpl implements IpCommunities {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String ipCommunityName) {
-        this.serviceClient().delete(resourceGroupName, ipCommunityName);
+        this.delete(resourceGroupName, ipCommunityName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String ipCommunityName, Context context) {
@@ -53,8 +53,7 @@ public final class IpCommunitiesImpl implements IpCommunities {
     }
 
     public PagedIterable<IpCommunity> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<IpCommunityInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new IpCommunityImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<IpCommunity> listByResourceGroup(String resourceGroupName, Context context) {
@@ -63,8 +62,7 @@ public final class IpCommunitiesImpl implements IpCommunities {
     }
 
     public PagedIterable<IpCommunity> list() {
-        PagedIterable<IpCommunityInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new IpCommunityImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<IpCommunity> list(Context context) {
@@ -73,58 +71,30 @@ public final class IpCommunitiesImpl implements IpCommunities {
     }
 
     public IpCommunity getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String ipCommunityName = ResourceManagerUtils.getValueFromIdByName(id, "ipCommunities");
-        if (ipCommunityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'ipCommunities'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, ipCommunityName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<IpCommunity> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String ipCommunityName = ResourceManagerUtils.getValueFromIdByName(id, "ipCommunities");
-        if (ipCommunityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'ipCommunities'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipCommunities/{ipCommunityName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String ipCommunityName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipCommunities/{ipCommunityName}",
+            "ipCommunityName", "ipCommunities", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, ipCommunityName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String ipCommunityName = ResourceManagerUtils.getValueFromIdByName(id, "ipCommunities");
-        if (ipCommunityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'ipCommunities'.", id)));
-        }
-        this.delete(resourceGroupName, ipCommunityName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String ipCommunityName = ResourceManagerUtils.getValueFromIdByName(id, "ipCommunities");
-        if (ipCommunityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'ipCommunities'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipCommunities/{ipCommunityName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String ipCommunityName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipCommunities/{ipCommunityName}",
+            "ipCommunityName", "ipCommunities", LOGGER);
         this.delete(resourceGroupName, ipCommunityName, context);
     }
 

@@ -210,11 +210,7 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SiteInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<SiteListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -235,27 +231,13 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Site resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SiteInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List Site resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SiteInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -293,16 +275,7 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
         return getWithResponseAsync(siteName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Site.
-     * 
-     * @param siteName Name of Site resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Site along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SiteInner> getWithResponse(String siteName, Context context) {
         final String accept = "application/json";
@@ -310,15 +283,7 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
             siteName, accept, context);
     }
 
-    /**
-     * Get a Site.
-     * 
-     * @param siteName Name of Site resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Site.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteInner get(String siteName) {
         return getWithResponse(siteName, Context.NONE).getValue();
@@ -356,10 +321,7 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String siteName, SiteInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), siteName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(siteName, resource, Context.NONE);
     }
 
     /**
@@ -398,33 +360,13 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
             SiteInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Site.
-     * 
-     * @param siteName Name of Site resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of site as ARM Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(String siteName, SiteInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(siteName, resource);
-        return this.client.<SiteInner, SiteInner>getLroResult(response, SiteInner.class, SiteInner.class, Context.NONE);
+        return beginCreateOrUpdate(siteName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Site.
-     * 
-     * @param siteName Name of Site resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of site as ARM Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(String siteName, SiteInner resource,
         Context context) {
@@ -447,35 +389,16 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
         return beginCreateOrUpdateAsync(siteName, resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Site.
-     * 
-     * @param siteName Name of Site resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site as ARM Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteInner createOrUpdate(String siteName, SiteInner resource) {
-        return beginCreateOrUpdate(siteName, resource).getFinalResult();
+        return createOrUpdate(siteName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Site.
-     * 
-     * @param siteName Name of Site resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site as ARM Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteInner createOrUpdate(String siteName, SiteInner resource, Context context) {
-        return beginCreateOrUpdate(siteName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(siteName, resource, context));
     }
 
     /**
@@ -513,17 +436,7 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
         return updateWithResponseAsync(siteName, properties).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a Site.
-     * 
-     * @param siteName Name of Site resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site as ARM Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SiteInner> updateWithResponse(String siteName, SiteUpdate properties, Context context) {
         final String contentType = "application/json";
@@ -532,16 +445,7 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
             this.client.getSubscriptionId(), siteName, contentType, accept, properties, context);
     }
 
-    /**
-     * Update a Site.
-     * 
-     * @param siteName Name of Site resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site as ARM Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteInner update(String siteName, SiteUpdate properties) {
         return updateWithResponse(siteName, properties, Context.NONE).getValue();
@@ -578,30 +482,14 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
         return deleteWithResponseAsync(siteName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a Site.
-     * 
-     * @param siteName Name of Site resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String siteName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), siteName, context);
     }
 
-    /**
-     * Delete a Site.
-     * 
-     * @param siteName Name of Site resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String siteName) {
         deleteWithResponse(siteName, Context.NONE);
@@ -637,10 +525,7 @@ public final class SitesBySubscriptionsClientImpl implements SitesBySubscription
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SiteInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SiteListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -226,6 +226,55 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     }
 
     @Test
+    public void createIfNotExistsOnShareBeingDeleted() {
+        ShareAsyncClient client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName());
+
+        StepVerifier.create(client.create().then(client.delete()).then(client.createIfNotExists()))
+            .verifyErrorSatisfies(r -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(r, 409,
+                ShareErrorCode.SHARE_BEING_DELETED));
+    }
+
+    // Live only: it waits for the service to finish deleting the share, about 30 seconds (see
+    // createAfterShareDeleteCompletes). The recorded test above covers the refusal while the delete is in progress.
+    @LiveOnly
+    @Test
+    public void createSucceedsAfterShareDeleteCompletes() {
+        ShareAsyncClient client = primaryFileServiceAsyncClient.getShareAsyncClient(generateShareName());
+
+        StepVerifier
+            .create(client.create()
+                .then(client.delete())
+                .then(createAfterShareDeleteCompletes(client.createWithResponse(new ShareCreateOptions()))))
+            .assertNext(response -> FileShareTestHelper.assertResponseStatusCode(response, 201))
+            .verifyComplete();
+    }
+
+    @LiveOnly
+    @Test
+    public void createIfNotExistsAfterShareDeleteCompletes() {
+        ShareAsyncClient client = primaryFileServiceAsyncClient.getShareAsyncClient(generateShareName());
+
+        StepVerifier
+            .create(client.create()
+                .then(client.delete())
+                .then(createAfterShareDeleteCompletes(client.createIfNotExistsWithResponse(new ShareCreateOptions()))))
+            .assertNext(response -> FileShareTestHelper.assertResponseStatusCode(response, 201))
+            .verifyComplete();
+    }
+
+    @Test
+    public void createDirectoryIfNotExistsOnAFile() {
+        String name = generatePathName();
+
+        StepVerifier
+            .create(primaryShareAsyncClient.create()
+                .then(primaryShareAsyncClient.getFileClient(name).create(1024))
+                .then(primaryShareAsyncClient.createDirectoryIfNotExists(name)))
+            .verifyErrorSatisfies(r -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(r, 409,
+                ShareErrorCode.RESOURCE_TYPE_MISMATCH));
+    }
+
+    @Test
     public void createIfNotExistsShareThatAlreadyExists() {
         ShareAsyncClient client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName());
         Mono<Response<ShareInfo>> initialResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions());
@@ -339,6 +388,17 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                 assertEquals(testMetadata, it.getValue().getMetadata());
                 assertEquals(1, it.getValue().getQuota());
             }).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getPropertiesIncludesCreationTime() {
+        StepVerifier.create(primaryShareAsyncClient.create().then(primaryShareAsyncClient.getProperties()))
+            .assertNext(properties -> {
+                assertNotNull(properties.getCreationTime());
+                assertNotNull(properties.getETag());
+            })
+            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
@@ -1157,6 +1217,52 @@ public class ShareAsyncApiTests extends FileShareTestBase {
 
         //cleanup
         premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-06-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#createShareChangeFeedSupplier")
+    public void createShareChangeFeed(Boolean enabled, Integer retentionInDays) {
+        ShareAsyncClient client = premiumFileServiceAsyncClient.getShareAsyncClient(shareName);
+        ShareCreateOptions options
+            = new ShareCreateOptions().setChangeFeedEnabled(enabled).setChangeFeedRetentionInDays(retentionInDays);
+
+        Response<ShareInfo> response = client.createWithResponse(options).block();
+        try {
+            assertEquals(201, response.getStatusCode());
+            FileShareTestHelper.assertShareChangeFeedRequestHeaders(response, enabled, retentionInDays);
+            StepVerifier.create(client.getPropertiesWithResponse())
+                .assertNext(r -> FileShareTestHelper.assertShareChangeFeedProperties(r, enabled, retentionInDays))
+                .verifyComplete();
+        } finally {
+            client.delete().block();
+        }
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-06-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#setPropertiesShareChangeFeedSupplier")
+    public void setPropertiesShareChangeFeed(Boolean enabled, Integer retentionInDays) {
+        ShareAsyncClient client = premiumFileServiceAsyncClient.getShareAsyncClient(shareName);
+        client.createWithResponse(new ShareCreateOptions().setChangeFeedEnabled(true).setChangeFeedRetentionInDays(7))
+            .block();
+        try {
+            ShareSetPropertiesOptions options = new ShareSetPropertiesOptions().setChangeFeedEnabled(enabled)
+                .setChangeFeedRetentionInDays(retentionInDays);
+            StepVerifier.create(client.setPropertiesWithResponse(options).flatMap(response -> {
+                assertEquals(200, response.getStatusCode());
+                FileShareTestHelper.assertShareChangeFeedRequestHeaders(response, enabled, retentionInDays);
+                return client.getPropertiesWithResponse();
+            }))
+                .assertNext(
+                    r -> FileShareTestHelper.assertShareChangeFeedProperties(r, enabled == null ? true : enabled,
+                        Boolean.FALSE.equals(enabled)
+                            ? retentionInDays
+                            : retentionInDays == null ? Integer.valueOf(7) : retentionInDays))
+                .verifyComplete();
+        } finally {
+            client.delete().block();
+        }
     }
 
     @PlaybackOnly

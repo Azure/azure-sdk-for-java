@@ -47,7 +47,7 @@ public final class DisconnectedOperationsImpl implements DisconnectedOperations 
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String name) {
-        this.serviceClient().delete(resourceGroupName, name);
+        this.delete(resourceGroupName, name, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String name, Context context) {
@@ -55,8 +55,7 @@ public final class DisconnectedOperationsImpl implements DisconnectedOperations 
     }
 
     public PagedIterable<DisconnectedOperation> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<DisconnectedOperationInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DisconnectedOperationImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<DisconnectedOperation> listByResourceGroup(String resourceGroupName, Context context) {
@@ -66,8 +65,7 @@ public final class DisconnectedOperationsImpl implements DisconnectedOperations 
     }
 
     public PagedIterable<DisconnectedOperation> list() {
-        PagedIterable<DisconnectedOperationInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DisconnectedOperationImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<DisconnectedOperation> list(Context context) {
@@ -94,58 +92,30 @@ public final class DisconnectedOperationsImpl implements DisconnectedOperations 
     }
 
     public DisconnectedOperation getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "disconnectedOperations");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'disconnectedOperations'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DisconnectedOperation> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "disconnectedOperations");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'disconnectedOperations'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}",
+            "name", "disconnectedOperations", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, name, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "disconnectedOperations");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'disconnectedOperations'.", id)));
-        }
-        this.delete(resourceGroupName, name, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "disconnectedOperations");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'disconnectedOperations'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}",
+            "name", "disconnectedOperations", LOGGER);
         this.delete(resourceGroupName, name, context);
     }
 

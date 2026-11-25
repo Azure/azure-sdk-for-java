@@ -31,13 +31,13 @@ public final class ResourceProvidersBmsTriggerDataMoveMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.resourceProviders()
-            .bmsTriggerDataMove("eci", "hocjxwkloozrv",
-                new TriggerDataMoveRequest().withSourceResourceId("xvcmufunlcp")
-                    .withSourceRegion("xvi")
-                    .withDataMoveLevel(DataMoveLevel.VAULT)
-                    .withCorrelationId("eyngjg")
-                    .withSourceContainerArmIds(Arrays.asList("uvp"))
-                    .withPauseGC(false),
+            .bmsTriggerDataMove("ljialzbn", "brqlpbcjtrpz",
+                new TriggerDataMoveRequest().withSourceResourceId("yudivbxnhsqeaeo")
+                    .withSourceRegion("qelwgdhuruzytza")
+                    .withDataMoveLevel(DataMoveLevel.INVALID)
+                    .withCorrelationId("gatmoljiy")
+                    .withSourceContainerArmIds(Arrays.asList("inmzvfkne"))
+                    .withPauseGC(true),
                 com.azure.core.util.Context.NONE);
 
     }

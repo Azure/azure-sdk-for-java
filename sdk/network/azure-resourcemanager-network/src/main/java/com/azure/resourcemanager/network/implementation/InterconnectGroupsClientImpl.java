@@ -161,17 +161,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information about the specified interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interconnect group along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<InterconnectGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String interconnectGroupName) {
@@ -191,7 +181,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             return Mono
                 .error(new IllegalArgumentException("Parameter interconnectGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -230,23 +220,14 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             return Mono
                 .error(new IllegalArgumentException("Parameter interconnectGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, interconnectGroupName, accept, context);
     }
 
-    /**
-     * Gets information about the specified interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interconnect group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<InterconnectGroupInner> getByResourceGroupAsync(String resourceGroupName,
         String interconnectGroupName) {
@@ -254,49 +235,20 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about the specified interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interconnect group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InterconnectGroupInner> getByResourceGroupWithResponse(String resourceGroupName,
         String interconnectGroupName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, interconnectGroupName, context).block();
     }
 
-    /**
-     * Gets information about the specified interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interconnect group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InterconnectGroupInner getByResourceGroup(String resourceGroupName, String interconnectGroupName) {
         return getByResourceGroupWithResponse(resourceGroupName, interconnectGroupName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param parameters Parameters supplied to the create or update interconnect group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an interconnect group resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<InterconnectGroupInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String interconnectGroupName, InterconnectGroupInner parameters) {
@@ -321,7 +273,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -367,7 +319,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -375,17 +327,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             resourceGroupName, interconnectGroupName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates an interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param parameters Parameters supplied to the create or update interconnect group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an interconnect group resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<InterconnectGroupInner> createOrUpdateAsync(String resourceGroupName, String interconnectGroupName,
         InterconnectGroupInner parameters) {
@@ -393,35 +335,14 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates an interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param parameters Parameters supplied to the create or update interconnect group operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an interconnect group resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InterconnectGroupInner> createOrUpdateWithResponse(String resourceGroupName,
         String interconnectGroupName, InterconnectGroupInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, interconnectGroupName, parameters, context).block();
     }
 
-    /**
-     * Creates or updates an interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param parameters Parameters supplied to the create or update interconnect group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an interconnect group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InterconnectGroupInner createOrUpdate(String resourceGroupName, String interconnectGroupName,
         InterconnectGroupInner parameters) {
@@ -429,17 +350,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             .getValue();
     }
 
-    /**
-     * Updates interconnect group tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param parameters Parameters supplied to update interconnect group tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an interconnect group resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<InterconnectGroupInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String interconnectGroupName, TagsObject parameters) {
@@ -464,7 +375,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -510,7 +421,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -518,17 +429,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             resourceGroupName, interconnectGroupName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates interconnect group tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param parameters Parameters supplied to update interconnect group tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an interconnect group resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<InterconnectGroupInner> updateTagsAsync(String resourceGroupName, String interconnectGroupName,
         TagsObject parameters) {
@@ -536,51 +437,21 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates interconnect group tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param parameters Parameters supplied to update interconnect group tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an interconnect group resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InterconnectGroupInner> updateTagsWithResponse(String resourceGroupName,
         String interconnectGroupName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, interconnectGroupName, parameters, context).block();
     }
 
-    /**
-     * Updates interconnect group tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param parameters Parameters supplied to update interconnect group tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an interconnect group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InterconnectGroupInner updateTags(String resourceGroupName, String interconnectGroupName,
         TagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, interconnectGroupName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes the specified interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String interconnectGroupName) {
         if (this.client.getEndpoint() == null) {
@@ -599,7 +470,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             return Mono
                 .error(new IllegalArgumentException("Parameter interconnectGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, interconnectGroupName, context))
@@ -636,52 +507,25 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             return Mono
                 .error(new IllegalArgumentException("Parameter interconnectGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             interconnectGroupName, context);
     }
 
-    /**
-     * Deletes the specified interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String interconnectGroupName) {
         return deleteWithResponseAsync(resourceGroupName, interconnectGroupName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the specified interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String interconnectGroupName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, interconnectGroupName, context).block();
     }
 
-    /**
-     * Deletes the specified interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String interconnectGroupName) {
         deleteWithResponse(resourceGroupName, interconnectGroupName, Context.NONE);
@@ -711,7 +555,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -747,7 +591,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -757,15 +601,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all interconnect groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interconnect groups in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<InterconnectGroupInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -788,30 +624,13 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all interconnect groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interconnect groups in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InterconnectGroupInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets all interconnect groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interconnect groups in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InterconnectGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -835,7 +654,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -865,7 +684,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -873,13 +692,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all interconnect groups in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interconnect groups in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<InterconnectGroupInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -900,43 +713,19 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all interconnect groups in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interconnect groups in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InterconnectGroupInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all interconnect groups in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interconnect groups in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InterconnectGroupInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * Gets node availability for all subgroups in the specified interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return node availability for all subgroups in the specified interconnect group along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getNodeAvailabilityWithResponseAsync(String resourceGroupName,
         String interconnectGroupName) {
@@ -956,7 +745,7 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             return Mono
                 .error(new IllegalArgumentException("Parameter interconnectGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getNodeAvailability(this.client.getEndpoint(), apiVersion,
@@ -995,24 +784,14 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             return Mono
                 .error(new IllegalArgumentException("Parameter interconnectGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getNodeAvailability(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, interconnectGroupName, accept, context);
     }
 
-    /**
-     * Gets node availability for all subgroups in the specified interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of node availability for all subgroups in the specified interconnect
-     * group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<InterconnectGroupNodeAvailabilityInner>, InterconnectGroupNodeAvailabilityInner>
         beginGetNodeAvailabilityAsync(String resourceGroupName, String interconnectGroupName) {
@@ -1046,52 +825,21 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             InterconnectGroupNodeAvailabilityInner.class, context);
     }
 
-    /**
-     * Gets node availability for all subgroups in the specified interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of node availability for all subgroups in the specified interconnect
-     * group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InterconnectGroupNodeAvailabilityInner>, InterconnectGroupNodeAvailabilityInner>
         beginGetNodeAvailability(String resourceGroupName, String interconnectGroupName) {
         return this.beginGetNodeAvailabilityAsync(resourceGroupName, interconnectGroupName).getSyncPoller();
     }
 
-    /**
-     * Gets node availability for all subgroups in the specified interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of node availability for all subgroups in the specified interconnect
-     * group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InterconnectGroupNodeAvailabilityInner>, InterconnectGroupNodeAvailabilityInner>
         beginGetNodeAvailability(String resourceGroupName, String interconnectGroupName, Context context) {
         return this.beginGetNodeAvailabilityAsync(resourceGroupName, interconnectGroupName, context).getSyncPoller();
     }
 
-    /**
-     * Gets node availability for all subgroups in the specified interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return node availability for all subgroups in the specified interconnect group on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<InterconnectGroupNodeAvailabilityInner> getNodeAvailabilityAsync(String resourceGroupName,
         String interconnectGroupName) {
@@ -1118,33 +866,14 @@ public final class InterconnectGroupsClientImpl implements InnerSupportsGet<Inte
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets node availability for all subgroups in the specified interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return node availability for all subgroups in the specified interconnect group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InterconnectGroupNodeAvailabilityInner getNodeAvailability(String resourceGroupName,
         String interconnectGroupName) {
         return getNodeAvailabilityAsync(resourceGroupName, interconnectGroupName).block();
     }
 
-    /**
-     * Gets node availability for all subgroups in the specified interconnect group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param interconnectGroupName The name of the interconnect group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return node availability for all subgroups in the specified interconnect group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InterconnectGroupNodeAvailabilityInner getNodeAvailability(String resourceGroupName,
         String interconnectGroupName, Context context) {

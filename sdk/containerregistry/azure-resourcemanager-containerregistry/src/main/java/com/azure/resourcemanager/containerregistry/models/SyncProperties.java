@@ -171,10 +171,6 @@ public final class SyncProperties implements JsonSerializable<SyncProperties> {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (tokenId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property tokenId in model SyncProperties"));
-        }
         if (messageTtl() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property messageTtl in model SyncProperties"));
@@ -189,8 +185,8 @@ public final class SyncProperties implements JsonSerializable<SyncProperties> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("tokenId", this.tokenId);
         jsonWriter.writeStringField("messageTtl", CoreUtils.durationToStringWithDays(this.messageTtl));
+        jsonWriter.writeStringField("tokenId", this.tokenId);
         jsonWriter.writeStringField("schedule", this.schedule);
         jsonWriter.writeStringField("syncWindow", CoreUtils.durationToStringWithDays(this.syncWindow));
         return jsonWriter.writeEndObject();
@@ -212,11 +208,11 @@ public final class SyncProperties implements JsonSerializable<SyncProperties> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("tokenId".equals(fieldName)) {
-                    deserializedSyncProperties.tokenId = reader.getString();
-                } else if ("messageTtl".equals(fieldName)) {
+                if ("messageTtl".equals(fieldName)) {
                     deserializedSyncProperties.messageTtl
                         = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("tokenId".equals(fieldName)) {
+                    deserializedSyncProperties.tokenId = reader.getString();
                 } else if ("schedule".equals(fieldName)) {
                     deserializedSyncProperties.schedule = reader.getString();
                 } else if ("syncWindow".equals(fieldName)) {

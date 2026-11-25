@@ -22,13 +22,12 @@ public final class ModelDeploymentProperties implements JsonSerializable<ModelDe
     private ModelDeploymentProvisioningState provisioningState;
 
     /*
-     * Full ARM resource id of the model to deploy. Phase 1 accepts an `AIModel` resource id only. Immutable after
-     * creation.
+     * Full Azure resource ID of the model to deploy. Immutable after creation.
      */
     private String modelResourceId;
 
     /*
-     * Full ARM resource id of a `ModelSource` to use when pulling artifacts for this deployment. Immutable after
+     * Full Azure resource ID of a `ModelSource` to use when pulling artifacts for this deployment. Immutable after
      * creation.
      */
     private String modelSourceResourceId;
@@ -75,8 +74,7 @@ public final class ModelDeploymentProperties implements JsonSerializable<ModelDe
     }
 
     /**
-     * Get the modelResourceId property: Full ARM resource id of the model to deploy. Phase 1 accepts an `AIModel`
-     * resource id only. Immutable after creation.
+     * Get the modelResourceId property: Full Azure resource ID of the model to deploy. Immutable after creation.
      * 
      * @return the modelResourceId value.
      */
@@ -85,8 +83,7 @@ public final class ModelDeploymentProperties implements JsonSerializable<ModelDe
     }
 
     /**
-     * Set the modelResourceId property: Full ARM resource id of the model to deploy. Phase 1 accepts an `AIModel`
-     * resource id only. Immutable after creation.
+     * Set the modelResourceId property: Full Azure resource ID of the model to deploy. Immutable after creation.
      * 
      * @param modelResourceId the modelResourceId value to set.
      * @return the ModelDeploymentProperties object itself.
@@ -97,8 +94,8 @@ public final class ModelDeploymentProperties implements JsonSerializable<ModelDe
     }
 
     /**
-     * Get the modelSourceResourceId property: Full ARM resource id of a `ModelSource` to use when pulling artifacts for
-     * this deployment. Immutable after creation.
+     * Get the modelSourceResourceId property: Full Azure resource ID of a `ModelSource` to use when pulling artifacts
+     * for this deployment. Immutable after creation.
      * 
      * @return the modelSourceResourceId value.
      */
@@ -107,8 +104,8 @@ public final class ModelDeploymentProperties implements JsonSerializable<ModelDe
     }
 
     /**
-     * Set the modelSourceResourceId property: Full ARM resource id of a `ModelSource` to use when pulling artifacts for
-     * this deployment. Immutable after creation.
+     * Set the modelSourceResourceId property: Full Azure resource ID of a `ModelSource` to use when pulling artifacts
+     * for this deployment. Immutable after creation.
      * 
      * @param modelSourceResourceId the modelSourceResourceId value to set.
      * @return the ModelDeploymentProperties object itself.

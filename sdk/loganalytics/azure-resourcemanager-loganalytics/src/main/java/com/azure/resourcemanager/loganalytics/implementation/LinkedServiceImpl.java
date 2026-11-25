@@ -79,10 +79,7 @@ public final class LinkedServiceImpl implements LinkedService, LinkedService.Def
     }
 
     public LinkedService create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLinkedServices()
-            .createOrUpdate(resourceGroupName, workspaceName, linkedServiceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LinkedService create(Context context) {
@@ -103,10 +100,7 @@ public final class LinkedServiceImpl implements LinkedService, LinkedService.Def
     }
 
     public LinkedService apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLinkedServices()
-            .createOrUpdate(resourceGroupName, workspaceName, linkedServiceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LinkedService apply(Context context) {
@@ -120,17 +114,19 @@ public final class LinkedServiceImpl implements LinkedService, LinkedService.Def
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.linkedServiceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "linkedServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices/{linkedServiceName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices/{linkedServiceName}",
+            "workspaceName");
+        this.linkedServiceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices/{linkedServiceName}",
+            "linkedServiceName");
     }
 
     public LinkedService refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLinkedServices()
-            .getWithResponse(resourceGroupName, workspaceName, linkedServiceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LinkedService refresh(Context context) {

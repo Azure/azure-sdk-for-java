@@ -15,25 +15,26 @@ public final class L2ServiceLoadBalancerConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L2ServiceLoadBalancerConfiguration model = BinaryData.fromString(
-            "{\"ipAddressPools\":[{\"addresses\":[\"hostgktstvdxecl\",\"edqbc\"],\"autoAssign\":\"True\",\"name\":\"lhpl\",\"onlyUseHostIps\":\"True\"}]}")
+            "{\"ipAddressPools\":[{\"addresses\":[\"vewzcj\",\"nmwcpmgu\",\"adraufactkahzo\",\"ajjziuxxpshne\"],\"autoAssign\":\"True\",\"name\":\"lfg\",\"onlyUseHostIps\":\"True\"}]}")
             .toObject(L2ServiceLoadBalancerConfiguration.class);
-        Assertions.assertEquals("hostgktstvdxecl", model.ipAddressPools().get(0).addresses().get(0));
+        Assertions.assertEquals("vewzcj", model.ipAddressPools().get(0).addresses().get(0));
         Assertions.assertEquals(BfdEnabled.TRUE, model.ipAddressPools().get(0).autoAssign());
-        Assertions.assertEquals("lhpl", model.ipAddressPools().get(0).name());
+        Assertions.assertEquals("lfg", model.ipAddressPools().get(0).name());
         Assertions.assertEquals(BfdEnabled.TRUE, model.ipAddressPools().get(0).onlyUseHostIps());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L2ServiceLoadBalancerConfiguration model = new L2ServiceLoadBalancerConfiguration().withIpAddressPools(
-            Arrays.asList(new IpAddressPool().withAddresses(Arrays.asList("hostgktstvdxecl", "edqbc"))
+        L2ServiceLoadBalancerConfiguration model
+            = new L2ServiceLoadBalancerConfiguration().withIpAddressPools(Arrays.asList(new IpAddressPool()
+                .withAddresses(Arrays.asList("vewzcj", "nmwcpmgu", "adraufactkahzo", "ajjziuxxpshne"))
                 .withAutoAssign(BfdEnabled.TRUE)
-                .withName("lhpl")
+                .withName("lfg")
                 .withOnlyUseHostIps(BfdEnabled.TRUE)));
         model = BinaryData.fromObject(model).toObject(L2ServiceLoadBalancerConfiguration.class);
-        Assertions.assertEquals("hostgktstvdxecl", model.ipAddressPools().get(0).addresses().get(0));
+        Assertions.assertEquals("vewzcj", model.ipAddressPools().get(0).addresses().get(0));
         Assertions.assertEquals(BfdEnabled.TRUE, model.ipAddressPools().get(0).autoAssign());
-        Assertions.assertEquals("lhpl", model.ipAddressPools().get(0).name());
+        Assertions.assertEquals("lfg", model.ipAddressPools().get(0).name());
         Assertions.assertEquals(BfdEnabled.TRUE, model.ipAddressPools().get(0).onlyUseHostIps());
     }
 }

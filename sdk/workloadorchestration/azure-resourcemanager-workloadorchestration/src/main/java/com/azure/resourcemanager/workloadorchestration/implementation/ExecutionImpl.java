@@ -76,11 +76,7 @@ public final class ExecutionImpl implements Execution, Execution.Definition, Exe
     }
 
     public Execution create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExecutions()
-            .createOrUpdate(resourceGroupName, contextName, workflowName, versionName, executionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Execution create(Context context) {
@@ -103,11 +99,7 @@ public final class ExecutionImpl implements Execution, Execution.Definition, Exe
     }
 
     public Execution apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExecutions()
-            .update(resourceGroupName, contextName, workflowName, versionName, executionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Execution apply(Context context) {
@@ -122,19 +114,25 @@ public final class ExecutionImpl implements Execution, Execution.Definition, Exe
         com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.contextName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "contexts");
-        this.workflowName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workflows");
-        this.versionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "versions");
-        this.executionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "executions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
+            "resourceGroupName");
+        this.contextName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
+            "contextName");
+        this.workflowName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
+            "workflowName");
+        this.versionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
+            "versionName");
+        this.executionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions/{versionName}/executions/{executionName}",
+            "executionName");
     }
 
     public Execution refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExecutions()
-            .getWithResponse(resourceGroupName, contextName, workflowName, versionName, executionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Execution refresh(Context context) {

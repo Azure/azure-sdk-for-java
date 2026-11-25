@@ -123,18 +123,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a managed instance encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance encryption protector along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedInstanceEncryptionProtectorInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, EncryptionProtectorName encryptionProtectorName) {
@@ -208,17 +197,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             resourceGroupName, managedInstanceName, encryptionProtectorName, accept, context);
     }
 
-    /**
-     * Gets a managed instance encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance encryption protector on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceEncryptionProtectorInner> getAsync(String resourceGroupName, String managedInstanceName,
         EncryptionProtectorName encryptionProtectorName) {
@@ -226,35 +205,14 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a managed instance encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance encryption protector along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedInstanceEncryptionProtectorInner> getWithResponse(String resourceGroupName,
         String managedInstanceName, EncryptionProtectorName encryptionProtectorName, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, context).block();
     }
 
-    /**
-     * Gets a managed instance encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance encryption protector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceEncryptionProtectorInner get(String resourceGroupName, String managedInstanceName,
         EncryptionProtectorName encryptionProtectorName) {
@@ -262,19 +220,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             .getValue();
     }
 
-    /**
-     * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param parameters The requested encryption protector resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed instance encryption protector along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, EncryptionProtectorName encryptionProtectorName,
@@ -364,18 +310,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param parameters The requested encryption protector resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the managed instance encryption protector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName,
@@ -415,18 +350,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
                 ManagedInstanceEncryptionProtectorInner.class, context);
     }
 
-    /**
-     * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param parameters The requested encryption protector resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the managed instance encryption protector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
         beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
@@ -436,19 +360,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             .getSyncPoller();
     }
 
-    /**
-     * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param parameters The requested encryption protector resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the managed instance encryption protector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
         beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
@@ -460,18 +372,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             .getSyncPoller();
     }
 
-    /**
-     * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param parameters The requested encryption protector resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed instance encryption protector on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceEncryptionProtectorInner> createOrUpdateAsync(String resourceGroupName,
         String managedInstanceName, EncryptionProtectorName encryptionProtectorName,
@@ -502,37 +403,14 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param parameters The requested encryption protector resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed instance encryption protector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceEncryptionProtectorInner createOrUpdate(String resourceGroupName, String managedInstanceName,
         EncryptionProtectorName encryptionProtectorName, ManagedInstanceEncryptionProtectorInner parameters) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, parameters).block();
     }
 
-    /**
-     * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param parameters The requested encryption protector resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed instance encryption protector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceEncryptionProtectorInner createOrUpdate(String resourceGroupName, String managedInstanceName,
         EncryptionProtectorName encryptionProtectorName, ManagedInstanceEncryptionProtectorInner parameters,
@@ -621,16 +499,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of managed instance encryption protectors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance encryption protectors as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceEncryptionProtectorInner> listByInstanceAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -656,50 +525,21 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of managed instance encryption protectors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance encryption protectors as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceEncryptionProtectorInner> listByInstance(String resourceGroupName,
         String managedInstanceName) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
-    /**
-     * Gets a list of managed instance encryption protectors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance encryption protectors as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceEncryptionProtectorInner> listByInstance(String resourceGroupName,
         String managedInstanceName, Context context) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName, context));
     }
 
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> revalidateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, EncryptionProtectorName encryptionProtectorName) {
@@ -770,17 +610,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             this.client.getSubscriptionId(), resourceGroupName, managedInstanceName, encryptionProtectorName, context);
     }
 
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(String resourceGroupName, String managedInstanceName,
         EncryptionProtectorName encryptionProtectorName) {
@@ -812,17 +642,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             context);
     }
 
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String managedInstanceName,
         EncryptionProtectorName encryptionProtectorName) {
@@ -830,18 +650,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             .getSyncPoller();
     }
 
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String managedInstanceName,
         EncryptionProtectorName encryptionProtectorName, Context context) {
@@ -849,17 +658,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             .getSyncPoller();
     }
 
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revalidateAsync(String resourceGroupName, String managedInstanceName,
         EncryptionProtectorName encryptionProtectorName) {
@@ -886,33 +685,14 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revalidate(String resourceGroupName, String managedInstanceName,
         EncryptionProtectorName encryptionProtectorName) {
         revalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName).block();
     }
 
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revalidate(String resourceGroupName, String managedInstanceName,
         EncryptionProtectorName encryptionProtectorName, Context context) {

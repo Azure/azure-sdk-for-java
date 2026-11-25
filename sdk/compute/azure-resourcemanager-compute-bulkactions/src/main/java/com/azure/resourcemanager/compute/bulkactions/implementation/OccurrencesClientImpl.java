@@ -211,15 +211,16 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * Get a Occurrence.
+     * Gets the specified occurrence.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Occurrence along with {@link Response} on successful completion of {@link Mono}.
+     * @return the specified occurrence along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OccurrenceInner>> getWithResponseAsync(String resourceGroupName, String scheduledActionName,
@@ -232,15 +233,16 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * Get a Occurrence.
+     * Gets the specified occurrence.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Occurrence on successful completion of {@link Mono}.
+     * @return the specified occurrence on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OccurrenceInner> getAsync(String resourceGroupName, String scheduledActionName, String occurrenceId) {
@@ -248,18 +250,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Occurrence.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Occurrence along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OccurrenceInner> getWithResponse(String resourceGroupName, String scheduledActionName,
         String occurrenceId, Context context) {
@@ -268,27 +259,18 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
             resourceGroupName, scheduledActionName, occurrenceId, accept, context);
     }
 
-    /**
-     * Get a Occurrence.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Occurrence.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OccurrenceInner get(String resourceGroupName, String scheduledActionName, String occurrenceId) {
         return getWithResponse(resourceGroupName, scheduledActionName, occurrenceId, Context.NONE).getValue();
     }
 
     /**
-     * List Occurrence resources by ScheduledAction.
+     * Lists occurrences for the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -309,10 +291,11 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * List Occurrence resources by ScheduledAction.
+     * Lists occurrences for the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -326,10 +309,11 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * List Occurrence resources by ScheduledAction.
+     * Lists occurrences for the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -338,19 +322,15 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceInner> listByScheduledActionSinglePage(String resourceGroupName,
         String scheduledActionName) {
-        final String accept = "application/json";
-        Response<OccurrenceListResult> res
-            = service.listByScheduledActionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByScheduledActionSinglePage(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
     /**
-     * List Occurrence resources by ScheduledAction.
+     * Lists occurrences for the specified recurring bulk action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -368,33 +348,13 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Occurrence resources by ScheduledAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Occurrence list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OccurrenceInner> listByScheduledAction(String resourceGroupName, String scheduledActionName) {
-        return new PagedIterable<>(() -> listByScheduledActionSinglePage(resourceGroupName, scheduledActionName),
-            nextLink -> listByScheduledActionNextSinglePage(nextLink));
+        return listByScheduledAction(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
-    /**
-     * List Occurrence resources by ScheduledAction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Occurrence list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OccurrenceInner> listByScheduledAction(String resourceGroupName, String scheduledActionName,
         Context context) {
@@ -404,16 +364,17 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * List resources attached to Scheduled Actions for the given occurrence.
+     * Lists resources for the specified occurrence.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return paged list of resources included in a recurring bulk action occurrence along with {@link PagedResponse}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OccurrenceResourceInner>> listResourcesSinglePageAsync(String resourceGroupName,
@@ -428,15 +389,17 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * List resources attached to Scheduled Actions for the given occurrence.
+     * Lists resources for the specified occurrence.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items as paginated response with {@link PagedFlux}.
+     * @return paged list of resources included in a recurring bulk action occurrence as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OccurrenceResourceInner> listResourcesAsync(String resourceGroupName, String scheduledActionName,
@@ -446,38 +409,35 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * List resources attached to Scheduled Actions for the given occurrence.
+     * Lists resources for the specified occurrence.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items along with {@link PagedResponse}.
+     * @return paged list of resources included in a recurring bulk action occurrence along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceResourceInner> listResourcesSinglePage(String resourceGroupName,
         String scheduledActionName, String occurrenceId) {
-        final String accept = "application/json";
-        Response<OccurrenceResourceListResponse> res = service.listResourcesSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, scheduledActionName,
-            occurrenceId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listResourcesSinglePage(resourceGroupName, scheduledActionName, occurrenceId, Context.NONE);
     }
 
     /**
-     * List resources attached to Scheduled Actions for the given occurrence.
+     * Lists resources for the specified occurrence.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items along with {@link PagedResponse}.
+     * @return paged list of resources included in a recurring bulk action occurrence along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceResourceInner> listResourcesSinglePage(String resourceGroupName,
@@ -490,36 +450,14 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List resources attached to Scheduled Actions for the given occurrence.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OccurrenceResourceInner> listResources(String resourceGroupName, String scheduledActionName,
         String occurrenceId) {
-        return new PagedIterable<>(() -> listResourcesSinglePage(resourceGroupName, scheduledActionName, occurrenceId),
-            nextLink -> listResourcesNextSinglePage(nextLink));
+        return listResources(resourceGroupName, scheduledActionName, occurrenceId, Context.NONE);
     }
 
-    /**
-     * List resources attached to Scheduled Actions for the given occurrence.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OccurrenceResourceInner> listResources(String resourceGroupName, String scheduledActionName,
         String occurrenceId, Context context) {
@@ -529,17 +467,19 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * Cancel the occurrence so its pending operations do not run.
+     * Cancels the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
+     * @param body The resources to cancel in the occurrence. If no resource IDs are provided, the occurrence is
+     * canceled for all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource along
-     * with {@link Response} on successful completion of {@link Mono}.
+     * @return results of a recurring bulk action operation for targeted resources along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(String resourceGroupName,
@@ -554,41 +494,39 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * Cancel the occurrence so its pending operations do not run.
+     * Cancels the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
+     * @param body The resources to cancel in the occurrence. If no resource IDs are provided, the occurrence is
+     * canceled for all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource along
-     * with {@link Response}.
+     * @return results of a recurring bulk action operation for targeted resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> cancelWithResponse(String resourceGroupName, String scheduledActionName,
         String occurrenceId, CancelOccurrenceRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, occurrenceId, contentType, accept,
-            body, Context.NONE);
+        return cancelWithResponse(resourceGroupName, scheduledActionName, occurrenceId, body, Context.NONE);
     }
 
     /**
-     * Cancel the occurrence so its pending operations do not run.
+     * Cancels the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
+     * @param body The resources to cancel in the occurrence. If no resource IDs are provided, the occurrence is
+     * canceled for all resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource along
-     * with {@link Response}.
+     * @return results of a recurring bulk action operation for targeted resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> cancelWithResponse(String resourceGroupName, String scheduledActionName,
@@ -601,17 +539,19 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * Cancel the occurrence so its pending operations do not run.
+     * Cancels the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
+     * @param body The resources to cancel in the occurrence. If no resource IDs are provided, the occurrence is
+     * canceled for all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the response from scheduled action resource requests, which
-     * contains the status of each resource.
+     * @return the {@link PollerFlux} for polling of results of a recurring bulk action operation for targeted
+     * resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner> beginCancelAsync(
@@ -623,41 +563,14 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
             this.client.getContext());
     }
 
-    /**
-     * Cancel the occurrence so its pending operations do not run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response from scheduled action resource requests, which
-     * contains the status of each resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner> beginCancel(
         String resourceGroupName, String scheduledActionName, String occurrenceId, CancelOccurrenceRequest body) {
-        Response<BinaryData> response = cancelWithResponse(resourceGroupName, scheduledActionName, occurrenceId, body);
-        return this.client.<ResourceOperationResponseInner, ResourceOperationResponseInner>getLroResult(response,
-            ResourceOperationResponseInner.class, ResourceOperationResponseInner.class, Context.NONE);
+        return beginCancel(resourceGroupName, scheduledActionName, occurrenceId, body, Context.NONE);
     }
 
-    /**
-     * Cancel the occurrence so its pending operations do not run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response from scheduled action resource requests, which
-     * contains the status of each resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner> beginCancel(
         String resourceGroupName, String scheduledActionName, String occurrenceId, CancelOccurrenceRequest body,
@@ -669,17 +582,19 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * Cancel the occurrence so its pending operations do not run.
+     * Cancels the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
+     * @param body The resources to cancel in the occurrence. If no resource IDs are provided, the occurrence is
+     * canceled for all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource on
-     * successful completion of {@link Mono}.
+     * @return results of a recurring bulk action operation for targeted resources on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ResourceOperationResponseInner> cancelAsync(String resourceGroupName, String scheduledActionName,
@@ -688,55 +603,35 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Cancel the occurrence so its pending operations do not run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceOperationResponseInner cancel(String resourceGroupName, String scheduledActionName,
         String occurrenceId, CancelOccurrenceRequest body) {
-        return beginCancel(resourceGroupName, scheduledActionName, occurrenceId, body).getFinalResult();
+        return cancel(resourceGroupName, scheduledActionName, occurrenceId, body, Context.NONE);
     }
 
-    /**
-     * Cancel the occurrence so its pending operations do not run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceOperationResponseInner cancel(String resourceGroupName, String scheduledActionName,
         String occurrenceId, CancelOccurrenceRequest body, Context context) {
-        return beginCancel(resourceGroupName, scheduledActionName, occurrenceId, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCancel(resourceGroupName, scheduledActionName, occurrenceId, body, context));
     }
 
     /**
-     * Delay the occurrence to a later time.
+     * Delays the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
+     * @param body The new scheduled time and resources to delay in the occurrence. If no resource IDs are provided, all
+     * resources are delayed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource along
-     * with {@link Response} on successful completion of {@link Mono}.
+     * @return results of a recurring bulk action operation for targeted resources along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> delayWithResponseAsync(String resourceGroupName,
@@ -751,41 +646,39 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * Delay the occurrence to a later time.
+     * Delays the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
+     * @param body The new scheduled time and resources to delay in the occurrence. If no resource IDs are provided, all
+     * resources are delayed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource along
-     * with {@link Response}.
+     * @return results of a recurring bulk action operation for targeted resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> delayWithResponse(String resourceGroupName, String scheduledActionName,
         String occurrenceId, DelayRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.delaySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, occurrenceId, contentType, accept,
-            body, Context.NONE);
+        return delayWithResponse(resourceGroupName, scheduledActionName, occurrenceId, body, Context.NONE);
     }
 
     /**
-     * Delay the occurrence to a later time.
+     * Delays the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
+     * @param body The new scheduled time and resources to delay in the occurrence. If no resource IDs are provided, all
+     * resources are delayed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource along
-     * with {@link Response}.
+     * @return results of a recurring bulk action operation for targeted resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> delayWithResponse(String resourceGroupName, String scheduledActionName,
@@ -798,17 +691,19 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * Delay the occurrence to a later time.
+     * Delays the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
+     * @param body The new scheduled time and resources to delay in the occurrence. If no resource IDs are provided, all
+     * resources are delayed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the response from scheduled action resource requests, which
-     * contains the status of each resource.
+     * @return the {@link PollerFlux} for polling of results of a recurring bulk action operation for targeted
+     * resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner>
@@ -820,41 +715,14 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delay the occurrence to a later time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response from scheduled action resource requests, which
-     * contains the status of each resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner>
         beginDelay(String resourceGroupName, String scheduledActionName, String occurrenceId, DelayRequest body) {
-        Response<BinaryData> response = delayWithResponse(resourceGroupName, scheduledActionName, occurrenceId, body);
-        return this.client.<ResourceOperationResponseInner, ResourceOperationResponseInner>getLroResult(response,
-            ResourceOperationResponseInner.class, ResourceOperationResponseInner.class, Context.NONE);
+        return beginDelay(resourceGroupName, scheduledActionName, occurrenceId, body, Context.NONE);
     }
 
-    /**
-     * Delay the occurrence to a later time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response from scheduled action resource requests, which
-     * contains the status of each resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner> beginDelay(
         String resourceGroupName, String scheduledActionName, String occurrenceId, DelayRequest body, Context context) {
@@ -865,17 +733,19 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * Delay the occurrence to a later time.
+     * Delays the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the recurring bulk action. It must be 3 to 24 characters and can contain
+     * only letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
+     * @param body The new scheduled time and resources to delay in the occurrence. If no resource IDs are provided, all
+     * resources are delayed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource on
-     * successful completion of {@link Mono}.
+     * @return results of a recurring bulk action operation for targeted resources on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ResourceOperationResponseInner> delayAsync(String resourceGroupName, String scheduledActionName,
@@ -884,41 +754,19 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delay the occurrence to a later time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceOperationResponseInner delay(String resourceGroupName, String scheduledActionName,
         String occurrenceId, DelayRequest body) {
-        return beginDelay(resourceGroupName, scheduledActionName, occurrenceId, body).getFinalResult();
+        return delay(resourceGroupName, scheduledActionName, occurrenceId, body, Context.NONE);
     }
 
-    /**
-     * Delay the occurrence to a later time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceOperationResponseInner delay(String resourceGroupName, String scheduledActionName,
         String occurrenceId, DelayRequest body, Context context) {
-        return beginDelay(resourceGroupName, scheduledActionName, occurrenceId, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginDelay(resourceGroupName, scheduledActionName, occurrenceId, body, context));
     }
 
     /**
@@ -953,11 +801,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceInner> listByScheduledActionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OccurrenceListResult> res
-            = service.listByScheduledActionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByScheduledActionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -986,8 +830,8 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return paged list of resources included in a recurring bulk action occurrence along with {@link PagedResponse}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OccurrenceResourceInner>> listResourcesNextSinglePageAsync(String nextLink) {
@@ -1006,15 +850,11 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items along with {@link PagedResponse}.
+     * @return paged list of resources included in a recurring bulk action occurrence along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceResourceInner> listResourcesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OccurrenceResourceListResponse> res
-            = service.listResourcesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listResourcesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1025,7 +865,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items along with {@link PagedResponse}.
+     * @return paged list of resources included in a recurring bulk action occurrence along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceResourceInner> listResourcesNextSinglePage(String nextLink, Context context) {

@@ -149,18 +149,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified service Endpoint Policies in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified service Endpoint Policies in a specified resource group along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServiceEndpointPolicyInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String serviceEndpointPolicyName, String expand) {
@@ -180,7 +169,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter serviceEndpointPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -220,24 +209,14 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter serviceEndpointPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, serviceEndpointPolicyName, expand, accept, context);
     }
 
-    /**
-     * Gets the specified service Endpoint Policies in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified service Endpoint Policies in a specified resource group on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceEndpointPolicyInner> getByResourceGroupAsync(String resourceGroupName,
         String serviceEndpointPolicyName) {
@@ -246,18 +225,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified service Endpoint Policies in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified service Endpoint Policies in a specified resource group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceEndpointPolicyInner> getByResourceGroupWithResponse(String resourceGroupName,
         String serviceEndpointPolicyName, String expand, Context context) {
@@ -265,16 +233,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             .block();
     }
 
-    /**
-     * Gets the specified service Endpoint Policies in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified service Endpoint Policies in a specified resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceEndpointPolicyInner getByResourceGroup(String resourceGroupName, String serviceEndpointPolicyName) {
         final String expand = null;
@@ -282,17 +241,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             .getValue();
     }
 
-    /**
-     * Creates or updates a service Endpoint Policies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param parameters Parameters supplied to the create or update service endpoint policy operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service End point policy resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String serviceEndpointPolicyName, ServiceEndpointPolicyInner parameters) {
@@ -317,7 +266,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -363,7 +312,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -371,17 +320,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             resourceGroupName, serviceEndpointPolicyName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a service Endpoint Policies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param parameters Parameters supplied to the create or update service endpoint policy operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of service End point policy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServiceEndpointPolicyInner>, ServiceEndpointPolicyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceEndpointPolicyName, ServiceEndpointPolicyInner parameters) {
@@ -415,35 +354,14 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             this.client.getHttpPipeline(), ServiceEndpointPolicyInner.class, ServiceEndpointPolicyInner.class, context);
     }
 
-    /**
-     * Creates or updates a service Endpoint Policies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param parameters Parameters supplied to the create or update service endpoint policy operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of service End point policy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceEndpointPolicyInner>, ServiceEndpointPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceEndpointPolicyName, ServiceEndpointPolicyInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, serviceEndpointPolicyName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a service Endpoint Policies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param parameters Parameters supplied to the create or update service endpoint policy operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of service End point policy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceEndpointPolicyInner>, ServiceEndpointPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceEndpointPolicyName, ServiceEndpointPolicyInner parameters,
@@ -452,17 +370,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a service Endpoint Policies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param parameters Parameters supplied to the create or update service endpoint policy operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service End point policy resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceEndpointPolicyInner> createOrUpdateAsync(String resourceGroupName,
         String serviceEndpointPolicyName, ServiceEndpointPolicyInner parameters) {
@@ -489,52 +397,21 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a service Endpoint Policies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param parameters Parameters supplied to the create or update service endpoint policy operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service End point policy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceEndpointPolicyInner createOrUpdate(String resourceGroupName, String serviceEndpointPolicyName,
         ServiceEndpointPolicyInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serviceEndpointPolicyName, parameters).block();
     }
 
-    /**
-     * Creates or updates a service Endpoint Policies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param parameters Parameters supplied to the create or update service endpoint policy operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service End point policy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceEndpointPolicyInner createOrUpdate(String resourceGroupName, String serviceEndpointPolicyName,
         ServiceEndpointPolicyInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, serviceEndpointPolicyName, parameters, context).block();
     }
 
-    /**
-     * Updates tags of a service endpoint policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param parameters Parameters supplied to update service endpoint policy tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service End point policy resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServiceEndpointPolicyInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String serviceEndpointPolicyName, TagsObject parameters) {
@@ -559,7 +436,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -605,7 +482,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -613,17 +490,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             resourceGroupName, serviceEndpointPolicyName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates tags of a service endpoint policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param parameters Parameters supplied to update service endpoint policy tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service End point policy resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceEndpointPolicyInner> updateTagsAsync(String resourceGroupName, String serviceEndpointPolicyName,
         TagsObject parameters) {
@@ -631,35 +498,14 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates tags of a service endpoint policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param parameters Parameters supplied to update service endpoint policy tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service End point policy resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceEndpointPolicyInner> updateTagsWithResponse(String resourceGroupName,
         String serviceEndpointPolicyName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, serviceEndpointPolicyName, parameters, context).block();
     }
 
-    /**
-     * Updates tags of a service endpoint policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param parameters Parameters supplied to update service endpoint policy tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service End point policy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceEndpointPolicyInner updateTags(String resourceGroupName, String serviceEndpointPolicyName,
         TagsObject parameters) {
@@ -667,16 +513,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             .getValue();
     }
 
-    /**
-     * Deletes the specified service endpoint policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String serviceEndpointPolicyName) {
@@ -696,7 +533,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter serviceEndpointPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, serviceEndpointPolicyName, context))
@@ -733,22 +570,13 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter serviceEndpointPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             serviceEndpointPolicyName, context);
     }
 
-    /**
-     * Deletes the specified service endpoint policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
         String serviceEndpointPolicyName) {
@@ -778,48 +606,20 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             context);
     }
 
-    /**
-     * Deletes the specified service endpoint policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceEndpointPolicyName) {
         return this.beginDeleteAsync(resourceGroupName, serviceEndpointPolicyName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified service endpoint policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceEndpointPolicyName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, serviceEndpointPolicyName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified service endpoint policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serviceEndpointPolicyName) {
         return beginDeleteAsync(resourceGroupName, serviceEndpointPolicyName).last()
@@ -843,30 +643,13 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified service endpoint policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serviceEndpointPolicyName) {
         deleteAsync(resourceGroupName, serviceEndpointPolicyName).block();
     }
 
-    /**
-     * Deletes the specified service endpoint policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serviceEndpointPolicyName, Context context) {
         deleteAsync(resourceGroupName, serviceEndpointPolicyName, context).block();
@@ -897,7 +680,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -933,7 +716,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -943,15 +726,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all service endpoint Policies in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all service endpoint Policies in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServiceEndpointPolicyInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -974,30 +749,13 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all service endpoint Policies in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all service endpoint Policies in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceEndpointPolicyInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets all service endpoint Policies in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all service endpoint Policies in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceEndpointPolicyInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1021,7 +779,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1051,7 +809,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1059,13 +817,7 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the service endpoint policies in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the service endpoint policies in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServiceEndpointPolicyInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -1086,27 +838,13 @@ public final class ServiceEndpointPoliciesClientImpl implements InnerSupportsGet
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the service endpoint policies in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the service endpoint policies in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceEndpointPolicyInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all the service endpoint policies in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the service endpoint policies in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceEndpointPolicyInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

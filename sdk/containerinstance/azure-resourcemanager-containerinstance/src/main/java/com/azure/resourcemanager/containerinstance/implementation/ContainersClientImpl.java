@@ -95,26 +95,7 @@ public final class ContainersClientImpl implements ContainersClient {
             @PathParam("containerName") String containerName, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get the logs for a specified container instance.
-     * 
-     * Get the logs for a specified container instance in a specified resource group and container group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupName The name of the container group.
-     * @param containerName The name of the container instance.
-     * @param tail The number of lines to show from the tail of the container instance log. If not provided, all
-     * available logs are shown up to 4mb.
-     * @param timestamps If true, adds a timestamp at the beginning of every line of log output. If not provided,
-     * defaults to false.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the logs for a specified container instance.
-     * 
-     * Get the logs for a specified container instance in a specified resource group and container group along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LogsInner>> listLogsWithResponseAsync(String resourceGroupName, String containerGroupName,
         String containerName, Integer tail, Boolean timestamps) {
@@ -194,22 +175,7 @@ public final class ContainersClientImpl implements ContainersClient {
             resourceGroupName, containerGroupName, containerName, tail, timestamps, accept, context);
     }
 
-    /**
-     * Get the logs for a specified container instance.
-     * 
-     * Get the logs for a specified container instance in a specified resource group and container group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupName The name of the container group.
-     * @param containerName The name of the container instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the logs for a specified container instance.
-     * 
-     * Get the logs for a specified container instance in a specified resource group and container group on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogsInner> listLogsAsync(String resourceGroupName, String containerGroupName, String containerName) {
         final Integer tail = null;
@@ -218,27 +184,7 @@ public final class ContainersClientImpl implements ContainersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the logs for a specified container instance.
-     * 
-     * Get the logs for a specified container instance in a specified resource group and container group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupName The name of the container group.
-     * @param containerName The name of the container instance.
-     * @param tail The number of lines to show from the tail of the container instance log. If not provided, all
-     * available logs are shown up to 4mb.
-     * @param timestamps If true, adds a timestamp at the beginning of every line of log output. If not provided,
-     * defaults to false.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the logs for a specified container instance.
-     * 
-     * Get the logs for a specified container instance in a specified resource group and container group along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogsInner> listLogsWithResponse(String resourceGroupName, String containerGroupName,
         String containerName, Integer tail, Boolean timestamps, Context context) {
@@ -246,21 +192,7 @@ public final class ContainersClientImpl implements ContainersClient {
             context).block();
     }
 
-    /**
-     * Get the logs for a specified container instance.
-     * 
-     * Get the logs for a specified container instance in a specified resource group and container group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupName The name of the container group.
-     * @param containerName The name of the container instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the logs for a specified container instance.
-     * 
-     * Get the logs for a specified container instance in a specified resource group and container group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogsInner listLogs(String resourceGroupName, String containerGroupName, String containerName) {
         final Integer tail = null;
@@ -269,21 +201,7 @@ public final class ContainersClientImpl implements ContainersClient {
             Context.NONE).getValue();
     }
 
-    /**
-     * Executes a command in a specific container instance.
-     * 
-     * Executes a command for a specific container instance in a specified resource group and container group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupName The name of the container group.
-     * @param containerName The name of the container instance.
-     * @param containerExecRequest The request for the exec command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information for the container exec command along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ContainerExecResponseInner>> executeCommandWithResponseAsync(String resourceGroupName,
         String containerGroupName, String containerName, ContainerExecRequest containerExecRequest) {
@@ -373,20 +291,7 @@ public final class ContainersClientImpl implements ContainersClient {
             containerExecRequest, context);
     }
 
-    /**
-     * Executes a command in a specific container instance.
-     * 
-     * Executes a command for a specific container instance in a specified resource group and container group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupName The name of the container group.
-     * @param containerName The name of the container instance.
-     * @param containerExecRequest The request for the exec command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information for the container exec command on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerExecResponseInner> executeCommandAsync(String resourceGroupName, String containerGroupName,
         String containerName, ContainerExecRequest containerExecRequest) {
@@ -394,21 +299,7 @@ public final class ContainersClientImpl implements ContainersClient {
             containerExecRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Executes a command in a specific container instance.
-     * 
-     * Executes a command for a specific container instance in a specified resource group and container group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupName The name of the container group.
-     * @param containerName The name of the container instance.
-     * @param containerExecRequest The request for the exec command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information for the container exec command along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContainerExecResponseInner> executeCommandWithResponse(String resourceGroupName,
         String containerGroupName, String containerName, ContainerExecRequest containerExecRequest, Context context) {
@@ -416,20 +307,7 @@ public final class ContainersClientImpl implements ContainersClient {
             containerExecRequest, context).block();
     }
 
-    /**
-     * Executes a command in a specific container instance.
-     * 
-     * Executes a command for a specific container instance in a specified resource group and container group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupName The name of the container group.
-     * @param containerName The name of the container instance.
-     * @param containerExecRequest The request for the exec command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information for the container exec command.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerExecResponseInner executeCommand(String resourceGroupName, String containerGroupName,
         String containerName, ContainerExecRequest containerExecRequest) {
@@ -437,20 +315,7 @@ public final class ContainersClientImpl implements ContainersClient {
             Context.NONE).getValue();
     }
 
-    /**
-     * Attach to the output of a specific container instance.
-     * 
-     * Attach to the output stream of a specific container instance in a specified resource group and container group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupName The name of the container group.
-     * @param containerName The name of the container instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information for the output stream from container attach along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ContainerAttachResponseInner>> attachWithResponseAsync(String resourceGroupName,
         String containerGroupName, String containerName) {
@@ -523,19 +388,7 @@ public final class ContainersClientImpl implements ContainersClient {
             resourceGroupName, containerGroupName, containerName, accept, context);
     }
 
-    /**
-     * Attach to the output of a specific container instance.
-     * 
-     * Attach to the output stream of a specific container instance in a specified resource group and container group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupName The name of the container group.
-     * @param containerName The name of the container instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information for the output stream from container attach on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerAttachResponseInner> attachAsync(String resourceGroupName, String containerGroupName,
         String containerName) {
@@ -543,39 +396,14 @@ public final class ContainersClientImpl implements ContainersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Attach to the output of a specific container instance.
-     * 
-     * Attach to the output stream of a specific container instance in a specified resource group and container group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupName The name of the container group.
-     * @param containerName The name of the container instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information for the output stream from container attach along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContainerAttachResponseInner> attachWithResponse(String resourceGroupName,
         String containerGroupName, String containerName, Context context) {
         return attachWithResponseAsync(resourceGroupName, containerGroupName, containerName, context).block();
     }
 
-    /**
-     * Attach to the output of a specific container instance.
-     * 
-     * Attach to the output stream of a specific container instance in a specified resource group and container group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupName The name of the container group.
-     * @param containerName The name of the container instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information for the output stream from container attach.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAttachResponseInner attach(String resourceGroupName, String containerGroupName,
         String containerName) {

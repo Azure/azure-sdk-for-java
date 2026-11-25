@@ -148,19 +148,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves information about a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param select The select expression to apply on the operation.
-     * @param expand The expand query option to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GalleryInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String galleryName, SelectPermissions select, GalleryExpandParams expand) {
@@ -179,7 +167,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -219,24 +207,14 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, galleryName, select, expand, accept, context);
     }
 
-    /**
-     * Retrieves information about a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryInner> getByResourceGroupAsync(String resourceGroupName, String galleryName) {
         final SelectPermissions select = null;
@@ -245,36 +223,14 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves information about a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param select The select expression to apply on the operation.
-     * @param expand The expand query option to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GalleryInner> getByResourceGroupWithResponse(String resourceGroupName, String galleryName,
         SelectPermissions select, GalleryExpandParams expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, galleryName, select, expand, context).block();
     }
 
-    /**
-     * Retrieves information about a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryInner getByResourceGroup(String resourceGroupName, String galleryName) {
         final SelectPermissions select = null;
@@ -282,18 +238,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         return getByResourceGroupWithResponse(resourceGroupName, galleryName, select, expand, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String galleryName, GalleryInner gallery) {
@@ -317,7 +262,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         } else {
             gallery.validate();
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -362,7 +307,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         } else {
             gallery.validate();
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -370,18 +315,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             resourceGroupName, galleryName, contentType, accept, gallery, context);
     }
 
-    /**
-     * Create or update a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies information about the Shared Image Gallery that you want
-     * to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String galleryName, GalleryInner gallery) {
@@ -414,55 +348,21 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             GalleryInner.class, GalleryInner.class, context);
     }
 
-    /**
-     * Create or update a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the Shared Image Gallery that you want
-     * to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(String resourceGroupName,
         String galleryName, GalleryInner gallery) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, galleryName, gallery).getSyncPoller();
     }
 
-    /**
-     * Create or update a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the Shared Image Gallery that you want
-     * to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(String resourceGroupName,
         String galleryName, GalleryInner gallery, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, galleryName, gallery, context).getSyncPoller();
     }
 
-    /**
-     * Create or update a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryInner> createOrUpdateAsync(String resourceGroupName, String galleryName, GalleryInner gallery) {
         return beginCreateOrUpdateAsync(resourceGroupName, galleryName, gallery).last()
@@ -489,52 +389,20 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryInner createOrUpdate(String resourceGroupName, String galleryName, GalleryInner gallery) {
         return createOrUpdateAsync(resourceGroupName, galleryName, gallery).block();
     }
 
-    /**
-     * Create or update a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryInner createOrUpdate(String resourceGroupName, String galleryName, GalleryInner gallery,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, galleryName, gallery, context).block();
     }
 
-    /**
-     * Update a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String galleryName,
         GalleryUpdate gallery) {
@@ -558,7 +426,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         } else {
             gallery.validate();
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -603,7 +471,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         } else {
             gallery.validate();
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -611,18 +479,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             galleryName, contentType, accept, gallery, context);
     }
 
-    /**
-     * Update a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies information about the Shared Image Gallery that you want
-     * to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GalleryInner>, GalleryInner> beginUpdateAsync(String resourceGroupName,
         String galleryName, GalleryUpdate gallery) {
@@ -654,55 +511,21 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             GalleryInner.class, GalleryInner.class, context);
     }
 
-    /**
-     * Update a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the Shared Image Gallery that you want
-     * to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryInner>, GalleryInner> beginUpdate(String resourceGroupName, String galleryName,
         GalleryUpdate gallery) {
         return this.beginUpdateAsync(resourceGroupName, galleryName, gallery).getSyncPoller();
     }
 
-    /**
-     * Update a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the Shared Image Gallery that you want
-     * to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryInner>, GalleryInner> beginUpdate(String resourceGroupName, String galleryName,
         GalleryUpdate gallery, Context context) {
         return this.beginUpdateAsync(resourceGroupName, galleryName, gallery, context).getSyncPoller();
     }
 
-    /**
-     * Update a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryInner> updateAsync(String resourceGroupName, String galleryName, GalleryUpdate gallery) {
         return beginUpdateAsync(resourceGroupName, galleryName, gallery).last()
@@ -729,49 +552,19 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryInner update(String resourceGroupName, String galleryName, GalleryUpdate gallery) {
         return updateAsync(resourceGroupName, galleryName, gallery).block();
     }
 
-    /**
-     * Update a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param gallery Parameters supplied to the update Shared Image Gallery operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryInner update(String resourceGroupName, String galleryName, GalleryUpdate gallery, Context context) {
         return updateAsync(resourceGroupName, galleryName, gallery, context).block();
     }
 
-    /**
-     * Delete a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String galleryName) {
         if (this.client.getEndpoint() == null) {
@@ -789,7 +582,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, galleryName, context))
@@ -825,22 +618,13 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             galleryName, context);
     }
 
-    /**
-     * Delete a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String galleryName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, galleryName);
@@ -868,48 +652,20 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             context);
     }
 
-    /**
-     * Delete a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName) {
         return this.beginDeleteAsync(resourceGroupName, galleryName).getSyncPoller();
     }
 
-    /**
-     * Delete a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, galleryName, context).getSyncPoller();
     }
 
-    /**
-     * Delete a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String galleryName) {
         return beginDeleteAsync(resourceGroupName, galleryName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -932,30 +688,13 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String galleryName) {
         deleteAsync(resourceGroupName, galleryName).block();
     }
 
-    /**
-     * Delete a Shared Image Gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String galleryName, Context context) {
         deleteAsync(resourceGroupName, galleryName, context).block();
@@ -985,7 +724,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -1021,7 +760,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1031,15 +770,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List galleries under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Galleries operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GalleryInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1062,30 +793,13 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List galleries under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Galleries operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GalleryInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * List galleries under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Galleries operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GalleryInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1109,7 +823,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1139,7 +853,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1147,13 +861,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List galleries under a subscription.
-     * 
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Galleries operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GalleryInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -1174,27 +882,13 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List galleries under a subscription.
-     * 
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Galleries operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GalleryInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * List galleries under a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Galleries operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GalleryInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

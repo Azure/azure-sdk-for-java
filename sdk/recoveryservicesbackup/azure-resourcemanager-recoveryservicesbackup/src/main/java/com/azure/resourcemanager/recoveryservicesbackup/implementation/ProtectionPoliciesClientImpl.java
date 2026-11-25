@@ -164,19 +164,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Provides the details of the backup policies associated to Recovery Services Vault. This is an asynchronous
-     * operation. Status of the operation can be fetched using GetPolicyOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName Backup policy information to be fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectionPolicyResourceInner> getWithResponse(String vaultName, String resourceGroupName,
         String policyName, Context context) {
@@ -185,18 +173,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
             resourceGroupName, vaultName, policyName, accept, context);
     }
 
-    /**
-     * Provides the details of the backup policies associated to Recovery Services Vault. This is an asynchronous
-     * operation. Status of the operation can be fetched using GetPolicyOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName Backup policy information to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionPolicyResourceInner get(String vaultName, String resourceGroupName, String policyName) {
         return getWithResponse(vaultName, resourceGroupName, policyName, Context.NONE).getValue();
@@ -247,20 +224,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or modifies a backup policy. This is an asynchronous operation. Status of the operation can be fetched
-     * using GetPolicyOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName Backup policy information to be fetched.
-     * @param parameters resource backup policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectionPolicyResourceInner> createOrUpdateWithResponse(String vaultName,
         String resourceGroupName, String policyName, ProtectionPolicyResourceInner parameters, Context context) {
@@ -271,19 +235,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
             context);
     }
 
-    /**
-     * Creates or modifies a backup policy. This is an asynchronous operation. Status of the operation can be fetched
-     * using GetPolicyOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName Backup policy information to be fetched.
-     * @param parameters resource backup policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionPolicyResourceInner createOrUpdate(String vaultName, String resourceGroupName, String policyName,
         ProtectionPolicyResourceInner parameters) {
@@ -328,8 +280,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String vaultName, String resourceGroupName, String policyName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, policyName, Context.NONE);
+        return deleteWithResponse(vaultName, resourceGroupName, policyName, Context.NONE);
     }
 
     /**
@@ -374,40 +325,14 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
             this.client.getContext());
     }
 
-    /**
-     * Deletes specified backup policy from your Recovery Services Vault. This is an asynchronous operation. Status of
-     * the
-     * operation can be fetched using GetProtectionPolicyOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName Backup policy information to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String vaultName, String resourceGroupName,
         String policyName) {
-        Response<BinaryData> response = deleteWithResponse(vaultName, resourceGroupName, policyName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(vaultName, resourceGroupName, policyName, Context.NONE);
     }
 
-    /**
-     * Deletes specified backup policy from your Recovery Services Vault. This is an asynchronous operation. Status of
-     * the
-     * operation can be fetched using GetProtectionPolicyOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName Backup policy information to be fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String vaultName, String resourceGroupName, String policyName,
         Context context) {
@@ -434,38 +359,15 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes specified backup policy from your Recovery Services Vault. This is an asynchronous operation. Status of
-     * the
-     * operation can be fetched using GetProtectionPolicyOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName Backup policy information to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String vaultName, String resourceGroupName, String policyName) {
-        beginDelete(vaultName, resourceGroupName, policyName).getFinalResult();
+        delete(vaultName, resourceGroupName, policyName, Context.NONE);
     }
 
-    /**
-     * Deletes specified backup policy from your Recovery Services Vault. This is an asynchronous operation. Status of
-     * the
-     * operation can be fetched using GetProtectionPolicyOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName Backup policy information to be fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String vaultName, String resourceGroupName, String policyName, Context context) {
-        beginDelete(vaultName, resourceGroupName, policyName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(vaultName, resourceGroupName, policyName, context));
     }
 }

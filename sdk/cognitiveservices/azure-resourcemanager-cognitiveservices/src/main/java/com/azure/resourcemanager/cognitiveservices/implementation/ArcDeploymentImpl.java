@@ -73,10 +73,7 @@ public final class ArcDeploymentImpl implements ArcDeployment, ArcDeployment.Def
     }
 
     public ArcDeployment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getArcDeployments()
-            .createOrUpdate(resourceGroupName, accountName, deploymentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ArcDeployment create(Context context) {
@@ -99,10 +96,7 @@ public final class ArcDeploymentImpl implements ArcDeployment, ArcDeployment.Def
     }
 
     public ArcDeployment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getArcDeployments()
-            .update(resourceGroupName, accountName, deploymentName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ArcDeployment apply(Context context) {
@@ -116,17 +110,19 @@ public final class ArcDeploymentImpl implements ArcDeployment, ArcDeployment.Def
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.deploymentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "arcDeployments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/arcDeployments/{deploymentName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/arcDeployments/{deploymentName}",
+            "accountName");
+        this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/arcDeployments/{deploymentName}",
+            "deploymentName");
     }
 
     public ArcDeployment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getArcDeployments()
-            .getWithResponse(resourceGroupName, accountName, deploymentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ArcDeployment refresh(Context context) {

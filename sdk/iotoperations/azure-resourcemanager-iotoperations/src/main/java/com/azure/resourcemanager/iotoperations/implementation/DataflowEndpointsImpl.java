@@ -46,7 +46,7 @@ public final class DataflowEndpointsImpl implements DataflowEndpoints {
     }
 
     public void delete(String resourceGroupName, String instanceName, String dataflowEndpointName) {
-        this.serviceClient().delete(resourceGroupName, instanceName, dataflowEndpointName);
+        this.delete(resourceGroupName, instanceName, dataflowEndpointName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String instanceName, String dataflowEndpointName, Context context) {
@@ -54,9 +54,7 @@ public final class DataflowEndpointsImpl implements DataflowEndpoints {
     }
 
     public PagedIterable<DataflowEndpointResource> listByResourceGroup(String resourceGroupName, String instanceName) {
-        PagedIterable<DataflowEndpointResourceInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, instanceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataflowEndpointResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, instanceName, Context.NONE);
     }
 
     public PagedIterable<DataflowEndpointResource> listByResourceGroup(String resourceGroupName, String instanceName,
@@ -67,78 +65,36 @@ public final class DataflowEndpointsImpl implements DataflowEndpoints {
     }
 
     public DataflowEndpointResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String dataflowEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "dataflowEndpoints");
-        if (dataflowEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dataflowEndpoints'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, instanceName, dataflowEndpointName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DataflowEndpointResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String dataflowEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "dataflowEndpoints");
-        if (dataflowEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dataflowEndpoints'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowEndpoints/{dataflowEndpointName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String instanceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowEndpoints/{dataflowEndpointName}",
+            "instanceName", "instances", LOGGER);
+        String dataflowEndpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowEndpoints/{dataflowEndpointName}",
+            "dataflowEndpointName", "dataflowEndpoints", LOGGER);
         return this.getWithResponse(resourceGroupName, instanceName, dataflowEndpointName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String dataflowEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "dataflowEndpoints");
-        if (dataflowEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dataflowEndpoints'.", id)));
-        }
-        this.delete(resourceGroupName, instanceName, dataflowEndpointName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String dataflowEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "dataflowEndpoints");
-        if (dataflowEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dataflowEndpoints'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowEndpoints/{dataflowEndpointName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String instanceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowEndpoints/{dataflowEndpointName}",
+            "instanceName", "instances", LOGGER);
+        String dataflowEndpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowEndpoints/{dataflowEndpointName}",
+            "dataflowEndpointName", "dataflowEndpoints", LOGGER);
         this.delete(resourceGroupName, instanceName, dataflowEndpointName, context);
     }
 

@@ -1012,22 +1012,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a private endpoint connection
-     * 
-     * Description for Gets a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection
-     * 
-     * Description for Gets a private endpoint connection along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RemotePrivateEndpointConnectionArmResourceInner>>
         getPrivateEndpointConnectionWithResponseAsync(String resourceGroupName, String name,
@@ -1105,21 +1090,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Gets a private endpoint connection
-     * 
-     * Description for Gets a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection
-     * 
-     * Description for Gets a private endpoint connection on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RemotePrivateEndpointConnectionArmResourceInner>
         getPrivateEndpointConnectionAsync(String resourceGroupName, String name, String privateEndpointConnectionName) {
@@ -1127,22 +1098,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a private endpoint connection
-     * 
-     * Description for Gets a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection
-     * 
-     * Description for Gets a private endpoint connection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RemotePrivateEndpointConnectionArmResourceInner> getPrivateEndpointConnectionWithResponse(
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context) {
@@ -1150,21 +1106,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context).block();
     }
 
-    /**
-     * Gets a private endpoint connection
-     * 
-     * Description for Gets a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection
-     * 
-     * Description for Gets a private endpoint connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemotePrivateEndpointConnectionArmResourceInner getPrivateEndpointConnection(String resourceGroupName,
         String name, String privateEndpointConnectionName) {
@@ -1172,21 +1114,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             Context.NONE).getValue();
     }
 
-    /**
-     * Approves or rejects a private endpoint connection
-     * 
-     * Description for Approves or rejects a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param privateEndpointWrapper Request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> approveOrRejectPrivateEndpointConnectionWithResponseAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
@@ -1278,20 +1206,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             accept, privateEndpointWrapper, context);
     }
 
-    /**
-     * Approves or rejects a private endpoint connection
-     * 
-     * Description for Approves or rejects a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param privateEndpointWrapper Request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of remote Private Endpoint Connection ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
@@ -1336,20 +1251,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 RemotePrivateEndpointConnectionArmResourceInner.class, context);
     }
 
-    /**
-     * Approves or rejects a private endpoint connection
-     * 
-     * Description for Approves or rejects a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param privateEndpointWrapper Request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of remote Private Endpoint Connection ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
@@ -1362,21 +1264,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Approves or rejects a private endpoint connection
-     * 
-     * Description for Approves or rejects a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param privateEndpointWrapper Request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of remote Private Endpoint Connection ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
@@ -1389,20 +1277,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Approves or rejects a private endpoint connection
-     * 
-     * Description for Approves or rejects a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param privateEndpointWrapper Request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RemotePrivateEndpointConnectionArmResourceInner> approveOrRejectPrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
@@ -1436,20 +1311,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Approves or rejects a private endpoint connection
-     * 
-     * Description for Approves or rejects a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param privateEndpointWrapper Request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemotePrivateEndpointConnectionArmResourceInner approveOrRejectPrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName,
@@ -1458,21 +1320,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             privateEndpointWrapper).block();
     }
 
-    /**
-     * Approves or rejects a private endpoint connection
-     * 
-     * Description for Approves or rejects a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param privateEndpointWrapper Request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemotePrivateEndpointConnectionArmResourceInner approveOrRejectPrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName,
@@ -1481,19 +1329,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             privateEndpointWrapper, context).block();
     }
 
-    /**
-     * Deletes a private endpoint connection
-     * 
-     * Description for Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return anything along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deletePrivateEndpointConnectionWithResponseAsync(String resourceGroupName,
         String name, String privateEndpointConnectionName) {
@@ -1566,19 +1402,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Deletes a private endpoint connection
-     * 
-     * Description for Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of anything.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeletePrivateEndpointConnectionAsync(String resourceGroupName,
         String name, String privateEndpointConnectionName) {
@@ -1612,19 +1436,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context);
     }
 
-    /**
-     * Deletes a private endpoint connection
-     * 
-     * Description for Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of anything.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(String resourceGroupName,
         String name, String privateEndpointConnectionName) {
@@ -1632,20 +1444,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a private endpoint connection
-     * 
-     * Description for Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of anything.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(String resourceGroupName,
         String name, String privateEndpointConnectionName, Context context) {
@@ -1654,19 +1453,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a private endpoint connection
-     * 
-     * Description for Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return anything on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deletePrivateEndpointConnectionAsync(String resourceGroupName, String name,
         String privateEndpointConnectionName) {
@@ -1695,37 +1482,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a private endpoint connection
-     * 
-     * Description for Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deletePrivateEndpointConnection(String resourceGroupName, String name,
         String privateEndpointConnectionName) {
         deletePrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName).block();
     }
 
-    /**
-     * Deletes a private endpoint connection
-     * 
-     * Description for Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deletePrivateEndpointConnection(String resourceGroupName, String name,
         String privateEndpointConnectionName, Context context) {
@@ -1818,21 +1582,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the list of private endpoint connections associated with a static site
-     * 
-     * Description for Gets the list of private endpoint connections associated with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of private endpoint connections associated with a static site
-     * 
-     * Description for Gets the list of private endpoint connections associated with a static site as paginated response
-     * with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RemotePrivateEndpointConnectionArmResourceInner>
         getPrivateEndpointConnectionListAsync(String resourceGroupName, String name) {
@@ -1863,64 +1613,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> getPrivateEndpointConnectionListNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the list of private endpoint connections associated with a static site
-     * 
-     * Description for Gets the list of private endpoint connections associated with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of private endpoint connections associated with a static site
-     * 
-     * Description for Gets the list of private endpoint connections associated with a static site as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemotePrivateEndpointConnectionArmResourceInner>
         getPrivateEndpointConnectionList(String resourceGroupName, String name) {
         return new PagedIterable<>(getPrivateEndpointConnectionListAsync(resourceGroupName, name));
     }
 
-    /**
-     * Gets the list of private endpoint connections associated with a static site
-     * 
-     * Description for Gets the list of private endpoint connections associated with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of private endpoint connections associated with a static site
-     * 
-     * Description for Gets the list of private endpoint connections associated with a static site as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemotePrivateEndpointConnectionArmResourceInner>
         getPrivateEndpointConnectionList(String resourceGroupName, String name, Context context) {
         return new PagedIterable<>(getPrivateEndpointConnectionListAsync(resourceGroupName, name, context));
     }
 
-    /**
-     * Gets the details of a static site.
-     * 
-     * Description for Gets the details of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a static site.
-     * 
-     * Description for Gets the details of a static site along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteArmResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String name) {
@@ -1986,80 +1693,27 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
-    /**
-     * Gets the details of a static site.
-     * 
-     * Description for Gets the details of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a static site.
-     * 
-     * Description for Gets the details of a static site on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteArmResourceInner> getByResourceGroupAsync(String resourceGroupName, String name) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of a static site.
-     * 
-     * Description for Gets the details of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a static site.
-     * 
-     * Description for Gets the details of a static site along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteArmResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String name,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Gets the details of a static site.
-     * 
-     * Description for Gets the details of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a static site.
-     * 
-     * Description for Gets the details of a static site.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteArmResourceInner getByResourceGroup(String resourceGroupName, String name) {
         return getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateStaticSiteWithResponseAsync(String resourceGroupName,
         String name, StaticSiteArmResourceInner staticSiteEnvelope) {
@@ -2139,20 +1793,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, contentType, accept, staticSiteEnvelope, context);
     }
 
-    /**
-     * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner>
         beginCreateOrUpdateStaticSiteAsync(String resourceGroupName, String name,
@@ -2190,41 +1831,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getHttpPipeline(), StaticSiteArmResourceInner.class, StaticSiteArmResourceInner.class, context);
     }
 
-    /**
-     * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner> beginCreateOrUpdateStaticSite(
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope) {
         return this.beginCreateOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope).getSyncPoller();
     }
 
-    /**
-     * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner> beginCreateOrUpdateStaticSite(
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
@@ -2232,20 +1846,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteArmResourceInner> createOrUpdateStaticSiteAsync(String resourceGroupName, String name,
         StaticSiteArmResourceInner staticSiteEnvelope) {
@@ -2275,59 +1876,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteArmResourceInner createOrUpdateStaticSite(String resourceGroupName, String name,
         StaticSiteArmResourceInner staticSiteEnvelope) {
         return createOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope).block();
     }
 
-    /**
-     * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteArmResourceInner createOrUpdateStaticSite(String resourceGroupName, String name,
         StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
         return createOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope, context).block();
     }
 
-    /**
-     * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteArmResourceInner>> updateStaticSiteWithResponseAsync(String resourceGroupName,
         String name, StaticSitePatchResource staticSiteEnvelope) {
@@ -2407,20 +1970,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, contentType, accept, staticSiteEnvelope, context);
     }
 
-    /**
-     * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteArmResourceInner> updateStaticSiteAsync(String resourceGroupName, String name,
         StaticSitePatchResource staticSiteEnvelope) {
@@ -2428,58 +1978,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteArmResourceInner> updateStaticSiteWithResponse(String resourceGroupName, String name,
         StaticSitePatchResource staticSiteEnvelope, Context context) {
         return updateStaticSiteWithResponseAsync(resourceGroupName, name, staticSiteEnvelope, context).block();
     }
 
-    /**
-     * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteArmResourceInner updateStaticSite(String resourceGroupName, String name,
         StaticSitePatchResource staticSiteEnvelope) {
         return updateStaticSiteWithResponse(resourceGroupName, name, staticSiteEnvelope, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a static site.
-     * 
-     * Description for Deletes a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
@@ -2539,18 +2052,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             resourceGroupName, name, context);
     }
 
-    /**
-     * Deletes a static site.
-     * 
-     * Description for Deletes a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
@@ -2580,53 +2082,19 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context);
     }
 
-    /**
-     * Deletes a static site.
-     * 
-     * Description for Deletes a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
         return this.beginDeleteAsync(resourceGroupName, name).getSyncPoller();
     }
 
-    /**
-     * Deletes a static site.
-     * 
-     * Description for Deletes a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
         return this.beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a static site.
-     * 
-     * Description for Deletes a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String name) {
         return beginDeleteAsync(resourceGroupName, name).last().flatMap(this.client::getLroFinalResultOrError);
@@ -2650,34 +2118,13 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         return beginDeleteAsync(resourceGroupName, name, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a static site.
-     * 
-     * Description for Deletes a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name) {
         deleteAsync(resourceGroupName, name).block();
     }
 
-    /**
-     * Deletes a static site.
-     * 
-     * Description for Deletes a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name, Context context) {
         deleteAsync(resourceGroupName, name, context).block();
@@ -2760,20 +2207,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all static sites in the specified resource group.
-     * 
-     * Description for Gets all static sites in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all static sites in the specified resource group.
-     * 
-     * Description for Gets all static sites in the specified resource group as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteArmResourceInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -2801,40 +2235,13 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> getStaticSitesByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all static sites in the specified resource group.
-     * 
-     * Description for Gets all static sites in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all static sites in the specified resource group.
-     * 
-     * Description for Gets all static sites in the specified resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteArmResourceInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets all static sites in the specified resource group.
-     * 
-     * Description for Gets all static sites in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all static sites in the specified resource group.
-     * 
-     * Description for Gets all static sites in the specified resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteArmResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -2904,17 +2311,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get all Static Sites for a subscription.
-     * 
-     * Description for Get all Static Sites for a subscription.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Static Sites for a subscription.
-     * 
-     * Description for Get all Static Sites for a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteArmResourceInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -2939,35 +2336,13 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get all Static Sites for a subscription.
-     * 
-     * Description for Get all Static Sites for a subscription.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Static Sites for a subscription.
-     * 
-     * Description for Get all Static Sites for a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteArmResourceInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Get all Static Sites for a subscription.
-     * 
-     * Description for Get all Static Sites for a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Static Sites for a subscription.
-     * 
-     * Description for Get all Static Sites for a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteArmResourceInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
@@ -3066,21 +2441,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the list of users of a static site.
-     * 
-     * Description for Gets the list of users of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name parameter.
-     * @param authprovider The auth provider for the users.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of users of a static site.
-     * 
-     * Description for Gets the list of users of a static site as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteUserArmResourceInner> listStaticSiteUsersAsync(String resourceGroupName, String name,
         String authprovider) {
@@ -3111,63 +2472,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> listStaticSiteUsersNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the list of users of a static site.
-     * 
-     * Description for Gets the list of users of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name parameter.
-     * @param authprovider The auth provider for the users.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of users of a static site.
-     * 
-     * Description for Gets the list of users of a static site as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteUserArmResourceInner> listStaticSiteUsers(String resourceGroupName, String name,
         String authprovider) {
         return new PagedIterable<>(listStaticSiteUsersAsync(resourceGroupName, name, authprovider));
     }
 
-    /**
-     * Gets the list of users of a static site.
-     * 
-     * Description for Gets the list of users of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name parameter.
-     * @param authprovider The auth provider for the users.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of users of a static site.
-     * 
-     * Description for Gets the list of users of a static site as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteUserArmResourceInner> listStaticSiteUsers(String resourceGroupName, String name,
         String authprovider, Context context) {
         return new PagedIterable<>(listStaticSiteUsersAsync(resourceGroupName, name, authprovider, context));
     }
 
-    /**
-     * Deletes the user entry from the static site.
-     * 
-     * Description for Deletes the user entry from the static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name parameter.
-     * @param authprovider The authprovider parameter.
-     * @param userid The userid parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteStaticSiteUserWithResponseAsync(String resourceGroupName, String name,
         String authprovider, String userid) {
@@ -3242,20 +2561,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, authprovider, userid, context);
     }
 
-    /**
-     * Deletes the user entry from the static site.
-     * 
-     * Description for Deletes the user entry from the static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name parameter.
-     * @param authprovider The authprovider parameter.
-     * @param userid The userid parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteStaticSiteUserAsync(String resourceGroupName, String name, String authprovider,
         String userid) {
@@ -3263,60 +2569,20 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the user entry from the static site.
-     * 
-     * Description for Deletes the user entry from the static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name parameter.
-     * @param authprovider The authprovider parameter.
-     * @param userid The userid parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteStaticSiteUserWithResponse(String resourceGroupName, String name, String authprovider,
         String userid, Context context) {
         return deleteStaticSiteUserWithResponseAsync(resourceGroupName, name, authprovider, userid, context).block();
     }
 
-    /**
-     * Deletes the user entry from the static site.
-     * 
-     * Description for Deletes the user entry from the static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name parameter.
-     * @param authprovider The authprovider parameter.
-     * @param userid The userid parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteStaticSiteUser(String resourceGroupName, String name, String authprovider, String userid) {
         deleteStaticSiteUserWithResponse(resourceGroupName, name, authprovider, userid, Context.NONE);
     }
 
-    /**
-     * Updates a user entry with the listed roles
-     * 
-     * Description for Updates a user entry with the listed roles.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name parameter.
-     * @param authprovider The authprovider parameter.
-     * @param userid The userid parameter.
-     * @param staticSiteUserEnvelope A JSON representation of the StaticSiteUser properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User ARM resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteUserArmResourceInner>> updateStaticSiteUserWithResponseAsync(
         String resourceGroupName, String name, String authprovider, String userid,
@@ -3412,21 +2678,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteUserEnvelope, context);
     }
 
-    /**
-     * Updates a user entry with the listed roles
-     * 
-     * Description for Updates a user entry with the listed roles.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name parameter.
-     * @param authprovider The authprovider parameter.
-     * @param userid The userid parameter.
-     * @param staticSiteUserEnvelope A JSON representation of the StaticSiteUser properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User ARM resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteUserArmResourceInner> updateStaticSiteUserAsync(String resourceGroupName, String name,
         String authprovider, String userid, StaticSiteUserArmResourceInner staticSiteUserEnvelope) {
@@ -3434,22 +2686,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteUserEnvelope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a user entry with the listed roles
-     * 
-     * Description for Updates a user entry with the listed roles.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name parameter.
-     * @param authprovider The authprovider parameter.
-     * @param userid The userid parameter.
-     * @param staticSiteUserEnvelope A JSON representation of the StaticSiteUser properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User ARM resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteUserArmResourceInner> updateStaticSiteUserWithResponse(String resourceGroupName,
         String name, String authprovider, String userid, StaticSiteUserArmResourceInner staticSiteUserEnvelope,
@@ -3458,21 +2695,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteUserEnvelope, context).block();
     }
 
-    /**
-     * Updates a user entry with the listed roles
-     * 
-     * Description for Updates a user entry with the listed roles.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name parameter.
-     * @param authprovider The authprovider parameter.
-     * @param userid The userid parameter.
-     * @param staticSiteUserEnvelope A JSON representation of the StaticSiteUser properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteUserArmResourceInner updateStaticSiteUser(String resourceGroupName, String name,
         String authprovider, String userid, StaticSiteUserArmResourceInner staticSiteUserEnvelope) {
@@ -3480,19 +2703,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates the app settings of a static site.
-     * 
-     * Description for Creates or updates the app settings of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param appSettings The dictionary containing the static site app settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteAppSettingsWithResponseAsync(
         String resourceGroupName, String name, StringDictionaryInner appSettings) {
@@ -3569,19 +2780,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, contentType, accept, appSettings, context);
     }
 
-    /**
-     * Creates or updates the app settings of a static site.
-     * 
-     * Description for Creates or updates the app settings of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param appSettings The dictionary containing the static site app settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> createOrUpdateStaticSiteAppSettingsAsync(String resourceGroupName, String name,
         StringDictionaryInner appSettings) {
@@ -3589,20 +2788,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the app settings of a static site.
-     * 
-     * Description for Creates or updates the app settings of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param appSettings The dictionary containing the static site app settings to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> createOrUpdateStaticSiteAppSettingsWithResponse(String resourceGroupName,
         String name, StringDictionaryInner appSettings, Context context) {
@@ -3610,19 +2796,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .block();
     }
 
-    /**
-     * Creates or updates the app settings of a static site.
-     * 
-     * Description for Creates or updates the app settings of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param appSettings The dictionary containing the static site app settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StringDictionaryInner createOrUpdateStaticSiteAppSettings(String resourceGroupName, String name,
         StringDictionaryInner appSettings) {
@@ -3630,19 +2804,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getValue();
     }
 
-    /**
-     * Creates or updates the function app settings of a static site.
-     * 
-     * Description for Creates or updates the function app settings of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param appSettings The dictionary containing the static site function app settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteFunctionAppSettingsWithResponseAsync(
         String resourceGroupName, String name, StringDictionaryInner appSettings) {
@@ -3720,19 +2882,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             appSettings, context);
     }
 
-    /**
-     * Creates or updates the function app settings of a static site.
-     * 
-     * Description for Creates or updates the function app settings of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param appSettings The dictionary containing the static site function app settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> createOrUpdateStaticSiteFunctionAppSettingsAsync(String resourceGroupName,
         String name, StringDictionaryInner appSettings) {
@@ -3740,20 +2890,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the function app settings of a static site.
-     * 
-     * Description for Creates or updates the function app settings of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param appSettings The dictionary containing the static site function app settings to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> createOrUpdateStaticSiteFunctionAppSettingsWithResponse(
         String resourceGroupName, String name, StringDictionaryInner appSettings, Context context) {
@@ -3761,19 +2898,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context).block();
     }
 
-    /**
-     * Creates or updates the function app settings of a static site.
-     * 
-     * Description for Creates or updates the function app settings of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param appSettings The dictionary containing the static site function app settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StringDictionaryInner createOrUpdateStaticSiteFunctionAppSettings(String resourceGroupName, String name,
         StringDictionaryInner appSettings) {
@@ -3781,20 +2906,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             Context.NONE).getValue();
     }
 
-    /**
-     * Creates an invitation link for a user with the role
-     * 
-     * Description for Creates an invitation link for a user with the role.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteUserRolesInvitationEnvelope The staticSiteUserRolesInvitationEnvelope parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static sites user roles invitation link resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteUserInvitationResponseResourceInner>> createUserRolesInvitationLinkWithResponseAsync(
         String resourceGroupName, String name,
@@ -3877,19 +2989,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteUserRolesInvitationEnvelope, context);
     }
 
-    /**
-     * Creates an invitation link for a user with the role
-     * 
-     * Description for Creates an invitation link for a user with the role.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteUserRolesInvitationEnvelope The staticSiteUserRolesInvitationEnvelope parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static sites user roles invitation link resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteUserInvitationResponseResourceInner> createUserRolesInvitationLinkAsync(
         String resourceGroupName, String name,
@@ -3898,20 +2998,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteUserRolesInvitationEnvelope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates an invitation link for a user with the role
-     * 
-     * Description for Creates an invitation link for a user with the role.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteUserRolesInvitationEnvelope The staticSiteUserRolesInvitationEnvelope parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static sites user roles invitation link resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteUserInvitationResponseResourceInner> createUserRolesInvitationLinkWithResponse(
         String resourceGroupName, String name,
@@ -3920,19 +3007,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteUserRolesInvitationEnvelope, context).block();
     }
 
-    /**
-     * Creates an invitation link for a user with the role
-     * 
-     * Description for Creates an invitation link for a user with the role.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteUserRolesInvitationEnvelope The staticSiteUserRolesInvitationEnvelope parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static sites user roles invitation link resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteUserInvitationResponseResourceInner createUserRolesInvitationLink(String resourceGroupName,
         String name, StaticSiteUserInvitationRequestResource staticSiteUserRolesInvitationEnvelope) {
@@ -3940,18 +3015,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             Context.NONE).getValue();
     }
 
-    /**
-     * Detaches a static site.
-     * 
-     * Description for Detaches a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> detachStaticSiteWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
@@ -4011,18 +3075,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, context);
     }
 
-    /**
-     * Detaches a static site.
-     * 
-     * Description for Detaches a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDetachStaticSiteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = detachStaticSiteWithResponseAsync(resourceGroupName, name);
@@ -4052,54 +3105,20 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context);
     }
 
-    /**
-     * Detaches a static site.
-     * 
-     * Description for Detaches a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDetachStaticSite(String resourceGroupName, String name) {
         return this.beginDetachStaticSiteAsync(resourceGroupName, name).getSyncPoller();
     }
 
-    /**
-     * Detaches a static site.
-     * 
-     * Description for Detaches a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDetachStaticSite(String resourceGroupName, String name,
         Context context) {
         return this.beginDetachStaticSiteAsync(resourceGroupName, name, context).getSyncPoller();
     }
 
-    /**
-     * Detaches a static site.
-     * 
-     * Description for Detaches a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> detachStaticSiteAsync(String resourceGroupName, String name) {
         return beginDetachStaticSiteAsync(resourceGroupName, name).last()
@@ -4125,34 +3144,13 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Detaches a static site.
-     * 
-     * Description for Detaches a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void detachStaticSite(String resourceGroupName, String name) {
         detachStaticSiteAsync(resourceGroupName, name).block();
     }
 
-    /**
-     * Detaches a static site.
-     * 
-     * Description for Detaches a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void detachStaticSite(String resourceGroupName, String name, Context context) {
         detachStaticSiteAsync(resourceGroupName, name, context).block();
@@ -4244,20 +3242,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the functions of a static site.
-     * 
-     * Description for Gets the functions of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the functions of a static site.
-     * 
-     * Description for Gets the functions of a static site as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteFunctionsAsync(String resourceGroupName,
         String name) {
@@ -4287,62 +3272,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> listStaticSiteFunctionsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the functions of a static site.
-     * 
-     * Description for Gets the functions of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the functions of a static site.
-     * 
-     * Description for Gets the functions of a static site as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteFunctions(String resourceGroupName,
         String name) {
         return new PagedIterable<>(listStaticSiteFunctionsAsync(resourceGroupName, name));
     }
 
-    /**
-     * Gets the functions of a static site.
-     * 
-     * Description for Gets the functions of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the functions of a static site.
-     * 
-     * Description for Gets the functions of a static site as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteFunctions(String resourceGroupName,
         String name, Context context) {
         return new PagedIterable<>(listStaticSiteFunctionsAsync(resourceGroupName, name, context));
     }
 
-    /**
-     * Gets the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>> listStaticSiteAppSettingsWithResponseAsync(String resourceGroupName,
         String name) {
@@ -4408,78 +3352,27 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
-    /**
-     * Gets the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> listStaticSiteAppSettingsAsync(String resourceGroupName, String name) {
         return listStaticSiteAppSettingsWithResponseAsync(resourceGroupName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> listStaticSiteAppSettingsWithResponse(String resourceGroupName, String name,
         Context context) {
         return listStaticSiteAppSettingsWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Gets the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StringDictionaryInner listStaticSiteAppSettings(String resourceGroupName, String name) {
         return listStaticSiteAppSettingsWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
-    /**
-     * Lists the roles configured for the static site.
-     * 
-     * Description for Lists the roles configured for the static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string list resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringListInner>> listStaticSiteConfiguredRolesWithResponseAsync(String resourceGroupName,
         String name) {
@@ -4542,75 +3435,27 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
-    /**
-     * Lists the roles configured for the static site.
-     * 
-     * Description for Lists the roles configured for the static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string list resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringListInner> listStaticSiteConfiguredRolesAsync(String resourceGroupName, String name) {
         return listStaticSiteConfiguredRolesWithResponseAsync(resourceGroupName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists the roles configured for the static site.
-     * 
-     * Description for Lists the roles configured for the static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string list resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringListInner> listStaticSiteConfiguredRolesWithResponse(String resourceGroupName, String name,
         Context context) {
         return listStaticSiteConfiguredRolesWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Lists the roles configured for the static site.
-     * 
-     * Description for Lists the roles configured for the static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string list resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StringListInner listStaticSiteConfiguredRoles(String resourceGroupName, String name) {
         return listStaticSiteConfiguredRolesWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
-    /**
-     * Gets the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>>
         listStaticSiteFunctionAppSettingsWithResponseAsync(String resourceGroupName, String name) {
@@ -4676,78 +3521,27 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
-    /**
-     * Gets the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> listStaticSiteFunctionAppSettingsAsync(String resourceGroupName, String name) {
         return listStaticSiteFunctionAppSettingsWithResponseAsync(resourceGroupName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> listStaticSiteFunctionAppSettingsWithResponse(String resourceGroupName,
         String name, Context context) {
         return listStaticSiteFunctionAppSettingsWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Gets the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StringDictionaryInner listStaticSiteFunctionAppSettings(String resourceGroupName, String name) {
         return listStaticSiteFunctionAppSettingsWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
-    /**
-     * Lists the secrets for an existing static site.
-     * 
-     * Description for Lists the secrets for an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>> listStaticSiteSecretsWithResponseAsync(String resourceGroupName,
         String name) {
@@ -4810,75 +3604,27 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
-    /**
-     * Lists the secrets for an existing static site.
-     * 
-     * Description for Lists the secrets for an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> listStaticSiteSecretsAsync(String resourceGroupName, String name) {
         return listStaticSiteSecretsWithResponseAsync(resourceGroupName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists the secrets for an existing static site.
-     * 
-     * Description for Lists the secrets for an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> listStaticSiteSecretsWithResponse(String resourceGroupName, String name,
         Context context) {
         return listStaticSiteSecretsWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Lists the secrets for an existing static site.
-     * 
-     * Description for Lists the secrets for an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StringDictionaryInner listStaticSiteSecrets(String resourceGroupName, String name) {
         return listStaticSiteSecretsWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
-    /**
-     * Gets the private link resources
-     * 
-     * Description for Gets the private link resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources
-     * 
-     * Description for Gets the private link resources along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateLinkResourcesWrapperInner>>
         getPrivateLinkResourcesWithResponseAsync(String resourceGroupName, String name) {
@@ -4944,79 +3690,27 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
-    /**
-     * Gets the private link resources
-     * 
-     * Description for Gets the private link resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources
-     * 
-     * Description for Gets the private link resources on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkResourcesWrapperInner> getPrivateLinkResourcesAsync(String resourceGroupName, String name) {
         return getPrivateLinkResourcesWithResponseAsync(resourceGroupName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the private link resources
-     * 
-     * Description for Gets the private link resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources
-     * 
-     * Description for Gets the private link resources along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourcesWrapperInner> getPrivateLinkResourcesWithResponse(String resourceGroupName,
         String name, Context context) {
         return getPrivateLinkResourcesWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Gets the private link resources
-     * 
-     * Description for Gets the private link resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources
-     * 
-     * Description for Gets the private link resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourcesWrapperInner getPrivateLinkResources(String resourceGroupName, String name) {
         return getPrivateLinkResourcesWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
-    /**
-     * Resets the api key for an existing static site.
-     * 
-     * Description for Resets the api key for an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param resetPropertiesEnvelope The resetPropertiesEnvelope parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetStaticSiteApiKeyWithResponseAsync(String resourceGroupName, String name,
         StaticSiteResetPropertiesArmResource resetPropertiesEnvelope) {
@@ -5093,19 +3787,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, contentType, resetPropertiesEnvelope, context);
     }
 
-    /**
-     * Resets the api key for an existing static site.
-     * 
-     * Description for Resets the api key for an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param resetPropertiesEnvelope The resetPropertiesEnvelope parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetStaticSiteApiKeyAsync(String resourceGroupName, String name,
         StaticSiteResetPropertiesArmResource resetPropertiesEnvelope) {
@@ -5113,20 +3795,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Resets the api key for an existing static site.
-     * 
-     * Description for Resets the api key for an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param resetPropertiesEnvelope The resetPropertiesEnvelope parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetStaticSiteApiKeyWithResponse(String resourceGroupName, String name,
         StaticSiteResetPropertiesArmResource resetPropertiesEnvelope, Context context) {
@@ -5134,18 +3803,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .block();
     }
 
-    /**
-     * Resets the api key for an existing static site.
-     * 
-     * Description for Resets the api key for an existing static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param resetPropertiesEnvelope The resetPropertiesEnvelope parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resetStaticSiteApiKey(String resourceGroupName, String name,
         StaticSiteResetPropertiesArmResource resetPropertiesEnvelope) {
@@ -5229,16 +3887,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Returns details of database connections for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseConnectionInner> getDatabaseConnectionsWithDetailsAsync(String resourceGroupName,
         String name) {
@@ -5264,53 +3913,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> getDatabaseConnectionsWithDetailsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Returns details of database connections for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseConnectionInner> getDatabaseConnectionsWithDetails(String resourceGroupName,
         String name) {
         return new PagedIterable<>(getDatabaseConnectionsWithDetailsAsync(resourceGroupName, name));
     }
 
-    /**
-     * Returns details of database connections for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseConnectionInner> getDatabaseConnectionsWithDetails(String resourceGroupName,
         String name, Context context) {
         return new PagedIterable<>(getDatabaseConnectionsWithDetailsAsync(resourceGroupName, name, context));
     }
 
-    /**
-     * Deploys zipped content to a static site.
-     * 
-     * Description for Deploys zipped content to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createZipDeploymentForStaticSiteWithResponseAsync(String resourceGroupName,
         String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
@@ -5389,20 +4006,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context);
     }
 
-    /**
-     * Deploys zipped content to a static site.
-     * 
-     * Description for Deploys zipped content to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteAsync(String resourceGroupName,
         String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
@@ -5437,20 +4041,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context);
     }
 
-    /**
-     * Deploys zipped content to a static site.
-     * 
-     * Description for Deploys zipped content to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSite(String resourceGroupName,
         String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
@@ -5458,21 +4049,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Deploys zipped content to a static site.
-     * 
-     * Description for Deploys zipped content to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSite(String resourceGroupName,
         String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context) {
@@ -5482,20 +4059,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Deploys zipped content to a static site.
-     * 
-     * Description for Deploys zipped content to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createZipDeploymentForStaticSiteAsync(String resourceGroupName, String name,
         StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
@@ -5526,39 +4090,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deploys zipped content to a static site.
-     * 
-     * Description for Deploys zipped content to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createZipDeploymentForStaticSite(String resourceGroupName, String name,
         StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
         createZipDeploymentForStaticSiteAsync(resourceGroupName, name, staticSiteZipDeploymentEnvelope).block();
     }
 
-    /**
-     * Deploys zipped content to a static site.
-     * 
-     * Description for Deploys zipped content to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createZipDeploymentForStaticSite(String resourceGroupName, String name,
         StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context) {
@@ -5566,22 +4105,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .block();
     }
 
-    /**
-     * Gets the details of a static site build.
-     * 
-     * Description for Gets the details of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a static site build.
-     * 
-     * Description for Gets the details of a static site build along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteBuildArmResourceInner>> getStaticSiteBuildWithResponseAsync(String resourceGroupName,
         String name, String environmentName) {
@@ -5656,21 +4180,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, environmentName, accept, context);
     }
 
-    /**
-     * Gets the details of a static site build.
-     * 
-     * Description for Gets the details of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a static site build.
-     * 
-     * Description for Gets the details of a static site build on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteBuildArmResourceInner> getStaticSiteBuildAsync(String resourceGroupName, String name,
         String environmentName) {
@@ -5678,62 +4188,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of a static site build.
-     * 
-     * Description for Gets the details of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a static site build.
-     * 
-     * Description for Gets the details of a static site build along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteBuildArmResourceInner> getStaticSiteBuildWithResponse(String resourceGroupName,
         String name, String environmentName, Context context) {
         return getStaticSiteBuildWithResponseAsync(resourceGroupName, name, environmentName, context).block();
     }
 
-    /**
-     * Gets the details of a static site build.
-     * 
-     * Description for Gets the details of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a static site build.
-     * 
-     * Description for Gets the details of a static site build.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteBuildArmResourceInner getStaticSiteBuild(String resourceGroupName, String name,
         String environmentName) {
         return getStaticSiteBuildWithResponse(resourceGroupName, name, environmentName, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a static site build.
-     * 
-     * Description for Deletes a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteStaticSiteBuildWithResponseAsync(String resourceGroupName,
         String name, String environmentName) {
@@ -5804,19 +4273,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, environmentName, context);
     }
 
-    /**
-     * Deletes a static site build.
-     * 
-     * Description for Deletes a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteStaticSiteBuildAsync(String resourceGroupName, String name,
         String environmentName) {
@@ -5850,58 +4307,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context);
     }
 
-    /**
-     * Deletes a static site build.
-     * 
-     * Description for Deletes a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteStaticSiteBuild(String resourceGroupName, String name,
         String environmentName) {
         return this.beginDeleteStaticSiteBuildAsync(resourceGroupName, name, environmentName).getSyncPoller();
     }
 
-    /**
-     * Deletes a static site build.
-     * 
-     * Description for Deletes a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteStaticSiteBuild(String resourceGroupName, String name,
         String environmentName, Context context) {
         return this.beginDeleteStaticSiteBuildAsync(resourceGroupName, name, environmentName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a static site build.
-     * 
-     * Description for Deletes a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteStaticSiteBuildAsync(String resourceGroupName, String name, String environmentName) {
         return beginDeleteStaticSiteBuildAsync(resourceGroupName, name, environmentName).last()
@@ -5929,36 +4349,13 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a static site build.
-     * 
-     * Description for Deletes a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteStaticSiteBuild(String resourceGroupName, String name, String environmentName) {
         deleteStaticSiteBuildAsync(resourceGroupName, name, environmentName).block();
     }
 
-    /**
-     * Deletes a static site build.
-     * 
-     * Description for Deletes a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteStaticSiteBuild(String resourceGroupName, String name, String environmentName, Context context) {
         deleteStaticSiteBuildAsync(resourceGroupName, name, environmentName, context).block();
@@ -6049,21 +4446,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all static site builds for a particular static site.
-     * 
-     * Description for Gets all static site builds for a particular static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all static site builds for a particular static site.
-     * 
-     * Description for Gets all static site builds for a particular static site as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteBuildArmResourceInner> getStaticSiteBuildsAsync(String resourceGroupName, String name) {
         return new PagedFlux<>(() -> getStaticSiteBuildsSinglePageAsync(resourceGroupName, name),
@@ -6093,62 +4476,20 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> getStaticSiteBuildsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all static site builds for a particular static site.
-     * 
-     * Description for Gets all static site builds for a particular static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all static site builds for a particular static site.
-     * 
-     * Description for Gets all static site builds for a particular static site as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteBuildArmResourceInner> getStaticSiteBuilds(String resourceGroupName, String name) {
         return new PagedIterable<>(getStaticSiteBuildsAsync(resourceGroupName, name));
     }
 
-    /**
-     * Gets all static site builds for a particular static site.
-     * 
-     * Description for Gets all static site builds for a particular static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all static site builds for a particular static site.
-     * 
-     * Description for Gets all static site builds for a particular static site as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteBuildArmResourceInner> getStaticSiteBuilds(String resourceGroupName, String name,
         Context context) {
         return new PagedIterable<>(getStaticSiteBuildsAsync(resourceGroupName, name, context));
     }
 
-    /**
-     * Creates or updates the app settings of a static site build.
-     * 
-     * Description for Creates or updates the app settings of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param appSettings The dictionary containing the static site app settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteBuildAppSettingsWithResponseAsync(
         String resourceGroupName, String name, String environmentName, StringDictionaryInner appSettings) {
@@ -6236,20 +4577,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context);
     }
 
-    /**
-     * Creates or updates the app settings of a static site build.
-     * 
-     * Description for Creates or updates the app settings of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param appSettings The dictionary containing the static site app settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> createOrUpdateStaticSiteBuildAppSettingsAsync(String resourceGroupName,
         String name, String environmentName, StringDictionaryInner appSettings) {
@@ -6257,21 +4585,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             appSettings).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the app settings of a static site build.
-     * 
-     * Description for Creates or updates the app settings of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param appSettings The dictionary containing the static site app settings to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> createOrUpdateStaticSiteBuildAppSettingsWithResponse(
         String resourceGroupName, String name, String environmentName, StringDictionaryInner appSettings,
@@ -6280,20 +4594,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             appSettings, context).block();
     }
 
-    /**
-     * Creates or updates the app settings of a static site build.
-     * 
-     * Description for Creates or updates the app settings of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param appSettings The dictionary containing the static site app settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StringDictionaryInner createOrUpdateStaticSiteBuildAppSettings(String resourceGroupName, String name,
         String environmentName, StringDictionaryInner appSettings) {
@@ -6301,20 +4602,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             appSettings, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates the function app settings of a static site build.
-     * 
-     * Description for Creates or updates the function app settings of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param appSettings The dictionary containing the static site function app settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteBuildFunctionAppSettingsWithResponseAsync(
         String resourceGroupName, String name, String environmentName, StringDictionaryInner appSettings) {
@@ -6402,20 +4690,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             contentType, accept, appSettings, context);
     }
 
-    /**
-     * Creates or updates the function app settings of a static site build.
-     * 
-     * Description for Creates or updates the function app settings of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param appSettings The dictionary containing the static site function app settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> createOrUpdateStaticSiteBuildFunctionAppSettingsAsync(String resourceGroupName,
         String name, String environmentName, StringDictionaryInner appSettings) {
@@ -6423,21 +4698,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             environmentName, appSettings).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the function app settings of a static site build.
-     * 
-     * Description for Creates or updates the function app settings of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param appSettings The dictionary containing the static site function app settings to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> createOrUpdateStaticSiteBuildFunctionAppSettingsWithResponse(
         String resourceGroupName, String name, String environmentName, StringDictionaryInner appSettings,
@@ -6446,20 +4707,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             environmentName, appSettings, context).block();
     }
 
-    /**
-     * Creates or updates the function app settings of a static site build.
-     * 
-     * Description for Creates or updates the function app settings of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param appSettings The dictionary containing the static site function app settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StringDictionaryInner createOrUpdateStaticSiteBuildFunctionAppSettings(String resourceGroupName, String name,
         String environmentName, StringDictionaryInner appSettings) {
@@ -6564,22 +4812,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the functions of a particular static site build.
-     * 
-     * Description for Gets the functions of a particular static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the functions of a particular static site build.
-     * 
-     * Description for Gets the functions of a particular static site build as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteFunctionOverviewArmResourceInner>
         listStaticSiteBuildFunctionsAsync(String resourceGroupName, String name, String environmentName) {
@@ -6613,45 +4846,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> listStaticSiteBuildFunctionsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the functions of a particular static site build.
-     * 
-     * Description for Gets the functions of a particular static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the functions of a particular static site build.
-     * 
-     * Description for Gets the functions of a particular static site build as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteFunctionOverviewArmResourceInner>
         listStaticSiteBuildFunctions(String resourceGroupName, String name, String environmentName) {
         return new PagedIterable<>(listStaticSiteBuildFunctionsAsync(resourceGroupName, name, environmentName));
     }
 
-    /**
-     * Gets the functions of a particular static site build.
-     * 
-     * Description for Gets the functions of a particular static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the functions of a particular static site build.
-     * 
-     * Description for Gets the functions of a particular static site build as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteFunctionOverviewArmResourceInner>
         listStaticSiteBuildFunctions(String resourceGroupName, String name, String environmentName, Context context) {
@@ -6659,22 +4861,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             listStaticSiteBuildFunctionsAsync(resourceGroupName, name, environmentName, context));
     }
 
-    /**
-     * Gets the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>>
         listStaticSiteBuildAppSettingsWithResponseAsync(String resourceGroupName, String name, String environmentName) {
@@ -6750,21 +4937,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, environmentName, accept, context);
     }
 
-    /**
-     * Gets the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> listStaticSiteBuildAppSettingsAsync(String resourceGroupName, String name,
         String environmentName) {
@@ -6772,22 +4945,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> listStaticSiteBuildAppSettingsWithResponse(String resourceGroupName,
         String name, String environmentName, Context context) {
@@ -6795,21 +4953,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .block();
     }
 
-    /**
-     * Gets the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StringDictionaryInner listStaticSiteBuildAppSettings(String resourceGroupName, String name,
         String environmentName) {
@@ -6817,22 +4961,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getValue();
     }
 
-    /**
-     * Gets the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>> listStaticSiteBuildFunctionAppSettingsWithResponseAsync(
         String resourceGroupName, String name, String environmentName) {
@@ -6908,21 +5037,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, environmentName, accept, context);
     }
 
-    /**
-     * Gets the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> listStaticSiteBuildFunctionAppSettingsAsync(String resourceGroupName,
         String name, String environmentName) {
@@ -6930,22 +5045,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> listStaticSiteBuildFunctionAppSettingsWithResponse(String resourceGroupName,
         String name, String environmentName, Context context) {
@@ -6953,21 +5053,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context).block();
     }
 
-    /**
-     * Gets the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StringDictionaryInner listStaticSiteBuildFunctionAppSettings(String resourceGroupName, String name,
         String environmentName) {
@@ -7063,17 +5149,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Returns details of database connections for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseConnectionInner> getBuildDatabaseConnectionsWithDetailsAsync(String resourceGroupName,
         String name, String environmentName) {
@@ -7102,17 +5178,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> getBuildDatabaseConnectionsWithDetailsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Returns details of database connections for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseConnectionInner> getBuildDatabaseConnectionsWithDetails(String resourceGroupName,
         String name, String environmentName) {
@@ -7120,18 +5186,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             getBuildDatabaseConnectionsWithDetailsAsync(resourceGroupName, name, environmentName));
     }
 
-    /**
-     * Returns details of database connections for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseConnectionInner> getBuildDatabaseConnectionsWithDetails(String resourceGroupName,
         String name, String environmentName, Context context) {
@@ -7139,21 +5194,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             getBuildDatabaseConnectionsWithDetailsAsync(resourceGroupName, name, environmentName, context));
     }
 
-    /**
-     * Deploys zipped content to a specific environment of a static site.
-     * 
-     * Description for Deploys zipped content to a specific environment of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createZipDeploymentForStaticSiteBuildWithResponseAsync(
         String resourceGroupName, String name, String environmentName,
@@ -7243,21 +5284,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteZipDeploymentEnvelope, context);
     }
 
-    /**
-     * Deploys zipped content to a specific environment of a static site.
-     * 
-     * Description for Deploys zipped content to a specific environment of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuildAsync(String resourceGroupName,
         String name, String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
@@ -7294,21 +5321,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context);
     }
 
-    /**
-     * Deploys zipped content to a specific environment of a static site.
-     * 
-     * Description for Deploys zipped content to a specific environment of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuild(String resourceGroupName,
         String name, String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
@@ -7318,22 +5331,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Deploys zipped content to a specific environment of a static site.
-     * 
-     * Description for Deploys zipped content to a specific environment of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuild(String resourceGroupName,
         String name, String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope,
@@ -7344,21 +5342,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Deploys zipped content to a specific environment of a static site.
-     * 
-     * Description for Deploys zipped content to a specific environment of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createZipDeploymentForStaticSiteBuildAsync(String resourceGroupName, String name,
         String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
@@ -7389,20 +5373,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteZipDeploymentEnvelope, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deploys zipped content to a specific environment of a static site.
-     * 
-     * Description for Deploys zipped content to a specific environment of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createZipDeploymentForStaticSiteBuild(String resourceGroupName, String name, String environmentName,
         StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
@@ -7410,21 +5381,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteZipDeploymentEnvelope).block();
     }
 
-    /**
-     * Deploys zipped content to a specific environment of a static site.
-     * 
-     * Description for Deploys zipped content to a specific environment of a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createZipDeploymentForStaticSiteBuild(String resourceGroupName, String name, String environmentName,
         StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context) {
@@ -7432,19 +5389,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteZipDeploymentEnvelope, context).block();
     }
 
-    /**
-     * Returns overview of a database connection for a static site build by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseConnectionInner>> getBuildDatabaseConnectionWithResponseAsync(String resourceGroupName,
         String name, String environmentName, String databaseConnectionName) {
@@ -7526,18 +5471,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context);
     }
 
-    /**
-     * Returns overview of a database connection for a static site build by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseConnectionInner> getBuildDatabaseConnectionAsync(String resourceGroupName, String name,
         String environmentName, String databaseConnectionName) {
@@ -7545,19 +5479,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns overview of a database connection for a static site build by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseConnectionInner> getBuildDatabaseConnectionWithResponse(String resourceGroupName,
         String name, String environmentName, String databaseConnectionName, Context context) {
@@ -7565,18 +5487,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionName, context).block();
     }
 
-    /**
-     * Returns overview of a database connection for a static site build by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseConnectionInner getBuildDatabaseConnection(String resourceGroupName, String name,
         String environmentName, String databaseConnectionName) {
@@ -7584,22 +5495,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a database connection for a static site build
-     * 
-     * Description for Create or update a database connection for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseConnectionInner>> createOrUpdateBuildDatabaseConnectionWithResponseAsync(
         String resourceGroupName, String name, String environmentName, String databaseConnectionName,
@@ -7700,21 +5596,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             contentType, accept, databaseConnectionRequestEnvelope, context);
     }
 
-    /**
-     * Create or update a database connection for a static site build
-     * 
-     * Description for Create or update a database connection for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseConnectionInner> createOrUpdateBuildDatabaseConnectionAsync(String resourceGroupName,
         String name, String environmentName, String databaseConnectionName,
@@ -7723,22 +5605,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionName, databaseConnectionRequestEnvelope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a database connection for a static site build
-     * 
-     * Description for Create or update a database connection for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseConnectionInner> createOrUpdateBuildDatabaseConnectionWithResponse(String resourceGroupName,
         String name, String environmentName, String databaseConnectionName,
@@ -7747,21 +5614,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionName, databaseConnectionRequestEnvelope, context).block();
     }
 
-    /**
-     * Create or update a database connection for a static site build
-     * 
-     * Description for Create or update a database connection for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseConnectionInner createOrUpdateBuildDatabaseConnection(String resourceGroupName, String name,
         String environmentName, String databaseConnectionName,
@@ -7770,22 +5623,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionName, databaseConnectionRequestEnvelope, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a database connection for a static site build
-     * 
-     * Description for Create or update a database connection for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseConnectionInner>> updateBuildDatabaseConnectionWithResponseAsync(
         String resourceGroupName, String name, String environmentName, String databaseConnectionName,
@@ -7886,21 +5724,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             contentType, accept, databaseConnectionRequestEnvelope, context);
     }
 
-    /**
-     * Create or update a database connection for a static site build
-     * 
-     * Description for Create or update a database connection for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseConnectionInner> updateBuildDatabaseConnectionAsync(String resourceGroupName, String name,
         String environmentName, String databaseConnectionName,
@@ -7909,22 +5733,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionName, databaseConnectionRequestEnvelope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a database connection for a static site build
-     * 
-     * Description for Create or update a database connection for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseConnectionInner> updateBuildDatabaseConnectionWithResponse(String resourceGroupName,
         String name, String environmentName, String databaseConnectionName,
@@ -7933,21 +5742,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionName, databaseConnectionRequestEnvelope, context).block();
     }
 
-    /**
-     * Create or update a database connection for a static site build
-     * 
-     * Description for Create or update a database connection for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseConnectionInner updateBuildDatabaseConnection(String resourceGroupName, String name,
         String environmentName, String databaseConnectionName,
@@ -7956,18 +5751,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionName, databaseConnectionRequestEnvelope, Context.NONE).getValue();
     }
 
-    /**
-     * Delete a database connection for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteBuildDatabaseConnectionWithResponseAsync(String resourceGroupName, String name,
         String environmentName, String databaseConnectionName) {
@@ -8045,18 +5829,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, environmentName, databaseConnectionName, context);
     }
 
-    /**
-     * Delete a database connection for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteBuildDatabaseConnectionAsync(String resourceGroupName, String name, String environmentName,
         String databaseConnectionName) {
@@ -8064,19 +5837,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a database connection for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteBuildDatabaseConnectionWithResponse(String resourceGroupName, String name,
         String environmentName, String databaseConnectionName, Context context) {
@@ -8084,17 +5845,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionName, context).block();
     }
 
-    /**
-     * Delete a database connection for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteBuildDatabaseConnection(String resourceGroupName, String name, String environmentName,
         String databaseConnectionName) {
@@ -8190,17 +5941,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Returns overviews of database connections for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseConnectionInner> getBuildDatabaseConnectionsAsync(String resourceGroupName, String name,
         String environmentName) {
@@ -8229,54 +5970,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> getBuildDatabaseConnectionsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Returns overviews of database connections for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseConnectionInner> getBuildDatabaseConnections(String resourceGroupName, String name,
         String environmentName) {
         return new PagedIterable<>(getBuildDatabaseConnectionsAsync(resourceGroupName, name, environmentName));
     }
 
-    /**
-     * Returns overviews of database connections for a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseConnectionInner> getBuildDatabaseConnections(String resourceGroupName, String name,
         String environmentName, Context context) {
         return new PagedIterable<>(getBuildDatabaseConnectionsAsync(resourceGroupName, name, environmentName, context));
     }
 
-    /**
-     * Returns details of a database connection for a static site build by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseConnectionInner>> getBuildDatabaseConnectionWithDetailsWithResponseAsync(
         String resourceGroupName, String name, String environmentName, String databaseConnectionName) {
@@ -8358,18 +6066,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context);
     }
 
-    /**
-     * Returns details of a database connection for a static site build by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseConnectionInner> getBuildDatabaseConnectionWithDetailsAsync(String resourceGroupName,
         String name, String environmentName, String databaseConnectionName) {
@@ -8377,19 +6074,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns details of a database connection for a static site build by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseConnectionInner> getBuildDatabaseConnectionWithDetailsWithResponse(String resourceGroupName,
         String name, String environmentName, String databaseConnectionName, Context context) {
@@ -8397,18 +6082,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionName, context).block();
     }
 
-    /**
-     * Returns details of a database connection for a static site build by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseConnectionInner getBuildDatabaseConnectionWithDetails(String resourceGroupName, String name,
         String environmentName, String databaseConnectionName) {
@@ -8416,18 +6090,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionName, Context.NONE).getValue();
     }
 
-    /**
-     * Returns overview of a database connection for a static site by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseConnectionInner>> getDatabaseConnectionWithResponseAsync(String resourceGroupName,
         String name, String databaseConnectionName) {
@@ -8499,17 +6162,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, databaseConnectionName, accept, context);
     }
 
-    /**
-     * Returns overview of a database connection for a static site by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseConnectionInner> getDatabaseConnectionAsync(String resourceGroupName, String name,
         String databaseConnectionName) {
@@ -8517,35 +6170,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns overview of a database connection for a static site by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseConnectionInner> getDatabaseConnectionWithResponse(String resourceGroupName, String name,
         String databaseConnectionName, Context context) {
         return getDatabaseConnectionWithResponseAsync(resourceGroupName, name, databaseConnectionName, context).block();
     }
 
-    /**
-     * Returns overview of a database connection for a static site by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseConnectionInner getDatabaseConnection(String resourceGroupName, String name,
         String databaseConnectionName) {
@@ -8553,21 +6185,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getValue();
     }
 
-    /**
-     * Create or update a database connection for a static site
-     * 
-     * Description for Create or update a database connection for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseConnectionInner>> createOrUpdateDatabaseConnectionWithResponseAsync(
         String resourceGroupName, String name, String databaseConnectionName,
@@ -8659,20 +6277,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionRequestEnvelope, context);
     }
 
-    /**
-     * Create or update a database connection for a static site
-     * 
-     * Description for Create or update a database connection for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseConnectionInner> createOrUpdateDatabaseConnectionAsync(String resourceGroupName, String name,
         String databaseConnectionName, DatabaseConnectionInner databaseConnectionRequestEnvelope) {
@@ -8680,21 +6285,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionRequestEnvelope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a database connection for a static site
-     * 
-     * Description for Create or update a database connection for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseConnectionInner> createOrUpdateDatabaseConnectionWithResponse(String resourceGroupName,
         String name, String databaseConnectionName, DatabaseConnectionInner databaseConnectionRequestEnvelope,
@@ -8703,20 +6294,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionRequestEnvelope, context).block();
     }
 
-    /**
-     * Create or update a database connection for a static site
-     * 
-     * Description for Create or update a database connection for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseConnectionInner createOrUpdateDatabaseConnection(String resourceGroupName, String name,
         String databaseConnectionName, DatabaseConnectionInner databaseConnectionRequestEnvelope) {
@@ -8724,21 +6302,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionRequestEnvelope, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a database connection for a static site
-     * 
-     * Description for Create or update a database connection for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseConnectionInner>> updateDatabaseConnectionWithResponseAsync(String resourceGroupName,
         String name, String databaseConnectionName, DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope) {
@@ -8829,20 +6393,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionRequestEnvelope, context);
     }
 
-    /**
-     * Create or update a database connection for a static site
-     * 
-     * Description for Create or update a database connection for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseConnectionInner> updateDatabaseConnectionAsync(String resourceGroupName, String name,
         String databaseConnectionName, DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope) {
@@ -8850,21 +6401,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionRequestEnvelope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a database connection for a static site
-     * 
-     * Description for Create or update a database connection for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseConnectionInner> updateDatabaseConnectionWithResponse(String resourceGroupName, String name,
         String databaseConnectionName, DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope,
@@ -8873,20 +6410,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionRequestEnvelope, context).block();
     }
 
-    /**
-     * Create or update a database connection for a static site
-     * 
-     * Description for Create or update a database connection for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseConnectionInner updateDatabaseConnection(String resourceGroupName, String name,
         String databaseConnectionName, DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope) {
@@ -8894,17 +6418,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             databaseConnectionRequestEnvelope, Context.NONE).getValue();
     }
 
-    /**
-     * Delete a database connection for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDatabaseConnectionWithResponseAsync(String resourceGroupName, String name,
         String databaseConnectionName) {
@@ -8973,17 +6487,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, databaseConnectionName, context);
     }
 
-    /**
-     * Delete a database connection for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDatabaseConnectionAsync(String resourceGroupName, String name,
         String databaseConnectionName) {
@@ -8991,18 +6495,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a database connection for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDatabaseConnectionWithResponse(String resourceGroupName, String name,
         String databaseConnectionName, Context context) {
@@ -9010,16 +6503,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .block();
     }
 
-    /**
-     * Delete a database connection for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDatabaseConnection(String resourceGroupName, String name, String databaseConnectionName) {
         deleteDatabaseConnectionWithResponse(resourceGroupName, name, databaseConnectionName, Context.NONE);
@@ -9102,16 +6586,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Returns overviews of database connections for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseConnectionInner> getDatabaseConnectionsAsync(String resourceGroupName, String name) {
         return new PagedFlux<>(() -> getDatabaseConnectionsSinglePageAsync(resourceGroupName, name),
@@ -9136,50 +6611,20 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> getDatabaseConnectionsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Returns overviews of database connections for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseConnectionInner> getDatabaseConnections(String resourceGroupName, String name) {
         return new PagedIterable<>(getDatabaseConnectionsAsync(resourceGroupName, name));
     }
 
-    /**
-     * Returns overviews of database connections for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseConnectionInner> getDatabaseConnections(String resourceGroupName, String name,
         Context context) {
         return new PagedIterable<>(getDatabaseConnectionsAsync(resourceGroupName, name, context));
     }
 
-    /**
-     * Returns details of a database connection for a static site by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseConnectionInner>> getDatabaseConnectionWithDetailsWithResponseAsync(
         String resourceGroupName, String name, String databaseConnectionName) {
@@ -9251,17 +6696,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, databaseConnectionName, accept, context);
     }
 
-    /**
-     * Returns details of a database connection for a static site by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseConnectionInner> getDatabaseConnectionWithDetailsAsync(String resourceGroupName, String name,
         String databaseConnectionName) {
@@ -9269,18 +6704,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns details of a database connection for a static site by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseConnectionInner> getDatabaseConnectionWithDetailsWithResponse(String resourceGroupName,
         String name, String databaseConnectionName, Context context) {
@@ -9288,17 +6712,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context).block();
     }
 
-    /**
-     * Returns details of a database connection for a static site by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseConnectionInner getDatabaseConnectionWithDetails(String resourceGroupName, String name,
         String databaseConnectionName) {
@@ -9306,23 +6720,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             Context.NONE).getValue();
     }
 
-    /**
-     * Gets the details of the user provided function app registered with a static site build
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the user provided function app registered with a static site build
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site build along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteUserProvidedFunctionAppArmResourceInner>>
         getUserProvidedFunctionAppForStaticSiteBuildWithResponseAsync(String resourceGroupName, String name,
@@ -9410,23 +6808,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             functionAppName, accept, context);
     }
 
-    /**
-     * Gets the details of the user provided function app registered with a static site build
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the user provided function app registered with a static site build
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site build on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteUserProvidedFunctionAppArmResourceInner> getUserProvidedFunctionAppForStaticSiteBuildAsync(
         String resourceGroupName, String name, String environmentName, String functionAppName) {
@@ -9434,24 +6816,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             functionAppName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of the user provided function app registered with a static site build
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the user provided function app registered with a static site build
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site build along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppForStaticSiteBuildWithResponse(String resourceGroupName, String name,
@@ -9460,22 +6825,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             functionAppName, context).block();
     }
 
-    /**
-     * Gets the details of the user provided function app registered with a static site build
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the user provided function app registered with a static site build
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site build.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteUserProvidedFunctionAppArmResourceInner getUserProvidedFunctionAppForStaticSiteBuild(
         String resourceGroupName, String name, String environmentName, String functionAppName) {
@@ -9483,26 +6833,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             functionAppName, Context.NONE).getValue();
     }
 
-    /**
-     * Register a user provided function app with a static site build
-     * 
-     * Description for Register a user provided function app with a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
-     * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
-     * &lt;code&gt;false&lt;/code&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> registerUserProvidedFunctionAppWithStaticSiteBuildWithResponseAsync(
         String resourceGroupName, String name, String environmentName, String functionAppName,
@@ -9609,25 +6940,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             functionAppName, isForced, contentType, accept, staticSiteUserProvidedFunctionEnvelope, context);
     }
 
-    /**
-     * Register a user provided function app with a static site build
-     * 
-     * Description for Register a user provided function app with a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
-     * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
-     * &lt;code&gt;false&lt;/code&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of static Site User Provided Function App ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -9644,22 +6957,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 StaticSiteUserProvidedFunctionAppArmResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Register a user provided function app with a static site build
-     * 
-     * Description for Register a user provided function app with a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of static Site User Provided Function App ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -9713,22 +7011,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 StaticSiteUserProvidedFunctionAppArmResourceInner.class, context);
     }
 
-    /**
-     * Register a user provided function app with a static site build
-     * 
-     * Description for Register a user provided function app with a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of static Site User Provided Function App ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -9742,26 +7025,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Register a user provided function app with a static site build
-     * 
-     * Description for Register a user provided function app with a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
-     * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
-     * &lt;code&gt;false&lt;/code&gt;.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of static Site User Provided Function App ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -9775,25 +7039,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Register a user provided function app with a static site build
-     * 
-     * Description for Register a user provided function app with a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
-     * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
-     * &lt;code&gt;false&lt;/code&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteUserProvidedFunctionAppArmResourceInner>
         registerUserProvidedFunctionAppWithStaticSiteBuildAsync(String resourceGroupName, String name,
@@ -9805,22 +7051,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Register a user provided function app with a static site build
-     * 
-     * Description for Register a user provided function app with a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteUserProvidedFunctionAppArmResourceInner>
         registerUserProvidedFunctionAppWithStaticSiteBuildAsync(String resourceGroupName, String name,
@@ -9863,22 +7094,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Register a user provided function app with a static site build
-     * 
-     * Description for Register a user provided function app with a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteUserProvidedFunctionAppArmResourceInner registerUserProvidedFunctionAppWithStaticSiteBuild(
         String resourceGroupName, String name, String environmentName, String functionAppName,
@@ -9888,26 +7104,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced).block();
     }
 
-    /**
-     * Register a user provided function app with a static site build
-     * 
-     * Description for Register a user provided function app with a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
-     * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
-     * &lt;code&gt;false&lt;/code&gt;.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteUserProvidedFunctionAppArmResourceInner registerUserProvidedFunctionAppWithStaticSiteBuild(
         String resourceGroupName, String name, String environmentName, String functionAppName,
@@ -9917,20 +7114,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced, context).block();
     }
 
-    /**
-     * Detach the user provided function app from the static site build
-     * 
-     * Description for Detach the user provided function app from the static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> detachUserProvidedFunctionAppFromStaticSiteBuildWithResponseAsync(
         String resourceGroupName, String name, String environmentName, String functionAppName) {
@@ -10011,20 +7195,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             functionAppName, context);
     }
 
-    /**
-     * Detach the user provided function app from the static site build
-     * 
-     * Description for Detach the user provided function app from the static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> detachUserProvidedFunctionAppFromStaticSiteBuildAsync(String resourceGroupName, String name,
         String environmentName, String functionAppName) {
@@ -10032,21 +7203,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             environmentName, functionAppName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Detach the user provided function app from the static site build
-     * 
-     * Description for Detach the user provided function app from the static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> detachUserProvidedFunctionAppFromStaticSiteBuildWithResponse(String resourceGroupName,
         String name, String environmentName, String functionAppName, Context context) {
@@ -10054,19 +7211,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             environmentName, functionAppName, context).block();
     }
 
-    /**
-     * Detach the user provided function app from the static site build
-     * 
-     * Description for Detach the user provided function app from the static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void detachUserProvidedFunctionAppFromStaticSiteBuild(String resourceGroupName, String name,
         String environmentName, String functionAppName) {
@@ -10173,22 +7318,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the details of the user provided function apps registered with a static site build
-     * 
-     * Description for Gets the details of the user provided function apps registered with a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the user provided function apps registered with a static site build
-     * 
-     * Description for Gets the details of the user provided function apps registered with a static site build as
-     * paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppsForStaticSiteBuildAsync(String resourceGroupName, String name,
@@ -10226,22 +7356,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> getUserProvidedFunctionAppsForStaticSiteBuildNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the details of the user provided function apps registered with a static site build
-     * 
-     * Description for Gets the details of the user provided function apps registered with a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the user provided function apps registered with a static site build
-     * 
-     * Description for Gets the details of the user provided function apps registered with a static site build as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppsForStaticSiteBuild(String resourceGroupName, String name, String environmentName) {
@@ -10249,23 +7364,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             getUserProvidedFunctionAppsForStaticSiteBuildAsync(resourceGroupName, name, environmentName));
     }
 
-    /**
-     * Gets the details of the user provided function apps registered with a static site build
-     * 
-     * Description for Gets the details of the user provided function apps registered with a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the user provided function apps registered with a static site build
-     * 
-     * Description for Gets the details of the user provided function apps registered with a static site build as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppsForStaticSiteBuild(String resourceGroupName, String name, String environmentName,
@@ -10274,22 +7373,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             getUserProvidedFunctionAppsForStaticSiteBuildAsync(resourceGroupName, name, environmentName, context));
     }
 
-    /**
-     * Gets the details of the user provided function app registered with a static site
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the user provided function app registered with a static site
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteUserProvidedFunctionAppArmResourceInner>>
         getUserProvidedFunctionAppForStaticSiteWithResponseAsync(String resourceGroupName, String name,
@@ -10367,22 +7451,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, functionAppName, accept, context);
     }
 
-    /**
-     * Gets the details of the user provided function app registered with a static site
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the user provided function app registered with a static site
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppForStaticSiteAsync(String resourceGroupName, String name, String functionAppName) {
@@ -10390,23 +7459,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of the user provided function app registered with a static site
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the user provided function app registered with a static site
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppForStaticSiteWithResponse(String resourceGroupName, String name,
@@ -10415,21 +7468,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context).block();
     }
 
-    /**
-     * Gets the details of the user provided function app registered with a static site
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the user provided function app registered with a static site
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteUserProvidedFunctionAppArmResourceInner
         getUserProvidedFunctionAppForStaticSite(String resourceGroupName, String name, String functionAppName) {
@@ -10437,25 +7476,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             Context.NONE).getValue();
     }
 
-    /**
-     * Register a user provided function app with a static site
-     * 
-     * Description for Register a user provided function app with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
-     * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
-     * &lt;code&gt;false&lt;/code&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> registerUserProvidedFunctionAppWithStaticSiteWithResponseAsync(
         String resourceGroupName, String name, String functionAppName,
@@ -10552,24 +7573,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             isForced, contentType, accept, staticSiteUserProvidedFunctionEnvelope, context);
     }
 
-    /**
-     * Register a user provided function app with a static site
-     * 
-     * Description for Register a user provided function app with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
-     * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
-     * &lt;code&gt;false&lt;/code&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of static Site User Provided Function App ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -10585,21 +7589,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 StaticSiteUserProvidedFunctionAppArmResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Register a user provided function app with a static site
-     * 
-     * Description for Register a user provided function app with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of static Site User Provided Function App ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -10650,21 +7640,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 StaticSiteUserProvidedFunctionAppArmResourceInner.class, context);
     }
 
-    /**
-     * Register a user provided function app with a static site
-     * 
-     * Description for Register a user provided function app with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of static Site User Provided Function App ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -10678,25 +7654,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Register a user provided function app with a static site
-     * 
-     * Description for Register a user provided function app with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
-     * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
-     * &lt;code&gt;false&lt;/code&gt;.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of static Site User Provided Function App ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -10710,24 +7668,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Register a user provided function app with a static site
-     * 
-     * Description for Register a user provided function app with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
-     * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
-     * &lt;code&gt;false&lt;/code&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteUserProvidedFunctionAppArmResourceInner> registerUserProvidedFunctionAppWithStaticSiteAsync(
         String resourceGroupName, String name, String functionAppName,
@@ -10736,21 +7677,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteUserProvidedFunctionEnvelope, isForced).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Register a user provided function app with a static site
-     * 
-     * Description for Register a user provided function app with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteUserProvidedFunctionAppArmResourceInner> registerUserProvidedFunctionAppWithStaticSiteAsync(
         String resourceGroupName, String name, String functionAppName,
@@ -10789,21 +7716,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Register a user provided function app with a static site
-     * 
-     * Description for Register a user provided function app with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteUserProvidedFunctionAppArmResourceInner registerUserProvidedFunctionAppWithStaticSite(
         String resourceGroupName, String name, String functionAppName,
@@ -10813,25 +7726,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteUserProvidedFunctionEnvelope, isForced).block();
     }
 
-    /**
-     * Register a user provided function app with a static site
-     * 
-     * Description for Register a user provided function app with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
-     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
-     * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
-     * &lt;code&gt;false&lt;/code&gt;.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteUserProvidedFunctionAppArmResourceInner registerUserProvidedFunctionAppWithStaticSite(
         String resourceGroupName, String name, String functionAppName,
@@ -10841,19 +7736,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteUserProvidedFunctionEnvelope, isForced, context).block();
     }
 
-    /**
-     * Detach the user provided function app from the static site
-     * 
-     * Description for Detach the user provided function app from the static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> detachUserProvidedFunctionAppFromStaticSiteWithResponseAsync(String resourceGroupName,
         String name, String functionAppName) {
@@ -10925,19 +7808,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context);
     }
 
-    /**
-     * Detach the user provided function app from the static site
-     * 
-     * Description for Detach the user provided function app from the static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> detachUserProvidedFunctionAppFromStaticSiteAsync(String resourceGroupName, String name,
         String functionAppName) {
@@ -10945,20 +7816,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Detach the user provided function app from the static site
-     * 
-     * Description for Detach the user provided function app from the static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> detachUserProvidedFunctionAppFromStaticSiteWithResponse(String resourceGroupName, String name,
         String functionAppName, Context context) {
@@ -10966,18 +7824,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context).block();
     }
 
-    /**
-     * Detach the user provided function app from the static site
-     * 
-     * Description for Detach the user provided function app from the static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void detachUserProvidedFunctionAppFromStaticSite(String resourceGroupName, String name,
         String functionAppName) {
@@ -11071,21 +7918,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the details of the user provided function apps registered with a static site
-     * 
-     * Description for Gets the details of the user provided function apps registered with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the user provided function apps registered with a static site
-     * 
-     * Description for Gets the details of the user provided function apps registered with a static site as paginated
-     * response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppsForStaticSiteAsync(String resourceGroupName, String name) {
@@ -11117,65 +7950,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> getUserProvidedFunctionAppsForStaticSiteNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the details of the user provided function apps registered with a static site
-     * 
-     * Description for Gets the details of the user provided function apps registered with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the user provided function apps registered with a static site
-     * 
-     * Description for Gets the details of the user provided function apps registered with a static site as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppsForStaticSite(String resourceGroupName, String name) {
         return new PagedIterable<>(getUserProvidedFunctionAppsForStaticSiteAsync(resourceGroupName, name));
     }
 
-    /**
-     * Gets the details of the user provided function apps registered with a static site
-     * 
-     * Description for Gets the details of the user provided function apps registered with a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the user provided function apps registered with a static site
-     * 
-     * Description for Gets the details of the user provided function apps registered with a static site as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppsForStaticSite(String resourceGroupName, String name, Context context) {
         return new PagedIterable<>(getUserProvidedFunctionAppsForStaticSiteAsync(resourceGroupName, name, context));
     }
 
-    /**
-     * Gets the basic auth properties for a static site.
-     * 
-     * Description for Gets the basic auth properties for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param basicAuthName name of the basic auth entry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the basic auth properties for a static site.
-     * 
-     * Description for Gets the basic auth properties for a static site along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteBasicAuthPropertiesArmResourceInner>>
         getBasicAuthWithResponseAsync(String resourceGroupName, String name, BasicAuthName basicAuthName) {
@@ -11248,21 +8037,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, basicAuthName, accept, context);
     }
 
-    /**
-     * Gets the basic auth properties for a static site.
-     * 
-     * Description for Gets the basic auth properties for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param basicAuthName name of the basic auth entry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the basic auth properties for a static site.
-     * 
-     * Description for Gets the basic auth properties for a static site on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteBasicAuthPropertiesArmResourceInner> getBasicAuthAsync(String resourceGroupName, String name,
         BasicAuthName basicAuthName) {
@@ -11270,64 +8045,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the basic auth properties for a static site.
-     * 
-     * Description for Gets the basic auth properties for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param basicAuthName name of the basic auth entry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the basic auth properties for a static site.
-     * 
-     * Description for Gets the basic auth properties for a static site along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteBasicAuthPropertiesArmResourceInner> getBasicAuthWithResponse(String resourceGroupName,
         String name, BasicAuthName basicAuthName, Context context) {
         return getBasicAuthWithResponseAsync(resourceGroupName, name, basicAuthName, context).block();
     }
 
-    /**
-     * Gets the basic auth properties for a static site.
-     * 
-     * Description for Gets the basic auth properties for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param basicAuthName name of the basic auth entry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the basic auth properties for a static site.
-     * 
-     * Description for Gets the basic auth properties for a static site.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteBasicAuthPropertiesArmResourceInner getBasicAuth(String resourceGroupName, String name,
         BasicAuthName basicAuthName) {
         return getBasicAuthWithResponse(resourceGroupName, name, basicAuthName, Context.NONE).getValue();
     }
 
-    /**
-     * Adds or updates basic auth for a static site.
-     * 
-     * Description for Adds or updates basic auth for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param basicAuthName name of the basic auth entry.
-     * @param basicAuthEnvelope A JSON representation of the basic auth properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static site basic auth properties ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteBasicAuthPropertiesArmResourceInner>> createOrUpdateBasicAuthWithResponseAsync(
         String resourceGroupName, String name, BasicAuthName basicAuthName,
@@ -11417,20 +8149,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             basicAuthEnvelope, context);
     }
 
-    /**
-     * Adds or updates basic auth for a static site.
-     * 
-     * Description for Adds or updates basic auth for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param basicAuthName name of the basic auth entry.
-     * @param basicAuthEnvelope A JSON representation of the basic auth properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static site basic auth properties ARM resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteBasicAuthPropertiesArmResourceInner> createOrUpdateBasicAuthAsync(String resourceGroupName,
         String name, BasicAuthName basicAuthName, StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope) {
@@ -11438,21 +8157,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Adds or updates basic auth for a static site.
-     * 
-     * Description for Adds or updates basic auth for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param basicAuthName name of the basic auth entry.
-     * @param basicAuthEnvelope A JSON representation of the basic auth properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static site basic auth properties ARM resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteBasicAuthPropertiesArmResourceInner> createOrUpdateBasicAuthWithResponse(
         String resourceGroupName, String name, BasicAuthName basicAuthName,
@@ -11461,20 +8166,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context).block();
     }
 
-    /**
-     * Adds or updates basic auth for a static site.
-     * 
-     * Description for Adds or updates basic auth for a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param basicAuthName name of the basic auth entry.
-     * @param basicAuthEnvelope A JSON representation of the basic auth properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static site basic auth properties ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteBasicAuthPropertiesArmResourceInner createOrUpdateBasicAuth(String resourceGroupName, String name,
         BasicAuthName basicAuthName, StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope) {
@@ -11568,21 +8260,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the basic auth properties for a static site as a collection.
-     * 
-     * Description for Gets the basic auth properties for a static site as a collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the basic auth properties for a static site as a collection.
-     * 
-     * Description for Gets the basic auth properties for a static site as a collection as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuthAsync(String resourceGroupName,
         String name) {
@@ -11613,65 +8291,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> listBasicAuthNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the basic auth properties for a static site as a collection.
-     * 
-     * Description for Gets the basic auth properties for a static site as a collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the basic auth properties for a static site as a collection.
-     * 
-     * Description for Gets the basic auth properties for a static site as a collection as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuth(String resourceGroupName,
         String name) {
         return new PagedIterable<>(listBasicAuthAsync(resourceGroupName, name));
     }
 
-    /**
-     * Gets the basic auth properties for a static site as a collection.
-     * 
-     * Description for Gets the basic auth properties for a static site as a collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the basic auth properties for a static site as a collection.
-     * 
-     * Description for Gets the basic auth properties for a static site as a collection as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuth(String resourceGroupName,
         String name, Context context) {
         return new PagedIterable<>(listBasicAuthAsync(resourceGroupName, name, context));
     }
 
-    /**
-     * Gets an existing custom domain for a particular static site.
-     * 
-     * Description for Gets an existing custom domain for a particular static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing custom domain for a particular static site.
-     * 
-     * Description for Gets an existing custom domain for a particular static site along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteCustomDomainOverviewArmResourceInner>>
         getStaticSiteCustomDomainWithResponseAsync(String resourceGroupName, String name, String domainName) {
@@ -11745,22 +8379,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, domainName, accept, context);
     }
 
-    /**
-     * Gets an existing custom domain for a particular static site.
-     * 
-     * Description for Gets an existing custom domain for a particular static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing custom domain for a particular static site.
-     * 
-     * Description for Gets an existing custom domain for a particular static site on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteCustomDomainOverviewArmResourceInner> getStaticSiteCustomDomainAsync(String resourceGroupName,
         String name, String domainName) {
@@ -11768,65 +8387,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an existing custom domain for a particular static site.
-     * 
-     * Description for Gets an existing custom domain for a particular static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing custom domain for a particular static site.
-     * 
-     * Description for Gets an existing custom domain for a particular static site along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteCustomDomainOverviewArmResourceInner> getStaticSiteCustomDomainWithResponse(
         String resourceGroupName, String name, String domainName, Context context) {
         return getStaticSiteCustomDomainWithResponseAsync(resourceGroupName, name, domainName, context).block();
     }
 
-    /**
-     * Gets an existing custom domain for a particular static site.
-     * 
-     * Description for Gets an existing custom domain for a particular static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing custom domain for a particular static site.
-     * 
-     * Description for Gets an existing custom domain for a particular static site.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteCustomDomainOverviewArmResourceInner getStaticSiteCustomDomain(String resourceGroupName,
         String name, String domainName) {
         return getStaticSiteCustomDomainWithResponse(resourceGroupName, name, domainName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateStaticSiteCustomDomainWithResponseAsync(
         String resourceGroupName, String name, String domainName,
@@ -11918,21 +8493,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteCustomDomainRequestPropertiesEnvelope, context);
     }
 
-    /**
-     * Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of static Site Custom Domain Overview ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
@@ -11977,21 +8538,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 StaticSiteCustomDomainOverviewArmResourceInner.class, context);
     }
 
-    /**
-     * Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of static Site Custom Domain Overview ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
@@ -12003,22 +8550,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of static Site Custom Domain Overview ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
@@ -12031,21 +8563,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteCustomDomainOverviewArmResourceInner> createOrUpdateStaticSiteCustomDomainAsync(
         String resourceGroupName, String name, String domainName,
@@ -12080,21 +8598,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteCustomDomainOverviewArmResourceInner createOrUpdateStaticSiteCustomDomain(String resourceGroupName,
         String name, String domainName,
@@ -12103,22 +8607,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteCustomDomainRequestPropertiesEnvelope).block();
     }
 
-    /**
-     * Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteCustomDomainOverviewArmResourceInner createOrUpdateStaticSiteCustomDomain(String resourceGroupName,
         String name, String domainName,
@@ -12128,19 +8617,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteCustomDomainRequestPropertiesEnvelope, context).block();
     }
 
-    /**
-     * Deletes a custom domain.
-     * 
-     * Description for Deletes a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteStaticSiteCustomDomainWithResponseAsync(String resourceGroupName,
         String name, String domainName) {
@@ -12209,19 +8686,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, domainName, context);
     }
 
-    /**
-     * Deletes a custom domain.
-     * 
-     * Description for Deletes a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteStaticSiteCustomDomainAsync(String resourceGroupName,
         String name, String domainName) {
@@ -12255,39 +8720,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context);
     }
 
-    /**
-     * Deletes a custom domain.
-     * 
-     * Description for Deletes a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteStaticSiteCustomDomain(String resourceGroupName, String name,
         String domainName) {
         return this.beginDeleteStaticSiteCustomDomainAsync(resourceGroupName, name, domainName).getSyncPoller();
     }
 
-    /**
-     * Deletes a custom domain.
-     * 
-     * Description for Deletes a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteStaticSiteCustomDomain(String resourceGroupName, String name,
         String domainName, Context context) {
@@ -12295,19 +8735,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a custom domain.
-     * 
-     * Description for Deletes a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteStaticSiteCustomDomainAsync(String resourceGroupName, String name, String domainName) {
         return beginDeleteStaticSiteCustomDomainAsync(resourceGroupName, name, domainName).last()
@@ -12335,36 +8763,13 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a custom domain.
-     * 
-     * Description for Deletes a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteStaticSiteCustomDomain(String resourceGroupName, String name, String domainName) {
         deleteStaticSiteCustomDomainAsync(resourceGroupName, name, domainName).block();
     }
 
-    /**
-     * Deletes a custom domain.
-     * 
-     * Description for Deletes a custom domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteStaticSiteCustomDomain(String resourceGroupName, String name, String domainName,
         Context context) {
@@ -12457,21 +8862,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all static site custom domains for a particular static site.
-     * 
-     * Description for Gets all static site custom domains for a particular static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all static site custom domains for a particular static site.
-     * 
-     * Description for Gets all static site custom domains for a particular static site as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteCustomDomainOverviewArmResourceInner>
         listStaticSiteCustomDomainsAsync(String resourceGroupName, String name) {
@@ -12502,64 +8893,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> listStaticSiteCustomDomainsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all static site custom domains for a particular static site.
-     * 
-     * Description for Gets all static site custom domains for a particular static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all static site custom domains for a particular static site.
-     * 
-     * Description for Gets all static site custom domains for a particular static site as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteCustomDomainOverviewArmResourceInner>
         listStaticSiteCustomDomains(String resourceGroupName, String name) {
         return new PagedIterable<>(listStaticSiteCustomDomainsAsync(resourceGroupName, name));
     }
 
-    /**
-     * Gets all static site custom domains for a particular static site.
-     * 
-     * Description for Gets all static site custom domains for a particular static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all static site custom domains for a particular static site.
-     * 
-     * Description for Gets all static site custom domains for a particular static site as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteCustomDomainOverviewArmResourceInner>
         listStaticSiteCustomDomains(String resourceGroupName, String name, Context context) {
         return new PagedIterable<>(listStaticSiteCustomDomainsAsync(resourceGroupName, name, context));
     }
 
-    /**
-     * Validates a particular custom domain can be added to a static site.
-     * 
-     * Description for Validates a particular custom domain can be added to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> validateCustomDomainCanBeAddedToStaticSiteWithResponseAsync(
         String resourceGroupName, String name, String domainName,
@@ -12648,21 +8996,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             contentType, staticSiteCustomDomainRequestPropertiesEnvelope, context);
     }
 
-    /**
-     * Validates a particular custom domain can be added to a static site.
-     * 
-     * Description for Validates a particular custom domain can be added to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSiteAsync(
         String resourceGroupName, String name, String domainName,
@@ -12701,21 +9035,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context);
     }
 
-    /**
-     * Validates a particular custom domain can be added to a static site.
-     * 
-     * Description for Validates a particular custom domain can be added to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSite(String resourceGroupName,
         String name, String domainName,
@@ -12726,22 +9046,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Validates a particular custom domain can be added to a static site.
-     * 
-     * Description for Validates a particular custom domain can be added to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSite(String resourceGroupName,
         String name, String domainName,
@@ -12753,21 +9058,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Validates a particular custom domain can be added to a static site.
-     * 
-     * Description for Validates a particular custom domain can be added to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> validateCustomDomainCanBeAddedToStaticSiteAsync(String resourceGroupName, String name,
         String domainName,
@@ -12802,20 +9093,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validates a particular custom domain can be added to a static site.
-     * 
-     * Description for Validates a particular custom domain can be added to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateCustomDomainCanBeAddedToStaticSite(String resourceGroupName, String name, String domainName,
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope) {
@@ -12823,21 +9101,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteCustomDomainRequestPropertiesEnvelope).block();
     }
 
-    /**
-     * Validates a particular custom domain can be added to a static site.
-     * 
-     * Description for Validates a particular custom domain can be added to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param domainName The custom domain name.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateCustomDomainCanBeAddedToStaticSite(String resourceGroupName, String name, String domainName,
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
@@ -12846,18 +9110,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteCustomDomainRequestPropertiesEnvelope, context).block();
     }
 
-    /**
-     * Returns the details of a linked backend linked to a static site by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteLinkedBackendArmResourceInner>>
         getLinkedBackendWithResponseAsync(String resourceGroupName, String name, String linkedBackendName) {
@@ -12928,17 +9181,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, linkedBackendName, accept, context);
     }
 
-    /**
-     * Returns the details of a linked backend linked to a static site by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendAsync(String resourceGroupName, String name,
         String linkedBackendName) {
@@ -12946,54 +9189,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the details of a linked backend linked to a static site by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendWithResponse(String resourceGroupName,
         String name, String linkedBackendName, Context context) {
         return getLinkedBackendWithResponseAsync(resourceGroupName, name, linkedBackendName, context).block();
     }
 
-    /**
-     * Returns the details of a linked backend linked to a static site by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteLinkedBackendArmResourceInner getLinkedBackend(String resourceGroupName, String name,
         String linkedBackendName) {
         return getLinkedBackendWithResponse(resourceGroupName, name, linkedBackendName, Context.NONE).getValue();
     }
 
-    /**
-     * Link backend to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> linkBackendWithResponseAsync(String resourceGroupName, String name,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
@@ -13082,18 +9292,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteLinkedBackendEnvelope, context);
     }
 
-    /**
-     * Link backend to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of static Site Linked Backend ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackendAsync(String resourceGroupName, String name, String linkedBackendName,
@@ -13132,18 +9331,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 StaticSiteLinkedBackendArmResourceInner.class, context);
     }
 
-    /**
-     * Link backend to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of static Site Linked Backend ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackend(String resourceGroupName, String name, String linkedBackendName,
@@ -13152,19 +9340,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Link backend to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of static Site Linked Backend ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackend(String resourceGroupName, String name, String linkedBackendName,
@@ -13174,18 +9350,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Link backend to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteLinkedBackendArmResourceInner> linkBackendAsync(String resourceGroupName, String name,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
@@ -13214,37 +9379,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Link backend to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteLinkedBackendArmResourceInner linkBackend(String resourceGroupName, String name,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
         return linkBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope).block();
     }
 
-    /**
-     * Link backend to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteLinkedBackendArmResourceInner linkBackend(String resourceGroupName, String name,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
@@ -13253,18 +9395,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .block();
     }
 
-    /**
-     * Unlink a backend from a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param isCleaningAuthConfig Decides if Easy Auth configuration will be removed from backend configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> unlinkBackendWithResponseAsync(String resourceGroupName, String name,
         String linkedBackendName, Boolean isCleaningAuthConfig) {
@@ -13334,17 +9465,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), resourceGroupName, name, linkedBackendName, isCleaningAuthConfig, context);
     }
 
-    /**
-     * Unlink a backend from a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> unlinkBackendAsync(String resourceGroupName, String name, String linkedBackendName) {
         final Boolean isCleaningAuthConfig = null;
@@ -13352,19 +9473,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Unlink a backend from a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param isCleaningAuthConfig Decides if Easy Auth configuration will be removed from backend configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> unlinkBackendWithResponse(String resourceGroupName, String name, String linkedBackendName,
         Boolean isCleaningAuthConfig, Context context) {
@@ -13372,16 +9481,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .block();
     }
 
-    /**
-     * Unlink a backend from a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void unlinkBackend(String resourceGroupName, String name, String linkedBackendName) {
         final Boolean isCleaningAuthConfig = null;
@@ -13466,16 +9566,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Returns details of all backends linked to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site linked backends as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsAsync(String resourceGroupName,
         String name) {
@@ -13501,51 +9592,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> getLinkedBackendsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Returns details of all backends linked to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site linked backends as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteLinkedBackendArmResourceInner> getLinkedBackends(String resourceGroupName,
         String name) {
         return new PagedIterable<>(getLinkedBackendsAsync(resourceGroupName, name));
     }
 
-    /**
-     * Returns details of all backends linked to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site linked backends as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteLinkedBackendArmResourceInner> getLinkedBackends(String resourceGroupName,
         String name, Context context) {
         return new PagedIterable<>(getLinkedBackendsAsync(resourceGroupName, name, context));
     }
 
-    /**
-     * Validates that a backend can be linked to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> validateBackendWithResponseAsync(String resourceGroupName, String name,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
@@ -13631,18 +9692,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteLinkedBackendEnvelope, context);
     }
 
-    /**
-     * Validates that a backend can be linked to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginValidateBackendAsync(String resourceGroupName, String name,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
@@ -13676,18 +9726,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context);
     }
 
-    /**
-     * Validates that a backend can be linked to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateBackend(String resourceGroupName, String name,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
@@ -13696,19 +9735,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Validates that a backend can be linked to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateBackend(String resourceGroupName, String name,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
@@ -13719,18 +9746,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Validates that a backend can be linked to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> validateBackendAsync(String resourceGroupName, String name, String linkedBackendName,
         StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
@@ -13759,35 +9775,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validates that a backend can be linked to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateBackend(String resourceGroupName, String name, String linkedBackendName,
         StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
         validateBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope).block();
     }
 
-    /**
-     * Validates that a backend can be linked to a static site.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateBackend(String resourceGroupName, String name, String linkedBackendName,
         StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
@@ -13795,19 +9790,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .block();
     }
 
-    /**
-     * Returns the details of a linked backend linked to a static site build by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendForBuildWithResponseAsync(
         String resourceGroupName, String name, String environmentName, String linkedBackendName) {
@@ -13889,18 +9872,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context);
     }
 
-    /**
-     * Returns the details of a linked backend linked to a static site build by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendForBuildAsync(String resourceGroupName,
         String name, String environmentName, String linkedBackendName) {
@@ -13908,19 +9880,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the details of a linked backend linked to a static site build by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendForBuildWithResponse(
         String resourceGroupName, String name, String environmentName, String linkedBackendName, Context context) {
@@ -13928,18 +9888,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context).block();
     }
 
-    /**
-     * Returns the details of a linked backend linked to a static site build by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteLinkedBackendArmResourceInner getLinkedBackendForBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName) {
@@ -13947,20 +9896,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             Context.NONE).getValue();
     }
 
-    /**
-     * Link backend to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> linkBackendToBuildWithResponseAsync(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
@@ -14059,19 +9995,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             accept, staticSiteLinkedBackendEnvelope, context);
     }
 
-    /**
-     * Link backend to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of static Site Linked Backend ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackendToBuildAsync(String resourceGroupName, String name, String environmentName,
@@ -14112,19 +10036,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 StaticSiteLinkedBackendArmResourceInner.class, context);
     }
 
-    /**
-     * Link backend to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of static Site Linked Backend ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackendToBuild(String resourceGroupName, String name, String environmentName, String linkedBackendName,
@@ -14135,20 +10047,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Link backend to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of static Site Linked Backend ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackendToBuild(String resourceGroupName, String name, String environmentName, String linkedBackendName,
@@ -14159,19 +10058,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Link backend to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteLinkedBackendArmResourceInner> linkBackendToBuildAsync(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
@@ -14202,19 +10089,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteLinkedBackendEnvelope, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Link backend to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteLinkedBackendArmResourceInner linkBackendToBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
@@ -14223,20 +10098,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteLinkedBackendEnvelope).block();
     }
 
-    /**
-     * Link backend to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteLinkedBackendArmResourceInner linkBackendToBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
@@ -14245,19 +10107,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteLinkedBackendEnvelope, context).block();
     }
 
-    /**
-     * Unlink a backend from a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param isCleaningAuthConfig Decides if auth will be removed from backend configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> unlinkBackendFromBuildWithResponseAsync(String resourceGroupName, String name,
         String environmentName, String linkedBackendName, Boolean isCleaningAuthConfig) {
@@ -14337,18 +10187,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             isCleaningAuthConfig, context);
     }
 
-    /**
-     * Unlink a backend from a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> unlinkBackendFromBuildAsync(String resourceGroupName, String name, String environmentName,
         String linkedBackendName) {
@@ -14357,20 +10196,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             isCleaningAuthConfig).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Unlink a backend from a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param isCleaningAuthConfig Decides if auth will be removed from backend configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> unlinkBackendFromBuildWithResponse(String resourceGroupName, String name,
         String environmentName, String linkedBackendName, Boolean isCleaningAuthConfig, Context context) {
@@ -14378,17 +10204,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             isCleaningAuthConfig, context).block();
     }
 
-    /**
-     * Unlink a backend from a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void unlinkBackendFromBuild(String resourceGroupName, String name, String environmentName,
         String linkedBackendName) {
@@ -14486,17 +10302,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Returns details of all backends linked to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site linked backends as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsForBuildAsync(String resourceGroupName,
         String name, String environmentName) {
@@ -14524,54 +10330,21 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             nextLink -> getLinkedBackendsForBuildNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Returns details of all backends linked to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site linked backends as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsForBuild(String resourceGroupName,
         String name, String environmentName) {
         return new PagedIterable<>(getLinkedBackendsForBuildAsync(resourceGroupName, name, environmentName));
     }
 
-    /**
-     * Returns details of all backends linked to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site linked backends as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsForBuild(String resourceGroupName,
         String name, String environmentName, Context context) {
         return new PagedIterable<>(getLinkedBackendsForBuildAsync(resourceGroupName, name, environmentName, context));
     }
 
-    /**
-     * Validates that a backend can be linked to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> validateBackendForBuildWithResponseAsync(String resourceGroupName,
         String name, String environmentName, String linkedBackendName,
@@ -14667,19 +10440,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteLinkedBackendEnvelope, context);
     }
 
-    /**
-     * Validates that a backend can be linked to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginValidateBackendForBuildAsync(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
@@ -14715,19 +10476,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             context);
     }
 
-    /**
-     * Validates that a backend can be linked to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateBackendForBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
@@ -14738,20 +10487,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Validates that a backend can be linked to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateBackendForBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
@@ -14762,19 +10498,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .getSyncPoller();
     }
 
-    /**
-     * Validates that a backend can be linked to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> validateBackendForBuildAsync(String resourceGroupName, String name, String environmentName,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
@@ -14804,18 +10528,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteLinkedBackendEnvelope, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validates that a backend can be linked to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateBackendForBuild(String resourceGroupName, String name, String environmentName,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
@@ -14823,19 +10536,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteLinkedBackendEnvelope).block();
     }
 
-    /**
-     * Validates that a backend can be linked to a static site build.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateBackendForBuild(String resourceGroupName, String name, String environmentName,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
@@ -14844,19 +10545,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             staticSiteLinkedBackendEnvelope, context).block();
     }
 
-    /**
-     * Generates a preview workflow file for the static site
-     * 
-     * Description for Generates a preview workflow file for the static site.
-     * 
-     * @param location The location name.
-     * @param staticSitesWorkflowPreviewRequest The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return preview for the Static Site Workflow to be generated along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSitesWorkflowPreviewInner>> previewWorkflowWithResponseAsync(String location,
         StaticSitesWorkflowPreviewRequest staticSitesWorkflowPreviewRequest) {
@@ -14927,18 +10616,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             this.client.getSubscriptionId(), location, contentType, accept, staticSitesWorkflowPreviewRequest, context);
     }
 
-    /**
-     * Generates a preview workflow file for the static site
-     * 
-     * Description for Generates a preview workflow file for the static site.
-     * 
-     * @param location The location name.
-     * @param staticSitesWorkflowPreviewRequest The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return preview for the Static Site Workflow to be generated on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSitesWorkflowPreviewInner> previewWorkflowAsync(String location,
         StaticSitesWorkflowPreviewRequest staticSitesWorkflowPreviewRequest) {
@@ -14946,37 +10624,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generates a preview workflow file for the static site
-     * 
-     * Description for Generates a preview workflow file for the static site.
-     * 
-     * @param location The location name.
-     * @param staticSitesWorkflowPreviewRequest The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return preview for the Static Site Workflow to be generated along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSitesWorkflowPreviewInner> previewWorkflowWithResponse(String location,
         StaticSitesWorkflowPreviewRequest staticSitesWorkflowPreviewRequest, Context context) {
         return previewWorkflowWithResponseAsync(location, staticSitesWorkflowPreviewRequest, context).block();
     }
 
-    /**
-     * Generates a preview workflow file for the static site
-     * 
-     * Description for Generates a preview workflow file for the static site.
-     * 
-     * @param location The location name.
-     * @param staticSitesWorkflowPreviewRequest The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return preview for the Static Site Workflow to be generated.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSitesWorkflowPreviewInner previewWorkflow(String location,
         StaticSitesWorkflowPreviewRequest staticSitesWorkflowPreviewRequest) {

@@ -19,6 +19,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -30,6 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.relationships.fluent.DependencyOfRelationshipsClient;
 import com.azure.resourcemanager.relationships.fluent.models.DependencyOfRelationshipInner;
+import com.azure.resourcemanager.relationships.implementation.models.DependencyOfRelationshipListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -119,6 +124,40 @@ public final class DependencyOfRelationshipsClientImpl implements DependencyOfRe
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri, @PathParam("name") String name,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceUri}/providers/Microsoft.Relationships/dependencyOf")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DependencyOfRelationshipListResult>> listByParent(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceUri}/providers/Microsoft.Relationships/dependencyOf")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DependencyOfRelationshipListResult> listByParentSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DependencyOfRelationshipListResult>> listByParentNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DependencyOfRelationshipListResult> listByParentNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -158,10 +197,7 @@ public final class DependencyOfRelationshipsClientImpl implements DependencyOfRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceUri, String name,
         DependencyOfRelationshipInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, name,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceUri, name, resource, Context.NONE);
     }
 
     /**
@@ -205,37 +241,14 @@ public final class DependencyOfRelationshipsClientImpl implements DependencyOfRe
             this.client.getContext());
     }
 
-    /**
-     * Create a DependencyOfRelationship.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name Name of dependencyOf relationship.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines a dependencyOf relationship resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DependencyOfRelationshipInner>, DependencyOfRelationshipInner>
         beginCreateOrUpdate(String resourceUri, String name, DependencyOfRelationshipInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceUri, name, resource);
-        return this.client.<DependencyOfRelationshipInner, DependencyOfRelationshipInner>getLroResult(response,
-            DependencyOfRelationshipInner.class, DependencyOfRelationshipInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceUri, name, resource, Context.NONE);
     }
 
-    /**
-     * Create a DependencyOfRelationship.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name Name of dependencyOf relationship.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines a dependencyOf relationship resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DependencyOfRelationshipInner>, DependencyOfRelationshipInner>
         beginCreateOrUpdate(String resourceUri, String name, DependencyOfRelationshipInner resource, Context context) {
@@ -262,39 +275,18 @@ public final class DependencyOfRelationshipsClientImpl implements DependencyOfRe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a DependencyOfRelationship.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name Name of dependencyOf relationship.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a dependencyOf relationship resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DependencyOfRelationshipInner createOrUpdate(String resourceUri, String name,
         DependencyOfRelationshipInner resource) {
-        return beginCreateOrUpdate(resourceUri, name, resource).getFinalResult();
+        return createOrUpdate(resourceUri, name, resource, Context.NONE);
     }
 
-    /**
-     * Create a DependencyOfRelationship.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name Name of dependencyOf relationship.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a dependencyOf relationship resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DependencyOfRelationshipInner createOrUpdate(String resourceUri, String name,
         DependencyOfRelationshipInner resource, Context context) {
-        return beginCreateOrUpdate(resourceUri, name, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceUri, name, resource, context));
     }
 
     /**
@@ -331,17 +323,7 @@ public final class DependencyOfRelationshipsClientImpl implements DependencyOfRe
         return getWithResponseAsync(resourceUri, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DependencyOfRelationship.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name Name of dependencyOf relationship.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DependencyOfRelationship along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DependencyOfRelationshipInner> getWithResponse(String resourceUri, String name, Context context) {
         final String accept = "application/json";
@@ -349,16 +331,7 @@ public final class DependencyOfRelationshipsClientImpl implements DependencyOfRe
             context);
     }
 
-    /**
-     * Get a DependencyOfRelationship.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name Name of dependencyOf relationship.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DependencyOfRelationship.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DependencyOfRelationshipInner get(String resourceUri, String name) {
         return getWithResponse(resourceUri, name, Context.NONE).getValue();
@@ -394,8 +367,7 @@ public final class DependencyOfRelationshipsClientImpl implements DependencyOfRe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceUri, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, name,
-            Context.NONE);
+        return deleteWithResponse(resourceUri, name, Context.NONE);
     }
 
     /**
@@ -431,33 +403,13 @@ public final class DependencyOfRelationshipsClientImpl implements DependencyOfRe
             this.client.getContext());
     }
 
-    /**
-     * Delete a DependencyOfRelationship.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name Name of dependencyOf relationship.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceUri, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceUri, name, Context.NONE);
     }
 
-    /**
-     * Delete a DependencyOfRelationship.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name Name of dependencyOf relationship.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, String name, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceUri, name, context);
@@ -479,32 +431,150 @@ public final class DependencyOfRelationshipsClientImpl implements DependencyOfRe
         return beginDeleteAsync(resourceUri, name).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a DependencyOfRelationship.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name Name of dependencyOf relationship.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, String name) {
-        beginDelete(resourceUri, name).getFinalResult();
+        delete(resourceUri, name, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceUri, String name, Context context) {
+        this.client.getLroFinalResultOrError(beginDelete(resourceUri, name, context));
     }
 
     /**
-     * Delete a DependencyOfRelationship.
+     * List DependencyOfRelationship resources by parent.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param name Name of dependencyOf relationship.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<DependencyOfRelationshipInner>> listByParentSinglePageAsync(String resourceUri) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByParent(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceUri, accept, context))
+            .<PagedResponse<DependencyOfRelationshipInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List DependencyOfRelationship resources by parent.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<DependencyOfRelationshipInner> listByParentAsync(String resourceUri) {
+        return new PagedFlux<>(() -> listByParentSinglePageAsync(resourceUri),
+            nextLink -> listByParentNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List DependencyOfRelationship resources by parent.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DependencyOfRelationshipInner> listByParentSinglePage(String resourceUri) {
+        return listByParentSinglePage(resourceUri, Context.NONE);
+    }
+
+    /**
+     * List DependencyOfRelationship resources by parent.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceUri, String name, Context context) {
-        beginDelete(resourceUri, name, context).getFinalResult();
+    private PagedResponse<DependencyOfRelationshipInner> listByParentSinglePage(String resourceUri, Context context) {
+        final String accept = "application/json";
+        Response<DependencyOfRelationshipListResult> res = service.listByParentSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), resourceUri, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DependencyOfRelationshipInner> listByParent(String resourceUri) {
+        return listByParent(resourceUri, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DependencyOfRelationshipInner> listByParent(String resourceUri, Context context) {
+        return new PagedIterable<>(() -> listByParentSinglePage(resourceUri, context),
+            nextLink -> listByParentNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<DependencyOfRelationshipInner>> listByParentNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByParentNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DependencyOfRelationshipInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DependencyOfRelationshipInner> listByParentNextSinglePage(String nextLink) {
+        return listByParentNextSinglePage(nextLink, Context.NONE);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DependencyOfRelationshipInner> listByParentNextSinglePage(String nextLink, Context context) {
+        final String accept = "application/json";
+        Response<DependencyOfRelationshipListResult> res
+            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 }

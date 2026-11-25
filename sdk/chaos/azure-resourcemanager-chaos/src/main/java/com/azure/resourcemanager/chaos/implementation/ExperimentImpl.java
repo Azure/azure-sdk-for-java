@@ -115,10 +115,7 @@ public final class ExperimentImpl implements Experiment, Experiment.Definition, 
     }
 
     public Experiment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExperiments()
-            .createOrUpdate(resourceGroupName, experimentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Experiment create(Context context) {
@@ -140,10 +137,7 @@ public final class ExperimentImpl implements Experiment, Experiment.Definition, 
     }
 
     public Experiment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExperiments()
-            .update(resourceGroupName, experimentName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Experiment apply(Context context) {
@@ -156,16 +150,16 @@ public final class ExperimentImpl implements Experiment, Experiment.Definition, 
     ExperimentImpl(ExperimentInner innerObject, com.azure.resourcemanager.chaos.ChaosManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.experimentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "experiments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "resourceGroupName");
+        this.experimentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "experimentName");
     }
 
     public Experiment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExperiments()
-            .getByResourceGroupWithResponse(resourceGroupName, experimentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Experiment refresh(Context context) {

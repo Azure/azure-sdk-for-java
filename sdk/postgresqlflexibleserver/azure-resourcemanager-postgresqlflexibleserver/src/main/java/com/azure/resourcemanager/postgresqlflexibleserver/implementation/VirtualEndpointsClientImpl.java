@@ -190,18 +190,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information about a pair of virtual endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a pair of virtual endpoints along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualEndpointInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String virtualEndpointName) {
@@ -212,17 +201,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets information about a pair of virtual endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a pair of virtual endpoints on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualEndpointInner> getAsync(String resourceGroupName, String serverName,
         String virtualEndpointName) {
@@ -230,18 +209,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a pair of virtual endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a pair of virtual endpoints along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualEndpointInner> getWithResponse(String resourceGroupName, String serverName,
         String virtualEndpointName, Context context) {
@@ -250,34 +218,13 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             resourceGroupName, serverName, virtualEndpointName, accept, context);
     }
 
-    /**
-     * Gets information about a pair of virtual endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a pair of virtual endpoints.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualEndpointInner get(String resourceGroupName, String serverName, String virtualEndpointName) {
         return getWithResponse(resourceGroupName, serverName, virtualEndpointName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a pair of virtual endpoints for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param parameters Parameters required to create or update a pair of virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String serverName,
         String virtualEndpointName, VirtualEndpointInner parameters) {
@@ -304,10 +251,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String serverName,
         String virtualEndpointName, VirtualEndpointInner parameters) {
-        final String contentType = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, serverName, virtualEndpointName, contentType,
-            parameters, Context.NONE);
+        return createWithResponse(resourceGroupName, serverName, virtualEndpointName, parameters, Context.NONE);
     }
 
     /**
@@ -332,18 +276,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             parameters, context);
     }
 
-    /**
-     * Creates a pair of virtual endpoints for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param parameters Parameters required to create or update a pair of virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualEndpointInner>, VirtualEndpointInner> beginCreateAsync(String resourceGroupName,
         String serverName, String virtualEndpointName, VirtualEndpointInner parameters) {
@@ -353,40 +286,14 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             VirtualEndpointInner.class, VirtualEndpointInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a pair of virtual endpoints for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param parameters Parameters required to create or update a pair of virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualEndpointInner>, VirtualEndpointInner> beginCreate(String resourceGroupName,
         String serverName, String virtualEndpointName, VirtualEndpointInner parameters) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, serverName, virtualEndpointName, parameters);
-        return this.client.<VirtualEndpointInner, VirtualEndpointInner>getLroResult(response,
-            VirtualEndpointInner.class, VirtualEndpointInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, serverName, virtualEndpointName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates a pair of virtual endpoints for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param parameters Parameters required to create or update a pair of virtual endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualEndpointInner>, VirtualEndpointInner> beginCreate(String resourceGroupName,
         String serverName, String virtualEndpointName, VirtualEndpointInner parameters, Context context) {
@@ -396,18 +303,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             VirtualEndpointInner.class, VirtualEndpointInner.class, context);
     }
 
-    /**
-     * Creates a pair of virtual endpoints for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param parameters Parameters required to create or update a pair of virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualEndpointInner> createAsync(String resourceGroupName, String serverName,
         String virtualEndpointName, VirtualEndpointInner parameters) {
@@ -415,55 +311,22 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a pair of virtual endpoints for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param parameters Parameters required to create or update a pair of virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualEndpointInner create(String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointInner parameters) {
-        return beginCreate(resourceGroupName, serverName, virtualEndpointName, parameters).getFinalResult();
+        return create(resourceGroupName, serverName, virtualEndpointName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates a pair of virtual endpoints for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param parameters Parameters required to create or update a pair of virtual endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualEndpointInner create(String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointInner parameters, Context context) {
-        return beginCreate(resourceGroupName, serverName, virtualEndpointName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, serverName, virtualEndpointName, parameters, context));
     }
 
-    /**
-     * Updates a pair of virtual endpoints for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param parameters Parameters required to update a pair of virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
         String virtualEndpointName, VirtualEndpointResourceForPatch parameters) {
@@ -490,10 +353,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String serverName,
         String virtualEndpointName, VirtualEndpointResourceForPatch parameters) {
-        final String contentType = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, serverName, virtualEndpointName, contentType,
-            parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, serverName, virtualEndpointName, parameters, Context.NONE);
     }
 
     /**
@@ -518,18 +378,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             parameters, context);
     }
 
-    /**
-     * Updates a pair of virtual endpoints for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param parameters Parameters required to update a pair of virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualEndpointInner>, VirtualEndpointInner> beginUpdateAsync(String resourceGroupName,
         String serverName, String virtualEndpointName, VirtualEndpointResourceForPatch parameters) {
@@ -539,40 +388,14 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             VirtualEndpointInner.class, VirtualEndpointInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates a pair of virtual endpoints for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param parameters Parameters required to update a pair of virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualEndpointInner>, VirtualEndpointInner> beginUpdate(String resourceGroupName,
         String serverName, String virtualEndpointName, VirtualEndpointResourceForPatch parameters) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, serverName, virtualEndpointName, parameters);
-        return this.client.<VirtualEndpointInner, VirtualEndpointInner>getLroResult(response,
-            VirtualEndpointInner.class, VirtualEndpointInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, serverName, virtualEndpointName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates a pair of virtual endpoints for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param parameters Parameters required to update a pair of virtual endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualEndpointInner>, VirtualEndpointInner> beginUpdate(String resourceGroupName,
         String serverName, String virtualEndpointName, VirtualEndpointResourceForPatch parameters, Context context) {
@@ -582,18 +405,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             VirtualEndpointInner.class, VirtualEndpointInner.class, context);
     }
 
-    /**
-     * Updates a pair of virtual endpoints for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param parameters Parameters required to update a pair of virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualEndpointInner> updateAsync(String resourceGroupName, String serverName,
         String virtualEndpointName, VirtualEndpointResourceForPatch parameters) {
@@ -601,54 +413,22 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a pair of virtual endpoints for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param parameters Parameters required to update a pair of virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualEndpointInner update(String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointResourceForPatch parameters) {
-        return beginUpdate(resourceGroupName, serverName, virtualEndpointName, parameters).getFinalResult();
+        return update(resourceGroupName, serverName, virtualEndpointName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates a pair of virtual endpoints for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param parameters Parameters required to update a pair of virtual endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualEndpointInner update(String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointResourceForPatch parameters, Context context) {
-        return beginUpdate(resourceGroupName, serverName, virtualEndpointName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, serverName, virtualEndpointName, parameters, context));
     }
 
-    /**
-     * Deletes a pair of virtual endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String virtualEndpointName) {
@@ -672,8 +452,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String serverName,
         String virtualEndpointName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, serverName, virtualEndpointName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, serverName, virtualEndpointName, Context.NONE);
     }
 
     /**
@@ -695,17 +474,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             this.client.getSubscriptionId(), resourceGroupName, serverName, virtualEndpointName, context);
     }
 
-    /**
-     * Deletes a pair of virtual endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
         String virtualEndpointName) {
@@ -715,36 +484,14 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             this.client.getContext());
     }
 
-    /**
-     * Deletes a pair of virtual endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String virtualEndpointName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, serverName, virtualEndpointName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, serverName, virtualEndpointName, Context.NONE);
     }
 
-    /**
-     * Deletes a pair of virtual endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String virtualEndpointName, Context context) {
@@ -752,52 +499,23 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
-    /**
-     * Deletes a pair of virtual endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String virtualEndpointName) {
         return beginDeleteAsync(resourceGroupName, serverName, virtualEndpointName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a pair of virtual endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String virtualEndpointName) {
-        beginDelete(resourceGroupName, serverName, virtualEndpointName).getFinalResult();
+        delete(resourceGroupName, serverName, virtualEndpointName, Context.NONE);
     }
 
-    /**
-     * Deletes a pair of virtual endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName Base name of the virtual endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String virtualEndpointName, Context context) {
-        beginDelete(resourceGroupName, serverName, virtualEndpointName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, serverName, virtualEndpointName, context));
     }
 
     /**
@@ -822,16 +540,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists pair of virtual endpoints associated to a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual endpoints as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualEndpointInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
@@ -850,12 +559,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualEndpointInner> listByServerSinglePage(String resourceGroupName, String serverName) {
-        final String accept = "application/json";
-        Response<VirtualEndpointsList> res
-            = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServerSinglePage(resourceGroupName, serverName, Context.NONE);
     }
 
     /**
@@ -880,33 +584,13 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists pair of virtual endpoints associated to a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual endpoints as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualEndpointInner> listByServer(String resourceGroupName, String serverName) {
-        return new PagedIterable<>(() -> listByServerSinglePage(resourceGroupName, serverName),
-            nextLink -> listByServerNextSinglePage(nextLink));
+        return listByServer(resourceGroupName, serverName, Context.NONE);
     }
 
-    /**
-     * Lists pair of virtual endpoints associated to a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual endpoints as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualEndpointInner> listByServer(String resourceGroupName, String serverName,
         Context context) {
@@ -944,11 +628,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualEndpointInner> listByServerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VirtualEndpointsList> res
-            = service.listByServerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

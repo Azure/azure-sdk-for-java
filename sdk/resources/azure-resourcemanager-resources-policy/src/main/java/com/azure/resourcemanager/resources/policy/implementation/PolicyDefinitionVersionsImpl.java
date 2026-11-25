@@ -52,7 +52,7 @@ public final class PolicyDefinitionVersionsImpl implements PolicyDefinitionVersi
     }
 
     public void deleteByResourceGroup(String policyDefinitionName, String policyDefinitionVersion) {
-        this.serviceClient().delete(policyDefinitionName, policyDefinitionVersion);
+        this.deleteByResourceGroupWithResponse(policyDefinitionName, policyDefinitionVersion, Context.NONE);
     }
 
     public PagedIterable<PolicyDefinitionVersion> list(String policyDefinitionName) {
@@ -147,8 +147,8 @@ public final class PolicyDefinitionVersionsImpl implements PolicyDefinitionVersi
 
     public void deleteAtManagementGroup(String managementGroupName, String policyDefinitionName,
         String policyDefinitionVersion) {
-        this.serviceClient()
-            .deleteAtManagementGroup(managementGroupName, policyDefinitionName, policyDefinitionVersion);
+        this.deleteAtManagementGroupWithResponse(managementGroupName, policyDefinitionName, policyDefinitionVersion,
+            Context.NONE);
     }
 
     public PagedIterable<PolicyDefinitionVersion> listByManagementGroup(String managementGroupName,
@@ -215,58 +215,30 @@ public final class PolicyDefinitionVersionsImpl implements PolicyDefinitionVersi
     }
 
     public PolicyDefinitionVersion getById(String id) {
-        String policyDefinitionName = ResourceManagerUtils.getValueFromIdByName(id, "policyDefinitions");
-        if (policyDefinitionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policyDefinitions'.", id)));
-        }
-        String policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (policyDefinitionVersion == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
-        return this.getWithResponse(policyDefinitionName, policyDefinitionVersion, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<PolicyDefinitionVersion> getByIdWithResponse(String id, Context context) {
-        String policyDefinitionName = ResourceManagerUtils.getValueFromIdByName(id, "policyDefinitions");
-        if (policyDefinitionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policyDefinitions'.", id)));
-        }
-        String policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (policyDefinitionVersion == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
+        String policyDefinitionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}/versions/{policyDefinitionVersion}",
+            "policyDefinitionName", "policyDefinitions", LOGGER);
+        String policyDefinitionVersion = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}/versions/{policyDefinitionVersion}",
+            "policyDefinitionVersion", "versions", LOGGER);
         return this.getWithResponse(policyDefinitionName, policyDefinitionVersion, context);
     }
 
     public void deleteById(String id) {
-        String policyDefinitionName = ResourceManagerUtils.getValueFromIdByName(id, "policyDefinitions");
-        if (policyDefinitionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policyDefinitions'.", id)));
-        }
-        String policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (policyDefinitionVersion == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(policyDefinitionName, policyDefinitionVersion, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String policyDefinitionName = ResourceManagerUtils.getValueFromIdByName(id, "policyDefinitions");
-        if (policyDefinitionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policyDefinitions'.", id)));
-        }
-        String policyDefinitionVersion = ResourceManagerUtils.getValueFromIdByName(id, "versions");
-        if (policyDefinitionVersion == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
-        }
+        String policyDefinitionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}/versions/{policyDefinitionVersion}",
+            "policyDefinitionName", "policyDefinitions", LOGGER);
+        String policyDefinitionVersion = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}/versions/{policyDefinitionVersion}",
+            "policyDefinitionVersion", "versions", LOGGER);
         return this.deleteByResourceGroupWithResponse(policyDefinitionName, policyDefinitionVersion, context);
     }
 

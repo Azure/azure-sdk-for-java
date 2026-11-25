@@ -209,17 +209,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedDatabaseInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName) {
@@ -289,17 +279,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             resourceGroupName, managedInstanceName, databaseName, accept, context);
     }
 
-    /**
-     * Gets a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedDatabaseInner> getAsync(String resourceGroupName, String managedInstanceName,
         String databaseName) {
@@ -307,52 +287,20 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedDatabaseInner> getWithResponse(String resourceGroupName, String managedInstanceName,
         String databaseName, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, context).block();
     }
 
-    /**
-     * Gets a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseInner get(String resourceGroupName, String managedInstanceName, String databaseName) {
         return getWithResponse(resourceGroupName, managedInstanceName, databaseName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a new database or updates an existing database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The requested database resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedDatabaseInner parameters) {
@@ -437,18 +385,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             parameters, context);
     }
 
-    /**
-     * Creates a new database or updates an existing database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The requested database resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a managed database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters) {
@@ -482,18 +419,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             ManagedDatabaseInner.class, ManagedDatabaseInner.class, context);
     }
 
-    /**
-     * Creates a new database or updates an existing database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The requested database resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a managed database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCreateOrUpdate(
         String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters) {
@@ -501,19 +427,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Creates a new database or updates an existing database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The requested database resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a managed database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCreateOrUpdate(
         String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters,
@@ -522,18 +436,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Creates a new database or updates an existing database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The requested database resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedDatabaseInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName,
         String databaseName, ManagedDatabaseInner parameters) {
@@ -562,55 +465,21 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new database or updates an existing database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The requested database resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseInner createOrUpdate(String resourceGroupName, String managedInstanceName,
         String databaseName, ManagedDatabaseInner parameters) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
     }
 
-    /**
-     * Creates a new database or updates an existing database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The requested database resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseInner createOrUpdate(String resourceGroupName, String managedInstanceName,
         String databaseName, ManagedDatabaseInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).block();
     }
 
-    /**
-     * Updates an existing database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The requested database resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters) {
@@ -694,18 +563,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             resourceGroupName, managedInstanceName, databaseName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates an existing database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The requested database resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a managed database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginUpdateAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters) {
@@ -739,37 +597,14 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             ManagedDatabaseInner.class, ManagedDatabaseInner.class, context);
     }
 
-    /**
-     * Updates an existing database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The requested database resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a managed database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginUpdate(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters) {
         return this.beginUpdateAsync(resourceGroupName, managedInstanceName, databaseName, parameters).getSyncPoller();
     }
 
-    /**
-     * Updates an existing database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The requested database resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a managed database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginUpdate(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters, Context context) {
@@ -777,18 +612,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Updates an existing database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The requested database resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedDatabaseInner> updateAsync(String resourceGroupName, String managedInstanceName,
         String databaseName, ManagedDatabaseUpdate parameters) {
@@ -816,54 +640,21 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an existing database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The requested database resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseInner update(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseUpdate parameters) {
         return updateAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
     }
 
-    /**
-     * Updates an existing database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The requested database resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseInner update(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseUpdate parameters, Context context) {
         return updateAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).block();
     }
 
-    /**
-     * Deletes a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName) {
@@ -931,17 +722,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             resourceGroupName, managedInstanceName, databaseName, context);
     }
 
-    /**
-     * Deletes a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName,
         String databaseName) {
@@ -973,52 +754,21 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             context);
     }
 
-    /**
-     * Deletes a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
         String databaseName) {
         return this.beginDeleteAsync(resourceGroupName, managedInstanceName, databaseName).getSyncPoller();
     }
 
-    /**
-     * Deletes a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
         String databaseName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, managedInstanceName, databaseName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName, String databaseName) {
         return beginDeleteAsync(resourceGroupName, managedInstanceName, databaseName).last()
@@ -1044,32 +794,13 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String managedInstanceName, String databaseName) {
         deleteAsync(resourceGroupName, managedInstanceName, databaseName).block();
     }
 
-    /**
-     * Deletes a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String managedInstanceName, String databaseName, Context context) {
         deleteAsync(resourceGroupName, managedInstanceName, databaseName, context).block();
@@ -1152,16 +883,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed databases as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedDatabaseInner> listByInstanceAsync(String resourceGroupName, String managedInstanceName) {
         return new PagedFlux<>(() -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
@@ -1186,50 +908,20 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed databases as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedDatabaseInner> listByInstance(String resourceGroupName, String managedInstanceName) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
-    /**
-     * Gets a list of managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed databases as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedDatabaseInner> listByInstance(String resourceGroupName, String managedInstanceName,
         Context context) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName, context));
     }
 
-    /**
-     * Cancels a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the cancel managed database move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> cancelMoveWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedDatabaseMoveDefinition parameters) {
@@ -1312,18 +1004,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             parameters, context);
     }
 
-    /**
-     * Cancels a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the cancel managed database move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginCancelMoveAsync(String resourceGroupName, String managedInstanceName,
         String databaseName, ManagedDatabaseMoveDefinition parameters) {
@@ -1356,18 +1037,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             context);
     }
 
-    /**
-     * Cancels a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the cancel managed database move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancelMove(String resourceGroupName, String managedInstanceName,
         String databaseName, ManagedDatabaseMoveDefinition parameters) {
@@ -1375,19 +1045,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Cancels a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the cancel managed database move operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancelMove(String resourceGroupName, String managedInstanceName,
         String databaseName, ManagedDatabaseMoveDefinition parameters, Context context) {
@@ -1395,18 +1053,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Cancels a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the cancel managed database move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelMoveAsync(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters) {
@@ -1434,53 +1081,21 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Cancels a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the cancel managed database move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters) {
         cancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
     }
 
-    /**
-     * Cancels a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the cancel managed database move operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters, Context context) {
         cancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).block();
     }
 
-    /**
-     * Completes a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the complete managed database move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> completeMoveWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedDatabaseMoveDefinition parameters) {
@@ -1563,18 +1178,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             parameters, context);
     }
 
-    /**
-     * Completes a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the complete managed database move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginCompleteMoveAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedDatabaseMoveDefinition parameters) {
@@ -1607,18 +1211,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             context);
     }
 
-    /**
-     * Completes a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the complete managed database move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCompleteMove(String resourceGroupName, String managedInstanceName,
         String databaseName, ManagedDatabaseMoveDefinition parameters) {
@@ -1626,19 +1219,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Completes a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the complete managed database move operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCompleteMove(String resourceGroupName, String managedInstanceName,
         String databaseName, ManagedDatabaseMoveDefinition parameters, Context context) {
@@ -1646,18 +1227,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Completes a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the complete managed database move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> completeMoveAsync(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters) {
@@ -1685,53 +1255,21 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Completes a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the complete managed database move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void completeMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters) {
         completeMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
     }
 
-    /**
-     * Completes a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the complete managed database move operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void completeMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters, Context context) {
         completeMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).block();
     }
 
-    /**
-     * Completes the restore operation on a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The definition for completing the restore of this managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> completeRestoreWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, CompleteDatabaseRestoreDefinition parameters) {
@@ -1815,18 +1353,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             parameters, context);
     }
 
-    /**
-     * Completes the restore operation on a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The definition for completing the restore of this managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginCompleteRestoreAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, CompleteDatabaseRestoreDefinition parameters) {
@@ -1860,18 +1387,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             context);
     }
 
-    /**
-     * Completes the restore operation on a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The definition for completing the restore of this managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCompleteRestore(String resourceGroupName, String managedInstanceName,
         String databaseName, CompleteDatabaseRestoreDefinition parameters) {
@@ -1879,19 +1395,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Completes the restore operation on a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The definition for completing the restore of this managed database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCompleteRestore(String resourceGroupName, String managedInstanceName,
         String databaseName, CompleteDatabaseRestoreDefinition parameters, Context context) {
@@ -1899,18 +1403,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Completes the restore operation on a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The definition for completing the restore of this managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> completeRestoreAsync(String resourceGroupName, String managedInstanceName, String databaseName,
         CompleteDatabaseRestoreDefinition parameters) {
@@ -1939,52 +1432,21 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Completes the restore operation on a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The definition for completing the restore of this managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void completeRestore(String resourceGroupName, String managedInstanceName, String databaseName,
         CompleteDatabaseRestoreDefinition parameters) {
         completeRestoreAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
     }
 
-    /**
-     * Completes the restore operation on a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The definition for completing the restore of this managed database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void completeRestore(String resourceGroupName, String managedInstanceName, String databaseName,
         CompleteDatabaseRestoreDefinition parameters, Context context) {
         completeRestoreAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).block();
     }
 
-    /**
-     * Reevaluates the inaccessibility state of a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> reevaluateInaccessibleDatabaseStateWithResponseAsync(
         String resourceGroupName, String managedInstanceName, String databaseName) {
@@ -2055,17 +1517,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             this.client.getSubscriptionId(), resourceGroupName, managedInstanceName, databaseName, accept, context);
     }
 
-    /**
-     * Reevaluates the inaccessibility state of a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a managed database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner>
         beginReevaluateInaccessibleDatabaseStateAsync(String resourceGroupName, String managedInstanceName,
@@ -2099,17 +1551,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             ManagedDatabaseInner.class, ManagedDatabaseInner.class, context);
     }
 
-    /**
-     * Reevaluates the inaccessibility state of a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a managed database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginReevaluateInaccessibleDatabaseState(
         String resourceGroupName, String managedInstanceName, String databaseName) {
@@ -2117,18 +1559,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Reevaluates the inaccessibility state of a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a managed database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginReevaluateInaccessibleDatabaseState(
         String resourceGroupName, String managedInstanceName, String databaseName, Context context) {
@@ -2138,17 +1569,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Reevaluates the inaccessibility state of a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedDatabaseInner> reevaluateInaccessibleDatabaseStateAsync(String resourceGroupName,
         String managedInstanceName, String databaseName) {
@@ -2176,35 +1597,14 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reevaluates the inaccessibility state of a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseInner reevaluateInaccessibleDatabaseState(String resourceGroupName,
         String managedInstanceName, String databaseName) {
         return reevaluateInaccessibleDatabaseStateAsync(resourceGroupName, managedInstanceName, databaseName).block();
     }
 
-    /**
-     * Reevaluates the inaccessibility state of a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseInner reevaluateInaccessibleDatabaseState(String resourceGroupName,
         String managedInstanceName, String databaseName, Context context) {
@@ -2212,18 +1612,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .block();
     }
 
-    /**
-     * Starts a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the start managed database move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> startMoveWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, ManagedDatabaseStartMoveDefinition parameters) {
@@ -2307,18 +1696,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             parameters, context);
     }
 
-    /**
-     * Starts a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the start managed database move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartMoveAsync(String resourceGroupName, String managedInstanceName,
         String databaseName, ManagedDatabaseStartMoveDefinition parameters) {
@@ -2351,18 +1729,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             context);
     }
 
-    /**
-     * Starts a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the start managed database move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartMove(String resourceGroupName, String managedInstanceName,
         String databaseName, ManagedDatabaseStartMoveDefinition parameters) {
@@ -2370,19 +1737,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Starts a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the start managed database move operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartMove(String resourceGroupName, String managedInstanceName,
         String databaseName, ManagedDatabaseStartMoveDefinition parameters, Context context) {
@@ -2390,18 +1745,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Starts a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the start managed database move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startMoveAsync(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseStartMoveDefinition parameters) {
@@ -2429,35 +1773,14 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the start managed database move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void startMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseStartMoveDefinition parameters) {
         startMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
     }
 
-    /**
-     * Starts a managed database move operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters Parameters of the start managed database move operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void startMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseStartMoveDefinition parameters, Context context) {
@@ -2544,17 +1867,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of inaccessible managed databases in a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of inaccessible managed databases in a managed instance as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedDatabaseInner> listInaccessibleByInstanceAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -2582,35 +1895,14 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             nextLink -> listInaccessibleByInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of inaccessible managed databases in a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of inaccessible managed databases in a managed instance as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedDatabaseInner> listInaccessibleByInstance(String resourceGroupName,
         String managedInstanceName) {
         return new PagedIterable<>(listInaccessibleByInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
-    /**
-     * Gets a list of inaccessible managed databases in a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of inaccessible managed databases in a managed instance as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedDatabaseInner> listInaccessibleByInstance(String resourceGroupName,
         String managedInstanceName, Context context) {

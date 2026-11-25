@@ -63,10 +63,7 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
     }
 
     public FirewallRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewallRules()
-            .createOrUpdate(resourceGroupName, serverName, firewallRuleName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FirewallRule create(Context context) {
@@ -87,10 +84,7 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
     }
 
     public FirewallRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewallRules()
-            .createOrUpdate(resourceGroupName, serverName, firewallRuleName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FirewallRule apply(Context context) {
@@ -104,17 +98,19 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "flexibleServers");
-        this.firewallRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "firewallRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/firewallRules/{firewallRuleName}",
+            "resourceGroupName");
+        this.serverName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/firewallRules/{firewallRuleName}",
+            "serverName");
+        this.firewallRuleName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/firewallRules/{firewallRuleName}",
+            "firewallRuleName");
     }
 
     public FirewallRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewallRules()
-            .getWithResponse(resourceGroupName, serverName, firewallRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FirewallRule refresh(Context context) {

@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -86,6 +87,19 @@ public final class VersionSelector implements JsonSerializable<VersionSelector> 
         this.versionSelectionRules = versionSelectionRules;
         this.updatedProperties.add("versionSelectionRules");
         return this;
+    }
+
+    /**
+     * Set a single version selection rule.
+     *
+     * <p>This is a convenience method equivalent to calling {@link #setVersionSelectionRules(List)} with a singleton
+     * list.</p>
+     *
+     * @param versionSelectionRule the version selection rule to set.
+     * @return the VersionSelector object itself.
+     */
+    public VersionSelector setVersionSelectionRule(VersionSelectionRule versionSelectionRule) {
+        return setVersionSelectionRules(Collections.singletonList(versionSelectionRule));
     }
 
     /**

@@ -104,11 +104,7 @@ public final class DnsResolverPolicyVirtualNetworkLinkImpl implements DnsResolve
     }
 
     public DnsResolverPolicyVirtualNetworkLink create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsResolverPolicyVirtualNetworkLinks()
-            .createOrUpdate(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
-                this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DnsResolverPolicyVirtualNetworkLink create(Context context) {
@@ -135,11 +131,7 @@ public final class DnsResolverPolicyVirtualNetworkLinkImpl implements DnsResolve
     }
 
     public DnsResolverPolicyVirtualNetworkLink apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsResolverPolicyVirtualNetworkLinks()
-            .update(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName, updateParameters,
-                updateIfMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DnsResolverPolicyVirtualNetworkLink apply(Context context) {
@@ -154,19 +146,20 @@ public final class DnsResolverPolicyVirtualNetworkLinkImpl implements DnsResolve
         com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsResolverPolicies");
-        this.dnsResolverPolicyVirtualNetworkLinkName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualNetworkLinks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "resourceGroupName");
+        this.dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "dnsResolverPolicyName");
+        this.dnsResolverPolicyVirtualNetworkLinkName = ResourceManagerUtils.getValueFromIdByParameterName(
+            innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "dnsResolverPolicyVirtualNetworkLinkName");
     }
 
     public DnsResolverPolicyVirtualNetworkLink refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsResolverPolicyVirtualNetworkLinks()
-            .getWithResponse(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DnsResolverPolicyVirtualNetworkLink refresh(Context context) {

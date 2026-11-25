@@ -12,16 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class EventHubConsumerGroupBodyDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventHubConsumerGroupBodyDescription model = BinaryData.fromString("{\"properties\":{\"name\":\"l\"}}")
-            .toObject(EventHubConsumerGroupBodyDescription.class);
-        Assertions.assertEquals("l", model.properties().name());
+        EventHubConsumerGroupBodyDescription model
+            = BinaryData.fromString("{\"properties\":{\"name\":\"gureodkwobdag\"}}")
+                .toObject(EventHubConsumerGroupBodyDescription.class);
+        Assertions.assertEquals("gureodkwobdag", model.properties().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventHubConsumerGroupBodyDescription model
-            = new EventHubConsumerGroupBodyDescription().withProperties(new EventHubConsumerGroupName().withName("l"));
+        EventHubConsumerGroupBodyDescription model = new EventHubConsumerGroupBodyDescription()
+            .withProperties(new EventHubConsumerGroupName().withName("gureodkwobdag"));
         model = BinaryData.fromObject(model).toObject(EventHubConsumerGroupBodyDescription.class);
-        Assertions.assertEquals("l", model.properties().name());
+        Assertions.assertEquals("gureodkwobdag", model.properties().name());
     }
 }

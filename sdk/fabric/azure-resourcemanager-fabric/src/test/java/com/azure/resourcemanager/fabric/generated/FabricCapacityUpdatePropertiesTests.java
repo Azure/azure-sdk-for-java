@@ -16,23 +16,22 @@ public final class FabricCapacityUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FabricCapacityUpdateProperties model = BinaryData.fromString(
-            "{\"overage\":{\"state\":\"Enabled\",\"thresholdCapacityUnitHours\":1681565862},\"administration\":{\"members\":[\"tihfx\",\"ijbpzvgnwzsymgl\",\"uf\"]}}")
+            "{\"overage\":{\"state\":\"Disabled\",\"thresholdCapacityUnitHours\":1720264500},\"administration\":{\"members\":[\"tu\"]}}")
             .toObject(FabricCapacityUpdateProperties.class);
-        Assertions.assertEquals(CapacityOverageState.ENABLED, model.overage().state());
-        Assertions.assertEquals(1681565862, model.overage().thresholdCapacityUnitHours());
-        Assertions.assertEquals("tihfx", model.administration().members().get(0));
+        Assertions.assertEquals(CapacityOverageState.DISABLED, model.overage().state());
+        Assertions.assertEquals(1720264500, model.overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("tu", model.administration().members().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FabricCapacityUpdateProperties model = new FabricCapacityUpdateProperties()
-            .withOverage(new CapacityOverageProperties().withState(CapacityOverageState.ENABLED)
-                .withThresholdCapacityUnitHours(1681565862))
-            .withAdministration(
-                new CapacityAdministration().withMembers(Arrays.asList("tihfx", "ijbpzvgnwzsymgl", "uf")));
+            .withOverage(new CapacityOverageProperties().withState(CapacityOverageState.DISABLED)
+                .withThresholdCapacityUnitHours(1720264500))
+            .withAdministration(new CapacityAdministration().withMembers(Arrays.asList("tu")));
         model = BinaryData.fromObject(model).toObject(FabricCapacityUpdateProperties.class);
-        Assertions.assertEquals(CapacityOverageState.ENABLED, model.overage().state());
-        Assertions.assertEquals(1681565862, model.overage().thresholdCapacityUnitHours());
-        Assertions.assertEquals("tihfx", model.administration().members().get(0));
+        Assertions.assertEquals(CapacityOverageState.DISABLED, model.overage().state());
+        Assertions.assertEquals(1720264500, model.overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("tu", model.administration().members().get(0));
     }
 }

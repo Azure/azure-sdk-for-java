@@ -23,6 +23,9 @@ import java.util.concurrent.ExecutorService;
  * <a href="https://aka.ms/azsdk/java/identity/managedidentitycredential/docs">managed identity authentication
  * documentation</a>.</p>
  *
+ * <p>Azure Arc-enabled servers support user-assigned managed identities selected by client ID, resource ID, or object
+ * ID.</p>
+ *
  * <p><strong>Sample: Construct a simple ManagedIdentityCredential</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a {@link ManagedIdentityCredential},
@@ -70,7 +73,8 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     }
 
     /**
-     * Specifies the client ID of a user-assigned or system-assigned managed identity.
+     * Specifies the client ID of a user-assigned managed identity. If none of clientId, resourceId, or objectId
+     * is set, the system-assigned managed identity is used.
      *
      * Only one of clientId, resourceId, or objectId can be specified.
      *
@@ -83,7 +87,8 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     }
 
     /**
-     * Specifies the resource ID of a user-assigned or system-assigned managed identity.
+     * Specifies the resource ID of a user-assigned managed identity. If none of clientId, resourceId, or objectId
+     * is set, the system-assigned managed identity is used.
      *
      * Only one of clientId, resourceId, or objectId can be specified.
      *
@@ -96,7 +101,8 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     }
 
     /**
-     * Specifies the object ID of a user-assigned or system-assigned managed identity.
+     * Specifies the object ID of a user-assigned managed identity. If none of clientId, resourceId, or objectId
+     * is set, the system-assigned managed identity is used.
      *
      * Only one of clientId, resourceId, or objectId can be specified.
      *

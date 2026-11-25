@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ContainerGroupsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupsUpdate.json
+     * x-ms-original-file: 2026-07-01/ContainerGroupsUpdate.json
      */
     /**
      * Sample code: ContainerGroupsUpdate.

@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DataEffectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataEffect model = BinaryData.fromString("{\"name\":\"vu\",\"detailsSchema\":\"\\\"dataraehtwdwrft\\\"\"}")
+        DataEffect model = BinaryData.fromString("{\"name\":\"tjinf\",\"detailsSchema\":\"\\\"datalfltka\\\"\"}")
             .toObject(DataEffect.class);
-        Assertions.assertEquals("vu", model.name());
+        Assertions.assertEquals("tjinf", model.name());
     }
 }

@@ -177,10 +177,7 @@ public final class ImportJobImpl implements ImportJob, ImportJob.Definition, Imp
     }
 
     public ImportJob create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getImportJobs()
-            .createOrUpdate(resourceGroupName, amlFilesystemName, importJobName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ImportJob create(Context context) {
@@ -202,10 +199,7 @@ public final class ImportJobImpl implements ImportJob, ImportJob.Definition, Imp
     }
 
     public ImportJob apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getImportJobs()
-            .update(resourceGroupName, amlFilesystemName, importJobName, updateImportJob, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ImportJob apply(Context context) {
@@ -219,17 +213,19 @@ public final class ImportJobImpl implements ImportJob, ImportJob.Definition, Imp
         com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.amlFilesystemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "amlFilesystems");
-        this.importJobName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "importJobs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}",
+            "resourceGroupName");
+        this.amlFilesystemName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}",
+            "amlFilesystemName");
+        this.importJobName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}",
+            "importJobName");
     }
 
     public ImportJob refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getImportJobs()
-            .getWithResponse(resourceGroupName, amlFilesystemName, importJobName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ImportJob refresh(Context context) {

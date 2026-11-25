@@ -96,11 +96,7 @@ public final class ProtectedItemResourceImpl
     }
 
     public ProtectedItemResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectedItems()
-            .createOrUpdate(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProtectedItemResource create(Context context) {
@@ -123,11 +119,7 @@ public final class ProtectedItemResourceImpl
     }
 
     public ProtectedItemResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectedItems()
-            .createOrUpdate(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ProtectedItemResource apply(Context context) {
@@ -142,21 +134,25 @@ public final class ProtectedItemResourceImpl
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fabricName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupFabrics");
-        this.containerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "protectionContainers");
-        this.protectedItemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "protectedItems");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}",
+            "vaultName");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}",
+            "resourceGroupName");
+        this.fabricName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}",
+            "fabricName");
+        this.containerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}",
+            "containerName");
+        this.protectedItemName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}",
+            "protectedItemName");
     }
 
     public ProtectedItemResource refresh() {
-        String localFilter = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectedItems()
-            .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, localFilter,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProtectedItemResource refresh(Context context) {

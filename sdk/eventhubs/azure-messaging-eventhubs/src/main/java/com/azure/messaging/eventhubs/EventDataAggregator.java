@@ -29,7 +29,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  * Aggregates {@link EventData} into {@link EventDataBatch} and pushes them downstream when:
  *
  * <ul>
- *     <li>{@link BufferedProducerClientOptions#getMaxWaitTime()} elapses between events.</li>
+ *     <li>{@link BufferedProducerClientOptions#getMaxWaitTime()} elapses since the first event was added to the batch.</li>
  *     <li>{@link EventDataBatch} cannot hold any more events.</li>
  * </ul>
  */
@@ -113,6 +113,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
 
         private Subscription subscription;
         private EventDataBatch currentBatch;
+        private long batchId;
 
         private volatile Throwable lastError;
 
@@ -127,14 +128,20 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             this.currentBatch = batchSupplier.get();
 
             this.eventSink = Sinks.many().unicast().onBackpressureError();
-            this.disposable = Flux
-                .switchOnNext(eventSink.asFlux()
-                    .map(e -> Flux.interval(options.getMaxWaitTime()).takeUntil(index -> isCompleted.get())))
-                .subscribe(index -> {
+            this.disposable = Flux.switchOnNext(eventSink.asFlux()
+                .map(id -> Flux.interval(options.getMaxWaitTime())
+                    .map(index -> id)
+                    .takeUntil(ignored -> isCompleted.get())))
+                .subscribe(id -> {
                     logger.atVerbose()
                         .addKeyValue(PARTITION_ID_KEY, partitionId)
                         .log("Time elapsed. Attempt to publish downstream.");
-                    updateOrPublishBatch(null, true);
+                    synchronized (lock) {
+                        // A tick from a replaced timer can already be waiting for this lock.
+                        if (!isCompleted.get() && batchId == id) {
+                            updateOrPublishBatch(null, true);
+                        }
+                    }
                 });
         }
 
@@ -201,8 +208,6 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         public void onNext(EventData eventData) {
             updateOrPublishBatch(eventData, false);
 
-            eventSink.emitNext(1L, Sinks.EmitFailureHandler.FAIL_FAST);
-
             // When an EventDataBatch is pushed downstream, we decrement REQUESTED. However, if REQUESTED is still > 0,
             // that means we did not publish the EventDataBatch (i.e. because it was not full). We request another
             // EventData upstream to try and fill this EventDataBatch and push it downstream.
@@ -254,12 +259,15 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             synchronized (lock) {
                 added = currentBatch.tryAdd(eventData);
 
-                if (added) {
-                    return;
+                if (!added) {
+                    publishDownstream(false);
+                    added = currentBatch.tryAdd(eventData);
                 }
 
-                publishDownstream(false);
-                added = currentBatch.tryAdd(eventData);
+                if (added && currentBatch.getCount() == 1) {
+                    // Set the deadline while the first event and its batch are still protected by the lock.
+                    eventSink.emitNext(++batchId, Sinks.EmitFailureHandler.FAIL_FAST);
+                }
             }
 
             if (!added) {

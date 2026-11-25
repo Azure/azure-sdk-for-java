@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elasticsan.generated;
  */
 public final class VolumeGroupsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/VolumeGroups_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Get_MinimumSet_Gen.
@@ -23,7 +23,22 @@ public final class VolumeGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/VolumeGroups_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_PerformanceCritical_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VolumeGroups_PerformanceCritical_Get_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to ElasticSanManager.
+     */
+    public static void volumeGroupsPerformanceCriticalGetMaximumSetGen(
+        com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+        manager.volumeGroups()
+            .getWithResponse("resourcegroupname", "elasticsanname", "volumegroupname",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Get_MaximumSet_Gen.
@@ -31,6 +46,21 @@ public final class VolumeGroupsGetSamples {
      * @param manager Entry point to ElasticSanManager.
      */
     public static void volumeGroupsGetMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+        manager.volumeGroups()
+            .getWithResponse("resourcegroupname", "elasticsanname", "volumegroupname",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_GeneralPurpose_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VolumeGroups_GeneralPurpose_Get_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to ElasticSanManager.
+     */
+    public static void
+        volumeGroupsGeneralPurposeGetMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
         manager.volumeGroups()
             .getWithResponse("resourcegroupname", "elasticsanname", "volumegroupname",
                 com.azure.core.util.Context.NONE);

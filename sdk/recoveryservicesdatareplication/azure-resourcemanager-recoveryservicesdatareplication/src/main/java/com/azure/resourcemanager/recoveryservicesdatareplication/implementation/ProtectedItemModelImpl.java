@@ -67,10 +67,7 @@ public final class ProtectedItemModelImpl
     }
 
     public ProtectedItemModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectedItems()
-            .create(resourceGroupName, vaultName, protectedItemName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProtectedItemModel create(Context context) {
@@ -93,10 +90,7 @@ public final class ProtectedItemModelImpl
     }
 
     public ProtectedItemModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectedItems()
-            .update(resourceGroupName, vaultName, protectedItemName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ProtectedItemModel apply(Context context) {
@@ -110,17 +104,19 @@ public final class ProtectedItemModelImpl
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationVaults");
-        this.protectedItemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "protectedItems");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}",
+            "resourceGroupName");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}",
+            "vaultName");
+        this.protectedItemName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}",
+            "protectedItemName");
     }
 
     public ProtectedItemModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectedItems()
-            .getWithResponse(resourceGroupName, vaultName, protectedItemName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProtectedItemModel refresh(Context context) {

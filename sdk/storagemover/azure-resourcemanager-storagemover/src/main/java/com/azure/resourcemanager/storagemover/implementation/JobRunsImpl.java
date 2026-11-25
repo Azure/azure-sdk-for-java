@@ -48,9 +48,7 @@ public final class JobRunsImpl implements JobRuns {
 
     public PagedIterable<JobRun> list(String resourceGroupName, String storageMoverName, String projectName,
         String jobDefinitionName) {
-        PagedIterable<JobRunInner> inner
-            = this.serviceClient().list(resourceGroupName, storageMoverName, projectName, jobDefinitionName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new JobRunImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, storageMoverName, projectName, jobDefinitionName, Context.NONE);
     }
 
     public PagedIterable<JobRun> list(String resourceGroupName, String storageMoverName, String projectName,

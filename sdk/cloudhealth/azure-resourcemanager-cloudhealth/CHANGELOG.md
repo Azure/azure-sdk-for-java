@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,49 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2026-10-15)
+
+- Azure Resource Manager CloudHealth client library for Java. This package contains Microsoft Azure SDK for CloudHealth Management SDK.  Package api-version 2026-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Other Changes
+- First GA release.
+
+## 1.0.0-beta.5 (2026-09-25)
+
+- Azure Resource Manager CloudHealth client library for Java. This package contains Microsoft Azure SDK for CloudHealth Management SDK.  Package api-version 2026-10-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.SignalConfiguration` was modified
+
+* `timeGrain()` was removed
+* `dimensionFilter()` was removed
+* `metricNamespace()` was removed
+* `aggregationType()` was removed
+* `metricName()` was removed
+* `unit()` was removed
+
+### Features Added
+
+* `models.LogAnalyticsQueryRecommendationConfiguration` was added
+
+* `models.SignalRecommendationKind` was added
+
+* `models.AzureResourceMetricRecommendationConfiguration` was added
+
+* `models.SignalRecommendationConfiguration` was added
+
+* `models.PrometheusMetricsRecommendationConfiguration` was added
+
+#### `models.SignalConfiguration` was modified
+
+* `displayName()` was added
+* `refreshInterval()` was added
+* `dataUnit()` was added
+* `description()` was added
+* `configuration()` was added
+* `applicableResourceTypes()` was added
 
 ## 1.0.0-beta.4 (2026-08-25)
 

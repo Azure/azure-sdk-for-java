@@ -44,12 +44,7 @@ public final class RecoveryPlansImpl implements RecoveryPlans {
     }
 
     public RecoveryPlan createOrUpdate(String serviceGroupName, String recoveryPlanName, RecoveryPlanInner resource) {
-        RecoveryPlanInner inner = this.serviceClient().createOrUpdate(serviceGroupName, recoveryPlanName, resource);
-        if (inner != null) {
-            return new RecoveryPlanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(serviceGroupName, recoveryPlanName, resource, Context.NONE);
     }
 
     public RecoveryPlan createOrUpdate(String serviceGroupName, String recoveryPlanName, RecoveryPlanInner resource,
@@ -64,12 +59,7 @@ public final class RecoveryPlansImpl implements RecoveryPlans {
     }
 
     public RecoveryPlan update(String serviceGroupName, String recoveryPlanName, RecoveryPlanInner properties) {
-        RecoveryPlanInner inner = this.serviceClient().update(serviceGroupName, recoveryPlanName, properties);
-        if (inner != null) {
-            return new RecoveryPlanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(serviceGroupName, recoveryPlanName, properties, Context.NONE);
     }
 
     public RecoveryPlan update(String serviceGroupName, String recoveryPlanName, RecoveryPlanInner properties,
@@ -83,7 +73,7 @@ public final class RecoveryPlansImpl implements RecoveryPlans {
     }
 
     public void deleteByResourceGroup(String serviceGroupName, String recoveryPlanName) {
-        this.serviceClient().delete(serviceGroupName, recoveryPlanName);
+        this.delete(serviceGroupName, recoveryPlanName, Context.NONE);
     }
 
     public void delete(String serviceGroupName, String recoveryPlanName, Context context) {

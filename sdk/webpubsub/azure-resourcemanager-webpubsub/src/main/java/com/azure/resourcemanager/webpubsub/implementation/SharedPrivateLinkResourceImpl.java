@@ -89,11 +89,7 @@ public final class SharedPrivateLinkResourceImpl
     }
 
     public SharedPrivateLinkResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubSharedPrivateLinkResources()
-            .createOrUpdate(resourceGroupName, resourceName, sharedPrivateLinkResourceName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SharedPrivateLinkResource create(Context context) {
@@ -114,11 +110,7 @@ public final class SharedPrivateLinkResourceImpl
     }
 
     public SharedPrivateLinkResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubSharedPrivateLinkResources()
-            .createOrUpdate(resourceGroupName, resourceName, sharedPrivateLinkResourceName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SharedPrivateLinkResource apply(Context context) {
@@ -132,18 +124,34 @@ public final class SharedPrivateLinkResourceImpl
         com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "webPubSub");
-        this.sharedPrivateLinkResourceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sharedPrivateLinkResources");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
+            "resourceGroupName");
+        if (this.resourceGroupName == null) {
+            this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
+                "resourceGroupName");
+        }
+        this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
+            "resourceName");
+        if (this.resourceName == null) {
+            this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
+                "resourceName");
+        }
+        this.sharedPrivateLinkResourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
+            "sharedPrivateLinkResourceName");
+        if (this.sharedPrivateLinkResourceName == null) {
+            this.sharedPrivateLinkResourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
+                "sharedPrivateLinkResourceName");
+        }
     }
 
     public SharedPrivateLinkResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubSharedPrivateLinkResources()
-            .getWithResponse(resourceGroupName, resourceName, sharedPrivateLinkResourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SharedPrivateLinkResource refresh(Context context) {

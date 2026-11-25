@@ -182,10 +182,7 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
     }
 
     public ImageTemplate create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualMachineImageTemplates()
-            .createOrUpdate(resourceGroupName, imageTemplateName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ImageTemplate create(Context context) {
@@ -207,10 +204,7 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
     }
 
     public ImageTemplate apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualMachineImageTemplates()
-            .update(resourceGroupName, imageTemplateName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ImageTemplate apply(Context context) {
@@ -224,16 +218,16 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
         com.azure.resourcemanager.imagebuilder.ImageBuilderManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.imageTemplateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "imageTemplates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}",
+            "resourceGroupName");
+        this.imageTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}",
+            "imageTemplateName");
     }
 
     public ImageTemplate refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualMachineImageTemplates()
-            .getByResourceGroupWithResponse(resourceGroupName, imageTemplateName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ImageTemplate refresh(Context context) {

@@ -47,7 +47,7 @@ public final class DedicatedHsmsImpl implements DedicatedHsms {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String name) {
-        this.serviceClient().delete(resourceGroupName, name);
+        this.delete(resourceGroupName, name, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String name, Context context) {
@@ -77,10 +77,7 @@ public final class DedicatedHsmsImpl implements DedicatedHsms {
 
     public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
         String name) {
-        PagedIterable<OutboundEnvironmentEndpointInner> inner
-            = this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, name);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
+        return this.listOutboundNetworkDependenciesEndpoints(resourceGroupName, name, Context.NONE);
     }
 
     public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
@@ -92,58 +89,30 @@ public final class DedicatedHsmsImpl implements DedicatedHsms {
     }
 
     public DedicatedHsm getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "dedicatedHSMs");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dedicatedHSMs'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DedicatedHsm> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "dedicatedHSMs");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dedicatedHSMs'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}",
+            "name", "dedicatedHSMs", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, name, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "dedicatedHSMs");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dedicatedHSMs'.", id)));
-        }
-        this.delete(resourceGroupName, name, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "dedicatedHSMs");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dedicatedHSMs'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}",
+            "name", "dedicatedHSMs", LOGGER);
         this.delete(resourceGroupName, name, context);
     }
 

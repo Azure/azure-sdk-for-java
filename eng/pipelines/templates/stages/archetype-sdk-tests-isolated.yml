@@ -65,6 +65,9 @@ parameters:
 - name: TestVersionSupport
   type: boolean
   default: false
+- name: IsLatestNonLtsJdk
+  type: boolean
+  default: false
 - name: CloudConfig
   type: object
   default:
@@ -165,6 +168,7 @@ stages:
               TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
               TestMode: ${{ parameters.TestMode }}
               TestVersionSupport: ${{ parameters.TestVersionSupport }}
+              IsLatestNonLtsJdk: ${{ parameters.IsLatestNonLtsJdk }}
               TestResultsFiles: ${{ parameters.TestResultsFiles }}
               DisableAzureResourceCreation: ${{ parameters.DisableAzureResourceCreation }}
               TestGoals: ${{ parameters.TestGoals }}

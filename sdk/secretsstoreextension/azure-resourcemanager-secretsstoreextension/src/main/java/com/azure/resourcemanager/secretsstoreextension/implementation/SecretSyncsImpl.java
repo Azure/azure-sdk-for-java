@@ -45,7 +45,7 @@ public final class SecretSyncsImpl implements SecretSyncs {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String secretSyncName) {
-        this.serviceClient().delete(resourceGroupName, secretSyncName);
+        this.delete(resourceGroupName, secretSyncName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String secretSyncName, Context context) {
@@ -53,8 +53,7 @@ public final class SecretSyncsImpl implements SecretSyncs {
     }
 
     public PagedIterable<SecretSync> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<SecretSyncInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SecretSyncImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<SecretSync> listByResourceGroup(String resourceGroupName, Context context) {
@@ -63,8 +62,7 @@ public final class SecretSyncsImpl implements SecretSyncs {
     }
 
     public PagedIterable<SecretSync> list() {
-        PagedIterable<SecretSyncInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SecretSyncImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<SecretSync> list(Context context) {
@@ -73,58 +71,30 @@ public final class SecretSyncsImpl implements SecretSyncs {
     }
 
     public SecretSync getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String secretSyncName = ResourceManagerUtils.getValueFromIdByName(id, "secretSyncs");
-        if (secretSyncName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'secretSyncs'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, secretSyncName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SecretSync> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String secretSyncName = ResourceManagerUtils.getValueFromIdByName(id, "secretSyncs");
-        if (secretSyncName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'secretSyncs'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/secretSyncs/{secretSyncName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String secretSyncName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/secretSyncs/{secretSyncName}",
+            "secretSyncName", "secretSyncs", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, secretSyncName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String secretSyncName = ResourceManagerUtils.getValueFromIdByName(id, "secretSyncs");
-        if (secretSyncName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'secretSyncs'.", id)));
-        }
-        this.delete(resourceGroupName, secretSyncName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String secretSyncName = ResourceManagerUtils.getValueFromIdByName(id, "secretSyncs");
-        if (secretSyncName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'secretSyncs'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/secretSyncs/{secretSyncName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String secretSyncName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/secretSyncs/{secretSyncName}",
+            "secretSyncName", "secretSyncs", LOGGER);
         this.delete(resourceGroupName, secretSyncName, context);
     }
 

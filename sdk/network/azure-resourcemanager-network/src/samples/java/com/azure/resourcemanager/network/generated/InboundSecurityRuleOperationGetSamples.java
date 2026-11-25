@@ -9,7 +9,22 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class InboundSecurityRuleOperationGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/InboundSecurityRuleGet.json
+     * x-ms-original-file: 2026-05-01/InboundSecurityRuleSourceIPGet.json
+     */
+    /**
+     * Sample code: Get a Permanent Internet Ingress rule with SourceIP load distribution.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void getAPermanentInternetIngressRuleWithSourceIPLoadDistribution(
+        com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getInboundSecurityRuleOperations()
+            .getWithResponse("rg1", "nva", "rule1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01/InboundSecurityRuleGet.json
      */
     /**
      * Sample code: Create Network Virtual Appliance Inbound Security Rules.
@@ -18,6 +33,21 @@ public final class InboundSecurityRuleOperationGetSamples {
      */
     public static void
         createNetworkVirtualApplianceInboundSecurityRules(com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getInboundSecurityRuleOperations()
+            .getWithResponse("rg1", "nva", "rule1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01/InboundSecurityRuleSourceIPProtocolGet.json
+     */
+    /**
+     * Sample code: Get a Permanent Internet Ingress rule with SourceIPProtocol load distribution.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void getAPermanentInternetIngressRuleWithSourceIPProtocolLoadDistribution(
+        com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getInboundSecurityRuleOperations()
             .getWithResponse("rg1", "nva", "rule1", com.azure.core.util.Context.NONE);

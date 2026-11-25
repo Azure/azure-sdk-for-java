@@ -99,10 +99,7 @@ public final class DedicatedHsmImpl implements DedicatedHsm, DedicatedHsm.Defini
     }
 
     public DedicatedHsm create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDedicatedHsms()
-            .createOrUpdate(resourceGroupName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DedicatedHsm create(Context context) {
@@ -125,10 +122,7 @@ public final class DedicatedHsmImpl implements DedicatedHsm, DedicatedHsm.Defini
     }
 
     public DedicatedHsm apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDedicatedHsms()
-            .update(resourceGroupName, name, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DedicatedHsm apply(Context context) {
@@ -142,16 +136,16 @@ public final class DedicatedHsmImpl implements DedicatedHsm, DedicatedHsm.Defini
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dedicatedHSMs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}",
+            "resourceGroupName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}",
+            "name");
     }
 
     public DedicatedHsm refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDedicatedHsms()
-            .getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DedicatedHsm refresh(Context context) {

@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class FabricCapacitiesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/FabricCapacities_Update.json
+     * x-ms-original-file: 2026-09-01-preview/FabricCapacities_Update.json
      */
     /**
      * Sample code: Update capacity properties.

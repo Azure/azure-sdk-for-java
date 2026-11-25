@@ -14,6 +14,7 @@ import com.azure.resourcemanager.containerservicefleet.models.GateProvisioningSt
 import com.azure.resourcemanager.containerservicefleet.models.GateState;
 import com.azure.resourcemanager.containerservicefleet.models.GateTarget;
 import com.azure.resourcemanager.containerservicefleet.models.GateType;
+import com.azure.resourcemanager.containerservicefleet.models.ScheduledStartProperties;
 import java.io.IOException;
 
 /**
@@ -145,6 +146,15 @@ public final class GateInner extends ProxyResource {
      */
     public GateType gateType() {
         return this.innerProperties() == null ? null : this.innerProperties().gateType();
+    }
+
+    /**
+     * Get the scheduledStartProperties property: Details for ScheduledStart gate.
+     * 
+     * @return the scheduledStartProperties value.
+     */
+    public ScheduledStartProperties scheduledStartProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().scheduledStartProperties();
     }
 
     /**

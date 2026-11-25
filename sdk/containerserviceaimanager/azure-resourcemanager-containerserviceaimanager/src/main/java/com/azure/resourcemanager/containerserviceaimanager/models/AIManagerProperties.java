@@ -31,6 +31,14 @@ public final class AIManagerProperties implements JsonSerializable<AIManagerProp
      */
     private String managedResourceGroupName;
 
+    /*
+     * The Azure resource ID of an existing AKS cluster to attach (bring-your-own). When omitted, AI Manager provisions
+     * and manages its own underlying cluster. The referenced cluster must be in the same region as this AI Manager, but
+     * may reside in a different subscription within the same Microsoft Entra tenant. This property is immutable after
+     * creation.
+     */
+    private String clusterResourceId;
+
     /**
      * Creates an instance of AIManagerProperties class.
      */
@@ -77,12 +85,39 @@ public final class AIManagerProperties implements JsonSerializable<AIManagerProp
     }
 
     /**
+     * Get the clusterResourceId property: The Azure resource ID of an existing AKS cluster to attach (bring-your-own).
+     * When omitted, AI Manager provisions and manages its own underlying cluster. The referenced cluster must be in the
+     * same region as this AI Manager, but may reside in a different subscription within the same Microsoft Entra
+     * tenant. This property is immutable after creation.
+     * 
+     * @return the clusterResourceId value.
+     */
+    public String clusterResourceId() {
+        return this.clusterResourceId;
+    }
+
+    /**
+     * Set the clusterResourceId property: The Azure resource ID of an existing AKS cluster to attach (bring-your-own).
+     * When omitted, AI Manager provisions and manages its own underlying cluster. The referenced cluster must be in the
+     * same region as this AI Manager, but may reside in a different subscription within the same Microsoft Entra
+     * tenant. This property is immutable after creation.
+     * 
+     * @param clusterResourceId the clusterResourceId value to set.
+     * @return the AIManagerProperties object itself.
+     */
+    public AIManagerProperties withClusterResourceId(String clusterResourceId) {
+        this.clusterResourceId = clusterResourceId;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("deletePolicy", this.deletePolicy == null ? null : this.deletePolicy.toString());
+        jsonWriter.writeStringField("clusterResourceId", this.clusterResourceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -108,6 +143,8 @@ public final class AIManagerProperties implements JsonSerializable<AIManagerProp
                     deserializedAIManagerProperties.deletePolicy = DeletePolicy.fromString(reader.getString());
                 } else if ("managedResourceGroupName".equals(fieldName)) {
                     deserializedAIManagerProperties.managedResourceGroupName = reader.getString();
+                } else if ("clusterResourceId".equals(fieldName)) {
+                    deserializedAIManagerProperties.clusterResourceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

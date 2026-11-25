@@ -202,16 +202,7 @@ public final class ProviderActionsClientImpl implements ProviderActionsClient {
         return checkNameAvailabilityWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Check if the given name is available for a report.
-     * 
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseInner>
         checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest body, Context context) {
@@ -221,15 +212,7 @@ public final class ProviderActionsClientImpl implements ProviderActionsClient {
             accept, body, context);
     }
 
-    /**
-     * Check if the given name is available for a report.
-     * 
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest body) {
         return checkNameAvailabilityWithResponse(body, Context.NONE).getValue();
@@ -269,16 +252,7 @@ public final class ProviderActionsClientImpl implements ProviderActionsClient {
         return getCollectionCountWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the count of reports.
-     * 
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the count of reports along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetCollectionCountResponseInner> getCollectionCountWithResponse(GetCollectionCountRequest body,
         Context context) {
@@ -288,15 +262,7 @@ public final class ProviderActionsClientImpl implements ProviderActionsClient {
             accept, body, context);
     }
 
-    /**
-     * Get the count of reports.
-     * 
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the count of reports.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetCollectionCountResponseInner getCollectionCount(GetCollectionCountRequest body) {
         return getCollectionCountWithResponse(body, Context.NONE).getValue();
@@ -336,16 +302,7 @@ public final class ProviderActionsClientImpl implements ProviderActionsClient {
         return getOverviewStatusWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the resource overview status.
-     * 
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource overview status along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetOverviewStatusResponseInner> getOverviewStatusWithResponse(GetOverviewStatusRequest body,
         Context context) {
@@ -355,15 +312,7 @@ public final class ProviderActionsClientImpl implements ProviderActionsClient {
             accept, body, context);
     }
 
-    /**
-     * Get the resource overview status.
-     * 
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource overview status.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetOverviewStatusResponseInner getOverviewStatus(GetOverviewStatusRequest body) {
         return getOverviewStatusWithResponse(body, Context.NONE).getValue();
@@ -399,10 +348,7 @@ public final class ProviderActionsClientImpl implements ProviderActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> onboardWithResponse(OnboardRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.onboardSync(this.client.getEndpoint(), this.client.getApiVersion(), contentType, accept, body,
-            Context.NONE);
+        return onboardWithResponse(body, Context.NONE);
     }
 
     /**
@@ -439,32 +385,13 @@ public final class ProviderActionsClientImpl implements ProviderActionsClient {
             OnboardResponseInner.class, OnboardResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Onboard given subscriptions to Microsoft.AppComplianceAutomation provider.
-     * 
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of success.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnboardResponseInner>, OnboardResponseInner> beginOnboard(OnboardRequest body) {
-        Response<BinaryData> response = onboardWithResponse(body);
-        return this.client.<OnboardResponseInner, OnboardResponseInner>getLroResult(response,
-            OnboardResponseInner.class, OnboardResponseInner.class, Context.NONE);
+        return beginOnboard(body, Context.NONE);
     }
 
-    /**
-     * Onboard given subscriptions to Microsoft.AppComplianceAutomation provider.
-     * 
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of success.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnboardResponseInner>, OnboardResponseInner> beginOnboard(OnboardRequest body,
         Context context) {
@@ -487,33 +414,16 @@ public final class ProviderActionsClientImpl implements ProviderActionsClient {
         return beginOnboardAsync(body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Onboard given subscriptions to Microsoft.AppComplianceAutomation provider.
-     * 
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return success.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnboardResponseInner onboard(OnboardRequest body) {
-        return beginOnboard(body).getFinalResult();
+        return onboard(body, Context.NONE);
     }
 
-    /**
-     * Onboard given subscriptions to Microsoft.AppComplianceAutomation provider.
-     * 
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return success.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnboardResponseInner onboard(OnboardRequest body, Context context) {
-        return beginOnboard(body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginOnboard(body, context));
     }
 
     /**
@@ -546,10 +456,7 @@ public final class ProviderActionsClientImpl implements ProviderActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> triggerEvaluationWithResponse(TriggerEvaluationRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.triggerEvaluationSync(this.client.getEndpoint(), this.client.getApiVersion(), contentType,
-            accept, body, Context.NONE);
+        return triggerEvaluationWithResponse(body, Context.NONE);
     }
 
     /**
@@ -588,33 +495,14 @@ public final class ProviderActionsClientImpl implements ProviderActionsClient {
             this.client.getContext());
     }
 
-    /**
-     * Trigger quick evaluation for the given subscriptions.
-     * 
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of trigger evaluation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerEvaluationResponseInner>, TriggerEvaluationResponseInner>
         beginTriggerEvaluation(TriggerEvaluationRequest body) {
-        Response<BinaryData> response = triggerEvaluationWithResponse(body);
-        return this.client.<TriggerEvaluationResponseInner, TriggerEvaluationResponseInner>getLroResult(response,
-            TriggerEvaluationResponseInner.class, TriggerEvaluationResponseInner.class, Context.NONE);
+        return beginTriggerEvaluation(body, Context.NONE);
     }
 
-    /**
-     * Trigger quick evaluation for the given subscriptions.
-     * 
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of trigger evaluation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerEvaluationResponseInner>, TriggerEvaluationResponseInner>
         beginTriggerEvaluation(TriggerEvaluationRequest body, Context context) {
@@ -637,33 +525,16 @@ public final class ProviderActionsClientImpl implements ProviderActionsClient {
         return beginTriggerEvaluationAsync(body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Trigger quick evaluation for the given subscriptions.
-     * 
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trigger evaluation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerEvaluationResponseInner triggerEvaluation(TriggerEvaluationRequest body) {
-        return beginTriggerEvaluation(body).getFinalResult();
+        return triggerEvaluation(body, Context.NONE);
     }
 
-    /**
-     * Trigger quick evaluation for the given subscriptions.
-     * 
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trigger evaluation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerEvaluationResponseInner triggerEvaluation(TriggerEvaluationRequest body, Context context) {
-        return beginTriggerEvaluation(body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginTriggerEvaluation(body, context));
     }
 
     /**
@@ -702,16 +573,7 @@ public final class ProviderActionsClientImpl implements ProviderActionsClient {
         return listInUseStorageAccountsWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List the storage accounts which are in use by related reports.
-     * 
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters for listing in use storage accounts operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListInUseStorageAccountsResponseInner>
         listInUseStorageAccountsWithResponse(ListInUseStorageAccountsRequest body, Context context) {
@@ -721,15 +583,7 @@ public final class ProviderActionsClientImpl implements ProviderActionsClient {
             accept, body, context);
     }
 
-    /**
-     * List the storage accounts which are in use by related reports.
-     * 
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters for listing in use storage accounts operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListInUseStorageAccountsResponseInner listInUseStorageAccounts(ListInUseStorageAccountsRequest body) {
         return listInUseStorageAccountsWithResponse(body, Context.NONE).getValue();

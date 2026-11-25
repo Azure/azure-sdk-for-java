@@ -4,7 +4,10 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.util.BlobLayoutCacheValue;
+import com.azure.storage.blob.implementation.util.BlobLayoutRangeResolver;
 import com.azure.storage.blob.implementation.util.ByteBufferBackedOutputStreamUtil;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -12,9 +15,12 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DownloadRetryOptions;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
@@ -23,6 +29,8 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
 
     private final BlobClientBase client;
     private final BlobRequestConditions requestConditions;
+    private final AutoRefreshingCache<BlobLayoutCacheValue> layoutCache;
+    private final Context context;
 
     private long resourceLength;
 
@@ -43,11 +51,19 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
      */
     StorageSeekableByteChannelBlobReadBehavior(BlobClientBase client, ByteBuffer initialBuffer,
         long initialBufferPosition, long resourceLength, BlobRequestConditions requestConditions) {
+        this(client, initialBuffer, initialBufferPosition, resourceLength, requestConditions, null, null);
+    }
+
+    StorageSeekableByteChannelBlobReadBehavior(BlobClientBase client, ByteBuffer initialBuffer,
+        long initialBufferPosition, long resourceLength, BlobRequestConditions requestConditions,
+        AutoRefreshingCache<BlobLayoutCacheValue> layoutCache, Context context) {
         this.client = Objects.requireNonNull(client);
         this.initialBuffer = Objects.requireNonNull(initialBuffer);
         this.initialBufferPosition = initialBufferPosition;
         this.resourceLength = resourceLength;
         this.requestConditions = requestConditions;
+        this.layoutCache = layoutCache;
+        this.context = context;
     }
 
     BlobClientBase getClient() {
@@ -80,12 +96,19 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
             return -1;
         }
 
+        Context callContext = context;
+        if (layoutCache != null) {
+            BlobLayoutCacheValue cached = layoutCache.getValidValueSync();
+            URI endpoint = BlobLayoutRangeResolver.resolveEndpoint(sourceOffset, cached.getRanges());
+            callContext = StorageImplUtils.addDataLocalityEndpoint(context, endpoint);
+        }
+
         int initialPosition = dst.position();
 
         try (ByteBufferBackedOutputStreamUtil dstStream = new ByteBufferBackedOutputStreamUtil(dst)) {
             BlobDownloadResponse response
                 = client.downloadStreamWithResponse(dstStream, new BlobRange(sourceOffset, (long) dst.remaining()),
-                    new DownloadRetryOptions(), requestConditions, false, null, null);
+                    new DownloadRetryOptions(), requestConditions, false, null, callContext);
             resourceLength = CoreUtils.extractSizeFromContentRange(response.getDeserializedHeaders().getContentRange());
             return dst.position() - initialPosition;
         } catch (BlobStorageException e) {

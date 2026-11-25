@@ -110,10 +110,7 @@ public final class DtlEnvironmentImpl implements DtlEnvironment, DtlEnvironment.
     }
 
     public DtlEnvironment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnvironments()
-            .createOrUpdate(resourceGroupName, labName, userName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DtlEnvironment create(Context context) {
@@ -135,11 +132,7 @@ public final class DtlEnvironmentImpl implements DtlEnvironment, DtlEnvironment.
     }
 
     public DtlEnvironment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnvironments()
-            .updateWithResponse(resourceGroupName, labName, userName, name, updateDtlEnvironment, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DtlEnvironment apply(Context context) {
@@ -154,19 +147,22 @@ public final class DtlEnvironmentImpl implements DtlEnvironment, DtlEnvironment.
         com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
-        this.userName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "users");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "environments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/environments/{name}",
+            "resourceGroupName");
+        this.labName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/environments/{name}",
+            "labName");
+        this.userName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/environments/{name}",
+            "userName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/environments/{name}",
+            "name");
     }
 
     public DtlEnvironment refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getEnvironments()
-            .getWithResponse(resourceGroupName, labName, userName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DtlEnvironment refresh(Context context) {

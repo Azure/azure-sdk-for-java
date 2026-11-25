@@ -89,10 +89,7 @@ public final class AccessConnectorImpl implements AccessConnector, AccessConnect
     }
 
     public AccessConnector create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessConnectors()
-            .createOrUpdate(resourceGroupName, connectorName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AccessConnector create(Context context) {
@@ -114,10 +111,7 @@ public final class AccessConnectorImpl implements AccessConnector, AccessConnect
     }
 
     public AccessConnector apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessConnectors()
-            .update(resourceGroupName, connectorName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AccessConnector apply(Context context) {
@@ -131,16 +125,16 @@ public final class AccessConnectorImpl implements AccessConnector, AccessConnect
         com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.connectorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accessConnectors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}",
+            "resourceGroupName");
+        this.connectorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}",
+            "connectorName");
     }
 
     public AccessConnector refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessConnectors()
-            .getByResourceGroupWithResponse(resourceGroupName, connectorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AccessConnector refresh(Context context) {

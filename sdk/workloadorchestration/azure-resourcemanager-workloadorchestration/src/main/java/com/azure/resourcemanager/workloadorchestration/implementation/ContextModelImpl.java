@@ -85,10 +85,7 @@ public final class ContextModelImpl implements ContextModel, ContextModel.Defini
     }
 
     public ContextModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContexts()
-            .createOrUpdate(resourceGroupName, contextName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ContextModel create(Context context) {
@@ -111,10 +108,7 @@ public final class ContextModelImpl implements ContextModel, ContextModel.Defini
     }
 
     public ContextModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContexts()
-            .update(resourceGroupName, contextName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ContextModel apply(Context context) {
@@ -128,16 +122,16 @@ public final class ContextModelImpl implements ContextModel, ContextModel.Defini
         com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.contextName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "contexts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}",
+            "resourceGroupName");
+        this.contextName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}",
+            "contextName");
     }
 
     public ContextModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContexts()
-            .getByResourceGroupWithResponse(resourceGroupName, contextName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ContextModel refresh(Context context) {

@@ -1,0 +1,69 @@
+name: Validate documentation
+
+# Keep check-spelling.yml until the required-check migration is complete.
+on:
+  pull_request:
+    # Keep this list aligned with eng/pipelines/pullrequest.yml.
+    branches:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+
+concurrency:
+  group: ${{ github.workflow }}-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate-documentation:
+    name: Validate documentation
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 2
+
+      - name: Use Node.js 24
+        id: node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: eng/common/spelling/package-lock.json
+
+      - name: Prepare shared PR validation inputs
+        id: inputs
+        if: ${{ !cancelled() && steps.checkout.outcome == 'success' }}
+        shell: pwsh
+        env:
+          PR_VALIDATION_DIRECTORY: ${{ runner.temp }}/pr-validation
+        run: ./eng/scripts/Save-PRValidationInputs.ps1 -OutputDirectory $env:PR_VALIDATION_DIRECTORY
+
+      - name: Check spelling
+        id: spelling
+        if: ${{ !cancelled() && steps.inputs.outcome == 'success' && steps.node.outcome == 'success' }}
+        shell: pwsh
+        env:
+          PR_VALIDATION_DIRECTORY: ${{ runner.temp }}/pr-validation
+        run: ./eng/scripts/Invoke-PRValidation.ps1 -Check Spelling -OutputDirectory $env:PR_VALIDATION_DIRECTORY
+
+      - name: Verify changelogs
+        id: changelogs
+        if: ${{ !cancelled() && steps.inputs.outcome == 'success' }}
+        shell: pwsh
+        env:
+          PR_VALIDATION_DIRECTORY: ${{ runner.temp }}/pr-validation
+        run: ./eng/scripts/Invoke-PRValidation.ps1 -Check Changelogs -OutputDirectory $env:PR_VALIDATION_DIRECTORY
+
+      - name: Report validation results
+        if: ${{ !cancelled() }}
+        shell: pwsh
+        env:
+          PR_VALIDATION_DIRECTORY: ${{ runner.temp }}/pr-validation
+          PR_VALIDATION_STEPS: ${{ toJSON(steps) }}
+        run: ./eng/scripts/Complete-PRValidation.ps1 -OutputDirectory $env:PR_VALIDATION_DIRECTORY

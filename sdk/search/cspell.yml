@@ -6,6 +6,7 @@
 version: "0.2"
 import:
   - ../../.vscode/cspell.json
+  - ./azure-search-documents/cspell.json
 words:
   - abordable
   - adlsgen
@@ -32,6 +33,7 @@ words:
   - chhattisgarhi
   - coffe
   - complète
+  - covariantly
   - côté
   - cœur
   - d'autres

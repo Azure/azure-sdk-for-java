@@ -94,10 +94,7 @@ public final class ConfigTemplateImpl implements ConfigTemplate, ConfigTemplate.
     }
 
     public ConfigTemplate create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigTemplates()
-            .createOrUpdate(resourceGroupName, configTemplateName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ConfigTemplate create(Context context) {
@@ -120,11 +117,7 @@ public final class ConfigTemplateImpl implements ConfigTemplate, ConfigTemplate.
     }
 
     public ConfigTemplate apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigTemplates()
-            .updateWithResponse(resourceGroupName, configTemplateName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ConfigTemplate apply(Context context) {
@@ -139,16 +132,16 @@ public final class ConfigTemplateImpl implements ConfigTemplate, ConfigTemplate.
         com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.configTemplateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configTemplates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}",
+            "resourceGroupName");
+        this.configTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}",
+            "configTemplateName");
     }
 
     public ConfigTemplate refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigTemplates()
-            .getByResourceGroupWithResponse(resourceGroupName, configTemplateName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ConfigTemplate refresh(Context context) {

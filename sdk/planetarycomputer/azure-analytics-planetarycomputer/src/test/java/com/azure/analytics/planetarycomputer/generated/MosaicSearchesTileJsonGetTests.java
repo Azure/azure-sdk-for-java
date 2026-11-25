@@ -4,8 +4,16 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.ColorMapNames;
+import com.azure.analytics.planetarycomputer.models.PixelSelection;
+import com.azure.analytics.planetarycomputer.models.Resampling;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
+import com.azure.analytics.planetarycomputer.models.TerrainAlgorithm;
 import com.azure.analytics.planetarycomputer.models.TileAddressingScheme;
 import com.azure.analytics.planetarycomputer.models.TileJsonMetadata;
+import com.azure.analytics.planetarycomputer.models.TileMatrixSetId;
+import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -18,10 +26,14 @@ public final class MosaicSearchesTileJsonGetTests extends PlanetaryComputerProCl
     @Disabled
     public void testMosaicSearchesTileJsonGetTests() {
         // method invocation
-        TileJsonMetadata response
-            = dataClient.getSearchTileJson("ba13fc7947b9b585690d84ee61aaa653", null, Arrays.asList("image"), null, null,
-                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        TileJsonMetadata response = dataClient.getSearchTileJson("ba13fc7947b9b585690d84ee61aaa653",
+            (List<Integer>) null, Arrays.asList("image"), (String) null, (List<String>) null, (Boolean) null,
+            (String) null, (Boolean) null, (WarpKernelResampling) null, (Integer) null, (Integer) null, (Integer) null,
+            (Boolean) null, (Boolean) null, (String) null, (List<Integer>) null, (String) null, (String) null,
+            (List<String>) null, (SelMethod) null, (TileMatrixSetId) null, (TilerImageFormat) null, (Integer) null,
+            (Integer) null, (Integer) null, (Integer) null, (Double) null, (String) null, (String) null,
+            (Resampling) null, (PixelSelection) null, (TerrainAlgorithm) null, (String) null, (List<String>) null,
+            (ColorMapNames) null, (String) null, (Boolean) null);
 
         // response assertion
         Assertions.assertNotNull(response);

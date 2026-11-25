@@ -6,6 +6,9 @@ package com.azure.resourcemanager.appnetwork.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appnetwork.models.AppLinkUpdate;
+import com.azure.resourcemanager.appnetwork.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.appnetwork.models.ManagedServiceIdentityUpdate;
+import com.azure.resourcemanager.appnetwork.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -13,19 +16,24 @@ import org.junit.jupiter.api.Assertions;
 public final class AppLinkUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AppLinkUpdate model = BinaryData
-            .fromString(
-                "{\"tags\":{\"ypininm\":\"jkjlxofpdvhpfx\",\"po\":\"yhuybbkpod\",\"ognarxzxtheotus\":\"ginuvamih\"}}")
+        AppLinkUpdate model = BinaryData.fromString(
+            "{\"tags\":{\"ypininm\":\"jkjlxofpdvhpfx\",\"po\":\"yhuybbkpod\",\"ognarxzxtheotus\":\"ginuvamih\"},\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"nfygxgispemvtz\":{\"principalId\":\"iqihn\",\"clientId\":\"ngbwjz\"},\"aeqjhqjbasvms\":{\"principalId\":\"ufubl\",\"clientId\":\"fxqeof\"},\"douskcqvkocrcjdk\":{\"principalId\":\"qulngsntnbybkzgc\",\"clientId\":\"wclxxwrl\"},\"p\":{\"principalId\":\"nh\",\"clientId\":\"njbiksqrglssain\"}}}}")
             .toObject(AppLinkUpdate.class);
         Assertions.assertEquals("jkjlxofpdvhpfx", model.tags().get("ypininm"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AppLinkUpdate model = new AppLinkUpdate()
-            .withTags(mapOf("ypininm", "jkjlxofpdvhpfx", "po", "yhuybbkpod", "ognarxzxtheotus", "ginuvamih"));
+            .withTags(mapOf("ypininm", "jkjlxofpdvhpfx", "po", "yhuybbkpod", "ognarxzxtheotus", "ginuvamih"))
+            .withIdentity(new ManagedServiceIdentityUpdate().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("nfygxgispemvtz", new UserAssignedIdentity(), "aeqjhqjbasvms", new UserAssignedIdentity(),
+                        "douskcqvkocrcjdk", new UserAssignedIdentity(), "p", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(AppLinkUpdate.class);
         Assertions.assertEquals("jkjlxofpdvhpfx", model.tags().get("ypininm"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

@@ -175,19 +175,7 @@ public final class CloudHsmClusterPrivateEndpointConnectionsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the private endpoint connection for the Cloud Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param peConnectionName Name of the private endpoint connection associated with the Cloud HSM Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection for the Cloud Hsm Cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName,
         String cloudHsmClusterName, String peConnectionName, Context context) {
@@ -196,18 +184,7 @@ public final class CloudHsmClusterPrivateEndpointConnectionsClientImpl
             resourceGroupName, cloudHsmClusterName, peConnectionName, accept, context);
     }
 
-    /**
-     * Gets the private endpoint connection for the Cloud Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param peConnectionName Name of the private endpoint connection associated with the Cloud HSM Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection for the Cloud Hsm Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner get(String resourceGroupName, String cloudHsmClusterName,
         String peConnectionName) {
@@ -260,20 +237,7 @@ public final class CloudHsmClusterPrivateEndpointConnectionsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the private endpoint connection for the Cloud Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param peConnectionName Name of the private endpoint connection associated with the Cloud HSM Cluster.
-     * @param properties Parameters of the PrivateEndpointConnection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> createWithResponse(String resourceGroupName,
         String cloudHsmClusterName, String peConnectionName, PrivateEndpointConnectionInner properties,
@@ -285,19 +249,7 @@ public final class CloudHsmClusterPrivateEndpointConnectionsClientImpl
             accept, properties, context);
     }
 
-    /**
-     * Creates or updates the private endpoint connection for the Cloud Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param peConnectionName Name of the private endpoint connection associated with the Cloud HSM Cluster.
-     * @param properties Parameters of the PrivateEndpointConnection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner create(String resourceGroupName, String cloudHsmClusterName,
         String peConnectionName, PrivateEndpointConnectionInner properties) {
@@ -341,8 +293,7 @@ public final class CloudHsmClusterPrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cloudHsmClusterName,
         String peConnectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, peConnectionName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, cloudHsmClusterName, peConnectionName, Context.NONE);
     }
 
     /**
@@ -386,38 +337,14 @@ public final class CloudHsmClusterPrivateEndpointConnectionsClientImpl
             this.client.getContext());
     }
 
-    /**
-     * Deletes the private endpoint connection for the Cloud Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param peConnectionName Name of the private endpoint connection associated with the Cloud HSM Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudHsmClusterName,
         String peConnectionName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, cloudHsmClusterName, peConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, cloudHsmClusterName, peConnectionName, Context.NONE);
     }
 
-    /**
-     * Deletes the private endpoint connection for the Cloud Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param peConnectionName Name of the private endpoint connection associated with the Cloud HSM Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudHsmClusterName,
         String peConnectionName, Context context) {
@@ -444,36 +371,16 @@ public final class CloudHsmClusterPrivateEndpointConnectionsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the private endpoint connection for the Cloud Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param peConnectionName Name of the private endpoint connection associated with the Cloud HSM Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudHsmClusterName, String peConnectionName) {
-        beginDelete(resourceGroupName, cloudHsmClusterName, peConnectionName).getFinalResult();
+        delete(resourceGroupName, cloudHsmClusterName, peConnectionName, Context.NONE);
     }
 
-    /**
-     * Deletes the private endpoint connection for the Cloud Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param peConnectionName Name of the private endpoint connection associated with the Cloud HSM Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudHsmClusterName, String peConnectionName, Context context) {
-        beginDelete(resourceGroupName, cloudHsmClusterName, peConnectionName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, cloudHsmClusterName, peConnectionName, context));
     }
 }

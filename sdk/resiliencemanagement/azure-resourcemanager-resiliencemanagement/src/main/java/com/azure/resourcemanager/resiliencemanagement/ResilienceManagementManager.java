@@ -32,7 +32,6 @@ import com.azure.resourcemanager.resiliencemanagement.implementation.DrillsImpl;
 import com.azure.resourcemanager.resiliencemanagement.implementation.EnrollmentsImpl;
 import com.azure.resourcemanager.resiliencemanagement.implementation.GoalAssignmentsImpl;
 import com.azure.resourcemanager.resiliencemanagement.implementation.GoalResourcesImpl;
-import com.azure.resourcemanager.resiliencemanagement.implementation.GoalTemplatesImpl;
 import com.azure.resourcemanager.resiliencemanagement.implementation.OperationStatusImpl;
 import com.azure.resourcemanager.resiliencemanagement.implementation.OperationsImpl;
 import com.azure.resourcemanager.resiliencemanagement.implementation.RecoveryJobResourcesImpl;
@@ -50,7 +49,6 @@ import com.azure.resourcemanager.resiliencemanagement.models.Drills;
 import com.azure.resourcemanager.resiliencemanagement.models.Enrollments;
 import com.azure.resourcemanager.resiliencemanagement.models.GoalAssignments;
 import com.azure.resourcemanager.resiliencemanagement.models.GoalResources;
-import com.azure.resourcemanager.resiliencemanagement.models.GoalTemplates;
 import com.azure.resourcemanager.resiliencemanagement.models.OperationStatus;
 import com.azure.resourcemanager.resiliencemanagement.models.Operations;
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryJobResources;
@@ -77,8 +75,6 @@ public final class ResilienceManagementManager {
     private OperationStatus operationStatus;
 
     private GoalAssignments goalAssignments;
-
-    private GoalTemplates goalTemplates;
 
     private GoalResources goalResources;
 
@@ -355,18 +351,6 @@ public final class ResilienceManagementManager {
             this.goalAssignments = new GoalAssignmentsImpl(clientObject.getGoalAssignments(), this);
         }
         return goalAssignments;
-    }
-
-    /**
-     * Gets the resource collection API of GoalTemplates.
-     * 
-     * @return Resource collection API of GoalTemplates.
-     */
-    public GoalTemplates goalTemplates() {
-        if (this.goalTemplates == null) {
-            this.goalTemplates = new GoalTemplatesImpl(clientObject.getGoalTemplates(), this);
-        }
-        return goalTemplates;
     }
 
     /**

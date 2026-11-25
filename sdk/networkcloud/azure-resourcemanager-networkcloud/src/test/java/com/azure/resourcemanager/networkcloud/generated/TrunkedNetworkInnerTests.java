@@ -18,38 +18,37 @@ public final class TrunkedNetworkInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrunkedNetworkInner model = BinaryData.fromString(
-            "{\"properties\":{\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"slwkojpl\",\"isolationDomainIds\":[\"dnpdwrpqaf\",\"fugsnnfhyetefy\",\"oc\",\"ctfjgtixr\"],\"vlans\":[3731882443821848818,418846037583136212,7262703039995760177],\"associatedResourceIds\":[\"muowolbauiro\",\"ionszonwp\"],\"clusterId\":\"ajinnixjawrtmjfj\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"xlzhcoxovnekh\",\"hybridAksClustersAssociatedIds\":[\"usfnr\",\"tjxtxr\",\"cq\",\"jvidttge\"],\"virtualMachinesAssociatedIds\":[\"lvyjtcvuwkas\",\"zies\",\"uughtuqfecjxeyg\",\"uhxu\"],\"provisioningState\":\"Canceled\"},\"etag\":\"ewmrswnjlxu\",\"extendedLocation\":{\"name\":\"rhwpus\",\"type\":\"CustomLocation\"},\"location\":\"aqehg\",\"tags\":{\"xncnwfe\":\"hzjqatucoige\",\"cgbjbgdlfgt\":\"bnwgfmxj\",\"naquflq\":\"y\",\"zeqyjleziun\":\"ctqhamzjrwdk\"},\"id\":\"xdfzantkw\",\"name\":\"eg\",\"type\":\"amlbnseqacjjvpil\"}")
+            "{\"properties\":{\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"bgdlfgtdysna\",\"isolationDomainIds\":[\"flq\",\"ctqhamzjrwdk\"],\"vlans\":[3925305951000575816,1926968686358266429,6056265535523664651],\"associatedResourceIds\":[\"u\",\"jxdfzantkwcegya\"],\"clusterId\":\"bnseqacjjvpilg\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"jagmdi\",\"hybridAksClustersAssociatedIds\":[\"eiookjbsah\"],\"virtualMachinesAssociatedIds\":[\"tpdelqa\"],\"provisioningState\":\"Canceled\"},\"etag\":\"otoebnfxofv\",\"extendedLocation\":{\"name\":\"jkgd\",\"type\":\"CustomLocation\"},\"location\":\"zft\",\"tags\":{\"bmdujtmvcopexc\":\"w\",\"gtuwkff\":\"jurbuhhlkyqltqsr\"},\"id\":\"jk\",\"name\":\"sysidfvclglxnf\",\"type\":\"ijtk\"}")
             .toObject(TrunkedNetworkInner.class);
-        Assertions.assertEquals("aqehg", model.location());
-        Assertions.assertEquals("hzjqatucoige", model.tags().get("xncnwfe"));
-        Assertions.assertEquals("rhwpus", model.extendedLocation().name());
+        Assertions.assertEquals("zft", model.location());
+        Assertions.assertEquals("w", model.tags().get("bmdujtmvcopexc"));
+        Assertions.assertEquals("jkgd", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.DPDK, model.hybridAksPluginType());
-        Assertions.assertEquals("slwkojpl", model.interfaceName());
-        Assertions.assertEquals("dnpdwrpqaf", model.isolationDomainIds().get(0));
-        Assertions.assertEquals(3731882443821848818L, model.vlans().get(0));
+        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, model.hybridAksPluginType());
+        Assertions.assertEquals("bgdlfgtdysna", model.interfaceName());
+        Assertions.assertEquals("flq", model.isolationDomainIds().get(0));
+        Assertions.assertEquals(3925305951000575816L, model.vlans().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrunkedNetworkInner model = new TrunkedNetworkInner().withLocation("aqehg")
-            .withTags(mapOf("xncnwfe", "hzjqatucoige", "cgbjbgdlfgt", "bnwgfmxj", "naquflq", "y", "zeqyjleziun",
-                "ctqhamzjrwdk"))
+        TrunkedNetworkInner model = new TrunkedNetworkInner().withLocation("zft")
+            .withTags(mapOf("bmdujtmvcopexc", "w", "gtuwkff", "jurbuhhlkyqltqsr"))
             .withExtendedLocation(
-                new ExtendedLocation().withName("rhwpus").withType(ExtendedLocationType.CUSTOM_LOCATION))
-            .withHybridAksPluginType(HybridAksPluginType.DPDK)
-            .withInterfaceName("slwkojpl")
-            .withIsolationDomainIds(Arrays.asList("dnpdwrpqaf", "fugsnnfhyetefy", "oc", "ctfjgtixr"))
-            .withVlans(Arrays.asList(3731882443821848818L, 418846037583136212L, 7262703039995760177L));
+                new ExtendedLocation().withName("jkgd").withType(ExtendedLocationType.CUSTOM_LOCATION))
+            .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
+            .withInterfaceName("bgdlfgtdysna")
+            .withIsolationDomainIds(Arrays.asList("flq", "ctqhamzjrwdk"))
+            .withVlans(Arrays.asList(3925305951000575816L, 1926968686358266429L, 6056265535523664651L));
         model = BinaryData.fromObject(model).toObject(TrunkedNetworkInner.class);
-        Assertions.assertEquals("aqehg", model.location());
-        Assertions.assertEquals("hzjqatucoige", model.tags().get("xncnwfe"));
-        Assertions.assertEquals("rhwpus", model.extendedLocation().name());
+        Assertions.assertEquals("zft", model.location());
+        Assertions.assertEquals("w", model.tags().get("bmdujtmvcopexc"));
+        Assertions.assertEquals("jkgd", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.DPDK, model.hybridAksPluginType());
-        Assertions.assertEquals("slwkojpl", model.interfaceName());
-        Assertions.assertEquals("dnpdwrpqaf", model.isolationDomainIds().get(0));
-        Assertions.assertEquals(3731882443821848818L, model.vlans().get(0));
+        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, model.hybridAksPluginType());
+        Assertions.assertEquals("bgdlfgtdysna", model.interfaceName());
+        Assertions.assertEquals("flq", model.isolationDomainIds().get(0));
+        Assertions.assertEquals(3925305951000575816L, model.vlans().get(0));
     }
 
     // Use "Map.of" if available

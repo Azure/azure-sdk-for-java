@@ -10,7 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.compute.recommender.ComputeRecommenderManager;
-import com.azure.resourcemanager.compute.recommender.models.ComputeDiagnosticBase;
+import com.azure.resourcemanager.compute.recommender.models.SpotPlacementScoresBase;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +21,7 @@ public final class SpotPlacementScoresGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"supportedResourceTypes\":[\"nc\",\"cpecfvmmcoofs\",\"lzevgbmqjqab\",\"y\"]},\"id\":\"ivkwlzuvccfwnfnb\",\"name\":\"cfionl\",\"type\":\"bxetqgtzxdpn\"}";
+            = "{\"properties\":{\"supportedResourceTypes\":[\"fmxa\"]},\"id\":\"fjpgddtocjjxhvp\",\"name\":\"o\",\"type\":\"exhd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +30,10 @@ public final class SpotPlacementScoresGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ComputeDiagnosticBase response
-            = manager.spotPlacementScores().getWithResponse("rvynhzgpph", com.azure.core.util.Context.NONE).getValue();
+        SpotPlacementScoresBase response = manager.spotPlacementScores()
+            .getWithResponse("bkbfkgukdkex", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("nc", response.properties().supportedResourceTypes().get(0));
+        Assertions.assertEquals("fmxa", response.properties().supportedResourceTypes().get(0));
     }
 }

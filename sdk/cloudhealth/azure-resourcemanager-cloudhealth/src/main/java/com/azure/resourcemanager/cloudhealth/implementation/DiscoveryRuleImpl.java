@@ -60,10 +60,7 @@ public final class DiscoveryRuleImpl implements DiscoveryRule, DiscoveryRule.Def
     }
 
     public DiscoveryRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDiscoveryRules()
-            .createOrUpdate(resourceGroupName, healthModelName, discoveryRuleName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DiscoveryRule create(Context context) {
@@ -84,10 +81,7 @@ public final class DiscoveryRuleImpl implements DiscoveryRule, DiscoveryRule.Def
     }
 
     public DiscoveryRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDiscoveryRules()
-            .createOrUpdate(resourceGroupName, healthModelName, discoveryRuleName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DiscoveryRule apply(Context context) {
@@ -101,17 +95,19 @@ public final class DiscoveryRuleImpl implements DiscoveryRule, DiscoveryRule.Def
         com.azure.resourcemanager.cloudhealth.CloudHealthManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.healthModelName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "healthmodels");
-        this.discoveryRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "discoveryrules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}",
+            "resourceGroupName");
+        this.healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}",
+            "healthModelName");
+        this.discoveryRuleName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}",
+            "discoveryRuleName");
     }
 
     public DiscoveryRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDiscoveryRules()
-            .getWithResponse(resourceGroupName, healthModelName, discoveryRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DiscoveryRule refresh(Context context) {

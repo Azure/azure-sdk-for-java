@@ -20,7 +20,7 @@ public final class ClustersListZonesWithResponseMockTests {
     @Test
     public void testListZonesWithResponse() throws Exception {
         String responseStr
-            = "{\"zones\":[{\"hosts\":[\"gqjxgpnrhgovfgp\",\"kqmhhaowjr\",\"zvuporqzdfuydz\"],\"zone\":\"fvxcnqmxqpswo\"},{\"hosts\":[\"khlg\",\"dhbemzqkzszu\",\"iwtglxxhljfpg\"],\"zone\":\"crmnzhrgmqgjs\"},{\"hosts\":[\"qcbfrmbodths\",\"qgvriibakcla\",\"jfrnxousxauzlwv\",\"gmwohqfzizvu\"],\"zone\":\"mk\"},{\"hosts\":[\"thnwpzte\"],\"zone\":\"vmribiat\"}]}";
+            = "{\"zones\":[{\"hosts\":[\"zgb\"],\"zone\":\"edm\"},{\"hosts\":[\"vnlvxbcuiiznktwf\",\"nsnvpd\",\"bmikost\",\"z\"],\"zone\":\"iwbuqny\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ClustersListZonesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClusterZoneList response = manager.clusters()
-            .listZonesWithResponse("zvuqdflvon", "yp", "pubcpzgpxtivhjk", com.azure.core.util.Context.NONE)
+            .listZonesWithResponse("dmspof", "pv", "hryl", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

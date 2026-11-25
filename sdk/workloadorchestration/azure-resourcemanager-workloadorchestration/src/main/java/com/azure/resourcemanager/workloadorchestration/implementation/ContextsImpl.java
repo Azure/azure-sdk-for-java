@@ -45,8 +45,7 @@ public final class ContextsImpl implements Contexts {
     }
 
     public PagedIterable<ContextModel> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ContextInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContextModelImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<ContextModel> listByResourceGroup(String resourceGroupName, Context context) {
@@ -55,8 +54,7 @@ public final class ContextsImpl implements Contexts {
     }
 
     public PagedIterable<ContextModel> list() {
-        PagedIterable<ContextInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContextModelImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ContextModel> list(Context context) {
@@ -65,7 +63,7 @@ public final class ContextsImpl implements Contexts {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String contextName) {
-        this.serviceClient().delete(resourceGroupName, contextName);
+        this.delete(resourceGroupName, contextName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String contextName, Context context) {
@@ -73,58 +71,30 @@ public final class ContextsImpl implements Contexts {
     }
 
     public ContextModel getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String contextName = ResourceManagerUtils.getValueFromIdByName(id, "contexts");
-        if (contextName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'contexts'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, contextName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ContextModel> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String contextName = ResourceManagerUtils.getValueFromIdByName(id, "contexts");
-        if (contextName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'contexts'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String contextName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}",
+            "contextName", "contexts", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, contextName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String contextName = ResourceManagerUtils.getValueFromIdByName(id, "contexts");
-        if (contextName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'contexts'.", id)));
-        }
-        this.delete(resourceGroupName, contextName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String contextName = ResourceManagerUtils.getValueFromIdByName(id, "contexts");
-        if (contextName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'contexts'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String contextName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}",
+            "contextName", "contexts", LOGGER);
         this.delete(resourceGroupName, contextName, context);
     }
 

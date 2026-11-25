@@ -30,7 +30,9 @@ public final class WebSearchToolboxTool extends ToolboxTool {
     private WebSearchToolFilters filters;
 
     /*
-     * The user_location property.
+     * The approximate location of the user. If omitted or null, defaults to the
+     * United States. To avoid this fallback, pass `{"type": "approximate"}` without
+     * location fields. To localize results, provide the relevant location fields.
      */
     @Generated
     private WebSearchApproximateLocation userLocation;
@@ -90,7 +92,9 @@ public final class WebSearchToolboxTool extends ToolboxTool {
     }
 
     /**
-     * Get the userLocation property: The user_location property.
+     * Get the userLocation property: The approximate location of the user. If omitted or null, defaults to the
+     * United States. To avoid this fallback, pass `{"type": "approximate"}` without
+     * location fields. To localize results, provide the relevant location fields.
      *
      * @return the userLocation value.
      */
@@ -100,7 +104,9 @@ public final class WebSearchToolboxTool extends ToolboxTool {
     }
 
     /**
-     * Set the userLocation property: The user_location property.
+     * Set the userLocation property: The approximate location of the user. If omitted or null, defaults to the
+     * United States. To avoid this fallback, pass `{"type": "approximate"}` without
+     * location fields. To localize results, provide the relevant location fields.
      *
      * @param userLocation the userLocation value to set.
      * @return the WebSearchToolboxTool object itself.
@@ -202,6 +208,7 @@ public final class WebSearchToolboxTool extends ToolboxTool {
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("tool_configs", getToolConfigs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeBooleanField("external_web_access", this.externalWebAccess);
         jsonWriter.writeJsonField("filters", this.filters);
         jsonWriter.writeJsonField("user_location", this.userLocation);
         jsonWriter.writeStringField("search_context_size",
@@ -234,6 +241,8 @@ public final class WebSearchToolboxTool extends ToolboxTool {
                     deserializedWebSearchToolboxTool.setToolConfigs(toolConfigs);
                 } else if ("type".equals(fieldName)) {
                     deserializedWebSearchToolboxTool.type = ToolboxToolType.fromString(reader.getString());
+                } else if ("external_web_access".equals(fieldName)) {
+                    deserializedWebSearchToolboxTool.externalWebAccess = reader.getNullable(JsonReader::getBoolean);
                 } else if ("filters".equals(fieldName)) {
                     deserializedWebSearchToolboxTool.filters = WebSearchToolFilters.fromJson(reader);
                 } else if ("user_location".equals(fieldName)) {
@@ -250,5 +259,36 @@ public final class WebSearchToolboxTool extends ToolboxTool {
             }
             return deserializedWebSearchToolboxTool;
         });
+    }
+
+    /*
+     * Allow live internet access for web search. Defaults to true when omitted. When false, the web search tool runs in
+     * offline/cache-only mode and will not fetch new external content.
+     */
+    @Generated
+    private Boolean externalWebAccess;
+
+    /**
+     * Get the externalWebAccess property: Allow live internet access for web search. Defaults to true when omitted.
+     * When false, the web search tool runs in offline/cache-only mode and will not fetch new external content.
+     *
+     * @return the externalWebAccess value.
+     */
+    @Generated
+    public Boolean isExternalWebAccess() {
+        return this.externalWebAccess;
+    }
+
+    /**
+     * Set the externalWebAccess property: Allow live internet access for web search. Defaults to true when omitted.
+     * When false, the web search tool runs in offline/cache-only mode and will not fetch new external content.
+     *
+     * @param externalWebAccess the externalWebAccess value to set.
+     * @return the WebSearchToolboxTool object itself.
+     */
+    @Generated
+    public WebSearchToolboxTool setExternalWebAccess(Boolean externalWebAccess) {
+        this.externalWebAccess = externalWebAccess;
+        return this;
     }
 }

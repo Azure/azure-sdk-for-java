@@ -13,9 +13,12 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.micrometer.core.instrument.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,6 +54,8 @@ public class StoreResponseDiagnostics {
     private final String faultInjectionRuleId;
     private final List<String> faultInjectionEvaluationResults;
     private final String endpoint;
+    private final URI requestUri;
+    private final Tag serviceEndpointMetricTag;
     private final String requestThroughputControlGroupName;
     private final String requestThroughputControlGroupConfig;
 
@@ -65,7 +70,15 @@ public class StoreResponseDiagnostics {
         CosmosException cosmosException,
         RxDocumentServiceRequest rxDocumentServiceRequest) {
 
-        return new StoreResponseDiagnostics(cosmosException, rxDocumentServiceRequest);
+        return new StoreResponseDiagnostics(cosmosException, rxDocumentServiceRequest, null);
+    }
+
+    public static StoreResponseDiagnostics createStoreResponseDiagnostics(
+        CosmosException cosmosException,
+        RxDocumentServiceRequest rxDocumentServiceRequest,
+        Tag serviceEndpointMetricTag) {
+
+        return new StoreResponseDiagnostics(cosmosException, rxDocumentServiceRequest, serviceEndpointMetricTag);
     }
 
     private StoreResponseDiagnostics(StoreResponse storeResponse, RxDocumentServiceRequest rxDocumentServiceRequest) {
@@ -92,12 +105,16 @@ public class StoreResponseDiagnostics {
         this.faultInjectionRuleId = storeResponse.getFaultInjectionRuleId();
         this.faultInjectionEvaluationResults = storeResponse.getFaultInjectionRuleEvaluationResults();
         this.endpoint = storeResponse.getEndpoint();
+        this.requestUri = storeResponse.getRequestUri();
+        this.serviceEndpointMetricTag = storeResponse.getServiceEndpointMetricTag();
         this.requestThroughputControlGroupName = rxDocumentServiceRequest.throughputControlGroupName;
         this.requestThroughputControlGroupConfig =
             rxDocumentServiceRequest.requestContext.throughputControlRequestContext != null ? rxDocumentServiceRequest.requestContext.throughputControlRequestContext.getConfigString() : null;
     }
 
-    private StoreResponseDiagnostics(CosmosException e, RxDocumentServiceRequest rxDocumentServiceRequest) {
+    private StoreResponseDiagnostics(
+        CosmosException e, RxDocumentServiceRequest rxDocumentServiceRequest, Tag serviceEndpointMetricTag) {
+        this.serviceEndpointMetricTag = serviceEndpointMetricTag;
         String rspPkRangeId = BridgeInternal.getPartitionKeyRangeId(e);
         this.partitionKeyRangeId = !Strings.isNullOrWhiteSpace(rspPkRangeId) ? rspPkRangeId :
             rxDocumentServiceRequest.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
@@ -121,6 +138,7 @@ public class StoreResponseDiagnostics {
         this.faultInjectionRuleId = cosmosExceptionAccessor().getFaultInjectionRuleId(e);
         this.faultInjectionEvaluationResults = cosmosExceptionAccessor().getFaultInjectionEvaluationResults(e);
         Uri requestUri = cosmosExceptionAccessor().getRequestUri(e);
+        this.requestUri = requestUri != null ? requestUri.getURI() : null;
         if (requestUri != null) {
             this.endpoint = requestUri.getURIAsString();
         } else {
@@ -211,6 +229,16 @@ public class StoreResponseDiagnostics {
 
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    @JsonIgnore
+    public URI getRequestUri() {
+        return this.requestUri;
+    }
+
+    @JsonIgnore
+    public Tag getServiceEndpointMetricTag() {
+        return this.serviceEndpointMetricTag;
     }
 
     public String getRequestThroughputControlGroupName() {

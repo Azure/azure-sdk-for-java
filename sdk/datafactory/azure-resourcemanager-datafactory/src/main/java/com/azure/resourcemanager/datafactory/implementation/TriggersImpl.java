@@ -74,12 +74,11 @@ public final class TriggersImpl implements Triggers {
     }
 
     public void delete(String resourceGroupName, String factoryName, String triggerName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, triggerName);
+        this.deleteWithResponse(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
     public PagedIterable<TriggerResource> listByFactory(String resourceGroupName, String factoryName) {
-        PagedIterable<TriggerResourceInner> inner = this.serviceClient().listByFactory(resourceGroupName, factoryName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TriggerResourceImpl(inner1, this.manager()));
+        return this.listByFactory(resourceGroupName, factoryName, Context.NONE);
     }
 
     public PagedIterable<TriggerResource> listByFactory(String resourceGroupName, String factoryName, Context context) {
@@ -90,13 +89,7 @@ public final class TriggersImpl implements Triggers {
 
     public TriggerSubscriptionOperationStatus subscribeToEvents(String resourceGroupName, String factoryName,
         String triggerName) {
-        TriggerSubscriptionOperationStatusInner inner
-            = this.serviceClient().subscribeToEvents(resourceGroupName, factoryName, triggerName);
-        if (inner != null) {
-            return new TriggerSubscriptionOperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.subscribeToEvents(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
     public TriggerSubscriptionOperationStatus subscribeToEvents(String resourceGroupName, String factoryName,
@@ -131,13 +124,7 @@ public final class TriggersImpl implements Triggers {
 
     public TriggerSubscriptionOperationStatus unsubscribeFromEvents(String resourceGroupName, String factoryName,
         String triggerName) {
-        TriggerSubscriptionOperationStatusInner inner
-            = this.serviceClient().unsubscribeFromEvents(resourceGroupName, factoryName, triggerName);
-        if (inner != null) {
-            return new TriggerSubscriptionOperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.unsubscribeFromEvents(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
     public TriggerSubscriptionOperationStatus unsubscribeFromEvents(String resourceGroupName, String factoryName,
@@ -152,7 +139,7 @@ public final class TriggersImpl implements Triggers {
     }
 
     public void start(String resourceGroupName, String factoryName, String triggerName) {
-        this.serviceClient().start(resourceGroupName, factoryName, triggerName);
+        this.start(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
     public void start(String resourceGroupName, String factoryName, String triggerName, Context context) {
@@ -160,7 +147,7 @@ public final class TriggersImpl implements Triggers {
     }
 
     public void stop(String resourceGroupName, String factoryName, String triggerName) {
-        this.serviceClient().stop(resourceGroupName, factoryName, triggerName);
+        this.stop(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
     public void stop(String resourceGroupName, String factoryName, String triggerName, Context context) {
@@ -168,80 +155,37 @@ public final class TriggersImpl implements Triggers {
     }
 
     public TriggerResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String triggerName = ResourceManagerUtils.getValueFromIdByName(id, "triggers");
-        if (triggerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
-        }
         String localIfNoneMatch = null;
-        return this.getWithResponse(resourceGroupName, factoryName, triggerName, localIfNoneMatch, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, localIfNoneMatch, Context.NONE).getValue();
     }
 
     public Response<TriggerResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String triggerName = ResourceManagerUtils.getValueFromIdByName(id, "triggers");
-        if (triggerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String factoryName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}",
+            "factoryName", "factories", LOGGER);
+        String triggerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}",
+            "triggerName", "triggers", LOGGER);
         return this.getWithResponse(resourceGroupName, factoryName, triggerName, ifNoneMatch, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String triggerName = ResourceManagerUtils.getValueFromIdByName(id, "triggers");
-        if (triggerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, factoryName, triggerName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String triggerName = ResourceManagerUtils.getValueFromIdByName(id, "triggers");
-        if (triggerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String factoryName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}",
+            "factoryName", "factories", LOGGER);
+        String triggerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}",
+            "triggerName", "triggers", LOGGER);
         return this.deleteWithResponse(resourceGroupName, factoryName, triggerName, context);
     }
 

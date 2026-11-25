@@ -23,7 +23,7 @@ public final class ExperimentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"identity\":{\"principalId\":\"gdhg\",\"tenantId\":\"i\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"pibkephuu\":{\"principalId\":\"wrq\",\"clientId\":\"ulopmjnlexwhcb\"},\"uczkgofxyfsruc\":{\"principalId\":\"rctat\",\"clientId\":\"intqpbrlcyr\"}}},\"properties\":{\"provisioningState\":\"Canceled\",\"steps\":[{\"name\":\"pcjttbstvjeaqn\",\"branches\":[{\"name\":\"vvf\",\"actions\":[]},{\"name\":\"oxmlghktuidv\",\"actions\":[]}]},{\"name\":\"ma\",\"branches\":[{\"name\":\"pdwwexymzvlazi\",\"actions\":[]},{\"name\":\"bhpwvqsgnyy\",\"actions\":[]},{\"name\":\"uzivensrpmeyyvp\",\"actions\":[]},{\"name\":\"patlbijp\",\"actions\":[]}]},{\"name\":\"gsksrfhf\",\"branches\":[{\"name\":\"lmknbnxwcdom\",\"actions\":[]}]},{\"name\":\"pvfqawz\",\"branches\":[{\"name\":\"brttuiacl\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"exhajlfn\",\"filter\":{\"type\":\"ChaosTargetFilter\"}},{\"type\":\"ChaosTargetSelector\",\"id\":\"iqfyuttdi\",\"filter\":{\"type\":\"ChaosTargetFilter\"}}],\"customerDataStorage\":{\"storageAccountResourceId\":\"vnwsw\",\"blobContainerName\":\"xkyctwwgzwx\"}},\"location\":\"mecvogygzyvneeza\",\"tags\":{\"jjjavfqnvhnq\":\"htmoqqtlffhzbkr\"},\"id\":\"ewdogiyetesy\",\"name\":\"vidbztjhqtfb\",\"type\":\"vnynkb\"}]}";
+            = "{\"value\":[{\"identity\":{\"principalId\":\"kwpzdqtvh\",\"tenantId\":\"podaq\",\"type\":\"None\",\"userAssignedIdentities\":{\"atzviqsowsaael\":{\"principalId\":\"ietgbebjfu\",\"clientId\":\"moichdlpnfpubntn\"},\"zbj\":{\"principalId\":\"ttcjuhplrvkmjc\",\"clientId\":\"jvlgfggcvkyyliz\"}}},\"properties\":{\"provisioningState\":\"Creating\",\"steps\":[{\"name\":\"sfuztlvtmv\",\"branches\":[{\"name\":\"bwidql\",\"actions\":[]},{\"name\":\"hukoveofizrv\",\"actions\":[]},{\"name\":\"f\",\"actions\":[]}]},{\"name\":\"mjm\",\"branches\":[{\"name\":\"wyzgiblkuj\",\"actions\":[]},{\"name\":\"llfojuidjp\",\"actions\":[]}]},{\"name\":\"uyjucejikzo\",\"branches\":[{\"name\":\"vvtzejetjkl\",\"actions\":[]},{\"name\":\"tikyj\",\"actions\":[]},{\"name\":\"zkdbqzolx\",\"actions\":[]},{\"name\":\"zvhqjwtrhtgvg\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"c\",\"filter\":{\"type\":\"ChaosTargetFilter\"}},{\"type\":\"ChaosTargetSelector\",\"id\":\"kolawjmjsmwrokc\",\"filter\":{\"type\":\"ChaosTargetFilter\"}}],\"customerDataStorage\":{\"storageAccountResourceId\":\"zz\",\"blobContainerName\":\"jafi\"}},\"location\":\"hguynuchlgmltxdw\",\"tags\":{\"vlnsnnjz\":\"zusg\",\"mwamxqzragpgdph\":\"pafolp\"},\"id\":\"vdulajv\",\"name\":\"ejchcsrlz\",\"type\":\"nmzlanru\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,15 @@ public final class ExperimentsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Experiment> response
-            = manager.experiments().list(true, "ksgbuxan", com.azure.core.util.Context.NONE);
+        PagedIterable<Experiment> response = manager.experiments().list(false, "diw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mecvogygzyvneeza", response.iterator().next().location());
-        Assertions.assertEquals("htmoqqtlffhzbkr", response.iterator().next().tags().get("jjjavfqnvhnq"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
-            response.iterator().next().identity().type());
-        Assertions.assertEquals("pcjttbstvjeaqn", response.iterator().next().steps().get(0).name());
-        Assertions.assertEquals("vvf", response.iterator().next().steps().get(0).branches().get(0).name());
-        Assertions.assertEquals("exhajlfn", response.iterator().next().selectors().get(0).id());
-        Assertions.assertEquals("vnwsw", response.iterator().next().customerDataStorage().storageAccountResourceId());
-        Assertions.assertEquals("xkyctwwgzwx", response.iterator().next().customerDataStorage().blobContainerName());
+        Assertions.assertEquals("hguynuchlgmltxdw", response.iterator().next().location());
+        Assertions.assertEquals("zusg", response.iterator().next().tags().get("vlnsnnjz"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("sfuztlvtmv", response.iterator().next().steps().get(0).name());
+        Assertions.assertEquals("bwidql", response.iterator().next().steps().get(0).branches().get(0).name());
+        Assertions.assertEquals("c", response.iterator().next().selectors().get(0).id());
+        Assertions.assertEquals("zz", response.iterator().next().customerDataStorage().storageAccountResourceId());
+        Assertions.assertEquals("jafi", response.iterator().next().customerDataStorage().blobContainerName());
     }
 }

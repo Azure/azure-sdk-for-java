@@ -200,18 +200,7 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
             regulatoryComplianceAssessmentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Supported regulatory compliance details and state for selected assessment.
-     * 
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
-     * @param regulatoryComplianceAssessmentName Name of the regulatory compliance assessment object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance assessment details and state along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RegulatoryComplianceAssessmentInner> getWithResponse(String regulatoryComplianceStandardName,
         String regulatoryComplianceControlName, String regulatoryComplianceAssessmentName, Context context) {
@@ -219,17 +208,7 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
             regulatoryComplianceAssessmentName, context).block();
     }
 
-    /**
-     * Supported regulatory compliance details and state for selected assessment.
-     * 
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
-     * @param regulatoryComplianceAssessmentName Name of the regulatory compliance assessment object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance assessment details and state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegulatoryComplianceAssessmentInner get(String regulatoryComplianceStandardName,
         String regulatoryComplianceControlName, String regulatoryComplianceAssessmentName) {
@@ -378,16 +357,7 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
             regulatoryComplianceControlName, filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Details and state of assessments mapped to selected regulatory compliance control.
-     * 
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance assessment response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegulatoryComplianceAssessmentInner> list(String regulatoryComplianceStandardName,
         String regulatoryComplianceControlName) {
@@ -396,18 +366,7 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
             listAsync(regulatoryComplianceStandardName, regulatoryComplianceControlName, filter));
     }
 
-    /**
-     * Details and state of assessments mapped to selected regulatory compliance control.
-     * 
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
-     * @param filter OData filter. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance assessment response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegulatoryComplianceAssessmentInner> list(String regulatoryComplianceStandardName,
         String regulatoryComplianceControlName, String filter, Context context) {

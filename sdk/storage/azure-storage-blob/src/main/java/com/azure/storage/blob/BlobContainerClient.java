@@ -41,6 +41,7 @@ import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerProperties;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
@@ -369,6 +370,8 @@ public final class BlobContainerClient {
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #delete()}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerClient.create -->
@@ -383,6 +386,10 @@ public final class BlobContainerClient {
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerClient.create -->
+     *
+     * @throws BlobStorageException If the container could not be created, for example because a container with the same
+     * name already exists (status code 409, error code ContainerAlreadyExists) or is still being deleted (status code
+     * 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create() {
@@ -393,6 +400,8 @@ public final class BlobContainerClient {
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #delete()}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -413,6 +422,9 @@ public final class BlobContainerClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
+     * @throws BlobStorageException If the container could not be created, for example because a container with the same
+     * name already exists (status code 409, error code ContainerAlreadyExists) or is still being deleted (status code
+     * 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
@@ -428,6 +440,8 @@ public final class BlobContainerClient {
      * Creates a new container within a storage account if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #delete()}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerClient.createIfNotExists -->
@@ -438,6 +452,8 @@ public final class BlobContainerClient {
      * <!-- end com.azure.storage.blob.BlobContainerClient.createIfNotExists -->
      *
      * @return {@code true} if container is successfully created, {@code false} if container already exists.
+     * @throws BlobStorageException If the container could not be created for any other reason, for example when a
+     * container with the same name is still being deleted (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean createIfNotExists() {
@@ -447,6 +463,8 @@ public final class BlobContainerClient {
     /**
      * Creates a new container within a storage account if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #delete()}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -471,6 +489,8 @@ public final class BlobContainerClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 201, a new
      * container was successfully created. If status code is 409, a container already existed at this location.
+     * @throws BlobStorageException If the container could not be created for any other reason, for example when a
+     * container with the same name is still being deleted (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> createIfNotExistsWithResponse(BlobContainerCreateOptions options, Duration timeout,
@@ -481,7 +501,7 @@ public final class BlobContainerClient {
                 = createWithResponse(finalOptions.getMetadata(), finalOptions.getPublicAccessType(), timeout, context);
             return new SimpleResponse<>(response, true);
         } catch (BlobStorageException e) {
-            if (e.getStatusCode() == 409) {
+            if (ModelHelper.isConflictWithErrorCode(e, BlobErrorCode.CONTAINER_ALREADY_EXISTS)) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), false);
             } else {
@@ -496,6 +516,13 @@ public final class BlobContainerClient {
      * Marks the specified container for deletion. The container and any blobs contained within it are later deleted
      * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p>When a container is deleted, a container with the same name can't be created for at least 30 seconds. The
+     * container might not be available for more than 30 seconds if the service is still processing the request. While
+     * the container is being deleted, attempts to create a container of the same name fail with status code 409
+     * (Conflict). The service indicates that the container is being deleted. Operations on blobs within the container,
+     * including reads and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+     * After this period, all operations on the container and its blobs fail with status code 404 (Not Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -521,6 +548,13 @@ public final class BlobContainerClient {
      * Marks the specified container for deletion. The container and any blobs contained within it are later deleted
      * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p>When a container is deleted, a container with the same name can't be created for at least 30 seconds. The
+     * container might not be available for more than 30 seconds if the service is still processing the request. While
+     * the container is being deleted, attempts to create a container of the same name fail with status code 409
+     * (Conflict). The service indicates that the container is being deleted. Operations on blobs within the container,
+     * including reads and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+     * After this period, all operations on the container and its blobs fail with status code 404 (Not Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -565,6 +599,13 @@ public final class BlobContainerClient {
      * it are later deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
+     * <p>When a container is deleted, a container with the same name can't be created for at least 30 seconds. The
+     * container might not be available for more than 30 seconds if the service is still processing the request. While
+     * the container is being deleted, attempts to create a container of the same name fail with status code 409
+     * (Conflict). The service indicates that the container is being deleted. Operations on blobs within the container,
+     * including reads and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+     * After this period, all operations on the container and its blobs fail with status code 404 (Not Found).</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerClient.deleteIfExists -->
@@ -584,6 +625,13 @@ public final class BlobContainerClient {
      * Marks the specified container for deletion if it exists. The container and any blobs contained within it
      * are later deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p>When a container is deleted, a container with the same name can't be created for at least 30 seconds. The
+     * container might not be available for more than 30 seconds if the service is still processing the request. While
+     * the container is being deleted, attempts to create a container of the same name fail with status code 409
+     * (Conflict). The service indicates that the container is being deleted. Operations on blobs within the container,
+     * including reads and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+     * After this period, all operations on the container and its blobs fail with status code 404 (Not Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1035,19 +1083,8 @@ public final class BlobContainerClient {
     public PagedIterable<BlobItem> listBlobs(ListBlobsOptions options, String continuationToken, Duration timeout) {
         ModelHelper.validateListBlobsOptions(options);
         BiFunction<String, Integer, PagedResponse<BlobItem>> retriever = (nextMarker, pageSize) -> {
-            ListBlobsOptions finalOptions = new ListBlobsOptions();
-            if (options != null) {
-                finalOptions.setMaxResultsPerPage(options.getMaxResultsPerPage())
-                    .setPrefix(options.getPrefix())
-                    .setStartFrom(options.getStartFrom())
-                    .setDetails(options.getDetails());
-
-                if (options.getStorageResponseSerializationFormat() == StorageResponseSerializationFormat.ARROW) {
-                    finalOptions.setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
-                        .setEndBefore(options.getEndBefore());
-                }
-
-            }
+            ListBlobsOptions finalOptions = ModelHelper.copyListBlobsOptions(options);
+            ModelHelper.applyDefaultsToListBlobsOptions(finalOptions);
             /*
             If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
             Otherwise, prefer the new value.
@@ -1230,18 +1267,8 @@ public final class BlobContainerClient {
     public PagedIterable<BlobItem> listBlobsByHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
         ModelHelper.validateListBlobsOptions(options);
         BiFunction<String, Integer, PagedResponse<BlobItem>> func = (marker, pageSize) -> {
-            ListBlobsOptions finalOptions = new ListBlobsOptions();
-            if (options != null) {
-                finalOptions.setMaxResultsPerPage(options.getMaxResultsPerPage())
-                    .setPrefix(options.getPrefix())
-                    .setDetails(options.getDetails())
-                    .setStartFrom(options.getStartFrom());
-                if (ModelHelper.resolveSerializationFormat(options.getStorageResponseSerializationFormat())
-                    == StorageResponseSerializationFormat.ARROW) {
-                    finalOptions.setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
-                        .setEndBefore(options.getEndBefore());
-                }
-            }
+            ListBlobsOptions finalOptions = ModelHelper.copyListBlobsOptions(options);
+            ModelHelper.applyDefaultsToListBlobsOptions(finalOptions);
             /*
             If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
             Otherwise, prefer the new value.
@@ -1263,8 +1290,7 @@ public final class BlobContainerClient {
         ArrayList<ListBlobsIncludeItem> include
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
-        if (ModelHelper.resolveSerializationFormat(options.getStorageResponseSerializationFormat())
-            == StorageResponseSerializationFormat.ARROW) {
+        if (options.getStorageResponseSerializationFormat() == StorageResponseSerializationFormat.ARROW) {
             Callable<ResponseBase<ContainersListBlobHierarchySegmentApacheArrowHeaders, InputStream>> operation
                 = () -> azureBlobStorage.getContainers()
                     .listBlobHierarchySegmentApacheArrowWithResponse(containerName, delimiter, options.getPrefix(),

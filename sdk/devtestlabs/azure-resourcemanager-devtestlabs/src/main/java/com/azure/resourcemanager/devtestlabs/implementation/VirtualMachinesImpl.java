@@ -53,7 +53,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     }
 
     public void delete(String resourceGroupName, String labName, String name) {
-        this.serviceClient().delete(resourceGroupName, labName, name);
+        this.delete(resourceGroupName, labName, name, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String labName, String name, Context context) {
@@ -74,7 +74,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
 
     public void addDataDisk(String resourceGroupName, String labName, String name,
         DataDiskProperties dataDiskProperties) {
-        this.serviceClient().addDataDisk(resourceGroupName, labName, name, dataDiskProperties);
+        this.addDataDisk(resourceGroupName, labName, name, dataDiskProperties, Context.NONE);
     }
 
     public void addDataDisk(String resourceGroupName, String labName, String name,
@@ -84,7 +84,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
 
     public void applyArtifacts(String resourceGroupName, String labName, String name,
         ApplyArtifactsRequest applyArtifactsRequest) {
-        this.serviceClient().applyArtifacts(resourceGroupName, labName, name, applyArtifactsRequest);
+        this.applyArtifacts(resourceGroupName, labName, name, applyArtifactsRequest, Context.NONE);
     }
 
     public void applyArtifacts(String resourceGroupName, String labName, String name,
@@ -93,7 +93,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     }
 
     public void claim(String resourceGroupName, String labName, String name) {
-        this.serviceClient().claim(resourceGroupName, labName, name);
+        this.claim(resourceGroupName, labName, name, Context.NONE);
     }
 
     public void claim(String resourceGroupName, String labName, String name, Context context) {
@@ -102,7 +102,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
 
     public void detachDataDisk(String resourceGroupName, String labName, String name,
         DetachDataDiskProperties detachDataDiskProperties) {
-        this.serviceClient().detachDataDisk(resourceGroupName, labName, name, detachDataDiskProperties);
+        this.detachDataDisk(resourceGroupName, labName, name, detachDataDiskProperties, Context.NONE);
     }
 
     public void detachDataDisk(String resourceGroupName, String labName, String name,
@@ -145,7 +145,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     }
 
     public void redeploy(String resourceGroupName, String labName, String name) {
-        this.serviceClient().redeploy(resourceGroupName, labName, name);
+        this.redeploy(resourceGroupName, labName, name, Context.NONE);
     }
 
     public void redeploy(String resourceGroupName, String labName, String name, Context context) {
@@ -154,7 +154,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
 
     public void resize(String resourceGroupName, String labName, String name,
         ResizeLabVirtualMachineProperties resizeLabVirtualMachineProperties) {
-        this.serviceClient().resize(resourceGroupName, labName, name, resizeLabVirtualMachineProperties);
+        this.resize(resourceGroupName, labName, name, resizeLabVirtualMachineProperties, Context.NONE);
     }
 
     public void resize(String resourceGroupName, String labName, String name,
@@ -163,7 +163,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     }
 
     public void restart(String resourceGroupName, String labName, String name) {
-        this.serviceClient().restart(resourceGroupName, labName, name);
+        this.restart(resourceGroupName, labName, name, Context.NONE);
     }
 
     public void restart(String resourceGroupName, String labName, String name, Context context) {
@@ -171,7 +171,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     }
 
     public void start(String resourceGroupName, String labName, String name) {
-        this.serviceClient().start(resourceGroupName, labName, name);
+        this.start(resourceGroupName, labName, name, Context.NONE);
     }
 
     public void start(String resourceGroupName, String labName, String name, Context context) {
@@ -179,7 +179,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     }
 
     public void stop(String resourceGroupName, String labName, String name) {
-        this.serviceClient().stop(resourceGroupName, labName, name);
+        this.stop(resourceGroupName, labName, name, Context.NONE);
     }
 
     public void stop(String resourceGroupName, String labName, String name, Context context) {
@@ -187,7 +187,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     }
 
     public void transferDisks(String resourceGroupName, String labName, String name) {
-        this.serviceClient().transferDisks(resourceGroupName, labName, name);
+        this.transferDisks(resourceGroupName, labName, name, Context.NONE);
     }
 
     public void transferDisks(String resourceGroupName, String labName, String name, Context context) {
@@ -195,7 +195,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     }
 
     public void unClaim(String resourceGroupName, String labName, String name) {
-        this.serviceClient().unClaim(resourceGroupName, labName, name);
+        this.unClaim(resourceGroupName, labName, name, Context.NONE);
     }
 
     public void unClaim(String resourceGroupName, String labName, String name, Context context) {
@@ -203,79 +203,37 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     }
 
     public LabVirtualMachine getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
-        if (labName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "virtualmachines");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualmachines'.", id)));
-        }
         String localExpand = null;
-        return this.getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, localExpand, Context.NONE).getValue();
     }
 
     public Response<LabVirtualMachine> getByIdWithResponse(String id, String expand, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
-        if (labName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "virtualmachines");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualmachines'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String labName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{name}",
+            "labName", "labs", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{name}",
+            "name", "virtualmachines", LOGGER);
         return this.getWithResponse(resourceGroupName, labName, name, expand, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
-        if (labName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "virtualmachines");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualmachines'.", id)));
-        }
-        this.delete(resourceGroupName, labName, name, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
-        if (labName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "virtualmachines");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualmachines'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String labName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{name}",
+            "labName", "labs", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{name}",
+            "name", "virtualmachines", LOGGER);
         this.delete(resourceGroupName, labName, name, context);
     }
 

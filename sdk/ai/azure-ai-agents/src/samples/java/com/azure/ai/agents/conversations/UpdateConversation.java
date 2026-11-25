@@ -25,7 +25,7 @@ public class UpdateConversation {
         // Create metadata for the update
         ConversationUpdateParams.Metadata metadata = ConversationUpdateParams.Metadata.builder()
                 .putAdditionalProperty("updated_by", JsonValue.from("java_sample"))
-                .putAdditionalProperty("update_timestamp", JsonValue.from(System.currentTimeMillis()))
+                .putAdditionalProperty("update_timestamp", JsonValue.from(Long.toString(System.currentTimeMillis())))
                 .build();
 
         ConversationUpdateParams updateParams = ConversationUpdateParams.builder()

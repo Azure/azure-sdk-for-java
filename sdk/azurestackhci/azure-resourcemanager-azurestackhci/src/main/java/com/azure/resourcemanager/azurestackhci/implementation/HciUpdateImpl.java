@@ -182,11 +182,7 @@ public final class HciUpdateImpl implements HciUpdate, HciUpdate.Definition, Hci
     }
 
     public HciUpdate create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdates()
-            .putWithResponse(resourceGroupName, clusterName, updateName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public HciUpdate create(Context context) {
@@ -208,11 +204,7 @@ public final class HciUpdateImpl implements HciUpdate, HciUpdate.Definition, Hci
     }
 
     public HciUpdate apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdates()
-            .putWithResponse(resourceGroupName, clusterName, updateName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public HciUpdate apply(Context context) {
@@ -227,17 +219,19 @@ public final class HciUpdateImpl implements HciUpdate, HciUpdate.Definition, Hci
         com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.updateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "updates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}",
+            "clusterName");
+        this.updateName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}",
+            "updateName");
     }
 
     public HciUpdate refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdates()
-            .getWithResponse(resourceGroupName, clusterName, updateName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public HciUpdate refresh(Context context) {

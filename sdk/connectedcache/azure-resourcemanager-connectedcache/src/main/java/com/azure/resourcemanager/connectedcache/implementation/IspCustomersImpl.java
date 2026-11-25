@@ -46,7 +46,7 @@ public final class IspCustomersImpl implements IspCustomers {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String customerResourceName) {
-        this.serviceClient().delete(resourceGroupName, customerResourceName);
+        this.delete(resourceGroupName, customerResourceName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String customerResourceName, Context context) {
@@ -54,8 +54,7 @@ public final class IspCustomersImpl implements IspCustomers {
     }
 
     public PagedIterable<IspCustomerResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<IspCustomerResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new IspCustomerResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<IspCustomerResource> listByResourceGroup(String resourceGroupName, Context context) {
@@ -65,8 +64,7 @@ public final class IspCustomersImpl implements IspCustomers {
     }
 
     public PagedIterable<IspCustomerResource> list() {
-        PagedIterable<IspCustomerResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new IspCustomerResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<IspCustomerResource> list(Context context) {
@@ -75,58 +73,30 @@ public final class IspCustomersImpl implements IspCustomers {
     }
 
     public IspCustomerResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String customerResourceName = ResourceManagerUtils.getValueFromIdByName(id, "ispCustomers");
-        if (customerResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'ispCustomers'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, customerResourceName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<IspCustomerResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String customerResourceName = ResourceManagerUtils.getValueFromIdByName(id, "ispCustomers");
-        if (customerResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'ispCustomers'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String customerResourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}",
+            "customerResourceName", "ispCustomers", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, customerResourceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String customerResourceName = ResourceManagerUtils.getValueFromIdByName(id, "ispCustomers");
-        if (customerResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'ispCustomers'.", id)));
-        }
-        this.delete(resourceGroupName, customerResourceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String customerResourceName = ResourceManagerUtils.getValueFromIdByName(id, "ispCustomers");
-        if (customerResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'ispCustomers'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String customerResourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}",
+            "customerResourceName", "ispCustomers", LOGGER);
         this.delete(resourceGroupName, customerResourceName, context);
     }
 

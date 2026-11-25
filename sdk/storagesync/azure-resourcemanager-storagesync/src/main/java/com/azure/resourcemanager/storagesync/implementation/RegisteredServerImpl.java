@@ -175,10 +175,7 @@ public final class RegisteredServerImpl
     }
 
     public RegisteredServer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRegisteredServers()
-            .create(resourceGroupName, storageSyncServiceName, serverId, createParameters, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RegisteredServer create(Context context) {
@@ -200,10 +197,7 @@ public final class RegisteredServerImpl
     }
 
     public RegisteredServer apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRegisteredServers()
-            .update(resourceGroupName, storageSyncServiceName, serverId, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RegisteredServer apply(Context context) {
@@ -217,18 +211,19 @@ public final class RegisteredServerImpl
         com.azure.resourcemanager.storagesync.StorageSyncManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageSyncServiceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageSyncServices");
-        this.serverId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "registeredServers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}",
+            "resourceGroupName");
+        this.storageSyncServiceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}",
+            "storageSyncServiceName");
+        this.serverId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}",
+            "serverId");
     }
 
     public RegisteredServer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRegisteredServers()
-            .getWithResponse(resourceGroupName, storageSyncServiceName, serverId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RegisteredServer refresh(Context context) {

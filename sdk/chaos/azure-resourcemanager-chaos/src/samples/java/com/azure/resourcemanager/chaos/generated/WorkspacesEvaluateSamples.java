@@ -9,14 +9,15 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class WorkspacesEvaluateSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/Workspaces_Evaluate.json
+     * x-ms-original-file: 2026-11-01/Workspaces_Evaluate.json
      */
     /**
-     * Sample code: Trigger scenario evaluation for the workspace.
+     * Sample code: Start evaluation of published scenario-template versions.
      * 
      * @param manager Entry point to ChaosManager.
      */
-    public static void triggerScenarioEvaluationForTheWorkspace(com.azure.resourcemanager.chaos.ChaosManager manager) {
+    public static void
+        startEvaluationOfPublishedScenarioTemplateVersions(com.azure.resourcemanager.chaos.ChaosManager manager) {
         manager.workspaces().evaluate("exampleRG", "exampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }

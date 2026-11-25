@@ -120,11 +120,7 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, 
     }
 
     public ArcSetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getArcSettings()
-            .createWithResponse(resourceGroupName, clusterName, arcSettingName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ArcSetting create(Context context) {
@@ -147,11 +143,7 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, 
     }
 
     public ArcSetting apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getArcSettings()
-            .updateWithResponse(resourceGroupName, clusterName, arcSettingName, updateArcSetting, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ArcSetting apply(Context context) {
@@ -166,17 +158,19 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, 
         com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.arcSettingName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "arcSettings");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}",
+            "clusterName");
+        this.arcSettingName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}",
+            "arcSettingName");
     }
 
     public ArcSetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getArcSettings()
-            .getWithResponse(resourceGroupName, clusterName, arcSettingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ArcSetting refresh(Context context) {

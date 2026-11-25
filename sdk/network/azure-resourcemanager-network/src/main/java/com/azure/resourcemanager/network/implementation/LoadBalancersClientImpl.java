@@ -185,19 +185,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param expand Expands referenced resources.
-     * @param detailLevel Controls verbosity of the returned load balancer resource. When set to 'Reduced', read-only
-     * back-reference collections (e.g., rules referencing frontendIPConfigurations) are omitted from the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LoadBalancerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String loadBalancerName, String expand, LoadBalancerDetailLevel detailLevel) {
@@ -217,7 +205,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, loadBalancerName, expand, detailLevel, accept, context))
@@ -257,23 +245,14 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, loadBalancerName, expand, detailLevel, accept, context);
     }
 
-    /**
-     * Gets the specified load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LoadBalancerInner> getByResourceGroupAsync(String resourceGroupName, String loadBalancerName) {
         final String expand = null;
@@ -282,20 +261,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param expand Expands referenced resources.
-     * @param detailLevel Controls verbosity of the returned load balancer resource. When set to 'Reduced', read-only
-     * back-reference collections (e.g., rules referencing frontendIPConfigurations) are omitted from the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LoadBalancerInner> getByResourceGroupWithResponse(String resourceGroupName, String loadBalancerName,
         String expand, LoadBalancerDetailLevel detailLevel, Context context) {
@@ -303,16 +269,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             .block();
     }
 
-    /**
-     * Gets the specified load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancerInner getByResourceGroup(String resourceGroupName, String loadBalancerName) {
         final String expand = null;
@@ -321,17 +278,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             .getValue();
     }
 
-    /**
-     * Creates or updates a load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters Parameters supplied to the create or update load balancer operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String loadBalancerName, LoadBalancerInner parameters) {
@@ -356,7 +303,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -402,7 +349,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -410,17 +357,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             resourceGroupName, loadBalancerName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters Parameters supplied to the create or update load balancer operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of loadBalancer resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LoadBalancerInner>, LoadBalancerInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
@@ -452,52 +389,21 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             LoadBalancerInner.class, LoadBalancerInner.class, context);
     }
 
-    /**
-     * Creates or updates a load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters Parameters supplied to the create or update load balancer operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of loadBalancer resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(String resourceGroupName,
         String loadBalancerName, LoadBalancerInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, loadBalancerName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters Parameters supplied to the create or update load balancer operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of loadBalancer resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(String resourceGroupName,
         String loadBalancerName, LoadBalancerInner parameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, loadBalancerName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters Parameters supplied to the create or update load balancer operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LoadBalancerInner> createOrUpdateAsync(String resourceGroupName, String loadBalancerName,
         LoadBalancerInner parameters) {
@@ -524,52 +430,21 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters Parameters supplied to the create or update load balancer operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancerInner createOrUpdate(String resourceGroupName, String loadBalancerName,
         LoadBalancerInner parameters) {
         return createOrUpdateAsync(resourceGroupName, loadBalancerName, parameters).block();
     }
 
-    /**
-     * Creates or updates a load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters Parameters supplied to the create or update load balancer operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancerInner createOrUpdate(String resourceGroupName, String loadBalancerName,
         LoadBalancerInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, loadBalancerName, parameters, context).block();
     }
 
-    /**
-     * Updates a load balancer tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters Parameters supplied to update load balancer tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LoadBalancerInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String loadBalancerName, TagsObject parameters) {
@@ -594,7 +469,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -640,7 +515,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -648,17 +523,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             resourceGroupName, loadBalancerName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a load balancer tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters Parameters supplied to update load balancer tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LoadBalancerInner> updateTagsAsync(String resourceGroupName, String loadBalancerName,
         TagsObject parameters) {
@@ -666,50 +531,20 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a load balancer tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters Parameters supplied to update load balancer tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LoadBalancerInner> updateTagsWithResponse(String resourceGroupName, String loadBalancerName,
         TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, loadBalancerName, parameters, context).block();
     }
 
-    /**
-     * Updates a load balancer tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters Parameters supplied to update load balancer tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancerInner updateTags(String resourceGroupName, String loadBalancerName, TagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, loadBalancerName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes the specified load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String loadBalancerName) {
         if (this.client.getEndpoint() == null) {
@@ -728,7 +563,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, loadBalancerName, context))
@@ -765,22 +600,13 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             loadBalancerName, context);
     }
 
-    /**
-     * Deletes the specified load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String loadBalancerName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, loadBalancerName);
@@ -808,48 +634,20 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             context);
     }
 
-    /**
-     * Deletes the specified load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadBalancerName) {
         return this.beginDeleteAsync(resourceGroupName, loadBalancerName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadBalancerName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, loadBalancerName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String loadBalancerName) {
         return beginDeleteAsync(resourceGroupName, loadBalancerName).last()
@@ -873,30 +671,13 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String loadBalancerName) {
         deleteAsync(resourceGroupName, loadBalancerName).block();
     }
 
-    /**
-     * Deletes the specified load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String loadBalancerName, Context context) {
         deleteAsync(resourceGroupName, loadBalancerName, context).block();
@@ -926,7 +707,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -962,7 +743,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -972,15 +753,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the load balancers in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancers in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LoadBalancerInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1003,30 +776,13 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the load balancers in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancers in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancerInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets all the load balancers in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancers in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancerInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1050,7 +806,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1080,7 +836,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1088,13 +844,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the load balancers in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancers in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LoadBalancerInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -1115,44 +865,19 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the load balancers in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancers in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancerInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all the load balancers in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancers in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancerInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * Migrate load balancer to IP Based.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters Parameters supplied to the migrateToIpBased Api.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for a migrateToIpBased API along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MigratedPoolsInner>> migrateToIpBasedWithResponseAsync(String groupName,
         String loadBalancerName, MigrateLoadBalancerToIpBasedRequest parameters) {
@@ -1174,7 +899,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.migrateToIpBased(this.client.getEndpoint(), apiVersion,
@@ -1216,23 +941,14 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.migrateToIpBased(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             groupName, loadBalancerName, accept, parameters, context);
     }
 
-    /**
-     * Migrate load balancer to IP Based.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for a migrateToIpBased API on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigratedPoolsInner> migrateToIpBasedAsync(String groupName, String loadBalancerName) {
         final MigrateLoadBalancerToIpBasedRequest parameters = null;
@@ -1240,53 +956,21 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Migrate load balancer to IP Based.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters Parameters supplied to the migrateToIpBased Api.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for a migrateToIpBased API along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MigratedPoolsInner> migrateToIpBasedWithResponse(String groupName, String loadBalancerName,
         MigrateLoadBalancerToIpBasedRequest parameters, Context context) {
         return migrateToIpBasedWithResponseAsync(groupName, loadBalancerName, parameters, context).block();
     }
 
-    /**
-     * Migrate load balancer to IP Based.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for a migrateToIpBased API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigratedPoolsInner migrateToIpBased(String groupName, String loadBalancerName) {
         final MigrateLoadBalancerToIpBasedRequest parameters = null;
         return migrateToIpBasedWithResponse(groupName, loadBalancerName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * List of inbound NAT rule port mappings.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendPoolName The name of the backend address pool.
-     * @param parameters Query inbound NAT rule port mapping request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for a QueryInboundNatRulePortMapping API along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> listInboundNatRulePortMappingsWithResponseAsync(String groupName,
         String loadBalancerName, String backendPoolName, QueryInboundNatRulePortMappingRequest parameters) {
@@ -1314,7 +998,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1366,7 +1050,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1375,18 +1059,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             parameters, context);
     }
 
-    /**
-     * List of inbound NAT rule port mappings.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendPoolName The name of the backend address pool.
-     * @param parameters Query inbound NAT rule port mapping request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the response for a QueryInboundNatRulePortMapping API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<BackendAddressInboundNatRulePortMappingsInner>, BackendAddressInboundNatRulePortMappingsInner>
@@ -1427,18 +1100,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
                 BackendAddressInboundNatRulePortMappingsInner.class, context);
     }
 
-    /**
-     * List of inbound NAT rule port mappings.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendPoolName The name of the backend address pool.
-     * @param parameters Query inbound NAT rule port mapping request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response for a QueryInboundNatRulePortMapping API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<BackendAddressInboundNatRulePortMappingsInner>, BackendAddressInboundNatRulePortMappingsInner>
@@ -1448,19 +1110,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             .getSyncPoller();
     }
 
-    /**
-     * List of inbound NAT rule port mappings.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendPoolName The name of the backend address pool.
-     * @param parameters Query inbound NAT rule port mapping request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response for a QueryInboundNatRulePortMapping API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<BackendAddressInboundNatRulePortMappingsInner>, BackendAddressInboundNatRulePortMappingsInner>
@@ -1471,18 +1121,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             .getSyncPoller();
     }
 
-    /**
-     * List of inbound NAT rule port mappings.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendPoolName The name of the backend address pool.
-     * @param parameters Query inbound NAT rule port mapping request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for a QueryInboundNatRulePortMapping API on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackendAddressInboundNatRulePortMappingsInner> listInboundNatRulePortMappingsAsync(String groupName,
         String loadBalancerName, String backendPoolName, QueryInboundNatRulePortMappingRequest parameters) {
@@ -1511,37 +1150,14 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * List of inbound NAT rule port mappings.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendPoolName The name of the backend address pool.
-     * @param parameters Query inbound NAT rule port mapping request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for a QueryInboundNatRulePortMapping API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackendAddressInboundNatRulePortMappingsInner listInboundNatRulePortMappings(String groupName,
         String loadBalancerName, String backendPoolName, QueryInboundNatRulePortMappingRequest parameters) {
         return listInboundNatRulePortMappingsAsync(groupName, loadBalancerName, backendPoolName, parameters).block();
     }
 
-    /**
-     * List of inbound NAT rule port mappings.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendPoolName The name of the backend address pool.
-     * @param parameters Query inbound NAT rule port mapping request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for a QueryInboundNatRulePortMapping API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackendAddressInboundNatRulePortMappingsInner listInboundNatRulePortMappings(String groupName,
         String loadBalancerName, String backendPoolName, QueryInboundNatRulePortMappingRequest parameters,
@@ -1550,16 +1166,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             .block();
     }
 
-    /**
-     * Swaps VIPs between two load balancers.
-     * 
-     * @param location The name of the Azure region.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> swapPublicIpAddressesWithResponseAsync(String location,
         LoadBalancerVipSwapRequest parameters) {
@@ -1579,7 +1186,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.swapPublicIpAddresses(this.client.getEndpoint(), apiVersion,
@@ -1617,23 +1224,14 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         context = this.client.mergeContext(context);
         return service.swapPublicIpAddresses(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             location, contentType, parameters, context);
     }
 
-    /**
-     * Swaps VIPs between two load balancers.
-     * 
-     * @param location The name of the Azure region.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginSwapPublicIpAddressesAsync(String location,
         LoadBalancerVipSwapRequest parameters) {
@@ -1662,49 +1260,21 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             context);
     }
 
-    /**
-     * Swaps VIPs between two load balancers.
-     * 
-     * @param location The name of the Azure region.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSwapPublicIpAddresses(String location,
         LoadBalancerVipSwapRequest parameters) {
         return this.beginSwapPublicIpAddressesAsync(location, parameters).getSyncPoller();
     }
 
-    /**
-     * Swaps VIPs between two load balancers.
-     * 
-     * @param location The name of the Azure region.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSwapPublicIpAddresses(String location,
         LoadBalancerVipSwapRequest parameters, Context context) {
         return this.beginSwapPublicIpAddressesAsync(location, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Swaps VIPs between two load balancers.
-     * 
-     * @param location The name of the Azure region.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> swapPublicIpAddressesAsync(String location, LoadBalancerVipSwapRequest parameters) {
         return beginSwapPublicIpAddressesAsync(location, parameters).last()
@@ -1729,30 +1299,13 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Swaps VIPs between two load balancers.
-     * 
-     * @param location The name of the Azure region.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void swapPublicIpAddresses(String location, LoadBalancerVipSwapRequest parameters) {
         swapPublicIpAddressesAsync(location, parameters).block();
     }
 
-    /**
-     * Swaps VIPs between two load balancers.
-     * 
-     * @param location The name of the Azure region.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void swapPublicIpAddresses(String location, LoadBalancerVipSwapRequest parameters, Context context) {
         swapPublicIpAddressesAsync(location, parameters, context).block();

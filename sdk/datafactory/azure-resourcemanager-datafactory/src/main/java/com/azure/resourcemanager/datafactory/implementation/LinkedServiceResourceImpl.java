@@ -69,12 +69,7 @@ public final class LinkedServiceResourceImpl
     }
 
     public LinkedServiceResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLinkedServices()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, linkedServiceName, this.innerModel(),
-                createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LinkedServiceResource create(Context context) {
@@ -99,12 +94,7 @@ public final class LinkedServiceResourceImpl
     }
 
     public LinkedServiceResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLinkedServices()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, linkedServiceName, this.innerModel(),
-                updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LinkedServiceResource apply(Context context) {
@@ -120,18 +110,19 @@ public final class LinkedServiceResourceImpl
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
-        this.linkedServiceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "linkedservices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}",
+            "resourceGroupName");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}",
+            "factoryName");
+        this.linkedServiceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}",
+            "linkedServiceName");
     }
 
     public LinkedServiceResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getLinkedServices()
-            .getWithResponse(resourceGroupName, factoryName, linkedServiceName, localIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LinkedServiceResource refresh(Context context) {

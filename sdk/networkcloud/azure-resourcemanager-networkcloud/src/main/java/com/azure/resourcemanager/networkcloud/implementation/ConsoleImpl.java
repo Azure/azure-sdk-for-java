@@ -15,6 +15,7 @@ import com.azure.resourcemanager.networkcloud.models.ConsolePatchParameters;
 import com.azure.resourcemanager.networkcloud.models.ConsoleProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.SshPublicKey;
+import com.azure.resourcemanager.networkcloud.models.SshPublicKeyPatch;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -136,11 +137,7 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
     }
 
     public Console create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConsoles()
-            .createOrUpdate(resourceGroupName, virtualMachineName, consoleName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Console create(Context context) {
@@ -167,11 +164,7 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
     }
 
     public Console apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConsoles()
-            .update(resourceGroupName, virtualMachineName, consoleName, updateIfMatch, updateIfNoneMatch,
-                updateConsoleUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Console apply(Context context) {
@@ -185,17 +178,19 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
     ConsoleImpl(ConsoleInner innerObject, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.virtualMachineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualMachines");
-        this.consoleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "consoles");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/consoles/{consoleName}",
+            "resourceGroupName");
+        this.virtualMachineName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/consoles/{consoleName}",
+            "virtualMachineName");
+        this.consoleName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/consoles/{consoleName}",
+            "consoleName");
     }
 
     public Console refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConsoles()
-            .getWithResponse(resourceGroupName, virtualMachineName, consoleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Console refresh(Context context) {
@@ -232,13 +227,8 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
     }
 
     public ConsoleImpl withSshPublicKey(SshPublicKey sshPublicKey) {
-        if (isInCreateMode()) {
-            this.innerModel().withSshPublicKey(sshPublicKey);
-            return this;
-        } else {
-            this.updateConsoleUpdateParameters.withSshPublicKey(sshPublicKey);
-            return this;
-        }
+        this.innerModel().withSshPublicKey(sshPublicKey);
+        return this;
     }
 
     public ConsoleImpl withTags(Map<String, String> tags) {
@@ -279,6 +269,11 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
             this.updateIfNoneMatch = ifNoneMatch;
             return this;
         }
+    }
+
+    public ConsoleImpl withSshPublicKey(SshPublicKeyPatch sshPublicKey) {
+        this.updateConsoleUpdateParameters.withSshPublicKey(sshPublicKey);
+        return this;
     }
 
     private boolean isInCreateMode() {

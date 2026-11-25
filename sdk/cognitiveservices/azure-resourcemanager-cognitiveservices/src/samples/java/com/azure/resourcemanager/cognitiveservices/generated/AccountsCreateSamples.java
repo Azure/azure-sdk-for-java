@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.resourcemanager.cognitiveservices.models.AccountProperties;
 import com.azure.resourcemanager.cognitiveservices.models.CapabilitySettings;
+import com.azure.resourcemanager.cognitiveservices.models.CertificateBundleReference;
 import com.azure.resourcemanager.cognitiveservices.models.Encryption;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import com.azure.resourcemanager.cognitiveservices.models.KeySource;
@@ -13,6 +14,8 @@ import com.azure.resourcemanager.cognitiveservices.models.KeyVaultProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ManagedClusterAgentHostingConfiguration;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceIdentityType;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
+import com.azure.resourcemanager.cognitiveservices.models.TrustedCertificateSource;
+import com.azure.resourcemanager.cognitiveservices.models.TrustedCertificateSourceType;
 import com.azure.resourcemanager.cognitiveservices.models.UserAssignedIdentity;
 import com.azure.resourcemanager.cognitiveservices.models.UserOwnedStorage;
 import java.util.Arrays;
@@ -24,7 +27,7 @@ import java.util.Map;
  */
 public final class AccountsCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateAccountMin.json
+     * x-ms-original-file: 2026-11-15-preview/CreateAccountMin.json
      */
     /**
      * Sample code: Create Account Min.
@@ -44,7 +47,7 @@ public final class AccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateAccount.json
+     * x-ms-original-file: 2026-11-15-preview/CreateAccount.json
      */
     /**
      * Sample code: Create Account.
@@ -76,7 +79,7 @@ public final class AccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateAccountWithAgentHostingConfiguration.json
+     * x-ms-original-file: 2026-11-15-preview/CreateAccountWithAgentHostingConfiguration.json
      */
     /**
      * Sample code: Create a Foundry account with customer-owned AKS hosting.
@@ -105,6 +108,37 @@ public final class AccountsCreateSamples {
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/account-control-plane",
                     new UserAssignedIdentity())))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-15-preview/CreateAccountWithTrustedCertificateSources.json
+     */
+    /**
+     * Sample code: Create an account with private CA trust.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void createAnAccountWithPrivateCATrust(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.accounts()
+            .define("myAccount")
+            .withExistingResourceGroup("myResourceGroup")
+            .withRegion("eastus")
+            .withProperties(new AccountProperties().withCustomSubDomainName("myAccount")
+                .withAllowProjectManagement(true)
+                .withTrustedCertificateSources(Arrays.asList(new TrustedCertificateSource()
+                    .withType(TrustedCertificateSourceType.AZURE_KEY_VAULT)
+                    .withResourceId(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myKeyVault")
+                    .withCertificateBundleReferences(Arrays.asList(
+                        new CertificateBundleReference().withSecretName("fakeTokenPlaceholder")
+                            .withSecretVersion("fakeTokenPlaceholder"),
+                        new CertificateBundleReference().withSecretName("fakeTokenPlaceholder")
+                            .withSecretVersion("fakeTokenPlaceholder"))))))
+            .withKind("AIServices")
+            .withSku(new Sku().withName("S0"))
+            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .create();
     }
 

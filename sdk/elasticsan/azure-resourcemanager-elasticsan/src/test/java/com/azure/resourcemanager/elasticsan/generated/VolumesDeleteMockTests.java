@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
+import com.azure.resourcemanager.elasticsan.models.DeleteType;
 import com.azure.resourcemanager.elasticsan.models.XMsDeleteSnapshots;
 import com.azure.resourcemanager.elasticsan.models.XMsForceDelete;
 import java.nio.charset.StandardCharsets;
@@ -30,8 +31,8 @@ public final class VolumesDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.volumes()
-            .delete("ztzp", "fn", "ckw", "fz", XMsDeleteSnapshots.FALSE, XMsForceDelete.TRUE,
-                com.azure.core.util.Context.NONE);
+            .delete("frddhcrati", "zronasxift", "zq", "zh", XMsDeleteSnapshots.TRUE, XMsForceDelete.FALSE,
+                DeleteType.PERMANENT, com.azure.core.util.Context.NONE);
 
     }
 }

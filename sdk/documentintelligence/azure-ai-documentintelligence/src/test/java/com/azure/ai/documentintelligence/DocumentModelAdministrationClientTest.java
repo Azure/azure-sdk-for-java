@@ -25,7 +25,6 @@ import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -77,7 +76,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         Response<BinaryData> documentModelResponse
             = client.getModelWithResponse(documentModelDetails.getModelId(), null);
 
-        assertEquals(documentModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
+        assertEquals(200, documentModelResponse.getStatusCode());
     }
 
     /**
@@ -99,7 +98,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
         Response<BinaryData> resourceDetailsResponse = client.getResourceDetailsWithResponse(null);
-        assertEquals(resourceDetailsResponse.getStatusCode(), HttpResponseStatus.OK.code());
+        assertEquals(200, resourceDetailsResponse.getStatusCode());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -119,7 +118,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
 
         final Response<Void> deleteModelWithResponse = client.deleteModelWithResponse(createdModel.getModelId(), null);
 
-        assertEquals(deleteModelWithResponse.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
+        assertEquals(204, deleteModelWithResponse.getStatusCode());
     }
 
     /**

@@ -96,18 +96,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftsClientImpl
             @PathParam("ruleCollectionGroupName") String ruleCollectionGroupName, Context context);
     }
 
-    /**
-     * Get Rule Collection Group Draft.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param ruleCollectionGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule Collection Group Draft along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FirewallPolicyRuleCollectionGroupDraftInner>> getWithResponseAsync(String resourceGroupName,
         String firewallPolicyName, String ruleCollectionGroupName) {
@@ -131,7 +120,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter ruleCollectionGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -175,25 +164,14 @@ public final class FirewallPolicyRuleCollectionGroupDraftsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter ruleCollectionGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             firewallPolicyName, ruleCollectionGroupName, accept, context);
     }
 
-    /**
-     * Get Rule Collection Group Draft.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param ruleCollectionGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule Collection Group Draft on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FirewallPolicyRuleCollectionGroupDraftInner> getAsync(String resourceGroupName,
         String firewallPolicyName, String ruleCollectionGroupName) {
@@ -201,56 +179,21 @@ public final class FirewallPolicyRuleCollectionGroupDraftsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Rule Collection Group Draft.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param ruleCollectionGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule Collection Group Draft along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FirewallPolicyRuleCollectionGroupDraftInner> getWithResponse(String resourceGroupName,
         String firewallPolicyName, String ruleCollectionGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, firewallPolicyName, ruleCollectionGroupName, context).block();
     }
 
-    /**
-     * Get Rule Collection Group Draft.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param ruleCollectionGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule Collection Group Draft.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallPolicyRuleCollectionGroupDraftInner get(String resourceGroupName, String firewallPolicyName,
         String ruleCollectionGroupName) {
         return getWithResponse(resourceGroupName, firewallPolicyName, ruleCollectionGroupName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or Update Rule Collection Group Draft.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param ruleCollectionGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param parameters Parameters supplied to the create or update FirewallPolicyRuleCollectionGroup operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule Collection Group resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FirewallPolicyRuleCollectionGroupDraftInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName,
@@ -280,7 +223,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -333,7 +276,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -341,19 +284,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftsClientImpl
             resourceGroupName, firewallPolicyName, ruleCollectionGroupName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Create or Update Rule Collection Group Draft.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param ruleCollectionGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param parameters Parameters supplied to the create or update FirewallPolicyRuleCollectionGroup operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule Collection Group resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FirewallPolicyRuleCollectionGroupDraftInner> createOrUpdateAsync(String resourceGroupName,
         String firewallPolicyName, String ruleCollectionGroupName,
@@ -362,20 +293,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftsClientImpl
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or Update Rule Collection Group Draft.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param ruleCollectionGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param parameters Parameters supplied to the create or update FirewallPolicyRuleCollectionGroup operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule Collection Group resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FirewallPolicyRuleCollectionGroupDraftInner> createOrUpdateWithResponse(String resourceGroupName,
         String firewallPolicyName, String ruleCollectionGroupName,
@@ -384,19 +302,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftsClientImpl
             parameters, context).block();
     }
 
-    /**
-     * Create or Update Rule Collection Group Draft.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param ruleCollectionGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param parameters Parameters supplied to the create or update FirewallPolicyRuleCollectionGroup operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule Collection Group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallPolicyRuleCollectionGroupDraftInner createOrUpdate(String resourceGroupName,
         String firewallPolicyName, String ruleCollectionGroupName,
@@ -405,18 +311,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftsClientImpl
             Context.NONE).getValue();
     }
 
-    /**
-     * Delete Rule Collection Group Draft.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param ruleCollectionGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String firewallPolicyName,
         String ruleCollectionGroupName) {
@@ -440,7 +335,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter ruleCollectionGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -484,60 +379,27 @@ public final class FirewallPolicyRuleCollectionGroupDraftsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter ruleCollectionGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             firewallPolicyName, ruleCollectionGroupName, context);
     }
 
-    /**
-     * Delete Rule Collection Group Draft.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param ruleCollectionGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName) {
         return deleteWithResponseAsync(resourceGroupName, firewallPolicyName, ruleCollectionGroupName)
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete Rule Collection Group Draft.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param ruleCollectionGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String firewallPolicyName,
         String ruleCollectionGroupName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, firewallPolicyName, ruleCollectionGroupName, context).block();
     }
 
-    /**
-     * Delete Rule Collection Group Draft.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param ruleCollectionGroupName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName) {
         deleteWithResponse(resourceGroupName, firewallPolicyName, ruleCollectionGroupName, Context.NONE);

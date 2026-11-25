@@ -89,10 +89,7 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
     }
 
     public AgentPool create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentPools()
-            .create(resourceGroupName, registryName, agentPoolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AgentPool create(Context context) {
@@ -115,10 +112,7 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
     }
 
     public AgentPool apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentPools()
-            .update(resourceGroupName, registryName, agentPoolName, updateUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AgentPool apply(Context context) {
@@ -132,17 +126,19 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
         com.azure.resourcemanager.containerregistry.tasks.ContainerRegistryTasksManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.registryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "registries");
-        this.agentPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "agentPools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools/{agentPoolName}",
+            "resourceGroupName");
+        this.registryName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools/{agentPoolName}",
+            "registryName");
+        this.agentPoolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools/{agentPoolName}",
+            "agentPoolName");
     }
 
     public AgentPool refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentPools()
-            .getWithResponse(resourceGroupName, registryName, agentPoolName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AgentPool refresh(Context context) {

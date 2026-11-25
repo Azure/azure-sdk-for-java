@@ -67,11 +67,7 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
     }
 
     public Endpoint create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, endpointName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Endpoint create(Context context) {
@@ -93,11 +89,7 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
     }
 
     public Endpoint apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, endpointName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Endpoint apply(Context context) {
@@ -111,11 +103,21 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
     EndpointImpl(EndpointInner innerObject, com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.organizationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "organizations");
-        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
-        this.branchName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "branches");
-        this.endpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "endpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/endpoints/{endpointName}",
+            "resourceGroupName");
+        this.organizationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/endpoints/{endpointName}",
+            "organizationName");
+        this.projectName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/endpoints/{endpointName}",
+            "projectName");
+        this.branchName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/endpoints/{endpointName}",
+            "branchName");
+        this.endpointName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/endpoints/{endpointName}",
+            "endpointName");
     }
 
     public EndpointImpl withProperties(EndpointProperties properties) {

@@ -70,12 +70,7 @@ public final class CertificateResponseImpl
     }
 
     public CertificateResponse create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDpsCertificates()
-            .createOrUpdateWithResponse(resourceGroupName, provisioningServiceName, certificateName, this.innerModel(),
-                createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CertificateResponse create(Context context) {
@@ -101,12 +96,7 @@ public final class CertificateResponseImpl
     }
 
     public CertificateResponse apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDpsCertificates()
-            .createOrUpdateWithResponse(resourceGroupName, provisioningServiceName, certificateName, this.innerModel(),
-                updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CertificateResponse apply(Context context) {
@@ -122,19 +112,19 @@ public final class CertificateResponseImpl
         com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.provisioningServiceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "provisioningServices");
-        this.certificateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "certificates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}",
+            "resourceGroupName");
+        this.provisioningServiceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}",
+            "provisioningServiceName");
+        this.certificateName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}",
+            "certificateName");
     }
 
     public CertificateResponse refresh() {
-        String localIfMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getDpsCertificates()
-            .getWithResponse(certificateName, resourceGroupName, provisioningServiceName, localIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CertificateResponse refresh(Context context) {

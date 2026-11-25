@@ -301,11 +301,7 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudExadataInfrastructureInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<CloudExadataInfrastructureListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -326,29 +322,13 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List CloudExadataInfrastructure resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudExadataInfrastructure list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudExadataInfrastructureInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List CloudExadataInfrastructure resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudExadataInfrastructure list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudExadataInfrastructureInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -393,11 +373,7 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName,
         String cloudexadatainfrastructurename, CloudExadataInfrastructureInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, cloudexadatainfrastructurename, resource, Context.NONE);
     }
 
     /**
@@ -444,38 +420,14 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             this.client.getContext());
     }
 
-    /**
-     * Create a CloudExadataInfrastructure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloudExadataInfrastructure resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudexadatainfrastructurename, CloudExadataInfrastructureInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, cloudexadatainfrastructurename, resource);
-        return this.client.<CloudExadataInfrastructureInner, CloudExadataInfrastructureInner>getLroResult(response,
-            CloudExadataInfrastructureInner.class, CloudExadataInfrastructureInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, cloudexadatainfrastructurename, resource, Context.NONE);
     }
 
-    /**
-     * Create a CloudExadataInfrastructure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloudExadataInfrastructure resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudexadatainfrastructurename, CloudExadataInfrastructureInner resource,
@@ -504,40 +456,19 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a CloudExadataInfrastructure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloudExadataInfrastructure resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudExadataInfrastructureInner createOrUpdate(String resourceGroupName,
         String cloudexadatainfrastructurename, CloudExadataInfrastructureInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, cloudexadatainfrastructurename, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, cloudexadatainfrastructurename, resource, Context.NONE);
     }
 
-    /**
-     * Create a CloudExadataInfrastructure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloudExadataInfrastructure resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudExadataInfrastructureInner createOrUpdate(String resourceGroupName,
         String cloudexadatainfrastructurename, CloudExadataInfrastructureInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, cloudexadatainfrastructurename, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, cloudexadatainfrastructurename, resource, context));
     }
 
     /**
@@ -577,17 +508,7 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a CloudExadataInfrastructure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CloudExadataInfrastructure along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CloudExadataInfrastructureInner> getByResourceGroupWithResponse(String resourceGroupName,
         String cloudexadatainfrastructurename, Context context) {
@@ -596,16 +517,7 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, accept, context);
     }
 
-    /**
-     * Get a CloudExadataInfrastructure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CloudExadataInfrastructure.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudExadataInfrastructureInner getByResourceGroup(String resourceGroupName,
         String cloudexadatainfrastructurename) {
@@ -651,11 +563,7 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String cloudexadatainfrastructurename,
         CloudExadataInfrastructureUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, cloudexadatainfrastructurename, properties, Context.NONE);
     }
 
     /**
@@ -701,38 +609,14 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             this.client.getContext());
     }
 
-    /**
-     * Update a CloudExadataInfrastructure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloudExadataInfrastructure resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner> beginUpdate(
         String resourceGroupName, String cloudexadatainfrastructurename, CloudExadataInfrastructureUpdate properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, cloudexadatainfrastructurename, properties);
-        return this.client.<CloudExadataInfrastructureInner, CloudExadataInfrastructureInner>getLroResult(response,
-            CloudExadataInfrastructureInner.class, CloudExadataInfrastructureInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, cloudexadatainfrastructurename, properties, Context.NONE);
     }
 
-    /**
-     * Update a CloudExadataInfrastructure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloudExadataInfrastructure resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner> beginUpdate(
         String resourceGroupName, String cloudexadatainfrastructurename, CloudExadataInfrastructureUpdate properties,
@@ -761,39 +645,19 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a CloudExadataInfrastructure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloudExadataInfrastructure resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudExadataInfrastructureInner update(String resourceGroupName, String cloudexadatainfrastructurename,
         CloudExadataInfrastructureUpdate properties) {
-        return beginUpdate(resourceGroupName, cloudexadatainfrastructurename, properties).getFinalResult();
+        return update(resourceGroupName, cloudexadatainfrastructurename, properties, Context.NONE);
     }
 
-    /**
-     * Update a CloudExadataInfrastructure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloudExadataInfrastructure resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudExadataInfrastructureInner update(String resourceGroupName, String cloudexadatainfrastructurename,
         CloudExadataInfrastructureUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, cloudexadatainfrastructurename, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, cloudexadatainfrastructurename, properties, context));
     }
 
     /**
@@ -827,8 +691,7 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cloudexadatainfrastructurename) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, Context.NONE);
+        return deleteWithResponse(resourceGroupName, cloudexadatainfrastructurename, Context.NONE);
     }
 
     /**
@@ -868,34 +731,14 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             this.client.getContext());
     }
 
-    /**
-     * Delete a CloudExadataInfrastructure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String cloudexadatainfrastructurename) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, cloudexadatainfrastructurename);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, cloudexadatainfrastructurename, Context.NONE);
     }
 
-    /**
-     * Delete a CloudExadataInfrastructure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String cloudexadatainfrastructurename, Context context) {
@@ -919,33 +762,16 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a CloudExadataInfrastructure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudexadatainfrastructurename) {
-        beginDelete(resourceGroupName, cloudexadatainfrastructurename).getFinalResult();
+        delete(resourceGroupName, cloudexadatainfrastructurename, Context.NONE);
     }
 
-    /**
-     * Delete a CloudExadataInfrastructure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudexadatainfrastructurename, Context context) {
-        beginDelete(resourceGroupName, cloudexadatainfrastructurename, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, cloudexadatainfrastructurename, context));
     }
 
     /**
@@ -996,11 +822,7 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudExadataInfrastructureInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<CloudExadataInfrastructureListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1023,33 +845,13 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List CloudExadataInfrastructure resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudExadataInfrastructure list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudExadataInfrastructureInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List CloudExadataInfrastructure resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudExadataInfrastructure list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudExadataInfrastructureInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -1091,9 +893,7 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> addStorageCapacityWithResponse(String resourceGroupName,
         String cloudexadatainfrastructurename) {
-        final String accept = "application/json";
-        return service.addStorageCapacitySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, accept, Context.NONE);
+        return addStorageCapacityWithResponse(resourceGroupName, cloudexadatainfrastructurename, Context.NONE);
     }
 
     /**
@@ -1135,36 +935,14 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             this.client.getContext());
     }
 
-    /**
-     * Perform add storage capacity on exadata infra.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloudExadataInfrastructure resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner>
         beginAddStorageCapacity(String resourceGroupName, String cloudexadatainfrastructurename) {
-        Response<BinaryData> response
-            = addStorageCapacityWithResponse(resourceGroupName, cloudexadatainfrastructurename);
-        return this.client.<CloudExadataInfrastructureInner, CloudExadataInfrastructureInner>getLroResult(response,
-            CloudExadataInfrastructureInner.class, CloudExadataInfrastructureInner.class, Context.NONE);
+        return beginAddStorageCapacity(resourceGroupName, cloudexadatainfrastructurename, Context.NONE);
     }
 
-    /**
-     * Perform add storage capacity on exadata infra.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloudExadataInfrastructure resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner>
         beginAddStorageCapacity(String resourceGroupName, String cloudexadatainfrastructurename, Context context) {
@@ -1191,37 +969,19 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Perform add storage capacity on exadata infra.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloudExadataInfrastructure resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudExadataInfrastructureInner addStorageCapacity(String resourceGroupName,
         String cloudexadatainfrastructurename) {
-        return beginAddStorageCapacity(resourceGroupName, cloudexadatainfrastructurename).getFinalResult();
+        return addStorageCapacity(resourceGroupName, cloudexadatainfrastructurename, Context.NONE);
     }
 
-    /**
-     * Perform add storage capacity on exadata infra.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloudExadataInfrastructure resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudExadataInfrastructureInner addStorageCapacity(String resourceGroupName,
         String cloudexadatainfrastructurename, Context context) {
-        return beginAddStorageCapacity(resourceGroupName, cloudexadatainfrastructurename, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginAddStorageCapacity(resourceGroupName, cloudexadatainfrastructurename, context));
     }
 
     /**
@@ -1262,11 +1022,7 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> configureExascaleWithResponse(String resourceGroupName,
         String cloudexadatainfrastructurename, ConfigureExascaleCloudExadataInfrastructureDetails body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.configureExascaleSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, contentType, accept,
-            body, Context.NONE);
+        return configureExascaleWithResponse(resourceGroupName, cloudexadatainfrastructurename, body, Context.NONE);
     }
 
     /**
@@ -1314,39 +1070,15 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             this.client.getContext());
     }
 
-    /**
-     * Configures Exascale on Cloud exadata infrastructure resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloudExadataInfrastructure resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner>
         beginConfigureExascale(String resourceGroupName, String cloudexadatainfrastructurename,
             ConfigureExascaleCloudExadataInfrastructureDetails body) {
-        Response<BinaryData> response
-            = configureExascaleWithResponse(resourceGroupName, cloudexadatainfrastructurename, body);
-        return this.client.<CloudExadataInfrastructureInner, CloudExadataInfrastructureInner>getLroResult(response,
-            CloudExadataInfrastructureInner.class, CloudExadataInfrastructureInner.class, Context.NONE);
+        return beginConfigureExascale(resourceGroupName, cloudexadatainfrastructurename, body, Context.NONE);
     }
 
-    /**
-     * Configures Exascale on Cloud exadata infrastructure resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloudExadataInfrastructure resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner>
         beginConfigureExascale(String resourceGroupName, String cloudexadatainfrastructurename,
@@ -1375,41 +1107,20 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Configures Exascale on Cloud exadata infrastructure resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloudExadataInfrastructure resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudExadataInfrastructureInner configureExascale(String resourceGroupName,
         String cloudexadatainfrastructurename, ConfigureExascaleCloudExadataInfrastructureDetails body) {
-        return beginConfigureExascale(resourceGroupName, cloudexadatainfrastructurename, body).getFinalResult();
+        return configureExascale(resourceGroupName, cloudexadatainfrastructurename, body, Context.NONE);
     }
 
-    /**
-     * Configures Exascale on Cloud exadata infrastructure resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloudExadataInfrastructure resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudExadataInfrastructureInner configureExascale(String resourceGroupName,
         String cloudexadatainfrastructurename, ConfigureExascaleCloudExadataInfrastructureDetails body,
         Context context) {
-        return beginConfigureExascale(resourceGroupName, cloudexadatainfrastructurename, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginConfigureExascale(resourceGroupName, cloudexadatainfrastructurename, body, context));
     }
 
     /**
@@ -1445,11 +1156,7 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudExadataInfrastructureInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CloudExadataInfrastructureListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1505,11 +1212,7 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudExadataInfrastructureInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CloudExadataInfrastructureListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

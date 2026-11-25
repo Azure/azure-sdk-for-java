@@ -65,10 +65,7 @@ public final class BrokerResourceImpl implements BrokerResource, BrokerResource.
     }
 
     public BrokerResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokers()
-            .createOrUpdate(resourceGroupName, instanceName, brokerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BrokerResource create(Context context) {
@@ -89,10 +86,7 @@ public final class BrokerResourceImpl implements BrokerResource, BrokerResource.
     }
 
     public BrokerResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokers()
-            .createOrUpdate(resourceGroupName, instanceName, brokerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BrokerResource apply(Context context) {
@@ -106,17 +100,19 @@ public final class BrokerResourceImpl implements BrokerResource, BrokerResource.
         com.azure.resourcemanager.iotoperations.IoTOperationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.instanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "instances");
-        this.brokerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "brokers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}",
+            "resourceGroupName");
+        this.instanceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}",
+            "instanceName");
+        this.brokerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}",
+            "brokerName");
     }
 
     public BrokerResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokers()
-            .getWithResponse(resourceGroupName, instanceName, brokerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BrokerResource refresh(Context context) {

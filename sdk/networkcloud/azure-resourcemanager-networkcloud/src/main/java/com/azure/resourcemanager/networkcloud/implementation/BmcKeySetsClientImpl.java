@@ -229,18 +229,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get baseboard management controller key set of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseboard management controller key set of the provided cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BmcKeySetInner> getWithResponse(String resourceGroupName, String clusterName, String bmcKeySetName,
         Context context) {
@@ -249,17 +238,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
             resourceGroupName, clusterName, bmcKeySetName, accept, context);
     }
 
-    /**
-     * Get baseboard management controller key set of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseboard management controller key set of the provided cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BmcKeySetInner get(String resourceGroupName, String clusterName, String bmcKeySetName) {
         return getWithResponse(resourceGroupName, clusterName, bmcKeySetName, Context.NONE).getValue();
@@ -314,11 +293,8 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         String bmcKeySetName, BmcKeySetInner bmcKeySetParameters, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch,
-            contentType, accept, bmcKeySetParameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -414,55 +390,24 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return the {@link SyncPoller} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters, String ifMatch,
         String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterName, bmcKeySetName,
-            bmcKeySetParameters, ifMatch, ifNoneMatch);
-        return this.client.<BmcKeySetInner, BmcKeySetInner>getLroResult(response, BmcKeySetInner.class,
-            BmcKeySetInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @param bmcKeySetParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of bmcKeySet represents the baseboard management controller key set.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterName, bmcKeySetName,
-            bmcKeySetParameters, ifMatch, ifNoneMatch);
-        return this.client.<BmcKeySetInner, BmcKeySetInner>getLroResult(response, BmcKeySetInner.class,
-            BmcKeySetInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @param bmcKeySetParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of bmcKeySet represents the baseboard management controller key set.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters, String ifMatch,
@@ -519,49 +464,22 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @param bmcKeySetParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bmcKeySet represents the baseboard management controller key set.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BmcKeySetInner createOrUpdate(String resourceGroupName, String clusterName, String bmcKeySetName,
         BmcKeySetInner bmcKeySetParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters, ifMatch,
-            ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @param bmcKeySetParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bmcKeySet represents the baseboard management controller key set.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BmcKeySetInner createOrUpdate(String resourceGroupName, String clusterName, String bmcKeySetName,
         BmcKeySetInner bmcKeySetParameters, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters, ifMatch,
-            ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, clusterName, bmcKeySetName,
+            bmcKeySetParameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -613,10 +531,8 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName, String bmcKeySetName,
         String ifMatch, String ifNoneMatch, BmcKeySetPatchParameters bmcKeySetUpdateParameters) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch,
-            accept, bmcKeySetUpdateParameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch,
+            bmcKeySetUpdateParameters, Context.NONE);
     }
 
     /**
@@ -715,57 +631,25 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return the {@link SyncPoller} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdate(String resourceGroupName,
         String clusterName, String bmcKeySetName, String ifMatch, String ifNoneMatch,
         BmcKeySetPatchParameters bmcKeySetUpdateParameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, bmcKeySetName, ifMatch,
-            ifNoneMatch, bmcKeySetUpdateParameters);
-        return this.client.<BmcKeySetInner, BmcKeySetInner>getLroResult(response, BmcKeySetInner.class,
-            BmcKeySetInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch,
+            bmcKeySetUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
-     * associated with it. Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of bmcKeySet represents the baseboard management controller key set.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdate(String resourceGroupName,
         String clusterName, String bmcKeySetName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final BmcKeySetPatchParameters bmcKeySetUpdateParameters = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, bmcKeySetName, ifMatch,
-            ifNoneMatch, bmcKeySetUpdateParameters);
-        return this.client.<BmcKeySetInner, BmcKeySetInner>getLroResult(response, BmcKeySetInner.class,
-            BmcKeySetInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch,
+            bmcKeySetUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
-     * associated with it. Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param bmcKeySetUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of bmcKeySet represents the baseboard management controller key set.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdate(String resourceGroupName,
         String clusterName, String bmcKeySetName, String ifMatch, String ifNoneMatch,
@@ -823,50 +707,22 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
             bmcKeySetUpdateParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
-     * associated with it. Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bmcKeySet represents the baseboard management controller key set.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BmcKeySetInner update(String resourceGroupName, String clusterName, String bmcKeySetName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final BmcKeySetPatchParameters bmcKeySetUpdateParameters = null;
-        return beginUpdate(resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch,
-            bmcKeySetUpdateParameters).getFinalResult();
+        return update(resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch, bmcKeySetUpdateParameters,
+            Context.NONE);
     }
 
-    /**
-     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
-     * associated with it. Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param bmcKeySetUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bmcKeySet represents the baseboard management controller key set.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BmcKeySetInner update(String resourceGroupName, String clusterName, String bmcKeySetName, String ifMatch,
         String ifNoneMatch, BmcKeySetPatchParameters bmcKeySetUpdateParameters, Context context) {
-        return beginUpdate(resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch,
-            bmcKeySetUpdateParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, clusterName, bmcKeySetName, ifMatch,
+            ifNoneMatch, bmcKeySetUpdateParameters, context));
     }
 
     /**
@@ -912,9 +768,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, String bmcKeySetName,
         String ifMatch, String ifNoneMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -1003,50 +857,21 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String bmcKeySetName, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the baseboard management controller key set of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String bmcKeySetName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the baseboard management controller key set of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String bmcKeySetName, String ifMatch, String ifNoneMatch, Context context) {
@@ -1096,42 +921,20 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the baseboard management controller key set of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String bmcKeySetName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        beginDelete(resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch).getFinalResult();
+        delete(resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the baseboard management controller key set of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String bmcKeySetName, String ifMatch,
         String ifNoneMatch, Context context) {
-        beginDelete(resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, clusterName, bmcKeySetName, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -1217,11 +1020,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BmcKeySetInner> listByClusterSinglePage(String resourceGroupName, String clusterName,
         Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<BmcKeySetList> res = service.listByClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClusterSinglePage(resourceGroupName, clusterName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -1249,40 +1048,15 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of baseboard management controller key sets for the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of baseboard management controller key sets for the provided cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BmcKeySetInner> listByCluster(String resourceGroupName, String clusterName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByClusterSinglePage(resourceGroupName, clusterName, top, skipToken),
-            nextLink -> listByClusterNextSinglePage(nextLink));
+        return listByCluster(resourceGroupName, clusterName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of baseboard management controller key sets for the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of baseboard management controller key sets for the provided cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BmcKeySetInner> listByCluster(String resourceGroupName, String clusterName, Integer top,
         String skipToken, Context context) {
@@ -1323,11 +1097,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BmcKeySetInner> listByClusterNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BmcKeySetList> res
-            = service.listByClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

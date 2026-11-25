@@ -18,7 +18,6 @@ import com.azure.resourcemanager.containerregistry.models.LoggingProperties;
 import com.azure.resourcemanager.containerregistry.models.LoginServerProperties;
 import com.azure.resourcemanager.containerregistry.models.ParentProperties;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
-import com.azure.resourcemanager.containerregistry.models.RegistrySyncResult;
 import com.azure.resourcemanager.containerregistry.models.StatusDetailProperties;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -326,29 +325,6 @@ public final class ConnectedRegistryInner extends ProxyResource {
             this.innerProperties = new ConnectedRegistryProperties();
         }
         this.innerProperties().withGarbageCollection(garbageCollection);
-        return this;
-    }
-
-    /**
-     * Get the registrySyncResult property: The result of the connected registry's most recent sync with its parent.
-     * 
-     * @return the registrySyncResult value.
-     */
-    public RegistrySyncResult registrySyncResult() {
-        return this.innerProperties() == null ? null : this.innerProperties().registrySyncResult();
-    }
-
-    /**
-     * Set the registrySyncResult property: The result of the connected registry's most recent sync with its parent.
-     * 
-     * @param registrySyncResult the registrySyncResult value to set.
-     * @return the ConnectedRegistryInner object itself.
-     */
-    public ConnectedRegistryInner withRegistrySyncResult(RegistrySyncResult registrySyncResult) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ConnectedRegistryProperties();
-        }
-        this.innerProperties().withRegistrySyncResult(registrySyncResult);
         return this;
     }
 

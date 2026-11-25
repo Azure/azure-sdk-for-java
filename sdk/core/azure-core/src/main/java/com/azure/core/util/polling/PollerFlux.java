@@ -4,7 +4,6 @@
 package com.azure.core.util.polling;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.CoreSubscriber;
@@ -13,7 +12,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -21,6 +19,8 @@ import java.util.function.Supplier;
 /**
  * A Flux that simplifies the task of executing long-running operations against an Azure service. A subscription to
  * {@link PollerFlux} initiates a long-running operation and polls the status until it completes.
+ * Once activation starts, cancelling a subscription does not cancel the shared activation. Subsequent subscriptions
+ * reuse its result.
  *
  * <p>
  * <strong>Code samples</strong>
@@ -299,9 +299,8 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
         this.fetchResultOperation
             = Objects.requireNonNull(fetchResultOperation, "'fetchResultOperation' cannot be null.");
-        this.oneTimeActivationMono = new OneTimeActivation<>(this.rootContext, activationOperation,
-            // mapper
-            activationResult -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResult)).getMono();
+        this.oneTimeActivationMono = createActivationMono(this.rootContext, activationOperation,
+            activationResult -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResult));
         this.syncActivationOperation
             = cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block());
     }
@@ -398,9 +397,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
         this.fetchResultOperation
             = Objects.requireNonNull(fetchResultOperation, "'fetchResultOperation' cannot be null.");
-        this.oneTimeActivationMono = new OneTimeActivation<>(this.rootContext, activationOperation,
-            // mapper
-            Function.identity()).getMono();
+        this.oneTimeActivationMono = createActivationMono(this.rootContext, activationOperation, Function.identity());
         this.syncActivationOperation = cxt -> activationOperation.apply(cxt).block();
     }
 
@@ -511,95 +508,18 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
         return (retryAfter == null || retryAfter.isNegative() || retryAfter.isZero()) ? this.pollInterval : retryAfter;
     }
 
-    /**
-     * A utility to get One-Time-Executable-Mono that execute an activation function at most once.
-     * <p>
-     * When subscribed to such a Mono it internally subscribes to a Mono that perform an activation function. The
-     * One-Time-Executable-Mono caches the result of activation function as a PollResponse in {@code rootContext}, this
-     * cached response will be used by any future subscriptions.
-     * <p>
-     * Note: The standard cache() operator can't be used to achieve one time execution, because it caches error terminal
-     * signal and forward it to any future subscriptions. If there is an error while executing activation function then
-     * error should not be cached, but it should be forward it to subscription that initiated the failed activation. For
-     * any future subscriptions such past error should not be delivered instead activation function should be invoked
-     * again. Once a subscription result in successful execution of activation function then it will be cached in
-     * {@code rootContext} and will be used by any future subscriptions.
-     * <p>
-     * The One-Time-Executable-Mono handles concurrent calls to activation. Only one of them will be able to execute the
-     * activation function and other subscriptions will keep resubscribing until it sees an activation happened or get a
-     * chance to call activation as the one previously entered the critical section got an error on activation.
-     *
-     * @param <V> The type of value in poll response.
-     * @param <R> The type of the activation operation result.
-     */
-    private static final class OneTimeActivation<V, R> {
-        private final PollingContext<V> rootContext;
-        private final Function<PollingContext<V>, Mono<R>> activationFunction;
-        private final Function<R, PollResponse<V>> activationPollResponseMapper;
-        // indicates whether activation executed and completed 'successfully'.
-        private volatile boolean activated = false;
-        // to guard one-time-activation area
-        private final AtomicBoolean guardActivation = new AtomicBoolean(false);
-
-        /**
-         * Creates OneTimeActivation.
-         *
-         * @param rootContext the root context to store PollResponse holding activation result
-         * @param activationFunction function upon call return a Mono representing activation work
-         * @param activationPollResponseMapper mapper to map result of activation work execution to PollResponse
-         */
-        OneTimeActivation(PollingContext<V> rootContext, Function<PollingContext<V>, Mono<R>> activationFunction,
-            Function<R, PollResponse<V>> activationPollResponseMapper) {
-            this.rootContext = rootContext;
-            this.activationFunction = activationFunction;
-            this.activationPollResponseMapper = activationPollResponseMapper;
-        }
-
-        /**
-         * Get the mono containing activation work which on subscription executed only once.
-         *
-         * @return the one time executable mono
-         */
-        Mono<Boolean> getMono() {
-            return Mono.defer(() -> {
-                if (this.activated) {
-                    // already activated let subscriber get activation result from root context.
-                    return Mono.just(true);
-                }
-                if (this.guardActivation.compareAndSet(false, true)) {
-                    // one-time-activation-area
-                    //
-                    final Mono<R> activationMono;
-                    try {
-                        activationMono = this.activationFunction.apply(this.rootContext);
-                    } catch (RuntimeException e) {
-                        // onError: sync apply() failed
-                        // 1. remove guard so that future subscriber can retry activation.
-                        // 2. forward error to current subscriber.
-                        this.guardActivation.set(false);
-                        return FluxUtil.monoError(LOGGER, e);
-                    }
-                    return activationMono.map(this.activationPollResponseMapper)
-                        .switchIfEmpty(
-                            Mono.fromSupplier(() -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null)))
-                        .map(activationResponse -> {
-                            this.rootContext.setOnetimeActivationResponse(activationResponse);
-                            this.activated = true;
-                            return true;
-                        })
-                        // onError: async activation failed
-                        // 1. remove guard so that future subscription can retry activation.
-                        // 2. forward error to current subscriber.
-                        .doOnError(throwable -> this.guardActivation.set(false));
-                } else {
-                    // Couldn't enter one-time-activation-area (there was already someone in the area
-                    // trying to activate). Return empty() to outer "repeatWhenEmpty" that will result
-                    // in another attempt to enter one-time-activation-area.
-                    return Mono.empty();
-                }
+    private static <V, R> Mono<Boolean> createActivationMono(PollingContext<V> rootContext,
+        Function<PollingContext<V>, Mono<R>> activationFunction,
+        Function<R, PollResponse<V>> activationPollResponseMapper) {
+        // Share the pending activation even if its first subscriber cancels, so an operation isn't started twice.
+        // Cache successful activation indefinitely, but allow a later subscription to retry a failed activation.
+        return Mono.defer(() -> activationFunction.apply(rootContext))
+            .map(activationPollResponseMapper)
+            .switchIfEmpty(Mono.fromSupplier(() -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null)))
+            .map(activationResponse -> {
+                rootContext.setOnetimeActivationResponse(activationResponse);
+                return true;
             })
-                // Keep resubscribing as long as Mono.defer [holding activation work] emits empty().
-                .repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
-        }
+            .cache(ignored -> Duration.ofMillis(Long.MAX_VALUE), ignored -> Duration.ZERO, () -> Duration.ZERO);
     }
 }

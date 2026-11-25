@@ -45,7 +45,7 @@ public final class DedicatedHubsImpl implements DedicatedHubs {
     }
 
     public void delete(String resourceGroupName, String communityName, String dedicatedHubName) {
-        this.serviceClient().delete(resourceGroupName, communityName, dedicatedHubName);
+        this.delete(resourceGroupName, communityName, dedicatedHubName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String communityName, String dedicatedHubName, Context context) {
@@ -53,9 +53,7 @@ public final class DedicatedHubsImpl implements DedicatedHubs {
     }
 
     public PagedIterable<DedicatedHubResource> listByCommunityResource(String resourceGroupName, String communityName) {
-        PagedIterable<DedicatedHubResourceInner> inner
-            = this.serviceClient().listByCommunityResource(resourceGroupName, communityName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedHubResourceImpl(inner1, this.manager()));
+        return this.listByCommunityResource(resourceGroupName, communityName, Context.NONE);
     }
 
     public PagedIterable<DedicatedHubResource> listByCommunityResource(String resourceGroupName, String communityName,
@@ -66,8 +64,7 @@ public final class DedicatedHubsImpl implements DedicatedHubs {
     }
 
     public PagedIterable<DedicatedHubResource> listBySubscription(String communityName) {
-        PagedIterable<DedicatedHubResourceInner> inner = this.serviceClient().listBySubscription(communityName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedHubResourceImpl(inner1, this.manager()));
+        return this.listBySubscription(communityName, Context.NONE);
     }
 
     public PagedIterable<DedicatedHubResource> listBySubscription(String communityName, Context context) {
@@ -77,78 +74,36 @@ public final class DedicatedHubsImpl implements DedicatedHubs {
     }
 
     public DedicatedHubResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String communityName = ResourceManagerUtils.getValueFromIdByName(id, "communities");
-        if (communityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'communities'.", id)));
-        }
-        String dedicatedHubName = ResourceManagerUtils.getValueFromIdByName(id, "dedicatedHubs");
-        if (dedicatedHubName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dedicatedHubs'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, communityName, dedicatedHubName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DedicatedHubResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String communityName = ResourceManagerUtils.getValueFromIdByName(id, "communities");
-        if (communityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'communities'.", id)));
-        }
-        String dedicatedHubName = ResourceManagerUtils.getValueFromIdByName(id, "dedicatedHubs");
-        if (dedicatedHubName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dedicatedHubs'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/dedicatedHubs/{dedicatedHubName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String communityName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/dedicatedHubs/{dedicatedHubName}",
+            "communityName", "communities", LOGGER);
+        String dedicatedHubName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/dedicatedHubs/{dedicatedHubName}",
+            "dedicatedHubName", "dedicatedHubs", LOGGER);
         return this.getWithResponse(resourceGroupName, communityName, dedicatedHubName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String communityName = ResourceManagerUtils.getValueFromIdByName(id, "communities");
-        if (communityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'communities'.", id)));
-        }
-        String dedicatedHubName = ResourceManagerUtils.getValueFromIdByName(id, "dedicatedHubs");
-        if (dedicatedHubName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dedicatedHubs'.", id)));
-        }
-        this.delete(resourceGroupName, communityName, dedicatedHubName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String communityName = ResourceManagerUtils.getValueFromIdByName(id, "communities");
-        if (communityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'communities'.", id)));
-        }
-        String dedicatedHubName = ResourceManagerUtils.getValueFromIdByName(id, "dedicatedHubs");
-        if (dedicatedHubName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dedicatedHubs'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/dedicatedHubs/{dedicatedHubName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String communityName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/dedicatedHubs/{dedicatedHubName}",
+            "communityName", "communities", LOGGER);
+        String dedicatedHubName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/dedicatedHubs/{dedicatedHubName}",
+            "dedicatedHubName", "dedicatedHubs", LOGGER);
         this.delete(resourceGroupName, communityName, dedicatedHubName, context);
     }
 

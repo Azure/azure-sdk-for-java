@@ -1,104 +1,103 @@
 <#
 .SYNOPSIS
-Invokes sparse checkout on the specified repositories.
+Prepares or restores working-tree changes around a native sparse checkout.
 
 .DESCRIPTION
-Invokes sparse checkout on the specified repositories.
-
-This script is special to Java as it uses layered sparse checkout to reduce the amount of code to checkout.
-The first run of sparse checkout is inlined into YAML as there is a chicken and egg problem where the script
-to perform sparse checkout won't be available until after the checkout step has completed.
-
-This script is used to reduce the size of YAML files as this is only called when the initial checkout has
-already been completed.
+Combines the initial sparse checkout patterns with paths computed by Java's dependency discovery.
+Tracked-file changes are saved outside the repository and restored after the Azure Pipelines checkout
+step resets them. The checkout must use clean: false to preserve generated untracked files.
 
 .PARAMETER PathsJson
-JSON representation of the paths to checkout.
+JSON representation of the additional paths to checkout.
 
-.PARAMETER RepositoriesJson
-JSON representation of the repositories to checkout from.
+.PARAMETER ChangesPath
+Absolute path outside the repository for the patch containing tracked-file changes.
+
+.PARAMETER SourceVersion
+The original source revision, which must still be checked out before restoring changes.
+
+.PARAMETER Restore
+Restore the saved changes after the native checkout has completed.
 #>
 
+[CmdletBinding(DefaultParameterSetName = 'Prepare')]
 param(
-  [Parameter(Mandatory = $true)]
-  [string]$PathsJson,
+    [Parameter(Mandatory = $true, ParameterSetName = 'Prepare')]
+    [string]$PathsJson,
 
-  [Parameter(Mandatory = $true)]
-  [string]$RepositoriesJson
+    [Parameter(Mandatory = $true)]
+    [string]$ChangesPath,
+
+    [Parameter(Mandatory = $true, ParameterSetName = 'Restore')]
+    [string]$SourceVersion,
+
+    [Parameter(Mandatory = $true, ParameterSetName = 'Restore')]
+    [switch]$Restore
 )
 
-# Setting $PSNativeCommandArgumentPassing to 'Legacy' to use PowerShell
-# 7.2 behavior for command argument passing. Newer behaviors will result
-# in errors from git.exe.
-$PSNativeCommandArgumentPassing = 'Legacy'
+$ErrorActionPreference = 'Stop'
 
-function SparseCheckout([Array]$paths, [Hashtable]$repository)
-{
-    $dir = $repository.WorkingDirectory
-    if (!$dir) {
-        $dir = "./$($repository.Name)"
+if ($Restore) {
+    $currentVersion = git rev-parse HEAD
+    if ($LASTEXITCODE -ne 0 -or $currentVersion -ne $SourceVersion) {
+        throw "The native checkout changed the source revision. Patch retained at $ChangesPath."
     }
-    New-Item $dir -ItemType Directory -Force | Out-Null
-    Push-Location $dir
-
-    if (Test-Path .git/info/sparse-checkout) {
-        $hasInitialized = $true
-        Write-Host "Repository $($repository.Name) has already been initialized. Skipping this step."
-    } else {
-        Write-Host "Repository $($repository.Name) is being initialized."
-
-        if ($repository.Commitish -match '^refs/pull/\d+/merge$') {
-            Write-Host "git clone --no-checkout --filter=tree:0 -c remote.origin.fetch='+$($repository.Commitish):refs/remotes/origin/$($repository.Commitish)' https://github.com/$($repository.Name) ."
-            git clone --no-checkout --filter=tree:0 -c remote.origin.fetch=''+$($repository.Commitish):refs/remotes/origin/$($repository.Commitish)'' https://github.com/$($repository.Name) .
-        } else {
-            Write-Host "git clone --no-checkout --filter=tree:0 https://github.com/$($repository.Name) ."
-            git clone --no-checkout --filter=tree:0 https://github.com/$($repository.Name) .
+    if ((Get-Item -LiteralPath $ChangesPath).Length -gt 0) {
+        git apply --whitespace=nowarn -- $ChangesPath
+        if ($LASTEXITCODE -ne 0) {
+            throw "Restoring checkout changes failed with exit code $LASTEXITCODE. Patch retained at $ChangesPath."
         }
-
-        # Turn off git GC for sparse checkout. Note: The devops checkout task does this by default
-        Write-Host "git config gc.auto 0"
-        git config gc.auto 0
-
-        Write-Host "git sparse-checkout init"
-        git sparse-checkout init
-
-        # Set non-cone mode otherwise path filters will not work in git >= 2.37.0
-        # See https://github.blog/2022-06-27-highlights-from-git-2-37/#tidbits
-        Write-Host "git sparse-checkout set --no-cone '/*' '!/*/' '/eng'"
-        git sparse-checkout set --no-cone '/*' '!/*/' '/eng'
     }
-
-    # Prevent wildcard expansion in Invoke-Expression (e.g. for checkout path '/*')
-    $quotedPaths = $paths | ForEach-Object { "'$_'" }
-    $gitsparsecmd = "git sparse-checkout add $quotedPaths"
-    Write-Host $gitsparsecmd
-    Invoke-Expression -Command $gitsparsecmd
-
-    Write-Host "Set sparse checkout paths to:"
-    Get-Content .git/info/sparse-checkout
-
-    # sparse-checkout commands after initial checkout will auto-checkout again
-    if (!$hasInitialized) {
-        # Remove refs/heads/ prefix from branch names
-        $commitish = $repository.Commitish -replace '^refs/heads/', ''
-
-        # use -- to prevent git from interpreting the commitish as a path
-        Write-Host "git -c advice.detachedHead=false checkout $commitish --"
-
-        # This will use the default branch if repo.Commitish is empty
-        git -c advice.detachedHead=false checkout $commitish --
-    } else {
-        Write-Host "Skipping checkout as repo has already been initialized"
-    }
-
-    Pop-Location
+    Remove-Item -LiteralPath $ChangesPath
+    return
 }
+
+Write-Output '##vso[task.setvariable variable=SparseCheckoutRequired]false'
 
 # Paths may be sourced as a yaml object literal OR a dynamically generated variable json string.
 # If the latter, convertToJson will wrap the 'string' in quotes, so remove them.
 $paths = $PathsJson.Trim('"') | ConvertFrom-Json
-# Replace windows backslash paths, as Azure Pipelines default directories are sometimes formatted like 'D:\a\1\s'
-$repositories = $RepositoriesJson -replace '\\', '/' | ConvertFrom-Json -AsHashtable
-foreach ($repo in $repositories) {
-    SparseCheckout $paths $repo
+if (@($paths).Count -eq 0) {
+    return
 }
+
+$isWorkingTree = git rev-parse --is-inside-work-tree
+if ($LASTEXITCODE -ne 0 -or $isWorkingTree -ne 'true') {
+    throw 'The repository is not an initialized Git working tree.'
+}
+
+$isSparseCheckout = git config --type=bool --default=false --get core.sparseCheckout
+if ($LASTEXITCODE -ne 0) {
+    throw 'Unable to determine sparse checkout mode.'
+}
+if ($isSparseCheckout -ne 'true') {
+    Write-Information 'The repository has a full checkout. Skipping expansion.' -InformationAction Continue
+    return
+}
+
+$patternsPath = git rev-parse --git-path info/sparse-checkout
+if ($LASTEXITCODE -ne 0) {
+    throw 'Unable to locate the initial sparse checkout patterns.'
+}
+$patterns = @(Get-Content -LiteralPath $patternsPath) + @($paths)
+$quotedPatterns = foreach ($pattern in $patterns) {
+    if ($pattern -match "[`r`n]") {
+        throw 'Sparse checkout patterns cannot contain line breaks.'
+    }
+    '"' + ($pattern -replace '(\\*)"', '$1$1\"' -replace '(\\+)$', '$1$1') + '"'
+}
+
+New-Item -ItemType Directory -Path (Split-Path -Parent $ChangesPath) -Force | Out-Null
+$SourceVersion = git rev-parse HEAD
+if ($LASTEXITCODE -ne 0) {
+    throw 'Unable to determine the original source revision.'
+}
+git diff --binary --no-ext-diff --no-textconv --src-prefix=a/ --dst-prefix=b/ --output=$ChangesPath $SourceVersion --
+if ($LASTEXITCODE -ne 0) {
+    throw "Saving checkout changes failed with exit code $LASTEXITCODE."
+}
+
+$patternsValue = ($quotedPatterns -join ' ').Replace('%', '%AZP25')
+Write-Output "##vso[task.setvariable variable=SparseCheckoutPatterns]$patternsValue"
+Write-Output "##vso[task.setvariable variable=SparseCheckoutSourceVersion]$SourceVersion"
+Write-Output '##vso[task.setvariable variable=SparseCheckoutRequired]true'

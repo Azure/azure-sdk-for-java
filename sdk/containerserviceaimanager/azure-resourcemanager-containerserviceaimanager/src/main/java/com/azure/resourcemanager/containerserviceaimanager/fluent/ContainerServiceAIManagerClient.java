@@ -87,4 +87,11 @@ public interface ContainerServiceAIManagerClient {
      * @return the ModelDeploymentsClient object.
      */
     ModelDeploymentsClient getModelDeployments();
+
+    /**
+     * Gets the CustomAIModelsClient object to access its operations.
+     * 
+     * @return the CustomAIModelsClient object.
+     */
+    CustomAIModelsClient getCustomAIModels();
 }

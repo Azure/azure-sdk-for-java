@@ -50,7 +50,7 @@ public final class ArcSettingsImpl implements ArcSettings {
     }
 
     public void delete(String resourceGroupName, String clusterName, String arcSettingName) {
-        this.serviceClient().delete(resourceGroupName, clusterName, arcSettingName);
+        this.delete(resourceGroupName, clusterName, arcSettingName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String clusterName, String arcSettingName, Context context) {
@@ -58,8 +58,7 @@ public final class ArcSettingsImpl implements ArcSettings {
     }
 
     public PagedIterable<ArcSetting> listByCluster(String resourceGroupName, String clusterName) {
-        PagedIterable<ArcSettingInner> inner = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ArcSettingImpl(inner1, this.manager()));
+        return this.listByCluster(resourceGroupName, clusterName, Context.NONE);
     }
 
     public PagedIterable<ArcSetting> listByCluster(String resourceGroupName, String clusterName, Context context) {
@@ -87,13 +86,7 @@ public final class ArcSettingsImpl implements ArcSettings {
     }
 
     public ArcIdentityResponse createIdentity(String resourceGroupName, String clusterName, String arcSettingName) {
-        ArcIdentityResponseInner inner
-            = this.serviceClient().createIdentity(resourceGroupName, clusterName, arcSettingName);
-        if (inner != null) {
-            return new ArcIdentityResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createIdentity(resourceGroupName, clusterName, arcSettingName, Context.NONE);
     }
 
     public ArcIdentityResponse createIdentity(String resourceGroupName, String clusterName, String arcSettingName,
@@ -109,13 +102,8 @@ public final class ArcSettingsImpl implements ArcSettings {
 
     public ArcSetting reconcile(String resourceGroupName, String clusterName, String arcSettingName,
         ReconcileArcSettingsRequest reconcileArcSettingsRequest) {
-        ArcSettingInner inner = this.serviceClient()
-            .reconcile(resourceGroupName, clusterName, arcSettingName, reconcileArcSettingsRequest);
-        if (inner != null) {
-            return new ArcSettingImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.reconcile(resourceGroupName, clusterName, arcSettingName, reconcileArcSettingsRequest,
+            Context.NONE);
     }
 
     public ArcSetting reconcile(String resourceGroupName, String clusterName, String arcSettingName,
@@ -149,7 +137,7 @@ public final class ArcSettingsImpl implements ArcSettings {
     }
 
     public void initializeDisableProcess(String resourceGroupName, String clusterName, String arcSettingName) {
-        this.serviceClient().initializeDisableProcess(resourceGroupName, clusterName, arcSettingName);
+        this.initializeDisableProcess(resourceGroupName, clusterName, arcSettingName, Context.NONE);
     }
 
     public void initializeDisableProcess(String resourceGroupName, String clusterName, String arcSettingName,
@@ -158,78 +146,36 @@ public final class ArcSettingsImpl implements ArcSettings {
     }
 
     public ArcSetting getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
-        }
-        String arcSettingName = ResourceManagerUtils.getValueFromIdByName(id, "arcSettings");
-        if (arcSettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'arcSettings'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, clusterName, arcSettingName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ArcSetting> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
-        }
-        String arcSettingName = ResourceManagerUtils.getValueFromIdByName(id, "arcSettings");
-        if (arcSettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'arcSettings'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String clusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}",
+            "clusterName", "clusters", LOGGER);
+        String arcSettingName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}",
+            "arcSettingName", "arcSettings", LOGGER);
         return this.getWithResponse(resourceGroupName, clusterName, arcSettingName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
-        }
-        String arcSettingName = ResourceManagerUtils.getValueFromIdByName(id, "arcSettings");
-        if (arcSettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'arcSettings'.", id)));
-        }
-        this.delete(resourceGroupName, clusterName, arcSettingName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
-        }
-        String arcSettingName = ResourceManagerUtils.getValueFromIdByName(id, "arcSettings");
-        if (arcSettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'arcSettings'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String clusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}",
+            "clusterName", "clusters", LOGGER);
+        String arcSettingName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}",
+            "arcSettingName", "arcSettings", LOGGER);
         this.delete(resourceGroupName, clusterName, arcSettingName, context);
     }
 

@@ -1,0 +1,40 @@
+parameters:
+  - name: languageRepoResource
+    type: string
+  - name: toolsRef
+    type: string
+  - name: languageToolsRef
+    type: string
+  - name: poolName
+    type: string
+    default: azsdk-pool
+  - name: imageOverride
+    type: string
+    default: ubuntu-24.04
+
+jobs:
+  - template: /eng/common/pipelines/templates/jobs/apireview-hub-build-tools-base.yml
+    parameters:
+      languageRepoResource: ${{ parameters.languageRepoResource }}
+      toolsRef: ${{ parameters.toolsRef }}
+      languageToolsRef: ${{ parameters.languageToolsRef }}
+      poolName: ${{ parameters.poolName }}
+      imageOverride: ${{ parameters.imageOverride }}
+      stepList:
+        - bash: git -C "$(LanguageToolsSourceDirectory)" sparse-checkout add sdk/tools/api-review-maven-plugin sdk/tools/apiview-java-processor .vscode
+          displayName: Include Java API review tool sources
+        - task: JavaToolInstaller@0
+          displayName: Use Java 17
+          inputs:
+            versionSpec: '17'
+            jdkArchitectureOption: x64
+            jdkSourceOption: PreInstalled
+        - template: /eng/common/pipelines/templates/steps/maven-authenticate.yml
+        - task: PowerShell@2
+          displayName: Build and stage Java API review tools
+          inputs:
+            targetType: filePath
+            filePath: $(LanguageToolsSourceDirectory)/eng/scripts/Stage-ApiReviewTools.ps1
+            arguments: >-
+              -BinOutputDirectory "$(BinOutputDirectory)"
+            pwsh: true

@@ -295,18 +295,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a volume group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VolumeGroupInner> getWithResponse(String resourceGroupName, String storagePoolName,
         String volumeGroupName, Context context) {
@@ -315,17 +304,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             resourceGroupName, storagePoolName, volumeGroupName, accept, context);
     }
 
-    /**
-     * Get a volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a volume group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeGroupInner get(String resourceGroupName, String storagePoolName, String volumeGroupName) {
         return getWithResponse(resourceGroupName, storagePoolName, volumeGroupName, Context.NONE).getValue();
@@ -370,11 +349,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String storagePoolName,
         String volumeGroupName, VolumeGroupInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, volumeGroupName, contentType, accept,
-            resource, Context.NONE);
+        return createWithResponse(resourceGroupName, storagePoolName, volumeGroupName, resource, Context.NONE);
     }
 
     /**
@@ -421,40 +396,14 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             VolumeGroupInner.class, VolumeGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of volume Group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeGroupInner>, VolumeGroupInner> beginCreate(String resourceGroupName,
         String storagePoolName, String volumeGroupName, VolumeGroupInner resource) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, storagePoolName, volumeGroupName, resource);
-        return this.client.<VolumeGroupInner, VolumeGroupInner>getLroResult(response, VolumeGroupInner.class,
-            VolumeGroupInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, storagePoolName, volumeGroupName, resource, Context.NONE);
     }
 
-    /**
-     * Create a volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of volume Group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeGroupInner>, VolumeGroupInner> beginCreate(String resourceGroupName,
         String storagePoolName, String volumeGroupName, VolumeGroupInner resource, Context context) {
@@ -483,41 +432,19 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume Group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeGroupInner create(String resourceGroupName, String storagePoolName, String volumeGroupName,
         VolumeGroupInner resource) {
-        return beginCreate(resourceGroupName, storagePoolName, volumeGroupName, resource).getFinalResult();
+        return create(resourceGroupName, storagePoolName, volumeGroupName, resource, Context.NONE);
     }
 
-    /**
-     * Create a volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume Group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeGroupInner create(String resourceGroupName, String storagePoolName, String volumeGroupName,
         VolumeGroupInner resource, Context context) {
-        return beginCreate(resourceGroupName, storagePoolName, volumeGroupName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, storagePoolName, volumeGroupName, resource, context));
     }
 
     /**
@@ -559,11 +486,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String storagePoolName,
         String volumeGroupName, VolumeGroupUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, volumeGroupName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, storagePoolName, volumeGroupName, properties, Context.NONE);
     }
 
     /**
@@ -610,40 +533,14 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             VolumeGroupInner.class, VolumeGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of volume Group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeGroupInner>, VolumeGroupInner> beginUpdate(String resourceGroupName,
         String storagePoolName, String volumeGroupName, VolumeGroupUpdate properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, storagePoolName, volumeGroupName, properties);
-        return this.client.<VolumeGroupInner, VolumeGroupInner>getLroResult(response, VolumeGroupInner.class,
-            VolumeGroupInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, storagePoolName, volumeGroupName, properties, Context.NONE);
     }
 
-    /**
-     * Update a volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of volume Group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeGroupInner>, VolumeGroupInner> beginUpdate(String resourceGroupName,
         String storagePoolName, String volumeGroupName, VolumeGroupUpdate properties, Context context) {
@@ -672,41 +569,19 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume Group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeGroupInner update(String resourceGroupName, String storagePoolName, String volumeGroupName,
         VolumeGroupUpdate properties) {
-        return beginUpdate(resourceGroupName, storagePoolName, volumeGroupName, properties).getFinalResult();
+        return update(resourceGroupName, storagePoolName, volumeGroupName, properties, Context.NONE);
     }
 
-    /**
-     * Update a volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume Group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeGroupInner update(String resourceGroupName, String storagePoolName, String volumeGroupName,
         VolumeGroupUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, storagePoolName, volumeGroupName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, storagePoolName, volumeGroupName, properties, context));
     }
 
     /**
@@ -743,8 +618,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storagePoolName,
         String volumeGroupName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, volumeGroupName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, storagePoolName, volumeGroupName, Context.NONE);
     }
 
     /**
@@ -786,36 +660,14 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storagePoolName,
         String volumeGroupName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, storagePoolName, volumeGroupName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storagePoolName, volumeGroupName, Context.NONE);
     }
 
-    /**
-     * Delete a volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storagePoolName,
         String volumeGroupName, Context context) {
@@ -841,35 +693,16 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storagePoolName, String volumeGroupName) {
-        beginDelete(resourceGroupName, storagePoolName, volumeGroupName).getFinalResult();
+        delete(resourceGroupName, storagePoolName, volumeGroupName, Context.NONE);
     }
 
-    /**
-     * Delete a volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storagePoolName, String volumeGroupName, Context context) {
-        beginDelete(resourceGroupName, storagePoolName, volumeGroupName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, storagePoolName, volumeGroupName, context));
     }
 
     /**
@@ -924,12 +757,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VolumeGroupInner> listByStoragePoolSinglePage(String resourceGroupName,
         String storagePoolName) {
-        final String accept = "application/json";
-        Response<VolumeGroupListResult> res
-            = service.listByStoragePoolSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStoragePoolSinglePage(resourceGroupName, storagePoolName, Context.NONE);
     }
 
     /**
@@ -954,33 +782,13 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List volume groups by storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VolumeGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VolumeGroupInner> listByStoragePool(String resourceGroupName, String storagePoolName) {
-        return new PagedIterable<>(() -> listByStoragePoolSinglePage(resourceGroupName, storagePoolName),
-            nextLink -> listByStoragePoolNextSinglePage(nextLink));
+        return listByStoragePool(resourceGroupName, storagePoolName, Context.NONE);
     }
 
-    /**
-     * List volume groups by storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VolumeGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VolumeGroupInner> listByStoragePool(String resourceGroupName, String storagePoolName,
         Context context) {
@@ -1029,18 +837,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get connection parameters for ISCSI connection to the volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection parameters for ISCSI connection to the volume group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionParametersResponseInner> listConnectionParametersWithResponse(String resourceGroupName,
         String storagePoolName, String volumeGroupName, Context context) {
@@ -1049,17 +846,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             this.client.getSubscriptionId(), resourceGroupName, storagePoolName, volumeGroupName, accept, context);
     }
 
-    /**
-     * Get connection parameters for ISCSI connection to the volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection parameters for ISCSI connection to the volume group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionParametersResponseInner listConnectionParameters(String resourceGroupName, String storagePoolName,
         String volumeGroupName) {
@@ -1107,18 +894,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get current status and space information of the volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current status and space information of the volume group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VolumeGroupStatusInner> getStatusWithResponse(String resourceGroupName, String storagePoolName,
         String volumeGroupName, Context context) {
@@ -1127,17 +903,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             this.client.getSubscriptionId(), resourceGroupName, storagePoolName, volumeGroupName, accept, context);
     }
 
-    /**
-     * Get current status and space information of the volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current status and space information of the volume group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeGroupStatusInner getStatus(String resourceGroupName, String storagePoolName, String volumeGroupName) {
         return getStatusWithResponse(resourceGroupName, storagePoolName, volumeGroupName, Context.NONE).getValue();
@@ -1181,10 +947,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> overwriteWithResponse(String resourceGroupName, String storagePoolName,
         String volumeGroupName, VolumeGroupOverwriteRequest body) {
-        final String contentType = "application/json";
-        return service.overwriteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, volumeGroupName, contentType, body,
-            Context.NONE);
+        return overwriteWithResponse(resourceGroupName, storagePoolName, volumeGroupName, body, Context.NONE);
     }
 
     /**
@@ -1230,39 +993,14 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             this.client.getContext());
     }
 
-    /**
-     * Restores a volume group to a specific snapshot state, including volume structure and data.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginOverwrite(String resourceGroupName, String storagePoolName,
         String volumeGroupName, VolumeGroupOverwriteRequest body) {
-        Response<BinaryData> response
-            = overwriteWithResponse(resourceGroupName, storagePoolName, volumeGroupName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginOverwrite(resourceGroupName, storagePoolName, volumeGroupName, body, Context.NONE);
     }
 
-    /**
-     * Restores a volume group to a specific snapshot state, including volume structure and data.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginOverwrite(String resourceGroupName, String storagePoolName,
         String volumeGroupName, VolumeGroupOverwriteRequest body, Context context) {
@@ -1290,39 +1028,19 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restores a volume group to a specific snapshot state, including volume structure and data.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void overwrite(String resourceGroupName, String storagePoolName, String volumeGroupName,
         VolumeGroupOverwriteRequest body) {
-        beginOverwrite(resourceGroupName, storagePoolName, volumeGroupName, body).getFinalResult();
+        overwrite(resourceGroupName, storagePoolName, volumeGroupName, body, Context.NONE);
     }
 
-    /**
-     * Restores a volume group to a specific snapshot state, including volume structure and data.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param volumeGroupName Name of the volume group.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void overwrite(String resourceGroupName, String storagePoolName, String volumeGroupName,
         VolumeGroupOverwriteRequest body, Context context) {
-        beginOverwrite(resourceGroupName, storagePoolName, volumeGroupName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginOverwrite(resourceGroupName, storagePoolName, volumeGroupName, body, context));
     }
 
     /**
@@ -1356,11 +1074,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VolumeGroupInner> listByStoragePoolNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VolumeGroupListResult> res
-            = service.listByStoragePoolNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStoragePoolNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

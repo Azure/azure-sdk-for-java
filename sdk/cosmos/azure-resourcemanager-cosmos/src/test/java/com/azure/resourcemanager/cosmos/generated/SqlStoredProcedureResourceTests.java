@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlStoredProcedureResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlStoredProcedureResource model
-            = BinaryData.fromString("{\"id\":\"hujswtwkozzwcul\",\"body\":\"awpfajnjwltlwtjj\"}")
-                .toObject(SqlStoredProcedureResource.class);
-        Assertions.assertEquals("hujswtwkozzwcul", model.id());
-        Assertions.assertEquals("awpfajnjwltlwtjj", model.body());
+        SqlStoredProcedureResource model = BinaryData.fromString("{\"id\":\"yasflvgsgzwy\",\"body\":\"koih\"}")
+            .toObject(SqlStoredProcedureResource.class);
+        Assertions.assertEquals("yasflvgsgzwy", model.id());
+        Assertions.assertEquals("koih", model.body());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlStoredProcedureResource model
-            = new SqlStoredProcedureResource().withId("hujswtwkozzwcul").withBody("awpfajnjwltlwtjj");
+        SqlStoredProcedureResource model = new SqlStoredProcedureResource().withId("yasflvgsgzwy").withBody("koih");
         model = BinaryData.fromObject(model).toObject(SqlStoredProcedureResource.class);
-        Assertions.assertEquals("hujswtwkozzwcul", model.id());
-        Assertions.assertEquals("awpfajnjwltlwtjj", model.body());
+        Assertions.assertEquals("yasflvgsgzwy", model.id());
+        Assertions.assertEquals("koih", model.body());
     }
 }

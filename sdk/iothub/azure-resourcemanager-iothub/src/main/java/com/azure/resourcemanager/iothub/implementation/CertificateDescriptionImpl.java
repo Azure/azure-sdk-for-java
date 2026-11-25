@@ -69,12 +69,7 @@ public final class CertificateDescriptionImpl
     }
 
     public CertificateDescription create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificates()
-            .createOrUpdateWithResponse(resourceGroupName, resourceName, certificateName, this.innerModel(),
-                createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CertificateDescription create(Context context) {
@@ -99,12 +94,7 @@ public final class CertificateDescriptionImpl
     }
 
     public CertificateDescription apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificates()
-            .createOrUpdateWithResponse(resourceGroupName, resourceName, certificateName, this.innerModel(),
-                updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CertificateDescription apply(Context context) {
@@ -120,17 +110,19 @@ public final class CertificateDescriptionImpl
         com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "IotHubs");
-        this.certificateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "certificates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}",
+            "resourceGroupName");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}",
+            "resourceName");
+        this.certificateName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}",
+            "certificateName");
     }
 
     public CertificateDescription refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificates()
-            .getWithResponse(resourceGroupName, resourceName, certificateName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CertificateDescription refresh(Context context) {

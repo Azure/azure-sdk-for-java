@@ -47,7 +47,7 @@ public final class SignalDefinitionsImpl implements SignalDefinitions {
     }
 
     public void delete(String resourceGroupName, String healthModelName, String signalDefinitionName) {
-        this.serviceClient().delete(resourceGroupName, healthModelName, signalDefinitionName);
+        this.delete(resourceGroupName, healthModelName, signalDefinitionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String healthModelName, String signalDefinitionName, Context context) {
@@ -68,78 +68,36 @@ public final class SignalDefinitionsImpl implements SignalDefinitions {
     }
 
     public SignalDefinition getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByName(id, "healthmodels");
-        if (healthModelName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
-        }
-        String signalDefinitionName = ResourceManagerUtils.getValueFromIdByName(id, "signaldefinitions");
-        if (signalDefinitionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'signaldefinitions'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, healthModelName, signalDefinitionName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SignalDefinition> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByName(id, "healthmodels");
-        if (healthModelName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
-        }
-        String signalDefinitionName = ResourceManagerUtils.getValueFromIdByName(id, "signaldefinitions");
-        if (signalDefinitionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'signaldefinitions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String healthModelName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}",
+            "healthModelName", "healthmodels", LOGGER);
+        String signalDefinitionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}",
+            "signalDefinitionName", "signaldefinitions", LOGGER);
         return this.getWithResponse(resourceGroupName, healthModelName, signalDefinitionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByName(id, "healthmodels");
-        if (healthModelName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
-        }
-        String signalDefinitionName = ResourceManagerUtils.getValueFromIdByName(id, "signaldefinitions");
-        if (signalDefinitionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'signaldefinitions'.", id)));
-        }
-        this.delete(resourceGroupName, healthModelName, signalDefinitionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByName(id, "healthmodels");
-        if (healthModelName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
-        }
-        String signalDefinitionName = ResourceManagerUtils.getValueFromIdByName(id, "signaldefinitions");
-        if (signalDefinitionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'signaldefinitions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String healthModelName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}",
+            "healthModelName", "healthmodels", LOGGER);
+        String signalDefinitionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}",
+            "signalDefinitionName", "signaldefinitions", LOGGER);
         this.delete(resourceGroupName, healthModelName, signalDefinitionName, context);
     }
 

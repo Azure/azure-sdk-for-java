@@ -63,11 +63,7 @@ public final class RuleResultsImpl implements RuleResults, RuleResults.Definitio
     }
 
     public RuleResults create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSqlVulnerabilityAssessmentBaselineRules()
-            .createOrUpdateWithResponse(resourceId, ruleId, createDatabaseName, createBody, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RuleResults create(Context context) {
@@ -92,11 +88,7 @@ public final class RuleResultsImpl implements RuleResults, RuleResults.Definitio
     }
 
     public RuleResults apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSqlVulnerabilityAssessmentBaselineRules()
-            .createOrUpdateWithResponse(resourceId, ruleId, updateDatabaseName, updateBody, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RuleResults apply(Context context) {
@@ -119,12 +111,7 @@ public final class RuleResultsImpl implements RuleResults, RuleResults.Definitio
     }
 
     public RuleResults refresh() {
-        String localDatabaseName = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getSqlVulnerabilityAssessmentBaselineRules()
-            .getWithResponse(resourceId, ruleId, localDatabaseName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RuleResults refresh(Context context) {

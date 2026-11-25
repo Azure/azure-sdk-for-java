@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentModelVersionUpgradeOption;
+import com.azure.resourcemanager.cognitiveservices.models.GatedModelAccessProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ManagedComputeDeploymentProperties;
 import org.junit.jupiter.api.Assertions;
 
@@ -13,32 +14,33 @@ public final class ManagedComputeDeploymentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedComputeDeploymentProperties model = BinaryData.fromString(
-            "{\"model\":\"uykbbmn\",\"deploymentTemplate\":\"gltbxoeeo\",\"acceleratorType\":\"lnf\",\"versionUpgradeOption\":\"OnceCurrentVersionExpired\",\"capabilities\":{\"vezcrcssbzhdd\":\"vqdbpbhfck\",\"nqfblhkalehpava\":\"b\",\"minict\":\"ugiqjtiogqg\",\"pnbonhpcz\":\"eajohiyg\"},\"computeId\":\"mktp\",\"priority\":\"xqcsehch\",\"acceleratorsPerInstance\":862870831,\"totalAccelerators\":1044721974,\"provisioningState\":\"ExtensionUnreachable\",\"provisioningDetails\":{\"message\":\"q\",\"lastOperationTimestamp\":\"2021-11-26T08:10:47Z\"},\"routes\":{\"chatCompletionsScoringPath\":\"zulo\",\"swagger\":\"aeuzanh\",\"messagesApiScoringPath\":\"nhsenwphpzfng\"}}")
+            "{\"model\":\"yelsyasvfnk\",\"deploymentTemplate\":\"ygjje\",\"acceleratorType\":\"knfdr\",\"versionUpgradeOption\":\"NoAutoUpgrade\",\"gatedModelAccess\":{\"connectionId\":\"yckgtxkrdtulcrcj\"},\"capabilities\":{\"mzoonsvobchkxfpw\":\"otcsu\",\"kwayqshwy\":\"dyslbklglmnn\",\"tb\":\"xrid\",\"uylztpziizevjyk\":\"aqjmkgxqwque\"},\"computeId\":\"vezefkhkqtwqle\",\"priority\":\"jzkcasfwzcntog\",\"acceleratorsPerInstance\":1897764347,\"totalAccelerators\":369615449,\"provisioningState\":\"ExtensionUnreachable\",\"provisioningDetails\":{\"message\":\"wzvaqkifmxaw\",\"lastOperationTimestamp\":\"2021-03-02T00:58:34Z\"},\"routes\":{\"chatCompletionsScoringPath\":\"knhrkmjqncf\",\"swagger\":\"sc\",\"messagesApiScoringPath\":\"emvwf\"}}")
             .toObject(ManagedComputeDeploymentProperties.class);
-        Assertions.assertEquals("uykbbmn", model.model());
-        Assertions.assertEquals("gltbxoeeo", model.deploymentTemplate());
-        Assertions.assertEquals("lnf", model.acceleratorType());
-        Assertions.assertEquals(DeploymentModelVersionUpgradeOption.ONCE_CURRENT_VERSION_EXPIRED,
-            model.versionUpgradeOption());
-        Assertions.assertEquals("mktp", model.computeId());
-        Assertions.assertEquals("xqcsehch", model.priority());
+        Assertions.assertEquals("yelsyasvfnk", model.model());
+        Assertions.assertEquals("ygjje", model.deploymentTemplate());
+        Assertions.assertEquals("knfdr", model.acceleratorType());
+        Assertions.assertEquals(DeploymentModelVersionUpgradeOption.NO_AUTO_UPGRADE, model.versionUpgradeOption());
+        Assertions.assertEquals("yckgtxkrdtulcrcj", model.gatedModelAccess().connectionId());
+        Assertions.assertEquals("vezefkhkqtwqle", model.computeId());
+        Assertions.assertEquals("jzkcasfwzcntog", model.priority());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedComputeDeploymentProperties model = new ManagedComputeDeploymentProperties().withModel("uykbbmn")
-            .withDeploymentTemplate("gltbxoeeo")
-            .withAcceleratorType("lnf")
-            .withVersionUpgradeOption(DeploymentModelVersionUpgradeOption.ONCE_CURRENT_VERSION_EXPIRED)
-            .withComputeId("mktp")
-            .withPriority("xqcsehch");
+        ManagedComputeDeploymentProperties model = new ManagedComputeDeploymentProperties().withModel("yelsyasvfnk")
+            .withDeploymentTemplate("ygjje")
+            .withAcceleratorType("knfdr")
+            .withVersionUpgradeOption(DeploymentModelVersionUpgradeOption.NO_AUTO_UPGRADE)
+            .withGatedModelAccess(new GatedModelAccessProperties().withConnectionId("yckgtxkrdtulcrcj"))
+            .withComputeId("vezefkhkqtwqle")
+            .withPriority("jzkcasfwzcntog");
         model = BinaryData.fromObject(model).toObject(ManagedComputeDeploymentProperties.class);
-        Assertions.assertEquals("uykbbmn", model.model());
-        Assertions.assertEquals("gltbxoeeo", model.deploymentTemplate());
-        Assertions.assertEquals("lnf", model.acceleratorType());
-        Assertions.assertEquals(DeploymentModelVersionUpgradeOption.ONCE_CURRENT_VERSION_EXPIRED,
-            model.versionUpgradeOption());
-        Assertions.assertEquals("mktp", model.computeId());
-        Assertions.assertEquals("xqcsehch", model.priority());
+        Assertions.assertEquals("yelsyasvfnk", model.model());
+        Assertions.assertEquals("ygjje", model.deploymentTemplate());
+        Assertions.assertEquals("knfdr", model.acceleratorType());
+        Assertions.assertEquals(DeploymentModelVersionUpgradeOption.NO_AUTO_UPGRADE, model.versionUpgradeOption());
+        Assertions.assertEquals("yckgtxkrdtulcrcj", model.gatedModelAccess().connectionId());
+        Assertions.assertEquals("vezefkhkqtwqle", model.computeId());
+        Assertions.assertEquals("jzkcasfwzcntog", model.priority());
     }
 }

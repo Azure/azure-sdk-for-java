@@ -93,11 +93,7 @@ public final class IspCacheNodeResourceImpl
     }
 
     public IspCacheNodeResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIspCacheNodesOperations()
-            .createOrUpdate(resourceGroupName, customerResourceName, cacheNodeResourceName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IspCacheNodeResource create(Context context) {
@@ -120,12 +116,7 @@ public final class IspCacheNodeResourceImpl
     }
 
     public IspCacheNodeResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIspCacheNodesOperations()
-            .updateWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName, updateProperties,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IspCacheNodeResource apply(Context context) {
@@ -141,17 +132,19 @@ public final class IspCacheNodeResourceImpl
         com.azure.resourcemanager.connectedcache.ConnectedCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.customerResourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "ispCustomers");
-        this.cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "ispCacheNodes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes/{cacheNodeResourceName}",
+            "resourceGroupName");
+        this.customerResourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes/{cacheNodeResourceName}",
+            "customerResourceName");
+        this.cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes/{cacheNodeResourceName}",
+            "cacheNodeResourceName");
     }
 
     public IspCacheNodeResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIspCacheNodesOperations()
-            .getWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IspCacheNodeResource refresh(Context context) {

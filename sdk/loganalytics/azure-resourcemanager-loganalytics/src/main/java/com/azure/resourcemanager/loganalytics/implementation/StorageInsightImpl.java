@@ -99,12 +99,7 @@ public final class StorageInsightImpl implements StorageInsight, StorageInsight.
     }
 
     public StorageInsight create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageInsightConfigs()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, storageInsightName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StorageInsight create(Context context) {
@@ -127,12 +122,7 @@ public final class StorageInsightImpl implements StorageInsight, StorageInsight.
     }
 
     public StorageInsight apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageInsightConfigs()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, storageInsightName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StorageInsight apply(Context context) {
@@ -148,17 +138,19 @@ public final class StorageInsightImpl implements StorageInsight, StorageInsight.
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.storageInsightName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageInsightConfigs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}",
+            "workspaceName");
+        this.storageInsightName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}",
+            "storageInsightName");
     }
 
     public StorageInsight refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageInsightConfigs()
-            .getWithResponse(resourceGroupName, workspaceName, storageInsightName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StorageInsight refresh(Context context) {

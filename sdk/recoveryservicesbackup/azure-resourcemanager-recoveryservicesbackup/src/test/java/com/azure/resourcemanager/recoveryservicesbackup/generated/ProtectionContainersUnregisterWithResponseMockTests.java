@@ -28,7 +28,7 @@ public final class ProtectionContainersUnregisterWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.protectionContainers()
-            .unregisterWithResponse("lehzlxpgfq", "wzpwiibel", "cerwkwbpjxljtxbu", "qtbxxniuisdzh",
+            .unregisterWithResponse("gysdgzyyb", "oxlvocptvdxxheig", "lilw", "ghjhjvmabzzbwa",
                 com.azure.core.util.Context.NONE);
 
     }

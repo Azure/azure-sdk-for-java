@@ -144,18 +144,7 @@ public final class SimplifiedSolutionsClientImpl implements SimplifiedSolutionsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the simplified Solutions using the applicable solutionResourceName while creating the simplified Solutions.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param simplifiedSolutionsResourceName Simplified Solutions Resource Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the simplified Solutions using the applicable solutionResourceName while creating the simplified
-     * Solutions along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SimplifiedSolutionsResourceInner> getWithResponse(String scope,
         String simplifiedSolutionsResourceName, Context context) {
@@ -164,17 +153,7 @@ public final class SimplifiedSolutionsClientImpl implements SimplifiedSolutionsC
             simplifiedSolutionsResourceName, accept, context);
     }
 
-    /**
-     * Get the simplified Solutions using the applicable solutionResourceName while creating the simplified Solutions.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param simplifiedSolutionsResourceName Simplified Solutions Resource Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the simplified Solutions using the applicable solutionResourceName while creating the simplified
-     * Solutions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SimplifiedSolutionsResourceInner get(String scope, String simplifiedSolutionsResourceName) {
         return getWithResponse(scope, simplifiedSolutionsResourceName, Context.NONE).getValue();
@@ -223,9 +202,7 @@ public final class SimplifiedSolutionsClientImpl implements SimplifiedSolutionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String scope, String simplifiedSolutionsResourceName,
         SimplifiedSolutionsResourceInner simplifiedSolutionsRequestBody) {
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(), scope,
-            simplifiedSolutionsResourceName, accept, simplifiedSolutionsRequestBody, Context.NONE);
+        return createWithResponse(scope, simplifiedSolutionsResourceName, simplifiedSolutionsRequestBody, Context.NONE);
     }
 
     /**
@@ -319,55 +296,21 @@ public final class SimplifiedSolutionsClientImpl implements SimplifiedSolutionsC
      * @return the {@link SyncPoller} for polling of simplified Solutions response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SimplifiedSolutionsResourceInner>, SimplifiedSolutionsResourceInner> beginCreate(
+    private SyncPoller<PollResult<SimplifiedSolutionsResourceInner>, SimplifiedSolutionsResourceInner> beginCreate(
         String scope, String simplifiedSolutionsResourceName,
         SimplifiedSolutionsResourceInner simplifiedSolutionsRequestBody) {
-        Response<BinaryData> response
-            = createWithResponse(scope, simplifiedSolutionsResourceName, simplifiedSolutionsRequestBody);
-        return this.client.<SimplifiedSolutionsResourceInner, SimplifiedSolutionsResourceInner>getLroResult(response,
-            SimplifiedSolutionsResourceInner.class, SimplifiedSolutionsResourceInner.class, Context.NONE);
+        return beginCreate(scope, simplifiedSolutionsResourceName, simplifiedSolutionsRequestBody, Context.NONE);
     }
 
-    /**
-     * Creates Simplified Solutions for an Azure subscription using 'solutionId' from Discovery Solutions as the input.
-     * &lt;br/&gt;&lt;br/&gt; Simplified Solutions API makes the consumption of solutions APIs easier while still
-     * providing access to the same powerful solutions rendered in Solutions API. With Simplified Solutions, users don't
-     * have to worry about stitching together the article using replacement maps and can use the content in the API
-     * response to directly render as HTML content.&lt;br/&gt;.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param simplifiedSolutionsResourceName Simplified Solutions Resource Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of simplified Solutions response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SimplifiedSolutionsResourceInner>, SimplifiedSolutionsResourceInner>
         beginCreate(String scope, String simplifiedSolutionsResourceName) {
         final SimplifiedSolutionsResourceInner simplifiedSolutionsRequestBody = null;
-        Response<BinaryData> response
-            = createWithResponse(scope, simplifiedSolutionsResourceName, simplifiedSolutionsRequestBody);
-        return this.client.<SimplifiedSolutionsResourceInner, SimplifiedSolutionsResourceInner>getLroResult(response,
-            SimplifiedSolutionsResourceInner.class, SimplifiedSolutionsResourceInner.class, Context.NONE);
+        return beginCreate(scope, simplifiedSolutionsResourceName, simplifiedSolutionsRequestBody, Context.NONE);
     }
 
-    /**
-     * Creates Simplified Solutions for an Azure subscription using 'solutionId' from Discovery Solutions as the input.
-     * &lt;br/&gt;&lt;br/&gt; Simplified Solutions API makes the consumption of solutions APIs easier while still
-     * providing access to the same powerful solutions rendered in Solutions API. With Simplified Solutions, users don't
-     * have to worry about stitching together the article using replacement maps and can use the content in the API
-     * response to directly render as HTML content.&lt;br/&gt;.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param simplifiedSolutionsResourceName Simplified Solutions Resource Name.
-     * @param simplifiedSolutionsRequestBody The required request body for simplified Solutions resource creation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of simplified Solutions response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SimplifiedSolutionsResourceInner>, SimplifiedSolutionsResourceInner> beginCreate(
         String scope, String simplifiedSolutionsResourceName,
@@ -421,46 +364,18 @@ public final class SimplifiedSolutionsClientImpl implements SimplifiedSolutionsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates Simplified Solutions for an Azure subscription using 'solutionId' from Discovery Solutions as the input.
-     * &lt;br/&gt;&lt;br/&gt; Simplified Solutions API makes the consumption of solutions APIs easier while still
-     * providing access to the same powerful solutions rendered in Solutions API. With Simplified Solutions, users don't
-     * have to worry about stitching together the article using replacement maps and can use the content in the API
-     * response to directly render as HTML content.&lt;br/&gt;.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param simplifiedSolutionsResourceName Simplified Solutions Resource Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return simplified Solutions response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SimplifiedSolutionsResourceInner create(String scope, String simplifiedSolutionsResourceName) {
         final SimplifiedSolutionsResourceInner simplifiedSolutionsRequestBody = null;
-        return beginCreate(scope, simplifiedSolutionsResourceName, simplifiedSolutionsRequestBody).getFinalResult();
+        return create(scope, simplifiedSolutionsResourceName, simplifiedSolutionsRequestBody, Context.NONE);
     }
 
-    /**
-     * Creates Simplified Solutions for an Azure subscription using 'solutionId' from Discovery Solutions as the input.
-     * &lt;br/&gt;&lt;br/&gt; Simplified Solutions API makes the consumption of solutions APIs easier while still
-     * providing access to the same powerful solutions rendered in Solutions API. With Simplified Solutions, users don't
-     * have to worry about stitching together the article using replacement maps and can use the content in the API
-     * response to directly render as HTML content.&lt;br/&gt;.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param simplifiedSolutionsResourceName Simplified Solutions Resource Name.
-     * @param simplifiedSolutionsRequestBody The required request body for simplified Solutions resource creation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return simplified Solutions response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SimplifiedSolutionsResourceInner create(String scope, String simplifiedSolutionsResourceName,
         SimplifiedSolutionsResourceInner simplifiedSolutionsRequestBody, Context context) {
-        return beginCreate(scope, simplifiedSolutionsResourceName, simplifiedSolutionsRequestBody, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(scope, simplifiedSolutionsResourceName, simplifiedSolutionsRequestBody, context));
     }
 }

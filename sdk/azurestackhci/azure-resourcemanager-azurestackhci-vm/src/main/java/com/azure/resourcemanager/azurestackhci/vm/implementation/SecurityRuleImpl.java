@@ -66,11 +66,7 @@ public final class SecurityRuleImpl implements SecurityRule, SecurityRule.Defini
     }
 
     public SecurityRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityRules()
-            .createOrUpdate(resourceGroupName, networkSecurityGroupName, securityRuleName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SecurityRule create(Context context) {
@@ -91,11 +87,7 @@ public final class SecurityRuleImpl implements SecurityRule, SecurityRule.Defini
     }
 
     public SecurityRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityRules()
-            .createOrUpdate(resourceGroupName, networkSecurityGroupName, securityRuleName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SecurityRule apply(Context context) {
@@ -109,18 +101,19 @@ public final class SecurityRuleImpl implements SecurityRule, SecurityRule.Defini
         com.azure.resourcemanager.azurestackhci.vm.AzureStackHciVmManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkSecurityGroupName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkSecurityGroups");
-        this.securityRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "securityRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}/securityRules/{securityRuleName}",
+            "resourceGroupName");
+        this.networkSecurityGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}/securityRules/{securityRuleName}",
+            "networkSecurityGroupName");
+        this.securityRuleName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkSecurityGroups/{networkSecurityGroupName}/securityRules/{securityRuleName}",
+            "securityRuleName");
     }
 
     public SecurityRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityRules()
-            .getWithResponse(resourceGroupName, networkSecurityGroupName, securityRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SecurityRule refresh(Context context) {

@@ -89,10 +89,7 @@ public final class DedicatedHubResourceImpl
     }
 
     public DedicatedHubResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDedicatedHubs()
-            .createOrUpdate(resourceGroupName, communityName, dedicatedHubName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DedicatedHubResource create(Context context) {
@@ -114,10 +111,7 @@ public final class DedicatedHubResourceImpl
     }
 
     public DedicatedHubResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDedicatedHubs()
-            .update(resourceGroupName, communityName, dedicatedHubName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DedicatedHubResource apply(Context context) {
@@ -131,17 +125,19 @@ public final class DedicatedHubResourceImpl
         com.azure.resourcemanager.enclave.AzureEnclaveManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.communityName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "communities");
-        this.dedicatedHubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dedicatedHubs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/dedicatedHubs/{dedicatedHubName}",
+            "resourceGroupName");
+        this.communityName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/dedicatedHubs/{dedicatedHubName}",
+            "communityName");
+        this.dedicatedHubName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/dedicatedHubs/{dedicatedHubName}",
+            "dedicatedHubName");
     }
 
     public DedicatedHubResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDedicatedHubs()
-            .getWithResponse(resourceGroupName, communityName, dedicatedHubName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DedicatedHubResource refresh(Context context) {

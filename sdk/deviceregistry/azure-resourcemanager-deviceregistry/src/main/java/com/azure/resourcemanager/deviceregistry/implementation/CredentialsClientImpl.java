@@ -233,17 +233,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
         return getWithResponseAsync(resourceGroupName, namespaceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Credential along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CredentialInner> getWithResponse(String resourceGroupName, String namespaceName, Context context) {
         final String accept = "application/json";
@@ -251,16 +241,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
             resourceGroupName, namespaceName, accept, context);
     }
 
-    /**
-     * Get a Credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Credential.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CredentialInner get(String resourceGroupName, String namespaceName) {
         return getWithResponse(resourceGroupName, namespaceName, Context.NONE).getValue();
@@ -303,11 +284,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         CredentialInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, namespaceName, resource, Context.NONE);
     }
 
     /**
@@ -351,37 +328,14 @@ public final class CredentialsClientImpl implements CredentialsClient {
             CredentialInner.class, CredentialInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Credential Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CredentialInner>, CredentialInner> beginCreateOrUpdate(String resourceGroupName,
         String namespaceName, CredentialInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, namespaceName, resource);
-        return this.client.<CredentialInner, CredentialInner>getLroResult(response, CredentialInner.class,
-            CredentialInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, namespaceName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Credential Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CredentialInner>, CredentialInner> beginCreateOrUpdate(String resourceGroupName,
         String namespaceName, CredentialInner resource, Context context) {
@@ -408,38 +362,18 @@ public final class CredentialsClientImpl implements CredentialsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Credential Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CredentialInner createOrUpdate(String resourceGroupName, String namespaceName, CredentialInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, namespaceName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Credential Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CredentialInner createOrUpdate(String resourceGroupName, String namespaceName, CredentialInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, namespaceName, resource, context));
     }
 
     /**
@@ -472,8 +406,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String namespaceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, namespaceName, Context.NONE);
     }
 
     /**
@@ -510,33 +443,13 @@ public final class CredentialsClientImpl implements CredentialsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, namespaceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, namespaceName, Context.NONE);
     }
 
-    /**
-     * Delete a Credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         Context context) {
@@ -559,33 +472,16 @@ public final class CredentialsClientImpl implements CredentialsClient {
         return beginDeleteAsync(resourceGroupName, namespaceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName) {
-        beginDelete(resourceGroupName, namespaceName).getFinalResult();
+        delete(resourceGroupName, namespaceName, Context.NONE);
     }
 
-    /**
-     * Delete a Credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, Context context) {
-        beginDelete(resourceGroupName, namespaceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, namespaceName, context));
     }
 
     /**
@@ -625,11 +521,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String namespaceName,
         CredentialUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, namespaceName, properties, Context.NONE);
     }
 
     /**
@@ -673,37 +565,14 @@ public final class CredentialsClientImpl implements CredentialsClient {
             CredentialInner.class, CredentialInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Credential Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CredentialInner>, CredentialInner> beginUpdate(String resourceGroupName,
         String namespaceName, CredentialUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, namespaceName, properties);
-        return this.client.<CredentialInner, CredentialInner>getLroResult(response, CredentialInner.class,
-            CredentialInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, namespaceName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Credential Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CredentialInner>, CredentialInner> beginUpdate(String resourceGroupName,
         String namespaceName, CredentialUpdate properties, Context context) {
@@ -730,38 +599,17 @@ public final class CredentialsClientImpl implements CredentialsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Credential Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CredentialInner update(String resourceGroupName, String namespaceName, CredentialUpdate properties) {
-        return beginUpdate(resourceGroupName, namespaceName, properties).getFinalResult();
+        return update(resourceGroupName, namespaceName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Credential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Credential Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CredentialInner update(String resourceGroupName, String namespaceName, CredentialUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, namespaceName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, namespaceName, properties, context));
     }
 
     /**
@@ -816,12 +664,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CredentialInner> listByResourceGroupSinglePage(String resourceGroupName,
         String namespaceName) {
-        final String accept = "application/json";
-        Response<CredentialListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, namespaceName, Context.NONE);
     }
 
     /**
@@ -846,33 +689,13 @@ public final class CredentialsClientImpl implements CredentialsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Credential resources by Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Credential list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CredentialInner> listByResourceGroup(String resourceGroupName, String namespaceName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, namespaceName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, namespaceName, Context.NONE);
     }
 
-    /**
-     * List Credential resources by Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Credential list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CredentialInner> listByResourceGroup(String resourceGroupName, String namespaceName,
         Context context) {
@@ -911,8 +734,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> synchronizeWithResponse(String resourceGroupName, String namespaceName) {
-        return service.synchronizeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, Context.NONE);
+        return synchronizeWithResponse(resourceGroupName, namespaceName, Context.NONE);
     }
 
     /**
@@ -950,33 +772,13 @@ public final class CredentialsClientImpl implements CredentialsClient {
             this.client.getContext());
     }
 
-    /**
-     * The synchronize operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSynchronize(String resourceGroupName, String namespaceName) {
-        Response<BinaryData> response = synchronizeWithResponse(resourceGroupName, namespaceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginSynchronize(resourceGroupName, namespaceName, Context.NONE);
     }
 
-    /**
-     * The synchronize operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSynchronize(String resourceGroupName, String namespaceName,
         Context context) {
@@ -1000,33 +802,16 @@ public final class CredentialsClientImpl implements CredentialsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The synchronize operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void synchronize(String resourceGroupName, String namespaceName) {
-        beginSynchronize(resourceGroupName, namespaceName).getFinalResult();
+        synchronize(resourceGroupName, namespaceName, Context.NONE);
     }
 
-    /**
-     * The synchronize operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void synchronize(String resourceGroupName, String namespaceName, Context context) {
-        beginSynchronize(resourceGroupName, namespaceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginSynchronize(resourceGroupName, namespaceName, context));
     }
 
     /**
@@ -1061,11 +846,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CredentialInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CredentialListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

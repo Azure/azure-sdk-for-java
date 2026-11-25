@@ -43,7 +43,7 @@ public final class CacheInner extends ProxyResource {
     private Map<String, String> tags;
 
     /*
-     * The geo-location where the resource lives
+     * Region name string.
      */
     private String location;
 
@@ -113,7 +113,7 @@ public final class CacheInner extends ProxyResource {
     }
 
     /**
-     * Get the location property: The geo-location where the resource lives.
+     * Get the location property: Region name string.
      * 
      * @return the location value.
      */
@@ -122,7 +122,7 @@ public final class CacheInner extends ProxyResource {
     }
 
     /**
-     * Set the location property: The geo-location where the resource lives.
+     * Set the location property: Region name string.
      * 
      * @param location the location value to set.
      * @return the CacheInner object itself.

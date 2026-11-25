@@ -151,17 +151,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified network security perimeter by the name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network security perimeter by the name along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkSecurityPerimeterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String networkSecurityPerimeterName) {
@@ -181,7 +171,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             return Mono.error(
                 new IllegalArgumentException("Parameter networkSecurityPerimeterName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -220,23 +210,14 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             return Mono.error(
                 new IllegalArgumentException("Parameter networkSecurityPerimeterName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, networkSecurityPerimeterName, accept, context);
     }
 
-    /**
-     * Gets the specified network security perimeter by the name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network security perimeter by the name on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkSecurityPerimeterInner> getByResourceGroupAsync(String resourceGroupName,
         String networkSecurityPerimeterName) {
@@ -244,51 +225,21 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified network security perimeter by the name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network security perimeter by the name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkSecurityPerimeterInner> getByResourceGroupWithResponse(String resourceGroupName,
         String networkSecurityPerimeterName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkSecurityPerimeterName, context).block();
     }
 
-    /**
-     * Gets the specified network security perimeter by the name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network security perimeter by the name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityPerimeterInner getByResourceGroup(String resourceGroupName,
         String networkSecurityPerimeterName) {
         return getByResourceGroupWithResponse(resourceGroupName, networkSecurityPerimeterName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a Network Security Perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param parameters Parameter supplied to create or update the network security perimeter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Security Perimeter resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkSecurityPerimeterInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkSecurityPerimeterName, NetworkSecurityPerimeterInner parameters) {
@@ -313,7 +264,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -360,7 +311,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -368,17 +319,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             resourceGroupName, networkSecurityPerimeterName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a Network Security Perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param parameters Parameter supplied to create or update the network security perimeter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Security Perimeter resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkSecurityPerimeterInner> createOrUpdateAsync(String resourceGroupName,
         String networkSecurityPerimeterName, NetworkSecurityPerimeterInner parameters) {
@@ -386,18 +327,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a Network Security Perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param parameters Parameter supplied to create or update the network security perimeter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Security Perimeter resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkSecurityPerimeterInner> createOrUpdateWithResponse(String resourceGroupName,
         String networkSecurityPerimeterName, NetworkSecurityPerimeterInner parameters, Context context) {
@@ -405,17 +335,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             .block();
     }
 
-    /**
-     * Creates or updates a Network Security Perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param parameters Parameter supplied to create or update the network security perimeter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Security Perimeter resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityPerimeterInner createOrUpdate(String resourceGroupName, String networkSecurityPerimeterName,
         NetworkSecurityPerimeterInner parameters) {
@@ -423,18 +343,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             .getValue();
     }
 
-    /**
-     * Patch Tags for a Network Security Perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param parameters Parameter supplied to the network security perimeter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Security Perimeter resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkSecurityPerimeterInner>> patchWithResponseAsync(String resourceGroupName,
         String networkSecurityPerimeterName, UpdateTagsRequest parameters) {
@@ -459,7 +368,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -506,7 +415,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -514,17 +423,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             networkSecurityPerimeterName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Patch Tags for a Network Security Perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param parameters Parameter supplied to the network security perimeter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Security Perimeter resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkSecurityPerimeterInner> patchAsync(String resourceGroupName, String networkSecurityPerimeterName,
         UpdateTagsRequest parameters) {
@@ -532,52 +431,21 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Patch Tags for a Network Security Perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param parameters Parameter supplied to the network security perimeter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Security Perimeter resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkSecurityPerimeterInner> patchWithResponse(String resourceGroupName,
         String networkSecurityPerimeterName, UpdateTagsRequest parameters, Context context) {
         return patchWithResponseAsync(resourceGroupName, networkSecurityPerimeterName, parameters, context).block();
     }
 
-    /**
-     * Patch Tags for a Network Security Perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param parameters Parameter supplied to the network security perimeter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Security Perimeter resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityPerimeterInner patch(String resourceGroupName, String networkSecurityPerimeterName,
         UpdateTagsRequest parameters) {
         return patchWithResponse(resourceGroupName, networkSecurityPerimeterName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a network security perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param forceDeletion Deletes the resource even if it contains any child associations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String networkSecurityPerimeterName, Boolean forceDeletion) {
@@ -597,7 +465,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             return Mono.error(
                 new IllegalArgumentException("Parameter networkSecurityPerimeterName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -636,23 +504,13 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             return Mono.error(
                 new IllegalArgumentException("Parameter networkSecurityPerimeterName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkSecurityPerimeterName, forceDeletion, context);
     }
 
-    /**
-     * Deletes a network security perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param forceDeletion Deletes the resource even if it contains any child associations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
         String networkSecurityPerimeterName, Boolean forceDeletion) {
@@ -662,16 +520,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             this.client.getContext());
     }
 
-    /**
-     * Deletes a network security perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
         String networkSecurityPerimeterName) {
@@ -704,16 +553,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             context);
     }
 
-    /**
-     * Deletes a network security perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String networkSecurityPerimeterName) {
@@ -721,18 +561,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
         return this.beginDeleteAsync(resourceGroupName, networkSecurityPerimeterName, forceDeletion).getSyncPoller();
     }
 
-    /**
-     * Deletes a network security perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param forceDeletion Deletes the resource even if it contains any child associations.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkSecurityPerimeterName,
         Boolean forceDeletion, Context context) {
@@ -740,17 +569,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a network security perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param forceDeletion Deletes the resource even if it contains any child associations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkSecurityPerimeterName,
         Boolean forceDeletion) {
@@ -758,16 +577,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a network security perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkSecurityPerimeterName) {
         final Boolean forceDeletion = null;
@@ -794,32 +604,14 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a network security perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkSecurityPerimeterName) {
         final Boolean forceDeletion = null;
         deleteAsync(resourceGroupName, networkSecurityPerimeterName, forceDeletion).block();
     }
 
-    /**
-     * Deletes a network security perimeter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param forceDeletion Deletes the resource even if it contains any child associations.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkSecurityPerimeterName, Boolean forceDeletion,
         Context context) {
@@ -856,7 +648,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -897,7 +689,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -907,20 +699,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List network security perimeters in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkSecurityPerimeter list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkSecurityPerimeterInner> listByResourceGroupAsync(String resourceGroupName, Integer top,
         String skipToken) {
@@ -928,15 +707,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List network security perimeters in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkSecurityPerimeter list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkSecurityPerimeterInner> listByResourceGroupAsync(String resourceGroupName) {
         final Integer top = null;
@@ -967,16 +738,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List network security perimeters in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkSecurityPerimeter list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityPerimeterInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
@@ -984,22 +746,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, top, skipToken));
     }
 
-    /**
-     * List network security perimeters in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkSecurityPerimeter list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityPerimeterInner> listByResourceGroup(String resourceGroupName, Integer top,
         String skipToken, Context context) {
@@ -1030,7 +777,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1066,7 +813,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1076,32 +823,14 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List all network security perimeters in a subscription.
-     * 
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkSecurityPerimeter list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkSecurityPerimeterInner> listAsync(Integer top, String skipToken) {
         return new PagedFlux<>(() -> listSinglePageAsync(top, skipToken),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List all network security perimeters in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkSecurityPerimeter list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkSecurityPerimeterInner> listAsync() {
         final Integer top = null;
@@ -1130,14 +859,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List all network security perimeters in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkSecurityPerimeter list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityPerimeterInner> list() {
         final Integer top = null;
@@ -1145,21 +867,7 @@ public final class NetworkSecurityPerimetersClientImpl implements InnerSupportsG
         return new PagedIterable<>(listAsync(top, skipToken));
     }
 
-    /**
-     * List all network security perimeters in a subscription.
-     * 
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkSecurityPerimeter list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityPerimeterInner> list(Integer top, String skipToken, Context context) {
         return new PagedIterable<>(listAsync(top, skipToken, context));

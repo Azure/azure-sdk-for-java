@@ -149,18 +149,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified network profile in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network profile in a specified resource group along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String networkProfileName, String expand) {
@@ -180,7 +169,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -220,23 +209,14 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, networkProfileName, expand, accept, context);
     }
 
-    /**
-     * Gets the specified network profile in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network profile in a specified resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkProfileInner> getByResourceGroupAsync(String resourceGroupName, String networkProfileName) {
         final String expand = null;
@@ -244,51 +224,21 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified network profile in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network profile in a specified resource group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkProfileInner> getByResourceGroupWithResponse(String resourceGroupName,
         String networkProfileName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkProfileName, expand, context).block();
     }
 
-    /**
-     * Gets the specified network profile in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network profile in a specified resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkProfileInner getByResourceGroup(String resourceGroupName, String networkProfileName) {
         final String expand = null;
         return getByResourceGroupWithResponse(resourceGroupName, networkProfileName, expand, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a network profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @param parameters Parameters supplied to the create or update network profile operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network profile resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkProfileInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkProfileName, NetworkProfileInner parameters) {
@@ -313,7 +263,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -359,7 +309,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -367,17 +317,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             resourceGroupName, networkProfileName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a network profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @param parameters Parameters supplied to the create or update network profile operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network profile resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkProfileInner> createOrUpdateAsync(String resourceGroupName, String networkProfileName,
         NetworkProfileInner parameters) {
@@ -385,52 +325,21 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a network profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @param parameters Parameters supplied to the create or update network profile operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network profile resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkProfileInner> createOrUpdateWithResponse(String resourceGroupName, String networkProfileName,
         NetworkProfileInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, networkProfileName, parameters, context).block();
     }
 
-    /**
-     * Creates or updates a network profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @param parameters Parameters supplied to the create or update network profile operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network profile resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkProfileInner createOrUpdate(String resourceGroupName, String networkProfileName,
         NetworkProfileInner parameters) {
         return createOrUpdateWithResponse(resourceGroupName, networkProfileName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Updates network profile tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @param parameters Parameters supplied to update network profile tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network profile resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkProfileInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String networkProfileName, TagsObject parameters) {
@@ -455,7 +364,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -501,7 +410,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -509,17 +418,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             resourceGroupName, networkProfileName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates network profile tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @param parameters Parameters supplied to update network profile tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network profile resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkProfileInner> updateTagsAsync(String resourceGroupName, String networkProfileName,
         TagsObject parameters) {
@@ -527,50 +426,20 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates network profile tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @param parameters Parameters supplied to update network profile tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network profile resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkProfileInner> updateTagsWithResponse(String resourceGroupName, String networkProfileName,
         TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, networkProfileName, parameters, context).block();
     }
 
-    /**
-     * Updates network profile tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @param parameters Parameters supplied to update network profile tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network profile resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkProfileInner updateTags(String resourceGroupName, String networkProfileName, TagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, networkProfileName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes the specified network profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String networkProfileName) {
@@ -590,7 +459,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, networkProfileName, context))
@@ -627,22 +496,13 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkProfileName, context);
     }
 
-    /**
-     * Deletes the specified network profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkProfileName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkProfileName);
@@ -670,48 +530,20 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             context);
     }
 
-    /**
-     * Deletes the specified network profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkProfileName) {
         return this.beginDeleteAsync(resourceGroupName, networkProfileName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified network profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkProfileName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, networkProfileName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified network profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkProfileName) {
         return beginDeleteAsync(resourceGroupName, networkProfileName).last()
@@ -735,30 +567,13 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified network profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkProfileName) {
         deleteAsync(resourceGroupName, networkProfileName).block();
     }
 
-    /**
-     * Deletes the specified network profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkProfileName The name of the public IP prefix.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkProfileName, Context context) {
         deleteAsync(resourceGroupName, networkProfileName, context).block();
@@ -788,7 +603,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -824,7 +639,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -834,15 +649,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all network profiles in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network profiles in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkProfileInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -865,30 +672,13 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all network profiles in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network profiles in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkProfileInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets all network profiles in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network profiles in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkProfileInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -912,7 +702,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -942,7 +732,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -950,13 +740,7 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the network profiles in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the network profiles in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkProfileInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -977,27 +761,13 @@ public final class NetworkProfilesClientImpl implements InnerSupportsGet<Network
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the network profiles in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the network profiles in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkProfileInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all the network profiles in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the network profiles in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkProfileInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

@@ -190,10 +190,7 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
     }
 
     public NetworkDevice create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkDevices()
-            .create(resourceGroupName, networkDeviceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkDevice create(Context context) {
@@ -216,10 +213,7 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
     }
 
     public NetworkDevice apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkDevices()
-            .update(resourceGroupName, networkDeviceName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkDevice apply(Context context) {
@@ -233,16 +227,16 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkDeviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkDevices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}",
+            "resourceGroupName");
+        this.networkDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}",
+            "networkDeviceName");
     }
 
     public NetworkDevice refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkDevices()
-            .getByResourceGroupWithResponse(resourceGroupName, networkDeviceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkDevice refresh(Context context) {

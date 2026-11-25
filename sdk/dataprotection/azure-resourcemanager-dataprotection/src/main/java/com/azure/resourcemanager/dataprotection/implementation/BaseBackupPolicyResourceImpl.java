@@ -61,11 +61,7 @@ public final class BaseBackupPolicyResourceImpl
     }
 
     public BaseBackupPolicyResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BaseBackupPolicyResource create(Context context) {
@@ -88,11 +84,7 @@ public final class BaseBackupPolicyResourceImpl
     }
 
     public BaseBackupPolicyResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BaseBackupPolicyResource apply(Context context) {
@@ -107,17 +99,19 @@ public final class BaseBackupPolicyResourceImpl
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupVaults");
-        this.backupPolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupPolicies/{backupPolicyName}",
+            "resourceGroupName");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupPolicies/{backupPolicyName}",
+            "vaultName");
+        this.backupPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupPolicies/{backupPolicyName}",
+            "backupPolicyName");
     }
 
     public BaseBackupPolicyResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupPolicies()
-            .getWithResponse(resourceGroupName, vaultName, backupPolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BaseBackupPolicyResource refresh(Context context) {

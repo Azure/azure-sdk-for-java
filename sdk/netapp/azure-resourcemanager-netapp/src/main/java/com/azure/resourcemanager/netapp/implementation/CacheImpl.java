@@ -108,10 +108,7 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
     }
 
     public Cache create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCaches()
-            .createOrUpdate(resourceGroupName, accountName, poolName, cacheName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Cache create(Context context) {
@@ -133,10 +130,7 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
     }
 
     public Cache apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCaches()
-            .update(resourceGroupName, accountName, poolName, cacheName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Cache apply(Context context) {
@@ -149,18 +143,22 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
     CacheImpl(CacheInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
-        this.poolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capacityPools");
-        this.cacheName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "caches");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "accountName");
+        this.poolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "poolName");
+        this.cacheName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "cacheName");
     }
 
     public Cache refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCaches()
-            .getWithResponse(resourceGroupName, accountName, poolName, cacheName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Cache refresh(Context context) {

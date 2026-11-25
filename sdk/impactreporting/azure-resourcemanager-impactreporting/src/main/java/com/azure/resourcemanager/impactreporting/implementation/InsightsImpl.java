@@ -43,8 +43,7 @@ public final class InsightsImpl implements Insights {
     }
 
     public PagedIterable<Insight> listBySubscription(String workloadImpactName) {
-        PagedIterable<InsightInner> inner = this.serviceClient().listBySubscription(workloadImpactName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new InsightImpl(inner1, this.manager()));
+        return this.listBySubscription(workloadImpactName, Context.NONE);
     }
 
     public PagedIterable<Insight> listBySubscription(String workloadImpactName, Context context) {
@@ -58,62 +57,34 @@ public final class InsightsImpl implements Insights {
     }
 
     public void deleteByResourceGroup(String workloadImpactName, String insightName) {
-        this.serviceClient().delete(workloadImpactName, insightName);
+        this.deleteByResourceGroupWithResponse(workloadImpactName, insightName, Context.NONE);
     }
 
     public Insight getById(String id) {
-        String workloadImpactName = ResourceManagerUtils.getValueFromIdByName(id, "workloadImpacts");
-        if (workloadImpactName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workloadImpacts'.", id)));
-        }
-        String insightName = ResourceManagerUtils.getValueFromIdByName(id, "insights");
-        if (insightName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'insights'.", id)));
-        }
-        return this.getWithResponse(workloadImpactName, insightName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Insight> getByIdWithResponse(String id, Context context) {
-        String workloadImpactName = ResourceManagerUtils.getValueFromIdByName(id, "workloadImpacts");
-        if (workloadImpactName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workloadImpacts'.", id)));
-        }
-        String insightName = ResourceManagerUtils.getValueFromIdByName(id, "insights");
-        if (insightName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'insights'.", id)));
-        }
+        String workloadImpactName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights/{insightName}",
+            "workloadImpactName", "workloadImpacts", LOGGER);
+        String insightName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights/{insightName}",
+            "insightName", "insights", LOGGER);
         return this.getWithResponse(workloadImpactName, insightName, context);
     }
 
     public void deleteById(String id) {
-        String workloadImpactName = ResourceManagerUtils.getValueFromIdByName(id, "workloadImpacts");
-        if (workloadImpactName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workloadImpacts'.", id)));
-        }
-        String insightName = ResourceManagerUtils.getValueFromIdByName(id, "insights");
-        if (insightName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'insights'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(workloadImpactName, insightName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String workloadImpactName = ResourceManagerUtils.getValueFromIdByName(id, "workloadImpacts");
-        if (workloadImpactName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workloadImpacts'.", id)));
-        }
-        String insightName = ResourceManagerUtils.getValueFromIdByName(id, "insights");
-        if (insightName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'insights'.", id)));
-        }
+        String workloadImpactName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights/{insightName}",
+            "workloadImpactName", "workloadImpacts", LOGGER);
+        String insightName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights/{insightName}",
+            "insightName", "insights", LOGGER);
         return this.deleteByResourceGroupWithResponse(workloadImpactName, insightName, context);
     }
 

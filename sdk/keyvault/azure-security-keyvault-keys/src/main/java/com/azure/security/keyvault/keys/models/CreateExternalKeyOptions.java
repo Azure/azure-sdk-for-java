@@ -21,7 +21,7 @@ import java.util.Map;
  * </p>
  *
  * <p>External keys are only supported on Managed HSM configured to use External Key Management (EKM), with service
- * version {@code 2026-01-01-preview} or newer. They are not supported on a standard Key Vault.</p>
+ * version {@code 2026-04-01} or newer. They are not supported on a standard Key Vault.</p>
  *
  * @see KeyClient
  * @see KeyAsyncClient

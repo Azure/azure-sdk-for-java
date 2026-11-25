@@ -45,7 +45,7 @@ public final class UsagePlansImpl implements UsagePlans {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String usagePlanName) {
-        this.serviceClient().delete(resourceGroupName, usagePlanName);
+        this.delete(resourceGroupName, usagePlanName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String usagePlanName, Context context) {
@@ -53,8 +53,7 @@ public final class UsagePlansImpl implements UsagePlans {
     }
 
     public PagedIterable<UsagePlan> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<UsagePlanInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new UsagePlanImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<UsagePlan> listByResourceGroup(String resourceGroupName, Context context) {
@@ -63,8 +62,7 @@ public final class UsagePlansImpl implements UsagePlans {
     }
 
     public PagedIterable<UsagePlan> list() {
-        PagedIterable<UsagePlanInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new UsagePlanImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<UsagePlan> list(Context context) {
@@ -73,58 +71,30 @@ public final class UsagePlansImpl implements UsagePlans {
     }
 
     public UsagePlan getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String usagePlanName = ResourceManagerUtils.getValueFromIdByName(id, "usagePlans");
-        if (usagePlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'usagePlans'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, usagePlanName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<UsagePlan> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String usagePlanName = ResourceManagerUtils.getValueFromIdByName(id, "usagePlans");
-        if (usagePlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'usagePlans'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String usagePlanName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}",
+            "usagePlanName", "usagePlans", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, usagePlanName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String usagePlanName = ResourceManagerUtils.getValueFromIdByName(id, "usagePlans");
-        if (usagePlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'usagePlans'.", id)));
-        }
-        this.delete(resourceGroupName, usagePlanName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String usagePlanName = ResourceManagerUtils.getValueFromIdByName(id, "usagePlans");
-        if (usagePlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'usagePlans'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String usagePlanName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}",
+            "usagePlanName", "usagePlans", LOGGER);
         this.delete(resourceGroupName, usagePlanName, context);
     }
 

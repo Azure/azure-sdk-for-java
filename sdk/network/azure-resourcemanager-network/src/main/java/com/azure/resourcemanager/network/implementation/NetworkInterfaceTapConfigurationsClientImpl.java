@@ -122,19 +122,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get the specified tap configuration on a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified tap configuration on a network interface along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkInterfaceTapConfigurationInner>> getWithResponseAsync(String resourceGroupName,
         String networkInterfaceName, String tapConfigurationName) {
@@ -158,7 +146,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono
                 .error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -203,25 +191,14 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono
                 .error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkInterfaceName, tapConfigurationName, accept, context);
     }
 
-    /**
-     * Get the specified tap configuration on a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified tap configuration on a network interface on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkInterfaceTapConfigurationInner> getAsync(String resourceGroupName, String networkInterfaceName,
         String tapConfigurationName) {
@@ -229,57 +206,21 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified tap configuration on a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified tap configuration on a network interface along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkInterfaceTapConfigurationInner> getWithResponse(String resourceGroupName,
         String networkInterfaceName, String tapConfigurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, context).block();
     }
 
-    /**
-     * Get the specified tap configuration on a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified tap configuration on a network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInterfaceTapConfigurationInner get(String resourceGroupName, String networkInterfaceName,
         String tapConfigurationName) {
         return getWithResponse(resourceGroupName, networkInterfaceName, tapConfigurationName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param tapConfigurationParameters Parameters supplied to the create or update tap configuration operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tap configuration in a Network Interface along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkInterfaceName, String tapConfigurationName,
@@ -310,7 +251,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
         } else {
             tapConfigurationParameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -365,7 +306,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
         } else {
             tapConfigurationParameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -374,19 +315,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             tapConfigurationParameters, context);
     }
 
-    /**
-     * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param tapConfigurationParameters Parameters supplied to the create or update tap configuration operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of tap configuration in a Network Interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName,
@@ -424,19 +353,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             NetworkInterfaceTapConfigurationInner.class, context);
     }
 
-    /**
-     * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param tapConfigurationParameters Parameters supplied to the create or update tap configuration operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of tap configuration in a Network Interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner>
         beginCreateOrUpdate(String resourceGroupName, String networkInterfaceName, String tapConfigurationName,
@@ -447,20 +364,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param tapConfigurationParameters Parameters supplied to the create or update tap configuration operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of tap configuration in a Network Interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner>
         beginCreateOrUpdate(String resourceGroupName, String networkInterfaceName, String tapConfigurationName,
@@ -471,19 +375,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param tapConfigurationParameters Parameters supplied to the create or update tap configuration operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tap configuration in a Network Interface on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkInterfaceTapConfigurationInner> createOrUpdateAsync(String resourceGroupName,
         String networkInterfaceName, String tapConfigurationName,
@@ -514,19 +406,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             tapConfigurationParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param tapConfigurationParameters Parameters supplied to the create or update tap configuration operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tap configuration in a Network Interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInterfaceTapConfigurationInner createOrUpdate(String resourceGroupName, String networkInterfaceName,
         String tapConfigurationName, NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
@@ -534,20 +414,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             tapConfigurationParameters).block();
     }
 
-    /**
-     * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param tapConfigurationParameters Parameters supplied to the create or update tap configuration operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tap configuration in a Network Interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInterfaceTapConfigurationInner createOrUpdate(String resourceGroupName, String networkInterfaceName,
         String tapConfigurationName, NetworkInterfaceTapConfigurationInner tapConfigurationParameters,
@@ -556,18 +423,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             tapConfigurationParameters, context).block();
     }
 
-    /**
-     * Deletes the specified tap configuration from the NetworkInterface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String networkInterfaceName, String tapConfigurationName) {
@@ -591,7 +447,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono
                 .error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -635,24 +491,13 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono
                 .error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkInterfaceName, tapConfigurationName, context);
     }
 
-    /**
-     * Deletes the specified tap configuration from the NetworkInterface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkInterfaceName,
         String tapConfigurationName) {
@@ -685,37 +530,14 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             context);
     }
 
-    /**
-     * Deletes the specified tap configuration from the NetworkInterface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkInterfaceName,
         String tapConfigurationName) {
         return this.beginDeleteAsync(resourceGroupName, networkInterfaceName, tapConfigurationName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified tap configuration from the NetworkInterface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkInterfaceName,
         String tapConfigurationName, Context context) {
@@ -723,18 +545,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             .getSyncPoller();
     }
 
-    /**
-     * Deletes the specified tap configuration from the NetworkInterface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
         return beginDeleteAsync(resourceGroupName, networkInterfaceName, tapConfigurationName).last()
@@ -761,34 +572,13 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified tap configuration from the NetworkInterface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
         deleteAsync(resourceGroupName, networkInterfaceName, tapConfigurationName).block();
     }
 
-    /**
-     * Deletes the specified tap configuration from the NetworkInterface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tapConfigurationName The name of the resource that is unique within a resource group. This name can be
-     * used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkInterfaceName, String tapConfigurationName,
         Context context) {
@@ -825,7 +615,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono
                 .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -866,7 +656,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono
                 .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -876,16 +666,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get all Tap configurations in a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Tap configurations in a network interface as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkInterfaceTapConfigurationInner> listAsync(String resourceGroupName,
         String networkInterfaceName) {
@@ -911,33 +692,14 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get all Tap configurations in a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Tap configurations in a network interface as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceTapConfigurationInner> list(String resourceGroupName,
         String networkInterfaceName) {
         return new PagedIterable<>(listAsync(resourceGroupName, networkInterfaceName));
     }
 
-    /**
-     * Get all Tap configurations in a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Tap configurations in a network interface as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceTapConfigurationInner> list(String resourceGroupName,
         String networkInterfaceName, Context context) {

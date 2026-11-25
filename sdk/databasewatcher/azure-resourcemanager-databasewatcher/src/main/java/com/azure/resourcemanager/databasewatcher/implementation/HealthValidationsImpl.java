@@ -45,8 +45,7 @@ public final class HealthValidationsImpl implements HealthValidations {
     }
 
     public PagedIterable<HealthValidation> listByParent(String resourceGroupName, String watcherName) {
-        PagedIterable<HealthValidationInner> inner = this.serviceClient().listByParent(resourceGroupName, watcherName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new HealthValidationImpl(inner1, this.manager()));
+        return this.listByParent(resourceGroupName, watcherName, Context.NONE);
     }
 
     public PagedIterable<HealthValidation> listByParent(String resourceGroupName, String watcherName, Context context) {
@@ -56,13 +55,7 @@ public final class HealthValidationsImpl implements HealthValidations {
     }
 
     public HealthValidation startValidation(String resourceGroupName, String watcherName, String healthValidationName) {
-        HealthValidationInner inner
-            = this.serviceClient().startValidation(resourceGroupName, watcherName, healthValidationName);
-        if (inner != null) {
-            return new HealthValidationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.startValidation(resourceGroupName, watcherName, healthValidationName, Context.NONE);
     }
 
     public HealthValidation startValidation(String resourceGroupName, String watcherName, String healthValidationName,

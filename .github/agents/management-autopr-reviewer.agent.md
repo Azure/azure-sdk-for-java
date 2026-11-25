@@ -82,15 +82,21 @@ Run in this order:
    and whether this is a new module or an existing package update.
 3. **Prior state.** Read the latest workflow marker comment. If it records the
    same head SHA, stop. Classify prior concerns as unresolved, resolved, or no
-   longer applicable.
+   longer applicable. Before raising a Warning, check relevant earlier
+   resolutions and author replies as required by the skill.
 4. **Release-plan check.** Validate the field. A missing link is a candidate
    concern but does not stop the remaining review passes.
 5. **Targeted passes.** Run the review passes from the skill, excluding every
    path with a `generated` segment. For GA breaking-change review, use the
    current CHANGELOG section as the main source. Produce candidates, not final
    items. Assign only the severity declared by each rule.
-6. **Self-verification.** Re-fetch cited evidence at the pinned SHA, confirm it
-   is introduced by this PR, and drop weak or cosmetic candidates.
+6. **Self-verification.** For unresolved candidates, re-fetch cited evidence at
+   the pinned SHA and confirm it was introduced by this PR, not necessarily
+   its latest push. For `Resolved`, verify that the original condition no
+   longer applies, including removed or moved paths, or that an authoritative
+   reply answers a Warning's verification request. Resolved items supply
+   resolution evidence without requesting action. Drop weak or cosmetic
+   candidates.
 7. **Critic.** If no candidate survives, use `noop`. Otherwise dispatch exactly
    once using the protocol. Dispatch the named Management AutoPR Review Critic,
    not a general reviewer. If the runtime exposes only a generic subagent tool,
@@ -98,7 +104,9 @@ Run in this order:
    verify only the supplied candidates, and return only the critique table.
    Before invoking it, verify that the dispatch prompt itself contains every
    required protocol field: labeled PR, Session SHA, Package, Release type,
-   Prior workflow comment, and full Candidate concerns. A prompt containing
+   Prior workflow comment, relevant resolution history and author replies,
+   and full Candidate concerns with actions only for unresolved Blocking or
+   Warning items. A prompt containing
    only critic instructions or file-reading directions is invalid and must not
    be dispatched. Never ask the critic to repeat the full review. `FAIL` drops
    a candidate. `DOWNGRADE` changes it to a Warning verification question. No
@@ -113,11 +121,15 @@ line numbers moved.
 `MGMT-API-VERSION` is value-sensitive: when its effective API-version set
 changes, emit the same ID again as `New` with the new values.
 
-- `New`: not present in the prior workflow comment.
+- `New`: not previously raised, or changed evidence requires fresh verification.
 - `Carried forward`: still applies; retain the prior question or requested
   action without restating its full rationale.
-- `Resolved`: evidence in the new head or an authoritative author reply resolves
-  it. Include it for one replacement comment, then omit it on later runs.
+- `Resolved`: evidence in the new head resolves it, or an authoritative author
+  reply answers a Warning's verification request. Include it for one
+  replacement comment, then omit it on later runs without forgetting the
+  verified resolution. Do not revive an unchanged confirmed Warning; changed
+  rule, release, affected symbols, or verification question requires fresh
+  verification.
 
 Never ask the same unresolved question twice as a new concern.
 When the Java gate passes at a new head SHA, a still-applicable prior concern

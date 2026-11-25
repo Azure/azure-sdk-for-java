@@ -27,6 +27,11 @@ public final class ServiceGroupProperties implements JsonSerializable<ServiceGro
     private String displayName;
 
     /*
+     * The attributes of the serviceGroup.
+     */
+    private ServiceGroupAttributes attributes;
+
+    /*
      * The details of the parent serviceGroup.
      */
     private ParentServiceGroupProperties parent;
@@ -67,6 +72,26 @@ public final class ServiceGroupProperties implements JsonSerializable<ServiceGro
     }
 
     /**
+     * Get the attributes property: The attributes of the serviceGroup.
+     * 
+     * @return the attributes value.
+     */
+    public ServiceGroupAttributes attributes() {
+        return this.attributes;
+    }
+
+    /**
+     * Set the attributes property: The attributes of the serviceGroup.
+     * 
+     * @param attributes the attributes value to set.
+     * @return the ServiceGroupProperties object itself.
+     */
+    public ServiceGroupProperties withAttributes(ServiceGroupAttributes attributes) {
+        this.attributes = attributes;
+        return this;
+    }
+
+    /**
      * Get the parent property: The details of the parent serviceGroup.
      * 
      * @return the parent value.
@@ -93,6 +118,7 @@ public final class ServiceGroupProperties implements JsonSerializable<ServiceGro
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("attributes", this.attributes);
         jsonWriter.writeJsonField("parent", this.parent);
         return jsonWriter.writeEndObject();
     }
@@ -117,6 +143,8 @@ public final class ServiceGroupProperties implements JsonSerializable<ServiceGro
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("displayName".equals(fieldName)) {
                     deserializedServiceGroupProperties.displayName = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedServiceGroupProperties.attributes = ServiceGroupAttributes.fromJson(reader);
                 } else if ("parent".equals(fieldName)) {
                     deserializedServiceGroupProperties.parent = ParentServiceGroupProperties.fromJson(reader);
                 } else {

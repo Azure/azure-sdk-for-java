@@ -43,30 +43,16 @@ public final class ManifestsImpl implements Manifests {
     }
 
     public ManifestInfo getById(String id) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String environment = ResourceManagerUtils.getValueFromIdByName(id, "manifests");
-        if (environment == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'manifests'.", id)));
-        }
-        return this.getWithResponse(providerNamespace, environment, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ManifestInfo> getByIdWithResponse(String id, Context context) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String environment = ResourceManagerUtils.getValueFromIdByName(id, "manifests");
-        if (environment == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'manifests'.", id)));
-        }
+        String providerNamespace = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/manifests/{environment}",
+            "providerNamespace", "providerRegistrations", LOGGER);
+        String environment = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/manifests/{environment}",
+            "environment", "manifests", LOGGER);
         return this.getWithResponse(providerNamespace, environment, context);
     }
 

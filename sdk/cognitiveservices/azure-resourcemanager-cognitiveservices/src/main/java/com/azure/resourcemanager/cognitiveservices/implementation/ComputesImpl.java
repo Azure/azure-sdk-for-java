@@ -45,7 +45,7 @@ public final class ComputesImpl implements Computes {
     }
 
     public void delete(String resourceGroupName, String accountName, String computeName) {
-        this.serviceClient().delete(resourceGroupName, accountName, computeName);
+        this.delete(resourceGroupName, accountName, computeName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String accountName, String computeName, Context context) {
@@ -53,8 +53,7 @@ public final class ComputesImpl implements Computes {
     }
 
     public PagedIterable<Compute> list(String resourceGroupName, String accountName) {
-        PagedIterable<ComputeInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ComputeImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, accountName, Context.NONE);
     }
 
     public PagedIterable<Compute> list(String resourceGroupName, String accountName, Context context) {
@@ -63,7 +62,7 @@ public final class ComputesImpl implements Computes {
     }
 
     public void start(String resourceGroupName, String accountName, String computeName) {
-        this.serviceClient().start(resourceGroupName, accountName, computeName);
+        this.start(resourceGroupName, accountName, computeName, Context.NONE);
     }
 
     public void start(String resourceGroupName, String accountName, String computeName, Context context) {
@@ -71,7 +70,7 @@ public final class ComputesImpl implements Computes {
     }
 
     public void stop(String resourceGroupName, String accountName, String computeName) {
-        this.serviceClient().stop(resourceGroupName, accountName, computeName);
+        this.stop(resourceGroupName, accountName, computeName, Context.NONE);
     }
 
     public void stop(String resourceGroupName, String accountName, String computeName, Context context) {
@@ -79,7 +78,7 @@ public final class ComputesImpl implements Computes {
     }
 
     public void restart(String resourceGroupName, String accountName, String computeName) {
-        this.serviceClient().restart(resourceGroupName, accountName, computeName);
+        this.restart(resourceGroupName, accountName, computeName, Context.NONE);
     }
 
     public void restart(String resourceGroupName, String accountName, String computeName, Context context) {
@@ -87,78 +86,36 @@ public final class ComputesImpl implements Computes {
     }
 
     public Compute getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String computeName = ResourceManagerUtils.getValueFromIdByName(id, "computes");
-        if (computeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'computes'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, accountName, computeName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Compute> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String computeName = ResourceManagerUtils.getValueFromIdByName(id, "computes");
-        if (computeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'computes'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}",
+            "accountName", "accounts", LOGGER);
+        String computeName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}",
+            "computeName", "computes", LOGGER);
         return this.getWithResponse(resourceGroupName, accountName, computeName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String computeName = ResourceManagerUtils.getValueFromIdByName(id, "computes");
-        if (computeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'computes'.", id)));
-        }
-        this.delete(resourceGroupName, accountName, computeName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String computeName = ResourceManagerUtils.getValueFromIdByName(id, "computes");
-        if (computeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'computes'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}",
+            "accountName", "accounts", LOGGER);
+        String computeName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}",
+            "computeName", "computes", LOGGER);
         this.delete(resourceGroupName, accountName, computeName, context);
     }
 

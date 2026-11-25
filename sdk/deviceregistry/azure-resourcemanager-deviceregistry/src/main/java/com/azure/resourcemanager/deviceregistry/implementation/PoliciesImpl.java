@@ -46,7 +46,7 @@ public final class PoliciesImpl implements Policies {
     }
 
     public void delete(String resourceGroupName, String namespaceName, String policyName) {
-        this.serviceClient().delete(resourceGroupName, namespaceName, policyName);
+        this.delete(resourceGroupName, namespaceName, policyName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String namespaceName, String policyName, Context context) {
@@ -54,8 +54,7 @@ public final class PoliciesImpl implements Policies {
     }
 
     public PagedIterable<Policy> listByResourceGroup(String resourceGroupName, String namespaceName) {
-        PagedIterable<PolicyInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, namespaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, namespaceName, Context.NONE);
     }
 
     public PagedIterable<Policy> listByResourceGroup(String resourceGroupName, String namespaceName, Context context) {
@@ -65,7 +64,7 @@ public final class PoliciesImpl implements Policies {
     }
 
     public void revokeIssuer(String resourceGroupName, String namespaceName, String policyName) {
-        this.serviceClient().revokeIssuer(resourceGroupName, namespaceName, policyName);
+        this.revokeIssuer(resourceGroupName, namespaceName, policyName, Context.NONE);
     }
 
     public void revokeIssuer(String resourceGroupName, String namespaceName, String policyName, Context context) {
@@ -74,7 +73,7 @@ public final class PoliciesImpl implements Policies {
 
     public void activateBringYourOwnRoot(String resourceGroupName, String namespaceName, String policyName,
         ActivateBringYourOwnRootRequest body) {
-        this.serviceClient().activateBringYourOwnRoot(resourceGroupName, namespaceName, policyName, body);
+        this.activateBringYourOwnRoot(resourceGroupName, namespaceName, policyName, body, Context.NONE);
     }
 
     public void activateBringYourOwnRoot(String resourceGroupName, String namespaceName, String policyName,
@@ -83,78 +82,36 @@ public final class PoliciesImpl implements Policies {
     }
 
     public Policy getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
-        if (namespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
-        }
-        String policyName = ResourceManagerUtils.getValueFromIdByName(id, "policies");
-        if (policyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policies'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, namespaceName, policyName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Policy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
-        if (namespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
-        }
-        String policyName = ResourceManagerUtils.getValueFromIdByName(id, "policies");
-        if (policyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policies'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String namespaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}",
+            "namespaceName", "namespaces", LOGGER);
+        String policyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}",
+            "policyName", "policies", LOGGER);
         return this.getWithResponse(resourceGroupName, namespaceName, policyName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
-        if (namespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
-        }
-        String policyName = ResourceManagerUtils.getValueFromIdByName(id, "policies");
-        if (policyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policies'.", id)));
-        }
-        this.delete(resourceGroupName, namespaceName, policyName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
-        if (namespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
-        }
-        String policyName = ResourceManagerUtils.getValueFromIdByName(id, "policies");
-        if (policyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policies'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String namespaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}",
+            "namespaceName", "namespaces", LOGGER);
+        String policyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}",
+            "policyName", "policies", LOGGER);
         this.delete(resourceGroupName, namespaceName, policyName, context);
     }
 

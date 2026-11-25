@@ -13,15 +13,15 @@ public final class PrivateEndpointConnectionListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"tdss\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"mweriofzpy\",\"actionsRequired\":\"emwabnet\"},\"provisioningState\":\"Failed\",\"groupIds\":[\"h\",\"d\",\"lvwiwubmwmbesl\"]},\"etag\":\"k\",\"location\":\"tppjflcx\",\"id\":\"aokonzmnsik\",\"name\":\"mkqzeqqkdltfzxmh\",\"type\":\"v\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"eodkwobda\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"bqdxbx\",\"actionsRequired\":\"kbogqxndlkzgx\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"lbpodxunk\",\"ebxmubyynt\",\"lrb\"]},\"etag\":\"koievseo\",\"location\":\"q\",\"id\":\"ltmuwlauwzizx\",\"name\":\"mpgcjefuzmuvpbt\",\"type\":\"d\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"p\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"mnzb\",\"actionsRequired\":\"hjpglkf\"},\"provisioningState\":\"Deleting\",\"groupIds\":[\"euel\",\"phsdyhto\",\"fikdowwqu\",\"v\"]},\"etag\":\"xclvit\",\"location\":\"qzonosggbhcohf\",\"id\":\"sjnkal\",\"name\":\"utiiswacf\",\"type\":\"gdkz\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"fvhqc\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"vpnpp\",\"actionsRequired\":\"flrwd\"},\"provisioningState\":\"Creating\",\"groupIds\":[\"yjrxsagafcnih\",\"wqapnedgfbcvk\",\"vq\",\"pkeqdcvdrhvoo\"]},\"etag\":\"otbobzdopcj\",\"location\":\"nhdldwmgxcx\",\"id\":\"lpmutwuoegrpkhj\",\"name\":\"niyqslui\",\"type\":\"pdggkzzlvm\"}]}")
+            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"dtclusiypb\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"tg\",\"actionsRequired\":\"lfeadcygq\"},\"provisioningState\":\"Deleting\",\"groupIds\":[\"jhzi\",\"xgfpelolppv\"]},\"etag\":\"r\",\"location\":\"vu\",\"id\":\"raehtwdwrft\",\"name\":\"wib\",\"type\":\"rcdlbhshfwpr\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"wity\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"xccedcpnmdyodn\",\"actionsRequired\":\"xltjcvnhltiu\"},\"provisioningState\":\"Creating\",\"groupIds\":[\"vvwxqi\",\"y\"]},\"etag\":\"nyowxwlmdjrkvfg\",\"location\":\"fvpdbo\",\"id\":\"cizsjqlhkrribdei\",\"name\":\"qipqkghvxndz\",\"type\":\"mkrefajpjorwkq\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"b\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ivfxzsjabibsyst\",\"actionsRequired\":\"fsdjpvkvp\"},\"provisioningState\":\"Deleting\",\"groupIds\":[\"zbzkdvncjabudurg\",\"akmokzhjjklf\",\"hmouwqlgzrfze\",\"yebizikayuh\"]},\"etag\":\"bjbsybb\",\"location\":\"r\",\"id\":\"ldgmfpgvmpip\",\"name\":\"slthaq\",\"type\":\"x\"}]}")
             .toObject(PrivateEndpointConnectionListResultInner.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             model.value().get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("mweriofzpy",
+        Assertions.assertEquals("tg",
             model.value().get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("emwabnet",
+        Assertions.assertEquals("lfeadcygq",
             model.value().get(0).properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("h", model.value().get(0).properties().groupIds().get(0));
-        Assertions.assertEquals("tppjflcx", model.value().get(0).location());
+        Assertions.assertEquals("jhzi", model.value().get(0).properties().groupIds().get(0));
+        Assertions.assertEquals("vu", model.value().get(0).location());
     }
 }

@@ -45,7 +45,7 @@ public final class EndpointsImpl implements Endpoints {
     }
 
     public void delete(String resourceGroupName, String storageMoverName, String endpointName) {
-        this.serviceClient().delete(resourceGroupName, storageMoverName, endpointName);
+        this.delete(resourceGroupName, storageMoverName, endpointName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String storageMoverName, String endpointName, Context context) {
@@ -53,8 +53,7 @@ public final class EndpointsImpl implements Endpoints {
     }
 
     public PagedIterable<Endpoint> list(String resourceGroupName, String storageMoverName) {
-        PagedIterable<EndpointInner> inner = this.serviceClient().list(resourceGroupName, storageMoverName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EndpointImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, storageMoverName, Context.NONE);
     }
 
     public PagedIterable<Endpoint> list(String resourceGroupName, String storageMoverName, Context context) {
@@ -63,78 +62,36 @@ public final class EndpointsImpl implements Endpoints {
     }
 
     public Endpoint getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageMoverName = ResourceManagerUtils.getValueFromIdByName(id, "storageMovers");
-        if (storageMoverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageMovers'.", id)));
-        }
-        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "endpoints");
-        if (endpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, storageMoverName, endpointName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Endpoint> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageMoverName = ResourceManagerUtils.getValueFromIdByName(id, "storageMovers");
-        if (storageMoverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageMovers'.", id)));
-        }
-        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "endpoints");
-        if (endpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String storageMoverName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}",
+            "storageMoverName", "storageMovers", LOGGER);
+        String endpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}",
+            "endpointName", "endpoints", LOGGER);
         return this.getWithResponse(resourceGroupName, storageMoverName, endpointName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageMoverName = ResourceManagerUtils.getValueFromIdByName(id, "storageMovers");
-        if (storageMoverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageMovers'.", id)));
-        }
-        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "endpoints");
-        if (endpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
-        }
-        this.delete(resourceGroupName, storageMoverName, endpointName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageMoverName = ResourceManagerUtils.getValueFromIdByName(id, "storageMovers");
-        if (storageMoverName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageMovers'.", id)));
-        }
-        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "endpoints");
-        if (endpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String storageMoverName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}",
+            "storageMoverName", "storageMovers", LOGGER);
+        String endpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}",
+            "endpointName", "endpoints", LOGGER);
         this.delete(resourceGroupName, storageMoverName, endpointName, context);
     }
 

@@ -13,21 +13,21 @@ public final class AwsCloudProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AwsCloudProfile model = BinaryData.fromString(
-            "{\"accountId\":\"i\",\"excludedAccounts\":[\"npvswjdkirso\",\"dqxhcrmnohjtckwh\",\"soifiyipjxsqw\",\"gr\"],\"isOrganizationalAccount\":false}")
+            "{\"accountId\":\"hcbonqvpkvlr\",\"excludedAccounts\":[\"ea\",\"eipheoflokeyy\"],\"isOrganizationalAccount\":false}")
             .toObject(AwsCloudProfile.class);
-        Assertions.assertEquals("i", model.accountId());
-        Assertions.assertEquals("npvswjdkirso", model.excludedAccounts().get(0));
+        Assertions.assertEquals("hcbonqvpkvlr", model.accountId());
+        Assertions.assertEquals("ea", model.excludedAccounts().get(0));
         Assertions.assertFalse(model.isOrganizationalAccount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AwsCloudProfile model = new AwsCloudProfile().withAccountId("i")
-            .withExcludedAccounts(Arrays.asList("npvswjdkirso", "dqxhcrmnohjtckwh", "soifiyipjxsqw", "gr"))
+        AwsCloudProfile model = new AwsCloudProfile().withAccountId("hcbonqvpkvlr")
+            .withExcludedAccounts(Arrays.asList("ea", "eipheoflokeyy"))
             .withIsOrganizationalAccount(false);
         model = BinaryData.fromObject(model).toObject(AwsCloudProfile.class);
-        Assertions.assertEquals("i", model.accountId());
-        Assertions.assertEquals("npvswjdkirso", model.excludedAccounts().get(0));
+        Assertions.assertEquals("hcbonqvpkvlr", model.accountId());
+        Assertions.assertEquals("ea", model.excludedAccounts().get(0));
         Assertions.assertFalse(model.isOrganizationalAccount());
     }
 }

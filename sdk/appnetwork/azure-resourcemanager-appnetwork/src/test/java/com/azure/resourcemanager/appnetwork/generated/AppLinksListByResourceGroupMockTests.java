@@ -23,7 +23,7 @@ public final class AppLinksListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"cjooxdjebwpucwwf\",\"tenantId\":\"vbvmeu\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"dytdxwitx\":{\"principalId\":\"hzceuojgjrwjue\",\"clientId\":\"twm\"},\"kxfbkpycgklwndn\":{\"principalId\":\"jawgqwg\",\"clientId\":\"ni\"},\"pow\":{\"principalId\":\"dauwhvylwzbtd\",\"clientId\":\"ujznb\"},\"hfxobbcswsrtj\":{\"principalId\":\"przqlveu\",\"clientId\":\"upjm\"}}},\"location\":\"plrbpbewtghf\",\"tags\":{\"wxzvlvqhjkb\":\"c\",\"iebwwaloayqcgwrt\":\"gibtnm\",\"zg\":\"j\"},\"id\":\"yzm\",\"name\":\"txon\",\"type\":\"mtsavjcbpwxqp\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"epdkzja\",\"tenantId\":\"ux\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"zxbzpfzabglc\":{\"principalId\":\"avxbniwdjswztsdb\",\"clientId\":\"nxytxh\"},\"gu\":{\"principalId\":\"xwtctyqiklbbovpl\",\"clientId\":\"bhvgy\"},\"mg\":{\"principalId\":\"vmkfssxqu\",\"clientId\":\"fpl\"}}},\"location\":\"nkjzkdeslpvlop\",\"tags\":{\"wzbaiue\":\"ighxpk\",\"a\":\"baumnyqupedeoj\"},\"id\":\"ckhsmtxpsieb\",\"name\":\"fhvpesaps\",\"type\":\"rdqmhjjdhtldwkyz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,11 @@ public final class AppLinksListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AppLink> response
-            = manager.appLinks().listByResourceGroup("hashsfwxosow", com.azure.core.util.Context.NONE);
+            = manager.appLinks().listByResourceGroup("xibxujwbhqwalm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("plrbpbewtghf", response.iterator().next().location());
-        Assertions.assertEquals("c", response.iterator().next().tags().get("wxzvlvqhjkb"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("nkjzkdeslpvlop", response.iterator().next().location());
+        Assertions.assertEquals("ighxpk", response.iterator().next().tags().get("wzbaiue"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
     }
 }

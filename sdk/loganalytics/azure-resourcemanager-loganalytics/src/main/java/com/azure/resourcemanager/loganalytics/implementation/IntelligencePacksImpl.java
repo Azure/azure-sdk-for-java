@@ -36,7 +36,7 @@ public final class IntelligencePacksImpl implements IntelligencePacks {
     }
 
     public void disable(String resourceGroupName, String workspaceName, String intelligencePackName) {
-        this.serviceClient().disable(resourceGroupName, workspaceName, intelligencePackName);
+        this.disableWithResponse(resourceGroupName, workspaceName, intelligencePackName, Context.NONE);
     }
 
     public Response<Void> enableWithResponse(String resourceGroupName, String workspaceName,
@@ -45,7 +45,7 @@ public final class IntelligencePacksImpl implements IntelligencePacks {
     }
 
     public void enable(String resourceGroupName, String workspaceName, String intelligencePackName) {
-        this.serviceClient().enable(resourceGroupName, workspaceName, intelligencePackName);
+        this.enableWithResponse(resourceGroupName, workspaceName, intelligencePackName, Context.NONE);
     }
 
     public Response<List<IntelligencePack>> listWithResponse(String resourceGroupName, String workspaceName,

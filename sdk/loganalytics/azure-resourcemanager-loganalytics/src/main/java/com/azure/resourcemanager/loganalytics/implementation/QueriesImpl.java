@@ -51,7 +51,7 @@ public final class QueriesImpl implements Queries {
     }
 
     public void delete(String resourceGroupName, String queryPackName, String id) {
-        this.serviceClient().delete(resourceGroupName, queryPackName, id);
+        this.deleteWithResponse(resourceGroupName, queryPackName, id, Context.NONE);
     }
 
     public PagedIterable<LogAnalyticsQueryPackQuery> list(String resourceGroupName, String queryPackName) {
@@ -87,78 +87,36 @@ public final class QueriesImpl implements Queries {
     }
 
     public LogAnalyticsQueryPackQuery getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String queryPackName = ResourceManagerUtils.getValueFromIdByName(id, "queryPacks");
-        if (queryPackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'queryPacks'.", id)));
-        }
-        String varId = ResourceManagerUtils.getValueFromIdByName(id, "queries");
-        if (varId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'queries'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, queryPackName, varId, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<LogAnalyticsQueryPackQuery> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String queryPackName = ResourceManagerUtils.getValueFromIdByName(id, "queryPacks");
-        if (queryPackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'queryPacks'.", id)));
-        }
-        String varId = ResourceManagerUtils.getValueFromIdByName(id, "queries");
-        if (varId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'queries'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String queryPackName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}",
+            "queryPackName", "queryPacks", LOGGER);
+        String varId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}",
+            "id", "queries", LOGGER);
         return this.getWithResponse(resourceGroupName, queryPackName, varId, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String queryPackName = ResourceManagerUtils.getValueFromIdByName(id, "queryPacks");
-        if (queryPackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'queryPacks'.", id)));
-        }
-        String varId = ResourceManagerUtils.getValueFromIdByName(id, "queries");
-        if (varId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'queries'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, queryPackName, varId, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String queryPackName = ResourceManagerUtils.getValueFromIdByName(id, "queryPacks");
-        if (queryPackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'queryPacks'.", id)));
-        }
-        String varId = ResourceManagerUtils.getValueFromIdByName(id, "queries");
-        if (varId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'queries'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String queryPackName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}",
+            "queryPackName", "queryPacks", LOGGER);
+        String varId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks/{queryPackName}/queries/{id}",
+            "id", "queries", LOGGER);
         return this.deleteWithResponse(resourceGroupName, queryPackName, varId, context);
     }
 

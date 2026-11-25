@@ -41,7 +41,11 @@ public enum SecretServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2025-07-01}.
      */
-    V2025_07_01("2025-07-01");
+    V2025_07_01("2025-07-01"),
+    /**
+     * Service version {@code 2026-04-01}.
+     */
+    V2026_04_01("2026-04-01");
 
     private final String version;
 
@@ -63,6 +67,6 @@ public enum SecretServiceVersion implements ServiceVersion {
      * @return The latest {@link SecretServiceVersion}.
      */
     public static SecretServiceVersion getLatest() {
-        return V2025_07_01;
+        return V2026_04_01;
     }
 }

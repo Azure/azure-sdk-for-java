@@ -75,6 +75,13 @@ public interface CognitiveServicesManagementClient {
     DeletedAccountsClient getDeletedAccounts();
 
     /**
+     * Gets the AttachedAksClustersClient object to access its operations.
+     * 
+     * @return the AttachedAksClustersClient object.
+     */
+    AttachedAksClustersClient getAttachedAksClusters();
+
+    /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
      * 
      * @return the PrivateEndpointConnectionsClient object.
@@ -115,6 +122,20 @@ public interface CognitiveServicesManagementClient {
      * @return the SubscriptionRaiPoliciesClient object.
      */
     SubscriptionRaiPoliciesClient getSubscriptionRaiPolicies();
+
+    /**
+     * Gets the RaiRegosClient object to access its operations.
+     * 
+     * @return the RaiRegosClient object.
+     */
+    RaiRegosClient getRaiRegos();
+
+    /**
+     * Gets the RaiBindingsClient object to access its operations.
+     * 
+     * @return the RaiBindingsClient object.
+     */
+    RaiBindingsClient getRaiBindings();
 
     /**
      * Gets the RaiBlocklistItemsClient object to access its operations.
@@ -215,6 +236,13 @@ public interface CognitiveServicesManagementClient {
     ManagedComputeDeploymentsClient getManagedComputeDeployments();
 
     /**
+     * Gets the AdapterDeploymentsClient object to access its operations.
+     * 
+     * @return the AdapterDeploymentsClient object.
+     */
+    AdapterDeploymentsClient getAdapterDeployments();
+
+    /**
      * Gets the ComputeOperationsClient object to access its operations.
      * 
      * @return the ComputeOperationsClient object.
@@ -248,6 +276,20 @@ public interface CognitiveServicesManagementClient {
      * @return the ManagedComputeCapacitiesClient object.
      */
     ManagedComputeCapacitiesClient getManagedComputeCapacities();
+
+    /**
+     * Gets the AccountCostControlsClient object to access its operations.
+     * 
+     * @return the AccountCostControlsClient object.
+     */
+    AccountCostControlsClient getAccountCostControls();
+
+    /**
+     * Gets the ProjectCostControlsClient object to access its operations.
+     * 
+     * @return the ProjectCostControlsClient object.
+     */
+    ProjectCostControlsClient getProjectCostControls();
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.

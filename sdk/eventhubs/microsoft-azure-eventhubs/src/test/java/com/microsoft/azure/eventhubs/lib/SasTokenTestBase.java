@@ -5,8 +5,8 @@ package com.microsoft.azure.eventhubs.lib;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.impl.SharedAccessSignatureTokenProvider;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.time.Duration;
 import java.util.Locale;
@@ -15,7 +15,7 @@ public class SasTokenTestBase extends ApiTestBase {
 
     private static ConnectionStringBuilder originalConnectionString;
 
-    @BeforeClass
+    @BeforeAll
     public static void replaceConnectionString() throws Exception {
 
         originalConnectionString = TestContext.getConnectionString();
@@ -33,7 +33,7 @@ public class SasTokenTestBase extends ApiTestBase {
         TestContext.setConnectionString(connectionStringWithSasToken);
     }
 
-    @AfterClass
+    @AfterAll
     public static void undoReplace() {
         if (originalConnectionString != null) {
             TestContext.setConnectionString(originalConnectionString.toString());

@@ -28,7 +28,7 @@ public final class ItemLevelRecoveryConnectionsRevokeWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.itemLevelRecoveryConnections()
-            .revokeWithResponse("hmocgjshg", "u", "rhwv", "xqqggljky", "sjrclrvtzq", "rbctbhpjhxpcvrd",
+            .revokeWithResponse("saluzyi", "fcvcewbwq", "dgsjsat", "rncmazdfsqxh", "qmr", "jparnpvgrszrbwt",
                 com.azure.core.util.Context.NONE);
 
     }

@@ -20,7 +20,8 @@ public final class EntityListByGuidsTests extends DataMapClientTestBase {
     public void testEntityListByGuidsTests() {
         // method invocation
         AtlasEntitiesWithExtInfo response = entityClient.getByIds(
-            Arrays.asList("784c0f2f-afd2-e26b-f9cb-984f6c2c5021", "b4ebc8be-cef4-860a-bee9-28cc34cb5caa"), true, null);
+            Arrays.asList("784c0f2f-afd2-e26b-f9cb-984f6c2c5021", "b4ebc8be-cef4-860a-bee9-28cc34cb5caa"), true,
+            (Boolean) null);
 
         // response assertion
         Assertions.assertNotNull(response);

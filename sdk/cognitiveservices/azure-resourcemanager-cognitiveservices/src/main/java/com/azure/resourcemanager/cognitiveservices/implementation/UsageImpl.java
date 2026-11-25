@@ -22,6 +22,14 @@ public final class UsageImpl implements Usage {
         this.serviceManager = serviceManager;
     }
 
+    public String id() {
+        return this.innerModel().id();
+    }
+
+    public String type() {
+        return this.innerModel().type();
+    }
+
     public UnitType unit() {
         return this.innerModel().unit();
     }

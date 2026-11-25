@@ -85,10 +85,7 @@ public final class FqdnListLocalRulestackResourceImpl implements FqdnListLocalRu
     }
 
     public FqdnListLocalRulestackResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFqdnListLocalRulestacks()
-            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FqdnListLocalRulestackResource create(Context context) {
@@ -110,10 +107,7 @@ public final class FqdnListLocalRulestackResourceImpl implements FqdnListLocalRu
     }
 
     public FqdnListLocalRulestackResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFqdnListLocalRulestacks()
-            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FqdnListLocalRulestackResource apply(Context context) {
@@ -127,17 +121,19 @@ public final class FqdnListLocalRulestackResourceImpl implements FqdnListLocalRu
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.localRulestackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "localRulestacks");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fqdnlists");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/fqdnlists/{name}",
+            "resourceGroupName");
+        this.localRulestackName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/fqdnlists/{name}",
+            "localRulestackName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/fqdnlists/{name}",
+            "name");
     }
 
     public FqdnListLocalRulestackResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFqdnListLocalRulestacks()
-            .getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FqdnListLocalRulestackResource refresh(Context context) {

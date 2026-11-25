@@ -13,21 +13,21 @@ public final class TargetDiskNetworkAccessSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetDiskNetworkAccessSettings model = BinaryData.fromString(
-            "{\"targetDiskNetworkAccessOption\":\"EnablePublicAccessForAllDisks\",\"targetDiskAccessId\":\"vcjfelisdjubggb\"}")
+            "{\"targetDiskNetworkAccessOption\":\"EnablePrivateAccessForAllDisks\",\"targetDiskAccessId\":\"kfpksokdgo\"}")
             .toObject(TargetDiskNetworkAccessSettings.class);
-        Assertions.assertEquals(TargetDiskNetworkAccessOption.ENABLE_PUBLIC_ACCESS_FOR_ALL_DISKS,
+        Assertions.assertEquals(TargetDiskNetworkAccessOption.ENABLE_PRIVATE_ACCESS_FOR_ALL_DISKS,
             model.targetDiskNetworkAccessOption());
-        Assertions.assertEquals("vcjfelisdjubggb", model.targetDiskAccessId());
+        Assertions.assertEquals("kfpksokdgo", model.targetDiskAccessId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TargetDiskNetworkAccessSettings model = new TargetDiskNetworkAccessSettings()
-            .withTargetDiskNetworkAccessOption(TargetDiskNetworkAccessOption.ENABLE_PUBLIC_ACCESS_FOR_ALL_DISKS)
-            .withTargetDiskAccessId("vcjfelisdjubggb");
+            .withTargetDiskNetworkAccessOption(TargetDiskNetworkAccessOption.ENABLE_PRIVATE_ACCESS_FOR_ALL_DISKS)
+            .withTargetDiskAccessId("kfpksokdgo");
         model = BinaryData.fromObject(model).toObject(TargetDiskNetworkAccessSettings.class);
-        Assertions.assertEquals(TargetDiskNetworkAccessOption.ENABLE_PUBLIC_ACCESS_FOR_ALL_DISKS,
+        Assertions.assertEquals(TargetDiskNetworkAccessOption.ENABLE_PRIVATE_ACCESS_FOR_ALL_DISKS,
             model.targetDiskNetworkAccessOption());
-        Assertions.assertEquals("vcjfelisdjubggb", model.targetDiskAccessId());
+        Assertions.assertEquals("kfpksokdgo", model.targetDiskAccessId());
     }
 }

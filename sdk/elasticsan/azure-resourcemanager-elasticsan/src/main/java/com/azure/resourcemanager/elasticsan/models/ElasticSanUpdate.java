@@ -158,6 +158,81 @@ public final class ElasticSanUpdate implements JsonSerializable<ElasticSanUpdate
     }
 
     /**
+     * Get the totalIops property: Total Provisioned IOPS of the Elastic San appliance. Supported only for
+     * ElasticSanVersion V2.
+     * 
+     * @return the totalIops value.
+     */
+    public Long totalIops() {
+        return this.innerProperties() == null ? null : this.innerProperties().totalIops();
+    }
+
+    /**
+     * Set the totalIops property: Total Provisioned IOPS of the Elastic San appliance. Supported only for
+     * ElasticSanVersion V2.
+     * 
+     * @param totalIops the totalIops value to set.
+     * @return the ElasticSanUpdate object itself.
+     */
+    public ElasticSanUpdate withTotalIops(Long totalIops) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticSanUpdateProperties();
+        }
+        this.innerProperties().withTotalIops(totalIops);
+        return this;
+    }
+
+    /**
+     * Get the totalMBps property: Total Provisioned MBps Elastic San appliance. Supported only for ElasticSanVersion
+     * V2.
+     * 
+     * @return the totalMBps value.
+     */
+    public Long totalMBps() {
+        return this.innerProperties() == null ? null : this.innerProperties().totalMBps();
+    }
+
+    /**
+     * Set the totalMBps property: Total Provisioned MBps Elastic San appliance. Supported only for ElasticSanVersion
+     * V2.
+     * 
+     * @param totalMBps the totalMBps value to set.
+     * @return the ElasticSanUpdate object itself.
+     */
+    public ElasticSanUpdate withTotalMBps(Long totalMBps) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticSanUpdateProperties();
+        }
+        this.innerProperties().withTotalMBps(totalMBps);
+        return this;
+    }
+
+    /**
+     * Get the totalSizeTiB property: Total size of the Elastic San appliance in TB. Supported only for
+     * ElasticSanVersion V2.
+     * 
+     * @return the totalSizeTiB value.
+     */
+    public Long totalSizeTiB() {
+        return this.innerProperties() == null ? null : this.innerProperties().totalSizeTiB();
+    }
+
+    /**
+     * Set the totalSizeTiB property: Total size of the Elastic San appliance in TB. Supported only for
+     * ElasticSanVersion V2.
+     * 
+     * @param totalSizeTiB the totalSizeTiB value to set.
+     * @return the ElasticSanUpdate object itself.
+     */
+    public ElasticSanUpdate withTotalSizeTiB(Long totalSizeTiB) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticSanUpdateProperties();
+        }
+        this.innerProperties().withTotalSizeTiB(totalSizeTiB);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

@@ -244,18 +244,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a NamespaceDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NamespaceDevice along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NamespaceDeviceInner> getWithResponse(String resourceGroupName, String namespaceName,
         String deviceName, Context context) {
@@ -264,17 +253,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
             resourceGroupName, namespaceName, deviceName, accept, context);
     }
 
-    /**
-     * Get a NamespaceDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NamespaceDevice.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceDeviceInner get(String resourceGroupName, String namespaceName, String deviceName) {
         return getWithResponse(resourceGroupName, namespaceName, deviceName, Context.NONE).getValue();
@@ -319,11 +298,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String namespaceName,
         String deviceName, NamespaceDeviceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, deviceName, contentType, accept,
-            resource, Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, namespaceName, deviceName, resource, Context.NONE);
     }
 
     /**
@@ -370,40 +345,14 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
             NamespaceDeviceInner.class, NamespaceDeviceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a NamespaceDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of device definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceDeviceInner>, NamespaceDeviceInner> beginCreateOrReplace(
         String resourceGroupName, String namespaceName, String deviceName, NamespaceDeviceInner resource) {
-        Response<BinaryData> response
-            = createOrReplaceWithResponse(resourceGroupName, namespaceName, deviceName, resource);
-        return this.client.<NamespaceDeviceInner, NamespaceDeviceInner>getLroResult(response,
-            NamespaceDeviceInner.class, NamespaceDeviceInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, namespaceName, deviceName, resource, Context.NONE);
     }
 
-    /**
-     * Create a NamespaceDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of device definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceDeviceInner>, NamespaceDeviceInner> beginCreateOrReplace(
         String resourceGroupName, String namespaceName, String deviceName, NamespaceDeviceInner resource,
@@ -433,41 +382,19 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a NamespaceDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return device definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceDeviceInner createOrReplace(String resourceGroupName, String namespaceName, String deviceName,
         NamespaceDeviceInner resource) {
-        return beginCreateOrReplace(resourceGroupName, namespaceName, deviceName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, namespaceName, deviceName, resource, Context.NONE);
     }
 
-    /**
-     * Create a NamespaceDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return device definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceDeviceInner createOrReplace(String resourceGroupName, String namespaceName, String deviceName,
         NamespaceDeviceInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, namespaceName, deviceName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrReplace(resourceGroupName, namespaceName, deviceName, resource, context));
     }
 
     /**
@@ -509,11 +436,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String namespaceName, String deviceName,
         NamespaceDeviceUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, deviceName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, namespaceName, deviceName, properties, Context.NONE);
     }
 
     /**
@@ -560,39 +483,14 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
             NamespaceDeviceInner.class, NamespaceDeviceInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a NamespaceDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of device definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceDeviceInner>, NamespaceDeviceInner> beginUpdate(String resourceGroupName,
         String namespaceName, String deviceName, NamespaceDeviceUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, namespaceName, deviceName, properties);
-        return this.client.<NamespaceDeviceInner, NamespaceDeviceInner>getLroResult(response,
-            NamespaceDeviceInner.class, NamespaceDeviceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, namespaceName, deviceName, properties, Context.NONE);
     }
 
-    /**
-     * Update a NamespaceDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of device definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceDeviceInner>, NamespaceDeviceInner> beginUpdate(String resourceGroupName,
         String namespaceName, String deviceName, NamespaceDeviceUpdate properties, Context context) {
@@ -621,41 +519,19 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a NamespaceDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return device definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceDeviceInner update(String resourceGroupName, String namespaceName, String deviceName,
         NamespaceDeviceUpdate properties) {
-        return beginUpdate(resourceGroupName, namespaceName, deviceName, properties).getFinalResult();
+        return update(resourceGroupName, namespaceName, deviceName, properties, Context.NONE);
     }
 
-    /**
-     * Update a NamespaceDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return device definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceDeviceInner update(String resourceGroupName, String namespaceName, String deviceName,
         NamespaceDeviceUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, namespaceName, deviceName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, namespaceName, deviceName, properties, context));
     }
 
     /**
@@ -691,8 +567,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String namespaceName, String deviceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, deviceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, namespaceName, deviceName, Context.NONE);
     }
 
     /**
@@ -733,36 +608,14 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a NamespaceDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String deviceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, namespaceName, deviceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, namespaceName, deviceName, Context.NONE);
     }
 
-    /**
-     * Delete a NamespaceDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String deviceName, Context context) {
@@ -787,35 +640,16 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a NamespaceDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String deviceName) {
-        beginDelete(resourceGroupName, namespaceName, deviceName).getFinalResult();
+        delete(resourceGroupName, namespaceName, deviceName, Context.NONE);
     }
 
-    /**
-     * Delete a NamespaceDevice.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String deviceName, Context context) {
-        beginDelete(resourceGroupName, namespaceName, deviceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, namespaceName, deviceName, context));
     }
 
     /**
@@ -870,12 +704,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NamespaceDeviceInner> listByResourceGroupSinglePage(String resourceGroupName,
         String namespaceName) {
-        final String accept = "application/json";
-        Response<NamespaceDeviceListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, namespaceName, Context.NONE);
     }
 
     /**
@@ -900,33 +729,13 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List NamespaceDevice resources by Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NamespaceDevice list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NamespaceDeviceInner> listByResourceGroup(String resourceGroupName, String namespaceName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, namespaceName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, namespaceName, Context.NONE);
     }
 
-    /**
-     * List NamespaceDevice resources by Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NamespaceDevice list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NamespaceDeviceInner> listByResourceGroup(String resourceGroupName, String namespaceName,
         Context context) {
@@ -974,11 +783,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> revokeWithResponse(String resourceGroupName, String namespaceName, String deviceName,
         DeviceCredentialsRevokeRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.revokeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, deviceName, contentType, accept, body,
-            Context.NONE);
+        return revokeWithResponse(resourceGroupName, namespaceName, deviceName, body, Context.NONE);
     }
 
     /**
@@ -1025,38 +830,14 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
             this.client.getContext());
     }
 
-    /**
-     * The revoke operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of request payload for revoking device credentials.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevoke(String resourceGroupName, String namespaceName,
         String deviceName, DeviceCredentialsRevokeRequest body) {
-        Response<BinaryData> response = revokeWithResponse(resourceGroupName, namespaceName, deviceName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRevoke(resourceGroupName, namespaceName, deviceName, body, Context.NONE);
     }
 
-    /**
-     * The revoke operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of request payload for revoking device credentials.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevoke(String resourceGroupName, String namespaceName,
         String deviceName, DeviceCredentialsRevokeRequest body, Context context) {
@@ -1083,39 +864,18 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The revoke operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revoke(String resourceGroupName, String namespaceName, String deviceName,
         DeviceCredentialsRevokeRequest body) {
-        beginRevoke(resourceGroupName, namespaceName, deviceName, body).getFinalResult();
+        revoke(resourceGroupName, namespaceName, deviceName, body, Context.NONE);
     }
 
-    /**
-     * The revoke operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revoke(String resourceGroupName, String namespaceName, String deviceName,
         DeviceCredentialsRevokeRequest body, Context context) {
-        beginRevoke(resourceGroupName, namespaceName, deviceName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRevoke(resourceGroupName, namespaceName, deviceName, body, context));
     }
 
     /**
@@ -1150,11 +910,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NamespaceDeviceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NamespaceDeviceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

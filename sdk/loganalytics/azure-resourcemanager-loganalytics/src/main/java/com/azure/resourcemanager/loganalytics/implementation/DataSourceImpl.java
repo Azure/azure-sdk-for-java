@@ -79,12 +79,7 @@ public final class DataSourceImpl implements DataSource, DataSource.Definition, 
     }
 
     public DataSource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataSources()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, dataSourceName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DataSource create(Context context) {
@@ -106,12 +101,7 @@ public final class DataSourceImpl implements DataSource, DataSource.Definition, 
     }
 
     public DataSource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataSources()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, dataSourceName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DataSource apply(Context context) {
@@ -126,17 +116,19 @@ public final class DataSourceImpl implements DataSource, DataSource.Definition, 
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.dataSourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dataSources");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataSources/{dataSourceName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataSources/{dataSourceName}",
+            "workspaceName");
+        this.dataSourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataSources/{dataSourceName}",
+            "dataSourceName");
     }
 
     public DataSource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataSources()
-            .getWithResponse(resourceGroupName, workspaceName, dataSourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DataSource refresh(Context context) {

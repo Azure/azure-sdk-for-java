@@ -89,10 +89,7 @@ public final class NodePoolImpl implements NodePool, NodePool.Definition, NodePo
     }
 
     public NodePool create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNodePools()
-            .createOrUpdate(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NodePool create(Context context) {
@@ -114,10 +111,7 @@ public final class NodePoolImpl implements NodePool, NodePool.Definition, NodePo
     }
 
     public NodePool apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNodePools()
-            .update(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NodePool apply(Context context) {
@@ -131,18 +125,19 @@ public final class NodePoolImpl implements NodePool, NodePool.Definition, NodePo
         com.azure.resourcemanager.redhatopenshifthcp.RedHatOpenShiftHostedControlPlanesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hcpOpenShiftClusterName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hcpOpenShiftClusters");
-        this.nodePoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "nodePools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/nodePools/{nodePoolName}",
+            "resourceGroupName");
+        this.hcpOpenShiftClusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/nodePools/{nodePoolName}",
+            "hcpOpenShiftClusterName");
+        this.nodePoolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/nodePools/{nodePoolName}",
+            "nodePoolName");
     }
 
     public NodePool refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNodePools()
-            .getWithResponse(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NodePool refresh(Context context) {

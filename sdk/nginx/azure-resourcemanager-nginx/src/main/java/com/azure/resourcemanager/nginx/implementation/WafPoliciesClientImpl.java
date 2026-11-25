@@ -222,12 +222,7 @@ public final class WafPoliciesClientImpl implements WafPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NginxDeploymentWafPolicyMetadataInner> listSinglePage(String resourceGroupName,
         String deploymentName) {
-        final String accept = "application/json";
-        Response<NginxDeploymentWafPolicyListResponse> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, deploymentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, deploymentName, Context.NONE);
     }
 
     /**
@@ -252,33 +247,13 @@ public final class WafPoliciesClientImpl implements WafPoliciesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Waf Policies of given Nginx deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment Waf Policy List Response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NginxDeploymentWafPolicyMetadataInner> list(String resourceGroupName, String deploymentName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, deploymentName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, deploymentName, Context.NONE);
     }
 
-    /**
-     * List Waf Policies of given Nginx deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment Waf Policy List Response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NginxDeploymentWafPolicyMetadataInner> list(String resourceGroupName, String deploymentName,
         Context context) {
@@ -326,18 +301,7 @@ public final class WafPoliciesClientImpl implements WafPoliciesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the Nginx Waf Policy of given Nginx deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param wafPolicyName The name of Waf Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx Waf Policy of given Nginx deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NginxDeploymentWafPolicyInner> getWithResponse(String resourceGroupName, String deploymentName,
         String wafPolicyName, Context context) {
@@ -346,17 +310,7 @@ public final class WafPoliciesClientImpl implements WafPoliciesClient {
             resourceGroupName, deploymentName, wafPolicyName, accept, context);
     }
 
-    /**
-     * Get the Nginx Waf Policy of given Nginx deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param wafPolicyName The name of Waf Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx Waf Policy of given Nginx deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxDeploymentWafPolicyInner get(String resourceGroupName, String deploymentName, String wafPolicyName) {
         return getWithResponse(resourceGroupName, deploymentName, wafPolicyName, Context.NONE).getValue();
@@ -398,10 +352,7 @@ public final class WafPoliciesClientImpl implements WafPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String deploymentName,
         String wafPolicyName, NginxDeploymentWafPolicyInner body) {
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentName, wafPolicyName, accept, body,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, deploymentName, wafPolicyName, body, Context.NONE);
     }
 
     /**
@@ -482,46 +433,20 @@ public final class WafPoliciesClientImpl implements WafPoliciesClient {
      * @return the {@link SyncPoller} for polling of nginx Deployment Waf Policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NginxDeploymentWafPolicyInner>, NginxDeploymentWafPolicyInner> beginCreate(
+    private SyncPoller<PollResult<NginxDeploymentWafPolicyInner>, NginxDeploymentWafPolicyInner> beginCreate(
         String resourceGroupName, String deploymentName, String wafPolicyName, NginxDeploymentWafPolicyInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, deploymentName, wafPolicyName, body);
-        return this.client.<NginxDeploymentWafPolicyInner, NginxDeploymentWafPolicyInner>getLroResult(response,
-            NginxDeploymentWafPolicyInner.class, NginxDeploymentWafPolicyInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, deploymentName, wafPolicyName, body, Context.NONE);
     }
 
-    /**
-     * Create or update the Nginx Waf Policy for given Nginx deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param wafPolicyName The name of Waf Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nginx Deployment Waf Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NginxDeploymentWafPolicyInner>, NginxDeploymentWafPolicyInner>
         beginCreate(String resourceGroupName, String deploymentName, String wafPolicyName) {
         final NginxDeploymentWafPolicyInner body = null;
-        Response<BinaryData> response = createWithResponse(resourceGroupName, deploymentName, wafPolicyName, body);
-        return this.client.<NginxDeploymentWafPolicyInner, NginxDeploymentWafPolicyInner>getLroResult(response,
-            NginxDeploymentWafPolicyInner.class, NginxDeploymentWafPolicyInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, deploymentName, wafPolicyName, body, Context.NONE);
     }
 
-    /**
-     * Create or update the Nginx Waf Policy for given Nginx deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param wafPolicyName The name of Waf Policy.
-     * @param body Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nginx Deployment Waf Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NginxDeploymentWafPolicyInner>, NginxDeploymentWafPolicyInner> beginCreate(
         String resourceGroupName, String deploymentName, String wafPolicyName, NginxDeploymentWafPolicyInner body,
@@ -570,40 +495,19 @@ public final class WafPoliciesClientImpl implements WafPoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update the Nginx Waf Policy for given Nginx deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param wafPolicyName The name of Waf Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment Waf Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxDeploymentWafPolicyInner create(String resourceGroupName, String deploymentName, String wafPolicyName) {
         final NginxDeploymentWafPolicyInner body = null;
-        return beginCreate(resourceGroupName, deploymentName, wafPolicyName, body).getFinalResult();
+        return create(resourceGroupName, deploymentName, wafPolicyName, body, Context.NONE);
     }
 
-    /**
-     * Create or update the Nginx Waf Policy for given Nginx deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param wafPolicyName The name of Waf Policy.
-     * @param body Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment Waf Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxDeploymentWafPolicyInner create(String resourceGroupName, String deploymentName, String wafPolicyName,
         NginxDeploymentWafPolicyInner body, Context context) {
-        return beginCreate(resourceGroupName, deploymentName, wafPolicyName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, deploymentName, wafPolicyName, body, context));
     }
 
     /**
@@ -640,8 +544,7 @@ public final class WafPoliciesClientImpl implements WafPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String deploymentName,
         String wafPolicyName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentName, wafPolicyName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, deploymentName, wafPolicyName, Context.NONE);
     }
 
     /**
@@ -683,36 +586,14 @@ public final class WafPoliciesClientImpl implements WafPoliciesClient {
             this.client.getContext());
     }
 
-    /**
-     * Reset the Nginx Waf Policy of given Nginx deployment to default.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param wafPolicyName The name of Waf Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName,
         String wafPolicyName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, deploymentName, wafPolicyName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, deploymentName, wafPolicyName, Context.NONE);
     }
 
-    /**
-     * Reset the Nginx Waf Policy of given Nginx deployment to default.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param wafPolicyName The name of Waf Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName,
         String wafPolicyName, Context context) {
@@ -737,35 +618,16 @@ public final class WafPoliciesClientImpl implements WafPoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reset the Nginx Waf Policy of given Nginx deployment to default.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param wafPolicyName The name of Waf Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentName, String wafPolicyName) {
-        beginDelete(resourceGroupName, deploymentName, wafPolicyName).getFinalResult();
+        delete(resourceGroupName, deploymentName, wafPolicyName, Context.NONE);
     }
 
-    /**
-     * Reset the Nginx Waf Policy of given Nginx deployment to default.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param wafPolicyName The name of Waf Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentName, String wafPolicyName, Context context) {
-        beginDelete(resourceGroupName, deploymentName, wafPolicyName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, deploymentName, wafPolicyName, context));
     }
 
     /**
@@ -798,11 +660,7 @@ public final class WafPoliciesClientImpl implements WafPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NginxDeploymentWafPolicyMetadataInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NginxDeploymentWafPolicyListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

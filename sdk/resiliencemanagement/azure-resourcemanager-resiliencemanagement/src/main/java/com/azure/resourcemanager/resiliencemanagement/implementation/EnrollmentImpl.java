@@ -60,10 +60,7 @@ public final class EnrollmentImpl implements Enrollment, Enrollment.Definition, 
     }
 
     public Enrollment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnrollments()
-            .createOrUpdate(resourceGroupName, usagePlanName, enrollmentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Enrollment create(Context context) {
@@ -85,10 +82,7 @@ public final class EnrollmentImpl implements Enrollment, Enrollment.Definition, 
     }
 
     public Enrollment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnrollments()
-            .createOrUpdate(resourceGroupName, usagePlanName, enrollmentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Enrollment apply(Context context) {
@@ -102,17 +96,19 @@ public final class EnrollmentImpl implements Enrollment, Enrollment.Definition, 
         com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.usagePlanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "usagePlans");
-        this.enrollmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "enrollments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}/enrollments/{enrollmentName}",
+            "resourceGroupName");
+        this.usagePlanName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}/enrollments/{enrollmentName}",
+            "usagePlanName");
+        this.enrollmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}/enrollments/{enrollmentName}",
+            "enrollmentName");
     }
 
     public Enrollment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnrollments()
-            .getWithResponse(resourceGroupName, usagePlanName, enrollmentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Enrollment refresh(Context context) {

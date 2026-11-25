@@ -111,19 +111,7 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
         return triggerWithResponseAsync(vaultName, resourceGroupName, jobName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Cancels a job. This is an asynchronous operation. To know the status of the cancellation, call
-     * GetCancelOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the job whose details are to be fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> triggerWithResponse(String vaultName, String resourceGroupName, String jobName,
         Context context) {
@@ -131,17 +119,7 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
             this.client.getSubscriptionId(), resourceGroupName, vaultName, jobName, context);
     }
 
-    /**
-     * Cancels a job. This is an asynchronous operation. To know the status of the cancellation, call
-     * GetCancelOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the job whose details are to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void trigger(String vaultName, String resourceGroupName, String jobName) {
         triggerWithResponse(vaultName, resourceGroupName, jobName, Context.NONE);

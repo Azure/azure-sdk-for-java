@@ -220,19 +220,7 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get detailed information about OpenAI integration rules for a given Elastic monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param integrationName OpenAI Integration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information about OpenAI integration rules for a given Elastic monitor resource along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OpenAIIntegrationRPModelInner> getWithResponse(String resourceGroupName, String monitorName,
         String integrationName, Context context) {
@@ -241,17 +229,7 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
             resourceGroupName, monitorName, integrationName, accept, context);
     }
 
-    /**
-     * Get detailed information about OpenAI integration rules for a given Elastic monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param integrationName OpenAI Integration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information about OpenAI integration rules for a given Elastic monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenAIIntegrationRPModelInner get(String resourceGroupName, String monitorName, String integrationName) {
         return getWithResponse(resourceGroupName, monitorName, integrationName, Context.NONE).getValue();
@@ -302,20 +280,7 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update an OpenAI integration rule for a given Elastic monitor resource, enabling advanced AI-driven
-     * observability and monitoring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param integrationName The integrationName parameter.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capture properties of Open AI resource Integration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OpenAIIntegrationRPModelInner> createOrUpdateWithResponse(String resourceGroupName,
         String monitorName, String integrationName, OpenAIIntegrationRPModelInner body, Context context) {
@@ -324,18 +289,7 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, integrationName, accept, body, context);
     }
 
-    /**
-     * Create or update an OpenAI integration rule for a given Elastic monitor resource, enabling advanced AI-driven
-     * observability and monitoring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param integrationName The integrationName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capture properties of Open AI resource Integration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenAIIntegrationRPModelInner createOrUpdate(String resourceGroupName, String monitorName,
         String integrationName) {
@@ -383,19 +337,7 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete an OpenAI integration rule for a given Elastic monitor resource, removing AI-driven observability and
-     * monitoring capabilities.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param integrationName OpenAI Integration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String monitorName, String integrationName,
         Context context) {
@@ -403,17 +345,7 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, integrationName, context);
     }
 
-    /**
-     * Delete an OpenAI integration rule for a given Elastic monitor resource, removing AI-driven observability and
-     * monitoring capabilities.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param integrationName OpenAI Integration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String monitorName, String integrationName) {
         deleteWithResponse(resourceGroupName, monitorName, integrationName, Context.NONE);
@@ -472,12 +404,7 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OpenAIIntegrationRPModelInner> listSinglePage(String resourceGroupName, String monitorName) {
-        final String accept = "application/json";
-        Response<OpenAIIntegrationRPModelListResponse> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, monitorName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, monitorName, Context.NONE);
     }
 
     /**
@@ -503,35 +430,13 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all OpenAI integration rules for a given Elastic monitor resource, helping you manage AI-driven
-     * observability and monitoring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OpenAIIntegrationRPModelInner> list(String resourceGroupName, String monitorName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, monitorName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, monitorName, Context.NONE);
     }
 
-    /**
-     * List all OpenAI integration rules for a given Elastic monitor resource, helping you manage AI-driven
-     * observability and monitoring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OpenAIIntegrationRPModelInner> list(String resourceGroupName, String monitorName,
         Context context) {
@@ -582,20 +487,7 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
-     * performance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param integrationName OpenAI Integration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
-     * performance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OpenAIIntegrationStatusResponseInner> getStatusWithResponse(String resourceGroupName,
         String monitorName, String integrationName, Context context) {
@@ -604,19 +496,7 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, integrationName, accept, context);
     }
 
-    /**
-     * Get the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
-     * performance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param integrationName OpenAI Integration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
-     * performance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenAIIntegrationStatusResponseInner getStatus(String resourceGroupName, String monitorName,
         String integrationName) {
@@ -652,11 +532,7 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OpenAIIntegrationRPModelInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OpenAIIntegrationRPModelListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

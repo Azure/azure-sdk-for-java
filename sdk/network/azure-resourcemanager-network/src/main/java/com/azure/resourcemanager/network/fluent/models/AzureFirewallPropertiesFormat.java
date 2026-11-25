@@ -105,6 +105,16 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
      */
     private AfcConfiguration afcConfiguration;
 
+    /*
+     * Indicates whether the AI security add-on is enabled for the Azure Firewall.
+     */
+    private Boolean aiSecurityAddOn;
+
+    /*
+     * The TCP idle timeout for the Azure Firewall, in minutes. Valid values range from 4 to 64, inclusive.
+     */
+    private Integer tcpIdleTimeoutInMinutes;
+
     /**
      * Creates an instance of AzureFirewallPropertiesFormat class.
      */
@@ -386,6 +396,48 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
     }
 
     /**
+     * Get the aiSecurityAddOn property: Indicates whether the AI security add-on is enabled for the Azure Firewall.
+     * 
+     * @return the aiSecurityAddOn value.
+     */
+    public Boolean aiSecurityAddOn() {
+        return this.aiSecurityAddOn;
+    }
+
+    /**
+     * Set the aiSecurityAddOn property: Indicates whether the AI security add-on is enabled for the Azure Firewall.
+     * 
+     * @param aiSecurityAddOn the aiSecurityAddOn value to set.
+     * @return the AzureFirewallPropertiesFormat object itself.
+     */
+    public AzureFirewallPropertiesFormat withAiSecurityAddOn(Boolean aiSecurityAddOn) {
+        this.aiSecurityAddOn = aiSecurityAddOn;
+        return this;
+    }
+
+    /**
+     * Get the tcpIdleTimeoutInMinutes property: The TCP idle timeout for the Azure Firewall, in minutes. Valid values
+     * range from 4 to 64, inclusive.
+     * 
+     * @return the tcpIdleTimeoutInMinutes value.
+     */
+    public Integer tcpIdleTimeoutInMinutes() {
+        return this.tcpIdleTimeoutInMinutes;
+    }
+
+    /**
+     * Set the tcpIdleTimeoutInMinutes property: The TCP idle timeout for the Azure Firewall, in minutes. Valid values
+     * range from 4 to 64, inclusive.
+     * 
+     * @param tcpIdleTimeoutInMinutes the tcpIdleTimeoutInMinutes value to set.
+     * @return the AzureFirewallPropertiesFormat object itself.
+     */
+    public AzureFirewallPropertiesFormat withTcpIdleTimeoutInMinutes(Integer tcpIdleTimeoutInMinutes) {
+        this.tcpIdleTimeoutInMinutes = tcpIdleTimeoutInMinutes;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -447,6 +499,8 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
         jsonWriter.writeMapField("additionalProperties", this.additionalProperties,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("autoscaleConfiguration", this.autoscaleConfiguration);
+        jsonWriter.writeBooleanField("aiSecurityAddOn", this.aiSecurityAddOn);
+        jsonWriter.writeNumberField("tcpIdleTimeoutInMinutes", this.tcpIdleTimeoutInMinutes);
         return jsonWriter.writeEndObject();
     }
 
@@ -511,6 +565,12 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
                         = AzureFirewallAutoscaleConfiguration.fromJson(reader);
                 } else if ("afcConfiguration".equals(fieldName)) {
                     deserializedAzureFirewallPropertiesFormat.afcConfiguration = AfcConfiguration.fromJson(reader);
+                } else if ("aiSecurityAddOn".equals(fieldName)) {
+                    deserializedAzureFirewallPropertiesFormat.aiSecurityAddOn
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("tcpIdleTimeoutInMinutes".equals(fieldName)) {
+                    deserializedAzureFirewallPropertiesFormat.tcpIdleTimeoutInMinutes
+                        = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

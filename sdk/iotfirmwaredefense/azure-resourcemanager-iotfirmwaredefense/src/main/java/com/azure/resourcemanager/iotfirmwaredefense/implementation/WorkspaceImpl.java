@@ -92,11 +92,7 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     }
 
     public Workspace create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaces()
-            .createWithResponse(resourceGroupName, workspaceName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Workspace create(Context context) {
@@ -119,11 +115,7 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     }
 
     public Workspace apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaces()
-            .updateWithResponse(resourceGroupName, workspaceName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Workspace apply(Context context) {
@@ -138,16 +130,16 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}",
+            "workspaceName");
     }
 
     public Workspace refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaces()
-            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Workspace refresh(Context context) {

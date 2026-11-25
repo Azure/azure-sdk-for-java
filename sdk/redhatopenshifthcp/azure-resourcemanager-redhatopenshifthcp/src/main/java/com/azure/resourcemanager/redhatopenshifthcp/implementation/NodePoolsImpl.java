@@ -45,7 +45,7 @@ public final class NodePoolsImpl implements NodePools {
     }
 
     public void delete(String resourceGroupName, String hcpOpenShiftClusterName, String nodePoolName) {
-        this.serviceClient().delete(resourceGroupName, hcpOpenShiftClusterName, nodePoolName);
+        this.delete(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String hcpOpenShiftClusterName, String nodePoolName, Context context) {
@@ -53,9 +53,7 @@ public final class NodePoolsImpl implements NodePools {
     }
 
     public PagedIterable<NodePool> listByParent(String resourceGroupName, String hcpOpenShiftClusterName) {
-        PagedIterable<NodePoolInner> inner
-            = this.serviceClient().listByParent(resourceGroupName, hcpOpenShiftClusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NodePoolImpl(inner1, this.manager()));
+        return this.listByParent(resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
     }
 
     public PagedIterable<NodePool> listByParent(String resourceGroupName, String hcpOpenShiftClusterName,
@@ -66,78 +64,36 @@ public final class NodePoolsImpl implements NodePools {
     }
 
     public NodePool getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String hcpOpenShiftClusterName = ResourceManagerUtils.getValueFromIdByName(id, "hcpOpenShiftClusters");
-        if (hcpOpenShiftClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hcpOpenShiftClusters'.", id)));
-        }
-        String nodePoolName = ResourceManagerUtils.getValueFromIdByName(id, "nodePools");
-        if (nodePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nodePools'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<NodePool> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String hcpOpenShiftClusterName = ResourceManagerUtils.getValueFromIdByName(id, "hcpOpenShiftClusters");
-        if (hcpOpenShiftClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hcpOpenShiftClusters'.", id)));
-        }
-        String nodePoolName = ResourceManagerUtils.getValueFromIdByName(id, "nodePools");
-        if (nodePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nodePools'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/nodePools/{nodePoolName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String hcpOpenShiftClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/nodePools/{nodePoolName}",
+            "hcpOpenShiftClusterName", "hcpOpenShiftClusters", LOGGER);
+        String nodePoolName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/nodePools/{nodePoolName}",
+            "nodePoolName", "nodePools", LOGGER);
         return this.getWithResponse(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String hcpOpenShiftClusterName = ResourceManagerUtils.getValueFromIdByName(id, "hcpOpenShiftClusters");
-        if (hcpOpenShiftClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hcpOpenShiftClusters'.", id)));
-        }
-        String nodePoolName = ResourceManagerUtils.getValueFromIdByName(id, "nodePools");
-        if (nodePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nodePools'.", id)));
-        }
-        this.delete(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String hcpOpenShiftClusterName = ResourceManagerUtils.getValueFromIdByName(id, "hcpOpenShiftClusters");
-        if (hcpOpenShiftClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hcpOpenShiftClusters'.", id)));
-        }
-        String nodePoolName = ResourceManagerUtils.getValueFromIdByName(id, "nodePools");
-        if (nodePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nodePools'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/nodePools/{nodePoolName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String hcpOpenShiftClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/nodePools/{nodePoolName}",
+            "hcpOpenShiftClusterName", "hcpOpenShiftClusters", LOGGER);
+        String nodePoolName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/nodePools/{nodePoolName}",
+            "nodePoolName", "nodePools", LOGGER);
         this.delete(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, context);
     }
 

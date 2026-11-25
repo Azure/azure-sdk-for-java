@@ -82,11 +82,7 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplications()
-            .createWithResponse(resourceGroupName, accountName, applicationName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Application create(Context context) {
@@ -108,11 +104,7 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplications()
-            .updateWithResponse(resourceGroupName, accountName, applicationName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Application apply(Context context) {
@@ -126,17 +118,19 @@ public final class ApplicationImpl implements Application, Application.Definitio
     ApplicationImpl(ApplicationInner innerObject, com.azure.resourcemanager.batch.BatchManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "batchAccounts");
-        this.applicationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applications");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}",
+            "accountName");
+        this.applicationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}",
+            "applicationName");
     }
 
     public Application refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplications()
-            .getWithResponse(resourceGroupName, accountName, applicationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Application refresh(Context context) {

@@ -280,18 +280,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information of a configuration for coordinator and nodes.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param configurationName The name of the cluster configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information of a configuration for coordinator and nodes along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationInner> getWithResponse(String resourceGroupName, String clusterName,
         String configurationName, Context context) {
@@ -300,17 +289,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             resourceGroupName, clusterName, configurationName, accept, context);
     }
 
-    /**
-     * Gets information of a configuration for coordinator and nodes.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param configurationName The name of the cluster configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information of a configuration for coordinator and nodes.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationInner get(String resourceGroupName, String clusterName, String configurationName) {
         return getWithResponse(resourceGroupName, clusterName, configurationName, Context.NONE).getValue();
@@ -367,12 +346,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigurationInner> listByClusterSinglePage(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        Response<ClusterConfigurationListResult> res
-            = service.listByClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClusterSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -397,33 +371,13 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all the configurations of a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pagination result of configurations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationInner> listByCluster(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listByClusterSinglePage(resourceGroupName, clusterName),
-            nextLink -> listByClusterNextSinglePage(nextLink));
+        return listByCluster(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * List all the configurations of a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pagination result of configurations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationInner> listByCluster(String resourceGroupName, String clusterName,
         Context context) {
@@ -487,12 +441,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ServerConfigurationInner> listByServerSinglePage(String resourceGroupName, String clusterName,
         String serverName) {
-        final String accept = "application/json";
-        Response<ServerConfigurationListResult> res
-            = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, serverName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServerSinglePage(resourceGroupName, clusterName, serverName, Context.NONE);
     }
 
     /**
@@ -518,36 +467,14 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all the configurations of a server in cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ServerConfiguration list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerConfigurationInner> listByServer(String resourceGroupName, String clusterName,
         String serverName) {
-        return new PagedIterable<>(() -> listByServerSinglePage(resourceGroupName, clusterName, serverName),
-            nextLink -> listByServerNextSinglePage(nextLink));
+        return listByServer(resourceGroupName, clusterName, serverName, Context.NONE);
     }
 
-    /**
-     * List all the configurations of a server in cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ServerConfiguration list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerConfigurationInner> listByServer(String resourceGroupName, String clusterName,
         String serverName, Context context) {
@@ -595,18 +522,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information of a configuration for worker nodes.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param configurationName The name of the cluster configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information of a configuration for worker nodes along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerConfigurationInner> getNodeWithResponse(String resourceGroupName, String clusterName,
         String configurationName, Context context) {
@@ -615,17 +531,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, configurationName, accept, context);
     }
 
-    /**
-     * Gets information of a configuration for worker nodes.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param configurationName The name of the cluster configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information of a configuration for worker nodes.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerConfigurationInner getNode(String resourceGroupName, String clusterName, String configurationName) {
         return getNodeWithResponse(resourceGroupName, clusterName, configurationName, Context.NONE).getValue();
@@ -670,11 +576,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateOnNodeWithResponse(String resourceGroupName, String clusterName,
         String configurationName, ServerConfigurationInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateOnNodeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, configurationName, contentType, accept,
-            parameters, Context.NONE);
+        return updateOnNodeWithResponse(resourceGroupName, clusterName, configurationName, parameters, Context.NONE);
     }
 
     /**
@@ -722,40 +624,14 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Updates configuration of worker nodes in a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param configurationName The name of the cluster configuration.
-     * @param parameters The required parameters for updating a cluster configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerConfigurationInner>, ServerConfigurationInner> beginUpdateOnNode(
         String resourceGroupName, String clusterName, String configurationName, ServerConfigurationInner parameters) {
-        Response<BinaryData> response
-            = updateOnNodeWithResponse(resourceGroupName, clusterName, configurationName, parameters);
-        return this.client.<ServerConfigurationInner, ServerConfigurationInner>getLroResult(response,
-            ServerConfigurationInner.class, ServerConfigurationInner.class, Context.NONE);
+        return beginUpdateOnNode(resourceGroupName, clusterName, configurationName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates configuration of worker nodes in a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param configurationName The name of the cluster configuration.
-     * @param parameters The required parameters for updating a cluster configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerConfigurationInner>, ServerConfigurationInner> beginUpdateOnNode(
         String resourceGroupName, String clusterName, String configurationName, ServerConfigurationInner parameters,
@@ -785,42 +661,19 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates configuration of worker nodes in a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param configurationName The name of the cluster configuration.
-     * @param parameters The required parameters for updating a cluster configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerConfigurationInner updateOnNode(String resourceGroupName, String clusterName, String configurationName,
         ServerConfigurationInner parameters) {
-        return beginUpdateOnNode(resourceGroupName, clusterName, configurationName, parameters).getFinalResult();
+        return updateOnNode(resourceGroupName, clusterName, configurationName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates configuration of worker nodes in a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param configurationName The name of the cluster configuration.
-     * @param parameters The required parameters for updating a cluster configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerConfigurationInner updateOnNode(String resourceGroupName, String clusterName, String configurationName,
         ServerConfigurationInner parameters, Context context) {
-        return beginUpdateOnNode(resourceGroupName, clusterName, configurationName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdateOnNode(resourceGroupName, clusterName, configurationName, parameters, context));
     }
 
     /**
@@ -863,18 +716,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information of a configuration for coordinator.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param configurationName The name of the cluster configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information of a configuration for coordinator along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerConfigurationInner> getCoordinatorWithResponse(String resourceGroupName, String clusterName,
         String configurationName, Context context) {
@@ -883,17 +725,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, configurationName, accept, context);
     }
 
-    /**
-     * Gets information of a configuration for coordinator.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param configurationName The name of the cluster configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information of a configuration for coordinator.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerConfigurationInner getCoordinator(String resourceGroupName, String clusterName,
         String configurationName) {
@@ -939,11 +771,8 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateOnCoordinatorWithResponse(String resourceGroupName, String clusterName,
         String configurationName, ServerConfigurationInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateOnCoordinatorSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, configurationName, contentType, accept,
-            parameters, Context.NONE);
+        return updateOnCoordinatorWithResponse(resourceGroupName, clusterName, configurationName, parameters,
+            Context.NONE);
     }
 
     /**
@@ -991,40 +820,14 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Updates configuration of coordinator in a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param configurationName The name of the cluster configuration.
-     * @param parameters The required parameters for updating a cluster configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerConfigurationInner>, ServerConfigurationInner> beginUpdateOnCoordinator(
         String resourceGroupName, String clusterName, String configurationName, ServerConfigurationInner parameters) {
-        Response<BinaryData> response
-            = updateOnCoordinatorWithResponse(resourceGroupName, clusterName, configurationName, parameters);
-        return this.client.<ServerConfigurationInner, ServerConfigurationInner>getLroResult(response,
-            ServerConfigurationInner.class, ServerConfigurationInner.class, Context.NONE);
+        return beginUpdateOnCoordinator(resourceGroupName, clusterName, configurationName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates configuration of coordinator in a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param configurationName The name of the cluster configuration.
-     * @param parameters The required parameters for updating a cluster configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerConfigurationInner>, ServerConfigurationInner> beginUpdateOnCoordinator(
         String resourceGroupName, String clusterName, String configurationName, ServerConfigurationInner parameters,
@@ -1054,42 +857,19 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates configuration of coordinator in a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param configurationName The name of the cluster configuration.
-     * @param parameters The required parameters for updating a cluster configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerConfigurationInner updateOnCoordinator(String resourceGroupName, String clusterName,
         String configurationName, ServerConfigurationInner parameters) {
-        return beginUpdateOnCoordinator(resourceGroupName, clusterName, configurationName, parameters).getFinalResult();
+        return updateOnCoordinator(resourceGroupName, clusterName, configurationName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates configuration of coordinator in a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param configurationName The name of the cluster configuration.
-     * @param parameters The required parameters for updating a cluster configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerConfigurationInner updateOnCoordinator(String resourceGroupName, String clusterName,
         String configurationName, ServerConfigurationInner parameters, Context context) {
-        return beginUpdateOnCoordinator(resourceGroupName, clusterName, configurationName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdateOnCoordinator(resourceGroupName, clusterName, configurationName, parameters, context));
     }
 
     /**
@@ -1123,11 +903,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigurationInner> listByClusterNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ClusterConfigurationListResult> res
-            = service.listByClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1180,11 +956,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ServerConfigurationInner> listByServerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ServerConfigurationListResult> res
-            = service.listByServerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

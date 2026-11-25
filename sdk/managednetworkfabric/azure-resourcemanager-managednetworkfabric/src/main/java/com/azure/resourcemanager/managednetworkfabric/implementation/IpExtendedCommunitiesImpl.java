@@ -46,7 +46,7 @@ public final class IpExtendedCommunitiesImpl implements IpExtendedCommunities {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String ipExtendedCommunityName) {
-        this.serviceClient().delete(resourceGroupName, ipExtendedCommunityName);
+        this.delete(resourceGroupName, ipExtendedCommunityName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String ipExtendedCommunityName, Context context) {
@@ -54,8 +54,7 @@ public final class IpExtendedCommunitiesImpl implements IpExtendedCommunities {
     }
 
     public PagedIterable<IpExtendedCommunity> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<IpExtendedCommunityInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new IpExtendedCommunityImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<IpExtendedCommunity> listByResourceGroup(String resourceGroupName, Context context) {
@@ -65,8 +64,7 @@ public final class IpExtendedCommunitiesImpl implements IpExtendedCommunities {
     }
 
     public PagedIterable<IpExtendedCommunity> list() {
-        PagedIterable<IpExtendedCommunityInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new IpExtendedCommunityImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<IpExtendedCommunity> list(Context context) {
@@ -75,58 +73,30 @@ public final class IpExtendedCommunitiesImpl implements IpExtendedCommunities {
     }
 
     public IpExtendedCommunity getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String ipExtendedCommunityName = ResourceManagerUtils.getValueFromIdByName(id, "ipExtendedCommunities");
-        if (ipExtendedCommunityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'ipExtendedCommunities'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, ipExtendedCommunityName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<IpExtendedCommunity> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String ipExtendedCommunityName = ResourceManagerUtils.getValueFromIdByName(id, "ipExtendedCommunities");
-        if (ipExtendedCommunityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'ipExtendedCommunities'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String ipExtendedCommunityName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}",
+            "ipExtendedCommunityName", "ipExtendedCommunities", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, ipExtendedCommunityName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String ipExtendedCommunityName = ResourceManagerUtils.getValueFromIdByName(id, "ipExtendedCommunities");
-        if (ipExtendedCommunityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'ipExtendedCommunities'.", id)));
-        }
-        this.delete(resourceGroupName, ipExtendedCommunityName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String ipExtendedCommunityName = ResourceManagerUtils.getValueFromIdByName(id, "ipExtendedCommunities");
-        if (ipExtendedCommunityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'ipExtendedCommunities'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String ipExtendedCommunityName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}",
+            "ipExtendedCommunityName", "ipExtendedCommunities", LOGGER);
         this.delete(resourceGroupName, ipExtendedCommunityName, context);
     }
 

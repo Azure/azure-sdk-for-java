@@ -104,11 +104,7 @@ public final class BucketImpl implements Bucket, Bucket.Definition, Bucket.Updat
     }
 
     public Bucket create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBuckets()
-            .createOrUpdate(resourceGroupName, accountName, poolName, volumeName, bucketName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Bucket create(Context context) {
@@ -131,10 +127,7 @@ public final class BucketImpl implements Bucket, Bucket.Definition, Bucket.Updat
     }
 
     public Bucket apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBuckets()
-            .update(resourceGroupName, accountName, poolName, volumeName, bucketName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Bucket apply(Context context) {
@@ -147,19 +140,25 @@ public final class BucketImpl implements Bucket, Bucket.Definition, Bucket.Updat
     BucketImpl(BucketInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
-        this.poolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capacityPools");
-        this.volumeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "volumes");
-        this.bucketName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "buckets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}",
+            "accountName");
+        this.poolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}",
+            "poolName");
+        this.volumeName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}",
+            "volumeName");
+        this.bucketName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}",
+            "bucketName");
     }
 
     public Bucket refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBuckets()
-            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, bucketName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Bucket refresh(Context context) {

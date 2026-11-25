@@ -54,10 +54,7 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsImpl
     }
 
     public PagedIterable<DeploymentStacksWhatIfResult> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<DeploymentStacksWhatIfResultInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new DeploymentStacksWhatIfResultImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<DeploymentStacksWhatIfResult> listByResourceGroup(String resourceGroupName, Context context) {
@@ -84,13 +81,7 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsImpl
     }
 
     public DeploymentStacksWhatIfResult whatIf(String resourceGroupName, String deploymentStacksWhatIfResultName) {
-        DeploymentStacksWhatIfResultInner inner
-            = this.serviceClient().whatIf(resourceGroupName, deploymentStacksWhatIfResultName);
-        if (inner != null) {
-            return new DeploymentStacksWhatIfResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.whatIf(resourceGroupName, deploymentStacksWhatIfResultName, Context.NONE);
     }
 
     public DeploymentStacksWhatIfResult whatIf(String resourceGroupName, String deploymentStacksWhatIfResultName,
@@ -105,56 +96,28 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsImpl
     }
 
     public DeploymentStacksWhatIfResult getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentStacksWhatIfResultName
-            = ResourceManagerUtils.getValueFromIdByName(id, "deploymentStacksWhatIfResults");
-        if (deploymentStacksWhatIfResultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'deploymentStacksWhatIfResults'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, deploymentStacksWhatIfResultName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DeploymentStacksWhatIfResult> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentStacksWhatIfResultName
-            = ResourceManagerUtils.getValueFromIdByName(id, "deploymentStacksWhatIfResults");
-        if (deploymentStacksWhatIfResultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'deploymentStacksWhatIfResults'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String deploymentStacksWhatIfResultName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+            "deploymentStacksWhatIfResultName", "deploymentStacksWhatIfResults", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, deploymentStacksWhatIfResultName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentStacksWhatIfResultName
-            = ResourceManagerUtils.getValueFromIdByName(id, "deploymentStacksWhatIfResults");
-        if (deploymentStacksWhatIfResultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'deploymentStacksWhatIfResults'.", id)));
-        }
         UnmanageActionResourceMode localUnmanageActionResources = null;
         UnmanageActionResourceGroupMode localUnmanageActionResourceGroups = null;
         UnmanageActionManagementGroupMode localUnmanageActionManagementGroups = null;
         ResourcesWithoutDeleteSupportAction localUnmanageActionResourcesWithoutDeleteSupport = null;
         Boolean localBypassStackOutOfSyncError = null;
-        this.deleteWithResponse(resourceGroupName, deploymentStacksWhatIfResultName, localUnmanageActionResources,
-            localUnmanageActionResourceGroups, localUnmanageActionManagementGroups,
-            localUnmanageActionResourcesWithoutDeleteSupport, localBypassStackOutOfSyncError, Context.NONE);
+        this.deleteByIdWithResponse(id, localUnmanageActionResources, localUnmanageActionResourceGroups,
+            localUnmanageActionManagementGroups, localUnmanageActionResourcesWithoutDeleteSupport,
+            localBypassStackOutOfSyncError, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, UnmanageActionResourceMode unmanageActionResources,
@@ -162,17 +125,12 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsImpl
         UnmanageActionManagementGroupMode unmanageActionManagementGroups,
         ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentStacksWhatIfResultName
-            = ResourceManagerUtils.getValueFromIdByName(id, "deploymentStacksWhatIfResults");
-        if (deploymentStacksWhatIfResultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'deploymentStacksWhatIfResults'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String deploymentStacksWhatIfResultName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}",
+            "deploymentStacksWhatIfResultName", "deploymentStacksWhatIfResults", LOGGER);
         return this.deleteWithResponse(resourceGroupName, deploymentStacksWhatIfResultName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
             bypassStackOutOfSyncError, context);

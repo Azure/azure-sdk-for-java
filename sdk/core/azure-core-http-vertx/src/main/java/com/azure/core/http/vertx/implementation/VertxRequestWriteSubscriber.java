@@ -222,7 +222,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
         if (finishingWriteSize > 0 && progressReporter != null) {
             progressReporter.reportProgress(finishingWriteSize);
         }
-        end.get().onFailure(promise::fail);
+        end.get().onFailure(promise::tryFail);
     }
 
     private enum State {

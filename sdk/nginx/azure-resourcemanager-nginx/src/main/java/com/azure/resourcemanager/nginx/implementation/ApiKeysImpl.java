@@ -50,14 +50,11 @@ public final class ApiKeysImpl implements ApiKeys {
     }
 
     public void delete(String resourceGroupName, String deploymentName, String apiKeyName) {
-        this.serviceClient().delete(resourceGroupName, deploymentName, apiKeyName);
+        this.deleteWithResponse(resourceGroupName, deploymentName, apiKeyName, Context.NONE);
     }
 
     public PagedIterable<NginxDeploymentApiKeyResponse> list(String resourceGroupName, String deploymentName) {
-        PagedIterable<NginxDeploymentApiKeyResponseInner> inner
-            = this.serviceClient().list(resourceGroupName, deploymentName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new NginxDeploymentApiKeyResponseImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, deploymentName, Context.NONE);
     }
 
     public PagedIterable<NginxDeploymentApiKeyResponse> list(String resourceGroupName, String deploymentName,
@@ -69,78 +66,36 @@ public final class ApiKeysImpl implements ApiKeys {
     }
 
     public NginxDeploymentApiKeyResponse getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "nginxDeployments");
-        if (deploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
-        }
-        String apiKeyName = ResourceManagerUtils.getValueFromIdByName(id, "apiKeys");
-        if (apiKeyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'apiKeys'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, deploymentName, apiKeyName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<NginxDeploymentApiKeyResponse> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "nginxDeployments");
-        if (deploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
-        }
-        String apiKeyName = ResourceManagerUtils.getValueFromIdByName(id, "apiKeys");
-        if (apiKeyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'apiKeys'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/apiKeys/{apiKeyName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String deploymentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/apiKeys/{apiKeyName}",
+            "deploymentName", "nginxDeployments", LOGGER);
+        String apiKeyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/apiKeys/{apiKeyName}",
+            "apiKeyName", "apiKeys", LOGGER);
         return this.getWithResponse(resourceGroupName, deploymentName, apiKeyName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "nginxDeployments");
-        if (deploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
-        }
-        String apiKeyName = ResourceManagerUtils.getValueFromIdByName(id, "apiKeys");
-        if (apiKeyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'apiKeys'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, deploymentName, apiKeyName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "nginxDeployments");
-        if (deploymentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
-        }
-        String apiKeyName = ResourceManagerUtils.getValueFromIdByName(id, "apiKeys");
-        if (apiKeyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'apiKeys'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/apiKeys/{apiKeyName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String deploymentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/apiKeys/{apiKeyName}",
+            "deploymentName", "nginxDeployments", LOGGER);
+        String apiKeyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/apiKeys/{apiKeyName}",
+            "apiKeyName", "apiKeys", LOGGER);
         return this.deleteWithResponse(resourceGroupName, deploymentName, apiKeyName, context);
     }
 

@@ -202,18 +202,7 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of the fabric agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The fabric name.
-     * @param fabricAgentName The fabric agent name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the fabric agent along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FabricAgentModelInner> getWithResponse(String resourceGroupName, String fabricName,
         String fabricAgentName, Context context) {
@@ -222,17 +211,7 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
             resourceGroupName, fabricName, fabricAgentName, accept, context);
     }
 
-    /**
-     * Gets the details of the fabric agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The fabric name.
-     * @param fabricAgentName The fabric agent name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the fabric agent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricAgentModelInner get(String resourceGroupName, String fabricName, String fabricAgentName) {
         return getWithResponse(resourceGroupName, fabricName, fabricAgentName, Context.NONE).getValue();
@@ -277,11 +256,7 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String fabricName, String fabricAgentName,
         FabricAgentModelInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, fabricName, fabricAgentName, contentType, accept,
-            resource, Context.NONE);
+        return createWithResponse(resourceGroupName, fabricName, fabricAgentName, resource, Context.NONE);
     }
 
     /**
@@ -329,39 +304,14 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Creates the fabric agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The fabric name.
-     * @param fabricAgentName The fabric agent name.
-     * @param resource Fabric agent model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of fabric agent model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricAgentModelInner>, FabricAgentModelInner> beginCreate(String resourceGroupName,
         String fabricName, String fabricAgentName, FabricAgentModelInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, fabricName, fabricAgentName, resource);
-        return this.client.<FabricAgentModelInner, FabricAgentModelInner>getLroResult(response,
-            FabricAgentModelInner.class, FabricAgentModelInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, fabricName, fabricAgentName, resource, Context.NONE);
     }
 
-    /**
-     * Creates the fabric agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The fabric name.
-     * @param fabricAgentName The fabric agent name.
-     * @param resource Fabric agent model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of fabric agent model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricAgentModelInner>, FabricAgentModelInner> beginCreate(String resourceGroupName,
         String fabricName, String fabricAgentName, FabricAgentModelInner resource, Context context) {
@@ -390,41 +340,19 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates the fabric agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The fabric name.
-     * @param fabricAgentName The fabric agent name.
-     * @param resource Fabric agent model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fabric agent model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricAgentModelInner create(String resourceGroupName, String fabricName, String fabricAgentName,
         FabricAgentModelInner resource) {
-        return beginCreate(resourceGroupName, fabricName, fabricAgentName, resource).getFinalResult();
+        return create(resourceGroupName, fabricName, fabricAgentName, resource, Context.NONE);
     }
 
-    /**
-     * Creates the fabric agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The fabric name.
-     * @param fabricAgentName The fabric agent name.
-     * @param resource Fabric agent model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fabric agent model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricAgentModelInner create(String resourceGroupName, String fabricName, String fabricAgentName,
         FabricAgentModelInner resource, Context context) {
-        return beginCreate(resourceGroupName, fabricName, fabricAgentName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, fabricName, fabricAgentName, resource, context));
     }
 
     /**
@@ -461,8 +389,7 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String fabricName,
         String fabricAgentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, fabricName, fabricAgentName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, fabricName, fabricAgentName, Context.NONE);
     }
 
     /**
@@ -503,36 +430,14 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes fabric agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The fabric name.
-     * @param fabricAgentName The fabric agent name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fabricName,
         String fabricAgentName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, fabricName, fabricAgentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, fabricName, fabricAgentName, Context.NONE);
     }
 
-    /**
-     * Deletes fabric agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The fabric name.
-     * @param fabricAgentName The fabric agent name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fabricName,
         String fabricAgentName, Context context) {
@@ -557,35 +462,16 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes fabric agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The fabric name.
-     * @param fabricAgentName The fabric agent name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fabricName, String fabricAgentName) {
-        beginDelete(resourceGroupName, fabricName, fabricAgentName).getFinalResult();
+        delete(resourceGroupName, fabricName, fabricAgentName, Context.NONE);
     }
 
-    /**
-     * Deletes fabric agent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The fabric name.
-     * @param fabricAgentName The fabric agent name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String fabricName, String fabricAgentName, Context context) {
-        beginDelete(resourceGroupName, fabricName, fabricAgentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, fabricName, fabricAgentName, context));
     }
 
     /**
@@ -639,12 +525,7 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricAgentModelInner> listSinglePage(String resourceGroupName, String fabricName) {
-        final String accept = "application/json";
-        Response<FabricAgentModelListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, fabricName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, fabricName, Context.NONE);
     }
 
     /**
@@ -669,33 +550,13 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of fabric agents in the given fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The fabric name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of fabric agents in the given fabric as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FabricAgentModelInner> list(String resourceGroupName, String fabricName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, fabricName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, fabricName, Context.NONE);
     }
 
-    /**
-     * Gets the list of fabric agents in the given fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The fabric name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of fabric agents in the given fabric as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FabricAgentModelInner> list(String resourceGroupName, String fabricName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, fabricName, context),
@@ -732,11 +593,7 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricAgentModelInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FabricAgentModelListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

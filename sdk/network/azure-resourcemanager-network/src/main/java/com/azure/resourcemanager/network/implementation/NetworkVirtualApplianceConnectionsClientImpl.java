@@ -121,20 +121,7 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Creates a connection to Network Virtual Appliance, if it doesn't exist else updates the existing NVA connection'.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @param networkVirtualApplianceConnectionParameters Parameters supplied in an NetworkVirtualApplianceConnection
-     * PUT operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkVirtualApplianceConnection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkVirtualApplianceName, String connectionName,
@@ -164,7 +151,7 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
         } else {
             networkVirtualApplianceConnectionParameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -218,7 +205,7 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
         } else {
             networkVirtualApplianceConnectionParameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -227,19 +214,7 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
             networkVirtualApplianceConnectionParameters, context);
     }
 
-    /**
-     * Creates a connection to Network Virtual Appliance, if it doesn't exist else updates the existing NVA connection'.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @param networkVirtualApplianceConnectionParameters Parameters supplied in an NetworkVirtualApplianceConnection
-     * PUT operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of networkVirtualApplianceConnection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NetworkVirtualApplianceConnectionInner>, NetworkVirtualApplianceConnectionInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String networkVirtualApplianceName, String connectionName,
@@ -277,19 +252,7 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
             NetworkVirtualApplianceConnectionInner.class, context);
     }
 
-    /**
-     * Creates a connection to Network Virtual Appliance, if it doesn't exist else updates the existing NVA connection'.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @param networkVirtualApplianceConnectionParameters Parameters supplied in an NetworkVirtualApplianceConnection
-     * PUT operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of networkVirtualApplianceConnection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkVirtualApplianceConnectionInner>, NetworkVirtualApplianceConnectionInner>
         beginCreateOrUpdate(String resourceGroupName, String networkVirtualApplianceName, String connectionName,
@@ -300,20 +263,7 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
             .getSyncPoller();
     }
 
-    /**
-     * Creates a connection to Network Virtual Appliance, if it doesn't exist else updates the existing NVA connection'.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @param networkVirtualApplianceConnectionParameters Parameters supplied in an NetworkVirtualApplianceConnection
-     * PUT operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of networkVirtualApplianceConnection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkVirtualApplianceConnectionInner>, NetworkVirtualApplianceConnectionInner>
         beginCreateOrUpdate(String resourceGroupName, String networkVirtualApplianceName, String connectionName,
@@ -324,19 +274,7 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
             .getSyncPoller();
     }
 
-    /**
-     * Creates a connection to Network Virtual Appliance, if it doesn't exist else updates the existing NVA connection'.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @param networkVirtualApplianceConnectionParameters Parameters supplied in an NetworkVirtualApplianceConnection
-     * PUT operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkVirtualApplianceConnection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkVirtualApplianceConnectionInner> createOrUpdateAsync(String resourceGroupName,
         String networkVirtualApplianceName, String connectionName,
@@ -367,19 +305,7 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
             networkVirtualApplianceConnectionParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a connection to Network Virtual Appliance, if it doesn't exist else updates the existing NVA connection'.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @param networkVirtualApplianceConnectionParameters Parameters supplied in an NetworkVirtualApplianceConnection
-     * PUT operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkVirtualApplianceConnection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkVirtualApplianceConnectionInner createOrUpdate(String resourceGroupName,
         String networkVirtualApplianceName, String connectionName,
@@ -388,20 +314,7 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
             networkVirtualApplianceConnectionParameters).block();
     }
 
-    /**
-     * Creates a connection to Network Virtual Appliance, if it doesn't exist else updates the existing NVA connection'.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @param networkVirtualApplianceConnectionParameters Parameters supplied in an NetworkVirtualApplianceConnection
-     * PUT operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkVirtualApplianceConnection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkVirtualApplianceConnectionInner createOrUpdate(String resourceGroupName,
         String networkVirtualApplianceName, String connectionName,
@@ -410,18 +323,7 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
             networkVirtualApplianceConnectionParameters, context).block();
     }
 
-    /**
-     * Retrieves the details of specified NVA connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkVirtualApplianceConnection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkVirtualApplianceConnectionInner>> getWithResponseAsync(String resourceGroupName,
         String networkVirtualApplianceName, String connectionName) {
@@ -444,7 +346,7 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -487,24 +389,14 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkVirtualApplianceName, connectionName, accept, context);
     }
 
-    /**
-     * Retrieves the details of specified NVA connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkVirtualApplianceConnection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkVirtualApplianceConnectionInner> getAsync(String resourceGroupName,
         String networkVirtualApplianceName, String connectionName) {
@@ -512,52 +404,21 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the details of specified NVA connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkVirtualApplianceConnection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkVirtualApplianceConnectionInner> getWithResponse(String resourceGroupName,
         String networkVirtualApplianceName, String connectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkVirtualApplianceName, connectionName, context).block();
     }
 
-    /**
-     * Retrieves the details of specified NVA connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkVirtualApplianceConnection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkVirtualApplianceConnectionInner get(String resourceGroupName, String networkVirtualApplianceName,
         String connectionName) {
         return getWithResponse(resourceGroupName, networkVirtualApplianceName, connectionName, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a NVA connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String networkVirtualApplianceName, String connectionName) {
@@ -580,7 +441,7 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -622,23 +483,13 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkVirtualApplianceName, connectionName, context);
     }
 
-    /**
-     * Deletes a NVA connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
         String networkVirtualApplianceName, String connectionName) {
@@ -670,35 +521,14 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
             context);
     }
 
-    /**
-     * Deletes a NVA connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkVirtualApplianceName,
         String connectionName) {
         return this.beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, connectionName).getSyncPoller();
     }
 
-    /**
-     * Deletes a NVA connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkVirtualApplianceName,
         String connectionName, Context context) {
@@ -706,17 +536,7 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a NVA connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkVirtualApplianceName, String connectionName) {
         return beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, connectionName).last()
@@ -742,32 +562,13 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a NVA connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkVirtualApplianceName, String connectionName) {
         deleteAsync(resourceGroupName, networkVirtualApplianceName, connectionName).block();
     }
 
-    /**
-     * Deletes a NVA connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param connectionName The connectionName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkVirtualApplianceName, String connectionName,
         Context context) {
@@ -804,7 +605,7 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
             return Mono.error(
                 new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -845,7 +646,7 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
             return Mono.error(
                 new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -855,16 +656,7 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists NetworkVirtualApplianceConnections under the NVA.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkVirtualApplianceConnection list as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkVirtualApplianceConnectionInner> listAsync(String resourceGroupName,
         String networkVirtualApplianceName) {
@@ -890,33 +682,14 @@ public final class NetworkVirtualApplianceConnectionsClientImpl implements Netwo
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists NetworkVirtualApplianceConnections under the NVA.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkVirtualApplianceConnection list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkVirtualApplianceConnectionInner> list(String resourceGroupName,
         String networkVirtualApplianceName) {
         return new PagedIterable<>(listAsync(resourceGroupName, networkVirtualApplianceName));
     }
 
-    /**
-     * Lists NetworkVirtualApplianceConnections under the NVA.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkVirtualApplianceConnection list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkVirtualApplianceConnectionInner> list(String resourceGroupName,
         String networkVirtualApplianceName, Context context) {

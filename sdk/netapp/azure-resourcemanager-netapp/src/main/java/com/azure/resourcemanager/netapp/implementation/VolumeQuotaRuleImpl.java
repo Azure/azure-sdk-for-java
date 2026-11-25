@@ -107,11 +107,7 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
     }
 
     public VolumeQuotaRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeQuotaRules()
-            .create(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VolumeQuotaRule create(Context context) {
@@ -134,11 +130,7 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
     }
 
     public VolumeQuotaRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeQuotaRules()
-            .update(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, updateBody,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VolumeQuotaRule apply(Context context) {
@@ -152,19 +144,25 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
         com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
-        this.poolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capacityPools");
-        this.volumeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "volumes");
-        this.volumeQuotaRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "volumeQuotaRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules/{volumeQuotaRuleName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules/{volumeQuotaRuleName}",
+            "accountName");
+        this.poolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules/{volumeQuotaRuleName}",
+            "poolName");
+        this.volumeName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules/{volumeQuotaRuleName}",
+            "volumeName");
+        this.volumeQuotaRuleName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules/{volumeQuotaRuleName}",
+            "volumeQuotaRuleName");
     }
 
     public VolumeQuotaRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeQuotaRules()
-            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VolumeQuotaRule refresh(Context context) {

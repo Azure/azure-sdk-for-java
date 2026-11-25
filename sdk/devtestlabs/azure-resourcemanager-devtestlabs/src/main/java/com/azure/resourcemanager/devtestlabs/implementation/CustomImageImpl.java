@@ -141,10 +141,7 @@ public final class CustomImageImpl implements CustomImage, CustomImage.Definitio
     }
 
     public CustomImage create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomImages()
-            .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CustomImage create(Context context) {
@@ -166,11 +163,7 @@ public final class CustomImageImpl implements CustomImage, CustomImage.Definitio
     }
 
     public CustomImage apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomImages()
-            .updateWithResponse(resourceGroupName, labName, name, updateCustomImage, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CustomImage apply(Context context) {
@@ -185,18 +178,19 @@ public final class CustomImageImpl implements CustomImage, CustomImage.Definitio
         com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "customimages");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/customimages/{name}",
+            "resourceGroupName");
+        this.labName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/customimages/{name}",
+            "labName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/customimages/{name}",
+            "name");
     }
 
     public CustomImage refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomImages()
-            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CustomImage refresh(Context context) {

@@ -61,18 +61,18 @@ public interface ComputeBulkActionsManagementClient {
     VirtualMachineBulkOperationsClient getVirtualMachineBulkOperations();
 
     /**
-     * Gets the LaunchBulkInstancesOperationsClient object to access its operations.
-     * 
-     * @return the LaunchBulkInstancesOperationsClient object.
-     */
-    LaunchBulkInstancesOperationsClient getLaunchBulkInstancesOperations();
-
-    /**
      * Gets the BulkCreateCustomsClient object to access its operations.
      * 
      * @return the BulkCreateCustomsClient object.
      */
     BulkCreateCustomsClient getBulkCreateCustoms();
+
+    /**
+     * Gets the BulkCreatesClient object to access its operations.
+     * 
+     * @return the BulkCreatesClient object.
+     */
+    BulkCreatesClient getBulkCreates();
 
     /**
      * Gets the ScheduledActionsClient object to access its operations.

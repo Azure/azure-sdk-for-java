@@ -48,7 +48,7 @@ public final class ExperimentsImpl implements Experiments {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String experimentName) {
-        this.serviceClient().delete(resourceGroupName, experimentName);
+        this.delete(resourceGroupName, experimentName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String experimentName, Context context) {
@@ -78,7 +78,7 @@ public final class ExperimentsImpl implements Experiments {
     }
 
     public void cancel(String resourceGroupName, String experimentName) {
-        this.serviceClient().cancel(resourceGroupName, experimentName);
+        this.cancel(resourceGroupName, experimentName, Context.NONE);
     }
 
     public void cancel(String resourceGroupName, String experimentName, Context context) {
@@ -86,7 +86,7 @@ public final class ExperimentsImpl implements Experiments {
     }
 
     public void start(String resourceGroupName, String experimentName) {
-        this.serviceClient().start(resourceGroupName, experimentName);
+        this.start(resourceGroupName, experimentName, Context.NONE);
     }
 
     public void start(String resourceGroupName, String experimentName, Context context) {
@@ -112,9 +112,7 @@ public final class ExperimentsImpl implements Experiments {
     }
 
     public PagedIterable<ExperimentExecution> listAllExecutions(String resourceGroupName, String experimentName) {
-        PagedIterable<ExperimentExecutionInner> inner
-            = this.serviceClient().listAllExecutions(resourceGroupName, experimentName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExperimentExecutionImpl(inner1, this.manager()));
+        return this.listAllExecutions(resourceGroupName, experimentName, Context.NONE);
     }
 
     public PagedIterable<ExperimentExecution> listAllExecutions(String resourceGroupName, String experimentName,
@@ -144,58 +142,30 @@ public final class ExperimentsImpl implements Experiments {
     }
 
     public Experiment getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String experimentName = ResourceManagerUtils.getValueFromIdByName(id, "experiments");
-        if (experimentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, experimentName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Experiment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String experimentName = ResourceManagerUtils.getValueFromIdByName(id, "experiments");
-        if (experimentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String experimentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "experimentName", "experiments", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, experimentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String experimentName = ResourceManagerUtils.getValueFromIdByName(id, "experiments");
-        if (experimentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
-        }
-        this.delete(resourceGroupName, experimentName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String experimentName = ResourceManagerUtils.getValueFromIdByName(id, "experiments");
-        if (experimentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String experimentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "experimentName", "experiments", LOGGER);
         this.delete(resourceGroupName, experimentName, context);
     }
 

@@ -16,22 +16,23 @@ public final class SkuMixPlacementResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuMixPlacementResponseInner model = BinaryData.fromString(
-            "{\"id\":\"onpeqfpjkjlxofp\",\"placementChoices\":[{\"score\":670343743,\"skuSplit\":[{\"name\":\"fxxypininmayhuy\",\"priority\":\"Spot\",\"capacity\":1192352775,\"zone\":\"odepoogin\"},{\"name\":\"vamih\",\"priority\":\"Spot\",\"capacity\":774982264,\"zone\":\"arxzxtheot\"}]},{\"score\":372211152,\"skuSplit\":[{\"name\":\"vyevcciqi\",\"priority\":\"Regular\",\"capacity\":720964194,\"zone\":\"ngbwjz\"},{\"name\":\"nfygxgispemvtz\",\"priority\":\"Regular\",\"capacity\":1277339929,\"zone\":\"ubljofxqe\"},{\"name\":\"fjaeq\",\"priority\":\"Spot\",\"capacity\":1946289710,\"zone\":\"b\"},{\"name\":\"s\",\"priority\":\"Spot\",\"capacity\":1818222173,\"zone\":\"jqul\"}]},{\"score\":1600466611,\"skuSplit\":[{\"name\":\"ntnbybkzg\",\"priority\":\"Spot\",\"capacity\":897753397,\"zone\":\"clxxwrljdo\"},{\"name\":\"skcqvkocrcjd\",\"priority\":\"Spot\",\"capacity\":1343054120,\"zone\":\"hxbnjbiksqrg\"},{\"name\":\"ssainqpjwnzll\",\"priority\":\"Regular\",\"capacity\":559790959,\"zone\":\"pee\"}]},{\"score\":1862600222,\"skuSplit\":[{\"name\":\"gxsabkyq\",\"priority\":\"Regular\",\"capacity\":1999845889,\"zone\":\"itcjczdz\"},{\"name\":\"vndhkrwpdapp\",\"priority\":\"Regular\",\"capacity\":264024813,\"zone\":\"kvwrwjfeu\"}]}],\"validUntil\":\"2021-11-14T12:39:29Z\",\"partialFulfillmentReason\":\"None\",\"capacityLimits\":[{\"name\":\"eltmrldhugjzzdat\",\"priority\":\"Spot\",\"zone\":\"oc\",\"limit\":2078454022,\"reason\":\"InsufficientCapacity\"}]}")
+            "{\"id\":\"jvtbvpyss\",\"placementChoices\":[{\"score\":881911115,\"skuSplit\":[{\"name\":\"uj\",\"priority\":\"Spot\",\"capacity\":1719389036,\"zone\":\"muouqfp\"},{\"name\":\"wzwbnguitn\",\"priority\":\"Regular\",\"capacity\":1661646001,\"zone\":\"gazxuf\"}]},{\"score\":1785230840,\"skuSplit\":[{\"name\":\"ckyfih\",\"priority\":\"Regular\",\"capacity\":689215499,\"zone\":\"fvzwdzuhty\"},{\"name\":\"wisdkft\",\"priority\":\"Spot\",\"capacity\":404172620,\"zone\":\"nteiwaopv\"}]},{\"score\":1562310773,\"skuSplit\":[{\"name\":\"jcmmxdcufufsrp\",\"priority\":\"Spot\",\"capacity\":2146966484,\"zone\":\"dnsezcxtbzs\"},{\"name\":\"fycc\",\"priority\":\"Spot\",\"capacity\":1252731195,\"zone\":\"mdwzjeiachboo\"}]},{\"score\":1630319768,\"skuSplit\":[{\"name\":\"nrosfqpte\",\"priority\":\"Regular\",\"capacity\":1514904394,\"zone\":\"vypyqrimzinpv\"},{\"name\":\"wjdk\",\"priority\":\"Spot\",\"capacity\":1230254023,\"zone\":\"od\"}]}],\"validUntil\":\"2021-04-24T02:10:51Z\",\"partialFulfillmentReason\":\"InsufficientQuota\",\"capacityLimits\":[{\"name\":\"nohjt\",\"priority\":\"Regular\",\"zone\":\"h\",\"limit\":1289285070,\"reason\":\"SkuNotAvailable\"}]}")
             .toObject(SkuMixPlacementResponseInner.class);
-        Assertions.assertEquals("onpeqfpjkjlxofp", model.id());
-        Assertions.assertEquals(670343743, model.placementChoices().get(0).score());
-        Assertions.assertEquals("fxxypininmayhuy", model.placementChoices().get(0).skuSplit().get(0).name());
+        Assertions.assertEquals("jvtbvpyss", model.id());
+        Assertions.assertEquals(881911115, model.placementChoices().get(0).score());
+        Assertions.assertEquals("uj", model.placementChoices().get(0).skuSplit().get(0).name());
         Assertions.assertEquals(SkuMixPlacementPriority.SPOT,
             model.placementChoices().get(0).skuSplit().get(0).priority());
-        Assertions.assertEquals(1192352775, model.placementChoices().get(0).skuSplit().get(0).capacity());
-        Assertions.assertEquals("odepoogin", model.placementChoices().get(0).skuSplit().get(0).zone());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-14T12:39:29Z"), model.validUntil());
-        Assertions.assertEquals(SkuMixPlacementPartialFulfillmentReason.NONE, model.partialFulfillmentReason());
-        Assertions.assertEquals("eltmrldhugjzzdat", model.capacityLimits().get(0).name());
-        Assertions.assertEquals(SkuMixPlacementPriority.SPOT, model.capacityLimits().get(0).priority());
-        Assertions.assertEquals("oc", model.capacityLimits().get(0).zone());
-        Assertions.assertEquals(2078454022, model.capacityLimits().get(0).limit());
-        Assertions.assertEquals(SkuMixPlacementCapacityLimitReason.INSUFFICIENT_CAPACITY,
+        Assertions.assertEquals(1719389036, model.placementChoices().get(0).skuSplit().get(0).capacity());
+        Assertions.assertEquals("muouqfp", model.placementChoices().get(0).skuSplit().get(0).zone());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-24T02:10:51Z"), model.validUntil());
+        Assertions.assertEquals(SkuMixPlacementPartialFulfillmentReason.INSUFFICIENT_QUOTA,
+            model.partialFulfillmentReason());
+        Assertions.assertEquals("nohjt", model.capacityLimits().get(0).name());
+        Assertions.assertEquals(SkuMixPlacementPriority.REGULAR, model.capacityLimits().get(0).priority());
+        Assertions.assertEquals("h", model.capacityLimits().get(0).zone());
+        Assertions.assertEquals(1289285070, model.capacityLimits().get(0).limit());
+        Assertions.assertEquals(SkuMixPlacementCapacityLimitReason.SKU_NOT_AVAILABLE,
             model.capacityLimits().get(0).reason());
     }
 }

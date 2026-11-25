@@ -1,5 +1,6 @@
 import:
   - ../../.vscode/cspell.json
+  - ./pipeline/cspell.json
 words:
   - "aarch"
   - "accums"
@@ -41,6 +42,7 @@ words:
   - "jgss"
   - "jnilib"
   - "jodd"
+  - "jpms"
   - "kihn"
   - "ksql"
   - "latencyutils"

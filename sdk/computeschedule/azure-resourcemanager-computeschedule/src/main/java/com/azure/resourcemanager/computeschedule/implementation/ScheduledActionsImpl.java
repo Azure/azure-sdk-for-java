@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.computeschedule.fluent.ScheduledActionsClient;
 import com.azure.resourcemanager.computeschedule.fluent.models.CancelOperationsResponseInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.CreateFlexResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.CreateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.DeallocateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.DeleteResourceOperationResponseInner;
@@ -25,9 +26,11 @@ import com.azure.resourcemanager.computeschedule.fluent.models.StartResourceOper
 import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsResponse;
+import com.azure.resourcemanager.computeschedule.models.CreateFlexResourceOperationResponse;
 import com.azure.resourcemanager.computeschedule.models.CreateResourceOperationResponse;
 import com.azure.resourcemanager.computeschedule.models.DeallocateResourceOperationResponse;
 import com.azure.resourcemanager.computeschedule.models.DeleteResourceOperationResponse;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteCreateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteRequest;
@@ -178,6 +181,25 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         }
     }
 
+    public Response<CreateFlexResourceOperationResponse> virtualMachinesExecuteCreateFlexWithResponse(
+        String locationparameter, ExecuteCreateFlexRequest body, Context context) {
+        Response<CreateFlexResourceOperationResponseInner> inner
+            = this.serviceClient().virtualMachinesExecuteCreateFlexWithResponse(locationparameter, body, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CreateFlexResourceOperationResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public CreateFlexResourceOperationResponse virtualMachinesExecuteCreateFlex(String locationparameter,
+        ExecuteCreateFlexRequest body) {
+        CreateFlexResourceOperationResponseInner inner
+            = this.serviceClient().virtualMachinesExecuteCreateFlex(locationparameter, body);
+        if (inner != null) {
+            return new CreateFlexResourceOperationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Response<CreateResourceOperationResponse> virtualMachinesExecuteCreateWithResponse(String locationparameter,
         ExecuteCreateRequest requestBody, Context context) {
         Response<CreateResourceOperationResponseInner> inner
@@ -291,7 +313,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String scheduledActionName) {
-        this.serviceClient().delete(resourceGroupName, scheduledActionName);
+        this.delete(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String scheduledActionName, Context context) {
@@ -299,8 +321,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public PagedIterable<ScheduledAction> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ScheduledActionInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<ScheduledAction> listByResourceGroup(String resourceGroupName, Context context) {
@@ -310,8 +331,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public PagedIterable<ScheduledAction> list() {
-        PagedIterable<ScheduledActionInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ScheduledAction> list(Context context) {
@@ -320,9 +340,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public PagedIterable<ScheduledActionResource> listResources(String resourceGroupName, String scheduledActionName) {
-        PagedIterable<ScheduledActionResourceInner> inner
-            = this.serviceClient().listResources(resourceGroupName, scheduledActionName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionResourceImpl(inner1, this.manager()));
+        return this.listResources(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
     public PagedIterable<ScheduledActionResource> listResources(String resourceGroupName, String scheduledActionName,
@@ -394,7 +412,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public void disable(String resourceGroupName, String scheduledActionName) {
-        this.serviceClient().disable(resourceGroupName, scheduledActionName);
+        this.disableWithResponse(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
     public Response<Void> enableWithResponse(String resourceGroupName, String scheduledActionName, Context context) {
@@ -402,7 +420,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public void enable(String resourceGroupName, String scheduledActionName) {
-        this.serviceClient().enable(resourceGroupName, scheduledActionName);
+        this.enableWithResponse(resourceGroupName, scheduledActionName, Context.NONE);
     }
 
     public Response<RecurringActionsResourceOperationResult> cancelNextOccurrenceWithResponse(String resourceGroupName,
@@ -442,58 +460,30 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public ScheduledAction getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String scheduledActionName = ResourceManagerUtils.getValueFromIdByName(id, "scheduledActions");
-        if (scheduledActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scheduledActions'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, scheduledActionName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ScheduledAction> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String scheduledActionName = ResourceManagerUtils.getValueFromIdByName(id, "scheduledActions");
-        if (scheduledActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scheduledActions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String scheduledActionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}",
+            "scheduledActionName", "scheduledActions", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, scheduledActionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String scheduledActionName = ResourceManagerUtils.getValueFromIdByName(id, "scheduledActions");
-        if (scheduledActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scheduledActions'.", id)));
-        }
-        this.delete(resourceGroupName, scheduledActionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String scheduledActionName = ResourceManagerUtils.getValueFromIdByName(id, "scheduledActions");
-        if (scheduledActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scheduledActions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String scheduledActionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}",
+            "scheduledActionName", "scheduledActions", LOGGER);
         this.delete(resourceGroupName, scheduledActionName, context);
     }
 

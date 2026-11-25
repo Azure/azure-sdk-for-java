@@ -28,8 +28,7 @@ public final class DbSystemsImpl implements DbSystems {
     }
 
     public PagedIterable<DbSystem> list() {
-        PagedIterable<DbSystemInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DbSystemImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<DbSystem> list(Context context) {
@@ -55,7 +54,7 @@ public final class DbSystemsImpl implements DbSystems {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String dbSystemName) {
-        this.serviceClient().delete(resourceGroupName, dbSystemName);
+        this.delete(resourceGroupName, dbSystemName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String dbSystemName, Context context) {
@@ -63,8 +62,7 @@ public final class DbSystemsImpl implements DbSystems {
     }
 
     public PagedIterable<DbSystem> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<DbSystemInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DbSystemImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<DbSystem> listByResourceGroup(String resourceGroupName, Context context) {
@@ -73,58 +71,30 @@ public final class DbSystemsImpl implements DbSystems {
     }
 
     public DbSystem getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String dbSystemName = ResourceManagerUtils.getValueFromIdByName(id, "dbSystems");
-        if (dbSystemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dbSystems'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, dbSystemName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DbSystem> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String dbSystemName = ResourceManagerUtils.getValueFromIdByName(id, "dbSystems");
-        if (dbSystemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dbSystems'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/dbSystems/{dbSystemName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String dbSystemName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/dbSystems/{dbSystemName}",
+            "dbSystemName", "dbSystems", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, dbSystemName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String dbSystemName = ResourceManagerUtils.getValueFromIdByName(id, "dbSystems");
-        if (dbSystemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dbSystems'.", id)));
-        }
-        this.delete(resourceGroupName, dbSystemName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String dbSystemName = ResourceManagerUtils.getValueFromIdByName(id, "dbSystems");
-        if (dbSystemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dbSystems'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/dbSystems/{dbSystemName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String dbSystemName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/dbSystems/{dbSystemName}",
+            "dbSystemName", "dbSystems", LOGGER);
         this.delete(resourceGroupName, dbSystemName, context);
     }
 

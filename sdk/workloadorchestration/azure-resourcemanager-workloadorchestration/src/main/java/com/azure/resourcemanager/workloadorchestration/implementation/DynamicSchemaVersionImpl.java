@@ -69,11 +69,7 @@ public final class DynamicSchemaVersionImpl
     }
 
     public DynamicSchemaVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDynamicSchemaVersions()
-            .createOrUpdate(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DynamicSchemaVersion create(Context context) {
@@ -96,12 +92,7 @@ public final class DynamicSchemaVersionImpl
     }
 
     public DynamicSchemaVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDynamicSchemaVersions()
-            .updateWithResponse(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DynamicSchemaVersion apply(Context context) {
@@ -117,18 +108,22 @@ public final class DynamicSchemaVersionImpl
         com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.schemaName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "schemas");
-        this.dynamicSchemaName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dynamicSchemas");
-        this.dynamicSchemaVersionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "versions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{dynamicSchemaVersionName}",
+            "resourceGroupName");
+        this.schemaName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{dynamicSchemaVersionName}",
+            "schemaName");
+        this.dynamicSchemaName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{dynamicSchemaVersionName}",
+            "dynamicSchemaName");
+        this.dynamicSchemaVersionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{dynamicSchemaVersionName}",
+            "dynamicSchemaVersionName");
     }
 
     public DynamicSchemaVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDynamicSchemaVersions()
-            .getWithResponse(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DynamicSchemaVersion refresh(Context context) {

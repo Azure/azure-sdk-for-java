@@ -100,7 +100,7 @@ public final class UpgradeHistoriesClientImpl implements UpgradeHistoriesClient 
     }
 
     /**
-     * List UpgradeHistory resources by AppLinkMember.
+     * List the upgrade history of an Azure Kubernetes Application Network member.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -124,7 +124,7 @@ public final class UpgradeHistoriesClientImpl implements UpgradeHistoriesClient 
     }
 
     /**
-     * List UpgradeHistory resources by AppLinkMember.
+     * List the upgrade history of an Azure Kubernetes Application Network member.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -143,7 +143,7 @@ public final class UpgradeHistoriesClientImpl implements UpgradeHistoriesClient 
     }
 
     /**
-     * List UpgradeHistory resources by AppLinkMember.
+     * List the upgrade history of an Azure Kubernetes Application Network member.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -156,16 +156,11 @@ public final class UpgradeHistoriesClientImpl implements UpgradeHistoriesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UpgradeHistoryInner> listByAppLinkMemberSinglePage(String resourceGroupName,
         String appLinkName, String appLinkMemberName) {
-        final String accept = "application/json";
-        Response<UpgradeHistoryListResult> res = service.listByAppLinkMemberSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, appLinkName,
-            appLinkMemberName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAppLinkMemberSinglePage(resourceGroupName, appLinkName, appLinkMemberName, Context.NONE);
     }
 
     /**
-     * List UpgradeHistory resources by AppLinkMember.
+     * List the upgrade history of an Azure Kubernetes Application Network member.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -187,37 +182,14 @@ public final class UpgradeHistoriesClientImpl implements UpgradeHistoriesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List UpgradeHistory resources by AppLinkMember.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appLinkName The name of the AppLink.
-     * @param appLinkMemberName The name of the AppLinkMember.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UpgradeHistory list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpgradeHistoryInner> listByAppLinkMember(String resourceGroupName, String appLinkName,
         String appLinkMemberName) {
-        return new PagedIterable<>(
-            () -> listByAppLinkMemberSinglePage(resourceGroupName, appLinkName, appLinkMemberName),
-            nextLink -> listByAppLinkMemberNextSinglePage(nextLink));
+        return listByAppLinkMember(resourceGroupName, appLinkName, appLinkMemberName, Context.NONE);
     }
 
-    /**
-     * List UpgradeHistory resources by AppLinkMember.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appLinkName The name of the AppLink.
-     * @param appLinkMemberName The name of the AppLinkMember.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UpgradeHistory list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpgradeHistoryInner> listByAppLinkMember(String resourceGroupName, String appLinkName,
         String appLinkMemberName, Context context) {
@@ -258,11 +230,7 @@ public final class UpgradeHistoriesClientImpl implements UpgradeHistoriesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UpgradeHistoryInner> listByAppLinkMemberNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<UpgradeHistoryListResult> res
-            = service.listByAppLinkMemberNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAppLinkMemberNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

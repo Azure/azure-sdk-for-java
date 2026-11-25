@@ -79,12 +79,7 @@ public final class IntegrationRuntimeResourceImpl
     }
 
     public IntegrationRuntimeResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIntegrationRuntimes()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, integrationRuntimeName, this.innerModel(),
-                createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IntegrationRuntimeResource create(Context context) {
@@ -110,12 +105,7 @@ public final class IntegrationRuntimeResourceImpl
     }
 
     public IntegrationRuntimeResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIntegrationRuntimes()
-            .updateWithResponse(resourceGroupName, factoryName, integrationRuntimeName,
-                updateUpdateIntegrationRuntimeRequest, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IntegrationRuntimeResource apply(Context context) {
@@ -131,19 +121,19 @@ public final class IntegrationRuntimeResourceImpl
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
-        this.integrationRuntimeName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "integrationRuntimes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}",
+            "resourceGroupName");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}",
+            "factoryName");
+        this.integrationRuntimeName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}",
+            "integrationRuntimeName");
     }
 
     public IntegrationRuntimeResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getIntegrationRuntimes()
-            .getWithResponse(resourceGroupName, factoryName, integrationRuntimeName, localIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IntegrationRuntimeResource refresh(Context context) {

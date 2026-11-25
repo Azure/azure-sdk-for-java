@@ -66,11 +66,7 @@ public final class BranchImpl implements Branch, Branch.Definition, Branch.Updat
     }
 
     public Branch create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBranches()
-            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Branch create(Context context) {
@@ -91,11 +87,7 @@ public final class BranchImpl implements Branch, Branch.Definition, Branch.Updat
     }
 
     public Branch apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBranches()
-            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Branch apply(Context context) {
@@ -108,18 +100,22 @@ public final class BranchImpl implements Branch, Branch.Definition, Branch.Updat
     BranchImpl(BranchInner innerObject, com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.organizationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "organizations");
-        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
-        this.branchName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "branches");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}",
+            "resourceGroupName");
+        this.organizationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}",
+            "organizationName");
+        this.projectName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}",
+            "projectName");
+        this.branchName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}",
+            "branchName");
     }
 
     public Branch refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBranches()
-            .getWithResponse(resourceGroupName, organizationName, projectName, branchName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Branch refresh(Context context) {

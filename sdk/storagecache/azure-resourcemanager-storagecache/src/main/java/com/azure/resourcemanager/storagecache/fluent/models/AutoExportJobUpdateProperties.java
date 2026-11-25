@@ -13,7 +13,7 @@ import com.azure.resourcemanager.storagecache.models.AutoExportJobAdminStatus;
 import java.io.IOException;
 
 /**
- * The AutoExportJobUpdateProperties model.
+ * Properties for updating an auto export job.
  */
 @Fluent
 public final class AutoExportJobUpdateProperties implements JsonSerializable<AutoExportJobUpdateProperties> {

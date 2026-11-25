@@ -21,6 +21,12 @@ public final class ImageVersionSecurityProfile implements JsonSerializable<Image
      */
     private GalleryImageVersionUefiSettings uefiSettings;
 
+    /*
+     * Specifies the secrets provisioning settings for the gallery image version. Used on create or update to configure
+     * secrets provisioning.
+     */
+    private SecretsProvisioningSettings secretsProvisioningSettings;
+
     /**
      * Creates an instance of ImageVersionSecurityProfile class.
      */
@@ -48,6 +54,29 @@ public final class ImageVersionSecurityProfile implements JsonSerializable<Image
     }
 
     /**
+     * Get the secretsProvisioningSettings property: Specifies the secrets provisioning settings for the gallery image
+     * version. Used on create or update to configure secrets provisioning.
+     * 
+     * @return the secretsProvisioningSettings value.
+     */
+    public SecretsProvisioningSettings secretsProvisioningSettings() {
+        return this.secretsProvisioningSettings;
+    }
+
+    /**
+     * Set the secretsProvisioningSettings property: Specifies the secrets provisioning settings for the gallery image
+     * version. Used on create or update to configure secrets provisioning.
+     * 
+     * @param secretsProvisioningSettings the secretsProvisioningSettings value to set.
+     * @return the ImageVersionSecurityProfile object itself.
+     */
+    public ImageVersionSecurityProfile
+        withSecretsProvisioningSettings(SecretsProvisioningSettings secretsProvisioningSettings) {
+        this.secretsProvisioningSettings = secretsProvisioningSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -55,6 +84,9 @@ public final class ImageVersionSecurityProfile implements JsonSerializable<Image
     public void validate() {
         if (uefiSettings() != null) {
             uefiSettings().validate();
+        }
+        if (secretsProvisioningSettings() != null) {
+            secretsProvisioningSettings().validate();
         }
     }
 
@@ -65,6 +97,7 @@ public final class ImageVersionSecurityProfile implements JsonSerializable<Image
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("uefiSettings", this.uefiSettings);
+        jsonWriter.writeJsonField("secretsProvisioningSettings", this.secretsProvisioningSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -86,6 +119,9 @@ public final class ImageVersionSecurityProfile implements JsonSerializable<Image
                 if ("uefiSettings".equals(fieldName)) {
                     deserializedImageVersionSecurityProfile.uefiSettings
                         = GalleryImageVersionUefiSettings.fromJson(reader);
+                } else if ("secretsProvisioningSettings".equals(fieldName)) {
+                    deserializedImageVersionSecurityProfile.secretsProvisioningSettings
+                        = SecretsProvisioningSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

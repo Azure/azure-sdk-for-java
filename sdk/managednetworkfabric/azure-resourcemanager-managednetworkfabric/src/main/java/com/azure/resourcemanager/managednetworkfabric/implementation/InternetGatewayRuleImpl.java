@@ -109,10 +109,7 @@ public final class InternetGatewayRuleImpl
     }
 
     public InternetGatewayRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInternetGatewayRules()
-            .create(resourceGroupName, internetGatewayRuleName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public InternetGatewayRule create(Context context) {
@@ -135,10 +132,7 @@ public final class InternetGatewayRuleImpl
     }
 
     public InternetGatewayRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInternetGatewayRules()
-            .update(resourceGroupName, internetGatewayRuleName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public InternetGatewayRule apply(Context context) {
@@ -152,17 +146,16 @@ public final class InternetGatewayRuleImpl
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.internetGatewayRuleName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "internetGatewayRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}",
+            "resourceGroupName");
+        this.internetGatewayRuleName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/{internetGatewayRuleName}",
+            "internetGatewayRuleName");
     }
 
     public InternetGatewayRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInternetGatewayRules()
-            .getByResourceGroupWithResponse(resourceGroupName, internetGatewayRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public InternetGatewayRule refresh(Context context) {

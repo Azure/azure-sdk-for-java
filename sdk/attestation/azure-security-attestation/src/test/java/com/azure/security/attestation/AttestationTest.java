@@ -31,6 +31,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.LinkedHashMap;
@@ -50,6 +51,10 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 @LiveOnly
 public class AttestationTest extends AttestationClientTestBase {
     // LiveOnly because "JWT cannot be stored in recordings."
+    // The initial payload for TPM attestation is a JSON object with a property named "payload",
+    // containing an object with a property named "type" whose value is "aikcert".
+    private static final String TPM_INITIAL_PAYLOAD = "{\"payload\": { \"type\": \"aikcert\" } }";
+
     private static final String RUNTIME_DATA = "CiAgICAgICAgewogICAgICAgICAgICAiandrIiA6IHsKICAgICAgICAgICAgICAgICJrdHk"
         + "iOiJFQyIsCiAgICAgICAgICAgICAgICAidXNlIjoic2lnIiwKICAgICAgICAgICAgICAgICJjcnYiOiJQLTI1NiIsCiAgICAgICAgICAgICA"
         + "gICAieCI6IjE4d0hMZUlnVzl3Vk42VkQxVHhncHF5MkxzellrTWY2SjhualZBaWJ2aE0iLAogICAgICAgICAgICAgICAgInkiOiJjVjRkUzR"
@@ -212,29 +217,30 @@ public class AttestationTest extends AttestationClientTestBase {
         final AtomicBoolean callbackCalled = new AtomicBoolean(false);
         AttestationOptions request = new AttestationOptions(sgxQuote)
             .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.BINARY))
-            .setValidationOptions(new AttestationTokenValidationOptions().setValidationCallback((token, signer) -> {
-                callbackCalled.set(true);
-                // Perform minimal validation of the issued SGX token. The
-                // token validation logic will have checked the issuance_time
-                // and expiration_time, but this shows accessing those fields.
-                //
-                // The validation logic also checks the subject of the certificate to verify
-                // that the issuer of the certificate is the expected instance of the service.
-                LOGGER.info("In validation callback, checking token...");
-                LOGGER.info(String.format("     Token issuer: %s", token.getIssuer()));
-                if (!interceptorManager.isPlaybackMode()) {
-                    LOGGER.info(String.format("     Token was issued at: %tc", token.getIssuedAt()));
-                    LOGGER.info(String.format("     Token expires at: %tc", token.getExpiresOn()));
-                    if (!token.getIssuer().equals(clientUri)) {
-                        LOGGER.error(String.format("Token issuer %s does not match expected issuer %s",
-                            token.getIssuer(), clientUri));
-                        throw new RuntimeException(
-                            String.format("Issuer Mismatch: found %s, expected %s", token.getIssuer(), clientUri));
+            .setValidationOptions(new AttestationTokenValidationOptions().setValidationSlack(CLOCK_SKEW_TOLERANCE)
+                .setValidationCallback((token, signer) -> {
+                    callbackCalled.set(true);
+                    // Perform minimal validation of the issued SGX token. The
+                    // token validation logic will have checked the issuance_time
+                    // and expiration_time, but this shows accessing those fields.
+                    //
+                    // The validation logic also checks the subject of the certificate to verify
+                    // that the issuer of the certificate is the expected instance of the service.
+                    LOGGER.info("In validation callback, checking token...");
+                    LOGGER.info(String.format("     Token issuer: %s", token.getIssuer()));
+                    if (!interceptorManager.isPlaybackMode()) {
+                        LOGGER.info(String.format("     Token was issued at: %tc", token.getIssuedAt()));
+                        LOGGER.info(String.format("     Token expires at: %tc", token.getExpiresOn()));
+                        if (!token.getIssuer().equals(clientUri)) {
+                            LOGGER.error(String.format("Token issuer %s does not match expected issuer %s",
+                                token.getIssuer(), clientUri));
+                            throw new RuntimeException(
+                                String.format("Issuer Mismatch: found %s, expected %s", token.getIssuer(), clientUri));
+                        }
+                        LOGGER.info(String.format("Issuer of signing certificate is: %s",
+                            signer.getCertificates().get(0).getIssuerDN().getName()));
                     }
-                    LOGGER.info(String.format("Issuer of signing certificate is: %s",
-                        signer.getCertificates().get(0).getIssuerDN().getName()));
-                }
-            })
+                })
                 // Only validate time based properties when not in PLAYBACK mode. PLAYBACK mode has these values
                 // hard-coded into the session record.
                 .setValidateExpiresOn(getTestMode() != TestMode.PLAYBACK));
@@ -476,6 +482,102 @@ public class AttestationTest extends AttestationClientTestBase {
             assertTrue(payload.containsKey("challenge"));
             assertTrue(payload.containsKey("service_context"));
         }).verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    @SuppressWarnings("deprecation")
+    void testTpmAttestationString(HttpClient httpClient, String clientUri) {
+        assumeTrue(classifyClient(clientUri) != ClientTypes.SHARED, "This test does not work on shared instances.");
+        assumeTrue(trySetTpmAttestationPolicy(httpClient, clientUri), "Unable to set the TPM attestation policy.");
+
+        AttestationClient client = getAuthenticatedAttestationBuilder(httpClient, clientUri).buildClient();
+
+        String tpmResponse = client.attestTpm(TPM_INITIAL_PAYLOAD);
+
+        verifyTpmInitialResponse(tpmResponse.getBytes(StandardCharsets.UTF_8));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    @SuppressWarnings("deprecation")
+    void testTpmAttestationStringWithResponse(HttpClient httpClient, String clientUri) {
+        assumeTrue(classifyClient(clientUri) != ClientTypes.SHARED, "This test does not work on shared instances.");
+        assumeTrue(trySetTpmAttestationPolicy(httpClient, clientUri), "Unable to set the TPM attestation policy.");
+
+        AttestationClient client = getAuthenticatedAttestationBuilder(httpClient, clientUri).buildClient();
+
+        Response<String> tpmResponse = client.attestTpmWithResponse(TPM_INITIAL_PAYLOAD, Context.NONE);
+
+        assertEquals(200, tpmResponse.getStatusCode());
+        verifyTpmInitialResponse(tpmResponse.getValue().getBytes(StandardCharsets.UTF_8));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    @SuppressWarnings("deprecation")
+    void testTpmAttestationStringAsync(HttpClient httpClient, String clientUri) {
+        assumeTrue(classifyClient(clientUri) != ClientTypes.SHARED, "This test does not work on shared instances.");
+        assumeTrue(trySetTpmAttestationPolicy(httpClient, clientUri), "Unable to set the TPM attestation policy.");
+
+        AttestationAsyncClient client = getAuthenticatedAttestationBuilder(httpClient, clientUri).buildAsyncClient();
+
+        StepVerifier.create(client.attestTpm(TPM_INITIAL_PAYLOAD))
+            .assertNext(tpmResponse -> verifyTpmInitialResponse(tpmResponse.getBytes(StandardCharsets.UTF_8)))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    @SuppressWarnings("deprecation")
+    void testTpmAttestationStringWithResponseAsync(HttpClient httpClient, String clientUri) {
+        assumeTrue(classifyClient(clientUri) != ClientTypes.SHARED, "This test does not work on shared instances.");
+        assumeTrue(trySetTpmAttestationPolicy(httpClient, clientUri), "Unable to set the TPM attestation policy.");
+
+        AttestationAsyncClient client = getAuthenticatedAttestationBuilder(httpClient, clientUri).buildAsyncClient();
+
+        StepVerifier.create(client.attestTpmWithResponse(TPM_INITIAL_PAYLOAD)).assertNext(tpmResponse -> {
+            assertEquals(200, tpmResponse.getStatusCode());
+            verifyTpmInitialResponse(tpmResponse.getValue().getBytes(StandardCharsets.UTF_8));
+        }).verifyComplete();
+    }
+
+    /**
+     * Sets a permissive TPM attestation policy, which is required before TPM attestation can be performed.
+     *
+     * @return true if the policy was updated, false otherwise.
+     */
+    private boolean trySetTpmAttestationPolicy(HttpClient httpClient, String clientUri) {
+        AttestationAdministrationClient adminClient
+            = getAttestationAdministrationBuilder(httpClient, clientUri).buildClient();
+        PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM, new AttestationPolicySetOptions()
+            .setAttestationPolicy("version=1.0; authorizationrules{=>permit();};issuancerules{};")
+            .setAttestationSigner(new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())));
+
+        if (result.getPolicyResolution() != PolicyModification.UPDATED) {
+            LOGGER.log(LogLevel.VERBOSE,
+                () -> "Unexpected resolution setting TPM policy: " + result.getPolicyResolution());
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Verifies the response to the first leg of the TPM attestation protocol, which is a JSON object containing a
+     * "payload" object with "challenge" and "service_context" properties.
+     */
+    private static void verifyTpmInitialResponse(byte[] tpmResponse) {
+        Object deserializedResponse
+            = assertDoesNotThrow(() -> ADAPTER.deserialize(tpmResponse, Object.class, SerializerEncoding.JSON));
+        assertInstanceOf(LinkedHashMap.class, deserializedResponse);
+        @SuppressWarnings("unchecked")
+        LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
+        assertTrue(initialResponse.containsKey("payload"));
+        assertInstanceOf(LinkedHashMap.class, initialResponse.get("payload"));
+        @SuppressWarnings("unchecked")
+        LinkedHashMap<String, Object> payload = (LinkedHashMap<String, Object>) initialResponse.get("payload");
+        assertTrue(payload.containsKey("challenge"));
+        assertTrue(payload.containsKey("service_context"));
     }
 
     @Test()

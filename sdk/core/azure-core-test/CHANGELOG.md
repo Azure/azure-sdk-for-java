@@ -1,6 +1,6 @@
 # Release History
 
-## 1.27.0-beta.19 (Unreleased)
+## 1.27.0-beta.21 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,37 @@
 
 ### Bugs Fixed
 
+- Automatic test-proxy installation now uses a per-user cache instead of a shared temporary path. On POSIX file
+  systems the cache must be owned by and accessible only to the current user. Downloads are checked against GitHub's
+  published SHA-256 digest, and the cached executable is verified before launch. Installation now happens only when a
+  test proxy needs to be started, so an already running test proxy is used without installing one.
+- Recording now fails closed if test-proxy sanitizer registration fails, including when a sanitizer is invalid.
+  Further requests are rejected and the recording session is discarded instead of saving data without the requested
+  redactions.
+
 ### Other Changes
+
+## 1.27.0-beta.20 (2026-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to `1.61.0`.
+- Upgraded `azure-core-http-jdk-httpclient` from `1.2.0` to `1.3.0`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to `1.17.0`.
+- Upgraded `azure-core-http-okhttp` from `1.13.8` to `1.14.0`.
+- Upgraded `azure-core-http-vertx` from `1.2.0` to `1.3.0`.
+- Upgraded Reactor to `3.8.7` and the shared Netty transport to Netty `4.2.19.Final` / Reactor Netty `1.3.7`.
+
+## 1.27.0-beta.19 (2026-09-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.1` to `1.60.0`.
+- Upgraded Apache Ant from `1.10.15` to `1.10.18`.
 
 ## 1.27.0-beta.18 (2026-08-27)
 

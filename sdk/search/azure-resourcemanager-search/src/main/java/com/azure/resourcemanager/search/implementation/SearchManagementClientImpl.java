@@ -28,7 +28,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.search.fluent.AdminKeysClient;
 import com.azure.resourcemanager.search.fluent.NetworkSecurityPerimeterConfigurationsClient;
-import com.azure.resourcemanager.search.fluent.OfferingsClient;
 import com.azure.resourcemanager.search.fluent.OperationsClient;
 import com.azure.resourcemanager.search.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.search.fluent.PrivateLinkResourcesClient;
@@ -133,20 +132,6 @@ public final class SearchManagementClientImpl extends AzureServiceClient impleme
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
-    }
-
-    /**
-     * The OfferingsClient object to access its operations.
-     */
-    private final OfferingsClient offerings;
-
-    /**
-     * Gets the OfferingsClient object to access its operations.
-     * 
-     * @return the OfferingsClient object.
-     */
-    public OfferingsClient getOfferings() {
-        return this.offerings;
     }
 
     /**
@@ -293,8 +278,7 @@ public final class SearchManagementClientImpl extends AzureServiceClient impleme
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-03-01-preview";
-        this.offerings = new OfferingsClientImpl(this);
+        this.apiVersion = "2026-11-01";
         this.operations = new OperationsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.sharedPrivateLinkResources = new SharedPrivateLinkResourcesClientImpl(this);
@@ -325,17 +309,7 @@ public final class SearchManagementClientImpl extends AzureServiceClient impleme
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the quota usage for a search SKU in the given subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param skuName The unique SKU name that identifies a billable tier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota usage for a search SKU in the given subscription along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QuotaUsageResultInner>> usageBySubscriptionSkuWithResponseAsync(String location,
         String skuName) {
@@ -395,49 +369,21 @@ public final class SearchManagementClientImpl extends AzureServiceClient impleme
             this.getSubscriptionId(), skuName, accept, context);
     }
 
-    /**
-     * Gets the quota usage for a search SKU in the given subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param skuName The unique SKU name that identifies a billable tier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota usage for a search SKU in the given subscription on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QuotaUsageResultInner> usageBySubscriptionSkuAsync(String location, String skuName) {
         return usageBySubscriptionSkuWithResponseAsync(location, skuName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the quota usage for a search SKU in the given subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param skuName The unique SKU name that identifies a billable tier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota usage for a search SKU in the given subscription along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QuotaUsageResultInner> usageBySubscriptionSkuWithResponse(String location, String skuName,
         Context context) {
         return usageBySubscriptionSkuWithResponseAsync(location, skuName, context).block();
     }
 
-    /**
-     * Gets the quota usage for a search SKU in the given subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param skuName The unique SKU name that identifies a billable tier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota usage for a search SKU in the given subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QuotaUsageResultInner usageBySubscriptionSku(String location, String skuName) {
         return usageBySubscriptionSkuWithResponse(location, skuName, Context.NONE).getValue();
