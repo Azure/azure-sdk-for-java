@@ -235,18 +235,7 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Config Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Config Template Version Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigTemplateVersionInner> getWithResponse(String resourceGroupName, String configTemplateName,
         String configTemplateVersionName, Context context) {
@@ -255,17 +244,7 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
             resourceGroupName, configTemplateName, configTemplateVersionName, accept, context);
     }
 
-    /**
-     * Get a Config Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Config Template Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateVersionInner get(String resourceGroupName, String configTemplateName,
         String configTemplateVersionName) {
@@ -773,12 +752,7 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigTemplateVersionInner> listByConfigTemplateSinglePage(String resourceGroupName,
         String configTemplateName) {
-        final String accept = "application/json";
-        Response<ConfigTemplateVersionListResult> res
-            = service.listByConfigTemplateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, configTemplateName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByConfigTemplateSinglePage(resourceGroupName, configTemplateName, Context.NONE);
     }
 
     /**
@@ -803,34 +777,14 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Config Template Version Resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ConfigTemplateVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigTemplateVersionInner> listByConfigTemplate(String resourceGroupName,
         String configTemplateName) {
-        return new PagedIterable<>(() -> listByConfigTemplateSinglePage(resourceGroupName, configTemplateName),
-            nextLink -> listByConfigTemplateNextSinglePage(nextLink));
+        return listByConfigTemplate(resourceGroupName, configTemplateName, Context.NONE);
     }
 
-    /**
-     * List Config Template Version Resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ConfigTemplateVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigTemplateVersionInner> listByConfigTemplate(String resourceGroupName,
         String configTemplateName, Context context) {
@@ -870,11 +824,7 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigTemplateVersionInner> listByConfigTemplateNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConfigTemplateVersionListResult> res
-            = service.listByConfigTemplateNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByConfigTemplateNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

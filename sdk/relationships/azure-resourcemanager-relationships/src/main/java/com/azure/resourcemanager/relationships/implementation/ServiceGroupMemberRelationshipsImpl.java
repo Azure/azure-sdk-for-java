@@ -44,7 +44,7 @@ public final class ServiceGroupMemberRelationshipsImpl implements ServiceGroupMe
     }
 
     public void deleteByResourceGroup(String resourceUri, String name) {
-        this.serviceClient().delete(resourceUri, name);
+        this.delete(resourceUri, name, Context.NONE);
     }
 
     public void delete(String resourceUri, String name, Context context) {
@@ -52,9 +52,7 @@ public final class ServiceGroupMemberRelationshipsImpl implements ServiceGroupMe
     }
 
     public PagedIterable<ServiceGroupMemberRelationship> listByParent(String resourceUri) {
-        PagedIterable<ServiceGroupMemberRelationshipInner> inner = this.serviceClient().listByParent(resourceUri);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ServiceGroupMemberRelationshipImpl(inner1, this.manager()));
+        return this.listByParent(resourceUri, Context.NONE);
     }
 
     public PagedIterable<ServiceGroupMemberRelationship> listByParent(String resourceUri, Context context) {
@@ -65,66 +63,30 @@ public final class ServiceGroupMemberRelationshipsImpl implements ServiceGroupMe
     }
 
     public ServiceGroupMemberRelationship getById(String id) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember/{name}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember/{name}", "name");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'serviceGroupMember'.", id)));
-        }
-        return this.getWithResponse(resourceUri, name, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ServiceGroupMemberRelationship> getByIdWithResponse(String id, Context context) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember/{name}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember/{name}", "name");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'serviceGroupMember'.", id)));
-        }
+        String resourceUri = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember/{name}", "resourceUri", "resourceUri",
+            LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember/{name}", "name", "serviceGroupMember",
+            LOGGER);
         return this.getWithResponse(resourceUri, name, context);
     }
 
     public void deleteById(String id) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember/{name}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember/{name}", "name");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'serviceGroupMember'.", id)));
-        }
-        this.delete(resourceUri, name, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember/{name}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember/{name}", "name");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'serviceGroupMember'.", id)));
-        }
+        String resourceUri = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember/{name}", "resourceUri", "resourceUri",
+            LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember/{name}", "name", "serviceGroupMember",
+            LOGGER);
         this.delete(resourceUri, name, context);
     }
 

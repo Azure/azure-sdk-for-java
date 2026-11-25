@@ -221,12 +221,8 @@ public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
     private PagedResponse<UsageAggregationInner> listSinglePage(OffsetDateTime reportedStartTime,
         OffsetDateTime reportedEndTime, Boolean showDetails, AggregationGranularity aggregationGranularity,
         String continuationToken) {
-        final String accept = "application/json";
-        Response<UsageAggregationListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), reportedStartTime, reportedEndTime,
-            showDetails, aggregationGranularity, continuationToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(reportedStartTime, reportedEndTime, showDetails, aggregationGranularity,
+            continuationToken, Context.NONE);
     }
 
     /**
@@ -263,48 +259,17 @@ public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Query aggregated Azure subscription consumption data for a date range.
-     * 
-     * @param reportedStartTime The start of the time range to retrieve data for.
-     * @param reportedEndTime The end of the time range to retrieve data for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 202.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UsageAggregation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageAggregationInner> list(OffsetDateTime reportedStartTime, OffsetDateTime reportedEndTime) {
         final Boolean showDetails = null;
         final AggregationGranularity aggregationGranularity = null;
         final String continuationToken = null;
-        return new PagedIterable<>(() -> listSinglePage(reportedStartTime, reportedEndTime, showDetails,
-            aggregationGranularity, continuationToken), nextLink -> listNextSinglePage(nextLink));
+        return list(reportedStartTime, reportedEndTime, showDetails, aggregationGranularity, continuationToken,
+            Context.NONE);
     }
 
-    /**
-     * Query aggregated Azure subscription consumption data for a date range.
-     * 
-     * @param reportedStartTime The start of the time range to retrieve data for.
-     * @param reportedEndTime The end of the time range to retrieve data for.
-     * @param showDetails `True` returns usage data in instance-level detail, `false` causes server-side aggregation
-     * with fewer details. For example, if you have 3 website instances, by default you will get 3 line items for
-     * website consumption. If you specify showDetails = false, the data will be aggregated as a single line item for
-     * website consumption within the time period (for the given subscriptionId, meterId, usageStartTime and
-     * usageEndTime).
-     * @param aggregationGranularity `Daily` (default) returns the data in daily granularity, `Hourly` returns the data
-     * in hourly granularity.
-     * @param continuationToken Used when a continuation token string is provided in the response body of the previous
-     * call, enabling paging through a large result set. If not present, the data is retrieved from the beginning of the
-     * day/hour (based on the granularity) passed in.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 202.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UsageAggregation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageAggregationInner> list(OffsetDateTime reportedStartTime, OffsetDateTime reportedEndTime,
         Boolean showDetails, AggregationGranularity aggregationGranularity, String continuationToken, Context context) {
@@ -344,11 +309,7 @@ public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UsageAggregationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<UsageAggregationListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

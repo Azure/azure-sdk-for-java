@@ -151,17 +151,7 @@ public final class HcpOpenShiftVersionsClientImpl implements HcpOpenShiftVersion
         return getWithResponseAsync(location, hcpOpenShiftVersionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a HcpOpenShiftVersion.
-     * 
-     * @param location The name of the Azure region.
-     * @param hcpOpenShiftVersionName The name of the HcpOpenShiftVersion.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HcpOpenShiftVersion along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HcpOpenShiftVersionInner> getWithResponse(String location, String hcpOpenShiftVersionName,
         Context context) {
@@ -170,16 +160,7 @@ public final class HcpOpenShiftVersionsClientImpl implements HcpOpenShiftVersion
             location, hcpOpenShiftVersionName, accept, context);
     }
 
-    /**
-     * Get a HcpOpenShiftVersion.
-     * 
-     * @param location The name of the Azure region.
-     * @param hcpOpenShiftVersionName The name of the HcpOpenShiftVersion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HcpOpenShiftVersion.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HcpOpenShiftVersionInner get(String location, String hcpOpenShiftVersionName) {
         return getWithResponse(location, hcpOpenShiftVersionName, Context.NONE).getValue();
@@ -231,11 +212,7 @@ public final class HcpOpenShiftVersionsClientImpl implements HcpOpenShiftVersion
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HcpOpenShiftVersionInner> listSinglePage(String location) {
-        final String accept = "application/json";
-        Response<HcpOpenShiftVersionListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, Context.NONE);
     }
 
     /**
@@ -257,30 +234,13 @@ public final class HcpOpenShiftVersionsClientImpl implements HcpOpenShiftVersion
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List HcpOpenShiftVersion resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HcpOpenShiftVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HcpOpenShiftVersionInner> list(String location) {
-        return new PagedIterable<>(() -> listSinglePage(location), nextLink -> listNextSinglePage(nextLink));
+        return list(location, Context.NONE);
     }
 
-    /**
-     * List HcpOpenShiftVersion resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HcpOpenShiftVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HcpOpenShiftVersionInner> list(String location, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, context),
@@ -317,11 +277,7 @@ public final class HcpOpenShiftVersionsClientImpl implements HcpOpenShiftVersion
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HcpOpenShiftVersionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<HcpOpenShiftVersionListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

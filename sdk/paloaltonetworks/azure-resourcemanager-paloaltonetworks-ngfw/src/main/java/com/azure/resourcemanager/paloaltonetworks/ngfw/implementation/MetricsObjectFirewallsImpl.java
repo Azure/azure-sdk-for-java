@@ -46,13 +46,7 @@ public final class MetricsObjectFirewallsImpl implements MetricsObjectFirewalls 
 
     public MetricsObjectFirewallResource createOrUpdate(String resourceGroupName, String firewallName,
         MetricsObjectFirewallResourceInner resource) {
-        MetricsObjectFirewallResourceInner inner
-            = this.serviceClient().createOrUpdate(resourceGroupName, firewallName, resource);
-        if (inner != null) {
-            return new MetricsObjectFirewallResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, firewallName, resource, Context.NONE);
     }
 
     public MetricsObjectFirewallResource createOrUpdate(String resourceGroupName, String firewallName,
@@ -67,7 +61,7 @@ public final class MetricsObjectFirewallsImpl implements MetricsObjectFirewalls 
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String firewallName) {
-        this.serviceClient().delete(resourceGroupName, firewallName);
+        this.delete(resourceGroupName, firewallName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String firewallName, Context context) {
@@ -75,10 +69,7 @@ public final class MetricsObjectFirewallsImpl implements MetricsObjectFirewalls 
     }
 
     public PagedIterable<MetricsObjectFirewallResource> listByFirewalls(String resourceGroupName, String firewallName) {
-        PagedIterable<MetricsObjectFirewallResourceInner> inner
-            = this.serviceClient().listByFirewalls(resourceGroupName, firewallName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new MetricsObjectFirewallResourceImpl(inner1, this.manager()));
+        return this.listByFirewalls(resourceGroupName, firewallName, Context.NONE);
     }
 
     public PagedIterable<MetricsObjectFirewallResource> listByFirewalls(String resourceGroupName, String firewallName,

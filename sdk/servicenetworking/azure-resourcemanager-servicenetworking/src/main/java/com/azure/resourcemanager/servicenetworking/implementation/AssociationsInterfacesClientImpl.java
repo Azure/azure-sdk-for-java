@@ -236,18 +236,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Association.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param associationName Name of Association.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Association along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AssociationInner> getWithResponse(String resourceGroupName, String trafficControllerName,
         String associationName, Context context) {
@@ -256,17 +245,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
             resourceGroupName, trafficControllerName, associationName, accept, context);
     }
 
-    /**
-     * Get a Association.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param associationName Name of Association.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Association.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssociationInner get(String resourceGroupName, String trafficControllerName, String associationName) {
         return getWithResponse(resourceGroupName, trafficControllerName, associationName, Context.NONE).getValue();
@@ -312,11 +291,8 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String trafficControllerName,
         String associationName, AssociationInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, associationName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, trafficControllerName, associationName, resource,
+            Context.NONE);
     }
 
     /**
@@ -363,40 +339,14 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
             AssociationInner.class, AssociationInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Association.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param associationName Name of Association.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of association Subresource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssociationInner>, AssociationInner> beginCreateOrUpdate(String resourceGroupName,
         String trafficControllerName, String associationName, AssociationInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, trafficControllerName, associationName, resource);
-        return this.client.<AssociationInner, AssociationInner>getLroResult(response, AssociationInner.class,
-            AssociationInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, associationName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Association.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param associationName Name of Association.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of association Subresource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssociationInner>, AssociationInner> beginCreateOrUpdate(String resourceGroupName,
         String trafficControllerName, String associationName, AssociationInner resource, Context context) {
@@ -425,43 +375,19 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Association.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param associationName Name of Association.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return association Subresource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssociationInner createOrUpdate(String resourceGroupName, String trafficControllerName,
         String associationName, AssociationInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, associationName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, trafficControllerName, associationName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Association.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param associationName Name of Association.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return association Subresource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssociationInner createOrUpdate(String resourceGroupName, String trafficControllerName,
         String associationName, AssociationInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, associationName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, trafficControllerName, associationName, resource, context));
     }
 
     /**
@@ -508,19 +434,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a Association.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param associationName Name of Association.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return association Subresource of Traffic Controller along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AssociationInner> updateWithResponse(String resourceGroupName, String trafficControllerName,
         String associationName, AssociationUpdate properties, Context context) {
@@ -531,18 +445,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
             accept, properties, context);
     }
 
-    /**
-     * Update a Association.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param associationName Name of Association.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return association Subresource of Traffic Controller.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssociationInner update(String resourceGroupName, String trafficControllerName, String associationName,
         AssociationUpdate properties) {
@@ -584,8 +487,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String trafficControllerName,
         String associationName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, associationName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, trafficControllerName, associationName, Context.NONE);
     }
 
     /**
@@ -627,36 +529,14 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
             this.client.getContext());
     }
 
-    /**
-     * Delete a Association.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param associationName Name of Association.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
         String associationName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, trafficControllerName, associationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, trafficControllerName, associationName, Context.NONE);
     }
 
-    /**
-     * Delete a Association.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param associationName Name of Association.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
         String associationName, Context context) {
@@ -682,36 +562,18 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Association.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param associationName Name of Association.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trafficControllerName, String associationName) {
-        beginDelete(resourceGroupName, trafficControllerName, associationName).getFinalResult();
+        delete(resourceGroupName, trafficControllerName, associationName, Context.NONE);
     }
 
-    /**
-     * Delete a Association.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param associationName Name of Association.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trafficControllerName, String associationName,
         Context context) {
-        beginDelete(resourceGroupName, trafficControllerName, associationName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, trafficControllerName, associationName, context));
     }
 
     /**
@@ -768,12 +630,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssociationInner> listByTrafficControllerSinglePage(String resourceGroupName,
         String trafficControllerName) {
-        final String accept = "application/json";
-        Response<AssociationListResult> res
-            = service.listByTrafficControllerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTrafficControllerSinglePage(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
     /**
@@ -798,34 +655,14 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Association resources by TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Association list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssociationInner> listByTrafficController(String resourceGroupName,
         String trafficControllerName) {
-        return new PagedIterable<>(() -> listByTrafficControllerSinglePage(resourceGroupName, trafficControllerName),
-            nextLink -> listByTrafficControllerNextSinglePage(nextLink));
+        return listByTrafficController(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
-    /**
-     * List Association resources by TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Association list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssociationInner> listByTrafficController(String resourceGroupName,
         String trafficControllerName, Context context) {
@@ -866,11 +703,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssociationInner> listByTrafficControllerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AssociationListResult> res
-            = service.listByTrafficControllerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTrafficControllerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

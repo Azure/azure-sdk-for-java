@@ -61,11 +61,7 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
     }
 
     public PrivateEndpointConnectionResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnections()
-            .approveOrReject(resourceGroupName, clusterName, privateEndpointConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PrivateEndpointConnectionResource create(Context context) {
@@ -87,11 +83,7 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
     }
 
     public PrivateEndpointConnectionResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnections()
-            .approveOrReject(resourceGroupName, clusterName, privateEndpointConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PrivateEndpointConnectionResource apply(Context context) {
@@ -117,11 +109,7 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
     }
 
     public PrivateEndpointConnectionResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, clusterName, privateEndpointConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PrivateEndpointConnectionResource refresh(Context context) {

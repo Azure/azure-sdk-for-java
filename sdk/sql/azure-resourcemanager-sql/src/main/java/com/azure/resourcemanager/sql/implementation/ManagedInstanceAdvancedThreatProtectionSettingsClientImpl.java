@@ -114,18 +114,7 @@ public final class ManagedInstanceAdvancedThreatProtectionSettingsClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get a managed instance's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance's Advanced Threat Protection state along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedInstanceAdvancedThreatProtectionInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, AdvancedThreatProtectionName advancedThreatProtectionName) {
@@ -199,17 +188,7 @@ public final class ManagedInstanceAdvancedThreatProtectionSettingsClientImpl
             resourceGroupName, managedInstanceName, advancedThreatProtectionName, accept, context);
     }
 
-    /**
-     * Get a managed instance's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance's Advanced Threat Protection state on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceAdvancedThreatProtectionInner> getAsync(String resourceGroupName,
         String managedInstanceName, AdvancedThreatProtectionName advancedThreatProtectionName) {
@@ -217,18 +196,7 @@ public final class ManagedInstanceAdvancedThreatProtectionSettingsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a managed instance's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance's Advanced Threat Protection state along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedInstanceAdvancedThreatProtectionInner> getWithResponse(String resourceGroupName,
         String managedInstanceName, AdvancedThreatProtectionName advancedThreatProtectionName, Context context) {
@@ -236,17 +204,7 @@ public final class ManagedInstanceAdvancedThreatProtectionSettingsClientImpl
             .block();
     }
 
-    /**
-     * Get a managed instance's Advanced Threat Protection state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance's Advanced Threat Protection state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceAdvancedThreatProtectionInner get(String resourceGroupName, String managedInstanceName,
         AdvancedThreatProtectionName advancedThreatProtectionName) {
@@ -254,19 +212,7 @@ public final class ManagedInstanceAdvancedThreatProtectionSettingsClientImpl
             .getValue();
     }
 
-    /**
-     * Creates or updates Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param parameters The managed instance Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance Advanced Threat Protection along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, AdvancedThreatProtectionName advancedThreatProtectionName,
@@ -356,18 +302,7 @@ public final class ManagedInstanceAdvancedThreatProtectionSettingsClientImpl
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param parameters The managed instance Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a managed instance Advanced Threat Protection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<ManagedInstanceAdvancedThreatProtectionInner>, ManagedInstanceAdvancedThreatProtectionInner>
@@ -410,18 +345,7 @@ public final class ManagedInstanceAdvancedThreatProtectionSettingsClientImpl
                 ManagedInstanceAdvancedThreatProtectionInner.class, context);
     }
 
-    /**
-     * Creates or updates Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param parameters The managed instance Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a managed instance Advanced Threat Protection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ManagedInstanceAdvancedThreatProtectionInner>, ManagedInstanceAdvancedThreatProtectionInner>
@@ -433,19 +357,7 @@ public final class ManagedInstanceAdvancedThreatProtectionSettingsClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param parameters The managed instance Advanced Threat Protection state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a managed instance Advanced Threat Protection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ManagedInstanceAdvancedThreatProtectionInner>, ManagedInstanceAdvancedThreatProtectionInner>
@@ -458,18 +370,7 @@ public final class ManagedInstanceAdvancedThreatProtectionSettingsClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param parameters The managed instance Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance Advanced Threat Protection on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceAdvancedThreatProtectionInner> createOrUpdateAsync(String resourceGroupName,
         String managedInstanceName, AdvancedThreatProtectionName advancedThreatProtectionName,
@@ -499,18 +400,7 @@ public final class ManagedInstanceAdvancedThreatProtectionSettingsClientImpl
             parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param parameters The managed instance Advanced Threat Protection state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance Advanced Threat Protection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceAdvancedThreatProtectionInner createOrUpdate(String resourceGroupName,
         String managedInstanceName, AdvancedThreatProtectionName advancedThreatProtectionName,
@@ -519,19 +409,7 @@ public final class ManagedInstanceAdvancedThreatProtectionSettingsClientImpl
             .block();
     }
 
-    /**
-     * Creates or updates Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
-     * @param parameters The managed instance Advanced Threat Protection state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance Advanced Threat Protection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceAdvancedThreatProtectionInner createOrUpdate(String resourceGroupName,
         String managedInstanceName, AdvancedThreatProtectionName advancedThreatProtectionName,
@@ -620,16 +498,7 @@ public final class ManagedInstanceAdvancedThreatProtectionSettingsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get the managed instance's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed instance's Advanced Threat Protection settings as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceAdvancedThreatProtectionInner> listByInstanceAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -655,35 +524,14 @@ public final class ManagedInstanceAdvancedThreatProtectionSettingsClientImpl
             nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get the managed instance's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed instance's Advanced Threat Protection settings as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceAdvancedThreatProtectionInner> listByInstance(String resourceGroupName,
         String managedInstanceName) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
-    /**
-     * Get the managed instance's Advanced Threat Protection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed instance's Advanced Threat Protection settings as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceAdvancedThreatProtectionInner> listByInstance(String resourceGroupName,
         String managedInstanceName, Context context) {

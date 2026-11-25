@@ -95,10 +95,7 @@ public final class ConfigTemplateImpl implements ConfigTemplate, ConfigTemplate.
     }
 
     public ConfigTemplate create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigTemplates()
-            .createOrUpdate(resourceGroupName, configTemplateName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ConfigTemplate create(Context context) {
@@ -121,11 +118,7 @@ public final class ConfigTemplateImpl implements ConfigTemplate, ConfigTemplate.
     }
 
     public ConfigTemplate apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigTemplates()
-            .updateWithResponse(resourceGroupName, configTemplateName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ConfigTemplate apply(Context context) {
@@ -149,11 +142,7 @@ public final class ConfigTemplateImpl implements ConfigTemplate, ConfigTemplate.
     }
 
     public ConfigTemplate refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigTemplates()
-            .getByResourceGroupWithResponse(resourceGroupName, configTemplateName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ConfigTemplate refresh(Context context) {

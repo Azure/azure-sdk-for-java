@@ -45,12 +45,7 @@ public final class RetentionPoliciesImpl implements RetentionPolicies {
 
     public RetentionPolicy createOrReplace(String resourceGroupName, String schedulerName,
         RetentionPolicyInner resource) {
-        RetentionPolicyInner inner = this.serviceClient().createOrReplace(resourceGroupName, schedulerName, resource);
-        if (inner != null) {
-            return new RetentionPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrReplace(resourceGroupName, schedulerName, resource, Context.NONE);
     }
 
     public RetentionPolicy createOrReplace(String resourceGroupName, String schedulerName,
@@ -65,12 +60,7 @@ public final class RetentionPoliciesImpl implements RetentionPolicies {
     }
 
     public RetentionPolicy update(String resourceGroupName, String schedulerName, RetentionPolicyInner properties) {
-        RetentionPolicyInner inner = this.serviceClient().update(resourceGroupName, schedulerName, properties);
-        if (inner != null) {
-            return new RetentionPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, schedulerName, properties, Context.NONE);
     }
 
     public RetentionPolicy update(String resourceGroupName, String schedulerName, RetentionPolicyInner properties,
@@ -84,7 +74,7 @@ public final class RetentionPoliciesImpl implements RetentionPolicies {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String schedulerName) {
-        this.serviceClient().delete(resourceGroupName, schedulerName);
+        this.delete(resourceGroupName, schedulerName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String schedulerName, Context context) {
@@ -92,9 +82,7 @@ public final class RetentionPoliciesImpl implements RetentionPolicies {
     }
 
     public PagedIterable<RetentionPolicy> listByScheduler(String resourceGroupName, String schedulerName) {
-        PagedIterable<RetentionPolicyInner> inner
-            = this.serviceClient().listByScheduler(resourceGroupName, schedulerName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RetentionPolicyImpl(inner1, this.manager()));
+        return this.listByScheduler(resourceGroupName, schedulerName, Context.NONE);
     }
 
     public PagedIterable<RetentionPolicy> listByScheduler(String resourceGroupName, String schedulerName,

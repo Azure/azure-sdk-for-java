@@ -145,17 +145,7 @@ public final class JobsClientImpl implements JobsClient {
         return getWithResponseAsync(resourceUri, jobName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Job resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param jobName The name of the Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobInner> getWithResponse(String resourceUri, String jobName, Context context) {
         final String accept = "application/json";
@@ -163,16 +153,7 @@ public final class JobsClientImpl implements JobsClient {
             context);
     }
 
-    /**
-     * Get a Job resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param jobName The name of the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobInner get(String resourceUri, String jobName) {
         return getWithResponse(resourceUri, jobName, Context.NONE).getValue();
@@ -225,11 +206,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobInner> listByTargetSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<JobListResult> res = service.listByTargetSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTargetSinglePage(resourceUri, Context.NONE);
     }
 
     /**
@@ -251,31 +228,13 @@ public final class JobsClientImpl implements JobsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Jobs by parent resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Job list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobInner> listByTarget(String resourceUri) {
-        return new PagedIterable<>(() -> listByTargetSinglePage(resourceUri),
-            nextLink -> listByTargetNextSinglePage(nextLink));
+        return listByTarget(resourceUri, Context.NONE);
     }
 
-    /**
-     * List Jobs by parent resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Job list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobInner> listByTarget(String resourceUri, Context context) {
         return new PagedIterable<>(() -> listByTargetSinglePage(resourceUri, context),
@@ -313,11 +272,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobInner> listByTargetNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<JobListResult> res
-            = service.listByTargetNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTargetNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

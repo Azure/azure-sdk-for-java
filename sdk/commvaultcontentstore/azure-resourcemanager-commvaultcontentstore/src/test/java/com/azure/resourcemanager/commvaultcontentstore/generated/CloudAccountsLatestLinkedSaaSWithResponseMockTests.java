@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class CloudAccountsLatestLinkedSaaSWithResponseMockTests {
     @Test
     public void testLatestLinkedSaaSWithResponse() throws Exception {
-        String responseStr = "{\"saaSResourceId\":\"lvkgju\",\"isHiddenSaaS\":true}";
+        String responseStr = "{\"saaSResourceId\":\"gicccnxqhuex\",\"isHiddenSaaS\":true}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +30,10 @@ public final class CloudAccountsLatestLinkedSaaSWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LatestLinkedSaaSResponse response = manager.cloudAccounts()
-            .latestLinkedSaaSWithResponse("r", "xqtvcofu", com.azure.core.util.Context.NONE)
+            .latestLinkedSaaSWithResponse("brgz", "wmsweypqwd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lvkgju", response.saaSResourceId());
+        Assertions.assertEquals("gicccnxqhuex", response.saaSResourceId());
         Assertions.assertTrue(response.isHiddenSaaS());
     }
 }

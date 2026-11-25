@@ -385,17 +385,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the properties of the specified configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified configuration store along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationStoreInner> getByResourceGroupWithResponse(String resourceGroupName,
         String configStoreName, Context context) {
@@ -404,16 +394,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             this.client.getSubscriptionId(), resourceGroupName, configStoreName, accept, context);
     }
 
-    /**
-     * Gets the properties of the specified configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified configuration store.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationStoreInner getByResourceGroup(String resourceGroupName, String configStoreName) {
         return getByResourceGroupWithResponse(resourceGroupName, configStoreName, Context.NONE).getValue();
@@ -457,11 +438,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String configStoreName,
         ConfigurationStoreInner configStoreCreationParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configStoreName, contentType, accept,
-            configStoreCreationParameters, Context.NONE);
+        return createWithResponse(resourceGroupName, configStoreName, configStoreCreationParameters, Context.NONE);
     }
 
     /**
@@ -507,38 +484,14 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             this.client.getContext());
     }
 
-    /**
-     * Creates a configuration store with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param configStoreCreationParameters The parameters for creating a configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the configuration store along with all resource properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginCreate(
         String resourceGroupName, String configStoreName, ConfigurationStoreInner configStoreCreationParameters) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, configStoreName, configStoreCreationParameters);
-        return this.client.<ConfigurationStoreInner, ConfigurationStoreInner>getLroResult(response,
-            ConfigurationStoreInner.class, ConfigurationStoreInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, configStoreName, configStoreCreationParameters, Context.NONE);
     }
 
-    /**
-     * Creates a configuration store with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param configStoreCreationParameters The parameters for creating a configuration store.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the configuration store along with all resource properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginCreate(
         String resourceGroupName, String configStoreName, ConfigurationStoreInner configStoreCreationParameters,
@@ -567,39 +520,19 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a configuration store with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param configStoreCreationParameters The parameters for creating a configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration store along with all resource properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationStoreInner create(String resourceGroupName, String configStoreName,
         ConfigurationStoreInner configStoreCreationParameters) {
-        return beginCreate(resourceGroupName, configStoreName, configStoreCreationParameters).getFinalResult();
+        return create(resourceGroupName, configStoreName, configStoreCreationParameters, Context.NONE);
     }
 
-    /**
-     * Creates a configuration store with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param configStoreCreationParameters The parameters for creating a configuration store.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration store along with all resource properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationStoreInner create(String resourceGroupName, String configStoreName,
         ConfigurationStoreInner configStoreCreationParameters, Context context) {
-        return beginCreate(resourceGroupName, configStoreName, configStoreCreationParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, configStoreName, configStoreCreationParameters, context));
     }
 
     /**
@@ -640,11 +573,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String configStoreName,
         ConfigurationStoreUpdateParameters configStoreUpdateParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configStoreName, contentType, accept,
-            configStoreUpdateParameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, configStoreName, configStoreUpdateParameters, Context.NONE);
     }
 
     /**
@@ -691,39 +620,15 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             this.client.getContext());
     }
 
-    /**
-     * Updates a configuration store with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param configStoreUpdateParameters The parameters for updating a configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the configuration store along with all resource properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginUpdate(
         String resourceGroupName, String configStoreName,
         ConfigurationStoreUpdateParameters configStoreUpdateParameters) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, configStoreName, configStoreUpdateParameters);
-        return this.client.<ConfigurationStoreInner, ConfigurationStoreInner>getLroResult(response,
-            ConfigurationStoreInner.class, ConfigurationStoreInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, configStoreName, configStoreUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Updates a configuration store with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param configStoreUpdateParameters The parameters for updating a configuration store.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the configuration store along with all resource properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginUpdate(
         String resourceGroupName, String configStoreName,
@@ -752,39 +657,19 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a configuration store with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param configStoreUpdateParameters The parameters for updating a configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration store along with all resource properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationStoreInner update(String resourceGroupName, String configStoreName,
         ConfigurationStoreUpdateParameters configStoreUpdateParameters) {
-        return beginUpdate(resourceGroupName, configStoreName, configStoreUpdateParameters).getFinalResult();
+        return update(resourceGroupName, configStoreName, configStoreUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Updates a configuration store with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param configStoreUpdateParameters The parameters for updating a configuration store.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration store along with all resource properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationStoreInner update(String resourceGroupName, String configStoreName,
         ConfigurationStoreUpdateParameters configStoreUpdateParameters, Context context) {
-        return beginUpdate(resourceGroupName, configStoreName, configStoreUpdateParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, configStoreName, configStoreUpdateParameters, context));
     }
 
     /**
@@ -817,8 +702,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String configStoreName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configStoreName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, configStoreName, Context.NONE);
     }
 
     /**
@@ -855,33 +739,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             this.client.getContext());
     }
 
-    /**
-     * Deletes a configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, configStoreName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, configStoreName, Context.NONE);
     }
 
-    /**
-     * Deletes a configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
         Context context) {
@@ -905,33 +769,16 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configStoreName) {
-        beginDelete(resourceGroupName, configStoreName).getFinalResult();
+        delete(resourceGroupName, configStoreName, Context.NONE);
     }
 
-    /**
-     * Deletes a configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configStoreName, Context context) {
-        beginDelete(resourceGroupName, configStoreName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, configStoreName, context));
     }
 
     /**
@@ -1008,12 +855,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigurationStoreInner> listByResourceGroupSinglePage(String resourceGroupName,
         String skipToken) {
-        final String accept = "application/json";
-        Response<ConfigurationStoreListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, skipToken, Context.NONE);
     }
 
     /**
@@ -1040,35 +882,14 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the configuration stores for a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ConfigurationStore list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationStoreInner> listByResourceGroup(String resourceGroupName) {
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, skipToken),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, skipToken, Context.NONE);
     }
 
-    /**
-     * Lists the configuration stores for a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
-     * parameter that specifies a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ConfigurationStore list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationStoreInner> listByResourceGroup(String resourceGroupName, String skipToken,
         Context context) {
@@ -1141,11 +962,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigurationStoreInner> listSinglePage(String skipToken) {
-        final String accept = "application/json";
-        Response<ConfigurationStoreListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(skipToken, Context.NONE);
     }
 
     /**
@@ -1169,31 +986,14 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the configuration stores for a given subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ConfigurationStore list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationStoreInner> list() {
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(skipToken), nextLink -> listNextSinglePage(nextLink));
+        return list(skipToken, Context.NONE);
     }
 
-    /**
-     * Lists the configuration stores for a given subscription.
-     * 
-     * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
-     * parameter that specifies a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ConfigurationStore list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationStoreInner> list(String skipToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(skipToken, context),
@@ -1278,11 +1078,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApiKeyInner> listKeysSinglePage(String resourceGroupName, String configStoreName,
         String skipToken) {
-        final String accept = "application/json";
-        Response<ApiKeyListResult> res = service.listKeysSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configStoreName, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listKeysSinglePage(resourceGroupName, configStoreName, skipToken, Context.NONE);
     }
 
     /**
@@ -1309,37 +1105,14 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the access key for the specified configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list API keys as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApiKeyInner> listKeys(String resourceGroupName, String configStoreName) {
         final String skipToken = null;
-        return new PagedIterable<>(() -> listKeysSinglePage(resourceGroupName, configStoreName, skipToken),
-            nextLink -> listKeysNextSinglePage(nextLink));
+        return listKeys(resourceGroupName, configStoreName, skipToken, Context.NONE);
     }
 
-    /**
-     * Lists the access key for the specified configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
-     * parameter that specifies a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list API keys as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApiKeyInner> listKeys(String resourceGroupName, String configStoreName, String skipToken,
         Context context) {
@@ -1390,18 +1163,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Regenerates an access key for the specified configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param regenerateKeyParameters The parameters for regenerating an access key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an API key used for authenticating with a configuration store endpoint along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApiKeyInner> regenerateKeyWithResponse(String resourceGroupName, String configStoreName,
         RegenerateKeyParameters regenerateKeyParameters, Context context) {
@@ -1412,17 +1174,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             regenerateKeyParameters, context);
     }
 
-    /**
-     * Regenerates an access key for the specified configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param regenerateKeyParameters The parameters for regenerating an access key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an API key used for authenticating with a configuration store endpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApiKeyInner regenerateKey(String resourceGroupName, String configStoreName,
         RegenerateKeyParameters regenerateKeyParameters) {
@@ -1466,17 +1218,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         return getDeletedWithResponseAsync(location, configStoreName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a deleted Azure app configuration store.
-     * 
-     * @param location The name of the Azure region.
-     * @param configStoreName The name of the configuration store.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted Azure app configuration store along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedConfigurationStoreInner> getDeletedWithResponse(String location, String configStoreName,
         Context context) {
@@ -1485,16 +1227,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             this.client.getSubscriptionId(), location, configStoreName, accept, context);
     }
 
-    /**
-     * Gets a deleted Azure app configuration store.
-     * 
-     * @param location The name of the Azure region.
-     * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted Azure app configuration store.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedConfigurationStoreInner getDeleted(String location, String configStoreName) {
         return getDeletedWithResponse(location, configStoreName, Context.NONE).getValue();
@@ -1530,8 +1263,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> purgeDeletedWithResponse(String location, String configStoreName) {
-        return service.purgeDeletedSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, configStoreName, Context.NONE);
+        return purgeDeletedWithResponse(location, configStoreName, Context.NONE);
     }
 
     /**
@@ -1568,33 +1300,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             this.client.getContext());
     }
 
-    /**
-     * Permanently deletes the specified configuration store.
-     * 
-     * @param location The name of the Azure region.
-     * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String location, String configStoreName) {
-        Response<BinaryData> response = purgeDeletedWithResponse(location, configStoreName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginPurgeDeleted(location, configStoreName, Context.NONE);
     }
 
-    /**
-     * Permanently deletes the specified configuration store.
-     * 
-     * @param location The name of the Azure region.
-     * @param configStoreName The name of the configuration store.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String location, String configStoreName,
         Context context) {
@@ -1617,33 +1329,16 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         return beginPurgeDeletedAsync(location, configStoreName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Permanently deletes the specified configuration store.
-     * 
-     * @param location The name of the Azure region.
-     * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeleted(String location, String configStoreName) {
-        beginPurgeDeleted(location, configStoreName).getFinalResult();
+        purgeDeleted(location, configStoreName, Context.NONE);
     }
 
-    /**
-     * Permanently deletes the specified configuration store.
-     * 
-     * @param location The name of the Azure region.
-     * @param configStoreName The name of the configuration store.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeleted(String location, String configStoreName, Context context) {
-        beginPurgeDeleted(location, configStoreName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginPurgeDeleted(location, configStoreName, context));
     }
 
     /**
@@ -1688,11 +1383,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeletedConfigurationStoreInner> listDeletedSinglePage() {
-        final String accept = "application/json";
-        Response<DeletedConfigurationStoreListResult> res = service.listDeletedSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDeletedSinglePage(Context.NONE);
     }
 
     /**
@@ -1713,29 +1404,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets information about the deleted configuration stores in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the deleted configuration stores in a subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedConfigurationStoreInner> listDeleted() {
-        return new PagedIterable<>(() -> listDeletedSinglePage(), nextLink -> listDeletedNextSinglePage(nextLink));
+        return listDeleted(Context.NONE);
     }
 
-    /**
-     * Gets information about the deleted configuration stores in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the deleted configuration stores in a subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedConfigurationStoreInner> listDeleted(Context context) {
         return new PagedIterable<>(() -> listDeletedSinglePage(context),
@@ -1774,11 +1449,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigurationStoreInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConfigurationStoreListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1830,11 +1501,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigurationStoreInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConfigurationStoreListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1887,11 +1554,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApiKeyInner> listKeysNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ApiKeyListResult> res
-            = service.listKeysNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listKeysNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1943,11 +1606,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeletedConfigurationStoreInner> listDeletedNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeletedConfigurationStoreListResult> res
-            = service.listDeletedNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listDeletedNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -235,30 +235,7 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IscsiPathInner> listByPrivateCloudSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<IscsiPathListResult> res
-            = service.listByPrivateCloudSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPrivateCloudSinglePage(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -301,33 +278,13 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List IscsiPath resources by PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a IscsiPath list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IscsiPathInner> listByPrivateCloud(String resourceGroupName, String privateCloudName) {
-        return new PagedIterable<>(() -> listByPrivateCloudSinglePage(resourceGroupName, privateCloudName),
-            nextLink -> listByPrivateCloudNextSinglePage(nextLink));
+        return listByPrivateCloud(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * List IscsiPath resources by PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a IscsiPath list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IscsiPathInner> listByPrivateCloud(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -386,17 +343,7 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a IscsiPath.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a IscsiPath along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IscsiPathInner> getWithResponse(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -423,16 +370,7 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
             resourceGroupName, privateCloudName, accept, context);
     }
 
-    /**
-     * Get a IscsiPath.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a IscsiPath.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IscsiPathInner get(String resourceGroupName, String privateCloudName) {
         return getWithResponse(resourceGroupName, privateCloudName, Context.NONE).getValue();
@@ -496,35 +434,7 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String privateCloudName,
         IscsiPathInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, privateCloudName, resource, Context.NONE);
     }
 
     /**
@@ -593,37 +503,14 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
             IscsiPathInner.class, IscsiPathInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a IscsiPath.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an iSCSI path resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IscsiPathInner>, IscsiPathInner> beginCreateOrUpdate(String resourceGroupName,
         String privateCloudName, IscsiPathInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, privateCloudName, resource);
-        return this.client.<IscsiPathInner, IscsiPathInner>getLroResult(response, IscsiPathInner.class,
-            IscsiPathInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, privateCloudName, resource, Context.NONE);
     }
 
-    /**
-     * Create a IscsiPath.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an iSCSI path resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IscsiPathInner>, IscsiPathInner> beginCreateOrUpdate(String resourceGroupName,
         String privateCloudName, IscsiPathInner resource, Context context) {
@@ -651,38 +538,18 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a IscsiPath.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an iSCSI path resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IscsiPathInner createOrUpdate(String resourceGroupName, String privateCloudName, IscsiPathInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, privateCloudName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, privateCloudName, resource, Context.NONE);
     }
 
-    /**
-     * Create a IscsiPath.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an iSCSI path resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IscsiPathInner createOrUpdate(String resourceGroupName, String privateCloudName, IscsiPathInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, privateCloudName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, privateCloudName, resource, context));
     }
 
     /**
@@ -732,26 +599,7 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -807,33 +655,13 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a IscsiPath.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, privateCloudName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Delete a IscsiPath.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -857,33 +685,16 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a IscsiPath.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName) {
-        beginDelete(resourceGroupName, privateCloudName).getFinalResult();
+        delete(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * Delete a IscsiPath.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName, Context context) {
-        beginDelete(resourceGroupName, privateCloudName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, privateCloudName, context));
     }
 
     /**
@@ -925,20 +736,7 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IscsiPathInner> listByPrivateCloudNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<IscsiPathListResult> res
-            = service.listByPrivateCloudNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPrivateCloudNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

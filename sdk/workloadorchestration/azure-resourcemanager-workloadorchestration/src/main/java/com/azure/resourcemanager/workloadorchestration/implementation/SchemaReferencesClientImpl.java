@@ -219,17 +219,7 @@ public final class SchemaReferencesClientImpl implements SchemaReferencesClient 
         return getWithResponseAsync(resourceUri, schemaReferenceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Schema Reference Resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param schemaReferenceName The name of the SchemaReference.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Schema Reference Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaReferenceInner> getWithResponse(String resourceUri, String schemaReferenceName,
         Context context) {
@@ -238,16 +228,7 @@ public final class SchemaReferencesClientImpl implements SchemaReferencesClient 
             accept, context);
     }
 
-    /**
-     * Get a Schema Reference Resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param schemaReferenceName The name of the SchemaReference.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Schema Reference Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaReferenceInner get(String resourceUri, String schemaReferenceName) {
         return getWithResponse(resourceUri, schemaReferenceName, Context.NONE).getValue();
@@ -699,11 +680,7 @@ public final class SchemaReferencesClientImpl implements SchemaReferencesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaReferenceInner> listByResourceGroupSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<SchemaReferenceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceUri, Context.NONE);
     }
 
     /**
@@ -725,31 +702,13 @@ public final class SchemaReferencesClientImpl implements SchemaReferencesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by specified resource group.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SchemaReference list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchemaReferenceInner> listByResourceGroup(String resourceUri) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceUri),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceUri, Context.NONE);
     }
 
-    /**
-     * List by specified resource group.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SchemaReference list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchemaReferenceInner> listByResourceGroup(String resourceUri, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceUri, context),
@@ -788,11 +747,7 @@ public final class SchemaReferencesClientImpl implements SchemaReferencesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaReferenceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SchemaReferenceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

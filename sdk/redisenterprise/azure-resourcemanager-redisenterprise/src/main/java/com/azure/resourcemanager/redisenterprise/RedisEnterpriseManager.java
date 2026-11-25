@@ -26,6 +26,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redisenterprise.fluent.RedisEnterpriseManagementClient;
 import com.azure.resourcemanager.redisenterprise.implementation.AccessPolicyAssignmentsImpl;
+import com.azure.resourcemanager.redisenterprise.implementation.ClustersImpl;
 import com.azure.resourcemanager.redisenterprise.implementation.DatabasesImpl;
 import com.azure.resourcemanager.redisenterprise.implementation.MigrationsImpl;
 import com.azure.resourcemanager.redisenterprise.implementation.OperationsImpl;
@@ -35,6 +36,7 @@ import com.azure.resourcemanager.redisenterprise.implementation.PrivateLinkResou
 import com.azure.resourcemanager.redisenterprise.implementation.RedisEnterpriseManagementClientBuilder;
 import com.azure.resourcemanager.redisenterprise.implementation.RedisEnterprisesImpl;
 import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignments;
+import com.azure.resourcemanager.redisenterprise.models.Clusters;
 import com.azure.resourcemanager.redisenterprise.models.Databases;
 import com.azure.resourcemanager.redisenterprise.models.Migrations;
 import com.azure.resourcemanager.redisenterprise.models.Operations;
@@ -56,6 +58,8 @@ import java.util.stream.Collectors;
  */
 public final class RedisEnterpriseManager {
     private Operations operations;
+
+    private Clusters clusters;
 
     private Databases databases;
 
@@ -296,6 +300,18 @@ public final class RedisEnterpriseManager {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
         return operations;
+    }
+
+    /**
+     * Gets the resource collection API of Clusters.
+     * 
+     * @return Resource collection API of Clusters.
+     */
+    public Clusters clusters() {
+        if (this.clusters == null) {
+            this.clusters = new ClustersImpl(clientObject.getClusters(), this);
+        }
+        return clusters;
     }
 
     /**

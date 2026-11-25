@@ -29,7 +29,7 @@ public final class GatewaysImpl implements Gateways {
     }
 
     public void delete(String resourceGroupName, String workspaceName, String gatewayId) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, gatewayId);
+        this.deleteWithResponse(resourceGroupName, workspaceName, gatewayId, Context.NONE);
     }
 
     private GatewaysClient serviceClient() {

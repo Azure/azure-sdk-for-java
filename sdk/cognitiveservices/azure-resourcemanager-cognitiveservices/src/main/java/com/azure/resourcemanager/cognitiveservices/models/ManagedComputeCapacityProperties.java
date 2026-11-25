@@ -23,9 +23,26 @@ public final class ManagedComputeCapacityProperties implements JsonSerializable<
     private String acceleratorType;
 
     /*
+     * The capacity offer scope: Global or DataZone. Omitted for deployment-scoped results.
+     */
+    private String offerScope;
+
+    /*
+     * The identifier within the offer scope: an empty string for Global, or US or EU
+     * for DataZone. Omitted for deployment-scoped results.
+     */
+    private String scopeId;
+
+    /*
      * The number of available accelerators in the region.
      */
     private Integer availableAccelerators;
+
+    /*
+     * The total number of available accelerators summed across regions within the scope.
+     * Omitted for deployment-scoped results.
+     */
+    private Integer totalAvailableAccelerators;
 
     /*
      * Capacity information broken down by deployment size.
@@ -48,12 +65,42 @@ public final class ManagedComputeCapacityProperties implements JsonSerializable<
     }
 
     /**
+     * Get the offerScope property: The capacity offer scope: Global or DataZone. Omitted for deployment-scoped results.
+     * 
+     * @return the offerScope value.
+     */
+    public String offerScope() {
+        return this.offerScope;
+    }
+
+    /**
+     * Get the scopeId property: The identifier within the offer scope: an empty string for Global, or US or EU
+     * for DataZone. Omitted for deployment-scoped results.
+     * 
+     * @return the scopeId value.
+     */
+    public String scopeId() {
+        return this.scopeId;
+    }
+
+    /**
      * Get the availableAccelerators property: The number of available accelerators in the region.
      * 
      * @return the availableAccelerators value.
      */
     public Integer availableAccelerators() {
         return this.availableAccelerators;
+    }
+
+    /**
+     * Get the totalAvailableAccelerators property: The total number of available accelerators summed across regions
+     * within the scope.
+     * Omitted for deployment-scoped results.
+     * 
+     * @return the totalAvailableAccelerators value.
+     */
+    public Integer totalAvailableAccelerators() {
+        return this.totalAvailableAccelerators;
     }
 
     /**
@@ -92,8 +139,15 @@ public final class ManagedComputeCapacityProperties implements JsonSerializable<
 
                 if ("acceleratorType".equals(fieldName)) {
                     deserializedManagedComputeCapacityProperties.acceleratorType = reader.getString();
+                } else if ("offerScope".equals(fieldName)) {
+                    deserializedManagedComputeCapacityProperties.offerScope = reader.getString();
+                } else if ("scopeId".equals(fieldName)) {
+                    deserializedManagedComputeCapacityProperties.scopeId = reader.getString();
                 } else if ("availableAccelerators".equals(fieldName)) {
                     deserializedManagedComputeCapacityProperties.availableAccelerators
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("totalAvailableAccelerators".equals(fieldName)) {
+                    deserializedManagedComputeCapacityProperties.totalAvailableAccelerators
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("deploymentSizeCapacities".equals(fieldName)) {
                     List<DeploymentSizeCapacity> deploymentSizeCapacities

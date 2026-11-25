@@ -82,11 +82,7 @@ public final class GlobalReachConnectionImpl
     }
 
     public GlobalReachConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalReachConnections()
-            .createOrUpdate(resourceGroupName, privateCloudName, globalReachConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public GlobalReachConnection create(Context context) {
@@ -107,11 +103,7 @@ public final class GlobalReachConnectionImpl
     }
 
     public GlobalReachConnection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalReachConnections()
-            .createOrUpdate(resourceGroupName, privateCloudName, globalReachConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public GlobalReachConnection apply(Context context) {
@@ -137,11 +129,7 @@ public final class GlobalReachConnectionImpl
     }
 
     public GlobalReachConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalReachConnections()
-            .getWithResponse(resourceGroupName, privateCloudName, globalReachConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public GlobalReachConnection refresh(Context context) {

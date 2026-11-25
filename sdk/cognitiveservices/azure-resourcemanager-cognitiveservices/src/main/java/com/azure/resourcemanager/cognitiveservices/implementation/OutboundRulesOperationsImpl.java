@@ -28,9 +28,7 @@ public final class OutboundRulesOperationsImpl implements OutboundRulesOperation
 
     public PagedIterable<OutboundRuleBasicResource> post(String resourceGroupName, String accountName,
         String managedNetworkName, ManagedNetworkSettingsBasicResourceInner body) {
-        PagedIterable<OutboundRuleBasicResourceInner> inner
-            = this.serviceClient().post(resourceGroupName, accountName, managedNetworkName, body);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OutboundRuleBasicResourceImpl(inner1, this.manager()));
+        return this.post(resourceGroupName, accountName, managedNetworkName, body, Context.NONE);
     }
 
     public PagedIterable<OutboundRuleBasicResource> post(String resourceGroupName, String accountName,

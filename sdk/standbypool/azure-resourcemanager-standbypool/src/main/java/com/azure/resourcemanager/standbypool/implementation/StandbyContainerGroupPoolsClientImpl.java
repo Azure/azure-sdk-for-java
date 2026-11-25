@@ -258,17 +258,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyContainerGroupPoolResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StandbyContainerGroupPoolResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String standbyContainerGroupPoolName, Context context) {
@@ -277,16 +267,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, accept, context);
     }
 
-    /**
-     * Get a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyContainerGroupPoolResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandbyContainerGroupPoolResourceInner getByResourceGroup(String resourceGroupName,
         String standbyContainerGroupPoolName) {
@@ -331,11 +312,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName,
         String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, standbyContainerGroupPoolName, resource, Context.NONE);
     }
 
     /**
@@ -382,40 +359,15 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             StandbyContainerGroupPoolResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a StandbyContainerGroupPoolResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StandbyContainerGroupPoolResourceInner>, StandbyContainerGroupPoolResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String standbyContainerGroupPoolName,
             StandbyContainerGroupPoolResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, standbyContainerGroupPoolName, resource);
-        return this.client.<StandbyContainerGroupPoolResourceInner, StandbyContainerGroupPoolResourceInner>getLroResult(
-            response, StandbyContainerGroupPoolResourceInner.class, StandbyContainerGroupPoolResourceInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, standbyContainerGroupPoolName, resource, Context.NONE);
     }
 
-    /**
-     * Create a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a StandbyContainerGroupPoolResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StandbyContainerGroupPoolResourceInner>, StandbyContainerGroupPoolResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String standbyContainerGroupPoolName,
@@ -445,40 +397,19 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyContainerGroupPoolResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandbyContainerGroupPoolResourceInner createOrUpdate(String resourceGroupName,
         String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, standbyContainerGroupPoolName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, standbyContainerGroupPoolName, resource, Context.NONE);
     }
 
-    /**
-     * Create a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyContainerGroupPoolResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandbyContainerGroupPoolResourceInner createOrUpdate(String resourceGroupName,
         String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, standbyContainerGroupPoolName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, standbyContainerGroupPoolName, resource, context));
     }
 
     /**
@@ -512,8 +443,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String standbyContainerGroupPoolName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, standbyContainerGroupPoolName, Context.NONE);
     }
 
     /**
@@ -553,34 +483,14 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             this.client.getContext());
     }
 
-    /**
-     * Delete a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String standbyContainerGroupPoolName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, standbyContainerGroupPoolName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, standbyContainerGroupPoolName, Context.NONE);
     }
 
-    /**
-     * Delete a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String standbyContainerGroupPoolName, Context context) {
@@ -604,33 +514,16 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String standbyContainerGroupPoolName) {
-        beginDelete(resourceGroupName, standbyContainerGroupPoolName).getFinalResult();
+        delete(resourceGroupName, standbyContainerGroupPoolName, Context.NONE);
     }
 
-    /**
-     * Delete a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String standbyContainerGroupPoolName, Context context) {
-        beginDelete(resourceGroupName, standbyContainerGroupPoolName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, standbyContainerGroupPoolName, context));
     }
 
     /**
@@ -674,18 +567,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyContainerGroupPoolResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StandbyContainerGroupPoolResourceInner> updateWithResponse(String resourceGroupName,
         String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceUpdate properties, Context context) {
@@ -696,17 +578,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             properties, context);
     }
 
-    /**
-     * Update a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyContainerGroupPoolResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandbyContainerGroupPoolResourceInner update(String resourceGroupName, String standbyContainerGroupPoolName,
         StandbyContainerGroupPoolResourceUpdate properties) {
@@ -764,12 +636,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StandbyContainerGroupPoolResourceInner>
         listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<StandbyContainerGroupPoolResourceListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -793,33 +660,13 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List StandbyContainerGroupPoolResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyContainerGroupPoolResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyContainerGroupPoolResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List StandbyContainerGroupPoolResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyContainerGroupPoolResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyContainerGroupPoolResourceInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -869,11 +716,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StandbyContainerGroupPoolResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<StandbyContainerGroupPoolResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -894,29 +737,13 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List StandbyContainerGroupPoolResource resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyContainerGroupPoolResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyContainerGroupPoolResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List StandbyContainerGroupPoolResource resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyContainerGroupPoolResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyContainerGroupPoolResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -956,11 +783,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StandbyContainerGroupPoolResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StandbyContainerGroupPoolResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1016,11 +839,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StandbyContainerGroupPoolResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StandbyContainerGroupPoolResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

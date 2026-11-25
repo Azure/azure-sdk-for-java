@@ -38,7 +38,8 @@ public final class AppConfigurationEventListener implements ApplicationListener<
         try {
             if (!(event.getRequestUrl().equals(ACTUATOR + APPCONFIGURATION_REFRESH)
                 || event.getRequestUrl().equals(ACTUATOR + APPCONFIGURATION_REFRESH_BUS))) {
-                appConfigurationRefresh.refreshConfigurations().subscribe();
+                appConfigurationRefresh.refreshConfigurations().subscribe(ignored -> { },
+                    error -> LOGGER.error("Refresh failed with unexpected exception.", error));
             }
         } catch (Exception e) {
             LOGGER.error("Refresh failed with unexpected exception.", e);

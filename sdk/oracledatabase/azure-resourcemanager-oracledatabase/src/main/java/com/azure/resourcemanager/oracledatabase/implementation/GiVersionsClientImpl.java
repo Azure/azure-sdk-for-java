@@ -152,17 +152,7 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
         return getWithResponseAsync(location, giversionname).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a GiVersion.
-     * 
-     * @param location The name of the Azure region.
-     * @param giversionname GiVersion name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GiVersion along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GiVersionInner> getWithResponse(String location, String giversionname, Context context) {
         final String accept = "application/json";
@@ -170,16 +160,7 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
             location, giversionname, accept, context);
     }
 
-    /**
-     * Get a GiVersion.
-     * 
-     * @param location The name of the Azure region.
-     * @param giversionname GiVersion name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GiVersion.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GiVersionInner get(String location, String giversionname) {
         return getWithResponse(location, giversionname, Context.NONE).getValue();
@@ -304,12 +285,7 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GiVersionInner> listByLocationSinglePage(String location, SystemShapes shape, String zone,
         String shapeAttribute) {
-        final String accept = "application/json";
-        Response<GiVersionListResult> res
-            = service.listByLocationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, shape, zone, shapeAttribute, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationSinglePage(location, shape, zone, shapeAttribute, Context.NONE);
     }
 
     /**
@@ -360,37 +336,16 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List GiVersion resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GiVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GiVersionInner> listByLocation(String location) {
         final SystemShapes shape = null;
         final String zone = null;
         final String shapeAttribute = null;
-        return new PagedIterable<>(() -> listByLocationSinglePage(location, shape, zone, shapeAttribute),
-            nextLink -> listByLocationNextSinglePage(nextLink));
+        return listByLocation(location, shape, zone, shapeAttribute, Context.NONE);
     }
 
-    /**
-     * List GiVersion resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @param shape If provided, filters the results for the given shape.
-     * @param zone Filters the result for the given Azure Availability Zone.
-     * @param shapeAttribute Filters the result for the given Shape Attribute, such as BLOCK_STORAGE or SMART_STORAGE.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GiVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GiVersionInner> listByLocation(String location, SystemShapes shape, String zone,
         String shapeAttribute, Context context) {
@@ -398,18 +353,7 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
             nextLink -> listByLocationNextSinglePage(nextLink, context));
     }
 
-    /**
-     * List GiVersion resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @param shape If provided, filters the results for the given shape.
-     * @param zone Filters the result for the given Azure Availability Zone.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GiVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GiVersionInner> listByLocation(String location, SystemShapes shape, String zone,
         Context context) {
@@ -448,11 +392,7 @@ public final class GiVersionsClientImpl implements GiVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GiVersionInner> listByLocationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GiVersionListResult> res
-            = service.listByLocationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

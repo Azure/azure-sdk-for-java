@@ -215,23 +215,7 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Dapr component resiliency policy.
-     * 
-     * Gets the details of a resiliency policy for a Dapr component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param componentName Name of the Dapr Component.
-     * @param name Name of the Dapr Component Resiliency Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Dapr component resiliency policy.
-     * 
-     * Gets the details of a resiliency policy for a Dapr component along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DaprComponentResiliencyPolicyInner> getWithResponse(String resourceGroupName,
         String environmentName, String componentName, String name, Context context) {
@@ -240,22 +224,7 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
             resourceGroupName, environmentName, componentName, name, accept, context);
     }
 
-    /**
-     * Get a Dapr component resiliency policy.
-     * 
-     * Gets the details of a resiliency policy for a Dapr component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param componentName Name of the Dapr Component.
-     * @param name Name of the Dapr Component Resiliency Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Dapr component resiliency policy.
-     * 
-     * Gets the details of a resiliency policy for a Dapr component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DaprComponentResiliencyPolicyInner get(String resourceGroupName, String environmentName,
         String componentName, String name) {
@@ -313,22 +282,7 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
             daprComponentResiliencyPolicyEnvelope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a Dapr component resiliency policy.
-     * 
-     * Creates or updates a resiliency policy for a Dapr component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param componentName Name of the Dapr Component.
-     * @param name Name of the Dapr Component Resiliency Policy.
-     * @param daprComponentResiliencyPolicyEnvelope Configuration details of the Dapr Component Resiliency Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr Component Resiliency Policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DaprComponentResiliencyPolicyInner> createOrUpdateWithResponse(String resourceGroupName,
         String environmentName, String componentName, String name,
@@ -340,21 +294,7 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
             accept, daprComponentResiliencyPolicyEnvelope, context);
     }
 
-    /**
-     * Creates or updates a Dapr component resiliency policy.
-     * 
-     * Creates or updates a resiliency policy for a Dapr component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param componentName Name of the Dapr Component.
-     * @param name Name of the Dapr Component Resiliency Policy.
-     * @param daprComponentResiliencyPolicyEnvelope Configuration details of the Dapr Component Resiliency Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr Component Resiliency Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DaprComponentResiliencyPolicyInner createOrUpdate(String resourceGroupName, String environmentName,
         String componentName, String name, DaprComponentResiliencyPolicyInner daprComponentResiliencyPolicyEnvelope) {
@@ -406,21 +346,7 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a Dapr component resiliency policy.
-     * 
-     * Delete a resiliency policy for a Dapr component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param componentName Name of the Dapr Component.
-     * @param name Name of the Dapr Component Resiliency Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String componentName,
         String name, Context context) {
@@ -428,19 +354,7 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
             this.client.getSubscriptionId(), resourceGroupName, environmentName, componentName, name, context);
     }
 
-    /**
-     * Delete a Dapr component resiliency policy.
-     * 
-     * Delete a resiliency policy for a Dapr component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param componentName Name of the Dapr Component.
-     * @param name Name of the Dapr Component Resiliency Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String componentName, String name) {
         deleteWithResponse(resourceGroupName, environmentName, componentName, name, Context.NONE);
@@ -514,12 +428,7 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DaprComponentResiliencyPolicyInner> listSinglePage(String resourceGroupName,
         String environmentName, String componentName) {
-        final String accept = "application/json";
-        Response<DaprComponentResiliencyPoliciesCollection> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, environmentName, componentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, environmentName, componentName, Context.NONE);
     }
 
     /**
@@ -549,44 +458,14 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the resiliency policies for a Dapr component.
-     * 
-     * Lists the resiliency policies configured for a Dapr component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param componentName Name of the Dapr Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resiliency policies for a Dapr component.
-     * 
-     * Lists the resiliency policies configured for a Dapr component as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DaprComponentResiliencyPolicyInner> list(String resourceGroupName, String environmentName,
         String componentName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName, componentName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, environmentName, componentName, Context.NONE);
     }
 
-    /**
-     * Get the resiliency policies for a Dapr component.
-     * 
-     * Lists the resiliency policies configured for a Dapr component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param componentName Name of the Dapr Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resiliency policies for a Dapr component.
-     * 
-     * Lists the resiliency policies configured for a Dapr component as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DaprComponentResiliencyPolicyInner> list(String resourceGroupName, String environmentName,
         String componentName, Context context) {
@@ -632,11 +511,7 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DaprComponentResiliencyPolicyInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DaprComponentResiliencyPoliciesCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

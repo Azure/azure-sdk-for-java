@@ -121,20 +121,7 @@ public final class DeploymentPreflightsClientImpl implements DeploymentPreflight
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Performs resource deployment validation.
-     * 
-     * Performs resource deployment preflight validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentId Deployment Id.
-     * @param body Deployment preflight model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment preflight model along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentPreflightModelInner> postWithResponse(String resourceGroupName, String deploymentId,
         DeploymentPreflightModelInner body, Context context) {
@@ -143,18 +130,7 @@ public final class DeploymentPreflightsClientImpl implements DeploymentPreflight
             resourceGroupName, deploymentId, accept, body, context);
     }
 
-    /**
-     * Performs resource deployment validation.
-     * 
-     * Performs resource deployment preflight validation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentId Deployment Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment preflight model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentPreflightModelInner post(String resourceGroupName, String deploymentId) {
         final DeploymentPreflightModelInner body = null;

@@ -88,11 +88,7 @@ public final class SecurityPolicyImpl implements SecurityPolicy, SecurityPolicy.
     }
 
     public SecurityPolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityPoliciesInterfaces()
-            .createOrUpdate(resourceGroupName, trafficControllerName, securityPolicyName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SecurityPolicy create(Context context) {
@@ -115,12 +111,7 @@ public final class SecurityPolicyImpl implements SecurityPolicy, SecurityPolicy.
     }
 
     public SecurityPolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityPoliciesInterfaces()
-            .updateWithResponse(resourceGroupName, trafficControllerName, securityPolicyName, updateProperties,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SecurityPolicy apply(Context context) {
@@ -147,11 +138,7 @@ public final class SecurityPolicyImpl implements SecurityPolicy, SecurityPolicy.
     }
 
     public SecurityPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityPoliciesInterfaces()
-            .getWithResponse(resourceGroupName, trafficControllerName, securityPolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SecurityPolicy refresh(Context context) {

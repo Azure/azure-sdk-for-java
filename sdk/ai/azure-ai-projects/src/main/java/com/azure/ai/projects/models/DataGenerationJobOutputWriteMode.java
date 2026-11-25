@@ -22,7 +22,11 @@ public final class DataGenerationJobOutputWriteMode extends ExpandableStringEnum
     /**
      * Merge newly generated output into an existing output. For trace data generation jobs that output evaluation
      * datasets, creates the next dataset version by merging newly generated rows with the latest existing dataset
-     * version and de-duping trace rows. For fine-tuning file outputs, merges into the file identified by
+     * version and de-duping trace rows. For conversation jobs, a newly generated conversation snapshot replaces the
+     * existing snapshot of the same conversation wholesale. The replacement snapshot may omit earlier turns outside the
+     * selected time window. Existing conversations without a newly generated replacement remain unchanged. Merging
+     * replaces whole conversation snapshots rather than unioning individual turns, so it does not retain every previous
+     * turn from the replaced snapshot. For fine-tuning file outputs, merges into the file identified by
      * `merge_file_id`.
      */
     @Generated

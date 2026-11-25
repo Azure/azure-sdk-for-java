@@ -24,7 +24,7 @@ public final class MicrosoftEntraAuthenticationsCreateOrReplaceMockTests {
     @Test
     public void testCreateOrReplace() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Disabled\",\"provisioningState\":\"Succeeded\"},\"id\":\"texoqqpwc\",\"name\":\"yufmhruncuwmq\",\"type\":\"pkcdqzhlct\"}";
+            = "{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Succeeded\"},\"id\":\"mkqscaz\",\"name\":\"awx\",\"type\":\"z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,11 +34,11 @@ public final class MicrosoftEntraAuthenticationsCreateOrReplaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MicrosoftEntraAuthentication response = manager.microsoftEntraAuthentications()
-            .createOrReplace("q", "yb",
+            .createOrReplace("awjutifd", "fmvigorqjbttzh",
                 new MicrosoftEntraAuthenticationInner().withProperties(
                     new MicrosoftEntraAuthenticationProperties().withState(AuthenticationState.ENABLED)),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(AuthenticationState.DISABLED, response.properties().state());
+        Assertions.assertEquals(AuthenticationState.ENABLED, response.properties().state());
     }
 }

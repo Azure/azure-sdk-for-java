@@ -148,12 +148,7 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceDetailsObjectInner> listByPoolSinglePage(String resourceGroupName, String poolName) {
-        final String accept = "application/json";
-        Response<ResourceDetailsObjectListResult> res
-            = service.listByPoolSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, poolName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPoolSinglePage(resourceGroupName, poolName, Context.NONE);
     }
 
     /**
@@ -177,33 +172,13 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ResourceDetailsObject resources by Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param poolName Name of the pool. It needs to be globally unique.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceDetailsObject list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceDetailsObjectInner> listByPool(String resourceGroupName, String poolName) {
-        return new PagedIterable<>(() -> listByPoolSinglePage(resourceGroupName, poolName),
-            nextLink -> listByPoolNextSinglePage(nextLink));
+        return listByPool(resourceGroupName, poolName, Context.NONE);
     }
 
-    /**
-     * List ResourceDetailsObject resources by Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param poolName Name of the pool. It needs to be globally unique.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceDetailsObject list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceDetailsObjectInner> listByPool(String resourceGroupName, String poolName,
         Context context) {
@@ -242,11 +217,7 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceDetailsObjectInner> listByPoolNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ResourceDetailsObjectListResult> res
-            = service.listByPoolNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPoolNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

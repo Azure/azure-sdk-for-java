@@ -194,18 +194,7 @@ public final class HuntsClientImpl implements HuntsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a hunt, without relations and comments.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param huntId The hunt id (GUID).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a hunt, without relations and comments along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HuntInner> getWithResponse(String resourceGroupName, String workspaceName, String huntId,
         Context context) {
@@ -214,17 +203,7 @@ public final class HuntsClientImpl implements HuntsClient {
             resourceGroupName, workspaceName, huntId, accept, context);
     }
 
-    /**
-     * Gets a hunt, without relations and comments.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param huntId The hunt id (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a hunt, without relations and comments.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HuntInner get(String resourceGroupName, String workspaceName, String huntId) {
         return getWithResponse(resourceGroupName, workspaceName, huntId, Context.NONE).getValue();
@@ -274,19 +253,7 @@ public final class HuntsClientImpl implements HuntsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a hunt.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param huntId The hunt id (GUID).
-     * @param hunt The hunt.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Hunt in Azure Security Insights along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HuntInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String huntId,
         HuntInner hunt, Context context) {
@@ -297,18 +264,7 @@ public final class HuntsClientImpl implements HuntsClient {
             context);
     }
 
-    /**
-     * Create or update a hunt.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param huntId The hunt id (GUID).
-     * @param hunt The hunt.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Hunt in Azure Security Insights.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HuntInner createOrUpdate(String resourceGroupName, String workspaceName, String huntId, HuntInner hunt) {
         return createOrUpdateWithResponse(resourceGroupName, workspaceName, huntId, hunt, Context.NONE).getValue();
@@ -350,18 +306,7 @@ public final class HuntsClientImpl implements HuntsClient {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, huntId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a hunt.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param huntId The hunt id (GUID).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String huntId,
         Context context) {
@@ -369,16 +314,7 @@ public final class HuntsClientImpl implements HuntsClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, huntId, context);
     }
 
-    /**
-     * Delete a hunt.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param huntId The hunt id (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String huntId) {
         deleteWithResponse(resourceGroupName, workspaceName, huntId, Context.NONE);
@@ -478,12 +414,7 @@ public final class HuntsClientImpl implements HuntsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HuntInner> listSinglePage(String resourceGroupName, String workspaceName, String filter,
         String orderby, Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<HuntList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, filter, orderby, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, filter, orderby, top, skipToken, Context.NONE);
     }
 
     /**
@@ -514,44 +445,17 @@ public final class HuntsClientImpl implements HuntsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all hunts, without relations and comments.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all hunts, without relations and comments as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HuntInner> list(String resourceGroupName, String workspaceName) {
         final String filter = null;
         final String orderby = null;
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, workspaceName, filter, orderby, top, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, filter, orderby, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Gets all hunts, without relations and comments.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param filter Filters the results, based on a Boolean condition. Optional.
-     * @param orderby Sorts the results. Optional.
-     * @param top Returns only the first n results. Optional.
-     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
-     * a starting point to use for subsequent calls. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all hunts, without relations and comments as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HuntInner> list(String resourceGroupName, String workspaceName, String filter, String orderby,
         Integer top, String skipToken, Context context) {
@@ -590,10 +494,7 @@ public final class HuntsClientImpl implements HuntsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HuntInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<HuntList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -340,17 +340,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Config Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Config Template Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigTemplateInner> getByResourceGroupWithResponse(String resourceGroupName,
         String configTemplateName, Context context) {
@@ -359,16 +349,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             this.client.getSubscriptionId(), resourceGroupName, configTemplateName, accept, context);
     }
 
-    /**
-     * Get a Config Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Config Template Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateInner getByResourceGroup(String resourceGroupName, String configTemplateName) {
         return getByResourceGroupWithResponse(resourceGroupName, configTemplateName, Context.NONE).getValue();
@@ -411,11 +392,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String configTemplateName,
         ConfigTemplateInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configTemplateName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, configTemplateName, resource, Context.NONE);
     }
 
     /**
@@ -460,37 +437,14 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             ConfigTemplateInner.class, ConfigTemplateInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a Config Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of config Template Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigTemplateInner>, ConfigTemplateInner>
         beginCreateOrUpdate(String resourceGroupName, String configTemplateName, ConfigTemplateInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, configTemplateName, resource);
-        return this.client.<ConfigTemplateInner, ConfigTemplateInner>getLroResult(response, ConfigTemplateInner.class,
-            ConfigTemplateInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, configTemplateName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Config Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of config Template Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigTemplateInner>, ConfigTemplateInner> beginCreateOrUpdate(
         String resourceGroupName, String configTemplateName, ConfigTemplateInner resource, Context context) {
@@ -518,39 +472,19 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Config Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Template Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateInner createOrUpdate(String resourceGroupName, String configTemplateName,
         ConfigTemplateInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, configTemplateName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, configTemplateName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Config Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Template Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateInner createOrUpdate(String resourceGroupName, String configTemplateName,
         ConfigTemplateInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, configTemplateName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, configTemplateName, resource, context));
     }
 
     /**
@@ -594,18 +528,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * update a Config Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Template Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigTemplateInner> updateWithResponse(String resourceGroupName, String configTemplateName,
         ConfigTemplateUpdate properties, Context context) {
@@ -616,17 +539,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             context);
     }
 
-    /**
-     * update a Config Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Template Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateInner update(String resourceGroupName, String configTemplateName,
         ConfigTemplateUpdate properties) {
@@ -1007,11 +920,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createVersionWithResponse(String resourceGroupName, String configTemplateName,
         ConfigTemplateVersionWithUpdateTypeInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createVersionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configTemplateName, contentType, accept, body,
-            Context.NONE);
+        return createVersionWithResponse(resourceGroupName, configTemplateName, body, Context.NONE);
     }
 
     /**
@@ -1056,37 +965,14 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             this.client.getContext());
     }
 
-    /**
-     * Create or update a Config Template Version Resource with the specified UpdateType.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of config Template Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigTemplateVersionInner>, ConfigTemplateVersionInner> beginCreateVersion(
         String resourceGroupName, String configTemplateName, ConfigTemplateVersionWithUpdateTypeInner body) {
-        Response<BinaryData> response = createVersionWithResponse(resourceGroupName, configTemplateName, body);
-        return this.client.<ConfigTemplateVersionInner, ConfigTemplateVersionInner>getLroResult(response,
-            ConfigTemplateVersionInner.class, ConfigTemplateVersionInner.class, Context.NONE);
+        return beginCreateVersion(resourceGroupName, configTemplateName, body, Context.NONE);
     }
 
-    /**
-     * Create or update a Config Template Version Resource with the specified UpdateType.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of config Template Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigTemplateVersionInner>, ConfigTemplateVersionInner> beginCreateVersion(
         String resourceGroupName, String configTemplateName, ConfigTemplateVersionWithUpdateTypeInner body,
@@ -1114,39 +1000,19 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Config Template Version Resource with the specified UpdateType.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Template Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateVersionInner createVersion(String resourceGroupName, String configTemplateName,
         ConfigTemplateVersionWithUpdateTypeInner body) {
-        return beginCreateVersion(resourceGroupName, configTemplateName, body).getFinalResult();
+        return createVersion(resourceGroupName, configTemplateName, body, Context.NONE);
     }
 
-    /**
-     * Create or update a Config Template Version Resource with the specified UpdateType.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Template Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateVersionInner createVersion(String resourceGroupName, String configTemplateName,
         ConfigTemplateVersionWithUpdateTypeInner body, Context context) {
-        return beginCreateVersion(resourceGroupName, configTemplateName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateVersion(resourceGroupName, configTemplateName, body, context));
     }
 
     /**
@@ -1190,18 +1056,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Remove Config Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remove Version response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RemoveVersionResponseInner> removeVersionWithResponse(String resourceGroupName,
         String configTemplateName, VersionParameter body, Context context) {
@@ -1211,17 +1066,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             this.client.getSubscriptionId(), resourceGroupName, configTemplateName, contentType, accept, body, context);
     }
 
-    /**
-     * Remove Config Template Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remove Version response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemoveVersionResponseInner removeVersion(String resourceGroupName, String configTemplateName,
         VersionParameter body) {
@@ -1259,8 +1104,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String configTemplateName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configTemplateName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, configTemplateName, Context.NONE);
     }
 
     /**
@@ -1298,33 +1142,13 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Config Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configTemplateName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, configTemplateName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, configTemplateName, Context.NONE);
     }
 
-    /**
-     * Delete a Config Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configTemplateName,
         Context context) {
@@ -1348,33 +1172,16 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Config Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configTemplateName) {
-        beginDelete(resourceGroupName, configTemplateName).getFinalResult();
+        delete(resourceGroupName, configTemplateName, Context.NONE);
     }
 
-    /**
-     * Delete a Config Template Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configTemplateName The name of the ConfigTemplate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configTemplateName, Context context) {
-        beginDelete(resourceGroupName, configTemplateName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, configTemplateName, context));
     }
 
     /**
@@ -1424,11 +1231,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigTemplateInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ConfigTemplateListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1451,31 +1254,13 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ConfigTemplate list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigTemplateInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List by specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ConfigTemplate list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigTemplateInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1523,11 +1308,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigTemplateInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ConfigTemplateListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1548,27 +1329,13 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ConfigTemplate list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigTemplateInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List by subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ConfigTemplate list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigTemplateInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1607,11 +1374,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigTemplateInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConfigTemplateListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1665,11 +1428,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigTemplateInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConfigTemplateListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

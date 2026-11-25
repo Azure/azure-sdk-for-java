@@ -60,9 +60,7 @@ public final class SolutionTemplateVersionsImpl implements SolutionTemplateVersi
 
     public PagedIterable<SolutionTemplateVersion> listBySolutionTemplate(String resourceGroupName,
         String solutionTemplateName) {
-        PagedIterable<SolutionTemplateVersionInner> inner
-            = this.serviceClient().listBySolutionTemplate(resourceGroupName, solutionTemplateName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SolutionTemplateVersionImpl(inner1, this.manager()));
+        return this.listBySolutionTemplate(resourceGroupName, solutionTemplateName, Context.NONE);
     }
 
     public PagedIterable<SolutionTemplateVersion> listBySolutionTemplate(String resourceGroupName,
@@ -74,8 +72,8 @@ public final class SolutionTemplateVersionsImpl implements SolutionTemplateVersi
 
     public void bulkDeploySolution(String resourceGroupName, String solutionTemplateName,
         String solutionTemplateVersionName, BulkDeploySolutionParameter body) {
-        this.serviceClient()
-            .bulkDeploySolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body);
+        this.bulkDeploySolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body,
+            Context.NONE);
     }
 
     public void bulkDeploySolution(String resourceGroupName, String solutionTemplateName,
@@ -86,8 +84,8 @@ public final class SolutionTemplateVersionsImpl implements SolutionTemplateVersi
 
     public void bulkPublishSolution(String resourceGroupName, String solutionTemplateName,
         String solutionTemplateVersionName, BulkPublishSolutionParameter body) {
-        this.serviceClient()
-            .bulkPublishSolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body);
+        this.bulkPublishSolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body,
+            Context.NONE);
     }
 
     public void bulkPublishSolution(String resourceGroupName, String solutionTemplateName,

@@ -85,10 +85,7 @@ public final class FqdnListLocalRulestackResourceImpl implements FqdnListLocalRu
     }
 
     public FqdnListLocalRulestackResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFqdnListLocalRulestacks()
-            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FqdnListLocalRulestackResource create(Context context) {
@@ -110,10 +107,7 @@ public final class FqdnListLocalRulestackResourceImpl implements FqdnListLocalRu
     }
 
     public FqdnListLocalRulestackResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFqdnListLocalRulestacks()
-            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FqdnListLocalRulestackResource apply(Context context) {
@@ -139,11 +133,7 @@ public final class FqdnListLocalRulestackResourceImpl implements FqdnListLocalRu
     }
 
     public FqdnListLocalRulestackResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFqdnListLocalRulestacks()
-            .getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FqdnListLocalRulestackResource refresh(Context context) {

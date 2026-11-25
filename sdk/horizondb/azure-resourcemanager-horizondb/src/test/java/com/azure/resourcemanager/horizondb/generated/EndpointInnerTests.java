@@ -11,7 +11,7 @@ public final class EndpointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointInner model = BinaryData.fromString(
-            "{\"properties\":{\"scope\":\"Cluster\",\"associatedResourceId\":\"ezkojvdcp\",\"fullyQualifiedDomainName\":\"foqouicybx\",\"role\":\"ReadWrite\"},\"id\":\"gszufoxciqopid\",\"name\":\"amcio\",\"type\":\"hkh\"}")
+            "{\"properties\":{\"scope\":\"Pool\",\"associatedResourceId\":\"hlmctlpdngitvgb\",\"fullyQualifiedDomainName\":\"hrixkwmy\",\"role\":\"ReadOnly\"},\"id\":\"jvegrhbpnaixexcc\",\"name\":\"dreaxh\",\"type\":\"exdrrvqahqkg\"}")
             .toObject(EndpointInner.class);
     }
 }

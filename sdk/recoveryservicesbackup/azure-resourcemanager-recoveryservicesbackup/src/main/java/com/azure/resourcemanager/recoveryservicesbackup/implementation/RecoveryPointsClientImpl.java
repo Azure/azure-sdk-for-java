@@ -227,23 +227,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             recoveryPointId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Provides the information of the backed up data identified using RecoveryPointID. This is an asynchronous
-     * operation.
-     * To know the status of the operation, call the GetProtectedItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup copies along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoveryPointResourceInner> getWithResponse(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId, Context context) {
@@ -253,22 +237,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             context);
     }
 
-    /**
-     * Provides the information of the backed up data identified using RecoveryPointID. This is an asynchronous
-     * operation.
-     * To know the status of the operation, call the GetProtectedItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup copies.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPointResourceInner get(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, String recoveryPointId) {
@@ -363,12 +332,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryPointResourceInner> listSinglePage(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String filter) {
-        final String accept = "application/json";
-        Response<RecoveryPointResourceList> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName,
-            containerName, protectedItemName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter,
+            Context.NONE);
     }
 
     /**
@@ -397,43 +362,15 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the backup copies for the backed up item.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryPointResourceInner> list(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName) {
         final String filter = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter, Context.NONE);
     }
 
-    /**
-     * Lists the backup copies for the backed up item.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param filter OData filter options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryPointResourceInner> list(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, String filter, Context context) {
@@ -487,11 +424,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> getRPExtendedInfoWithResponse(String resourceGroupName, String vaultName,
         String fabricName, GetRPExtendedInfoRequestResource parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.getRPExtendedInfoSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName, contentType, accept, parameters,
-            Context.NONE);
+        return getRPExtendedInfoWithResponse(resourceGroupName, vaultName, fabricName, parameters, Context.NONE);
     }
 
     /**
@@ -546,47 +479,15 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             this.client.getContext());
     }
 
-    /**
-     * Triggers fetching the additional details of a recovery point, which are not returned by the recovery point GET
-     * API. This is an asynchronous operation. Returns tracking headers which can be tracked using the
-     * GetRPExtendedInfoOperationResult API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param parameters Request payload containing the ARM id of the recovery point whose additional details are to be
-     * fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of list of the additional details of recovery points.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RPExtendedInfoResourceListInner>, RPExtendedInfoResourceListInner>
         beginGetRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
             GetRPExtendedInfoRequestResource parameters) {
-        Response<BinaryData> response
-            = getRPExtendedInfoWithResponse(resourceGroupName, vaultName, fabricName, parameters);
-        return this.client.<RPExtendedInfoResourceListInner, RPExtendedInfoResourceListInner>getLroResult(response,
-            RPExtendedInfoResourceListInner.class, RPExtendedInfoResourceListInner.class, Context.NONE);
+        return beginGetRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters, Context.NONE);
     }
 
-    /**
-     * Triggers fetching the additional details of a recovery point, which are not returned by the recovery point GET
-     * API. This is an asynchronous operation. Returns tracking headers which can be tracked using the
-     * GetRPExtendedInfoOperationResult API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param parameters Request payload containing the ARM id of the recovery point whose additional details are to be
-     * fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of list of the additional details of recovery points.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RPExtendedInfoResourceListInner>, RPExtendedInfoResourceListInner>
         beginGetRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
@@ -619,47 +520,19 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Triggers fetching the additional details of a recovery point, which are not returned by the recovery point GET
-     * API. This is an asynchronous operation. Returns tracking headers which can be tracked using the
-     * GetRPExtendedInfoOperationResult API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param parameters Request payload containing the ARM id of the recovery point whose additional details are to be
-     * fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of the additional details of recovery points.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RPExtendedInfoResourceListInner getRPExtendedInfo(String resourceGroupName, String vaultName,
         String fabricName, GetRPExtendedInfoRequestResource parameters) {
-        return beginGetRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters).getFinalResult();
+        return getRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters, Context.NONE);
     }
 
-    /**
-     * Triggers fetching the additional details of a recovery point, which are not returned by the recovery point GET
-     * API. This is an asynchronous operation. Returns tracking headers which can be tracked using the
-     * GetRPExtendedInfoOperationResult API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param parameters Request payload containing the ARM id of the recovery point whose additional details are to be
-     * fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of the additional details of recovery points.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RPExtendedInfoResourceListInner getRPExtendedInfo(String resourceGroupName, String vaultName,
         String fabricName, GetRPExtendedInfoRequestResource parameters, Context context) {
-        return beginGetRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginGetRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters, context));
     }
 
     /**
@@ -709,21 +582,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo operation. Returns
-     * 202 Accepted while the operation is still running.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param operationId OperationID which represents the prior getRPExtendedInfo operation whose result needs to be
-     * fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of the additional details of recovery points.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPointsGetRPExtendedInfoOperationResultResponse getRPExtendedInfoOperationResultWithResponse(
         String resourceGroupName, String vaultName, String fabricName, String operationId, Context context) {
@@ -732,20 +591,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName, operationId, accept, context);
     }
 
-    /**
-     * Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo operation. Returns
-     * 202 Accepted while the operation is still running.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param operationId OperationID which represents the prior getRPExtendedInfo operation whose result needs to be
-     * fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of the additional details of recovery points.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RPExtendedInfoResourceListInner getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName,
         String fabricName, String operationId) {
@@ -783,11 +629,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryPointResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RecoveryPointResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

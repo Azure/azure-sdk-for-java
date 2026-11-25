@@ -48,9 +48,7 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
 
     public PagedIterable<RecoveryPointModel> list(String resourceGroupName, String vaultName,
         String protectedItemName) {
-        PagedIterable<RecoveryPointModelInner> inner
-            = this.serviceClient().list(resourceGroupName, vaultName, protectedItemName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryPointModelImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, vaultName, protectedItemName, Context.NONE);
     }
 
     public PagedIterable<RecoveryPointModel> list(String resourceGroupName, String vaultName, String protectedItemName,

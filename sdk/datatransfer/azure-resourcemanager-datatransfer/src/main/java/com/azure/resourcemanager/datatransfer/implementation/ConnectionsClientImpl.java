@@ -346,17 +346,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionInner> getByResourceGroupWithResponse(String resourceGroupName, String connectionName,
         Context context) {
@@ -365,16 +355,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             this.client.getSubscriptionId(), resourceGroupName, connectionName, accept, context);
     }
 
-    /**
-     * Gets connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionInner getByResourceGroup(String resourceGroupName, String connectionName) {
         return getByResourceGroupWithResponse(resourceGroupName, connectionName, Context.NONE).getValue();
@@ -417,11 +398,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String connectionName,
         ConnectionInner connection) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectionName, contentType, accept, connection,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, connectionName, connection, Context.NONE);
     }
 
     /**
@@ -466,37 +443,14 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             ConnectionInner.class, ConnectionInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates the connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param connection Connection body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionInner>, ConnectionInner> beginCreateOrUpdate(String resourceGroupName,
         String connectionName, ConnectionInner connection) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, connectionName, connection);
-        return this.client.<ConnectionInner, ConnectionInner>getLroResult(response, ConnectionInner.class,
-            ConnectionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, connectionName, connection, Context.NONE);
     }
 
-    /**
-     * Creates or updates the connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param connection Connection body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionInner>, ConnectionInner> beginCreateOrUpdate(String resourceGroupName,
         String connectionName, ConnectionInner connection, Context context) {
@@ -524,38 +478,18 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates the connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param connection Connection body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionInner createOrUpdate(String resourceGroupName, String connectionName, ConnectionInner connection) {
-        return beginCreateOrUpdate(resourceGroupName, connectionName, connection).getFinalResult();
+        return createOrUpdate(resourceGroupName, connectionName, connection, Context.NONE);
     }
 
-    /**
-     * Creates or updates the connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param connection Connection body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionInner createOrUpdate(String resourceGroupName, String connectionName, ConnectionInner connection,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, connectionName, connection, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, connectionName, connection, context));
     }
 
     /**
@@ -595,11 +529,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String connectionName,
         ConnectionsPatch connection) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectionName, contentType, accept, connection,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, connectionName, connection, Context.NONE);
     }
 
     /**
@@ -643,36 +573,14 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             this.client.getContext());
     }
 
-    /**
-     * Updates the connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param connection Connection body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String connectionName,
         ConnectionsPatch connection) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, connectionName, connection);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUpdate(resourceGroupName, connectionName, connection, Context.NONE);
     }
 
-    /**
-     * Updates the connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param connection Connection body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String connectionName,
         ConnectionsPatch connection, Context context) {
@@ -697,35 +605,16 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param connection Connection body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String connectionName, ConnectionsPatch connection) {
-        beginUpdate(resourceGroupName, connectionName, connection).getFinalResult();
+        update(resourceGroupName, connectionName, connection, Context.NONE);
     }
 
-    /**
-     * Updates the connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param connection Connection body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String connectionName, ConnectionsPatch connection, Context context) {
-        beginUpdate(resourceGroupName, connectionName, connection, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, connectionName, connection, context));
     }
 
     /**
@@ -758,8 +647,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String connectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectionName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, connectionName, Context.NONE);
     }
 
     /**
@@ -796,33 +684,13 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectionName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, connectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, connectionName, Context.NONE);
     }
 
-    /**
-     * Deletes the connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectionName,
         Context context) {
@@ -846,33 +714,16 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String connectionName) {
-        beginDelete(resourceGroupName, connectionName).getFinalResult();
+        delete(resourceGroupName, connectionName, Context.NONE);
     }
 
-    /**
-     * Deletes the connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String connectionName, Context context) {
-        beginDelete(resourceGroupName, connectionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, connectionName, context));
     }
 
     /**
@@ -922,11 +773,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectionInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ConnectionListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -948,31 +795,13 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets connections in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connections in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets connections in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connections in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1019,11 +848,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectionInner> listBySubscriptionSinglePage() {
-        final String accept = "application/json";
-        Response<ConnectionListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionSinglePage(Context.NONE);
     }
 
     /**
@@ -1044,28 +869,13 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets connections in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connections in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionInner> listBySubscription() {
-        return new PagedIterable<>(() -> listBySubscriptionSinglePage(),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return listBySubscription(Context.NONE);
     }
 
-    /**
-     * Gets connections in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connections in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionInner> listBySubscription(Context context) {
         return new PagedIterable<>(() -> listBySubscriptionSinglePage(context),
@@ -1109,10 +919,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> linkWithResponse(String resourceGroupName, String connectionName,
         ResourceBody connection) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.linkSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, connectionName, contentType, accept, connection, Context.NONE);
+        return linkWithResponse(resourceGroupName, connectionName, connection, Context.NONE);
     }
 
     /**
@@ -1155,37 +962,14 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             ConnectionInner.class, ConnectionInner.class, this.client.getContext());
     }
 
-    /**
-     * Links the connection to its pending connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param connection Connection body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionInner>, ConnectionInner> beginLink(String resourceGroupName,
         String connectionName, ResourceBody connection) {
-        Response<BinaryData> response = linkWithResponse(resourceGroupName, connectionName, connection);
-        return this.client.<ConnectionInner, ConnectionInner>getLroResult(response, ConnectionInner.class,
-            ConnectionInner.class, Context.NONE);
+        return beginLink(resourceGroupName, connectionName, connection, Context.NONE);
     }
 
-    /**
-     * Links the connection to its pending connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param connection Connection body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionInner>, ConnectionInner> beginLink(String resourceGroupName,
         String connectionName, ResourceBody connection, Context context) {
@@ -1211,38 +995,17 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Links the connection to its pending connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param connection Connection body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionInner link(String resourceGroupName, String connectionName, ResourceBody connection) {
-        return beginLink(resourceGroupName, connectionName, connection).getFinalResult();
+        return link(resourceGroupName, connectionName, connection, Context.NONE);
     }
 
-    /**
-     * Links the connection to its pending connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param connection Connection body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionInner link(String resourceGroupName, String connectionName, ResourceBody connection,
         Context context) {
-        return beginLink(resourceGroupName, connectionName, connection, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginLink(resourceGroupName, connectionName, connection, context));
     }
 
     /**
@@ -1296,12 +1059,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PendingConnectionInner> listSinglePage(String resourceGroupName, String connectionName) {
-        final String accept = "application/json";
-        Response<PendingConnectionListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, connectionName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, connectionName, Context.NONE);
     }
 
     /**
@@ -1326,33 +1084,13 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all pending remote connections that are linkable to this connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PendingConnectionInner> list(String resourceGroupName, String connectionName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, connectionName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, connectionName, Context.NONE);
     }
 
-    /**
-     * Lists all pending remote connections that are linkable to this connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PendingConnectionInner> list(String resourceGroupName, String connectionName,
         Context context) {
@@ -1412,12 +1150,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PendingFlowInner> listPendingFlowsListSinglePage(String resourceGroupName,
         String connectionName) {
-        final String accept = "application/json";
-        Response<PendingFlowListResult> res
-            = service.listPendingFlowsListSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, connectionName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listPendingFlowsListSinglePage(resourceGroupName, connectionName, Context.NONE);
     }
 
     /**
@@ -1442,33 +1175,13 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all remote flows that have not yet been linked to local flows.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PendingFlowInner> listPendingFlowsList(String resourceGroupName, String connectionName) {
-        return new PagedIterable<>(() -> listPendingFlowsListSinglePage(resourceGroupName, connectionName),
-            nextLink -> listPendingFlowsListNextSinglePage(nextLink));
+        return listPendingFlowsList(resourceGroupName, connectionName, Context.NONE);
     }
 
-    /**
-     * Lists all remote flows that have not yet been linked to local flows.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PendingFlowInner> listPendingFlowsList(String resourceGroupName, String connectionName,
         Context context) {
@@ -1508,11 +1221,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectionInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConnectionListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1565,11 +1274,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectionInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConnectionListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1621,11 +1326,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PendingConnectionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PendingConnectionListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1679,11 +1380,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PendingFlowInner> listPendingFlowsListNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PendingFlowListResult> res
-            = service.listPendingFlowsListNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listPendingFlowsListNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

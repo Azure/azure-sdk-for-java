@@ -22,23 +22,25 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.cognitiveservices.fluent.AccountCapabilityHostsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.AccountConnectionsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.AccountCostControlsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.AccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.AdapterDeploymentsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.AgentApplicationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.AgentDeploymentsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ArcDeploymentsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.AttachedAksClustersClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CognitiveServicesManagementClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentPlansClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentTiersClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ComputeOperationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ComputesClient;
-import com.azure.resourcemanager.cognitiveservices.fluent.CostControlsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.DefenderForAISettingsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.DeletedAccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.DeploymentsClient;
@@ -59,6 +61,7 @@ import com.azure.resourcemanager.cognitiveservices.fluent.PrivateEndpointConnect
 import com.azure.resourcemanager.cognitiveservices.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ProjectCapabilityHostsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ProjectConnectionsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.ProjectCostControlsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ProjectsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.QuotaTiersClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiBindingsClient;
@@ -229,6 +232,20 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
      */
     public DeletedAccountsClient getDeletedAccounts() {
         return this.deletedAccounts;
+    }
+
+    /**
+     * The AttachedAksClustersClient object to access its operations.
+     */
+    private final AttachedAksClustersClient attachedAksClusters;
+
+    /**
+     * Gets the AttachedAksClustersClient object to access its operations.
+     * 
+     * @return the AttachedAksClustersClient object.
+     */
+    public AttachedAksClustersClient getAttachedAksClusters() {
+        return this.attachedAksClusters;
     }
 
     /**
@@ -624,17 +641,31 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
     }
 
     /**
-     * The CostControlsClient object to access its operations.
+     * The AccountCostControlsClient object to access its operations.
      */
-    private final CostControlsClient costControls;
+    private final AccountCostControlsClient accountCostControls;
 
     /**
-     * Gets the CostControlsClient object to access its operations.
+     * Gets the AccountCostControlsClient object to access its operations.
      * 
-     * @return the CostControlsClient object.
+     * @return the AccountCostControlsClient object.
      */
-    public CostControlsClient getCostControls() {
-        return this.costControls;
+    public AccountCostControlsClient getAccountCostControls() {
+        return this.accountCostControls;
+    }
+
+    /**
+     * The ProjectCostControlsClient object to access its operations.
+     */
+    private final ProjectCostControlsClient projectCostControls;
+
+    /**
+     * Gets the ProjectCostControlsClient object to access its operations.
+     * 
+     * @return the ProjectCostControlsClient object.
+     */
+    public ProjectCostControlsClient getProjectCostControls() {
+        return this.projectCostControls;
     }
 
     /**
@@ -892,11 +923,12 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-09-15-preview";
+        this.apiVersion = "2026-11-15-preview";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.accounts = new AccountsClientImpl(this);
         this.deletedAccounts = new DeletedAccountsClientImpl(this);
+        this.attachedAksClusters = new AttachedAksClustersClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.deployments = new DeploymentsClientImpl(this);
         this.commitmentPlans = new CommitmentPlansClientImpl(this);
@@ -925,7 +957,8 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.computes = new ComputesClientImpl(this);
         this.workbenches = new WorkbenchesClientImpl(this);
         this.managedComputeCapacities = new ManagedComputeCapacitiesClientImpl(this);
-        this.costControls = new CostControlsClientImpl(this);
+        this.accountCostControls = new AccountCostControlsClientImpl(this);
+        this.projectCostControls = new ProjectCostControlsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.testRaiExternalSafetyProviders = new TestRaiExternalSafetyProvidersClientImpl(this);
         this.raiExternalSafetyProviders = new RaiExternalSafetyProvidersClientImpl(this);
@@ -1000,6 +1033,24 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
     }
 
     /**
+     * Waits for completion and gets the final result, or throws an error.
+     * 
+     * @param poller the synchronous poller.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return the final result.
+     * @throws ManagementException if the long running operation fails.
+     */
+    public <T, U> U getLroFinalResultOrError(SyncPoller<PollResult<T>, U> poller) {
+        PollResponse<PollResult<T>> response = poller.waitForCompletion();
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            throw exception;
+        }
+        return poller.getFinalResult();
+    }
+
+    /**
      * Gets the final result, or an error, based on last async poll response.
      * 
      * @param response the last async poll response.
@@ -1008,17 +1059,25 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
      * @return the final result, or an error.
      */
     public <T, U> Mono<U> getLroFinalResultOrError(AsyncPollResponse<PollResult<T>, U> response) {
-        if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            return Mono.error(exception);
+        }
+        return response.getFinalResult();
+    }
+
+    private ManagementException getLroException(LongRunningOperationStatus status, PollResult<?> result) {
+        PollResult.Error lroError = result == null ? null : result.getError();
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED || lroError != null) {
             String errorMessage;
             ManagementError managementError = null;
             HttpResponse errorResponse = null;
-            PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
                 errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
                     lroError.getResponseBody());
 
-                errorMessage = response.getValue().getError().getMessage();
-                String errorBody = response.getValue().getError().getResponseBody();
+                errorMessage = lroError.getMessage();
+                String errorBody = lroError.getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
@@ -1037,12 +1096,11 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
             }
             if (managementError == null) {
                 // fallback to default ManagementError
-                managementError = new ManagementError(response.getStatus().toString(), errorMessage);
+                managementError = new ManagementError(status.toString(), errorMessage);
             }
-            return Mono.error(new ManagementException(errorMessage, errorResponse, managementError));
-        } else {
-            return response.getFinalResult();
+            return new ManagementException(errorMessage, errorResponse, managementError);
         }
+        return null;
     }
 
     private static final class HttpResponseImpl extends HttpResponse {

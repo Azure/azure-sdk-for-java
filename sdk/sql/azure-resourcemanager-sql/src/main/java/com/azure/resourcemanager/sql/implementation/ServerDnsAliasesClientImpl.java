@@ -127,17 +127,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServerDnsAliasInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String dnsAliasName) {
@@ -205,68 +195,27 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             resourceGroupName, serverName, dnsAliasName, accept, context);
     }
 
-    /**
-     * Gets a server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerDnsAliasInner> getAsync(String resourceGroupName, String serverName, String dnsAliasName) {
         return getWithResponseAsync(resourceGroupName, serverName, dnsAliasName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerDnsAliasInner> getWithResponse(String resourceGroupName, String serverName,
         String dnsAliasName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, dnsAliasName, context).block();
     }
 
-    /**
-     * Gets a server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerDnsAliasInner get(String resourceGroupName, String serverName, String dnsAliasName) {
         return getWithResponse(resourceGroupName, serverName, dnsAliasName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String dnsAliasName) {
@@ -334,17 +283,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             this.client.getSubscriptionId(), resourceGroupName, serverName, dnsAliasName, accept, context);
     }
 
-    /**
-     * Creates a server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String dnsAliasName) {
@@ -376,52 +315,21 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             ServerDnsAliasInner.class, ServerDnsAliasInner.class, context);
     }
 
-    /**
-     * Creates a server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner>
         beginCreateOrUpdate(String resourceGroupName, String serverName, String dnsAliasName) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, dnsAliasName).getSyncPoller();
     }
 
-    /**
-     * Creates a server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner>
         beginCreateOrUpdate(String resourceGroupName, String serverName, String dnsAliasName, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, dnsAliasName, context).getSyncPoller();
     }
 
-    /**
-     * Creates a server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerDnsAliasInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String dnsAliasName) {
@@ -448,51 +356,20 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerDnsAliasInner createOrUpdate(String resourceGroupName, String serverName, String dnsAliasName) {
         return createOrUpdateAsync(resourceGroupName, serverName, dnsAliasName).block();
     }
 
-    /**
-     * Creates a server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerDnsAliasInner createOrUpdate(String resourceGroupName, String serverName, String dnsAliasName,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, dnsAliasName, context).block();
     }
 
-    /**
-     * Deletes the server DNS alias with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String dnsAliasName) {
@@ -558,17 +435,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             resourceGroupName, serverName, dnsAliasName, context);
     }
 
-    /**
-     * Deletes the server DNS alias with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
         String dnsAliasName) {
@@ -599,52 +466,21 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             context);
     }
 
-    /**
-     * Deletes the server DNS alias with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String dnsAliasName) {
         return this.beginDeleteAsync(resourceGroupName, serverName, dnsAliasName).getSyncPoller();
     }
 
-    /**
-     * Deletes the server DNS alias with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String dnsAliasName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, serverName, dnsAliasName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the server DNS alias with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String dnsAliasName) {
         return beginDeleteAsync(resourceGroupName, serverName, dnsAliasName).last()
@@ -669,32 +505,13 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the server DNS alias with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String dnsAliasName) {
         deleteAsync(resourceGroupName, serverName, dnsAliasName).block();
     }
 
-    /**
-     * Deletes the server DNS alias with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String dnsAliasName, Context context) {
         deleteAsync(resourceGroupName, serverName, dnsAliasName, context).block();
@@ -777,16 +594,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of server DNS aliases for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DNS aliases for a server as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServerDnsAliasInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
@@ -811,50 +619,20 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of server DNS aliases for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DNS aliases for a server as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerDnsAliasInner> listByServer(String resourceGroupName, String serverName) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
     }
 
-    /**
-     * Gets a list of server DNS aliases for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DNS aliases for a server as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerDnsAliasInner> listByServer(String resourceGroupName, String serverName,
         Context context) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
     }
 
-    /**
-     * Acquires server DNS alias from another server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> acquireWithResponseAsync(String resourceGroupName, String serverName,
         String dnsAliasName, ServerDnsAliasAcquisition parameters) {
@@ -936,18 +714,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             resourceGroupName, serverName, dnsAliasName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Acquires server DNS alias from another server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginAcquireAsync(String resourceGroupName,
         String serverName, String dnsAliasName, ServerDnsAliasAcquisition parameters) {
@@ -980,55 +747,21 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             ServerDnsAliasInner.class, ServerDnsAliasInner.class, context);
     }
 
-    /**
-     * Acquires server DNS alias from another server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginAcquire(String resourceGroupName,
         String serverName, String dnsAliasName, ServerDnsAliasAcquisition parameters) {
         return this.beginAcquireAsync(resourceGroupName, serverName, dnsAliasName, parameters).getSyncPoller();
     }
 
-    /**
-     * Acquires server DNS alias from another server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginAcquire(String resourceGroupName,
         String serverName, String dnsAliasName, ServerDnsAliasAcquisition parameters, Context context) {
         return this.beginAcquireAsync(resourceGroupName, serverName, dnsAliasName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Acquires server DNS alias from another server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerDnsAliasInner> acquireAsync(String resourceGroupName, String serverName, String dnsAliasName,
         ServerDnsAliasAcquisition parameters) {
@@ -1056,37 +789,14 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Acquires server DNS alias from another server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerDnsAliasInner acquire(String resourceGroupName, String serverName, String dnsAliasName,
         ServerDnsAliasAcquisition parameters) {
         return acquireAsync(resourceGroupName, serverName, dnsAliasName, parameters).block();
     }
 
-    /**
-     * Acquires server DNS alias from another server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param dnsAliasName The name of the server dns alias.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerDnsAliasInner acquire(String resourceGroupName, String serverName, String dnsAliasName,
         ServerDnsAliasAcquisition parameters, Context context) {

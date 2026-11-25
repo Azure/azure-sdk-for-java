@@ -406,17 +406,7 @@ public final class TargetsClientImpl implements TargetsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Target Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Target Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TargetInner> getByResourceGroupWithResponse(String resourceGroupName, String targetName,
         Context context) {
@@ -425,16 +415,7 @@ public final class TargetsClientImpl implements TargetsClient {
             this.client.getSubscriptionId(), resourceGroupName, targetName, accept, context);
     }
 
-    /**
-     * Get a Target Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Target Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TargetInner getByResourceGroup(String resourceGroupName, String targetName) {
         return getByResourceGroupWithResponse(resourceGroupName, targetName, Context.NONE).getValue();
@@ -476,11 +457,7 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String targetName,
         TargetInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, targetName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, targetName, resource, Context.NONE);
     }
 
     /**
@@ -524,37 +501,14 @@ public final class TargetsClientImpl implements TargetsClient {
             TargetInner.class, TargetInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a Target Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of target Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TargetInner>, TargetInner> beginCreateOrUpdate(String resourceGroupName,
         String targetName, TargetInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, targetName, resource);
-        return this.client.<TargetInner, TargetInner>getLroResult(response, TargetInner.class, TargetInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, targetName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Target Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of target Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TargetInner>, TargetInner> beginCreateOrUpdate(String resourceGroupName,
         String targetName, TargetInner resource, Context context) {
@@ -580,38 +534,18 @@ public final class TargetsClientImpl implements TargetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Target Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return target Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TargetInner createOrUpdate(String resourceGroupName, String targetName, TargetInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, targetName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, targetName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Target Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return target Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TargetInner createOrUpdate(String resourceGroupName, String targetName, TargetInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, targetName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, targetName, resource, context));
     }
 
     /**
@@ -649,11 +583,7 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String targetName,
         TargetUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, targetName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, targetName, properties, Context.NONE);
     }
 
     /**
@@ -696,37 +626,14 @@ public final class TargetsClientImpl implements TargetsClient {
             TargetInner.class, TargetInner.class, this.client.getContext());
     }
 
-    /**
-     * update a Target Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of target Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TargetInner>, TargetInner> beginUpdate(String resourceGroupName, String targetName,
         TargetUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, targetName, properties);
-        return this.client.<TargetInner, TargetInner>getLroResult(response, TargetInner.class, TargetInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, targetName, properties, Context.NONE);
     }
 
-    /**
-     * update a Target Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of target Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TargetInner>, TargetInner> beginUpdate(String resourceGroupName, String targetName,
         TargetUpdate properties, Context context) {
@@ -752,37 +659,16 @@ public final class TargetsClientImpl implements TargetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * update a Target Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return target Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TargetInner update(String resourceGroupName, String targetName, TargetUpdate properties) {
-        return beginUpdate(resourceGroupName, targetName, properties).getFinalResult();
+        return update(resourceGroupName, targetName, properties, Context.NONE);
     }
 
-    /**
-     * update a Target Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return target Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TargetInner update(String resourceGroupName, String targetName, TargetUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, targetName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, targetName, properties, context));
     }
 
     /**
@@ -818,8 +704,7 @@ public final class TargetsClientImpl implements TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String targetName, Boolean forceDelete) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, forceDelete, targetName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, targetName, forceDelete, Context.NONE);
     }
 
     /**
@@ -890,41 +775,19 @@ public final class TargetsClientImpl implements TargetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String targetName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String targetName,
         Boolean forceDelete) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, targetName, forceDelete);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, targetName, forceDelete, Context.NONE);
     }
 
-    /**
-     * Delete a Target Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String targetName) {
         final Boolean forceDelete = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, targetName, forceDelete);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, targetName, forceDelete, Context.NONE);
     }
 
-    /**
-     * Delete a Target Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param forceDelete Force delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String targetName,
         Boolean forceDelete, Context context) {
@@ -966,35 +829,17 @@ public final class TargetsClientImpl implements TargetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Target Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String targetName) {
         final Boolean forceDelete = null;
-        beginDelete(resourceGroupName, targetName, forceDelete).getFinalResult();
+        delete(resourceGroupName, targetName, forceDelete, Context.NONE);
     }
 
-    /**
-     * Delete a Target Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param forceDelete Force delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String targetName, Boolean forceDelete, Context context) {
-        beginDelete(resourceGroupName, targetName, forceDelete, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, targetName, forceDelete, context));
     }
 
     /**
@@ -1044,11 +889,7 @@ public final class TargetsClientImpl implements TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<TargetListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1070,31 +911,13 @@ public final class TargetsClientImpl implements TargetsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Target list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TargetInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List by specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Target list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TargetInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1142,11 +965,7 @@ public final class TargetsClientImpl implements TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<TargetListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1167,27 +986,13 @@ public final class TargetsClientImpl implements TargetsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Target list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TargetInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List by subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Target list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TargetInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1229,9 +1034,7 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> installSolutionWithResponse(String resourceGroupName, String targetName,
         InstallSolutionParameter body) {
-        final String contentType = "application/json";
-        return service.installSolutionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, targetName, contentType, body, Context.NONE);
+        return installSolutionWithResponse(resourceGroupName, targetName, body, Context.NONE);
     }
 
     /**
@@ -1273,36 +1076,14 @@ public final class TargetsClientImpl implements TargetsClient {
             this.client.getContext());
     }
 
-    /**
-     * Post request to deploy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginInstallSolution(String resourceGroupName, String targetName,
         InstallSolutionParameter body) {
-        Response<BinaryData> response = installSolutionWithResponse(resourceGroupName, targetName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginInstallSolution(resourceGroupName, targetName, body, Context.NONE);
     }
 
-    /**
-     * Post request to deploy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginInstallSolution(String resourceGroupName, String targetName,
         InstallSolutionParameter body, Context context) {
@@ -1328,36 +1109,17 @@ public final class TargetsClientImpl implements TargetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Post request to deploy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void installSolution(String resourceGroupName, String targetName, InstallSolutionParameter body) {
-        beginInstallSolution(resourceGroupName, targetName, body).getFinalResult();
+        installSolution(resourceGroupName, targetName, body, Context.NONE);
     }
 
-    /**
-     * Post request to deploy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void installSolution(String resourceGroupName, String targetName, InstallSolutionParameter body,
         Context context) {
-        beginInstallSolution(resourceGroupName, targetName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginInstallSolution(resourceGroupName, targetName, body, context));
     }
 
     /**
@@ -1395,9 +1157,7 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> uninstallSolutionWithResponse(String resourceGroupName, String targetName,
         UninstallSolutionParameter body) {
-        final String contentType = "application/json";
-        return service.uninstallSolutionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, targetName, contentType, body, Context.NONE);
+        return uninstallSolutionWithResponse(resourceGroupName, targetName, body, Context.NONE);
     }
 
     /**
@@ -1439,36 +1199,14 @@ public final class TargetsClientImpl implements TargetsClient {
             this.client.getContext());
     }
 
-    /**
-     * Post request to uninstall.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUninstallSolution(String resourceGroupName, String targetName,
         UninstallSolutionParameter body) {
-        Response<BinaryData> response = uninstallSolutionWithResponse(resourceGroupName, targetName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUninstallSolution(resourceGroupName, targetName, body, Context.NONE);
     }
 
-    /**
-     * Post request to uninstall.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUninstallSolution(String resourceGroupName, String targetName,
         UninstallSolutionParameter body, Context context) {
@@ -1494,36 +1232,17 @@ public final class TargetsClientImpl implements TargetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Post request to uninstall.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uninstallSolution(String resourceGroupName, String targetName, UninstallSolutionParameter body) {
-        beginUninstallSolution(resourceGroupName, targetName, body).getFinalResult();
+        uninstallSolution(resourceGroupName, targetName, body, Context.NONE);
     }
 
-    /**
-     * Post request to uninstall.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uninstallSolution(String resourceGroupName, String targetName, UninstallSolutionParameter body,
         Context context) {
-        beginUninstallSolution(resourceGroupName, targetName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginUninstallSolution(resourceGroupName, targetName, body, context));
     }
 
     /**
@@ -1561,9 +1280,7 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> removeRevisionWithResponse(String resourceGroupName, String targetName,
         RemoveRevisionParameter body) {
-        final String contentType = "application/json";
-        return service.removeRevisionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, targetName, contentType, body, Context.NONE);
+        return removeRevisionWithResponse(resourceGroupName, targetName, body, Context.NONE);
     }
 
     /**
@@ -1605,36 +1322,14 @@ public final class TargetsClientImpl implements TargetsClient {
             this.client.getContext());
     }
 
-    /**
-     * Post request to remove solution version revision.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRemoveRevision(String resourceGroupName, String targetName,
         RemoveRevisionParameter body) {
-        Response<BinaryData> response = removeRevisionWithResponse(resourceGroupName, targetName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRemoveRevision(resourceGroupName, targetName, body, Context.NONE);
     }
 
-    /**
-     * Post request to remove solution version revision.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRemoveRevision(String resourceGroupName, String targetName,
         RemoveRevisionParameter body, Context context) {
@@ -1659,36 +1354,17 @@ public final class TargetsClientImpl implements TargetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Post request to remove solution version revision.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void removeRevision(String resourceGroupName, String targetName, RemoveRevisionParameter body) {
-        beginRemoveRevision(resourceGroupName, targetName, body).getFinalResult();
+        removeRevision(resourceGroupName, targetName, body, Context.NONE);
     }
 
-    /**
-     * Post request to remove solution version revision.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void removeRevision(String resourceGroupName, String targetName, RemoveRevisionParameter body,
         Context context) {
-        beginRemoveRevision(resourceGroupName, targetName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRemoveRevision(resourceGroupName, targetName, body, context));
     }
 
     /**
@@ -1727,10 +1403,7 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resolveConfigurationWithResponse(String resourceGroupName, String targetName,
         SolutionTemplateParameter body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.resolveConfigurationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, targetName, contentType, accept, body, Context.NONE);
+        return resolveConfigurationWithResponse(resourceGroupName, targetName, body, Context.NONE);
     }
 
     /**
@@ -1775,37 +1448,14 @@ public final class TargetsClientImpl implements TargetsClient {
             this.client.getContext());
     }
 
-    /**
-     * Post request to resolve configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resolved Configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResolvedConfigurationInner>, ResolvedConfigurationInner>
         beginResolveConfiguration(String resourceGroupName, String targetName, SolutionTemplateParameter body) {
-        Response<BinaryData> response = resolveConfigurationWithResponse(resourceGroupName, targetName, body);
-        return this.client.<ResolvedConfigurationInner, ResolvedConfigurationInner>getLroResult(response,
-            ResolvedConfigurationInner.class, ResolvedConfigurationInner.class, Context.NONE);
+        return beginResolveConfiguration(resourceGroupName, targetName, body, Context.NONE);
     }
 
-    /**
-     * Post request to resolve configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resolved Configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResolvedConfigurationInner>, ResolvedConfigurationInner> beginResolveConfiguration(
         String resourceGroupName, String targetName, SolutionTemplateParameter body, Context context) {
@@ -1832,39 +1482,19 @@ public final class TargetsClientImpl implements TargetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Post request to resolve configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resolved Configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResolvedConfigurationInner resolveConfiguration(String resourceGroupName, String targetName,
         SolutionTemplateParameter body) {
-        return beginResolveConfiguration(resourceGroupName, targetName, body).getFinalResult();
+        return resolveConfiguration(resourceGroupName, targetName, body, Context.NONE);
     }
 
-    /**
-     * Post request to resolve configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resolved Configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResolvedConfigurationInner resolveConfiguration(String resourceGroupName, String targetName,
         SolutionTemplateParameter body, Context context) {
-        return beginResolveConfiguration(resourceGroupName, targetName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginResolveConfiguration(resourceGroupName, targetName, body, context));
     }
 
     /**
@@ -1904,10 +1534,7 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> reviewSolutionVersionWithResponse(String resourceGroupName, String targetName,
         SolutionTemplateParameter body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.reviewSolutionVersionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, targetName, contentType, accept, body, Context.NONE);
+        return reviewSolutionVersionWithResponse(resourceGroupName, targetName, body, Context.NONE);
     }
 
     /**
@@ -1951,37 +1578,14 @@ public final class TargetsClientImpl implements TargetsClient {
             SolutionVersionInner.class, SolutionVersionInner.class, this.client.getContext());
     }
 
-    /**
-     * Post request to review configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner>
         beginReviewSolutionVersion(String resourceGroupName, String targetName, SolutionTemplateParameter body) {
-        Response<BinaryData> response = reviewSolutionVersionWithResponse(resourceGroupName, targetName, body);
-        return this.client.<SolutionVersionInner, SolutionVersionInner>getLroResult(response,
-            SolutionVersionInner.class, SolutionVersionInner.class, Context.NONE);
+        return beginReviewSolutionVersion(resourceGroupName, targetName, body, Context.NONE);
     }
 
-    /**
-     * Post request to review configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginReviewSolutionVersion(
         String resourceGroupName, String targetName, SolutionTemplateParameter body, Context context) {
@@ -2008,39 +1612,19 @@ public final class TargetsClientImpl implements TargetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Post request to review configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner reviewSolutionVersion(String resourceGroupName, String targetName,
         SolutionTemplateParameter body) {
-        return beginReviewSolutionVersion(resourceGroupName, targetName, body).getFinalResult();
+        return reviewSolutionVersion(resourceGroupName, targetName, body, Context.NONE);
     }
 
-    /**
-     * Post request to review configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner reviewSolutionVersion(String resourceGroupName, String targetName,
         SolutionTemplateParameter body, Context context) {
-        return beginReviewSolutionVersion(resourceGroupName, targetName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginReviewSolutionVersion(resourceGroupName, targetName, body, context));
     }
 
     /**
@@ -2080,10 +1664,7 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> publishSolutionVersionWithResponse(String resourceGroupName, String targetName,
         SolutionVersionParameter body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.publishSolutionVersionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, targetName, contentType, accept, body, Context.NONE);
+        return publishSolutionVersionWithResponse(resourceGroupName, targetName, body, Context.NONE);
     }
 
     /**
@@ -2127,37 +1708,14 @@ public final class TargetsClientImpl implements TargetsClient {
             SolutionVersionInner.class, SolutionVersionInner.class, this.client.getContext());
     }
 
-    /**
-     * Post request to publish.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner>
         beginPublishSolutionVersion(String resourceGroupName, String targetName, SolutionVersionParameter body) {
-        Response<BinaryData> response = publishSolutionVersionWithResponse(resourceGroupName, targetName, body);
-        return this.client.<SolutionVersionInner, SolutionVersionInner>getLroResult(response,
-            SolutionVersionInner.class, SolutionVersionInner.class, Context.NONE);
+        return beginPublishSolutionVersion(resourceGroupName, targetName, body, Context.NONE);
     }
 
-    /**
-     * Post request to publish.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginPublishSolutionVersion(
         String resourceGroupName, String targetName, SolutionVersionParameter body, Context context) {
@@ -2185,39 +1743,19 @@ public final class TargetsClientImpl implements TargetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Post request to publish.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner publishSolutionVersion(String resourceGroupName, String targetName,
         SolutionVersionParameter body) {
-        return beginPublishSolutionVersion(resourceGroupName, targetName, body).getFinalResult();
+        return publishSolutionVersion(resourceGroupName, targetName, body, Context.NONE);
     }
 
-    /**
-     * Post request to publish.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner publishSolutionVersion(String resourceGroupName, String targetName,
         SolutionVersionParameter body, Context context) {
-        return beginPublishSolutionVersion(resourceGroupName, targetName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginPublishSolutionVersion(resourceGroupName, targetName, body, context));
     }
 
     /**
@@ -2257,10 +1795,7 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateExternalValidationStatusWithResponse(String resourceGroupName, String targetName,
         UpdateExternalValidationStatusParameter body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateExternalValidationStatusSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, targetName, contentType, accept, body, Context.NONE);
+        return updateExternalValidationStatusWithResponse(resourceGroupName, targetName, body, Context.NONE);
     }
 
     /**
@@ -2304,37 +1839,14 @@ public final class TargetsClientImpl implements TargetsClient {
             SolutionVersionInner.class, SolutionVersionInner.class, this.client.getContext());
     }
 
-    /**
-     * Post request to update external validation status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginUpdateExternalValidationStatus(
         String resourceGroupName, String targetName, UpdateExternalValidationStatusParameter body) {
-        Response<BinaryData> response = updateExternalValidationStatusWithResponse(resourceGroupName, targetName, body);
-        return this.client.<SolutionVersionInner, SolutionVersionInner>getLroResult(response,
-            SolutionVersionInner.class, SolutionVersionInner.class, Context.NONE);
+        return beginUpdateExternalValidationStatus(resourceGroupName, targetName, body, Context.NONE);
     }
 
-    /**
-     * Post request to update external validation status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginUpdateExternalValidationStatus(
         String resourceGroupName, String targetName, UpdateExternalValidationStatusParameter body, Context context) {
@@ -2362,39 +1874,19 @@ public final class TargetsClientImpl implements TargetsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Post request to update external validation status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner updateExternalValidationStatus(String resourceGroupName, String targetName,
         UpdateExternalValidationStatusParameter body) {
-        return beginUpdateExternalValidationStatus(resourceGroupName, targetName, body).getFinalResult();
+        return updateExternalValidationStatus(resourceGroupName, targetName, body, Context.NONE);
     }
 
-    /**
-     * Post request to update external validation status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner updateExternalValidationStatus(String resourceGroupName, String targetName,
         UpdateExternalValidationStatusParameter body, Context context) {
-        return beginUpdateExternalValidationStatus(resourceGroupName, targetName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdateExternalValidationStatus(resourceGroupName, targetName, body, context));
     }
 
     /**
@@ -2606,11 +2098,7 @@ public final class TargetsClientImpl implements TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TargetListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2664,11 +2152,7 @@ public final class TargetsClientImpl implements TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TargetListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

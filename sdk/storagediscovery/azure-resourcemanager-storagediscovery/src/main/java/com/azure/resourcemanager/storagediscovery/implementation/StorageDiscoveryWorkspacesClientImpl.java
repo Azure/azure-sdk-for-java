@@ -249,17 +249,7 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a StorageDiscoveryWorkspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageDiscoveryWorkspaceName The name of the StorageDiscoveryWorkspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageDiscoveryWorkspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageDiscoveryWorkspaceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String storageDiscoveryWorkspaceName, Context context) {
@@ -268,16 +258,7 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
             this.client.getSubscriptionId(), resourceGroupName, storageDiscoveryWorkspaceName, accept, context);
     }
 
-    /**
-     * Get a StorageDiscoveryWorkspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageDiscoveryWorkspaceName The name of the StorageDiscoveryWorkspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageDiscoveryWorkspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageDiscoveryWorkspaceInner getByResourceGroup(String resourceGroupName,
         String storageDiscoveryWorkspaceName) {
@@ -327,18 +308,7 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a StorageDiscoveryWorkspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageDiscoveryWorkspaceName The name of the StorageDiscoveryWorkspace.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Storage Discovery Workspace resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageDiscoveryWorkspaceInner> createOrUpdateWithResponse(String resourceGroupName,
         String storageDiscoveryWorkspaceName, StorageDiscoveryWorkspaceInner resource, Context context) {
@@ -349,17 +319,7 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
             resource, context);
     }
 
-    /**
-     * Create a StorageDiscoveryWorkspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageDiscoveryWorkspaceName The name of the StorageDiscoveryWorkspace.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Storage Discovery Workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageDiscoveryWorkspaceInner createOrUpdate(String resourceGroupName, String storageDiscoveryWorkspaceName,
         StorageDiscoveryWorkspaceInner resource) {
@@ -409,18 +369,7 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a StorageDiscoveryWorkspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageDiscoveryWorkspaceName The name of the StorageDiscoveryWorkspace.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Storage Discovery Workspace resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageDiscoveryWorkspaceInner> updateWithResponse(String resourceGroupName,
         String storageDiscoveryWorkspaceName, StorageDiscoveryWorkspaceUpdate properties, Context context) {
@@ -431,17 +380,7 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
             properties, context);
     }
 
-    /**
-     * Update a StorageDiscoveryWorkspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageDiscoveryWorkspaceName The name of the StorageDiscoveryWorkspace.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Storage Discovery Workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageDiscoveryWorkspaceInner update(String resourceGroupName, String storageDiscoveryWorkspaceName,
         StorageDiscoveryWorkspaceUpdate properties) {
@@ -484,17 +423,7 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a StorageDiscoveryWorkspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageDiscoveryWorkspaceName The name of the StorageDiscoveryWorkspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String storageDiscoveryWorkspaceName,
         Context context) {
@@ -502,15 +431,7 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
             this.client.getSubscriptionId(), resourceGroupName, storageDiscoveryWorkspaceName, context);
     }
 
-    /**
-     * Delete a StorageDiscoveryWorkspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageDiscoveryWorkspaceName The name of the StorageDiscoveryWorkspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageDiscoveryWorkspaceName) {
         deleteWithResponse(resourceGroupName, storageDiscoveryWorkspaceName, Context.NONE);
@@ -564,11 +485,7 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageDiscoveryWorkspaceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<StorageDiscoveryWorkspaceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -591,33 +508,13 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List StorageDiscoveryWorkspace resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StorageDiscoveryWorkspace list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageDiscoveryWorkspaceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List StorageDiscoveryWorkspace resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StorageDiscoveryWorkspace list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageDiscoveryWorkspaceInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -666,11 +563,7 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageDiscoveryWorkspaceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<StorageDiscoveryWorkspaceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -691,29 +584,13 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List StorageDiscoveryWorkspace resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StorageDiscoveryWorkspace list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageDiscoveryWorkspaceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List StorageDiscoveryWorkspace resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StorageDiscoveryWorkspace list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageDiscoveryWorkspaceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -753,11 +630,7 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageDiscoveryWorkspaceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageDiscoveryWorkspaceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -812,11 +685,7 @@ public final class StorageDiscoveryWorkspacesClientImpl implements StorageDiscov
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageDiscoveryWorkspaceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageDiscoveryWorkspaceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

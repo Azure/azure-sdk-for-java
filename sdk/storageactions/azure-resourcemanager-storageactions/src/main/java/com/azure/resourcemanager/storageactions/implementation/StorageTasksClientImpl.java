@@ -276,18 +276,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the storage task properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage task properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageTaskInner> getByResourceGroupWithResponse(String resourceGroupName, String storageTaskName,
         Context context) {
@@ -296,17 +285,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
             this.client.getSubscriptionId(), resourceGroupName, storageTaskName, accept, context);
     }
 
-    /**
-     * Get the storage task properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage task properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTaskInner getByResourceGroup(String resourceGroupName, String storageTaskName) {
         return getByResourceGroupWithResponse(resourceGroupName, storageTaskName, Context.NONE).getValue();
@@ -357,11 +336,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String storageTaskName,
         StorageTaskInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageTaskName, contentType, accept, parameters,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, storageTaskName, parameters, Context.NONE);
     }
 
     /**
@@ -413,45 +388,14 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
             StorageTaskInner.class, StorageTaskInner.class, this.client.getContext());
     }
 
-    /**
-     * Asynchronously creates a new storage task resource with the specified parameters. If a storage task is already
-     * created and a subsequent create request is issued with different properties, the storage task properties will be
-     * updated. If a storage task is already created and a subsequent create or update request is issued with the exact
-     * same set of properties, the request will succeed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param parameters The parameters to create a Storage Task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents Storage Task.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageTaskInner>, StorageTaskInner> beginCreate(String resourceGroupName,
         String storageTaskName, StorageTaskInner parameters) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, storageTaskName, parameters);
-        return this.client.<StorageTaskInner, StorageTaskInner>getLroResult(response, StorageTaskInner.class,
-            StorageTaskInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, storageTaskName, parameters, Context.NONE);
     }
 
-    /**
-     * Asynchronously creates a new storage task resource with the specified parameters. If a storage task is already
-     * created and a subsequent create request is issued with different properties, the storage task properties will be
-     * updated. If a storage task is already created and a subsequent create or update request is issued with the exact
-     * same set of properties, the request will succeed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param parameters The parameters to create a Storage Task.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents Storage Task.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageTaskInner>, StorageTaskInner> beginCreate(String resourceGroupName,
         String storageTaskName, StorageTaskInner parameters, Context context) {
@@ -482,46 +426,18 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Asynchronously creates a new storage task resource with the specified parameters. If a storage task is already
-     * created and a subsequent create request is issued with different properties, the storage task properties will be
-     * updated. If a storage task is already created and a subsequent create or update request is issued with the exact
-     * same set of properties, the request will succeed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param parameters The parameters to create a Storage Task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents Storage Task.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTaskInner create(String resourceGroupName, String storageTaskName, StorageTaskInner parameters) {
-        return beginCreate(resourceGroupName, storageTaskName, parameters).getFinalResult();
+        return create(resourceGroupName, storageTaskName, parameters, Context.NONE);
     }
 
-    /**
-     * Asynchronously creates a new storage task resource with the specified parameters. If a storage task is already
-     * created and a subsequent create request is issued with different properties, the storage task properties will be
-     * updated. If a storage task is already created and a subsequent create or update request is issued with the exact
-     * same set of properties, the request will succeed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param parameters The parameters to create a Storage Task.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents Storage Task.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTaskInner create(String resourceGroupName, String storageTaskName, StorageTaskInner parameters,
         Context context) {
-        return beginCreate(resourceGroupName, storageTaskName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, storageTaskName, parameters, context));
     }
 
     /**
@@ -563,11 +479,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String storageTaskName,
         StorageTaskUpdateParameters parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageTaskName, contentType, accept, parameters,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, storageTaskName, parameters, Context.NONE);
     }
 
     /**
@@ -613,39 +525,14 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
             StorageTaskInner.class, StorageTaskInner.class, this.client.getContext());
     }
 
-    /**
-     * Update storage task properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param parameters The parameters to provide to update the storage task resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents Storage Task.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageTaskInner>, StorageTaskInner> beginUpdate(String resourceGroupName,
         String storageTaskName, StorageTaskUpdateParameters parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, storageTaskName, parameters);
-        return this.client.<StorageTaskInner, StorageTaskInner>getLroResult(response, StorageTaskInner.class,
-            StorageTaskInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, storageTaskName, parameters, Context.NONE);
     }
 
-    /**
-     * Update storage task properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param parameters The parameters to provide to update the storage task resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents Storage Task.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageTaskInner>, StorageTaskInner> beginUpdate(String resourceGroupName,
         String storageTaskName, StorageTaskUpdateParameters parameters, Context context) {
@@ -673,41 +560,19 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update storage task properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param parameters The parameters to provide to update the storage task resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents Storage Task.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTaskInner update(String resourceGroupName, String storageTaskName,
         StorageTaskUpdateParameters parameters) {
-        return beginUpdate(resourceGroupName, storageTaskName, parameters).getFinalResult();
+        return update(resourceGroupName, storageTaskName, parameters, Context.NONE);
     }
 
-    /**
-     * Update storage task properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param parameters The parameters to provide to update the storage task resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents Storage Task.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTaskInner update(String resourceGroupName, String storageTaskName,
         StorageTaskUpdateParameters parameters, Context context) {
-        return beginUpdate(resourceGroupName, storageTaskName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, storageTaskName, parameters, context));
     }
 
     /**
@@ -742,8 +607,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageTaskName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageTaskName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, storageTaskName, Context.NONE);
     }
 
     /**
@@ -782,35 +646,13 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete the storage task resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageTaskName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, storageTaskName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storageTaskName, Context.NONE);
     }
 
-    /**
-     * Delete the storage task resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageTaskName,
         Context context) {
@@ -835,35 +677,16 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the storage task resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageTaskName) {
-        beginDelete(resourceGroupName, storageTaskName).getFinalResult();
+        delete(resourceGroupName, storageTaskName, Context.NONE);
     }
 
-    /**
-     * Delete the storage task resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageTaskName, Context context) {
-        beginDelete(resourceGroupName, storageTaskName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, storageTaskName, context));
     }
 
     /**
@@ -913,11 +736,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageTaskInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<StorageTasksListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -939,31 +758,13 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the storage tasks available under the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Task operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all the storage tasks available under the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Task operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1011,11 +812,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageTaskInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<StorageTasksListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1036,27 +833,13 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the storage tasks available under the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Task operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all the storage tasks available under the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Task operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1100,17 +883,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
         return previewActionsWithResponseAsync(location, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Runs the input conditions against input object metadata properties and designates matched objects in response.
-     * 
-     * @param location The location parameter.
-     * @param parameters The parameters to preview action condition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Task Preview Action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageTaskPreviewActionInner> previewActionsWithResponse(String location,
         StorageTaskPreviewActionInner parameters, Context context) {
@@ -1120,16 +893,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
             this.client.getSubscriptionId(), location, contentType, accept, parameters, context);
     }
 
-    /**
-     * Runs the input conditions against input object metadata properties and designates matched objects in response.
-     * 
-     * @param location The location parameter.
-     * @param parameters The parameters to preview action condition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Task Preview Action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTaskPreviewActionInner previewActions(String location, StorageTaskPreviewActionInner parameters) {
         return previewActionsWithResponse(location, parameters, Context.NONE).getValue();
@@ -1167,11 +931,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageTaskInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageTasksListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1225,11 +985,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageTaskInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageTasksListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

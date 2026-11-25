@@ -28,8 +28,7 @@ public final class ScriptPackagesImpl implements ScriptPackages {
     }
 
     public PagedIterable<ScriptPackage> list(String resourceGroupName, String privateCloudName) {
-        PagedIterable<ScriptPackageInner> inner = this.serviceClient().list(resourceGroupName, privateCloudName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScriptPackageImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     public PagedIterable<ScriptPackage> list(String resourceGroupName, String privateCloudName, Context context) {

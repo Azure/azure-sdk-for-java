@@ -50,29 +50,31 @@ public final class WorkspaceEvaluationProperties implements JsonSerializable<Wor
     private String resourceSnapshotId;
 
     /*
+     * The canonical Azure resource ID of the retained discovery result that supplied resourceSnapshotId. This reference
+     * does not change when the latest discovery changes and never identifies the latest alias or a protected LRO
+     * polling handle.
+     */
+    private String discoveryResultId;
+
+    /*
      * The number of templates to evaluate.
      */
-    private Integer numTemplatesToEvaluate;
+    private int numTemplatesToEvaluate;
 
     /*
      * The number of templates that evaluated successfully.
      */
-    private Integer numTemplatesEvaluatedSucceeded;
+    private int numTemplatesEvaluatedSucceeded;
 
     /*
      * The number of templates that failed evaluation.
      */
-    private Integer numTemplatesEvaluatedFailed;
+    private int numTemplatesEvaluatedFailed;
 
     /*
      * The number of templates that were cancelled during evaluation.
      */
-    private Integer numTemplatesEvaluatedCancelled;
-
-    /*
-     * The overall evaluation result.
-     */
-    private RecommendationStatus evaluationResult;
+    private int numTemplatesEvaluatedCancelled;
 
     /*
      * Per-template evaluation results.
@@ -140,11 +142,22 @@ public final class WorkspaceEvaluationProperties implements JsonSerializable<Wor
     }
 
     /**
+     * Get the discoveryResultId property: The canonical Azure resource ID of the retained discovery result that
+     * supplied resourceSnapshotId. This reference does not change when the latest discovery changes and never
+     * identifies the latest alias or a protected LRO polling handle.
+     * 
+     * @return the discoveryResultId value.
+     */
+    public String discoveryResultId() {
+        return this.discoveryResultId;
+    }
+
+    /**
      * Get the numTemplatesToEvaluate property: The number of templates to evaluate.
      * 
      * @return the numTemplatesToEvaluate value.
      */
-    public Integer numTemplatesToEvaluate() {
+    public int numTemplatesToEvaluate() {
         return this.numTemplatesToEvaluate;
     }
 
@@ -153,7 +166,7 @@ public final class WorkspaceEvaluationProperties implements JsonSerializable<Wor
      * 
      * @return the numTemplatesEvaluatedSucceeded value.
      */
-    public Integer numTemplatesEvaluatedSucceeded() {
+    public int numTemplatesEvaluatedSucceeded() {
         return this.numTemplatesEvaluatedSucceeded;
     }
 
@@ -162,7 +175,7 @@ public final class WorkspaceEvaluationProperties implements JsonSerializable<Wor
      * 
      * @return the numTemplatesEvaluatedFailed value.
      */
-    public Integer numTemplatesEvaluatedFailed() {
+    public int numTemplatesEvaluatedFailed() {
         return this.numTemplatesEvaluatedFailed;
     }
 
@@ -171,17 +184,8 @@ public final class WorkspaceEvaluationProperties implements JsonSerializable<Wor
      * 
      * @return the numTemplatesEvaluatedCancelled value.
      */
-    public Integer numTemplatesEvaluatedCancelled() {
+    public int numTemplatesEvaluatedCancelled() {
         return this.numTemplatesEvaluatedCancelled;
-    }
-
-    /**
-     * Get the evaluationResult property: The overall evaluation result.
-     * 
-     * @return the evaluationResult value.
-     */
-    public RecommendationStatus evaluationResult() {
-        return this.evaluationResult;
     }
 
     /**
@@ -224,6 +228,18 @@ public final class WorkspaceEvaluationProperties implements JsonSerializable<Wor
                         = WorkspaceEvaluationStatus.fromString(reader.getString());
                 } else if ("workspaceId".equals(fieldName)) {
                     deserializedWorkspaceEvaluationProperties.workspaceId = reader.getString();
+                } else if ("resourceSnapshotId".equals(fieldName)) {
+                    deserializedWorkspaceEvaluationProperties.resourceSnapshotId = reader.getString();
+                } else if ("discoveryResultId".equals(fieldName)) {
+                    deserializedWorkspaceEvaluationProperties.discoveryResultId = reader.getString();
+                } else if ("numTemplatesToEvaluate".equals(fieldName)) {
+                    deserializedWorkspaceEvaluationProperties.numTemplatesToEvaluate = reader.getInt();
+                } else if ("numTemplatesEvaluatedSucceeded".equals(fieldName)) {
+                    deserializedWorkspaceEvaluationProperties.numTemplatesEvaluatedSucceeded = reader.getInt();
+                } else if ("numTemplatesEvaluatedFailed".equals(fieldName)) {
+                    deserializedWorkspaceEvaluationProperties.numTemplatesEvaluatedFailed = reader.getInt();
+                } else if ("numTemplatesEvaluatedCancelled".equals(fieldName)) {
+                    deserializedWorkspaceEvaluationProperties.numTemplatesEvaluatedCancelled = reader.getInt();
                 } else if ("startTime".equals(fieldName)) {
                     deserializedWorkspaceEvaluationProperties.startTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -233,23 +249,6 @@ public final class WorkspaceEvaluationProperties implements JsonSerializable<Wor
                 } else if ("errors".equals(fieldName)) {
                     List<OperationError> errors = reader.readArray(reader1 -> OperationError.fromJson(reader1));
                     deserializedWorkspaceEvaluationProperties.errors = errors;
-                } else if ("resourceSnapshotId".equals(fieldName)) {
-                    deserializedWorkspaceEvaluationProperties.resourceSnapshotId = reader.getString();
-                } else if ("numTemplatesToEvaluate".equals(fieldName)) {
-                    deserializedWorkspaceEvaluationProperties.numTemplatesToEvaluate
-                        = reader.getNullable(JsonReader::getInt);
-                } else if ("numTemplatesEvaluatedSucceeded".equals(fieldName)) {
-                    deserializedWorkspaceEvaluationProperties.numTemplatesEvaluatedSucceeded
-                        = reader.getNullable(JsonReader::getInt);
-                } else if ("numTemplatesEvaluatedFailed".equals(fieldName)) {
-                    deserializedWorkspaceEvaluationProperties.numTemplatesEvaluatedFailed
-                        = reader.getNullable(JsonReader::getInt);
-                } else if ("numTemplatesEvaluatedCancelled".equals(fieldName)) {
-                    deserializedWorkspaceEvaluationProperties.numTemplatesEvaluatedCancelled
-                        = reader.getNullable(JsonReader::getInt);
-                } else if ("evaluationResult".equals(fieldName)) {
-                    deserializedWorkspaceEvaluationProperties.evaluationResult
-                        = RecommendationStatus.fromString(reader.getString());
                 } else if ("results".equals(fieldName)) {
                     List<TemplateEvaluationResultItem> results
                         = reader.readArray(reader1 -> TemplateEvaluationResultItem.fromJson(reader1));

@@ -21,7 +21,7 @@ public final class AuthenticationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"provisioningState\":\"Succeeded\"},\"id\":\"reljeamur\",\"name\":\"zmlovuanash\",\"type\":\"xlpm\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Failed\"},\"id\":\"fxapjwogqqnobpu\",\"name\":\"cdabtqwpwya\",\"type\":\"bzasqbucljgkyexa\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class AuthenticationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Authentication> response
-            = manager.authentications().list("cvjtszcofiz", "htd", com.azure.core.util.Context.NONE);
+            = manager.authentications().list("lewjwiuubwef", "sfapaqtferrq", com.azure.core.util.Context.NONE);
 
     }
 }

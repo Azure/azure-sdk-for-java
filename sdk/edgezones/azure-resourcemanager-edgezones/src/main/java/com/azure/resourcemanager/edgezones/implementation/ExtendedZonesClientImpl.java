@@ -183,16 +183,7 @@ public final class ExtendedZonesClientImpl implements ExtendedZonesClient {
         return getWithResponseAsync(extendedZoneName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an Azure Extended Zone for a subscription.
-     * 
-     * @param extendedZoneName The name of the ExtendedZone.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Extended Zone for a subscription along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExtendedZoneInner> getWithResponse(String extendedZoneName, Context context) {
         final String accept = "application/json";
@@ -200,15 +191,7 @@ public final class ExtendedZonesClientImpl implements ExtendedZonesClient {
             extendedZoneName, accept, context);
     }
 
-    /**
-     * Gets an Azure Extended Zone for a subscription.
-     * 
-     * @param extendedZoneName The name of the ExtendedZone.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Extended Zone for a subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExtendedZoneInner get(String extendedZoneName) {
         return getWithResponse(extendedZoneName, Context.NONE).getValue();
@@ -255,11 +238,7 @@ public final class ExtendedZonesClientImpl implements ExtendedZonesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExtendedZoneInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ExtendedZoneListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -280,27 +259,13 @@ public final class ExtendedZonesClientImpl implements ExtendedZonesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the Azure Extended Zones available to a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExtendedZone list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExtendedZoneInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists the Azure Extended Zones available to a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExtendedZone list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExtendedZoneInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -341,17 +306,7 @@ public final class ExtendedZonesClientImpl implements ExtendedZonesClient {
         return registerWithResponseAsync(extendedZoneName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Registers a subscription for an Extended Zone.
-     * 
-     * @param extendedZoneName The name of the ExtendedZone.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource that represents an Azure Extended Zone available to a subscription for registering and
-     * unregistering along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExtendedZoneInner> registerWithResponse(String extendedZoneName, Context context) {
         final String accept = "application/json";
@@ -359,16 +314,7 @@ public final class ExtendedZonesClientImpl implements ExtendedZonesClient {
             this.client.getSubscriptionId(), extendedZoneName, accept, context);
     }
 
-    /**
-     * Registers a subscription for an Extended Zone.
-     * 
-     * @param extendedZoneName The name of the ExtendedZone.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource that represents an Azure Extended Zone available to a subscription for registering and
-     * unregistering.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExtendedZoneInner register(String extendedZoneName) {
         return registerWithResponse(extendedZoneName, Context.NONE).getValue();
@@ -408,17 +354,7 @@ public final class ExtendedZonesClientImpl implements ExtendedZonesClient {
         return unregisterWithResponseAsync(extendedZoneName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Unregisters a subscription for an Extended Zone.
-     * 
-     * @param extendedZoneName The name of the ExtendedZone.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource that represents an Azure Extended Zone available to a subscription for registering and
-     * unregistering along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExtendedZoneInner> unregisterWithResponse(String extendedZoneName, Context context) {
         final String accept = "application/json";
@@ -426,16 +362,7 @@ public final class ExtendedZonesClientImpl implements ExtendedZonesClient {
             this.client.getSubscriptionId(), extendedZoneName, accept, context);
     }
 
-    /**
-     * Unregisters a subscription for an Extended Zone.
-     * 
-     * @param extendedZoneName The name of the ExtendedZone.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource that represents an Azure Extended Zone available to a subscription for registering and
-     * unregistering.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExtendedZoneInner unregister(String extendedZoneName) {
         return unregisterWithResponse(extendedZoneName, Context.NONE).getValue();
@@ -473,11 +400,7 @@ public final class ExtendedZonesClientImpl implements ExtendedZonesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExtendedZoneInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ExtendedZoneListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

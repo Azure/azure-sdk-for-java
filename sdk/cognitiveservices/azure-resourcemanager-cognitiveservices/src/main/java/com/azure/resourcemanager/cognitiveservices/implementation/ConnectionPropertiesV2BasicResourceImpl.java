@@ -64,11 +64,7 @@ public final class ConnectionPropertiesV2BasicResourceImpl implements Connection
     }
 
     public ConnectionPropertiesV2BasicResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccountConnections()
-            .createWithResponse(resourceGroupName, accountName, connectionName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ConnectionPropertiesV2BasicResource create(Context context) {
@@ -92,11 +88,7 @@ public final class ConnectionPropertiesV2BasicResourceImpl implements Connection
     }
 
     public ConnectionPropertiesV2BasicResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccountConnections()
-            .updateWithResponse(resourceGroupName, accountName, connectionName, updateConnection, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ConnectionPropertiesV2BasicResource apply(Context context) {
@@ -114,20 +106,31 @@ public final class ConnectionPropertiesV2BasicResourceImpl implements Connection
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/connections/{connectionName}",
             "resourceGroupName");
+        if (this.resourceGroupName == null) {
+            this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/connections/{connectionName}",
+                "resourceGroupName");
+        }
         this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/connections/{connectionName}",
             "accountName");
+        if (this.accountName == null) {
+            this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/connections/{connectionName}",
+                "accountName");
+        }
         this.connectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/connections/{connectionName}",
             "connectionName");
+        if (this.connectionName == null) {
+            this.connectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/connections/{connectionName}",
+                "connectionName");
+        }
     }
 
     public ConnectionPropertiesV2BasicResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccountConnections()
-            .getWithResponse(resourceGroupName, accountName, connectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ConnectionPropertiesV2BasicResource refresh(Context context) {

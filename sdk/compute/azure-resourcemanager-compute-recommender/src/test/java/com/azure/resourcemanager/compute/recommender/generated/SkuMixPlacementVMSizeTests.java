@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuMixPlacementVMSizeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuMixPlacementVMSize model = BinaryData.fromString("{\"name\":\"oxxjtfelluwf\",\"rank\":1312385221}")
+        SkuMixPlacementVMSize model = BinaryData.fromString("{\"name\":\"rlyxwjkcprbnw\",\"rank\":1500151010}")
             .toObject(SkuMixPlacementVMSize.class);
-        Assertions.assertEquals("oxxjtfelluwf", model.name());
-        Assertions.assertEquals(1312385221, model.rank());
+        Assertions.assertEquals("rlyxwjkcprbnw", model.name());
+        Assertions.assertEquals(1500151010, model.rank());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuMixPlacementVMSize model = new SkuMixPlacementVMSize().withName("oxxjtfelluwf").withRank(1312385221);
+        SkuMixPlacementVMSize model = new SkuMixPlacementVMSize().withName("rlyxwjkcprbnw").withRank(1500151010);
         model = BinaryData.fromObject(model).toObject(SkuMixPlacementVMSize.class);
-        Assertions.assertEquals("oxxjtfelluwf", model.name());
-        Assertions.assertEquals(1312385221, model.rank());
+        Assertions.assertEquals("rlyxwjkcprbnw", model.name());
+        Assertions.assertEquals(1500151010, model.rank());
     }
 }

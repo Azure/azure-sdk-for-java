@@ -167,24 +167,7 @@ public final class ContentTemplatesClientImpl implements ContentTemplatesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a template byt its identifier.
-     * Expandable properties:
-     * - properties/mainTemplate
-     * - properties/dependantTemplates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param templateId template Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a template byt its identifier.
-     * Expandable properties:
-     * - properties/mainTemplate
-     * - properties/dependantTemplates along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TemplateModelInner> getWithResponse(String resourceGroupName, String workspaceName,
         String templateId, Context context) {
@@ -193,23 +176,7 @@ public final class ContentTemplatesClientImpl implements ContentTemplatesClient 
             resourceGroupName, workspaceName, templateId, accept, context);
     }
 
-    /**
-     * Gets a template byt its identifier.
-     * Expandable properties:
-     * - properties/mainTemplate
-     * - properties/dependantTemplates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param templateId template Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a template byt its identifier.
-     * Expandable properties:
-     * - properties/mainTemplate
-     * - properties/dependantTemplates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TemplateModelInner get(String resourceGroupName, String workspaceName, String templateId) {
         return getWithResponse(resourceGroupName, workspaceName, templateId, Context.NONE).getValue();
@@ -258,19 +225,7 @@ public final class ContentTemplatesClientImpl implements ContentTemplatesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Install a template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param templateId template Id.
-     * @param templateInstallationProperties Template installation properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return template resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TemplateModelInner> installWithResponse(String resourceGroupName, String workspaceName,
         String templateId, TemplateModelInner templateInstallationProperties, Context context) {
@@ -281,18 +236,7 @@ public final class ContentTemplatesClientImpl implements ContentTemplatesClient 
             templateInstallationProperties, context);
     }
 
-    /**
-     * Install a template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param templateId template Id.
-     * @param templateInstallationProperties Template installation properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return template resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TemplateModelInner install(String resourceGroupName, String workspaceName, String templateId,
         TemplateModelInner templateInstallationProperties) {
@@ -336,18 +280,7 @@ public final class ContentTemplatesClientImpl implements ContentTemplatesClient 
         return deleteWithResponseAsync(resourceGroupName, workspaceName, templateId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete an installed template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param templateId template Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String templateId,
         Context context) {
@@ -355,16 +288,7 @@ public final class ContentTemplatesClientImpl implements ContentTemplatesClient 
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, templateId, context);
     }
 
-    /**
-     * Delete an installed template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param templateId template Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String templateId) {
         deleteWithResponse(resourceGroupName, workspaceName, templateId, Context.NONE);

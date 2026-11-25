@@ -68,11 +68,7 @@ public final class ConfigurationAssignmentImpl
     private String configurationAssignmentName;
 
     public ConfigurationAssignment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurationAssignmentsForSubscriptions()
-            .createOrUpdateWithResponse(configurationAssignmentName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ConfigurationAssignment create(Context context) {
@@ -94,11 +90,7 @@ public final class ConfigurationAssignmentImpl
     }
 
     public ConfigurationAssignment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurationAssignmentsForSubscriptions()
-            .updateWithResponse(configurationAssignmentName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ConfigurationAssignment apply(Context context) {
@@ -116,14 +108,25 @@ public final class ConfigurationAssignmentImpl
         this.configurationAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}",
             "configurationAssignmentName");
+        if (this.configurationAssignmentName == null) {
+            this.configurationAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}",
+                "configurationAssignmentName");
+        }
+        if (this.configurationAssignmentName == null) {
+            this.configurationAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}",
+                "configurationAssignmentName");
+        }
+        if (this.configurationAssignmentName == null) {
+            this.configurationAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}",
+                "configurationAssignmentName");
+        }
     }
 
     public ConfigurationAssignment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurationAssignmentsForSubscriptions()
-            .getWithResponse(configurationAssignmentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ConfigurationAssignment refresh(Context context) {

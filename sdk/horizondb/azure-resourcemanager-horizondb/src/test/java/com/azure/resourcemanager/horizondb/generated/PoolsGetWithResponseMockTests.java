@@ -25,7 +25,7 @@ public final class PoolsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Ready\",\"computeModel\":{\"type\":\"Provisioned\",\"computeProcessor\":\"Intel\",\"computeGeneration\":1937777224,\"vCores\":441101019},\"nodeCount\":1249979629,\"highAvailability\":{\"mode\":\"AnyZone\"},\"parameterGroup\":{\"parameterGroupResourceId\":\"pdso\",\"applyMethod\":\"PendingReboot\",\"syncStatus\":\"InSync\"},\"scheduledMaintenance\":{\"maintenanceManagementType\":\"ScheduledMaintenanceProperties\"},\"provisioningState\":\"Succeeded\"},\"tags\":{\"yybyc\":\"uswdv\",\"ikyzirtxdy\":\"unvjsrtkfawnopq\",\"ejnt\":\"x\"},\"id\":\"ewgioilqukrydxt\",\"name\":\"mieoxorgguf\",\"type\":\"yaomtb\"}";
+            = "{\"properties\":{\"state\":\"Provisioning\",\"computeModel\":{\"type\":\"Provisioned\",\"computeProcessor\":\"Intel\",\"computeGeneration\":724874464,\"vCores\":456255387},\"nodeCount\":1224339207,\"highAvailability\":{\"mode\":\"ZoneRedundant\"},\"parameterGroup\":{\"parameterGroupResourceId\":\"uors\",\"applyMethod\":\"PendingReboot\",\"syncStatus\":\"FailedToApply\"},\"scheduledMaintenance\":{\"maintenanceManagementType\":\"ScheduledMaintenanceProperties\"},\"provisioningState\":\"InProgress\"},\"id\":\"lhlv\",\"name\":\"uuepzlrphwzsoldw\",\"type\":\"yuqdu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,18 +35,18 @@ public final class PoolsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Pool response = manager.pools()
-            .getWithResponse("gnyhmossxkkg", "h", "rghxjb", com.azure.core.util.Context.NONE)
+            .getWithResponse("uvwpklvxwmyg", "xpgpq", "hiszepnnbjcrxgib", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PoolComputeModelType.PROVISIONED, response.properties().computeModel().type());
         Assertions.assertEquals(ComputeProcessorType.INTEL, response.properties().computeModel().computeProcessor());
-        Assertions.assertEquals(1937777224, response.properties().computeModel().computeGeneration());
-        Assertions.assertEquals(441101019, response.properties().computeModel().vCores());
-        Assertions.assertEquals(1249979629, response.properties().nodeCount());
-        Assertions.assertEquals(PoolHighAvailabilityMode.ANY_ZONE, response.properties().highAvailability().mode());
-        Assertions.assertEquals("pdso", response.properties().parameterGroup().parameterGroupResourceId());
+        Assertions.assertEquals(724874464, response.properties().computeModel().computeGeneration());
+        Assertions.assertEquals(456255387, response.properties().computeModel().vCores());
+        Assertions.assertEquals(1224339207, response.properties().nodeCount());
+        Assertions.assertEquals(PoolHighAvailabilityMode.ZONE_REDUNDANT,
+            response.properties().highAvailability().mode());
+        Assertions.assertEquals("uors", response.properties().parameterGroup().parameterGroupResourceId());
         Assertions.assertEquals(ParameterApplyMethod.PENDING_REBOOT,
             response.properties().parameterGroup().applyMethod());
-        Assertions.assertEquals("uswdv", response.tags().get("yybyc"));
     }
 }

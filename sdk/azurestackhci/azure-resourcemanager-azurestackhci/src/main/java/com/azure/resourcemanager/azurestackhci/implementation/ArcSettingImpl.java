@@ -120,11 +120,7 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, 
     }
 
     public ArcSetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getArcSettings()
-            .createWithResponse(resourceGroupName, clusterName, arcSettingName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ArcSetting create(Context context) {
@@ -147,11 +143,7 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, 
     }
 
     public ArcSetting apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getArcSettings()
-            .updateWithResponse(resourceGroupName, clusterName, arcSettingName, updateArcSetting, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ArcSetting apply(Context context) {
@@ -178,11 +170,7 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, 
     }
 
     public ArcSetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getArcSettings()
-            .getWithResponse(resourceGroupName, clusterName, arcSettingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ArcSetting refresh(Context context) {

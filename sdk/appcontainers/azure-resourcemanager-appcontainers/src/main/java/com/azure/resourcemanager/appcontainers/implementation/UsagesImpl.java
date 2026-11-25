@@ -26,8 +26,7 @@ public final class UsagesImpl implements Usages {
     }
 
     public PagedIterable<Usage> list(String location) {
-        PagedIterable<UsageInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new UsageImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<Usage> list(String location, Context context) {

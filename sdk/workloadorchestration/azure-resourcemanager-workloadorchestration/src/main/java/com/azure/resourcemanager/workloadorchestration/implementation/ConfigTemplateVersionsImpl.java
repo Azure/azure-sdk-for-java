@@ -57,9 +57,7 @@ public final class ConfigTemplateVersionsImpl implements ConfigTemplateVersions 
 
     public PagedIterable<ConfigTemplateVersion> listByConfigTemplate(String resourceGroupName,
         String configTemplateName) {
-        PagedIterable<ConfigTemplateVersionInner> inner
-            = this.serviceClient().listByConfigTemplate(resourceGroupName, configTemplateName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigTemplateVersionImpl(inner1, this.manager()));
+        return this.listByConfigTemplate(resourceGroupName, configTemplateName, Context.NONE);
     }
 
     public PagedIterable<ConfigTemplateVersion> listByConfigTemplate(String resourceGroupName,

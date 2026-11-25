@@ -12,9 +12,9 @@ public final class ConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationInner model = BinaryData.fromString(
-            "{\"properties\":{\"value\":\"d\",\"description\":\"vwiwubmwmbesld\",\"defaultValue\":\"wwtppj\",\"dataType\":\"Enumeration\",\"allowedValues\":\"ogaok\",\"source\":\"z\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"qzeqqkdltfzxm\",\"documentationLink\":\"v\"},\"id\":\"ur\",\"name\":\"odkwobd\",\"type\":\"gxtibqdxbxw\"}")
+            "{\"properties\":{\"value\":\"plvwiwubmwmbes\",\"description\":\"nkww\",\"defaultValue\":\"pjflcxogao\",\"dataType\":\"String\",\"allowedValues\":\"m\",\"source\":\"ikvmkqzeqqk\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":false,\"unit\":\"hvhgureod\",\"documentationLink\":\"obdagxtibqdxb\"},\"id\":\"akbogqxndlkzgxh\",\"name\":\"ripl\",\"type\":\"podxunkb\"}")
             .toObject(ConfigurationInner.class);
-        Assertions.assertEquals("d", model.value());
-        Assertions.assertEquals("z", model.source());
+        Assertions.assertEquals("plvwiwubmwmbes", model.value());
+        Assertions.assertEquals("ikvmkqzeqqk", model.source());
     }
 }

@@ -71,10 +71,7 @@ public final class EntityImpl implements Entity, Entity.Definition, Entity.Updat
     }
 
     public Entity create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEntities()
-            .createOrUpdate(resourceGroupName, healthModelName, entityName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Entity create(Context context) {
@@ -95,10 +92,7 @@ public final class EntityImpl implements Entity, Entity.Definition, Entity.Updat
     }
 
     public Entity apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEntities()
-            .createOrUpdate(resourceGroupName, healthModelName, entityName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Entity apply(Context context) {
@@ -123,11 +117,7 @@ public final class EntityImpl implements Entity, Entity.Definition, Entity.Updat
     }
 
     public Entity refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEntities()
-            .getWithResponse(resourceGroupName, healthModelName, entityName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Entity refresh(Context context) {

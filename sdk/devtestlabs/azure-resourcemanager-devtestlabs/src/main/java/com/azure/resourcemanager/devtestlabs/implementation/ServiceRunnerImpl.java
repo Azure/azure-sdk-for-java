@@ -84,11 +84,7 @@ public final class ServiceRunnerImpl implements ServiceRunner, ServiceRunner.Def
     }
 
     public ServiceRunner create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceRunners()
-            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ServiceRunner create(Context context) {
@@ -110,11 +106,7 @@ public final class ServiceRunnerImpl implements ServiceRunner, ServiceRunner.Def
     }
 
     public ServiceRunner apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceRunners()
-            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ServiceRunner apply(Context context) {
@@ -141,11 +133,7 @@ public final class ServiceRunnerImpl implements ServiceRunner, ServiceRunner.Def
     }
 
     public ServiceRunner refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceRunners()
-            .getWithResponse(resourceGroupName, labName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ServiceRunner refresh(Context context) {

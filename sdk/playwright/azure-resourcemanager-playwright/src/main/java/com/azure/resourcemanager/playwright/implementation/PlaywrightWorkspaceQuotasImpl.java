@@ -48,9 +48,7 @@ public final class PlaywrightWorkspaceQuotasImpl implements PlaywrightWorkspaceQ
 
     public PagedIterable<PlaywrightWorkspaceQuota> listByPlaywrightWorkspace(String resourceGroupName,
         String playwrightWorkspaceName) {
-        PagedIterable<PlaywrightWorkspaceQuotaInner> inner
-            = this.serviceClient().listByPlaywrightWorkspace(resourceGroupName, playwrightWorkspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PlaywrightWorkspaceQuotaImpl(inner1, this.manager()));
+        return this.listByPlaywrightWorkspace(resourceGroupName, playwrightWorkspaceName, Context.NONE);
     }
 
     public PagedIterable<PlaywrightWorkspaceQuota> listByPlaywrightWorkspace(String resourceGroupName,

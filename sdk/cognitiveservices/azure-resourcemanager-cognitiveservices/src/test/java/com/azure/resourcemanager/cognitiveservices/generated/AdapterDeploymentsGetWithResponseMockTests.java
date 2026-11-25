@@ -21,7 +21,7 @@ public final class AdapterDeploymentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sourceModelId\":\"tfelfchnuf\",\"targetDeploymentName\":\"sjgbfbbach\",\"activeTargetDeploymentName\":\"czzunfnbphceeiv\",\"provisioningState\":\"ExtensionUnreachable\",\"lastOperation\":{\"type\":\"Delete\",\"status\":\"Accepted\",\"requestedTargetDeploymentName\":\"ghcnuqhqpvt\",\"startedAt\":\"2021-11-01T16:06:16Z\",\"completedAt\":\"2021-01-31T05:25:51Z\"}},\"etag\":\"clggagygntbfytn\",\"id\":\"nihuzzju\",\"name\":\"vwgbzdtorbiwn\",\"type\":\"fzdpxctsucrxd\"}";
+            = "{\"properties\":{\"sourceModelId\":\"btkafcnfit\",\"targetDeploymentName\":\"uckykdwyjd\",\"activeTargetDeploymentName\":\"xxbawjgyngoudcl\",\"provisioningState\":\"ResolvingDNS\",\"lastOperation\":{\"type\":\"Create\",\"status\":\"Failed\",\"requestedTargetDeploymentName\":\"xbdisje\",\"startedAt\":\"2021-08-17T14:53:30Z\",\"completedAt\":\"2021-11-11T14:40:40Z\"}},\"etag\":\"hchgjonrhdi\",\"id\":\"vpdjytme\",\"name\":\"uiuvkcnqonj\",\"type\":\"b\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class AdapterDeploymentsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AdapterDeployment response = manager.adapterDeployments()
-            .getWithResponse("asfzhzzcarc", "uoxyipdthjf", "nhwsgns", com.azure.core.util.Context.NONE)
+            .getWithResponse("dziphe", "fefznxcleyamv", "itjjhqvypqgncgw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tfelfchnuf", response.properties().sourceModelId());
-        Assertions.assertEquals("sjgbfbbach", response.properties().targetDeploymentName());
+        Assertions.assertEquals("btkafcnfit", response.properties().sourceModelId());
+        Assertions.assertEquals("uckykdwyjd", response.properties().targetDeploymentName());
     }
 }

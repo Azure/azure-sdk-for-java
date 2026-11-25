@@ -1,6 +1,6 @@
 # Release History
 
-## 7.5.0-beta.1 (Unreleased)
+## 7.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,9 +8,11 @@
 
 ### Bugs Fixed
 
-- Fixed an issue where a refresh, when using multiple stores, could result in a partially loaded store failed to load across retries and all available replicas.
-
 ### Other Changes
+
+## 7.5.0 (2026-11-24)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#750-2026-11-24) for more details.
 
 ## 7.4.0 (2026-07-24)
 

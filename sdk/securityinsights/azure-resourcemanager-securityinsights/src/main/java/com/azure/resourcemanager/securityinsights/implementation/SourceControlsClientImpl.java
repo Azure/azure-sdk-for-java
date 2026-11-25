@@ -198,18 +198,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a source control byt its identifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param sourceControlId Source control Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a source control byt its identifier along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SourceControlInner> getWithResponse(String resourceGroupName, String workspaceName,
         String sourceControlId, Context context) {
@@ -218,17 +207,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
             resourceGroupName, workspaceName, sourceControlId, accept, context);
     }
 
-    /**
-     * Gets a source control byt its identifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param sourceControlId Source control Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a source control byt its identifier.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SourceControlInner get(String resourceGroupName, String workspaceName, String sourceControlId) {
         return getWithResponse(resourceGroupName, workspaceName, sourceControlId, Context.NONE).getValue();
@@ -278,19 +257,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates a source control.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param sourceControlId Source control Id.
-     * @param sourceControl The SourceControl.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a SourceControl in Azure Security Insights along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SourceControlInner> createWithResponse(String resourceGroupName, String workspaceName,
         String sourceControlId, SourceControlInner sourceControl, Context context) {
@@ -301,18 +268,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
             sourceControl, context);
     }
 
-    /**
-     * Creates a source control.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param sourceControlId Source control Id.
-     * @param sourceControl The SourceControl.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a SourceControl in Azure Security Insights.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SourceControlInner create(String resourceGroupName, String workspaceName, String sourceControlId,
         SourceControlInner sourceControl) {
@@ -371,11 +327,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SourceControlInner> listSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<SourceControlList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -399,33 +351,13 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all source controls, without source control items.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all source controls, without source control items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SourceControlInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Gets all source controls, without source control items.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all source controls, without source control items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SourceControlInner> list(String resourceGroupName, String workspaceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, context),
@@ -475,19 +407,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Delete a source control.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param sourceControlId Source control Id.
-     * @param repositoryAccess The repository access credentials.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return warning response structure along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WarningInner> deleteWithResponse(String resourceGroupName, String workspaceName,
         String sourceControlId, RepositoryAccessProperties repositoryAccess, Context context) {
@@ -498,18 +418,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
             repositoryAccess, context);
     }
 
-    /**
-     * Delete a source control.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param sourceControlId Source control Id.
-     * @param repositoryAccess The repository access credentials.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return warning response structure.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WarningInner delete(String resourceGroupName, String workspaceName, String sourceControlId,
         RepositoryAccessProperties repositoryAccess) {
@@ -547,11 +456,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SourceControlInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SourceControlList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -93,12 +93,7 @@ public final class ProtectionIntentResourceImpl
     }
 
     public ProtectionIntentResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectionIntents()
-            .createOrUpdateWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProtectionIntentResource create(Context context) {
@@ -122,12 +117,7 @@ public final class ProtectionIntentResourceImpl
     }
 
     public ProtectionIntentResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectionIntents()
-            .createOrUpdateWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ProtectionIntentResource apply(Context context) {
@@ -158,11 +148,7 @@ public final class ProtectionIntentResourceImpl
     }
 
     public ProtectionIntentResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectionIntents()
-            .getWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProtectionIntentResource refresh(Context context) {

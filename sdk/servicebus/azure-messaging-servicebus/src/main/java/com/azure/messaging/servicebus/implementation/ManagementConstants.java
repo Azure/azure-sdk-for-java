@@ -20,6 +20,7 @@ public class ManagementConstants {
     public static final String LOCK_TOKEN_KEY = "lock-token";
     public static final String LOCK_TOKENS_KEY = "lock-tokens";
     public static final String MESSAGE_COUNT_KEY = "message-count";
+    public static final String ENQUEUED_TIME_UTC = "enqueued-time-utc";
     public static final String MESSAGE = "message";
     public static final String MESSAGES = "messages";
     public static final String MESSAGE_ID = "message-id";
@@ -84,6 +85,7 @@ public class ManagementConstants {
     static final String OPERATION_SET_SESSION_STATE = AmqpConstants.VENDOR + ":set-session-state";
     static final String OPERATION_UPDATE_DISPOSITION = AmqpConstants.VENDOR + ":update-disposition";
     static final String OPERATION_ADD_RULE = AmqpConstants.VENDOR + ":add-rule";
+    static final String OPERATION_BATCH_DELETE_MESSAGES = AmqpConstants.VENDOR + ":batch-delete-messages";
     static final String OPERATION_REMOVE_RULE = AmqpConstants.VENDOR + ":remove-rule";
     static final String OPERATION_GET_RULES = AmqpConstants.VENDOR + ":enumerate-rules";
     static final String OPERATION_GET_MESSAGE_SESSIONS = AmqpConstants.VENDOR + ":get-message-sessions";

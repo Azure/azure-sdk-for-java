@@ -226,33 +226,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualMachineInner> listSinglePage(String resourceGroupName, String privateCloudName,
         String clusterName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<VirtualMachinesList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, privateCloudName, clusterName, Context.NONE);
     }
 
     /**
@@ -299,36 +273,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List VirtualMachine resources by Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualMachine list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineInner> list(String resourceGroupName, String privateCloudName,
         String clusterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, privateCloudName, clusterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, privateCloudName, clusterName, Context.NONE);
     }
 
-    /**
-     * List VirtualMachine resources by Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualMachine list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineInner> list(String resourceGroupName, String privateCloudName,
         String clusterName, Context context) {
@@ -401,19 +353,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a VirtualMachine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param virtualMachineId ID of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a VirtualMachine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineInner> getWithResponse(String resourceGroupName, String privateCloudName,
         String clusterName, String virtualMachineId, Context context) {
@@ -448,18 +388,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             resourceGroupName, privateCloudName, clusterName, virtualMachineId, accept, context);
     }
 
-    /**
-     * Get a VirtualMachine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param virtualMachineId ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a VirtualMachine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineInner get(String resourceGroupName, String privateCloudName, String clusterName,
         String virtualMachineId) {
@@ -537,42 +466,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restrictMovementWithResponse(String resourceGroupName, String privateCloudName,
         String clusterName, String virtualMachineId, VirtualMachineRestrictMovement restrictMovement) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (virtualMachineId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter virtualMachineId is required and cannot be null."));
-        }
-        if (restrictMovement == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter restrictMovement is required and cannot be null."));
-        } else {
-            restrictMovement.validate();
-        }
-        final String contentType = "application/json";
-        return service.restrictMovementSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, virtualMachineId,
-            contentType, restrictMovement, Context.NONE);
+        return restrictMovementWithResponse(resourceGroupName, privateCloudName, clusterName, virtualMachineId,
+            restrictMovement, Context.NONE);
     }
 
     /**
@@ -653,41 +548,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Enable or disable DRS-driven VM movement restriction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param virtualMachineId ID of the virtual machine.
-     * @param restrictMovement The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestrictMovement(String resourceGroupName, String privateCloudName,
         String clusterName, String virtualMachineId, VirtualMachineRestrictMovement restrictMovement) {
-        Response<BinaryData> response = restrictMovementWithResponse(resourceGroupName, privateCloudName, clusterName,
-            virtualMachineId, restrictMovement);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRestrictMovement(resourceGroupName, privateCloudName, clusterName, virtualMachineId,
+            restrictMovement, Context.NONE);
     }
 
-    /**
-     * Enable or disable DRS-driven VM movement restriction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param virtualMachineId ID of the virtual machine.
-     * @param restrictMovement The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestrictMovement(String resourceGroupName, String privateCloudName,
         String clusterName, String virtualMachineId, VirtualMachineRestrictMovement restrictMovement, Context context) {
@@ -716,43 +585,20 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             restrictMovement).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enable or disable DRS-driven VM movement restriction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param virtualMachineId ID of the virtual machine.
-     * @param restrictMovement The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restrictMovement(String resourceGroupName, String privateCloudName, String clusterName,
         String virtualMachineId, VirtualMachineRestrictMovement restrictMovement) {
-        beginRestrictMovement(resourceGroupName, privateCloudName, clusterName, virtualMachineId, restrictMovement)
-            .getFinalResult();
+        restrictMovement(resourceGroupName, privateCloudName, clusterName, virtualMachineId, restrictMovement,
+            Context.NONE);
     }
 
-    /**
-     * Enable or disable DRS-driven VM movement restriction.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param virtualMachineId ID of the virtual machine.
-     * @param restrictMovement The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restrictMovement(String resourceGroupName, String privateCloudName, String clusterName,
         String virtualMachineId, VirtualMachineRestrictMovement restrictMovement, Context context) {
-        beginRestrictMovement(resourceGroupName, privateCloudName, clusterName, virtualMachineId, restrictMovement,
-            context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRestrictMovement(resourceGroupName, privateCloudName, clusterName,
+            virtualMachineId, restrictMovement, context));
     }
 
     /**
@@ -792,20 +638,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualMachineInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<VirtualMachinesList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

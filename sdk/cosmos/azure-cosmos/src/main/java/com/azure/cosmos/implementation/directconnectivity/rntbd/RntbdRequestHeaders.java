@@ -210,6 +210,14 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     // region Methods
 
+    void overrideSessionToken(final String sessionToken) {
+        if (StringUtils.isNotEmpty(sessionToken)) {
+            this.getSessionToken().setValue(sessionToken);
+        } else {
+            this.tokens.put(RntbdRequestHeader.SessionToken, RntbdToken.create(RntbdRequestHeader.SessionToken));
+        }
+    }
+
     static RntbdRequestHeaders decode(final ByteBuf in) {
         final RntbdRequestHeaders metadata = new RntbdRequestHeaders(in);
         return RntbdRequestHeaders.decode(metadata);

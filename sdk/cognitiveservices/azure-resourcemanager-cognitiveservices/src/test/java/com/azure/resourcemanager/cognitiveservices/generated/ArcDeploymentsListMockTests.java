@@ -12,8 +12,6 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeployment;
-import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentComputeType;
-import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentRuntime;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeploymentSkuName;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentState;
 import java.nio.charset.StandardCharsets;
@@ -26,7 +24,7 @@ public final class ArcDeploymentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"model\":{\"format\":\"fssrgrq\",\"name\":\"fnquollouurmuz\"},\"extensionId\":\"mbqqiehdhj\",\"runtime\":\"vllm\",\"compute\":\"cpu\",\"deploymentTemplate\":\"wnaxoxl\",\"vllmParameters\":{\"tensorParallelSize\":529599534,\"maxModelLen\":1581296532,\"gpuMemoryUtilization\":1.3326705,\"enforceEager\":false},\"replicas\":780928397,\"resources\":{\"requests\":{\"cpu\":\"vpaglyyh\",\"memory\":\"g\"},\"limits\":{\"cpu\":\"spmlutyj\",\"memory\":\"kedputocrb\",\"gpu\":1545684337}},\"nodeSelector\":{\"hgcmljzksqi\":\"mdrgcuzjmvkrwrjc\",\"hcaqpv\":\"ybqjvfio\",\"dswbsskgq\":\"szopeuku\",\"fsjbpwjwz\":\"emosq\"},\"deploymentState\":\"Running\",\"raiPolicyName\":\"dzymzkhxfpzcuud\",\"provisioningState\":\"Failed\",\"provisioningDetails\":{\"message\":\"j\",\"lastOperationTimestamp\":\"2021-03-16T23:40:13Z\"},\"inferenceEndpoint\":\"ibweua\",\"capabilities\":{\"coqxtvytzqlyldj\":\"xlz\"}},\"sku\":{\"name\":\"Arc\"},\"etag\":\"xyrazz\",\"id\":\"jv\",\"name\":\"szbdbrlbozltyol\",\"type\":\"cbibtk\"}]}";
+            = "{\"value\":[{\"properties\":{\"model\":{\"format\":\"zcffchn\",\"name\":\"iyevjeht\",\"version\":\"eaoxxsehfl\",\"assetId\":\"m\"},\"extensionId\":\"bpyz\",\"runtime\":\"onnx-genai\",\"compute\":\"cpu\",\"deploymentTemplate\":\"ph\",\"vllmParameters\":{\"tensorParallelSize\":1049997014,\"maxModelLen\":1360129044,\"gpuMemoryUtilization\":55.203773,\"enforceEager\":true},\"replicas\":1048800176,\"resources\":{\"requests\":{\"cpu\":\"vaxwzbwxx\",\"memory\":\"disxsrrhr\"},\"limits\":{\"cpu\":\"b\",\"memory\":\"rnrjzzuimpiybm\",\"gpu\":2140946735}},\"nodeSelector\":{\"vqqor\":\"cgxmfbiks\",\"hhxqnlm\":\"tqtwnqtjcemiasi\",\"fibwvhwouhysr\":\"vpms\",\"jxaayxpdzvgyuj\":\"kkzjsnxz\"},\"deploymentState\":\"Running\",\"raiPolicyName\":\"ejzdbigitramudyr\",\"provisioningState\":\"Accepted\",\"provisioningDetails\":{\"message\":\"pid\",\"lastOperationTimestamp\":\"2021-02-10T23:51:23Z\"},\"inferenceEndpoint\":\"qxolixfelsr\",\"capabilities\":{\"ktbay\":\"vtzy\",\"lk\":\"asnj\",\"fdssofuxys\":\"yzlkqyezyzxkr\",\"qajfwz\":\"ltkqvikoi\"}},\"sku\":{\"name\":\"Arc\"},\"etag\":\"goqvz\",\"id\":\"eiydoqbr\",\"name\":\"xlxptxhedn\",\"type\":\"zjtrjawpz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,24 +34,21 @@ public final class ArcDeploymentsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ArcDeployment> response
-            = manager.arcDeployments().list("tlthrt", "pu", com.azure.core.util.Context.NONE);
+            = manager.arcDeployments().list("udx", "fvn", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fssrgrq", response.iterator().next().properties().model().format());
-        Assertions.assertEquals("fnquollouurmuz", response.iterator().next().properties().model().name());
-        Assertions.assertEquals("mbqqiehdhj", response.iterator().next().properties().extensionId());
-        Assertions.assertEquals(ArcDeploymentRuntime.VLLM, response.iterator().next().properties().runtime());
-        Assertions.assertEquals(ArcDeploymentComputeType.CPU, response.iterator().next().properties().compute());
-        Assertions.assertEquals("wnaxoxl", response.iterator().next().properties().deploymentTemplate());
-        Assertions.assertEquals(780928397, response.iterator().next().properties().replicas());
-        Assertions.assertEquals("vpaglyyh", response.iterator().next().properties().resources().requests().cpu());
-        Assertions.assertEquals("g", response.iterator().next().properties().resources().requests().memory());
-        Assertions.assertEquals("spmlutyj", response.iterator().next().properties().resources().limits().cpu());
-        Assertions.assertEquals("kedputocrb", response.iterator().next().properties().resources().limits().memory());
-        Assertions.assertEquals(1545684337, response.iterator().next().properties().resources().limits().gpu());
-        Assertions.assertEquals("mdrgcuzjmvkrwrjc",
-            response.iterator().next().properties().nodeSelector().get("hgcmljzksqi"));
+        Assertions.assertEquals("m", response.iterator().next().properties().model().assetId());
+        Assertions.assertEquals("bpyz", response.iterator().next().properties().extensionId());
+        Assertions.assertEquals("ph", response.iterator().next().properties().deploymentTemplate());
+        Assertions.assertEquals(1048800176, response.iterator().next().properties().replicas());
+        Assertions.assertEquals("vaxwzbwxx", response.iterator().next().properties().resources().requests().cpu());
+        Assertions.assertEquals("disxsrrhr", response.iterator().next().properties().resources().requests().memory());
+        Assertions.assertEquals("b", response.iterator().next().properties().resources().limits().cpu());
+        Assertions.assertEquals("rnrjzzuimpiybm",
+            response.iterator().next().properties().resources().limits().memory());
+        Assertions.assertEquals(2140946735, response.iterator().next().properties().resources().limits().gpu());
+        Assertions.assertEquals("cgxmfbiks", response.iterator().next().properties().nodeSelector().get("vqqor"));
         Assertions.assertEquals(DeploymentState.RUNNING, response.iterator().next().properties().deploymentState());
-        Assertions.assertEquals("dzymzkhxfpzcuud", response.iterator().next().properties().raiPolicyName());
+        Assertions.assertEquals("ejzdbigitramudyr", response.iterator().next().properties().raiPolicyName());
         Assertions.assertEquals(ArcDeploymentSkuName.ARC, response.iterator().next().sku().name());
     }
 }

@@ -49,8 +49,7 @@ public final class TuningOptionsOperationsImpl implements TuningOptionsOperation
     }
 
     public PagedIterable<TuningOptions> listByServer(String resourceGroupName, String serverName) {
-        PagedIterable<TuningOptionsInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TuningOptionsImpl(inner1, this.manager()));
+        return this.listByServer(resourceGroupName, serverName, Context.NONE);
     }
 
     public PagedIterable<TuningOptions> listByServer(String resourceGroupName, String serverName, Context context) {

@@ -45,8 +45,7 @@ public final class AutonomousDatabaseVersionsImpl implements AutonomousDatabaseV
     }
 
     public PagedIterable<AutonomousDbVersion> listByLocation(String location) {
-        PagedIterable<AutonomousDbVersionInner> inner = this.serviceClient().listByLocation(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AutonomousDbVersionImpl(inner1, this.manager()));
+        return this.listByLocation(location, Context.NONE);
     }
 
     public PagedIterable<AutonomousDbVersion> listByLocation(String location, Context context) {

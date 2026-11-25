@@ -3,12 +3,14 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -25,6 +27,26 @@ public final class StreamUtil {
     private static final ClientLogger LOGGER = new ClientLogger(StreamUtil.class);
 
     private StreamUtil() {
+    }
+
+    static byte[] readAllBytes(InputStream inputStream, Long length) throws IOException {
+        AccessibleByteArrayOutputStream output = (length == null || length < Integer.MAX_VALUE - 8)
+            ? new AccessibleByteArrayOutputStream()
+            : new AccessibleByteArrayOutputStream(length.intValue());
+        byte[] buffer = new byte[8192];
+        int read;
+        while ((read = inputStream.read(buffer, 0, buffer.length)) != -1) {
+            output.write(buffer, 0, read);
+        }
+        return output.toByteArray();
+    }
+
+    static void transferTo(InputStream inputStream, OutputStream outputStream) throws IOException {
+        byte[] buffer = new byte[8192];
+        int read;
+        while ((read = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, read);
+        }
     }
 
     /**

@@ -260,10 +260,7 @@ public final class LabVirtualMachineImpl
     }
 
     public LabVirtualMachine create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualMachines()
-            .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LabVirtualMachine create(Context context) {
@@ -285,11 +282,7 @@ public final class LabVirtualMachineImpl
     }
 
     public LabVirtualMachine apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualMachines()
-            .updateWithResponse(resourceGroupName, labName, name, updateLabVirtualMachine, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LabVirtualMachine apply(Context context) {
@@ -316,12 +309,7 @@ public final class LabVirtualMachineImpl
     }
 
     public LabVirtualMachine refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualMachines()
-            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LabVirtualMachine refresh(Context context) {

@@ -277,17 +277,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a virtual hard disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual hard disk along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualHardDiskInner> getByResourceGroupWithResponse(String resourceGroupName,
         String virtualHardDiskName, Context context) {
@@ -296,16 +286,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
             this.client.getSubscriptionId(), resourceGroupName, virtualHardDiskName, accept, context);
     }
 
-    /**
-     * Gets a virtual hard disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual hard disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualHardDiskInner getByResourceGroup(String resourceGroupName, String virtualHardDiskName) {
         return getByResourceGroupWithResponse(resourceGroupName, virtualHardDiskName, Context.NONE).getValue();
@@ -351,11 +332,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String virtualHardDiskName,
         VirtualHardDiskInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, virtualHardDiskName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, virtualHardDiskName, resource, Context.NONE);
     }
 
     /**
@@ -402,39 +379,14 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
             VirtualHardDiskInner.class, VirtualHardDiskInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to create or update a virtual hard disk. Please note some properties can be set only during virtual
-     * hard disk creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the virtual hard disk resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualHardDiskInner>, VirtualHardDiskInner>
         beginCreateOrUpdate(String resourceGroupName, String virtualHardDiskName, VirtualHardDiskInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, virtualHardDiskName, resource);
-        return this.client.<VirtualHardDiskInner, VirtualHardDiskInner>getLroResult(response,
-            VirtualHardDiskInner.class, VirtualHardDiskInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, virtualHardDiskName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a virtual hard disk. Please note some properties can be set only during virtual
-     * hard disk creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the virtual hard disk resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualHardDiskInner>, VirtualHardDiskInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualHardDiskName, VirtualHardDiskInner resource, Context context) {
@@ -463,41 +415,19 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a virtual hard disk. Please note some properties can be set only during virtual
-     * hard disk creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtual hard disk resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualHardDiskInner createOrUpdate(String resourceGroupName, String virtualHardDiskName,
         VirtualHardDiskInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, virtualHardDiskName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, virtualHardDiskName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a virtual hard disk. Please note some properties can be set only during virtual
-     * hard disk creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtual hard disk resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualHardDiskInner createOrUpdate(String resourceGroupName, String virtualHardDiskName,
         VirtualHardDiskInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, virtualHardDiskName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, virtualHardDiskName, resource, context));
     }
 
     /**
@@ -538,11 +468,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String virtualHardDiskName,
         VirtualHardDisksUpdateRequest properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, virtualHardDiskName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, virtualHardDiskName, properties, Context.NONE);
     }
 
     /**
@@ -587,37 +513,14 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
             VirtualHardDiskInner.class, VirtualHardDiskInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to update a virtual hard disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the virtual hard disk resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualHardDiskInner>, VirtualHardDiskInner> beginUpdate(String resourceGroupName,
         String virtualHardDiskName, VirtualHardDisksUpdateRequest properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, virtualHardDiskName, properties);
-        return this.client.<VirtualHardDiskInner, VirtualHardDiskInner>getLroResult(response,
-            VirtualHardDiskInner.class, VirtualHardDiskInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, virtualHardDiskName, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update a virtual hard disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the virtual hard disk resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualHardDiskInner>, VirtualHardDiskInner> beginUpdate(String resourceGroupName,
         String virtualHardDiskName, VirtualHardDisksUpdateRequest properties, Context context) {
@@ -644,39 +547,19 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update a virtual hard disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtual hard disk resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualHardDiskInner update(String resourceGroupName, String virtualHardDiskName,
         VirtualHardDisksUpdateRequest properties) {
-        return beginUpdate(resourceGroupName, virtualHardDiskName, properties).getFinalResult();
+        return update(resourceGroupName, virtualHardDiskName, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update a virtual hard disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtual hard disk resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualHardDiskInner update(String resourceGroupName, String virtualHardDiskName,
         VirtualHardDisksUpdateRequest properties, Context context) {
-        return beginUpdate(resourceGroupName, virtualHardDiskName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, virtualHardDiskName, properties, context));
     }
 
     /**
@@ -710,8 +593,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String virtualHardDiskName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, virtualHardDiskName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, virtualHardDiskName, Context.NONE);
     }
 
     /**
@@ -749,33 +631,13 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a virtual hard disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHardDiskName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, virtualHardDiskName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, virtualHardDiskName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a virtual hard disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHardDiskName,
         Context context) {
@@ -799,33 +661,16 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a virtual hard disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualHardDiskName) {
-        beginDelete(resourceGroupName, virtualHardDiskName).getFinalResult();
+        delete(resourceGroupName, virtualHardDiskName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a virtual hard disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualHardDiskName, Context context) {
-        beginDelete(resourceGroupName, virtualHardDiskName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, virtualHardDiskName, context));
     }
 
     /**
@@ -878,11 +723,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualHardDiskInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<VirtualHardDiskListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -906,33 +747,13 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the virtual hard disks in the specified resource group. Use the nextLink property in the response to
-     * get the next page of virtual hard disks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualHardDisk list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualHardDiskInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all of the virtual hard disks in the specified resource group. Use the nextLink property in the response to
-     * get the next page of virtual hard disks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualHardDisk list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualHardDiskInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -982,11 +803,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualHardDiskInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<VirtualHardDiskListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1008,29 +825,13 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the virtual hard disks in the specified subscription. Use the nextLink property in the response to
-     * get the next page of virtual hard disks.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualHardDisk list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualHardDiskInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listAllNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all of the virtual hard disks in the specified subscription. Use the nextLink property in the response to
-     * get the next page of virtual hard disks.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualHardDisk list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualHardDiskInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listAllNextSinglePage(nextLink, context));
@@ -1074,11 +875,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> uploadWithResponse(String resourceGroupName, String virtualHardDiskName,
         VirtualHardDiskUploadRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.uploadSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, virtualHardDiskName, contentType, accept, body,
-            Context.NONE);
+        return uploadWithResponse(resourceGroupName, virtualHardDiskName, body, Context.NONE);
     }
 
     /**
@@ -1123,37 +920,14 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
             VirtualHardDiskUploadResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to upload a virtual hard disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for uploading virtual hard disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualHardDiskUploadResponseInner>, VirtualHardDiskUploadResponseInner>
         beginUpload(String resourceGroupName, String virtualHardDiskName, VirtualHardDiskUploadRequest body) {
-        Response<BinaryData> response = uploadWithResponse(resourceGroupName, virtualHardDiskName, body);
-        return this.client.<VirtualHardDiskUploadResponseInner, VirtualHardDiskUploadResponseInner>getLroResult(
-            response, VirtualHardDiskUploadResponseInner.class, VirtualHardDiskUploadResponseInner.class, Context.NONE);
+        return beginUpload(resourceGroupName, virtualHardDiskName, body, Context.NONE);
     }
 
-    /**
-     * The operation to upload a virtual hard disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for uploading virtual hard disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualHardDiskUploadResponseInner>, VirtualHardDiskUploadResponseInner> beginUpload(
         String resourceGroupName, String virtualHardDiskName, VirtualHardDiskUploadRequest body, Context context) {
@@ -1180,39 +954,18 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to upload a virtual hard disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for uploading virtual hard disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualHardDiskUploadResponseInner upload(String resourceGroupName, String virtualHardDiskName,
         VirtualHardDiskUploadRequest body) {
-        return beginUpload(resourceGroupName, virtualHardDiskName, body).getFinalResult();
+        return upload(resourceGroupName, virtualHardDiskName, body, Context.NONE);
     }
 
-    /**
-     * The operation to upload a virtual hard disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualHardDiskName Name of the virtual hard disk.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for uploading virtual hard disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualHardDiskUploadResponseInner upload(String resourceGroupName, String virtualHardDiskName,
         VirtualHardDiskUploadRequest body, Context context) {
-        return beginUpload(resourceGroupName, virtualHardDiskName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpload(resourceGroupName, virtualHardDiskName, body, context));
     }
 
     /**
@@ -1247,11 +1000,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualHardDiskInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VirtualHardDiskListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1304,11 +1053,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualHardDiskInner> listAllNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VirtualHardDiskListResult> res
-            = service.listAllNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -104,11 +104,7 @@ public final class FirmwareImpl implements Firmware, Firmware.Definition, Firmwa
     }
 
     public Firmware create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirmwares()
-            .createWithResponse(resourceGroupName, workspaceName, firmwareId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Firmware create(Context context) {
@@ -131,11 +127,7 @@ public final class FirmwareImpl implements Firmware, Firmware.Definition, Firmwa
     }
 
     public Firmware apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirmwares()
-            .updateWithResponse(resourceGroupName, workspaceName, firmwareId, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Firmware apply(Context context) {
@@ -162,11 +154,7 @@ public final class FirmwareImpl implements Firmware, Firmware.Definition, Firmwa
     }
 
     public Firmware refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirmwares()
-            .getWithResponse(resourceGroupName, workspaceName, firmwareId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Firmware refresh(Context context) {

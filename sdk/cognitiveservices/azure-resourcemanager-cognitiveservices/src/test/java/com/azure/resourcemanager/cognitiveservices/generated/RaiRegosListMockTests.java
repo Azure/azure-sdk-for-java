@@ -23,7 +23,7 @@ public final class RaiRegosListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"encoding\":\"None\",\"rego\":\"xohlydsn\"},\"etag\":\"pchiypbfhmih\",\"tags\":{\"rjzgkbrauxbo\":\"qozewbr\",\"nqbjxgjwsrer\":\"fq\",\"izwkwkjx\":\"kbuud\",\"dikqelssybz\":\"aac\"},\"id\":\"vgb\",\"name\":\"rommkiqhypwt\",\"type\":\"zyjj\"}]}";
+            = "{\"value\":[{\"properties\":{\"encoding\":\"Base64\",\"rego\":\"mpuyypaggp\"},\"etag\":\"hea\",\"tags\":{\"vlxtywukhjdspl\":\"wloqrmgdhymi\",\"oivxcodwkwoytc\":\"itxrrgkwiyoyh\",\"izfue\":\"chh\"},\"id\":\"fwfiikqcdnzsfi\",\"name\":\"hgneo\",\"type\":\"dmcrxly\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class RaiRegosListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RaiRego> response
-            = manager.raiRegos().list("cuex", "qpwwvmbjecfwlbgh", 1381709162, com.azure.core.util.Context.NONE);
+            = manager.raiRegos().list("dthfwlnvqa", "byfi", 1976317993, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(RaiRegoEncoding.NONE, response.iterator().next().properties().encoding());
-        Assertions.assertEquals("xohlydsn", response.iterator().next().properties().rego());
-        Assertions.assertEquals("qozewbr", response.iterator().next().tags().get("rjzgkbrauxbo"));
+        Assertions.assertEquals(RaiRegoEncoding.BASE64, response.iterator().next().properties().encoding());
+        Assertions.assertEquals("mpuyypaggp", response.iterator().next().properties().rego());
+        Assertions.assertEquals("wloqrmgdhymi", response.iterator().next().tags().get("vlxtywukhjdspl"));
     }
 }
