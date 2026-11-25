@@ -118,21 +118,7 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
         return getWithResponseAsync(operationId, location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the operation status for a resource.
-     * 
-     * Gets the operation result for a resource.
-     * 
-     * @param operationId The operationId parameter.
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status for a resource.
-     * 
-     * Gets the operation result for a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationResultsGetResponse getWithResponse(String operationId, String location, Context context) {
         final String accept = "application/json";
@@ -140,20 +126,7 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
             operationId, location, accept, context);
     }
 
-    /**
-     * Gets the operation status for a resource.
-     * 
-     * Gets the operation result for a resource.
-     * 
-     * @param operationId The operationId parameter.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status for a resource.
-     * 
-     * Gets the operation result for a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner get(String operationId, String location) {
         return getWithResponse(operationId, location, Context.NONE).getValue();

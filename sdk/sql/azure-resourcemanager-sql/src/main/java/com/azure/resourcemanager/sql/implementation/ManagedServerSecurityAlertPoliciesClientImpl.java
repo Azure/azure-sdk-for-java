@@ -112,18 +112,7 @@ public final class ManagedServerSecurityAlertPoliciesClientImpl implements Manag
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get a managed server's threat detection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server's threat detection policy along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedServerSecurityAlertPolicyInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, SecurityAlertPolicyName securityAlertPolicyName) {
@@ -197,17 +186,7 @@ public final class ManagedServerSecurityAlertPoliciesClientImpl implements Manag
             resourceGroupName, managedInstanceName, securityAlertPolicyName, accept, context);
     }
 
-    /**
-     * Get a managed server's threat detection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server's threat detection policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedServerSecurityAlertPolicyInner> getAsync(String resourceGroupName, String managedInstanceName,
         SecurityAlertPolicyName securityAlertPolicyName) {
@@ -215,35 +194,14 @@ public final class ManagedServerSecurityAlertPoliciesClientImpl implements Manag
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a managed server's threat detection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server's threat detection policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedServerSecurityAlertPolicyInner> getWithResponse(String resourceGroupName,
         String managedInstanceName, SecurityAlertPolicyName securityAlertPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, securityAlertPolicyName, context).block();
     }
 
-    /**
-     * Get a managed server's threat detection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server's threat detection policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedServerSecurityAlertPolicyInner get(String resourceGroupName, String managedInstanceName,
         SecurityAlertPolicyName securityAlertPolicyName) {
@@ -251,19 +209,7 @@ public final class ManagedServerSecurityAlertPoliciesClientImpl implements Manag
             .getValue();
     }
 
-    /**
-     * Creates or updates a threat detection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters The managed server security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server security alert policy along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, SecurityAlertPolicyName securityAlertPolicyName,
@@ -353,18 +299,7 @@ public final class ManagedServerSecurityAlertPoliciesClientImpl implements Manag
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a threat detection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters The managed server security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a managed server security alert policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedServerSecurityAlertPolicyInner>, ManagedServerSecurityAlertPolicyInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName,
@@ -402,18 +337,7 @@ public final class ManagedServerSecurityAlertPoliciesClientImpl implements Manag
             ManagedServerSecurityAlertPolicyInner.class, context);
     }
 
-    /**
-     * Creates or updates a threat detection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters The managed server security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a managed server security alert policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedServerSecurityAlertPolicyInner>, ManagedServerSecurityAlertPolicyInner>
         beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
@@ -423,19 +347,7 @@ public final class ManagedServerSecurityAlertPoliciesClientImpl implements Manag
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a threat detection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters The managed server security alert policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a managed server security alert policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedServerSecurityAlertPolicyInner>, ManagedServerSecurityAlertPolicyInner>
         beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
@@ -447,18 +359,7 @@ public final class ManagedServerSecurityAlertPoliciesClientImpl implements Manag
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a threat detection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters The managed server security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server security alert policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedServerSecurityAlertPolicyInner> createOrUpdateAsync(String resourceGroupName,
         String managedInstanceName, SecurityAlertPolicyName securityAlertPolicyName,
@@ -489,37 +390,14 @@ public final class ManagedServerSecurityAlertPoliciesClientImpl implements Manag
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a threat detection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters The managed server security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server security alert policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedServerSecurityAlertPolicyInner createOrUpdate(String resourceGroupName, String managedInstanceName,
         SecurityAlertPolicyName securityAlertPolicyName, ManagedServerSecurityAlertPolicyInner parameters) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, securityAlertPolicyName, parameters).block();
     }
 
-    /**
-     * Creates or updates a threat detection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters The managed server security alert policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server security alert policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedServerSecurityAlertPolicyInner createOrUpdate(String resourceGroupName, String managedInstanceName,
         SecurityAlertPolicyName securityAlertPolicyName, ManagedServerSecurityAlertPolicyInner parameters,
@@ -607,16 +485,7 @@ public final class ManagedServerSecurityAlertPoliciesClientImpl implements Manag
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get the managed server's threat detection policies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed server's threat detection policies as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedServerSecurityAlertPolicyInner> listByInstanceAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -642,33 +511,14 @@ public final class ManagedServerSecurityAlertPoliciesClientImpl implements Manag
             nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get the managed server's threat detection policies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed server's threat detection policies as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedServerSecurityAlertPolicyInner> listByInstance(String resourceGroupName,
         String managedInstanceName) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
-    /**
-     * Get the managed server's threat detection policies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed server's threat detection policies as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedServerSecurityAlertPolicyInner> listByInstance(String resourceGroupName,
         String managedInstanceName, Context context) {

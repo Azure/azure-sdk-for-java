@@ -117,18 +117,7 @@ public final class JWTAuthenticatorsClientImpl implements JWTAuthenticatorsClien
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified JWT authenticator of a managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified JWT authenticator of a managed cluster along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JWTAuthenticatorInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String jwtAuthenticatorName) {
@@ -198,17 +187,7 @@ public final class JWTAuthenticatorsClientImpl implements JWTAuthenticatorsClien
             resourceGroupName, resourceName, jwtAuthenticatorName, accept, context);
     }
 
-    /**
-     * Gets the specified JWT authenticator of a managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified JWT authenticator of a managed cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JWTAuthenticatorInner> getAsync(String resourceGroupName, String resourceName,
         String jwtAuthenticatorName) {
@@ -216,54 +195,20 @@ public final class JWTAuthenticatorsClientImpl implements JWTAuthenticatorsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified JWT authenticator of a managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified JWT authenticator of a managed cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JWTAuthenticatorInner> getWithResponse(String resourceGroupName, String resourceName,
         String jwtAuthenticatorName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, jwtAuthenticatorName, context).block();
     }
 
-    /**
-     * Gets the specified JWT authenticator of a managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified JWT authenticator of a managed cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JWTAuthenticatorInner get(String resourceGroupName, String resourceName, String jwtAuthenticatorName) {
         return getWithResponse(resourceGroupName, resourceName, jwtAuthenticatorName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates JWT authenticator in the managed cluster and updates the managed cluster to apply the
-     * settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @param parameters The JWT authenticator to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration for JWT authenticator in the managed cluster along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String resourceName, String jwtAuthenticatorName, JWTAuthenticatorInner parameters) {
@@ -350,19 +295,7 @@ public final class JWTAuthenticatorsClientImpl implements JWTAuthenticatorsClien
             parameters, context);
     }
 
-    /**
-     * Creates or updates JWT authenticator in the managed cluster and updates the managed cluster to apply the
-     * settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @param parameters The JWT authenticator to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of configuration for JWT authenticator in the managed cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<JWTAuthenticatorInner>, JWTAuthenticatorInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, String jwtAuthenticatorName, JWTAuthenticatorInner parameters) {
@@ -398,19 +331,7 @@ public final class JWTAuthenticatorsClientImpl implements JWTAuthenticatorsClien
             this.client.getHttpPipeline(), JWTAuthenticatorInner.class, JWTAuthenticatorInner.class, context);
     }
 
-    /**
-     * Creates or updates JWT authenticator in the managed cluster and updates the managed cluster to apply the
-     * settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @param parameters The JWT authenticator to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of configuration for JWT authenticator in the managed cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JWTAuthenticatorInner>, JWTAuthenticatorInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String jwtAuthenticatorName, JWTAuthenticatorInner parameters) {
@@ -418,20 +339,7 @@ public final class JWTAuthenticatorsClientImpl implements JWTAuthenticatorsClien
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates JWT authenticator in the managed cluster and updates the managed cluster to apply the
-     * settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @param parameters The JWT authenticator to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of configuration for JWT authenticator in the managed cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JWTAuthenticatorInner>, JWTAuthenticatorInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String jwtAuthenticatorName, JWTAuthenticatorInner parameters,
@@ -440,19 +348,7 @@ public final class JWTAuthenticatorsClientImpl implements JWTAuthenticatorsClien
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates JWT authenticator in the managed cluster and updates the managed cluster to apply the
-     * settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @param parameters The JWT authenticator to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration for JWT authenticator in the managed cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JWTAuthenticatorInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
         String jwtAuthenticatorName, JWTAuthenticatorInner parameters) {
@@ -482,56 +378,21 @@ public final class JWTAuthenticatorsClientImpl implements JWTAuthenticatorsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates JWT authenticator in the managed cluster and updates the managed cluster to apply the
-     * settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @param parameters The JWT authenticator to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration for JWT authenticator in the managed cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JWTAuthenticatorInner createOrUpdate(String resourceGroupName, String resourceName,
         String jwtAuthenticatorName, JWTAuthenticatorInner parameters) {
         return createOrUpdateAsync(resourceGroupName, resourceName, jwtAuthenticatorName, parameters).block();
     }
 
-    /**
-     * Creates or updates JWT authenticator in the managed cluster and updates the managed cluster to apply the
-     * settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @param parameters The JWT authenticator to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration for JWT authenticator in the managed cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JWTAuthenticatorInner createOrUpdate(String resourceGroupName, String resourceName,
         String jwtAuthenticatorName, JWTAuthenticatorInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, resourceName, jwtAuthenticatorName, parameters, context).block();
     }
 
-    /**
-     * Deletes a JWT authenticator and updates the managed cluster to apply the settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
         String jwtAuthenticatorName) {
@@ -599,17 +460,7 @@ public final class JWTAuthenticatorsClientImpl implements JWTAuthenticatorsClien
             resourceGroupName, resourceName, jwtAuthenticatorName, context);
     }
 
-    /**
-     * Deletes a JWT authenticator and updates the managed cluster to apply the settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String jwtAuthenticatorName) {
@@ -641,52 +492,21 @@ public final class JWTAuthenticatorsClientImpl implements JWTAuthenticatorsClien
             context);
     }
 
-    /**
-     * Deletes a JWT authenticator and updates the managed cluster to apply the settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String jwtAuthenticatorName) {
         return this.beginDeleteAsync(resourceGroupName, resourceName, jwtAuthenticatorName).getSyncPoller();
     }
 
-    /**
-     * Deletes a JWT authenticator and updates the managed cluster to apply the settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String jwtAuthenticatorName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, resourceName, jwtAuthenticatorName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a JWT authenticator and updates the managed cluster to apply the settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String jwtAuthenticatorName) {
         return beginDeleteAsync(resourceGroupName, resourceName, jwtAuthenticatorName).last()
@@ -712,32 +532,13 @@ public final class JWTAuthenticatorsClientImpl implements JWTAuthenticatorsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a JWT authenticator and updates the managed cluster to apply the settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String jwtAuthenticatorName) {
         deleteAsync(resourceGroupName, resourceName, jwtAuthenticatorName).block();
     }
 
-    /**
-     * Deletes a JWT authenticator and updates the managed cluster to apply the settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param jwtAuthenticatorName The name of the JWT authenticator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String jwtAuthenticatorName, Context context) {
         deleteAsync(resourceGroupName, resourceName, jwtAuthenticatorName, context).block();
@@ -820,17 +621,7 @@ public final class JWTAuthenticatorsClientImpl implements JWTAuthenticatorsClien
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of JWT authenticators in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of JWT authenticators in the specified managed cluster as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JWTAuthenticatorInner> listByManagedClusterAsync(String resourceGroupName, String resourceName) {
         return new PagedFlux<>(() -> listByManagedClusterSinglePageAsync(resourceGroupName, resourceName),
@@ -856,34 +647,13 @@ public final class JWTAuthenticatorsClientImpl implements JWTAuthenticatorsClien
             nextLink -> listByManagedClusterNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of JWT authenticators in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of JWT authenticators in the specified managed cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JWTAuthenticatorInner> listByManagedCluster(String resourceGroupName, String resourceName) {
         return new PagedIterable<>(listByManagedClusterAsync(resourceGroupName, resourceName));
     }
 
-    /**
-     * Gets a list of JWT authenticators in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of JWT authenticators in the specified managed cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JWTAuthenticatorInner> listByManagedCluster(String resourceGroupName, String resourceName,
         Context context) {

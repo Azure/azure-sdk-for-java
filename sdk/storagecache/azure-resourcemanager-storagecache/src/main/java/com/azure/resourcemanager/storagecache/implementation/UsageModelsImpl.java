@@ -26,8 +26,7 @@ public final class UsageModelsImpl implements UsageModels {
     }
 
     public PagedIterable<UsageModel> list() {
-        PagedIterable<UsageModelInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new UsageModelImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<UsageModel> list(Context context) {

@@ -178,16 +178,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves the details of a virtual wan vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VpnGatewayInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String gatewayName) {
@@ -250,65 +241,27 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             resourceGroupName, gatewayName, accept, context);
     }
 
-    /**
-     * Retrieves the details of a virtual wan vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnGatewayInner> getByResourceGroupAsync(String resourceGroupName, String gatewayName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, gatewayName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the details of a virtual wan vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VpnGatewayInner> getByResourceGroupWithResponse(String resourceGroupName, String gatewayName,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, gatewayName, context).block();
     }
 
-    /**
-     * Retrieves the details of a virtual wan vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnGatewayInner getByResourceGroup(String resourceGroupName, String gatewayName) {
         return getByResourceGroupWithResponse(resourceGroupName, gatewayName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String gatewayName, VpnGatewayInner vpnGatewayParameters) {
@@ -387,17 +340,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             resourceGroupName, gatewayName, contentType, accept, vpnGatewayParameters, context);
     }
 
-    /**
-     * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String gatewayName, VpnGatewayInner vpnGatewayParameters) {
@@ -429,35 +372,14 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             VpnGatewayInner.class, VpnGatewayInner.class, context);
     }
 
-    /**
-     * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginCreateOrUpdate(String resourceGroupName,
         String gatewayName, VpnGatewayInner vpnGatewayParameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, gatewayName, vpnGatewayParameters).getSyncPoller();
     }
 
-    /**
-     * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginCreateOrUpdate(String resourceGroupName,
         String gatewayName, VpnGatewayInner vpnGatewayParameters, Context context) {
@@ -465,17 +387,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             .getSyncPoller();
     }
 
-    /**
-     * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnGatewayInner> createOrUpdateAsync(String resourceGroupName, String gatewayName,
         VpnGatewayInner vpnGatewayParameters) {
@@ -502,52 +414,21 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnGatewayInner createOrUpdate(String resourceGroupName, String gatewayName,
         VpnGatewayInner vpnGatewayParameters) {
         return createOrUpdateAsync(resourceGroupName, gatewayName, vpnGatewayParameters).block();
     }
 
-    /**
-     * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnGatewayInner createOrUpdate(String resourceGroupName, String gatewayName,
         VpnGatewayInner vpnGatewayParameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, gatewayName, vpnGatewayParameters, context).block();
     }
 
-    /**
-     * Updates virtual wan vpn gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String gatewayName,
         TagsObject vpnGatewayParameters) {
@@ -626,17 +507,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             resourceGroupName, gatewayName, contentType, accept, vpnGatewayParameters, context);
     }
 
-    /**
-     * Updates virtual wan vpn gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginUpdateTagsAsync(String resourceGroupName,
         String gatewayName, TagsObject vpnGatewayParameters) {
@@ -668,52 +539,21 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             VpnGatewayInner.class, VpnGatewayInner.class, context);
     }
 
-    /**
-     * Updates virtual wan vpn gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginUpdateTags(String resourceGroupName,
         String gatewayName, TagsObject vpnGatewayParameters) {
         return this.beginUpdateTagsAsync(resourceGroupName, gatewayName, vpnGatewayParameters).getSyncPoller();
     }
 
-    /**
-     * Updates virtual wan vpn gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginUpdateTags(String resourceGroupName,
         String gatewayName, TagsObject vpnGatewayParameters, Context context) {
         return this.beginUpdateTagsAsync(resourceGroupName, gatewayName, vpnGatewayParameters, context).getSyncPoller();
     }
 
-    /**
-     * Updates virtual wan vpn gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnGatewayInner> updateTagsAsync(String resourceGroupName, String gatewayName,
         TagsObject vpnGatewayParameters) {
@@ -740,50 +580,20 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates virtual wan vpn gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnGatewayInner updateTags(String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters) {
         return updateTagsAsync(resourceGroupName, gatewayName, vpnGatewayParameters).block();
     }
 
-    /**
-     * Updates virtual wan vpn gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnGatewayInner updateTags(String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters,
         Context context) {
         return updateTagsAsync(resourceGroupName, gatewayName, vpnGatewayParameters, context).block();
     }
 
-    /**
-     * Deletes a virtual wan vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String gatewayName) {
         if (this.client.getEndpoint() == null) {
@@ -843,16 +653,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             gatewayName, context);
     }
 
-    /**
-     * Deletes a virtual wan vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String gatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, gatewayName);
@@ -880,48 +681,20 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             context);
     }
 
-    /**
-     * Deletes a virtual wan vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String gatewayName) {
         return this.beginDeleteAsync(resourceGroupName, gatewayName).getSyncPoller();
     }
 
-    /**
-     * Deletes a virtual wan vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String gatewayName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, gatewayName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a virtual wan vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String gatewayName) {
         return beginDeleteAsync(resourceGroupName, gatewayName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -944,30 +717,13 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a virtual wan vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String gatewayName) {
         deleteAsync(resourceGroupName, gatewayName).block();
     }
 
-    /**
-     * Deletes a virtual wan vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String gatewayName, Context context) {
         deleteAsync(resourceGroupName, gatewayName, context).block();
@@ -1043,15 +799,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the VpnGateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VpnGateways as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VpnGatewayInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1074,30 +822,13 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the VpnGateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VpnGateways as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnGatewayInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all the VpnGateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VpnGateways as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnGatewayInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1159,13 +890,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the VpnGateways in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VpnGateways as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VpnGatewayInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -1186,43 +911,19 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the VpnGateways in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VpnGateways as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnGatewayInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Lists all the VpnGateways in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VpnGateways as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnGatewayInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * Resets the primary of the vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> resetWithResponseAsync(String resourceGroupName, String gatewayName,
         String ipConfigurationId) {
@@ -1286,17 +987,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             gatewayName, ipConfigurationId, accept, context);
     }
 
-    /**
-     * Resets the primary of the vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginResetAsync(String resourceGroupName,
         String gatewayName, String ipConfigurationId) {
@@ -1306,16 +997,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             VpnGatewayInner.class, VpnGatewayInner.class, this.client.getContext());
     }
 
-    /**
-     * Resets the primary of the vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginResetAsync(String resourceGroupName,
         String gatewayName) {
@@ -1348,16 +1030,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             VpnGatewayInner.class, VpnGatewayInner.class, context);
     }
 
-    /**
-     * Resets the primary of the vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginReset(String resourceGroupName,
         String gatewayName) {
@@ -1365,51 +1038,21 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
         return this.beginResetAsync(resourceGroupName, gatewayName, ipConfigurationId).getSyncPoller();
     }
 
-    /**
-     * Resets the primary of the vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginReset(String resourceGroupName,
         String gatewayName, String ipConfigurationId, Context context) {
         return this.beginResetAsync(resourceGroupName, gatewayName, ipConfigurationId, context).getSyncPoller();
     }
 
-    /**
-     * Resets the primary of the vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnGatewayInner> resetAsync(String resourceGroupName, String gatewayName, String ipConfigurationId) {
         return beginResetAsync(resourceGroupName, gatewayName, ipConfigurationId).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resets the primary of the vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnGatewayInner> resetAsync(String resourceGroupName, String gatewayName) {
         final String ipConfigurationId = null;
@@ -1436,51 +1079,21 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resets the primary of the vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnGatewayInner reset(String resourceGroupName, String gatewayName) {
         final String ipConfigurationId = null;
         return resetAsync(resourceGroupName, gatewayName, ipConfigurationId).block();
     }
 
-    /**
-     * Resets the primary of the vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnGatewayInner reset(String resourceGroupName, String gatewayName, String ipConfigurationId,
         Context context) {
         return resetAsync(resourceGroupName, gatewayName, ipConfigurationId, context).block();
     }
 
-    /**
-     * Starts packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> startPacketCaptureWithResponseAsync(String resourceGroupName,
         String gatewayName, VpnGatewayPacketCaptureStartParameters parameters) {
@@ -1550,17 +1163,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             resourceGroupName, gatewayName, accept, parameters, context);
     }
 
-    /**
-     * Starts packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(String resourceGroupName,
         String gatewayName, VpnGatewayPacketCaptureStartParameters parameters) {
@@ -1570,16 +1173,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             this.client.getContext());
     }
 
-    /**
-     * Starts packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(String resourceGroupName,
         String gatewayName) {
@@ -1612,16 +1206,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             context);
     }
 
-    /**
-     * Starts packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<String>, String> beginStartPacketCapture(String resourceGroupName,
         String gatewayName) {
@@ -1629,35 +1214,14 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
         return this.beginStartPacketCaptureAsync(resourceGroupName, gatewayName, parameters).getSyncPoller();
     }
 
-    /**
-     * Starts packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<String>, String> beginStartPacketCapture(String resourceGroupName, String gatewayName,
         VpnGatewayPacketCaptureStartParameters parameters, Context context) {
         return this.beginStartPacketCaptureAsync(resourceGroupName, gatewayName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Starts packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> startPacketCaptureAsync(String resourceGroupName, String gatewayName,
         VpnGatewayPacketCaptureStartParameters parameters) {
@@ -1665,16 +1229,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> startPacketCaptureAsync(String resourceGroupName, String gatewayName) {
         final VpnGatewayPacketCaptureStartParameters parameters = null;
@@ -1701,51 +1256,21 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String startPacketCapture(String resourceGroupName, String gatewayName) {
         final VpnGatewayPacketCaptureStartParameters parameters = null;
         return startPacketCaptureAsync(resourceGroupName, gatewayName, parameters).block();
     }
 
-    /**
-     * Starts packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String startPacketCapture(String resourceGroupName, String gatewayName,
         VpnGatewayPacketCaptureStartParameters parameters, Context context) {
         return startPacketCaptureAsync(resourceGroupName, gatewayName, parameters, context).block();
     }
 
-    /**
-     * Stops packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> stopPacketCaptureWithResponseAsync(String resourceGroupName,
         String gatewayName, VpnGatewayPacketCaptureStopParameters parameters) {
@@ -1815,17 +1340,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             resourceGroupName, gatewayName, accept, parameters, context);
     }
 
-    /**
-     * Stops packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(String resourceGroupName,
         String gatewayName, VpnGatewayPacketCaptureStopParameters parameters) {
@@ -1835,16 +1350,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             this.client.getContext());
     }
 
-    /**
-     * Stops packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(String resourceGroupName,
         String gatewayName) {
@@ -1877,51 +1383,21 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             context);
     }
 
-    /**
-     * Stops packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<String>, String> beginStopPacketCapture(String resourceGroupName, String gatewayName) {
         final VpnGatewayPacketCaptureStopParameters parameters = null;
         return this.beginStopPacketCaptureAsync(resourceGroupName, gatewayName, parameters).getSyncPoller();
     }
 
-    /**
-     * Stops packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<String>, String> beginStopPacketCapture(String resourceGroupName, String gatewayName,
         VpnGatewayPacketCaptureStopParameters parameters, Context context) {
         return this.beginStopPacketCaptureAsync(resourceGroupName, gatewayName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Stops packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> stopPacketCaptureAsync(String resourceGroupName, String gatewayName,
         VpnGatewayPacketCaptureStopParameters parameters) {
@@ -1929,16 +1405,7 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stops packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> stopPacketCaptureAsync(String resourceGroupName, String gatewayName) {
         final VpnGatewayPacketCaptureStopParameters parameters = null;
@@ -1965,34 +1432,14 @@ public final class VpnGatewaysClientImpl implements InnerSupportsGet<VpnGatewayI
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stops packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String stopPacketCapture(String resourceGroupName, String gatewayName) {
         final VpnGatewayPacketCaptureStopParameters parameters = null;
         return stopPacketCaptureAsync(resourceGroupName, gatewayName, parameters).block();
     }
 
-    /**
-     * Stops packet capture on vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String stopPacketCapture(String resourceGroupName, String gatewayName,
         VpnGatewayPacketCaptureStopParameters parameters, Context context) {

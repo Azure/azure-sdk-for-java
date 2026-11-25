@@ -142,15 +142,7 @@ public final class TrustedAccessRolesClientImpl implements TrustedAccessRolesCli
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List supported trusted access roles.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of trusted access roles as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TrustedAccessRoleInner> listAsync(String location) {
         return new PagedFlux<>(() -> listSinglePageAsync(location), nextLink -> listNextSinglePageAsync(nextLink));
@@ -172,30 +164,13 @@ public final class TrustedAccessRolesClientImpl implements TrustedAccessRolesCli
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List supported trusted access roles.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of trusted access roles as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrustedAccessRoleInner> list(String location) {
         return new PagedIterable<>(listAsync(location));
     }
 
-    /**
-     * List supported trusted access roles.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of trusted access roles as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrustedAccessRoleInner> list(String location, Context context) {
         return new PagedIterable<>(listAsync(location, context));

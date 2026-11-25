@@ -119,19 +119,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified Virtual Router Peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Router Peering along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualRouterPeeringInner>> getWithResponseAsync(String resourceGroupName,
         String virtualRouterName, String peeringName) {
@@ -205,18 +193,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             virtualRouterName, peeringName, accept, context);
     }
 
-    /**
-     * Gets the specified Virtual Router Peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Router Peering on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualRouterPeeringInner> getAsync(String resourceGroupName, String virtualRouterName,
         String peeringName) {
@@ -224,55 +201,20 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified Virtual Router Peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Router Peering along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualRouterPeeringInner> getWithResponse(String resourceGroupName, String virtualRouterName,
         String peeringName, Context context) {
         return getWithResponseAsync(resourceGroupName, virtualRouterName, peeringName, context).block();
     }
 
-    /**
-     * Gets the specified Virtual Router Peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Router Peering.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualRouterPeeringInner get(String resourceGroupName, String virtualRouterName, String peeringName) {
         return getWithResponse(resourceGroupName, virtualRouterName, peeringName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates the specified Virtual Router Peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Router Peering resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String virtualRouterName, String peeringName, VirtualRouterPeeringInner parameters) {
@@ -359,19 +301,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             resourceGroupName, virtualRouterName, peeringName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates the specified Virtual Router Peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of virtual Router Peering resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualRouterPeeringInner>, VirtualRouterPeeringInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualRouterName, String peeringName, VirtualRouterPeeringInner parameters) {
@@ -407,19 +337,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             this.client.getHttpPipeline(), VirtualRouterPeeringInner.class, VirtualRouterPeeringInner.class, context);
     }
 
-    /**
-     * Creates or updates the specified Virtual Router Peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtual Router Peering resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualRouterPeeringInner>, VirtualRouterPeeringInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualRouterName, String peeringName, VirtualRouterPeeringInner parameters) {
@@ -427,20 +345,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates the specified Virtual Router Peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of virtual Router Peering resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualRouterPeeringInner>, VirtualRouterPeeringInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualRouterName, String peeringName, VirtualRouterPeeringInner parameters,
@@ -449,19 +354,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates the specified Virtual Router Peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Router Peering resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualRouterPeeringInner> createOrUpdateAsync(String resourceGroupName, String virtualRouterName,
         String peeringName, VirtualRouterPeeringInner parameters) {
@@ -490,57 +383,21 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates the specified Virtual Router Peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Router Peering resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualRouterPeeringInner createOrUpdate(String resourceGroupName, String virtualRouterName,
         String peeringName, VirtualRouterPeeringInner parameters) {
         return createOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters).block();
     }
 
-    /**
-     * Creates or updates the specified Virtual Router Peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param parameters Parameters supplied to the create or update Virtual Router Peering operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Router Peering resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualRouterPeeringInner createOrUpdate(String resourceGroupName, String virtualRouterName,
         String peeringName, VirtualRouterPeeringInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters, context).block();
     }
 
-    /**
-     * Deletes the specified peering from a Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualRouterName,
         String peeringName) {
@@ -611,18 +468,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             virtualRouterName, peeringName, context);
     }
 
-    /**
-     * Deletes the specified peering from a Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualRouterName,
         String peeringName) {
@@ -655,55 +501,21 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             context);
     }
 
-    /**
-     * Deletes the specified peering from a Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualRouterName,
         String peeringName) {
         return this.beginDeleteAsync(resourceGroupName, virtualRouterName, peeringName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified peering from a Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualRouterName,
         String peeringName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualRouterName, peeringName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified peering from a Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualRouterName, String peeringName) {
         return beginDeleteAsync(resourceGroupName, virtualRouterName, peeringName).last()
@@ -730,34 +542,13 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified peering from a Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualRouterName, String peeringName) {
         deleteAsync(resourceGroupName, virtualRouterName, peeringName).block();
     }
 
-    /**
-     * Deletes the specified peering from a Virtual Router.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param peeringName The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String virtualRouterName, String peeringName, Context context) {
         deleteAsync(resourceGroupName, virtualRouterName, peeringName, context).block();
@@ -844,16 +635,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all Virtual Router Peerings in a Virtual Router resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualRouterPeering list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualRouterPeeringInner> listAsync(String resourceGroupName, String virtualRouterName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualRouterName),
@@ -878,32 +660,13 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all Virtual Router Peerings in a Virtual Router resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualRouterPeering list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualRouterPeeringInner> list(String resourceGroupName, String virtualRouterName) {
         return new PagedIterable<>(listAsync(resourceGroupName, virtualRouterName));
     }
 
-    /**
-     * Lists all Virtual Router Peerings in a Virtual Router resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualRouterName The name of the Virtual Router.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualRouterPeering list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualRouterPeeringInner> list(String resourceGroupName, String virtualRouterName,
         Context context) {

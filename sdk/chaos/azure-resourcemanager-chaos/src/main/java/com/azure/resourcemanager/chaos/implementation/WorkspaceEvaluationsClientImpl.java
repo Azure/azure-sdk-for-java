@@ -168,24 +168,7 @@ public final class WorkspaceEvaluationsClientImpl implements WorkspaceEvaluation
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a retained template evaluation by its ID, or uses latest to select the most recently durably admitted GA
-     * template evaluation. Returns 200 with the current representation while processing or terminal. Returns 404 if no
-     * qualifying retained result exists; scenario-backed legacy operations are not substituted. This is not an LRO
-     * polling endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param evaluationName The stable service-generated evaluation result ID in hyphenated GUID form. Use latest in
-     * the request path for the most recently durably admitted GA template evaluation; responses contain the canonical
-     * result ID, not the protected polling identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a retained template evaluation by its ID, or uses latest to select the most recently durably admitted GA
-     * template evaluation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceEvaluationInner> getWithResponse(String resourceGroupName, String workspaceName,
         String evaluationName, Context context) {
@@ -194,23 +177,7 @@ public final class WorkspaceEvaluationsClientImpl implements WorkspaceEvaluation
             resourceGroupName, workspaceName, evaluationName, accept, context);
     }
 
-    /**
-     * Gets a retained template evaluation by its ID, or uses latest to select the most recently durably admitted GA
-     * template evaluation. Returns 200 with the current representation while processing or terminal. Returns 404 if no
-     * qualifying retained result exists; scenario-backed legacy operations are not substituted. This is not an LRO
-     * polling endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param evaluationName The stable service-generated evaluation result ID in hyphenated GUID form. Use latest in
-     * the request path for the most recently durably admitted GA template evaluation; responses contain the canonical
-     * result ID, not the protected polling identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a retained template evaluation by its ID, or uses latest to select the most recently durably admitted GA
-     * template evaluation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceEvaluationInner get(String resourceGroupName, String workspaceName, String evaluationName) {
         return getWithResponse(resourceGroupName, workspaceName, evaluationName, Context.NONE).getValue();
@@ -297,12 +264,7 @@ public final class WorkspaceEvaluationsClientImpl implements WorkspaceEvaluation
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceEvaluationInner> listSinglePage(String resourceGroupName, String workspaceName,
         String continuationToken) {
-        final String accept = "application/json";
-        Response<WorkspaceEvaluationListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, continuationToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, continuationToken, Context.NONE);
     }
 
     /**
@@ -330,39 +292,14 @@ public final class WorkspaceEvaluationsClientImpl implements WorkspaceEvaluation
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists retained GA template evaluations under the workspace. Each result has its canonical ID; latest is an alias
-     * and is not a separate collection entry. This operation does not extend retention or convert scenario-backed
-     * legacy evaluations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkspaceEvaluation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceEvaluationInner> list(String resourceGroupName, String workspaceName) {
         final String continuationToken = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, continuationToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, continuationToken, Context.NONE);
     }
 
-    /**
-     * Lists retained GA template evaluations under the workspace. Each result has its canonical ID; latest is an alias
-     * and is not a separate collection entry. This operation does not extend retention or convert scenario-backed
-     * legacy evaluations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param continuationToken Opaque continuation token supplied by the returned nextLink.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkspaceEvaluation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceEvaluationInner> list(String resourceGroupName, String workspaceName,
         String continuationToken, Context context) {
@@ -400,11 +337,7 @@ public final class WorkspaceEvaluationsClientImpl implements WorkspaceEvaluation
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceEvaluationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkspaceEvaluationListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

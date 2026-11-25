@@ -160,21 +160,7 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
         return getWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the health summary for the vault.
-     * 
-     * Gets the health details of the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the health summary for the vault.
-     * 
-     * Gets the health details of the vault along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VaultHealthDetailsInner> getWithResponse(String resourceGroupName, String resourceName,
         Context context) {
@@ -201,20 +187,7 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
             resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Gets the health summary for the vault.
-     * 
-     * Gets the health details of the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the health summary for the vault.
-     * 
-     * Gets the health details of the vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VaultHealthDetailsInner get(String resourceGroupName, String resourceName) {
         return getWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
@@ -266,27 +239,7 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> refreshWithResponse(String resourceGroupName, String resourceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.refreshSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
+        return refreshWithResponse(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -344,35 +297,14 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
             this.client.getContext());
     }
 
-    /**
-     * Refreshes health summary of the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vault health details definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultHealthDetailsInner>, VaultHealthDetailsInner>
         beginRefresh(String resourceGroupName, String resourceName) {
-        Response<BinaryData> response = refreshWithResponse(resourceGroupName, resourceName);
-        return this.client.<VaultHealthDetailsInner, VaultHealthDetailsInner>getLroResult(response,
-            VaultHealthDetailsInner.class, VaultHealthDetailsInner.class, Context.NONE);
+        return beginRefresh(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Refreshes health summary of the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vault health details definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultHealthDetailsInner>, VaultHealthDetailsInner>
         beginRefresh(String resourceGroupName, String resourceName, Context context) {
@@ -396,35 +328,16 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
         return beginRefreshAsync(resourceGroupName, resourceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Refreshes health summary of the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vault health details definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VaultHealthDetailsInner refresh(String resourceGroupName, String resourceName) {
-        return beginRefresh(resourceGroupName, resourceName).getFinalResult();
+        return refresh(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Refreshes health summary of the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vault health details definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VaultHealthDetailsInner refresh(String resourceGroupName, String resourceName, Context context) {
-        return beginRefresh(resourceGroupName, resourceName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginRefresh(resourceGroupName, resourceName, context));
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ReplicationVaultHealthsClientImpl.class);

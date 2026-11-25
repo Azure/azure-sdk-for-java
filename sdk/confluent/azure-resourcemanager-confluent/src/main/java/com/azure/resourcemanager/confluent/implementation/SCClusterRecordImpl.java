@@ -78,12 +78,7 @@ public final class SCClusterRecordImpl implements SCClusterRecord, SCClusterReco
     }
 
     public SCClusterRecord create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusters()
-            .createOrUpdateWithResponse(resourceGroupName, organizationName, environmentId, clusterId,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SCClusterRecord create(Context context) {
@@ -106,12 +101,7 @@ public final class SCClusterRecordImpl implements SCClusterRecord, SCClusterReco
     }
 
     public SCClusterRecord apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusters()
-            .createOrUpdateWithResponse(resourceGroupName, organizationName, environmentId, clusterId,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SCClusterRecord apply(Context context) {

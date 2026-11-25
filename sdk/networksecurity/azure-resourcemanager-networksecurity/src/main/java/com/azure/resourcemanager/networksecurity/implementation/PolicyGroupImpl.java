@@ -84,10 +84,7 @@ public final class PolicyGroupImpl implements PolicyGroup, PolicyGroup.Definitio
     }
 
     public PolicyGroup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicyGroups()
-            .createOrUpdate(resourceGroupName, policyGroupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PolicyGroup create(Context context) {
@@ -109,10 +106,7 @@ public final class PolicyGroupImpl implements PolicyGroup, PolicyGroup.Definitio
     }
 
     public PolicyGroup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicyGroups()
-            .update(resourceGroupName, policyGroupName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PolicyGroup apply(Context context) {
@@ -135,11 +129,7 @@ public final class PolicyGroupImpl implements PolicyGroup, PolicyGroup.Definitio
     }
 
     public PolicyGroup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicyGroups()
-            .getByResourceGroupWithResponse(resourceGroupName, policyGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PolicyGroup refresh(Context context) {

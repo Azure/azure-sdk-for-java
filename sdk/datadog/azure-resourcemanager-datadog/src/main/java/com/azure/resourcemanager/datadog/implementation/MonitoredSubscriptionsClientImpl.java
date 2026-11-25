@@ -226,19 +226,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List the subscriptions currently being monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MonitoredSubscriptionPropertiesInner> getWithResponse(String resourceGroupName, String monitorName,
         String configurationName, Context context) {
@@ -247,17 +235,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
             resourceGroupName, monitorName, configurationName, accept, context);
     }
 
-    /**
-     * List the subscriptions currently being monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitoredSubscriptionPropertiesInner get(String resourceGroupName, String monitorName,
         String configurationName) {
@@ -304,10 +282,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createorUpdateWithResponse(String resourceGroupName, String monitorName,
         String configurationName, MonitoredSubscriptionPropertiesInner body) {
-        final String accept = "application/json";
-        return service.createorUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, accept, body,
-            Context.NONE);
+        return createorUpdateWithResponse(resourceGroupName, monitorName, configurationName, body, Context.NONE);
     }
 
     /**
@@ -396,50 +371,18 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     private SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
         beginCreateorUpdate(String resourceGroupName, String monitorName, String configurationName,
             MonitoredSubscriptionPropertiesInner body) {
-        Response<BinaryData> response
-            = createorUpdateWithResponse(resourceGroupName, monitorName, configurationName, body);
-        return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
-            response, MonitoredSubscriptionPropertiesInner.class, MonitoredSubscriptionPropertiesInner.class,
-            Context.NONE);
+        return beginCreateorUpdate(resourceGroupName, monitorName, configurationName, body, Context.NONE);
     }
 
-    /**
-     * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the request to update subscriptions needed to be monitored by the
-     * Datadog monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
         beginCreateorUpdate(String resourceGroupName, String monitorName, String configurationName) {
         final MonitoredSubscriptionPropertiesInner body = null;
-        Response<BinaryData> response
-            = createorUpdateWithResponse(resourceGroupName, monitorName, configurationName, body);
-        return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
-            response, MonitoredSubscriptionPropertiesInner.class, MonitoredSubscriptionPropertiesInner.class,
-            Context.NONE);
+        return beginCreateorUpdate(resourceGroupName, monitorName, configurationName, body, Context.NONE);
     }
 
-    /**
-     * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the request to update subscriptions needed to be monitored by the
-     * Datadog monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
         beginCreateorUpdate(String resourceGroupName, String monitorName, String configurationName,
@@ -490,41 +433,20 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitoredSubscriptionPropertiesInner createorUpdate(String resourceGroupName, String monitorName,
         String configurationName) {
         final MonitoredSubscriptionPropertiesInner body = null;
-        return beginCreateorUpdate(resourceGroupName, monitorName, configurationName, body).getFinalResult();
+        return createorUpdate(resourceGroupName, monitorName, configurationName, body, Context.NONE);
     }
 
-    /**
-     * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitoredSubscriptionPropertiesInner createorUpdate(String resourceGroupName, String monitorName,
         String configurationName, MonitoredSubscriptionPropertiesInner body, Context context) {
-        return beginCreateorUpdate(resourceGroupName, monitorName, configurationName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateorUpdate(resourceGroupName, monitorName, configurationName, body, context));
     }
 
     /**
@@ -565,10 +487,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String monitorName,
         String configurationName, MonitoredSubscriptionPropertiesInner body) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, monitorName, configurationName, body, Context.NONE);
     }
 
     /**
@@ -657,48 +576,18 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     private SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
         beginUpdate(String resourceGroupName, String monitorName, String configurationName,
             MonitoredSubscriptionPropertiesInner body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, monitorName, configurationName, body);
-        return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
-            response, MonitoredSubscriptionPropertiesInner.class, MonitoredSubscriptionPropertiesInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, monitorName, configurationName, body, Context.NONE);
     }
 
-    /**
-     * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the request to update subscriptions needed to be monitored by the
-     * Datadog monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
         beginUpdate(String resourceGroupName, String monitorName, String configurationName) {
         final MonitoredSubscriptionPropertiesInner body = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, monitorName, configurationName, body);
-        return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
-            response, MonitoredSubscriptionPropertiesInner.class, MonitoredSubscriptionPropertiesInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, monitorName, configurationName, body, Context.NONE);
     }
 
-    /**
-     * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the request to update subscriptions needed to be monitored by the
-     * Datadog monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
         beginUpdate(String resourceGroupName, String monitorName, String configurationName,
@@ -749,41 +638,20 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitoredSubscriptionPropertiesInner update(String resourceGroupName, String monitorName,
         String configurationName) {
         final MonitoredSubscriptionPropertiesInner body = null;
-        return beginUpdate(resourceGroupName, monitorName, configurationName, body).getFinalResult();
+        return update(resourceGroupName, monitorName, configurationName, body, Context.NONE);
     }
 
-    /**
-     * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitoredSubscriptionPropertiesInner update(String resourceGroupName, String monitorName,
         String configurationName, MonitoredSubscriptionPropertiesInner body, Context context) {
-        return beginUpdate(resourceGroupName, monitorName, configurationName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, monitorName, configurationName, body, context));
     }
 
     /**
@@ -820,8 +688,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String monitorName,
         String configurationName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE);
     }
 
     /**
@@ -863,36 +730,14 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
             this.client.getContext());
     }
 
-    /**
-     * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
         String configurationName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, monitorName, configurationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, monitorName, configurationName, Context.NONE);
     }
 
-    /**
-     * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
         String configurationName, Context context) {
@@ -917,35 +762,16 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String monitorName, String configurationName) {
-        beginDelete(resourceGroupName, monitorName, configurationName).getFinalResult();
+        delete(resourceGroupName, monitorName, configurationName, Context.NONE);
     }
 
-    /**
-     * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String monitorName, String configurationName, Context context) {
-        beginDelete(resourceGroupName, monitorName, configurationName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, monitorName, configurationName, context));
     }
 
     /**
@@ -1000,12 +826,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MonitoredSubscriptionPropertiesInner> listSinglePage(String resourceGroupName,
         String monitorName) {
-        final String accept = "application/json";
-        Response<MonitoredSubscriptionPropertiesList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, monitorName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, monitorName, Context.NONE);
     }
 
     /**
@@ -1030,35 +851,13 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the subscriptions currently being monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of MonitoredSubscriptionProperties items as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoredSubscriptionPropertiesInner> list(String resourceGroupName, String monitorName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, monitorName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, monitorName, Context.NONE);
     }
 
-    /**
-     * List the subscriptions currently being monitored by the Datadog monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of MonitoredSubscriptionProperties items as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoredSubscriptionPropertiesInner> list(String resourceGroupName, String monitorName,
         Context context) {
@@ -1100,11 +899,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MonitoredSubscriptionPropertiesInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MonitoredSubscriptionPropertiesList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

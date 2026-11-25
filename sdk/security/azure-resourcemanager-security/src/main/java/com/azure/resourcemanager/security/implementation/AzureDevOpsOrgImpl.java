@@ -60,10 +60,7 @@ public final class AzureDevOpsOrgImpl implements AzureDevOpsOrg, AzureDevOpsOrg.
     }
 
     public AzureDevOpsOrg create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureDevOpsOrgs()
-            .createOrUpdate(resourceGroupName, securityConnectorName, orgName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AzureDevOpsOrg create(Context context) {
@@ -84,10 +81,7 @@ public final class AzureDevOpsOrgImpl implements AzureDevOpsOrg, AzureDevOpsOrg.
     }
 
     public AzureDevOpsOrg apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureDevOpsOrgs()
-            .update(resourceGroupName, securityConnectorName, orgName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AzureDevOpsOrg apply(Context context) {
@@ -113,11 +107,7 @@ public final class AzureDevOpsOrgImpl implements AzureDevOpsOrg, AzureDevOpsOrg.
     }
 
     public AzureDevOpsOrg refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureDevOpsOrgs()
-            .getWithResponse(resourceGroupName, securityConnectorName, orgName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AzureDevOpsOrg refresh(Context context) {

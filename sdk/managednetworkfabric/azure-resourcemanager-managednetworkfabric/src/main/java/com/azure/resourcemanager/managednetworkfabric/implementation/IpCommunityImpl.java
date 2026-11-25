@@ -118,10 +118,7 @@ public final class IpCommunityImpl implements IpCommunity, IpCommunity.Definitio
     }
 
     public IpCommunity create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIpCommunities()
-            .create(resourceGroupName, ipCommunityName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IpCommunity create(Context context) {
@@ -144,10 +141,7 @@ public final class IpCommunityImpl implements IpCommunity, IpCommunity.Definitio
     }
 
     public IpCommunity apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIpCommunities()
-            .update(resourceGroupName, ipCommunityName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IpCommunity apply(Context context) {
@@ -170,11 +164,7 @@ public final class IpCommunityImpl implements IpCommunity, IpCommunity.Definitio
     }
 
     public IpCommunity refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIpCommunities()
-            .getByResourceGroupWithResponse(resourceGroupName, ipCommunityName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IpCommunity refresh(Context context) {

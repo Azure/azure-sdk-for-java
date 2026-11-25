@@ -114,8 +114,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> unlinkMigratedEndpointWithResponse(String resourceGroupName, String clusterName) {
-        return service.unlinkMigratedEndpointSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, Context.NONE);
+        return unlinkMigratedEndpointWithResponse(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -158,38 +157,14 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getContext());
     }
 
-    /**
-     * Unlinks the migrated endpoint from an Azure Managed Redis cluster that was migrated from Azure Cache for Redis
-     * Enterprise, removing the source cache endpoint that was redirected to this cluster during migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUnlinkMigratedEndpoint(String resourceGroupName,
         String clusterName) {
-        Response<BinaryData> response = unlinkMigratedEndpointWithResponse(resourceGroupName, clusterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUnlinkMigratedEndpoint(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Unlinks the migrated endpoint from an Azure Managed Redis cluster that was migrated from Azure Cache for Redis
-     * Enterprise, removing the source cache endpoint that was redirected to this cluster during migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUnlinkMigratedEndpoint(String resourceGroupName, String clusterName,
         Context context) {
@@ -215,36 +190,15 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Unlinks the migrated endpoint from an Azure Managed Redis cluster that was migrated from Azure Cache for Redis
-     * Enterprise, removing the source cache endpoint that was redirected to this cluster during migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void unlinkMigratedEndpoint(String resourceGroupName, String clusterName) {
-        beginUnlinkMigratedEndpoint(resourceGroupName, clusterName).getFinalResult();
+        unlinkMigratedEndpoint(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Unlinks the migrated endpoint from an Azure Managed Redis cluster that was migrated from Azure Cache for Redis
-     * Enterprise, removing the source cache endpoint that was redirected to this cluster during migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void unlinkMigratedEndpoint(String resourceGroupName, String clusterName, Context context) {
-        beginUnlinkMigratedEndpoint(resourceGroupName, clusterName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginUnlinkMigratedEndpoint(resourceGroupName, clusterName, context));
     }
 }

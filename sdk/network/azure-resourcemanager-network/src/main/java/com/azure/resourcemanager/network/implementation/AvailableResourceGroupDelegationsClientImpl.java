@@ -143,17 +143,7 @@ public final class AvailableResourceGroupDelegationsClientImpl implements Availa
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all of the available subnet delegations for this resource group in this region.
-     * 
-     * @param location The location name.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of the available subnet delegations for this resource group in this region as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailableDelegationInner> listAsync(String location, String resourceGroupName) {
         return new PagedFlux<>(() -> listSinglePageAsync(location, resourceGroupName),
@@ -178,34 +168,13 @@ public final class AvailableResourceGroupDelegationsClientImpl implements Availa
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all of the available subnet delegations for this resource group in this region.
-     * 
-     * @param location The location name.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of the available subnet delegations for this resource group in this region as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableDelegationInner> list(String location, String resourceGroupName) {
         return new PagedIterable<>(listAsync(location, resourceGroupName));
     }
 
-    /**
-     * Gets all of the available subnet delegations for this resource group in this region.
-     * 
-     * @param location The location name.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of the available subnet delegations for this resource group in this region as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableDelegationInner> list(String location, String resourceGroupName, Context context) {
         return new PagedIterable<>(listAsync(location, resourceGroupName, context));

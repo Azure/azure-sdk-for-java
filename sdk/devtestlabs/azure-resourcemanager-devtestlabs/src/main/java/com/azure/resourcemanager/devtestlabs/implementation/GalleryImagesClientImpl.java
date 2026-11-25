@@ -181,12 +181,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GalleryImageInner> listSinglePage(String resourceGroupName, String labName, String expand,
         String filter, Integer top, String orderby) {
-        final String accept = "application/json";
-        Response<GalleryImageList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, labName, expand, filter, top, orderby, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, labName, expand, filter, top, orderby, Context.NONE);
     }
 
     /**
@@ -214,41 +209,17 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List gallery images in a given lab.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GalleryImageInner> list(String resourceGroupName, String labName) {
         final String expand = null;
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, labName, expand, filter, top, orderby),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, labName, expand, filter, top, orderby, Context.NONE);
     }
 
-    /**
-     * List gallery images in a given lab.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param expand Specify the $expand query. Example: 'properties($select=displayName)'.
-     * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GalleryImageInner> list(String resourceGroupName, String labName, String expand, String filter,
         Integer top, String orderby, Context context) {
@@ -287,11 +258,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GalleryImageInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GalleryImageList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

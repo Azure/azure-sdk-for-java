@@ -522,17 +522,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a LocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LocalRulestackResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LocalRulestackResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String localRulestackName, Context context) {
@@ -541,16 +531,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context);
     }
 
-    /**
-     * Get a LocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LocalRulestackResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocalRulestackResourceInner getByResourceGroup(String resourceGroupName, String localRulestackName) {
         return getByResourceGroupWithResponse(resourceGroupName, localRulestackName, Context.NONE).getValue();
@@ -593,11 +574,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String localRulestackName,
         LocalRulestackResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, localRulestackName, resource, Context.NONE);
     }
 
     /**
@@ -643,37 +620,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             this.client.getContext());
     }
 
-    /**
-     * Create a LocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of paloAltoNetworks LocalRulestack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LocalRulestackResourceInner>, LocalRulestackResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String localRulestackName, LocalRulestackResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, localRulestackName, resource);
-        return this.client.<LocalRulestackResourceInner, LocalRulestackResourceInner>getLroResult(response,
-            LocalRulestackResourceInner.class, LocalRulestackResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, localRulestackName, resource, Context.NONE);
     }
 
-    /**
-     * Create a LocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of paloAltoNetworks LocalRulestack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LocalRulestackResourceInner>, LocalRulestackResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String localRulestackName, LocalRulestackResourceInner resource, Context context) {
@@ -701,39 +655,19 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a LocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paloAltoNetworks LocalRulestack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocalRulestackResourceInner createOrUpdate(String resourceGroupName, String localRulestackName,
         LocalRulestackResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, localRulestackName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, localRulestackName, resource, Context.NONE);
     }
 
-    /**
-     * Create a LocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paloAltoNetworks LocalRulestack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocalRulestackResourceInner createOrUpdate(String resourceGroupName, String localRulestackName,
         LocalRulestackResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, localRulestackName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, localRulestackName, resource, context));
     }
 
     /**
@@ -777,18 +711,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a LocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paloAltoNetworks LocalRulestack along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LocalRulestackResourceInner> updateWithResponse(String resourceGroupName, String localRulestackName,
         LocalRulestackResourceUpdate properties, Context context) {
@@ -799,17 +722,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             context);
     }
 
-    /**
-     * Update a LocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paloAltoNetworks LocalRulestack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocalRulestackResourceInner update(String resourceGroupName, String localRulestackName,
         LocalRulestackResourceUpdate properties) {
@@ -847,8 +760,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String localRulestackName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, localRulestackName, Context.NONE);
     }
 
     /**
@@ -886,33 +798,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a LocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, localRulestackName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, localRulestackName, Context.NONE);
     }
 
-    /**
-     * Delete a LocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName,
         Context context) {
@@ -936,33 +828,16 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a LocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String localRulestackName) {
-        beginDelete(resourceGroupName, localRulestackName).getFinalResult();
+        delete(resourceGroupName, localRulestackName, Context.NONE);
     }
 
-    /**
-     * Delete a LocalRulestackResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String localRulestackName, Context context) {
-        beginDelete(resourceGroupName, localRulestackName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, localRulestackName, context));
     }
 
     /**
@@ -1013,11 +888,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LocalRulestackResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<LocalRulestackResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1040,31 +911,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List LocalRulestackResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LocalRulestackResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocalRulestackResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List LocalRulestackResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LocalRulestackResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocalRulestackResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1112,11 +965,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LocalRulestackResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<LocalRulestackResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1137,27 +986,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List LocalRulestackResource resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LocalRulestackResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocalRulestackResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List LocalRulestackResource resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LocalRulestackResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocalRulestackResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1195,8 +1030,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> commitWithResponse(String resourceGroupName, String localRulestackName) {
-        return service.commitSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, Context.NONE);
+        return commitWithResponse(resourceGroupName, localRulestackName, Context.NONE);
     }
 
     /**
@@ -1234,33 +1068,13 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             this.client.getContext());
     }
 
-    /**
-     * Commit rulestack configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCommit(String resourceGroupName, String localRulestackName) {
-        Response<BinaryData> response = commitWithResponse(resourceGroupName, localRulestackName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginCommit(resourceGroupName, localRulestackName, Context.NONE);
     }
 
-    /**
-     * Commit rulestack configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCommit(String resourceGroupName, String localRulestackName,
         Context context) {
@@ -1284,33 +1098,16 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Commit rulestack configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void commit(String resourceGroupName, String localRulestackName) {
-        beginCommit(resourceGroupName, localRulestackName).getFinalResult();
+        commit(resourceGroupName, localRulestackName, Context.NONE);
     }
 
-    /**
-     * Commit rulestack configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void commit(String resourceGroupName, String localRulestackName, Context context) {
-        beginCommit(resourceGroupName, localRulestackName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginCommit(resourceGroupName, localRulestackName, context));
     }
 
     /**
@@ -1349,17 +1146,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get changelog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return changelog along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChangelogInner> getChangeLogWithResponse(String resourceGroupName, String localRulestackName,
         Context context) {
@@ -1368,16 +1155,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context);
     }
 
-    /**
-     * Get changelog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return changelog.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangelogInner getChangeLog(String resourceGroupName, String localRulestackName) {
         return getChangeLogWithResponse(resourceGroupName, localRulestackName, Context.NONE).getValue();
@@ -1422,18 +1200,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * support info for rulestack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param email email address on behalf of which this API called.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return support information for the resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SupportInfoInner> getSupportInfoWithResponse(String resourceGroupName, String localRulestackName,
         String email, Context context) {
@@ -1442,16 +1209,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             this.client.getSubscriptionId(), resourceGroupName, localRulestackName, email, accept, context);
     }
 
-    /**
-     * support info for rulestack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return support information for the resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SupportInfoInner getSupportInfo(String resourceGroupName, String localRulestackName) {
         final String email = null;
@@ -1503,20 +1261,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the list of advanced security objects.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param type The type parameter.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of advanced security objects along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdvSecurityObjectListResponseInner> listAdvancedSecurityObjectsWithResponse(
         String resourceGroupName, String localRulestackName, AdvSecurityObjectTypeEnum type, String skip, Integer top,
@@ -1526,17 +1271,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             this.client.getSubscriptionId(), resourceGroupName, localRulestackName, skip, top, type, accept, context);
     }
 
-    /**
-     * Get the list of advanced security objects.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param type The type parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of advanced security objects.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdvSecurityObjectListResponseInner listAdvancedSecurityObjects(String resourceGroupName,
         String localRulestackName, AdvSecurityObjectTypeEnum type) {
@@ -1633,12 +1368,8 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<String> listAppIdsSinglePage(String resourceGroupName, String localRulestackName,
         String appIdVersion, String appPrefix, String skip, Integer top) {
-        final String accept = "application/json";
-        Response<ListAppIdResponseInner> res = service.listAppIdsSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, localRulestackName,
-            appIdVersion, appPrefix, skip, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAppIdsSinglePage(resourceGroupName, localRulestackName, appIdVersion, appPrefix, skip, top,
+            Context.NONE);
     }
 
     /**
@@ -1667,42 +1398,17 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List of AppIds for LocalRulestack ApiVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listAppIds(String resourceGroupName, String localRulestackName) {
         final String appIdVersion = null;
         final String appPrefix = null;
         final String skip = null;
         final Integer top = null;
-        return new PagedIterable<>(
-            () -> listAppIdsSinglePage(resourceGroupName, localRulestackName, appIdVersion, appPrefix, skip, top),
-            nextLink -> listAppIdsNextSinglePage(nextLink));
+        return listAppIds(resourceGroupName, localRulestackName, appIdVersion, appPrefix, skip, top, Context.NONE);
     }
 
-    /**
-     * List of AppIds for LocalRulestack ApiVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param appIdVersion The appIdVersion parameter.
-     * @param appPrefix The appPrefix parameter.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listAppIds(String resourceGroupName, String localRulestackName, String appIdVersion,
         String appPrefix, String skip, Integer top, Context context) {
@@ -1786,12 +1492,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CountryInner> listCountriesSinglePage(String resourceGroupName, String localRulestackName,
         String skip, Integer top) {
-        final String accept = "application/json";
-        Response<CountriesResponseInner> res = service.listCountriesSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, localRulestackName, skip,
-            top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listCountriesSinglePage(resourceGroupName, localRulestackName, skip, top, Context.NONE);
     }
 
     /**
@@ -1818,37 +1519,15 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List of countries for Rulestack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return countries Response Object as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CountryInner> listCountries(String resourceGroupName, String localRulestackName) {
         final String skip = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listCountriesSinglePage(resourceGroupName, localRulestackName, skip, top),
-            nextLink -> listCountriesNextSinglePage(nextLink));
+        return listCountries(resourceGroupName, localRulestackName, skip, top, Context.NONE);
     }
 
-    /**
-     * List of countries for Rulestack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return countries Response Object as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CountryInner> listCountries(String resourceGroupName, String localRulestackName, String skip,
         Integer top, Context context) {
@@ -1893,17 +1572,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List of Firewalls associated with Rulestack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list firewalls response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListFirewallsResponseInner> listFirewallsWithResponse(String resourceGroupName,
         String localRulestackName, Context context) {
@@ -1912,16 +1581,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context);
     }
 
-    /**
-     * List of Firewalls associated with Rulestack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list firewalls response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListFirewallsResponseInner listFirewalls(String resourceGroupName, String localRulestackName) {
         return listFirewallsWithResponse(resourceGroupName, localRulestackName, Context.NONE).getValue();
@@ -2008,12 +1668,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PredefinedUrlCategoryInner> listPredefinedUrlCategoriesSinglePage(String resourceGroupName,
         String localRulestackName, String skip, Integer top) {
-        final String accept = "application/json";
-        Response<PredefinedUrlCategoriesResponseInner> res = service.listPredefinedUrlCategoriesSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            localRulestackName, skip, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listPredefinedUrlCategoriesSinglePage(resourceGroupName, localRulestackName, skip, top, Context.NONE);
     }
 
     /**
@@ -2040,39 +1695,16 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List predefined URL categories for rulestack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return predefined url categories response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PredefinedUrlCategoryInner> listPredefinedUrlCategories(String resourceGroupName,
         String localRulestackName) {
         final String skip = null;
         final Integer top = null;
-        return new PagedIterable<>(
-            () -> listPredefinedUrlCategoriesSinglePage(resourceGroupName, localRulestackName, skip, top),
-            nextLink -> listPredefinedUrlCategoriesNextSinglePage(nextLink));
+        return listPredefinedUrlCategories(resourceGroupName, localRulestackName, skip, top, Context.NONE);
     }
 
-    /**
-     * List predefined URL categories for rulestack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return predefined url categories response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PredefinedUrlCategoryInner> listPredefinedUrlCategories(String resourceGroupName,
         String localRulestackName, String skip, Integer top, Context context) {
@@ -2125,20 +1757,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List the security services for rulestack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param type The type parameter.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security services list response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityServicesResponseInner> listSecurityServicesWithResponse(String resourceGroupName,
         String localRulestackName, SecurityServicesTypeEnum type, String skip, Integer top, Context context) {
@@ -2147,17 +1766,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             this.client.getSubscriptionId(), resourceGroupName, localRulestackName, skip, top, type, accept, context);
     }
 
-    /**
-     * List the security services for rulestack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param type The type parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security services list response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityServicesResponseInner listSecurityServices(String resourceGroupName, String localRulestackName,
         SecurityServicesTypeEnum type) {
@@ -2200,32 +1809,14 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
         return revertWithResponseAsync(resourceGroupName, localRulestackName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Revert rulestack configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revertWithResponse(String resourceGroupName, String localRulestackName, Context context) {
         return service.revertSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, localRulestackName, context);
     }
 
-    /**
-     * Revert rulestack configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revert(String resourceGroupName, String localRulestackName) {
         revertWithResponse(resourceGroupName, localRulestackName, Context.NONE);
@@ -2263,11 +1854,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LocalRulestackResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LocalRulestackResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2322,11 +1909,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LocalRulestackResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LocalRulestackResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2379,11 +1962,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<String> listAppIdsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ListAppIdResponseInner> res
-            = service.listAppIdsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAppIdsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2435,11 +2014,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CountryInner> listCountriesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CountriesResponseInner> res
-            = service.listCountriesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listCountriesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2493,11 +2068,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PredefinedUrlCategoryInner> listPredefinedUrlCategoriesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PredefinedUrlCategoriesResponseInner> res
-            = service.listPredefinedUrlCategoriesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listPredefinedUrlCategoriesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

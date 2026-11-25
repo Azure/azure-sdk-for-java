@@ -26,12 +26,7 @@ public final class TerraformsImpl implements Terraforms {
     }
 
     public TerraformOperationStatus exportTerraform(BaseExportModel body) {
-        TerraformOperationStatusInner inner = this.serviceClient().exportTerraform(body);
-        if (inner != null) {
-            return new TerraformOperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.exportTerraform(body, Context.NONE);
     }
 
     public TerraformOperationStatus exportTerraform(BaseExportModel body, Context context) {

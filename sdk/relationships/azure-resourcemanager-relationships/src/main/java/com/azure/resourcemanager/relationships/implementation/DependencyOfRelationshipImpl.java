@@ -54,10 +54,7 @@ public final class DependencyOfRelationshipImpl
     }
 
     public DependencyOfRelationship create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDependencyOfRelationships()
-            .createOrUpdate(resourceUri, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DependencyOfRelationship create(Context context) {
@@ -79,10 +76,7 @@ public final class DependencyOfRelationshipImpl
     }
 
     public DependencyOfRelationship apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDependencyOfRelationships()
-            .createOrUpdate(resourceUri, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DependencyOfRelationship apply(Context context) {
@@ -108,11 +102,7 @@ public final class DependencyOfRelationshipImpl
     }
 
     public DependencyOfRelationship refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDependencyOfRelationships()
-            .getWithResponse(resourceUri, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DependencyOfRelationship refresh(Context context) {

@@ -79,10 +79,7 @@ public final class LinkedServiceImpl implements LinkedService, LinkedService.Def
     }
 
     public LinkedService create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLinkedServices()
-            .createOrUpdate(resourceGroupName, workspaceName, linkedServiceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LinkedService create(Context context) {
@@ -103,10 +100,7 @@ public final class LinkedServiceImpl implements LinkedService, LinkedService.Def
     }
 
     public LinkedService apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLinkedServices()
-            .createOrUpdate(resourceGroupName, workspaceName, linkedServiceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LinkedService apply(Context context) {
@@ -132,11 +126,7 @@ public final class LinkedServiceImpl implements LinkedService, LinkedService.Def
     }
 
     public LinkedService refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLinkedServices()
-            .getWithResponse(resourceGroupName, workspaceName, linkedServiceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LinkedService refresh(Context context) {

@@ -76,12 +76,7 @@ public final class DefenderForAISettingImpl
     }
 
     public DefenderForAISetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDefenderForAISettings()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, defenderForAISettingName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DefenderForAISetting create(Context context) {
@@ -105,12 +100,7 @@ public final class DefenderForAISettingImpl
     }
 
     public DefenderForAISetting apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDefenderForAISettings()
-            .updateWithResponse(resourceGroupName, accountName, defenderForAISettingName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DefenderForAISetting apply(Context context) {
@@ -137,11 +127,7 @@ public final class DefenderForAISettingImpl
     }
 
     public DefenderForAISetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDefenderForAISettings()
-            .getWithResponse(resourceGroupName, accountName, defenderForAISettingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DefenderForAISetting refresh(Context context) {

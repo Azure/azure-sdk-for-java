@@ -179,12 +179,7 @@ public final class JobDefinitionImpl implements JobDefinition, JobDefinition.Def
     }
 
     public JobDefinition create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJobDefinitions()
-            .createOrUpdateWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public JobDefinition create(Context context) {
@@ -208,12 +203,7 @@ public final class JobDefinitionImpl implements JobDefinition, JobDefinition.Def
     }
 
     public JobDefinition apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJobDefinitions()
-            .updateWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName,
-                updateJobDefinition, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public JobDefinition apply(Context context) {
@@ -244,11 +234,7 @@ public final class JobDefinitionImpl implements JobDefinition, JobDefinition.Def
     }
 
     public JobDefinition refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJobDefinitions()
-            .getWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public JobDefinition refresh(Context context) {

@@ -754,24 +754,7 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of a Replication protected item.
-     * 
-     * Gets the details of an ASR replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Replication protected item.
-     * 
-     * Gets the details of an ASR replication protected item along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicationProtectedItemInner> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName, Context context) {
@@ -812,23 +795,7 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             context);
     }
 
-    /**
-     * Gets the details of a Replication protected item.
-     * 
-     * Gets the details of an ASR replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Replication protected item.
-     * 
-     * Gets the details of an ASR replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName) {
@@ -915,47 +882,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, EnableProtectionInput input) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        if (input == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter input is required and cannot be null."));
-        } else {
-            input.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, contentType, accept, input, Context.NONE);
+        return createWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, input, Context.NONE);
     }
 
     /**
@@ -1049,49 +977,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Enables protection.
-     * 
-     * The operation to create an ASR replication protected item (Enable replication).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param input Enable Protection Input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginCreate(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, EnableProtectionInput input) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, input);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, input, Context.NONE);
     }
 
-    /**
-     * Enables protection.
-     * 
-     * The operation to create an ASR replication protected item (Enable replication).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param input Enable Protection Input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginCreate(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -1126,52 +1021,21 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName, input).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enables protection.
-     * 
-     * The operation to create an ASR replication protected item (Enable replication).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param input Enable Protection Input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner create(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, EnableProtectionInput input) {
-        return beginCreate(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, input).getFinalResult();
+        return create(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            input, Context.NONE);
     }
 
-    /**
-     * Enables protection.
-     * 
-     * The operation to create an ASR replication protected item (Enable replication).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param input Enable Protection Input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner create(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, EnableProtectionInput input,
         Context context) {
-        return beginCreate(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, input, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, input, context));
     }
 
     /**
@@ -1255,48 +1119,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName,
         UpdateReplicationProtectedItemInput updateProtectionInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        if (updateProtectionInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter updateProtectionInput is required and cannot be null."));
-        } else {
-            updateProtectionInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, contentType, accept, updateProtectionInput, Context.NONE);
+        return updateWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, updateProtectionInput, Context.NONE);
     }
 
     /**
@@ -1391,49 +1215,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Updates the replication protected item settings.
-     * 
-     * The operation to update the recovery settings of an ASR replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param updateProtectionInput Update protection input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUpdate(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, UpdateReplicationProtectedItemInput updateProtectionInput) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, updateProtectionInput);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, updateProtectionInput, Context.NONE);
     }
 
-    /**
-     * Updates the replication protected item settings.
-     * 
-     * The operation to update the recovery settings of an ASR replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param updateProtectionInput Update protection input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUpdate(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -1469,53 +1260,22 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName, updateProtectionInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the replication protected item settings.
-     * 
-     * The operation to update the recovery settings of an ASR replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param updateProtectionInput Update protection input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner update(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName,
         UpdateReplicationProtectedItemInput updateProtectionInput) {
-        return beginUpdate(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, updateProtectionInput).getFinalResult();
+        return update(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            updateProtectionInput, Context.NONE);
     }
 
-    /**
-     * Updates the replication protected item settings.
-     * 
-     * The operation to update the recovery settings of an ASR replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param updateProtectionInput Update protection input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner update(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName,
         UpdateReplicationProtectedItemInput updateProtectionInput, Context context) {
-        return beginUpdate(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, updateProtectionInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, updateProtectionInput, context));
     }
 
     /**
@@ -1591,39 +1351,7 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> purgeWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        return service.purgeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
+        return purgeWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
             replicatedProtectedItemName, Context.NONE);
     }
 
@@ -1710,49 +1438,15 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Purges protection.
-     * 
-     * The operation to delete or purge a replication protected item. This operation will force delete the replication
-     * protected item. Use the remove operation on replication protected item to perform a clean disable replication for
-     * the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
-        Response<BinaryData> response = purgeWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginPurge(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, Context.NONE);
     }
 
-    /**
-     * Purges protection.
-     * 
-     * The operation to delete or purge a replication protected item. This operation will force delete the replication
-     * protected item. Use the remove operation on replication protected item to perform a clean disable replication for
-     * the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName, Context context) {
@@ -1785,51 +1479,20 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Purges protection.
-     * 
-     * The operation to delete or purge a replication protected item. This operation will force delete the replication
-     * protected item. Use the remove operation on replication protected item to perform a clean disable replication for
-     * the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purge(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName) {
-        beginPurge(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName)
-            .getFinalResult();
+        purge(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            Context.NONE);
     }
 
-    /**
-     * Purges protection.
-     * 
-     * The operation to delete or purge a replication protected item. This operation will force delete the replication
-     * protected item. Use the remove operation on replication protected item to perform a clean disable replication for
-     * the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purge(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, Context context) {
-        beginPurge(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
-            context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginPurge(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, context));
     }
 
     /**
@@ -1929,38 +1592,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationProtectedItemInner> listByReplicationProtectionContainersSinglePage(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ReplicationProtectedItemCollection> res = service.listByReplicationProtectionContainersSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            resourceName, fabricName, protectionContainerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationProtectionContainersSinglePage(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, Context.NONE);
     }
 
     /**
@@ -2018,49 +1651,15 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of Replication protected items.
-     * 
-     * Gets the list of ASR replication protected items in the protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Replication protected items.
-     * 
-     * Gets the list of ASR replication protected items in the protection container as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationProtectedItemInner> listByReplicationProtectionContainers(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName) {
-        return new PagedIterable<>(() -> listByReplicationProtectionContainersSinglePage(resourceGroupName,
-            resourceName, fabricName, protectionContainerName),
-            nextLink -> listByReplicationProtectionContainersNextSinglePage(nextLink));
+        return listByReplicationProtectionContainers(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, Context.NONE);
     }
 
-    /**
-     * Gets the list of Replication protected items.
-     * 
-     * Gets the list of ASR replication protected items in the protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Replication protected items.
-     * 
-     * Gets the list of ASR replication protected items in the protection container as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationProtectedItemInner> listByReplicationProtectionContainers(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, Context context) {
@@ -2149,48 +1748,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> addDisksWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, AddDisksInput addDisksInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        if (addDisksInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter addDisksInput is required and cannot be null."));
-        } else {
-            addDisksInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.addDisksSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, contentType, accept, addDisksInput, Context.NONE);
+        return addDisksWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, addDisksInput, Context.NONE);
     }
 
     /**
@@ -2285,49 +1844,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Add disk(s) for protection.
-     * 
-     * Operation to add disks(s) to the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param addDisksInput Add disks input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginAddDisks(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, AddDisksInput addDisksInput) {
-        Response<BinaryData> response = addDisksWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, addDisksInput);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginAddDisks(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, addDisksInput, Context.NONE);
     }
 
-    /**
-     * Add disk(s) for protection.
-     * 
-     * Operation to add disks(s) to the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param addDisksInput Add disks input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginAddDisks(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -2362,52 +1888,21 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName, addDisksInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Add disk(s) for protection.
-     * 
-     * Operation to add disks(s) to the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param addDisksInput Add disks input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner addDisks(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, AddDisksInput addDisksInput) {
-        return beginAddDisks(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, addDisksInput).getFinalResult();
+        return addDisks(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, addDisksInput, Context.NONE);
     }
 
-    /**
-     * Add disk(s) for protection.
-     * 
-     * Operation to add disks(s) to the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param addDisksInput Add disks input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner addDisks(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, AddDisksInput addDisksInput,
         Context context) {
-        return beginAddDisks(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, addDisksInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginAddDisks(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, addDisksInput, context));
     }
 
     /**
@@ -2491,48 +1986,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     private Response<BinaryData> applyRecoveryPointWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         ApplyRecoveryPointInput applyRecoveryPointInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        if (applyRecoveryPointInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applyRecoveryPointInput is required and cannot be null."));
-        } else {
-            applyRecoveryPointInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.applyRecoveryPointSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, contentType, accept, applyRecoveryPointInput, Context.NONE);
+        return applyRecoveryPointWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, applyRecoveryPointInput, Context.NONE);
     }
 
     /**
@@ -2628,49 +2083,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Change or apply recovery point.
-     * 
-     * The operation to change the recovery point of a failed over replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param applyRecoveryPointInput The ApplyRecoveryPointInput.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginApplyRecoveryPoint(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, ApplyRecoveryPointInput applyRecoveryPointInput) {
-        Response<BinaryData> response = applyRecoveryPointWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, applyRecoveryPointInput);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginApplyRecoveryPoint(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, applyRecoveryPointInput, Context.NONE);
     }
 
-    /**
-     * Change or apply recovery point.
-     * 
-     * The operation to change the recovery point of a failed over replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param applyRecoveryPointInput The ApplyRecoveryPointInput.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginApplyRecoveryPoint(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -2705,53 +2127,22 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName, applyRecoveryPointInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Change or apply recovery point.
-     * 
-     * The operation to change the recovery point of a failed over replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param applyRecoveryPointInput The ApplyRecoveryPointInput.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner applyRecoveryPoint(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         ApplyRecoveryPointInput applyRecoveryPointInput) {
-        return beginApplyRecoveryPoint(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, applyRecoveryPointInput).getFinalResult();
+        return applyRecoveryPoint(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, applyRecoveryPointInput, Context.NONE);
     }
 
-    /**
-     * Change or apply recovery point.
-     * 
-     * The operation to change the recovery point of a failed over replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param applyRecoveryPointInput The ApplyRecoveryPointInput.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner applyRecoveryPoint(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         ApplyRecoveryPointInput applyRecoveryPointInput, Context context) {
-        return beginApplyRecoveryPoint(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, applyRecoveryPointInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginApplyRecoveryPoint(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, applyRecoveryPointInput, context));
     }
 
     /**
@@ -2824,41 +2215,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> failoverCancelWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.failoverCancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, accept, Context.NONE);
+        return failoverCancelWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, Context.NONE);
     }
 
     /**
@@ -2943,47 +2301,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Execute cancel failover.
-     * 
-     * Operation to cancel the failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginFailoverCancel(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName) {
-        Response<BinaryData> response = failoverCancelWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginFailoverCancel(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, Context.NONE);
     }
 
-    /**
-     * Execute cancel failover.
-     * 
-     * Operation to cancel the failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginFailoverCancel(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -3016,49 +2343,20 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute cancel failover.
-     * 
-     * Operation to cancel the failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner failoverCancel(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
-        return beginFailoverCancel(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName).getFinalResult();
+        return failoverCancel(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, Context.NONE);
     }
 
-    /**
-     * Execute cancel failover.
-     * 
-     * Operation to cancel the failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner failoverCancel(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName, Context context) {
-        return beginFailoverCancel(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginFailoverCancel(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, context));
     }
 
     /**
@@ -3131,41 +2429,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> failoverCommitWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.failoverCommitSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, accept, Context.NONE);
+        return failoverCommitWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, Context.NONE);
     }
 
     /**
@@ -3250,47 +2515,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Execute commit failover.
-     * 
-     * Operation to commit the failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginFailoverCommit(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName) {
-        Response<BinaryData> response = failoverCommitWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginFailoverCommit(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, Context.NONE);
     }
 
-    /**
-     * Execute commit failover.
-     * 
-     * Operation to commit the failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginFailoverCommit(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -3323,49 +2557,20 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute commit failover.
-     * 
-     * Operation to commit the failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner failoverCommit(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
-        return beginFailoverCommit(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName).getFinalResult();
+        return failoverCommit(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, Context.NONE);
     }
 
-    /**
-     * Execute commit failover.
-     * 
-     * Operation to commit the failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner failoverCommit(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName, Context context) {
-        return beginFailoverCommit(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginFailoverCommit(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, context));
     }
 
     /**
@@ -3448,48 +2653,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     private Response<BinaryData> plannedFailoverWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         PlannedFailoverInput failoverInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        if (failoverInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter failoverInput is required and cannot be null."));
-        } else {
-            failoverInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.plannedFailoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, contentType, accept, failoverInput, Context.NONE);
+        return plannedFailoverWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, failoverInput, Context.NONE);
     }
 
     /**
@@ -3584,49 +2749,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Execute planned failover.
-     * 
-     * Operation to initiate a planned failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param failoverInput Planned failover input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginPlannedFailover(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, PlannedFailoverInput failoverInput) {
-        Response<BinaryData> response = plannedFailoverWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, failoverInput);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginPlannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, failoverInput, Context.NONE);
     }
 
-    /**
-     * Execute planned failover.
-     * 
-     * Operation to initiate a planned failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param failoverInput Planned failover input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginPlannedFailover(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -3661,53 +2793,22 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName, failoverInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute planned failover.
-     * 
-     * Operation to initiate a planned failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param failoverInput Planned failover input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner plannedFailover(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         PlannedFailoverInput failoverInput) {
-        return beginPlannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, failoverInput).getFinalResult();
+        return plannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, failoverInput, Context.NONE);
     }
 
-    /**
-     * Execute planned failover.
-     * 
-     * Operation to initiate a planned failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param failoverInput Planned failover input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner plannedFailover(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         PlannedFailoverInput failoverInput, Context context) {
-        return beginPlannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, failoverInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginPlannedFailover(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, failoverInput, context));
     }
 
     /**
@@ -3790,47 +2891,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName,
         DisableProtectionInput disableProtectionInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        if (disableProtectionInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter disableProtectionInput is required and cannot be null."));
-        } else {
-            disableProtectionInput.validate();
-        }
-        final String contentType = "application/json";
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, contentType, disableProtectionInput, Context.NONE);
+        return deleteWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, disableProtectionInput, Context.NONE);
     }
 
     /**
@@ -3923,48 +2985,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Disables protection.
-     * 
-     * The operation to disable replication on a replication protected item. This will also remove the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param disableProtectionInput Disable protection input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         DisableProtectionInput disableProtectionInput) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, disableProtectionInput);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, disableProtectionInput, Context.NONE);
     }
 
-    /**
-     * Disables protection.
-     * 
-     * The operation to disable replication on a replication protected item. This will also remove the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param disableProtectionInput Disable protection input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
@@ -3998,49 +3028,20 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName, disableProtectionInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Disables protection.
-     * 
-     * The operation to disable replication on a replication protected item. This will also remove the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param disableProtectionInput Disable protection input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, DisableProtectionInput disableProtectionInput) {
-        beginDelete(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
-            disableProtectionInput).getFinalResult();
+        delete(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            disableProtectionInput, Context.NONE);
     }
 
-    /**
-     * Disables protection.
-     * 
-     * The operation to disable replication on a replication protected item. This will also remove the item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param disableProtectionInput Disable protection input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, DisableProtectionInput disableProtectionInput, Context context) {
-        beginDelete(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
-            disableProtectionInput, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, disableProtectionInput, context));
     }
 
     /**
@@ -4124,48 +3125,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     private Response<BinaryData> removeDisksWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         RemoveDisksInput removeDisksInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        if (removeDisksInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter removeDisksInput is required and cannot be null."));
-        } else {
-            removeDisksInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.removeDisksSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, contentType, accept, removeDisksInput, Context.NONE);
+        return removeDisksWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, removeDisksInput, Context.NONE);
     }
 
     /**
@@ -4260,49 +3221,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Removes disk(s).
-     * 
-     * Operation to remove disk(s) from the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param removeDisksInput Remove disks input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginRemoveDisks(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, RemoveDisksInput removeDisksInput) {
-        Response<BinaryData> response = removeDisksWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, removeDisksInput);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginRemoveDisks(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, removeDisksInput, Context.NONE);
     }
 
-    /**
-     * Removes disk(s).
-     * 
-     * Operation to remove disk(s) from the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param removeDisksInput Remove disks input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginRemoveDisks(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -4337,52 +3265,21 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName, removeDisksInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Removes disk(s).
-     * 
-     * Operation to remove disk(s) from the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param removeDisksInput Remove disks input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner removeDisks(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, RemoveDisksInput removeDisksInput) {
-        return beginRemoveDisks(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, removeDisksInput).getFinalResult();
+        return removeDisks(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, removeDisksInput, Context.NONE);
     }
 
-    /**
-     * Removes disk(s).
-     * 
-     * Operation to remove disk(s) from the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param removeDisksInput Remove disks input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner removeDisks(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, RemoveDisksInput removeDisksInput,
         Context context) {
-        return beginRemoveDisks(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, removeDisksInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginRemoveDisks(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, removeDisksInput, context));
     }
 
     /**
@@ -4457,41 +3354,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> repairReplicationWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.repairReplicationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, accept, Context.NONE);
+        return repairReplicationWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, Context.NONE);
     }
 
     /**
@@ -4578,49 +3442,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Resynchronize or repair replication.
-     * 
-     * The operation to start resynchronize/repair replication for a replication protected item requiring
-     * resynchronization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginRepairReplication(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName) {
-        Response<BinaryData> response = repairReplicationWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginRepairReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, Context.NONE);
     }
 
-    /**
-     * Resynchronize or repair replication.
-     * 
-     * The operation to start resynchronize/repair replication for a replication protected item requiring
-     * resynchronization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginRepairReplication(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -4654,51 +3485,20 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resynchronize or repair replication.
-     * 
-     * The operation to start resynchronize/repair replication for a replication protected item requiring
-     * resynchronization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner repairReplication(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
-        return beginRepairReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName).getFinalResult();
+        return repairReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, Context.NONE);
     }
 
-    /**
-     * Resynchronize or repair replication.
-     * 
-     * The operation to start resynchronize/repair replication for a replication protected item requiring
-     * resynchronization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner repairReplication(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName, Context context) {
-        return beginRepairReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginRepairReplication(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, context));
     }
 
     /**
@@ -4780,48 +3580,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> reprotectWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, ReverseReplicationInput reprotectInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        if (reprotectInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter reprotectInput is required and cannot be null."));
-        } else {
-            reprotectInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.reprotectSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, contentType, accept, reprotectInput, Context.NONE);
+        return reprotectWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, reprotectInput, Context.NONE);
     }
 
     /**
@@ -4916,49 +3676,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Execute Reverse Replication\Reprotect.
-     * 
-     * Operation to reprotect or reverse replicate a failed over replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param reprotectInput Reverse replication input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginReprotect(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, ReverseReplicationInput reprotectInput) {
-        Response<BinaryData> response = reprotectWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, reprotectInput);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginReprotect(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, reprotectInput, Context.NONE);
     }
 
-    /**
-     * Execute Reverse Replication\Reprotect.
-     * 
-     * Operation to reprotect or reverse replicate a failed over replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param reprotectInput Reverse replication input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginReprotect(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -4993,52 +3720,21 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName, reprotectInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute Reverse Replication\Reprotect.
-     * 
-     * Operation to reprotect or reverse replicate a failed over replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param reprotectInput Reverse replication input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner reprotect(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, ReverseReplicationInput reprotectInput) {
-        return beginReprotect(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, reprotectInput).getFinalResult();
+        return reprotect(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, reprotectInput, Context.NONE);
     }
 
-    /**
-     * Execute Reverse Replication\Reprotect.
-     * 
-     * Operation to reprotect or reverse replicate a failed over replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param reprotectInput Reverse replication input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner reprotect(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, ReverseReplicationInput reprotectInput,
         Context context) {
-        return beginReprotect(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, reprotectInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginReprotect(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, reprotectInput, context));
     }
 
     /**
@@ -5122,48 +3818,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     private Response<BinaryData> resolveHealthErrorsWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         ResolveHealthInput resolveHealthInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        if (resolveHealthInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resolveHealthInput is required and cannot be null."));
-        } else {
-            resolveHealthInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.resolveHealthErrorsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, contentType, accept, resolveHealthInput, Context.NONE);
+        return resolveHealthErrorsWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, resolveHealthInput, Context.NONE);
     }
 
     /**
@@ -5258,49 +3914,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Resolve health errors.
-     * 
-     * Operation to resolve health issues of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param resolveHealthInput Health issue input object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner>
         beginResolveHealthErrors(String resourceGroupName, String resourceName, String fabricName,
             String protectionContainerName, String replicatedProtectedItemName, ResolveHealthInput resolveHealthInput) {
-        Response<BinaryData> response = resolveHealthErrorsWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, resolveHealthInput);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginResolveHealthErrors(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, resolveHealthInput, Context.NONE);
     }
 
-    /**
-     * Resolve health errors.
-     * 
-     * Operation to resolve health issues of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param resolveHealthInput Health issue input object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner>
         beginResolveHealthErrors(String resourceGroupName, String resourceName, String fabricName,
@@ -5336,53 +3959,22 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName, resolveHealthInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resolve health errors.
-     * 
-     * Operation to resolve health issues of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param resolveHealthInput Health issue input object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner resolveHealthErrors(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         ResolveHealthInput resolveHealthInput) {
-        return beginResolveHealthErrors(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, resolveHealthInput).getFinalResult();
+        return resolveHealthErrors(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, resolveHealthInput, Context.NONE);
     }
 
-    /**
-     * Resolve health errors.
-     * 
-     * Operation to resolve health issues of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param resolveHealthInput Health issue input object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner resolveHealthErrors(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         ResolveHealthInput resolveHealthInput, Context context) {
-        return beginResolveHealthErrors(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, resolveHealthInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginResolveHealthErrors(resourceGroupName, resourceName,
+            fabricName, protectionContainerName, replicatedProtectedItemName, resolveHealthInput, context));
     }
 
     /**
@@ -5466,48 +4058,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     private Response<BinaryData> switchProviderWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         SwitchProviderInput switchProviderInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        if (switchProviderInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter switchProviderInput is required and cannot be null."));
-        } else {
-            switchProviderInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.switchProviderSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, contentType, accept, switchProviderInput, Context.NONE);
+        return switchProviderWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, switchProviderInput, Context.NONE);
     }
 
     /**
@@ -5603,49 +4155,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Execute switch provider.
-     * 
-     * Operation to initiate a switch provider of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param switchProviderInput Switch provider input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginSwitchProvider(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, SwitchProviderInput switchProviderInput) {
-        Response<BinaryData> response = switchProviderWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, switchProviderInput);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginSwitchProvider(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, switchProviderInput, Context.NONE);
     }
 
-    /**
-     * Execute switch provider.
-     * 
-     * Operation to initiate a switch provider of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param switchProviderInput Switch provider input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginSwitchProvider(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -5680,53 +4199,22 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName, switchProviderInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute switch provider.
-     * 
-     * Operation to initiate a switch provider of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param switchProviderInput Switch provider input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner switchProvider(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         SwitchProviderInput switchProviderInput) {
-        return beginSwitchProvider(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, switchProviderInput).getFinalResult();
+        return switchProvider(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, switchProviderInput, Context.NONE);
     }
 
-    /**
-     * Execute switch provider.
-     * 
-     * Operation to initiate a switch provider of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param switchProviderInput Switch provider input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner switchProvider(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         SwitchProviderInput switchProviderInput, Context context) {
-        return beginSwitchProvider(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, switchProviderInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginSwitchProvider(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, switchProviderInput, context));
     }
 
     /**
@@ -5810,48 +4298,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     private Response<BinaryData> testFailoverWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         TestFailoverInput testfailoverInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        if (testfailoverInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter testfailoverInput is required and cannot be null."));
-        } else {
-            testfailoverInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.testFailoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, contentType, accept, testfailoverInput, Context.NONE);
+        return testFailoverWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, testfailoverInput, Context.NONE);
     }
 
     /**
@@ -5946,49 +4394,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Execute test failover.
-     * 
-     * Operation to perform a test failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param testfailoverInput Test failover input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginTestFailover(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, TestFailoverInput testfailoverInput) {
-        Response<BinaryData> response = testFailoverWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, testfailoverInput);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginTestFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, testfailoverInput, Context.NONE);
     }
 
-    /**
-     * Execute test failover.
-     * 
-     * Operation to perform a test failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param testfailoverInput Test failover input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginTestFailover(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -6023,52 +4438,21 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName, testfailoverInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute test failover.
-     * 
-     * Operation to perform a test failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param testfailoverInput Test failover input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner testFailover(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, TestFailoverInput testfailoverInput) {
-        return beginTestFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, testfailoverInput).getFinalResult();
+        return testFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, testfailoverInput, Context.NONE);
     }
 
-    /**
-     * Execute test failover.
-     * 
-     * Operation to perform a test failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param testfailoverInput Test failover input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner testFailover(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, TestFailoverInput testfailoverInput,
         Context context) {
-        return beginTestFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, testfailoverInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginTestFailover(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, testfailoverInput, context));
     }
 
     /**
@@ -6151,48 +4535,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     private Response<BinaryData> testFailoverCleanupWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         TestFailoverCleanupInput cleanupInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        if (cleanupInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cleanupInput is required and cannot be null."));
-        } else {
-            cleanupInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.testFailoverCleanupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, contentType, accept, cleanupInput, Context.NONE);
+        return testFailoverCleanupWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, cleanupInput, Context.NONE);
     }
 
     /**
@@ -6287,49 +4631,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Execute test failover cleanup.
-     * 
-     * Operation to clean up the test failover of a replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param cleanupInput Test failover cleanup input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner>
         beginTestFailoverCleanup(String resourceGroupName, String resourceName, String fabricName,
             String protectionContainerName, String replicatedProtectedItemName, TestFailoverCleanupInput cleanupInput) {
-        Response<BinaryData> response = testFailoverCleanupWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, cleanupInput);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginTestFailoverCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, cleanupInput, Context.NONE);
     }
 
-    /**
-     * Execute test failover cleanup.
-     * 
-     * Operation to clean up the test failover of a replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param cleanupInput Test failover cleanup input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner>
         beginTestFailoverCleanup(String resourceGroupName, String resourceName, String fabricName,
@@ -6365,53 +4676,22 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName, cleanupInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute test failover cleanup.
-     * 
-     * Operation to clean up the test failover of a replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param cleanupInput Test failover cleanup input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner testFailoverCleanup(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         TestFailoverCleanupInput cleanupInput) {
-        return beginTestFailoverCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, cleanupInput).getFinalResult();
+        return testFailoverCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, cleanupInput, Context.NONE);
     }
 
-    /**
-     * Execute test failover cleanup.
-     * 
-     * Operation to clean up the test failover of a replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param cleanupInput Test failover cleanup input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner testFailoverCleanup(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         TestFailoverCleanupInput cleanupInput, Context context) {
-        return beginTestFailoverCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, cleanupInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginTestFailoverCleanup(resourceGroupName, resourceName,
+            fabricName, protectionContainerName, replicatedProtectedItemName, cleanupInput, context));
     }
 
     /**
@@ -6494,48 +4774,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     private Response<BinaryData> unplannedFailoverWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         UnplannedFailoverInput failoverInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        if (failoverInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter failoverInput is required and cannot be null."));
-        } else {
-            failoverInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.unplannedFailoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, contentType, accept, failoverInput, Context.NONE);
+        return unplannedFailoverWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, failoverInput, Context.NONE);
     }
 
     /**
@@ -6630,49 +4870,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Execute unplanned failover.
-     * 
-     * Operation to initiate a failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param failoverInput Failover input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUnplannedFailover(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, UnplannedFailoverInput failoverInput) {
-        Response<BinaryData> response = unplannedFailoverWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, failoverInput);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginUnplannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, failoverInput, Context.NONE);
     }
 
-    /**
-     * Execute unplanned failover.
-     * 
-     * Operation to initiate a failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param failoverInput Failover input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUnplannedFailover(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -6707,53 +4914,22 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName, failoverInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute unplanned failover.
-     * 
-     * Operation to initiate a failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param failoverInput Failover input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner unplannedFailover(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         UnplannedFailoverInput failoverInput) {
-        return beginUnplannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, failoverInput).getFinalResult();
+        return unplannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, failoverInput, Context.NONE);
     }
 
-    /**
-     * Execute unplanned failover.
-     * 
-     * Operation to initiate a failover of the replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param failoverInput Failover input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner unplannedFailover(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         UnplannedFailoverInput failoverInput, Context context) {
-        return beginUnplannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, failoverInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUnplannedFailover(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, failoverInput, context));
     }
 
     /**
@@ -6837,48 +5013,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     private Response<BinaryData> updateApplianceWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        if (applianceUpdateInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applianceUpdateInput is required and cannot be null."));
-        } else {
-            applianceUpdateInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateApplianceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, contentType, accept, applianceUpdateInput, Context.NONE);
+        return updateApplianceWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, applianceUpdateInput, Context.NONE);
     }
 
     /**
@@ -6974,49 +5110,16 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Updates appliance for replication protected Item.
-     * 
-     * The operation to update appliance of an ASR replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param applianceUpdateInput Appliance update protection input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUpdateAppliance(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput) {
-        Response<BinaryData> response = updateApplianceWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, applianceUpdateInput);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginUpdateAppliance(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, applianceUpdateInput, Context.NONE);
     }
 
-    /**
-     * Updates appliance for replication protected Item.
-     * 
-     * The operation to update appliance of an ASR replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param applianceUpdateInput Appliance update protection input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUpdateAppliance(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -7052,53 +5155,22 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             replicatedProtectedItemName, applianceUpdateInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates appliance for replication protected Item.
-     * 
-     * The operation to update appliance of an ASR replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param applianceUpdateInput Appliance update protection input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner updateAppliance(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput) {
-        return beginUpdateAppliance(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, applianceUpdateInput).getFinalResult();
+        return updateAppliance(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, applianceUpdateInput, Context.NONE);
     }
 
-    /**
-     * Updates appliance for replication protected Item.
-     * 
-     * The operation to update appliance of an ASR replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param applianceUpdateInput Appliance update protection input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner updateAppliance(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput, Context context) {
-        return beginUpdateAppliance(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, applianceUpdateInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdateAppliance(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, applianceUpdateInput, context));
     }
 
     /**
@@ -7185,49 +5257,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     private Response<BinaryData> updateMobilityServiceWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         UpdateMobilityServiceRequest updateMobilityServiceRequest) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        if (updateMobilityServiceRequest == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter updateMobilityServiceRequest is required and cannot be null."));
-        } else {
-            updateMobilityServiceRequest.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateMobilityServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, contentType, accept, updateMobilityServiceRequest, Context.NONE);
+        return updateMobilityServiceWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, updateMobilityServiceRequest, Context.NONE);
     }
 
     /**
@@ -7326,52 +5357,17 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Update the mobility service on a protected item.
-     * 
-     * The operation to update(push update) the installed mobility service software on a replication protected item to
-     * the latest available version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param updateMobilityServiceRequest Request to update the mobility service on the protected item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner>
         beginUpdateMobilityService(String resourceGroupName, String resourceName, String fabricName,
             String protectionContainerName, String replicatedProtectedItemName,
             UpdateMobilityServiceRequest updateMobilityServiceRequest) {
-        Response<BinaryData> response = updateMobilityServiceWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, updateMobilityServiceRequest);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginUpdateMobilityService(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, updateMobilityServiceRequest, Context.NONE);
     }
 
-    /**
-     * Update the mobility service on a protected item.
-     * 
-     * The operation to update(push update) the installed mobility service software on a replication protected item to
-     * the latest available version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param updateMobilityServiceRequest Request to update the mobility service on the protected item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner>
         beginUpdateMobilityService(String resourceGroupName, String resourceName, String fabricName,
@@ -7409,55 +5405,22 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update the mobility service on a protected item.
-     * 
-     * The operation to update(push update) the installed mobility service software on a replication protected item to
-     * the latest available version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param updateMobilityServiceRequest Request to update the mobility service on the protected item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner updateMobilityService(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         UpdateMobilityServiceRequest updateMobilityServiceRequest) {
-        return beginUpdateMobilityService(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, updateMobilityServiceRequest).getFinalResult();
+        return updateMobilityService(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, updateMobilityServiceRequest, Context.NONE);
     }
 
-    /**
-     * Update the mobility service on a protected item.
-     * 
-     * The operation to update(push update) the installed mobility service software on a replication protected item to
-     * the latest available version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param updateMobilityServiceRequest Request to update the mobility service on the protected item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner updateMobilityService(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         UpdateMobilityServiceRequest updateMobilityServiceRequest, Context context) {
-        return beginUpdateMobilityService(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, updateMobilityServiceRequest, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdateMobilityService(resourceGroupName, resourceName,
+            fabricName, protectionContainerName, replicatedProtectedItemName, updateMobilityServiceRequest, context));
     }
 
     /**
@@ -7544,49 +5507,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     private Response<BinaryData> reinstallMobilityServiceWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         ReinstallMobilityServiceRequest updateMobilityServiceRequest) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        if (updateMobilityServiceRequest == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter updateMobilityServiceRequest is required and cannot be null."));
-        } else {
-            updateMobilityServiceRequest.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.reinstallMobilityServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, contentType, accept, updateMobilityServiceRequest, Context.NONE);
+        return reinstallMobilityServiceWithResponse(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, updateMobilityServiceRequest, Context.NONE);
     }
 
     /**
@@ -7686,52 +5608,17 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             this.client.getContext());
     }
 
-    /**
-     * Reinstall the mobility service on a protected item.
-     * 
-     * The operation to reinstall the installed mobility service software on a replication protected item to the latest
-     * available version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName The name of the protected item on which the agent is to be updated.
-     * @param updateMobilityServiceRequest Request to update the mobility service on the protected item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner>
         beginReinstallMobilityService(String resourceGroupName, String resourceName, String fabricName,
             String protectionContainerName, String replicatedProtectedItemName,
             ReinstallMobilityServiceRequest updateMobilityServiceRequest) {
-        Response<BinaryData> response = reinstallMobilityServiceWithResponse(resourceGroupName, resourceName,
-            fabricName, protectionContainerName, replicatedProtectedItemName, updateMobilityServiceRequest);
-        return this.client.<ReplicationProtectedItemInner, ReplicationProtectedItemInner>getLroResult(response,
-            ReplicationProtectedItemInner.class, ReplicationProtectedItemInner.class, Context.NONE);
+        return beginReinstallMobilityService(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, updateMobilityServiceRequest, Context.NONE);
     }
 
-    /**
-     * Reinstall the mobility service on a protected item.
-     * 
-     * The operation to reinstall the installed mobility service software on a replication protected item to the latest
-     * available version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName The name of the protected item on which the agent is to be updated.
-     * @param updateMobilityServiceRequest Request to update the mobility service on the protected item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner>
         beginReinstallMobilityService(String resourceGroupName, String resourceName, String fabricName,
@@ -7769,55 +5656,22 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reinstall the mobility service on a protected item.
-     * 
-     * The operation to reinstall the installed mobility service software on a replication protected item to the latest
-     * available version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName The name of the protected item on which the agent is to be updated.
-     * @param updateMobilityServiceRequest Request to update the mobility service on the protected item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner reinstallMobilityService(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         ReinstallMobilityServiceRequest updateMobilityServiceRequest) {
-        return beginReinstallMobilityService(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, updateMobilityServiceRequest).getFinalResult();
+        return reinstallMobilityService(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, updateMobilityServiceRequest, Context.NONE);
     }
 
-    /**
-     * Reinstall the mobility service on a protected item.
-     * 
-     * The operation to reinstall the installed mobility service software on a replication protected item to the latest
-     * available version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName The name of the protected item on which the agent is to be updated.
-     * @param updateMobilityServiceRequest Request to update the mobility service on the protected item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectedItemInner reinstallMobilityService(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         ReinstallMobilityServiceRequest updateMobilityServiceRequest, Context context) {
-        return beginReinstallMobilityService(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicatedProtectedItemName, updateMobilityServiceRequest, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginReinstallMobilityService(resourceGroupName, resourceName,
+            fabricName, protectionContainerName, replicatedProtectedItemName, updateMobilityServiceRequest, context));
     }
 
     /**
@@ -7928,30 +5782,7 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationProtectedItemInner> listSinglePage(String resourceGroupName, String resourceName,
         String skipToken, String filter) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ReplicationProtectedItemCollection> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, resourceName, skipToken, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, skipToken, filter, Context.NONE);
     }
 
     /**
@@ -8000,45 +5831,15 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of replication protected items.
-     * 
-     * Gets the list of ASR replication protected items in the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of replication protected items.
-     * 
-     * Gets the list of ASR replication protected items in the vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationProtectedItemInner> list(String resourceGroupName, String resourceName) {
         final String skipToken = null;
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, skipToken, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, skipToken, filter, Context.NONE);
     }
 
-    /**
-     * Gets the list of replication protected items.
-     * 
-     * Gets the list of ASR replication protected items in the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param skipToken The pagination token. Possible values: "FabricId" or "FabricId_CloudId" or null.
-     * @param filter OData filter options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of replication protected items.
-     * 
-     * Gets the list of ASR replication protected items in the vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationProtectedItemInner> list(String resourceGroupName, String resourceName,
         String skipToken, String filter, Context context) {
@@ -8095,20 +5896,7 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationProtectedItemInner>
         listByReplicationProtectionContainersNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ReplicationProtectedItemCollection> res = service
-            .listByReplicationProtectionContainersNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationProtectionContainersNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -8189,20 +5977,7 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationProtectedItemInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ReplicationProtectedItemCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -251,18 +251,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the protected item along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectedItemModelInner> getWithResponse(String resourceGroupName, String vaultName,
         String protectedItemName, Context context) {
@@ -271,17 +260,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             resourceGroupName, vaultName, protectedItemName, accept, context);
     }
 
-    /**
-     * Gets the details of the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the protected item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectedItemModelInner get(String resourceGroupName, String vaultName, String protectedItemName) {
         return getWithResponse(resourceGroupName, vaultName, protectedItemName, Context.NONE).getValue();
@@ -326,11 +305,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String vaultName,
         String protectedItemName, ProtectedItemModelInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, protectedItemName, contentType, accept,
-            resource, Context.NONE);
+        return createWithResponse(resourceGroupName, vaultName, protectedItemName, resource, Context.NONE);
     }
 
     /**
@@ -378,39 +353,14 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             this.client.getContext());
     }
 
-    /**
-     * Creates the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param resource Protected item model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of protected item model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginCreate(
         String resourceGroupName, String vaultName, String protectedItemName, ProtectedItemModelInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, vaultName, protectedItemName, resource);
-        return this.client.<ProtectedItemModelInner, ProtectedItemModelInner>getLroResult(response,
-            ProtectedItemModelInner.class, ProtectedItemModelInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, vaultName, protectedItemName, resource, Context.NONE);
     }
 
-    /**
-     * Creates the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param resource Protected item model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of protected item model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginCreate(
         String resourceGroupName, String vaultName, String protectedItemName, ProtectedItemModelInner resource,
@@ -440,41 +390,19 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param resource Protected item model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return protected item model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectedItemModelInner create(String resourceGroupName, String vaultName, String protectedItemName,
         ProtectedItemModelInner resource) {
-        return beginCreate(resourceGroupName, vaultName, protectedItemName, resource).getFinalResult();
+        return create(resourceGroupName, vaultName, protectedItemName, resource, Context.NONE);
     }
 
-    /**
-     * Creates the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param resource Protected item model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return protected item model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectedItemModelInner create(String resourceGroupName, String vaultName, String protectedItemName,
         ProtectedItemModelInner resource, Context context) {
-        return beginCreate(resourceGroupName, vaultName, protectedItemName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, vaultName, protectedItemName, resource, context));
     }
 
     /**
@@ -516,11 +444,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String vaultName,
         String protectedItemName, ProtectedItemModelUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, protectedItemName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, vaultName, protectedItemName, properties, Context.NONE);
     }
 
     /**
@@ -568,39 +492,14 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             this.client.getContext());
     }
 
-    /**
-     * Performs update on the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param properties Protected item model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of protected item model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginUpdate(
         String resourceGroupName, String vaultName, String protectedItemName, ProtectedItemModelUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, vaultName, protectedItemName, properties);
-        return this.client.<ProtectedItemModelInner, ProtectedItemModelInner>getLroResult(response,
-            ProtectedItemModelInner.class, ProtectedItemModelInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, vaultName, protectedItemName, properties, Context.NONE);
     }
 
-    /**
-     * Performs update on the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param properties Protected item model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of protected item model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginUpdate(
         String resourceGroupName, String vaultName, String protectedItemName, ProtectedItemModelUpdate properties,
@@ -630,41 +529,19 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Performs update on the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param properties Protected item model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return protected item model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectedItemModelInner update(String resourceGroupName, String vaultName, String protectedItemName,
         ProtectedItemModelUpdate properties) {
-        return beginUpdate(resourceGroupName, vaultName, protectedItemName, properties).getFinalResult();
+        return update(resourceGroupName, vaultName, protectedItemName, properties, Context.NONE);
     }
 
-    /**
-     * Performs update on the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param properties Protected item model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return protected item model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectedItemModelInner update(String resourceGroupName, String vaultName, String protectedItemName,
         ProtectedItemModelUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, vaultName, protectedItemName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, vaultName, protectedItemName, properties, context));
     }
 
     /**
@@ -703,9 +580,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String vaultName,
         String protectedItemName, Boolean forceDelete) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, forceDelete, vaultName, protectedItemName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, vaultName, protectedItemName, forceDelete, Context.NONE);
     }
 
     /**
@@ -785,44 +660,18 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
         String protectedItemName, Boolean forceDelete) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, vaultName, protectedItemName, forceDelete);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, vaultName, protectedItemName, forceDelete, Context.NONE);
     }
 
-    /**
-     * Removes the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
         String protectedItemName) {
         final Boolean forceDelete = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, vaultName, protectedItemName, forceDelete);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, vaultName, protectedItemName, forceDelete, Context.NONE);
     }
 
-    /**
-     * Removes the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param forceDelete A flag indicating whether to do force delete or not.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
         String protectedItemName, Boolean forceDelete, Context context) {
@@ -868,38 +717,19 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Removes the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName, String protectedItemName) {
         final Boolean forceDelete = null;
-        beginDelete(resourceGroupName, vaultName, protectedItemName, forceDelete).getFinalResult();
+        delete(resourceGroupName, vaultName, protectedItemName, forceDelete, Context.NONE);
     }
 
-    /**
-     * Removes the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param forceDelete A flag indicating whether to do force delete or not.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete,
         Context context) {
-        beginDelete(resourceGroupName, vaultName, protectedItemName, forceDelete, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, vaultName, protectedItemName, forceDelete, context));
     }
 
     /**
@@ -986,12 +816,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectedItemModelInner> listSinglePage(String resourceGroupName, String vaultName,
         String odataOptions, String continuationToken, Integer pageSize) {
-        final String accept = "application/json";
-        Response<ProtectedItemModelListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, odataOptions, continuationToken, pageSize, vaultName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, odataOptions, continuationToken, pageSize, Context.NONE);
     }
 
     /**
@@ -1019,40 +844,16 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of protected items in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of protected items in the given vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectedItemModelInner> list(String resourceGroupName, String vaultName) {
         final String odataOptions = null;
         final String continuationToken = null;
         final Integer pageSize = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, vaultName, odataOptions, continuationToken, pageSize),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, odataOptions, continuationToken, pageSize, Context.NONE);
     }
 
-    /**
-     * Gets the list of protected items in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param odataOptions OData options.
-     * @param continuationToken Continuation token.
-     * @param pageSize Page size.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of protected items in the given vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectedItemModelInner> list(String resourceGroupName, String vaultName, String odataOptions,
         String continuationToken, Integer pageSize, Context context) {
@@ -1100,11 +901,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> plannedFailoverWithResponse(String resourceGroupName, String vaultName,
         String protectedItemName, PlannedFailoverModelInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.plannedFailoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, protectedItemName, contentType, accept, body,
-            Context.NONE);
+        return plannedFailoverWithResponse(resourceGroupName, vaultName, protectedItemName, body, Context.NONE);
     }
 
     /**
@@ -1152,40 +949,14 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             this.client.getContext());
     }
 
-    /**
-     * Performs the planned failover on the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param body Planned failover model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of planned failover model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner> beginPlannedFailover(
         String resourceGroupName, String vaultName, String protectedItemName, PlannedFailoverModelInner body) {
-        Response<BinaryData> response
-            = plannedFailoverWithResponse(resourceGroupName, vaultName, protectedItemName, body);
-        return this.client.<PlannedFailoverModelInner, PlannedFailoverModelInner>getLroResult(response,
-            PlannedFailoverModelInner.class, PlannedFailoverModelInner.class, Context.NONE);
+        return beginPlannedFailover(resourceGroupName, vaultName, protectedItemName, body, Context.NONE);
     }
 
-    /**
-     * Performs the planned failover on the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param body Planned failover model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of planned failover model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner> beginPlannedFailover(
         String resourceGroupName, String vaultName, String protectedItemName, PlannedFailoverModelInner body,
@@ -1215,41 +986,19 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Performs the planned failover on the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param body Planned failover model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return planned failover model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlannedFailoverModelInner plannedFailover(String resourceGroupName, String vaultName,
         String protectedItemName, PlannedFailoverModelInner body) {
-        return beginPlannedFailover(resourceGroupName, vaultName, protectedItemName, body).getFinalResult();
+        return plannedFailover(resourceGroupName, vaultName, protectedItemName, body, Context.NONE);
     }
 
-    /**
-     * Performs the planned failover on the protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param protectedItemName The protected item name.
-     * @param body Planned failover model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return planned failover model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlannedFailoverModelInner plannedFailover(String resourceGroupName, String vaultName,
         String protectedItemName, PlannedFailoverModelInner body, Context context) {
-        return beginPlannedFailover(resourceGroupName, vaultName, protectedItemName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginPlannedFailover(resourceGroupName, vaultName, protectedItemName, body, context));
     }
 
     /**
@@ -1282,11 +1031,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectedItemModelInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProtectedItemModelListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

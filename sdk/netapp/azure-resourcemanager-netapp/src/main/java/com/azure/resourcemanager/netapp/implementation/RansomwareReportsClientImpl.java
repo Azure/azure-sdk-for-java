@@ -238,28 +238,7 @@ public final class RansomwareReportsClientImpl implements RansomwareReportsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get details of the specified ransomware report (ARP)
-     * ARP reports are created with a list of suspected files when it detects any combination of high data entropy,
-     * abnormal volume activity with data encryption, and unusual file extensions.
-     * ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one
-     * of these ARP snapshots or another snapshot of your volume to restore data.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param ransomwareReportName The name of the ransomware report.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified ransomware report (ARP)
-     * ARP reports are created with a list of suspected files when it detects any combination of high data entropy,
-     * abnormal volume activity with data encryption, and unusual file extensions.
-     * ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RansomwareReportInner> getWithResponse(String resourceGroupName, String accountName,
         String poolName, String volumeName, String ransomwareReportName, Context context) {
@@ -298,26 +277,7 @@ public final class RansomwareReportsClientImpl implements RansomwareReportsClien
             resourceGroupName, accountName, poolName, volumeName, ransomwareReportName, accept, context);
     }
 
-    /**
-     * Get details of the specified ransomware report (ARP)
-     * ARP reports are created with a list of suspected files when it detects any combination of high data entropy,
-     * abnormal volume activity with data encryption, and unusual file extensions.
-     * ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one
-     * of these ARP snapshots or another snapshot of your volume to restore data.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param ransomwareReportName The name of the ransomware report.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified ransomware report (ARP)
-     * ARP reports are created with a list of suspected files when it detects any combination of high data entropy,
-     * abnormal volume activity with data encryption, and unusual file extensions.
-     * ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RansomwareReportInner get(String resourceGroupName, String accountName, String poolName, String volumeName,
         String ransomwareReportName) {
@@ -420,38 +380,7 @@ public final class RansomwareReportsClientImpl implements RansomwareReportsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RansomwareReportInner> listSinglePage(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<RansomwareReportsList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, poolName, volumeName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, poolName, volumeName, Context.NONE);
     }
 
     /**
@@ -508,48 +437,14 @@ public final class RansomwareReportsClientImpl implements RansomwareReportsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all ransomware reports for the volume
-     * Returns a list of the Advanced Ransomware Protection (ARP) reports for the volume.
-     * ARP reports are created with a list of suspected files when it detects any combination of high data entropy,
-     * abnormal volume activity with data encryption, and unusual file extensions.
-     * ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one
-     * of these ARP snapshots or another snapshot of your volume to restore data".
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Advanced Ransomware Protection (ARP) reports as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RansomwareReportInner> list(String resourceGroupName, String accountName, String poolName,
         String volumeName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, poolName, volumeName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, poolName, volumeName, Context.NONE);
     }
 
-    /**
-     * List all ransomware reports for the volume
-     * Returns a list of the Advanced Ransomware Protection (ARP) reports for the volume.
-     * ARP reports are created with a list of suspected files when it detects any combination of high data entropy,
-     * abnormal volume activity with data encryption, and unusual file extensions.
-     * ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one
-     * of these ARP snapshots or another snapshot of your volume to restore data".
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Advanced Ransomware Protection (ARP) reports as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RansomwareReportInner> list(String resourceGroupName, String accountName, String poolName,
         String volumeName, Context context) {
@@ -636,45 +531,8 @@ public final class RansomwareReportsClientImpl implements RansomwareReportsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> clearSuspectsWithResponse(String resourceGroupName, String accountName,
         String poolName, String volumeName, String ransomwareReportName, RansomwareSuspectsClearRequest body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        if (ransomwareReportName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter ransomwareReportName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        return service.clearSuspectsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, ransomwareReportName,
-            contentType, body, Context.NONE);
+        return clearSuspectsWithResponse(resourceGroupName, accountName, poolName, volumeName, ransomwareReportName,
+            body, Context.NONE);
     }
 
     /**
@@ -766,49 +624,15 @@ public final class RansomwareReportsClientImpl implements RansomwareReportsClien
             this.client.getContext());
     }
 
-    /**
-     * Clear ransomware suspects for the given Advanced Ransomware Protection report. You should evaluate the report to
-     * determine whether the activity is acceptable (false positive) or whether an attack seems malicious.
-     * ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one
-     * of these ARP snapshots or another snapshot of your volume to restore data",.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param ransomwareReportName The name of the ransomware report.
-     * @param body Clear suspects request object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginClearSuspects(String resourceGroupName, String accountName,
         String poolName, String volumeName, String ransomwareReportName, RansomwareSuspectsClearRequest body) {
-        Response<BinaryData> response = clearSuspectsWithResponse(resourceGroupName, accountName, poolName, volumeName,
-            ransomwareReportName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginClearSuspects(resourceGroupName, accountName, poolName, volumeName, ransomwareReportName, body,
+            Context.NONE);
     }
 
-    /**
-     * Clear ransomware suspects for the given Advanced Ransomware Protection report. You should evaluate the report to
-     * determine whether the activity is acceptable (false positive) or whether an attack seems malicious.
-     * ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one
-     * of these ARP snapshots or another snapshot of your volume to restore data",.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param ransomwareReportName The name of the ransomware report.
-     * @param body Clear suspects request object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginClearSuspects(String resourceGroupName, String accountName,
         String poolName, String volumeName, String ransomwareReportName, RansomwareSuspectsClearRequest body,
@@ -843,51 +667,19 @@ public final class RansomwareReportsClientImpl implements RansomwareReportsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Clear ransomware suspects for the given Advanced Ransomware Protection report. You should evaluate the report to
-     * determine whether the activity is acceptable (false positive) or whether an attack seems malicious.
-     * ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one
-     * of these ARP snapshots or another snapshot of your volume to restore data",.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param ransomwareReportName The name of the ransomware report.
-     * @param body Clear suspects request object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void clearSuspects(String resourceGroupName, String accountName, String poolName, String volumeName,
         String ransomwareReportName, RansomwareSuspectsClearRequest body) {
-        beginClearSuspects(resourceGroupName, accountName, poolName, volumeName, ransomwareReportName, body)
-            .getFinalResult();
+        clearSuspects(resourceGroupName, accountName, poolName, volumeName, ransomwareReportName, body, Context.NONE);
     }
 
-    /**
-     * Clear ransomware suspects for the given Advanced Ransomware Protection report. You should evaluate the report to
-     * determine whether the activity is acceptable (false positive) or whether an attack seems malicious.
-     * ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one
-     * of these ARP snapshots or another snapshot of your volume to restore data",.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param ransomwareReportName The name of the ransomware report.
-     * @param body Clear suspects request object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void clearSuspects(String resourceGroupName, String accountName, String poolName, String volumeName,
         String ransomwareReportName, RansomwareSuspectsClearRequest body, Context context) {
-        beginClearSuspects(resourceGroupName, accountName, poolName, volumeName, ransomwareReportName, body, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(beginClearSuspects(resourceGroupName, accountName, poolName, volumeName,
+            ransomwareReportName, body, context));
     }
 
     /**
@@ -927,20 +719,7 @@ public final class RansomwareReportsClientImpl implements RansomwareReportsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RansomwareReportInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<RansomwareReportsList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

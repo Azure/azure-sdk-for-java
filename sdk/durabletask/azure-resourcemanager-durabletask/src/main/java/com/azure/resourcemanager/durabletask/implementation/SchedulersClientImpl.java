@@ -442,17 +442,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Scheduler along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchedulerInner> getByResourceGroupWithResponse(String resourceGroupName, String schedulerName,
         Context context) {
@@ -461,16 +451,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
             this.client.getSubscriptionId(), resourceGroupName, schedulerName, accept, context);
     }
 
-    /**
-     * Get a Scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchedulerInner getByResourceGroup(String resourceGroupName, String schedulerName) {
         return getByResourceGroupWithResponse(resourceGroupName, schedulerName, Context.NONE).getValue();
@@ -513,11 +494,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String schedulerName,
         SchedulerInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, schedulerName, resource, Context.NONE);
     }
 
     /**
@@ -561,37 +538,14 @@ public final class SchedulersClientImpl implements SchedulersClient {
             SchedulerInner.class, SchedulerInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a Scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Durable Task Scheduler resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SchedulerInner>, SchedulerInner> beginCreateOrUpdate(String resourceGroupName,
         String schedulerName, SchedulerInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, schedulerName, resource);
-        return this.client.<SchedulerInner, SchedulerInner>getLroResult(response, SchedulerInner.class,
-            SchedulerInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, schedulerName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Durable Task Scheduler resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SchedulerInner>, SchedulerInner> beginCreateOrUpdate(String resourceGroupName,
         String schedulerName, SchedulerInner resource, Context context) {
@@ -618,38 +572,18 @@ public final class SchedulersClientImpl implements SchedulersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Durable Task Scheduler resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchedulerInner createOrUpdate(String resourceGroupName, String schedulerName, SchedulerInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, schedulerName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, schedulerName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Durable Task Scheduler resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchedulerInner createOrUpdate(String resourceGroupName, String schedulerName, SchedulerInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, schedulerName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, schedulerName, resource, context));
     }
 
     /**
@@ -689,11 +623,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String schedulerName,
         SchedulerUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, schedulerName, properties, Context.NONE);
     }
 
     /**
@@ -737,37 +667,14 @@ public final class SchedulersClientImpl implements SchedulersClient {
             SchedulerInner.class, SchedulerInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Durable Task Scheduler resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SchedulerInner>, SchedulerInner> beginUpdate(String resourceGroupName,
         String schedulerName, SchedulerUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, schedulerName, properties);
-        return this.client.<SchedulerInner, SchedulerInner>getLroResult(response, SchedulerInner.class,
-            SchedulerInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, schedulerName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Durable Task Scheduler resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SchedulerInner>, SchedulerInner> beginUpdate(String resourceGroupName,
         String schedulerName, SchedulerUpdate properties, Context context) {
@@ -794,38 +701,17 @@ public final class SchedulersClientImpl implements SchedulersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Durable Task Scheduler resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchedulerInner update(String resourceGroupName, String schedulerName, SchedulerUpdate properties) {
-        return beginUpdate(resourceGroupName, schedulerName, properties).getFinalResult();
+        return update(resourceGroupName, schedulerName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Durable Task Scheduler resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchedulerInner update(String resourceGroupName, String schedulerName, SchedulerUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, schedulerName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, schedulerName, properties, context));
     }
 
     /**
@@ -858,8 +744,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String schedulerName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, schedulerName, Context.NONE);
     }
 
     /**
@@ -896,33 +781,13 @@ public final class SchedulersClientImpl implements SchedulersClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schedulerName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, schedulerName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * Delete a Scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schedulerName,
         Context context) {
@@ -945,33 +810,16 @@ public final class SchedulersClientImpl implements SchedulersClient {
         return beginDeleteAsync(resourceGroupName, schedulerName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schedulerName) {
-        beginDelete(resourceGroupName, schedulerName).getFinalResult();
+        delete(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * Delete a Scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schedulerName, Context context) {
-        beginDelete(resourceGroupName, schedulerName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, schedulerName, context));
     }
 
     /**
@@ -1021,11 +869,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchedulerInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<SchedulerListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1047,31 +891,13 @@ public final class SchedulersClientImpl implements SchedulersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Schedulers by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Scheduler list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchedulerInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List Schedulers by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Scheduler list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchedulerInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1119,11 +945,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchedulerInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<SchedulerListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1144,27 +966,13 @@ public final class SchedulersClientImpl implements SchedulersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Schedulers by subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Scheduler list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchedulerInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List Schedulers by subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Scheduler list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchedulerInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1212,18 +1020,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a private link resource for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param privateLinkResourceName The name of the private link associated with the Azure resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource for the durable task scheduler along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchedulerPrivateLinkResourceInner> getPrivateLinkWithResponse(String resourceGroupName,
         String schedulerName, String privateLinkResourceName, Context context) {
@@ -1233,17 +1030,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
             context);
     }
 
-    /**
-     * Get a private link resource for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param privateLinkResourceName The name of the private link associated with the Azure resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource for the durable task scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchedulerPrivateLinkResourceInner getPrivateLink(String resourceGroupName, String schedulerName,
         String privateLinkResourceName) {
@@ -1305,12 +1092,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchedulerPrivateLinkResourceInner> listPrivateLinksSinglePage(String resourceGroupName,
         String schedulerName) {
-        final String accept = "application/json";
-        Response<SchedulerPrivateLinkResourceListResult> res
-            = service.listPrivateLinksSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, schedulerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listPrivateLinksSinglePage(resourceGroupName, schedulerName, Context.NONE);
     }
 
     /**
@@ -1335,36 +1117,14 @@ public final class SchedulersClientImpl implements SchedulersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List private link resources for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SchedulerPrivateLinkResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchedulerPrivateLinkResourceInner> listPrivateLinks(String resourceGroupName,
         String schedulerName) {
-        return new PagedIterable<>(() -> listPrivateLinksSinglePage(resourceGroupName, schedulerName),
-            nextLink -> listPrivateLinksNextSinglePage(nextLink));
+        return listPrivateLinks(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * List private link resources for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SchedulerPrivateLinkResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchedulerPrivateLinkResourceInner> listPrivateLinks(String resourceGroupName,
         String schedulerName, Context context) {
@@ -1415,19 +1175,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
             privateEndpointConnectionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a private endpoint connection for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection for the durable task scheduler along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getPrivateEndpointConnectionWithResponse(String resourceGroupName,
         String schedulerName, String privateEndpointConnectionName, Context context) {
@@ -1437,18 +1185,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
             context);
     }
 
-    /**
-     * Get a private endpoint connection for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection for the durable task scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner getPrivateEndpointConnection(String resourceGroupName, String schedulerName,
         String privateEndpointConnectionName) {
@@ -1499,11 +1236,8 @@ public final class SchedulersClientImpl implements SchedulersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdatePrivateEndpointConnectionWithResponse(String resourceGroupName,
         String schedulerName, String privateEndpointConnectionName, PrivateEndpointConnectionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdatePrivateEndpointConnectionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, schedulerName,
-            privateEndpointConnectionName, contentType, accept, resource, Context.NONE);
+        return createOrUpdatePrivateEndpointConnectionWithResponse(resourceGroupName, schedulerName,
+            privateEndpointConnectionName, resource, Context.NONE);
     }
 
     /**
@@ -1555,43 +1289,16 @@ public final class SchedulersClientImpl implements SchedulersClient {
             this.client.getContext());
     }
 
-    /**
-     * Create or update a private endpoint connection for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
         beginCreateOrUpdatePrivateEndpointConnection(String resourceGroupName, String schedulerName,
             String privateEndpointConnectionName, PrivateEndpointConnectionInner resource) {
-        Response<BinaryData> response = createOrUpdatePrivateEndpointConnectionWithResponse(resourceGroupName,
-            schedulerName, privateEndpointConnectionName, resource);
-        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
-            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, Context.NONE);
+        return beginCreateOrUpdatePrivateEndpointConnection(resourceGroupName, schedulerName,
+            privateEndpointConnectionName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a private endpoint connection for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
         beginCreateOrUpdatePrivateEndpointConnection(String resourceGroupName, String schedulerName,
@@ -1622,46 +1329,21 @@ public final class SchedulersClientImpl implements SchedulersClient {
             privateEndpointConnectionName, resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a private endpoint connection for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner createOrUpdatePrivateEndpointConnection(String resourceGroupName,
         String schedulerName, String privateEndpointConnectionName, PrivateEndpointConnectionInner resource) {
-        return beginCreateOrUpdatePrivateEndpointConnection(resourceGroupName, schedulerName,
-            privateEndpointConnectionName, resource).getFinalResult();
+        return createOrUpdatePrivateEndpointConnection(resourceGroupName, schedulerName, privateEndpointConnectionName,
+            resource, Context.NONE);
     }
 
-    /**
-     * Create or update a private endpoint connection for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner createOrUpdatePrivateEndpointConnection(String resourceGroupName,
         String schedulerName, String privateEndpointConnectionName, PrivateEndpointConnectionInner resource,
         Context context) {
-        return beginCreateOrUpdatePrivateEndpointConnection(resourceGroupName, schedulerName,
-            privateEndpointConnectionName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdatePrivateEndpointConnection(resourceGroupName,
+            schedulerName, privateEndpointConnectionName, resource, context));
     }
 
     /**
@@ -1706,11 +1388,8 @@ public final class SchedulersClientImpl implements SchedulersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updatePrivateEndpointConnectionWithResponse(String resourceGroupName,
         String schedulerName, String privateEndpointConnectionName, PrivateEndpointConnectionUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updatePrivateEndpointConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, privateEndpointConnectionName,
-            contentType, accept, properties, Context.NONE);
+        return updatePrivateEndpointConnectionWithResponse(resourceGroupName, schedulerName,
+            privateEndpointConnectionName, properties, Context.NONE);
     }
 
     /**
@@ -1762,43 +1441,16 @@ public final class SchedulersClientImpl implements SchedulersClient {
             this.client.getContext());
     }
 
-    /**
-     * Update a private endpoint connection for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
         beginUpdatePrivateEndpointConnection(String resourceGroupName, String schedulerName,
             String privateEndpointConnectionName, PrivateEndpointConnectionUpdate properties) {
-        Response<BinaryData> response = updatePrivateEndpointConnectionWithResponse(resourceGroupName, schedulerName,
-            privateEndpointConnectionName, properties);
-        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
-            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, Context.NONE);
+        return beginUpdatePrivateEndpointConnection(resourceGroupName, schedulerName, privateEndpointConnectionName,
+            properties, Context.NONE);
     }
 
-    /**
-     * Update a private endpoint connection for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
         beginUpdatePrivateEndpointConnection(String resourceGroupName, String schedulerName,
@@ -1829,46 +1481,21 @@ public final class SchedulersClientImpl implements SchedulersClient {
             privateEndpointConnectionName, properties).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a private endpoint connection for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner updatePrivateEndpointConnection(String resourceGroupName,
         String schedulerName, String privateEndpointConnectionName, PrivateEndpointConnectionUpdate properties) {
-        return beginUpdatePrivateEndpointConnection(resourceGroupName, schedulerName, privateEndpointConnectionName,
-            properties).getFinalResult();
+        return updatePrivateEndpointConnection(resourceGroupName, schedulerName, privateEndpointConnectionName,
+            properties, Context.NONE);
     }
 
-    /**
-     * Update a private endpoint connection for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner updatePrivateEndpointConnection(String resourceGroupName,
         String schedulerName, String privateEndpointConnectionName, PrivateEndpointConnectionUpdate properties,
         Context context) {
-        return beginUpdatePrivateEndpointConnection(resourceGroupName, schedulerName, privateEndpointConnectionName,
-            properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdatePrivateEndpointConnection(resourceGroupName,
+            schedulerName, privateEndpointConnectionName, properties, context));
     }
 
     /**
@@ -1908,9 +1535,8 @@ public final class SchedulersClientImpl implements SchedulersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deletePrivateEndpointConnectionWithResponse(String resourceGroupName,
         String schedulerName, String privateEndpointConnectionName) {
-        return service.deletePrivateEndpointConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, privateEndpointConnectionName,
-            Context.NONE);
+        return deletePrivateEndpointConnectionWithResponse(resourceGroupName, schedulerName,
+            privateEndpointConnectionName, Context.NONE);
     }
 
     /**
@@ -1954,39 +1580,15 @@ public final class SchedulersClientImpl implements SchedulersClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a private endpoint connection for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(String resourceGroupName,
         String schedulerName, String privateEndpointConnectionName) {
-        Response<BinaryData> response = deletePrivateEndpointConnectionWithResponse(resourceGroupName, schedulerName,
-            privateEndpointConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeletePrivateEndpointConnection(resourceGroupName, schedulerName, privateEndpointConnectionName,
+            Context.NONE);
     }
 
-    /**
-     * Delete a private endpoint connection for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(String resourceGroupName,
         String schedulerName, String privateEndpointConnectionName, Context context) {
@@ -2014,41 +1616,19 @@ public final class SchedulersClientImpl implements SchedulersClient {
             privateEndpointConnectionName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a private endpoint connection for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deletePrivateEndpointConnection(String resourceGroupName, String schedulerName,
         String privateEndpointConnectionName) {
-        beginDeletePrivateEndpointConnection(resourceGroupName, schedulerName, privateEndpointConnectionName)
-            .getFinalResult();
+        deletePrivateEndpointConnection(resourceGroupName, schedulerName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete a private endpoint connection for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deletePrivateEndpointConnection(String resourceGroupName, String schedulerName,
         String privateEndpointConnectionName, Context context) {
-        beginDeletePrivateEndpointConnection(resourceGroupName, schedulerName, privateEndpointConnectionName, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(beginDeletePrivateEndpointConnection(resourceGroupName, schedulerName,
+            privateEndpointConnectionName, context));
     }
 
     /**
@@ -2105,12 +1685,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner>
         listPrivateEndpointConnectionsSinglePage(String resourceGroupName, String schedulerName) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResult> res
-            = service.listPrivateEndpointConnectionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, schedulerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listPrivateEndpointConnectionsSinglePage(resourceGroupName, schedulerName, Context.NONE);
     }
 
     /**
@@ -2135,36 +1710,14 @@ public final class SchedulersClientImpl implements SchedulersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List private endpoint connections for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateEndpointConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listPrivateEndpointConnections(String resourceGroupName,
         String schedulerName) {
-        return new PagedIterable<>(() -> listPrivateEndpointConnectionsSinglePage(resourceGroupName, schedulerName),
-            nextLink -> listPrivateEndpointConnectionsNextSinglePage(nextLink));
+        return listPrivateEndpointConnections(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * List private endpoint connections for the durable task scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateEndpointConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listPrivateEndpointConnections(String resourceGroupName,
         String schedulerName, Context context) {
@@ -2206,32 +1759,14 @@ public final class SchedulersClientImpl implements SchedulersClient {
         return restartWithResponseAsync(resourceGroupName, schedulerName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Restart a Scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> restartWithResponse(String resourceGroupName, String schedulerName, Context context) {
         return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, schedulerName, context);
     }
 
-    /**
-     * Restart a Scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String schedulerName) {
         restartWithResponse(resourceGroupName, schedulerName, Context.NONE);
@@ -2269,11 +1804,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchedulerInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SchedulerListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2327,11 +1858,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchedulerInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SchedulerListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2385,11 +1912,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchedulerPrivateLinkResourceInner> listPrivateLinksNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SchedulerPrivateLinkResourceListResult> res
-            = service.listPrivateLinksNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listPrivateLinksNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2445,11 +1968,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner>
         listPrivateEndpointConnectionsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResult> res
-            = service.listPrivateEndpointConnectionsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listPrivateEndpointConnectionsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

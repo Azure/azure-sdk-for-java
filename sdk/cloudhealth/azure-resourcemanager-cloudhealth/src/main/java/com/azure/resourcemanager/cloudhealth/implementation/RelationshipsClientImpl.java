@@ -214,19 +214,7 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Relationship.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
-     * concatenation of parentEntityName and childEntityName can be used as the name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Relationship along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RelationshipInner> getWithResponse(String resourceGroupName, String healthModelName,
         String relationshipName, Context context) {
@@ -235,18 +223,7 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
             resourceGroupName, healthModelName, relationshipName, accept, context);
     }
 
-    /**
-     * Get a Relationship.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
-     * concatenation of parentEntityName and childEntityName can be used as the name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Relationship.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelationshipInner get(String resourceGroupName, String healthModelName, String relationshipName) {
         return getWithResponse(resourceGroupName, healthModelName, relationshipName, Context.NONE).getValue();
@@ -294,11 +271,7 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
         String relationshipName, RelationshipInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, healthModelName, relationshipName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, healthModelName, relationshipName, resource, Context.NONE);
     }
 
     /**
@@ -347,42 +320,14 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
             RelationshipInner.class, RelationshipInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Relationship.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
-     * concatenation of parentEntityName and childEntityName can be used as the name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a relationship (aka edge) between two entities in a health model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RelationshipInner>, RelationshipInner> beginCreateOrUpdate(String resourceGroupName,
         String healthModelName, String relationshipName, RelationshipInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, healthModelName, relationshipName, resource);
-        return this.client.<RelationshipInner, RelationshipInner>getLroResult(response, RelationshipInner.class,
-            RelationshipInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, healthModelName, relationshipName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Relationship.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
-     * concatenation of parentEntityName and childEntityName can be used as the name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a relationship (aka edge) between two entities in a health model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RelationshipInner>, RelationshipInner> beginCreateOrUpdate(String resourceGroupName,
         String healthModelName, String relationshipName, RelationshipInner resource, Context context) {
@@ -413,44 +358,19 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Relationship.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
-     * concatenation of parentEntityName and childEntityName can be used as the name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a relationship (aka edge) between two entities in a health model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelationshipInner createOrUpdate(String resourceGroupName, String healthModelName, String relationshipName,
         RelationshipInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, healthModelName, relationshipName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, healthModelName, relationshipName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Relationship.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
-     * concatenation of parentEntityName and childEntityName can be used as the name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a relationship (aka edge) between two entities in a health model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelationshipInner createOrUpdate(String resourceGroupName, String healthModelName, String relationshipName,
         RelationshipInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, healthModelName, relationshipName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, healthModelName, relationshipName, resource, context));
     }
 
     /**
@@ -489,8 +409,7 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String healthModelName,
         String relationshipName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, healthModelName, relationshipName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, healthModelName, relationshipName, Context.NONE);
     }
 
     /**
@@ -534,38 +453,14 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Relationship.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
-     * concatenation of parentEntityName and childEntityName can be used as the name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String healthModelName,
         String relationshipName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, healthModelName, relationshipName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, healthModelName, relationshipName, Context.NONE);
     }
 
-    /**
-     * Delete a Relationship.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
-     * concatenation of parentEntityName and childEntityName can be used as the name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String healthModelName,
         String relationshipName, Context context) {
@@ -592,37 +487,17 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Relationship.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
-     * concatenation of parentEntityName and childEntityName can be used as the name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String healthModelName, String relationshipName) {
-        beginDelete(resourceGroupName, healthModelName, relationshipName).getFinalResult();
+        delete(resourceGroupName, healthModelName, relationshipName, Context.NONE);
     }
 
-    /**
-     * Delete a Relationship.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
-     * concatenation of parentEntityName and childEntityName can be used as the name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String healthModelName, String relationshipName, Context context) {
-        beginDelete(resourceGroupName, healthModelName, relationshipName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, healthModelName, relationshipName, context));
     }
 
     /**
@@ -701,12 +576,7 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RelationshipInner> listByHealthModelSinglePage(String resourceGroupName,
         String healthModelName, OffsetDateTime timestamp) {
-        final String accept = "application/json";
-        Response<RelationshipListResult> res
-            = service.listByHealthModelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, timestamp, healthModelName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByHealthModelSinglePage(resourceGroupName, healthModelName, timestamp, Context.NONE);
     }
 
     /**
@@ -733,36 +603,14 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Relationship resources by HealthModel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Relationship list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelationshipInner> listByHealthModel(String resourceGroupName, String healthModelName) {
         final OffsetDateTime timestamp = null;
-        return new PagedIterable<>(() -> listByHealthModelSinglePage(resourceGroupName, healthModelName, timestamp),
-            nextLink -> listByHealthModelNextSinglePage(nextLink));
+        return listByHealthModel(resourceGroupName, healthModelName, timestamp, Context.NONE);
     }
 
-    /**
-     * List Relationship resources by HealthModel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param timestamp Timestamp to use for the operation. When specified, the version of the resource at this point in
-     * time is retrieved. If not specified, the latest version is used.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Relationship list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelationshipInner> listByHealthModel(String resourceGroupName, String healthModelName,
         OffsetDateTime timestamp, Context context) {
@@ -802,11 +650,7 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RelationshipInner> listByHealthModelNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RelationshipListResult> res
-            = service.listByHealthModelNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByHealthModelNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

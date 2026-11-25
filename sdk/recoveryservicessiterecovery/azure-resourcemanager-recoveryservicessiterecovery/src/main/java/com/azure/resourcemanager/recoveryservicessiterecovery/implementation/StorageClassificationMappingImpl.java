@@ -23,6 +23,21 @@ public final class StorageClassificationMappingImpl
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
+            "resourceGroupName");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
+            "resourceName");
+        this.fabricName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
+            "fabricName");
+        this.storageClassificationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
+            "storageClassificationName");
+        this.storageClassificationMappingName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
+            "storageClassificationMappingName");
     }
 
     public String id() {
@@ -87,11 +102,7 @@ public final class StorageClassificationMappingImpl
     }
 
     public StorageClassificationMapping create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageClassificationMappings()
-            .create(resourceGroupName, resourceName, fabricName, storageClassificationName,
-                storageClassificationMappingName, createPairingInput, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StorageClassificationMapping create(Context context) {
@@ -110,12 +121,7 @@ public final class StorageClassificationMappingImpl
     }
 
     public StorageClassificationMapping refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageClassificationMappings()
-            .getWithResponse(resourceGroupName, resourceName, fabricName, storageClassificationName,
-                storageClassificationMappingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StorageClassificationMapping refresh(Context context) {

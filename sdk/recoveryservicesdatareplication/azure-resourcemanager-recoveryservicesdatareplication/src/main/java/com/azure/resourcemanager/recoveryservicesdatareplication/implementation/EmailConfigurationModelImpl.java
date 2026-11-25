@@ -19,6 +19,15 @@ public final class EmailConfigurationModelImpl implements EmailConfigurationMode
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/alertSettings/{emailConfigurationName}",
+            "resourceGroupName");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/alertSettings/{emailConfigurationName}",
+            "vaultName");
+        this.emailConfigurationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/alertSettings/{emailConfigurationName}",
+            "emailConfigurationName");
     }
 
     public String id() {
@@ -62,11 +71,7 @@ public final class EmailConfigurationModelImpl implements EmailConfigurationMode
     }
 
     public EmailConfigurationModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEmailConfigurations()
-            .createWithResponse(resourceGroupName, vaultName, emailConfigurationName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EmailConfigurationModel create(Context context) {
@@ -85,11 +90,7 @@ public final class EmailConfigurationModelImpl implements EmailConfigurationMode
     }
 
     public EmailConfigurationModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEmailConfigurations()
-            .getWithResponse(resourceGroupName, vaultName, emailConfigurationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EmailConfigurationModel refresh(Context context) {

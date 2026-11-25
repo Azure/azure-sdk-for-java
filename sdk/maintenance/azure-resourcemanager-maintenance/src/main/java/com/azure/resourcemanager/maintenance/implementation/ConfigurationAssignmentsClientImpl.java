@@ -335,22 +335,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             resourceType, resourceName, configurationAssignmentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get configuration assignment for resource..
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource name.
-     * @param configurationAssignmentName The name of the ConfigurationAssignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration assignment for resource. along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationAssignmentInner> getParentWithResponse(String resourceGroupName, String providerName,
         String resourceParentType, String resourceParentName, String resourceType, String resourceName,
@@ -361,21 +346,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             resourceType, resourceName, configurationAssignmentName, accept, context);
     }
 
-    /**
-     * Get configuration assignment for resource..
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource name.
-     * @param configurationAssignmentName The name of the ConfigurationAssignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration assignment for resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationAssignmentInner getParent(String resourceGroupName, String providerName,
         String resourceParentType, String resourceParentName, String resourceType, String resourceName,
@@ -439,23 +410,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Register configuration for resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource name.
-     * @param configurationAssignmentName The name of the ConfigurationAssignment.
-     * @param configurationAssignment The configurationAssignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration Assignment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationAssignmentInner> createOrUpdateParentWithResponse(String resourceGroupName,
         String providerName, String resourceParentType, String resourceParentName, String resourceType,
@@ -469,22 +424,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             context);
     }
 
-    /**
-     * Register configuration for resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource name.
-     * @param configurationAssignmentName The name of the ConfigurationAssignment.
-     * @param configurationAssignment The configurationAssignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration Assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationAssignmentInner createOrUpdateParent(String resourceGroupName, String providerName,
         String resourceParentType, String resourceParentName, String resourceType, String resourceName,
@@ -543,22 +483,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             resourceType, resourceName, configurationAssignmentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Unregister configuration for resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource name.
-     * @param configurationAssignmentName The name of the ConfigurationAssignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration Assignment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationAssignmentInner> deleteParentWithResponse(String resourceGroupName,
         String providerName, String resourceParentType, String resourceParentName, String resourceType,
@@ -569,21 +494,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             resourceType, resourceName, configurationAssignmentName, accept, context);
     }
 
-    /**
-     * Unregister configuration for resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource name.
-     * @param configurationAssignmentName The name of the ConfigurationAssignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration Assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationAssignmentInner deleteParent(String resourceGroupName, String providerName,
         String resourceParentType, String resourceParentName, String resourceType, String resourceName,
@@ -660,12 +571,8 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
     private PagedResponse<ConfigurationAssignmentInner> listParentSinglePage(String resourceGroupName,
         String providerName, String resourceParentType, String resourceParentName, String resourceType,
         String resourceName) {
-        final String accept = "application/json";
-        Response<ListConfigurationAssignmentsResult> res = service.listParentSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, providerName,
-            resourceParentType, resourceParentName, resourceType, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listParentSinglePage(resourceGroupName, providerName, resourceParentType, resourceParentName,
+            resourceType, resourceName, Context.NONE);
     }
 
     /**
@@ -695,42 +602,15 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List configurationAssignments for resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ConfigurationAssignments list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationAssignmentInner> listParent(String resourceGroupName, String providerName,
         String resourceParentType, String resourceParentName, String resourceType, String resourceName) {
-        return new PagedIterable<>(() -> listParentSinglePage(resourceGroupName, providerName, resourceParentType,
-            resourceParentName, resourceType, resourceName), nextLink -> listParentNextSinglePage(nextLink));
+        return listParent(resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType,
+            resourceName, Context.NONE);
     }
 
-    /**
-     * List configurationAssignments for resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ConfigurationAssignments list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationAssignmentInner> listParent(String resourceGroupName, String providerName,
         String resourceParentType, String resourceParentName, String resourceType, String resourceName,
@@ -785,20 +665,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             configurationAssignmentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get configuration assignment for resource..
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource parent type.
-     * @param resourceName Resource parent name.
-     * @param configurationAssignmentName The name of the ConfigurationAssignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration assignment for resource. along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationAssignmentInner> getWithResponse(String resourceGroupName, String providerName,
         String resourceType, String resourceName, String configurationAssignmentName, Context context) {
@@ -807,19 +674,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName, accept, context);
     }
 
-    /**
-     * Get configuration assignment for resource..
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource parent type.
-     * @param resourceName Resource parent name.
-     * @param configurationAssignmentName The name of the ConfigurationAssignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration assignment for resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationAssignmentInner get(String resourceGroupName, String providerName, String resourceType,
         String resourceName, String configurationAssignmentName) {
@@ -876,21 +731,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             configurationAssignmentName, configurationAssignment).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Register configuration for resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource parent type.
-     * @param resourceName Resource parent name.
-     * @param configurationAssignmentName The name of the ConfigurationAssignment.
-     * @param configurationAssignment The configurationAssignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration Assignment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationAssignmentInner> createOrUpdateWithResponse(String resourceGroupName,
         String providerName, String resourceType, String resourceName, String configurationAssignmentName,
@@ -902,20 +743,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             configurationAssignmentName, contentType, accept, configurationAssignment, context);
     }
 
-    /**
-     * Register configuration for resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource parent type.
-     * @param resourceName Resource parent name.
-     * @param configurationAssignmentName The name of the ConfigurationAssignment.
-     * @param configurationAssignment The configurationAssignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration Assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationAssignmentInner createOrUpdate(String resourceGroupName, String providerName,
         String resourceType, String resourceName, String configurationAssignmentName,
@@ -968,20 +796,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             configurationAssignmentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Unregister configuration for resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource parent type.
-     * @param resourceName Resource parent name.
-     * @param configurationAssignmentName The name of the ConfigurationAssignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration Assignment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationAssignmentInner> deleteWithResponse(String resourceGroupName, String providerName,
         String resourceType, String resourceName, String configurationAssignmentName, Context context) {
@@ -991,19 +806,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             configurationAssignmentName, accept, context);
     }
 
-    /**
-     * Unregister configuration for resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource parent type.
-     * @param resourceName Resource parent name.
-     * @param configurationAssignmentName The name of the ConfigurationAssignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration Assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationAssignmentInner delete(String resourceGroupName, String providerName, String resourceType,
         String resourceName, String configurationAssignmentName) {
@@ -1072,12 +875,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigurationAssignmentInner> listSinglePage(String resourceGroupName, String providerName,
         String resourceType, String resourceName) {
-        final String accept = "application/json";
-        Response<ListConfigurationAssignmentsResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, providerName, resourceType, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, providerName, resourceType, resourceName, Context.NONE);
     }
 
     /**
@@ -1104,40 +902,14 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get Configuration records within a subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription and resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationAssignmentInner> list(String resourceGroupName, String providerName,
         String resourceType, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, providerName, resourceType, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, providerName, resourceType, resourceName, Context.NONE);
     }
 
-    /**
-     * Get Configuration records within a subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription and resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationAssignmentInner> list(String resourceGroupName, String providerName,
         String resourceType, String resourceName, Context context) {
@@ -1177,11 +949,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigurationAssignmentInner> listParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ListConfigurationAssignmentsResult> res
-            = service.listParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1237,11 +1005,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigurationAssignmentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ListConfigurationAssignmentsResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

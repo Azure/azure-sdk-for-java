@@ -111,16 +111,7 @@ public final class DecompileOperationGroupsClientImpl implements DecompileOperat
         return bicepWithResponseAsync(decompileOperationRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Decompiles an ARM json template into a Bicep template.
-     * 
-     * @param decompileOperationRequest The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the decompileBicep operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DecompileOperationSuccessResponseInner>
         bicepWithResponse(DecompileOperationRequest decompileOperationRequest, Context context) {
@@ -130,15 +121,7 @@ public final class DecompileOperationGroupsClientImpl implements DecompileOperat
             this.client.getSubscriptionId(), contentType, accept, decompileOperationRequest, context);
     }
 
-    /**
-     * Decompiles an ARM json template into a Bicep template.
-     * 
-     * @param decompileOperationRequest The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the decompileBicep operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DecompileOperationSuccessResponseInner bicep(DecompileOperationRequest decompileOperationRequest) {
         return bicepWithResponse(decompileOperationRequest, Context.NONE).getValue();

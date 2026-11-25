@@ -26,8 +26,7 @@ public final class MonitoredResourcesImpl implements MonitoredResources {
     }
 
     public PagedIterable<MonitoredResource> list(String resourceGroupName, String monitorName) {
-        PagedIterable<MonitoredResourceInner> inner = this.serviceClient().list(resourceGroupName, monitorName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MonitoredResourceImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, monitorName, Context.NONE);
     }
 
     public PagedIterable<MonitoredResource> list(String resourceGroupName, String monitorName, Context context) {

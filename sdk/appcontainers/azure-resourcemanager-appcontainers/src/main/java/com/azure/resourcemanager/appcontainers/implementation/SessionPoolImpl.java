@@ -152,10 +152,7 @@ public final class SessionPoolImpl implements SessionPool, SessionPool.Definitio
     }
 
     public SessionPool create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContainerAppsSessionPools()
-            .createOrUpdate(resourceGroupName, sessionPoolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SessionPool create(Context context) {
@@ -177,10 +174,7 @@ public final class SessionPoolImpl implements SessionPool, SessionPool.Definitio
     }
 
     public SessionPool apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContainerAppsSessionPools()
-            .update(resourceGroupName, sessionPoolName, updateSessionPoolEnvelope, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SessionPool apply(Context context) {
@@ -203,11 +197,7 @@ public final class SessionPoolImpl implements SessionPool, SessionPool.Definitio
     }
 
     public SessionPool refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContainerAppsSessionPools()
-            .getByResourceGroupWithResponse(resourceGroupName, sessionPoolName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SessionPool refresh(Context context) {

@@ -189,21 +189,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of
-     * the operation,
-     * call the GetItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param intentObjectName Backed up item name whose details are to be fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectionIntentResourceInner> getWithResponse(String vaultName, String resourceGroupName,
         String fabricName, String intentObjectName, Context context) {
@@ -212,20 +198,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
             resourceGroupName, vaultName, fabricName, intentObjectName, accept, context);
     }
 
-    /**
-     * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of
-     * the operation,
-     * call the GetItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param intentObjectName Backed up item name whose details are to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionIntentResourceInner get(String vaultName, String resourceGroupName, String fabricName,
         String intentObjectName) {
@@ -279,20 +252,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create Intent for Enabling backup of an item. This is a synchronous operation.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param intentObjectName Backed up item name whose details are to be fetched.
-     * @param parameters resource backed up item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectionIntentResourceInner> createOrUpdateWithResponse(String vaultName,
         String resourceGroupName, String fabricName, String intentObjectName, ProtectionIntentResourceInner parameters,
@@ -304,19 +264,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
             accept, parameters, context);
     }
 
-    /**
-     * Create Intent for Enabling backup of an item. This is a synchronous operation.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param intentObjectName Backed up item name whose details are to be fetched.
-     * @param parameters resource backed up item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionIntentResourceInner createOrUpdate(String vaultName, String resourceGroupName, String fabricName,
         String intentObjectName, ProtectionIntentResourceInner parameters) {
@@ -364,19 +312,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Used to remove intent from an item.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param intentObjectName Backed up item name whose details are to be fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String vaultName, String resourceGroupName, String fabricName,
         String intentObjectName, Context context) {
@@ -384,17 +320,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
             this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName, intentObjectName, context);
     }
 
-    /**
-     * Used to remove intent from an item.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param intentObjectName Backed up item name whose details are to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String vaultName, String resourceGroupName, String fabricName, String intentObjectName) {
         deleteWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, Context.NONE);
@@ -444,20 +370,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
         return validateWithResponseAsync(azureRegion, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * It will validate followings
-     * 1. Vault capacity
-     * 2. VM is already protected
-     * 3. Any VM related configuration passed in properties.
-     * 
-     * @param azureRegion Azure region to hit Api.
-     * @param parameters Enable backup validation request on Virtual Machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response contract for enable backup validation request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PreValidateEnableBackupResponseInner> validateWithResponse(String azureRegion,
         PreValidateEnableBackupRequest parameters, Context context) {
@@ -467,19 +380,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
             this.client.getSubscriptionId(), contentType, accept, parameters, context);
     }
 
-    /**
-     * It will validate followings
-     * 1. Vault capacity
-     * 2. VM is already protected
-     * 3. Any VM related configuration passed in properties.
-     * 
-     * @param azureRegion Azure region to hit Api.
-     * @param parameters Enable backup validation request on Virtual Machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response contract for enable backup validation request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PreValidateEnableBackupResponseInner validate(String azureRegion,
         PreValidateEnableBackupRequest parameters) {

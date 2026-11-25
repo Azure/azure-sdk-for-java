@@ -111,19 +111,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified maintenance configuration of a managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration. Supported values are 'default',
-     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance configuration of a managed cluster along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MaintenanceConfigurationInner>> getWithResponseAsync(String resourceGroupName,
         String resourceName, String configName) {
@@ -193,18 +181,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             resourceGroupName, resourceName, configName, accept, context);
     }
 
-    /**
-     * Gets the specified maintenance configuration of a managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration. Supported values are 'default',
-     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance configuration of a managed cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceConfigurationInner> getAsync(String resourceGroupName, String resourceName,
         String configName) {
@@ -212,56 +189,20 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified maintenance configuration of a managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration. Supported values are 'default',
-     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance configuration of a managed cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceConfigurationInner> getWithResponse(String resourceGroupName, String resourceName,
         String configName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, configName, context).block();
     }
 
-    /**
-     * Gets the specified maintenance configuration of a managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration. Supported values are 'default',
-     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance configuration of a managed cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceConfigurationInner get(String resourceGroupName, String resourceName, String configName) {
         return getWithResponse(resourceGroupName, resourceName, configName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a maintenance configuration in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration. Supported values are 'default',
-     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
-     * @param parameters The maintenance configuration to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster
-     * along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String resourceName, String configName, MaintenanceConfigurationInner parameters) {
@@ -346,20 +287,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             parameters, context);
     }
 
-    /**
-     * Creates or updates a maintenance configuration in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration. Supported values are 'default',
-     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
-     * @param parameters The maintenance configuration to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceConfigurationInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
         String configName, MaintenanceConfigurationInner parameters) {
@@ -367,21 +295,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a maintenance configuration in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration. Supported values are 'default',
-     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
-     * @param parameters The maintenance configuration to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster
-     * along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceConfigurationInner> createOrUpdateWithResponse(String resourceGroupName,
         String resourceName, String configName, MaintenanceConfigurationInner parameters, Context context) {
@@ -389,19 +303,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             .block();
     }
 
-    /**
-     * Creates or updates a maintenance configuration in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration. Supported values are 'default',
-     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
-     * @param parameters The maintenance configuration to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceConfigurationInner createOrUpdate(String resourceGroupName, String resourceName,
         String configName, MaintenanceConfigurationInner parameters) {
@@ -409,18 +311,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             .getValue();
     }
 
-    /**
-     * Deletes a maintenance configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration. Supported values are 'default',
-     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
         String configName) {
@@ -487,53 +378,20 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             resourceGroupName, resourceName, configName, context);
     }
 
-    /**
-     * Deletes a maintenance configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration. Supported values are 'default',
-     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String configName) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, configName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a maintenance configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration. Supported values are 'default',
-     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String configName,
         Context context) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, configName, context).block();
     }
 
-    /**
-     * Deletes a maintenance configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration. Supported values are 'default',
-     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String configName) {
         deleteWithResponse(resourceGroupName, resourceName, configName, Context.NONE);
@@ -616,17 +474,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of maintenance configurations in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MaintenanceConfigurationInner> listByManagedClusterAsync(String resourceGroupName,
         String resourceName) {
@@ -653,35 +501,14 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             nextLink -> listByManagedClusterNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of maintenance configurations in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceConfigurationInner> listByManagedCluster(String resourceGroupName,
         String resourceName) {
         return new PagedIterable<>(listByManagedClusterAsync(resourceGroupName, resourceName));
     }
 
-    /**
-     * Gets a list of maintenance configurations in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceConfigurationInner> listByManagedCluster(String resourceGroupName,
         String resourceName, Context context) {

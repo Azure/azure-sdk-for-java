@@ -276,20 +276,7 @@ public final class DisksClientImpl implements DisksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param expand Specify the $expand query. Example: 'properties($select=diskType)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiskInner> getWithResponse(String resourceGroupName, String labName, String userName, String name,
         String expand, Context context) {
@@ -298,18 +285,7 @@ public final class DisksClientImpl implements DisksClient {
             resourceGroupName, labName, userName, name, expand, accept, context);
     }
 
-    /**
-     * Get disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiskInner get(String resourceGroupName, String labName, String userName, String name) {
         final String expand = null;
@@ -357,11 +333,7 @@ public final class DisksClientImpl implements DisksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String labName, String userName,
         String name, DiskInner disk) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, userName, name, contentType, accept, disk,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, labName, userName, name, disk, Context.NONE);
     }
 
     /**
@@ -410,40 +382,14 @@ public final class DisksClientImpl implements DisksClient {
             DiskInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or replace an existing disk. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param disk A Disk.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(String resourceGroupName, String labName,
         String userName, String name, DiskInner disk) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, labName, userName, name, disk);
-        return this.client.<DiskInner, DiskInner>getLroResult(response, DiskInner.class, DiskInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, labName, userName, name, disk, Context.NONE);
     }
 
-    /**
-     * Create or replace an existing disk. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param disk A Disk.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(String resourceGroupName, String labName,
         String userName, String name, DiskInner disk, Context context) {
@@ -472,43 +418,19 @@ public final class DisksClientImpl implements DisksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or replace an existing disk. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param disk A Disk.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiskInner createOrUpdate(String resourceGroupName, String labName, String userName, String name,
         DiskInner disk) {
-        return beginCreateOrUpdate(resourceGroupName, labName, userName, name, disk).getFinalResult();
+        return createOrUpdate(resourceGroupName, labName, userName, name, disk, Context.NONE);
     }
 
-    /**
-     * Create or replace an existing disk. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param disk A Disk.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiskInner createOrUpdate(String resourceGroupName, String labName, String userName, String name,
         DiskInner disk, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, labName, userName, name, disk, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, labName, userName, name, disk, context));
     }
 
     /**
@@ -556,20 +478,7 @@ public final class DisksClientImpl implements DisksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Allows modifying tags of disks. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param disk A Disk.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Disk along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiskInner> updateWithResponse(String resourceGroupName, String labName, String userName,
         String name, DiskFragment disk, Context context) {
@@ -580,19 +489,7 @@ public final class DisksClientImpl implements DisksClient {
             context);
     }
 
-    /**
-     * Allows modifying tags of disks. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param disk A Disk.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Disk.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiskInner update(String resourceGroupName, String labName, String userName, String name, DiskFragment disk) {
         return updateWithResponse(resourceGroupName, labName, userName, name, disk, Context.NONE).getValue();
@@ -634,8 +531,7 @@ public final class DisksClientImpl implements DisksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String labName, String userName,
         String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, userName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, labName, userName, name, Context.NONE);
     }
 
     /**
@@ -678,38 +574,14 @@ public final class DisksClientImpl implements DisksClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete disk. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String userName,
         String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, labName, userName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, labName, userName, name, Context.NONE);
     }
 
-    /**
-     * Delete disk. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String userName,
         String name, Context context) {
@@ -735,37 +607,16 @@ public final class DisksClientImpl implements DisksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete disk. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String labName, String userName, String name) {
-        beginDelete(resourceGroupName, labName, userName, name).getFinalResult();
+        delete(resourceGroupName, labName, userName, name, Context.NONE);
     }
 
-    /**
-     * Delete disk. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String labName, String userName, String name, Context context) {
-        beginDelete(resourceGroupName, labName, userName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, labName, userName, name, context));
     }
 
     /**
@@ -860,12 +711,7 @@ public final class DisksClientImpl implements DisksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiskInner> listSinglePage(String resourceGroupName, String labName, String userName,
         String expand, String filter, Integer top, String orderby) {
-        final String accept = "application/json";
-        Response<DiskList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, labName, userName, expand, filter, top, orderby, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, labName, userName, expand, filter, top, orderby, Context.NONE);
     }
 
     /**
@@ -895,44 +741,17 @@ public final class DisksClientImpl implements DisksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List disks in a given user profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiskInner> list(String resourceGroupName, String labName, String userName) {
         final String expand = null;
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, labName, userName, expand, filter, top, orderby),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, labName, userName, expand, filter, top, orderby, Context.NONE);
     }
 
-    /**
-     * List disks in a given user profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param expand Specify the $expand query. Example: 'properties($select=diskType)'.
-     * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiskInner> list(String resourceGroupName, String labName, String userName, String expand,
         String filter, Integer top, String orderby, Context context) {
@@ -981,10 +800,7 @@ public final class DisksClientImpl implements DisksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> attachWithResponse(String resourceGroupName, String labName, String userName,
         String name, AttachDiskProperties attachDiskProperties) {
-        final String contentType = "application/json";
-        return service.attachSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, userName, name, contentType,
-            attachDiskProperties, Context.NONE);
+        return attachWithResponse(resourceGroupName, labName, userName, name, attachDiskProperties, Context.NONE);
     }
 
     /**
@@ -1032,41 +848,14 @@ public final class DisksClientImpl implements DisksClient {
             this.client.getContext());
     }
 
-    /**
-     * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param attachDiskProperties Properties of the disk to attach.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAttach(String resourceGroupName, String labName, String userName,
         String name, AttachDiskProperties attachDiskProperties) {
-        Response<BinaryData> response
-            = attachWithResponse(resourceGroupName, labName, userName, name, attachDiskProperties);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginAttach(resourceGroupName, labName, userName, name, attachDiskProperties, Context.NONE);
     }
 
-    /**
-     * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param attachDiskProperties Properties of the disk to attach.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAttach(String resourceGroupName, String labName, String userName,
         String name, AttachDiskProperties attachDiskProperties, Context context) {
@@ -1095,41 +884,19 @@ public final class DisksClientImpl implements DisksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param attachDiskProperties Properties of the disk to attach.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void attach(String resourceGroupName, String labName, String userName, String name,
         AttachDiskProperties attachDiskProperties) {
-        beginAttach(resourceGroupName, labName, userName, name, attachDiskProperties).getFinalResult();
+        attach(resourceGroupName, labName, userName, name, attachDiskProperties, Context.NONE);
     }
 
-    /**
-     * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param attachDiskProperties Properties of the disk to attach.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void attach(String resourceGroupName, String labName, String userName, String name,
         AttachDiskProperties attachDiskProperties, Context context) {
-        beginAttach(resourceGroupName, labName, userName, name, attachDiskProperties, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginAttach(resourceGroupName, labName, userName, name, attachDiskProperties, context));
     }
 
     /**
@@ -1174,10 +941,7 @@ public final class DisksClientImpl implements DisksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> detachWithResponse(String resourceGroupName, String labName, String userName,
         String name, DetachDiskProperties detachDiskProperties) {
-        final String contentType = "application/json";
-        return service.detachSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, userName, name, contentType,
-            detachDiskProperties, Context.NONE);
+        return detachWithResponse(resourceGroupName, labName, userName, name, detachDiskProperties, Context.NONE);
     }
 
     /**
@@ -1227,43 +991,14 @@ public final class DisksClientImpl implements DisksClient {
             this.client.getContext());
     }
 
-    /**
-     * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
-     * complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param detachDiskProperties Properties of the disk to detach.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDetach(String resourceGroupName, String labName, String userName,
         String name, DetachDiskProperties detachDiskProperties) {
-        Response<BinaryData> response
-            = detachWithResponse(resourceGroupName, labName, userName, name, detachDiskProperties);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDetach(resourceGroupName, labName, userName, name, detachDiskProperties, Context.NONE);
     }
 
-    /**
-     * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
-     * complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param detachDiskProperties Properties of the disk to detach.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDetach(String resourceGroupName, String labName, String userName,
         String name, DetachDiskProperties detachDiskProperties, Context context) {
@@ -1293,43 +1028,19 @@ public final class DisksClientImpl implements DisksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
-     * complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param detachDiskProperties Properties of the disk to detach.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void detach(String resourceGroupName, String labName, String userName, String name,
         DetachDiskProperties detachDiskProperties) {
-        beginDetach(resourceGroupName, labName, userName, name, detachDiskProperties).getFinalResult();
+        detach(resourceGroupName, labName, userName, name, detachDiskProperties, Context.NONE);
     }
 
-    /**
-     * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
-     * complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param userName The name of the user profile.
-     * @param name The name of the disk.
-     * @param detachDiskProperties Properties of the disk to detach.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void detach(String resourceGroupName, String labName, String userName, String name,
         DetachDiskProperties detachDiskProperties, Context context) {
-        beginDetach(resourceGroupName, labName, userName, name, detachDiskProperties, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDetach(resourceGroupName, labName, userName, name, detachDiskProperties, context));
     }
 
     /**
@@ -1362,10 +1073,7 @@ public final class DisksClientImpl implements DisksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiskInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DiskList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

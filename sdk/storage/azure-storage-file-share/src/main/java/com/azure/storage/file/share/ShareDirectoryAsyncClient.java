@@ -39,6 +39,7 @@ import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
+import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareFilePermission;
@@ -423,7 +424,9 @@ public class ShareDirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @return A reactive response signaling completion. {@link ShareDirectoryInfo} contains information about the
-     * created directory.
+     * created directory. Errors with a {@link ShareStorageException} if the directory could not be created for any
+     * other reason than that it already exists, for example when a file with the same name already exists at this
+     * location (status code 409, error code ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryInfo> createIfNotExists() {
@@ -466,7 +469,9 @@ public class ShareDirectoryAsyncClient {
      * @return A {@link Mono} containing {@link Response} signaling completion, whose {@link Response#getValue() value}
      * contains a {@link ShareDirectoryInfo} containing information about the directory. If {@link Response}'s status
      * code is 201, a new directory was successfully created. If status code is 409, a directory already existed at this
-     * location.
+     * location. Errors with a {@link ShareStorageException} if the directory could not be created for any other reason
+     * than that it already exists, for example when a file with the same name already exists at this location (status
+     * code 409, error code ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareDirectoryInfo>> createIfNotExistsWithResponse(ShareDirectoryCreateOptions options) {
@@ -484,8 +489,7 @@ public class ShareDirectoryAsyncClient {
             return createWithResponse(options.getSmbProperties(), options.getFilePermission(),
                 options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(),
                 options.getFilePropertySemantics(), context).onErrorResume(
-                    t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
-                    t -> {
+                    t -> ModelHelper.isConflictWithErrorCode(t, ShareErrorCode.RESOURCE_ALREADY_EXISTS), t -> {
                         HttpResponse response = ((ShareStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                             response.getHeaders(), null));
@@ -1460,7 +1464,10 @@ public class ShareDirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param subdirectoryName Name of the subdirectory
-     * @return A {@link Mono} containing a {@link ShareDirectoryAsyncClient} used to interact with the subdirectory created.
+     * @return A {@link Mono} containing a {@link ShareDirectoryAsyncClient} used to interact with the subdirectory
+     * created. Errors with a {@link ShareStorageException} if the directory could not be created for any other reason
+     * than that it already exists, for example when a file with the same name already exists at this location (status
+     * code 409, error code ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryAsyncClient> createSubdirectoryIfNotExists(String subdirectoryName) {
@@ -1502,7 +1509,9 @@ public class ShareDirectoryAsyncClient {
      * @return A reactive response signaling completion. The presence of a {@link Response} item indicates a new
      * subdirectory was created, and {@link Response#getValue() value} contains a {@link ShareDirectoryAsyncClient}
      * which can be used to interact with the newly created directory. An empty {@code Mono} indicates the specified
-     * subdirectory already existed at this location.
+     * subdirectory already existed at this location. Errors with a {@link ShareStorageException} if the directory could
+     * not be created for any other reason than that it already exists, for example when a file with the same name
+     * already exists at this location (status code 409, error code ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareDirectoryAsyncClient>> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName,

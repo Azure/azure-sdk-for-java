@@ -45,9 +45,7 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
     }
 
     public PagedIterable<PrivateLinkResource> listByPrivateLinkScope(String resourceGroupName, String scopeName) {
-        PagedIterable<PrivateLinkResourceInner> inner
-            = this.serviceClient().listByPrivateLinkScope(resourceGroupName, scopeName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return this.listByPrivateLinkScope(resourceGroupName, scopeName, Context.NONE);
     }
 
     public PagedIterable<PrivateLinkResource> listByPrivateLinkScope(String resourceGroupName, String scopeName,

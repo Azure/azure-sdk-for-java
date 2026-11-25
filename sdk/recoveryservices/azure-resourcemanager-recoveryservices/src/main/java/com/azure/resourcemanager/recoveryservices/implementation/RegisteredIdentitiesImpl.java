@@ -29,7 +29,7 @@ public final class RegisteredIdentitiesImpl implements RegisteredIdentities {
     }
 
     public void delete(String resourceGroupName, String vaultName, String identityName) {
-        this.serviceClient().delete(resourceGroupName, vaultName, identityName);
+        this.deleteWithResponse(resourceGroupName, vaultName, identityName, Context.NONE);
     }
 
     private RegisteredIdentitiesClient serviceClient() {

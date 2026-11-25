@@ -91,10 +91,7 @@ public final class NamespaceImpl implements Namespace, Namespace.Definition, Nam
     }
 
     public Namespace create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaces()
-            .createOrReplace(resourceGroupName, namespaceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Namespace create(Context context) {
@@ -116,10 +113,7 @@ public final class NamespaceImpl implements Namespace, Namespace.Definition, Nam
     }
 
     public Namespace apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaces()
-            .update(resourceGroupName, namespaceName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Namespace apply(Context context) {
@@ -142,11 +136,7 @@ public final class NamespaceImpl implements Namespace, Namespace.Definition, Nam
     }
 
     public Namespace refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaces()
-            .getByResourceGroupWithResponse(resourceGroupName, namespaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Namespace refresh(Context context) {

@@ -64,70 +64,30 @@ public final class StandardAssignmentsImpl implements StandardAssignments {
     }
 
     public StandardAssignment getById(String id) {
-        String resourceId = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/standardAssignments/{standardAssignmentName}", "resourceId");
-        if (resourceId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
-        }
-        String standardAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/standardAssignments/{standardAssignmentName}",
-            "standardAssignmentName");
-        if (standardAssignmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'standardAssignments'.", id)));
-        }
-        return this.getWithResponse(resourceId, standardAssignmentName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<StandardAssignment> getByIdWithResponse(String id, Context context) {
-        String resourceId = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/standardAssignments/{standardAssignmentName}", "resourceId");
-        if (resourceId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
-        }
-        String standardAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/standardAssignments/{standardAssignmentName}", "resourceId",
+            "resourceId", LOGGER);
+        String standardAssignmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/{resourceId}/providers/Microsoft.Security/standardAssignments/{standardAssignmentName}",
-            "standardAssignmentName");
-        if (standardAssignmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'standardAssignments'.", id)));
-        }
+            "standardAssignmentName", "standardAssignments", LOGGER);
         return this.getWithResponse(resourceId, standardAssignmentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceId = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/standardAssignments/{standardAssignmentName}", "resourceId");
-        if (resourceId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
-        }
-        String standardAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/standardAssignments/{standardAssignmentName}",
-            "standardAssignmentName");
-        if (standardAssignmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'standardAssignments'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(resourceId, standardAssignmentName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceId = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/standardAssignments/{standardAssignmentName}", "resourceId");
-        if (resourceId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
-        }
-        String standardAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/standardAssignments/{standardAssignmentName}", "resourceId",
+            "resourceId", LOGGER);
+        String standardAssignmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/{resourceId}/providers/Microsoft.Security/standardAssignments/{standardAssignmentName}",
-            "standardAssignmentName");
-        if (standardAssignmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'standardAssignments'.", id)));
-        }
+            "standardAssignmentName", "standardAssignments", LOGGER);
         return this.deleteByResourceGroupWithResponse(resourceId, standardAssignmentName, context);
     }
 

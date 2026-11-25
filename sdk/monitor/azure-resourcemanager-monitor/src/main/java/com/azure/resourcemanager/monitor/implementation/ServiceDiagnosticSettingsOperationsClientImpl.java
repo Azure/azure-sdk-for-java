@@ -90,17 +90,7 @@ public final class ServiceDiagnosticSettingsOperationsClientImpl implements Serv
             Context context);
     }
 
-    /**
-     * Gets the active diagnostic settings for the specified resource. **WARNING**: This method will be deprecated in
-     * future releases.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings for the specified resource along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServiceDiagnosticSettingsResourceInner>> getWithResponseAsync(String resourceUri) {
         if (this.client.getEndpoint() == null) {
@@ -145,64 +135,25 @@ public final class ServiceDiagnosticSettingsOperationsClientImpl implements Serv
         return service.get(this.client.getEndpoint(), apiVersion, resourceUri, accept, context);
     }
 
-    /**
-     * Gets the active diagnostic settings for the specified resource. **WARNING**: This method will be deprecated in
-     * future releases.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings for the specified resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceDiagnosticSettingsResourceInner> getAsync(String resourceUri) {
         return getWithResponseAsync(resourceUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the active diagnostic settings for the specified resource. **WARNING**: This method will be deprecated in
-     * future releases.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings for the specified resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceDiagnosticSettingsResourceInner> getWithResponse(String resourceUri, Context context) {
         return getWithResponseAsync(resourceUri, context).block();
     }
 
-    /**
-     * Gets the active diagnostic settings for the specified resource. **WARNING**: This method will be deprecated in
-     * future releases.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings for the specified resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceDiagnosticSettingsResourceInner get(String resourceUri) {
         return getWithResponse(resourceUri, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update new diagnostic settings for the specified resource. **WARNING**: This method will be deprecated
-     * in future releases.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param parameters Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a service diagnostic setting along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServiceDiagnosticSettingsResourceInner>> createOrUpdateWithResponseAsync(String resourceUri,
         ServiceDiagnosticSettingsResourceInner parameters) {
@@ -263,17 +214,7 @@ public final class ServiceDiagnosticSettingsOperationsClientImpl implements Serv
             parameters, context);
     }
 
-    /**
-     * Create or update new diagnostic settings for the specified resource. **WARNING**: This method will be deprecated
-     * in future releases.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param parameters Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a service diagnostic setting on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceDiagnosticSettingsResourceInner> createOrUpdateAsync(String resourceUri,
         ServiceDiagnosticSettingsResourceInner parameters) {
@@ -281,53 +222,21 @@ public final class ServiceDiagnosticSettingsOperationsClientImpl implements Serv
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update new diagnostic settings for the specified resource. **WARNING**: This method will be deprecated
-     * in future releases.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param parameters Parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a service diagnostic setting along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceDiagnosticSettingsResourceInner> createOrUpdateWithResponse(String resourceUri,
         ServiceDiagnosticSettingsResourceInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceUri, parameters, context).block();
     }
 
-    /**
-     * Create or update new diagnostic settings for the specified resource. **WARNING**: This method will be deprecated
-     * in future releases.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param parameters Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a service diagnostic setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceDiagnosticSettingsResourceInner createOrUpdate(String resourceUri,
         ServiceDiagnosticSettingsResourceInner parameters) {
         return createOrUpdateWithResponse(resourceUri, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Updates an existing ServiceDiagnosticSettingsResource. To update other fields use the CreateOrUpdate method.
-     * **WARNING**: This method will be deprecated in future releases.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param serviceDiagnosticSettingsResource Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a service diagnostic setting along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServiceDiagnosticSettingsResourceInner>> updateWithResponseAsync(String resourceUri,
         ServiceDiagnosticSettingsResourcePatch serviceDiagnosticSettingsResource) {
@@ -390,17 +299,7 @@ public final class ServiceDiagnosticSettingsOperationsClientImpl implements Serv
             serviceDiagnosticSettingsResource, context);
     }
 
-    /**
-     * Updates an existing ServiceDiagnosticSettingsResource. To update other fields use the CreateOrUpdate method.
-     * **WARNING**: This method will be deprecated in future releases.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param serviceDiagnosticSettingsResource Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a service diagnostic setting on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceDiagnosticSettingsResourceInner> updateAsync(String resourceUri,
         ServiceDiagnosticSettingsResourcePatch serviceDiagnosticSettingsResource) {
@@ -408,35 +307,14 @@ public final class ServiceDiagnosticSettingsOperationsClientImpl implements Serv
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates an existing ServiceDiagnosticSettingsResource. To update other fields use the CreateOrUpdate method.
-     * **WARNING**: This method will be deprecated in future releases.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param serviceDiagnosticSettingsResource Parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a service diagnostic setting along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceDiagnosticSettingsResourceInner> updateWithResponse(String resourceUri,
         ServiceDiagnosticSettingsResourcePatch serviceDiagnosticSettingsResource, Context context) {
         return updateWithResponseAsync(resourceUri, serviceDiagnosticSettingsResource, context).block();
     }
 
-    /**
-     * Updates an existing ServiceDiagnosticSettingsResource. To update other fields use the CreateOrUpdate method.
-     * **WARNING**: This method will be deprecated in future releases.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param serviceDiagnosticSettingsResource Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a service diagnostic setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceDiagnosticSettingsResourceInner update(String resourceUri,
         ServiceDiagnosticSettingsResourcePatch serviceDiagnosticSettingsResource) {

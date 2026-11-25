@@ -194,22 +194,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get private endpoint connection
-     * 
-     * Get private endpoint connection properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the IoT Hub.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection
-     * 
-     * Get private endpoint connection properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName, Context context) {
@@ -218,21 +203,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             resourceGroupName, resourceName, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Get private endpoint connection
-     * 
-     * Get private endpoint connection properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the IoT Hub.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection
-     * 
-     * Get private endpoint connection properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner get(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName) {
@@ -283,11 +254,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, privateEndpointConnectionName,
-            contentType, accept, privateEndpointConnection, Context.NONE);
+        return updateWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName,
+            privateEndpointConnection, Context.NONE);
     }
 
     /**
@@ -341,45 +309,16 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             this.client.getContext());
     }
 
-    /**
-     * Update private endpoint connection
-     * 
-     * Update the status of a private endpoint connection with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the IoT Hub.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection The private endpoint connection with updated properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the private endpoint connection of an IotHub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
         String resourceGroupName, String resourceName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, resourceName,
-            privateEndpointConnectionName, privateEndpointConnection);
-        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
-            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection,
+            Context.NONE);
     }
 
-    /**
-     * Update private endpoint connection
-     * 
-     * Update the status of a private endpoint connection with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the IoT Hub.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection The private endpoint connection with updated properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the private endpoint connection of an IotHub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
         String resourceGroupName, String resourceName, String privateEndpointConnectionName,
@@ -411,48 +350,21 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             privateEndpointConnection).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update private endpoint connection
-     * 
-     * Update the status of a private endpoint connection with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the IoT Hub.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection The private endpoint connection with updated properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of an IotHub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner update(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
-        return beginUpdate(resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection)
-            .getFinalResult();
+        return update(resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection,
+            Context.NONE);
     }
 
-    /**
-     * Update private endpoint connection
-     * 
-     * Update the status of a private endpoint connection with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the IoT Hub.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateEndpointConnection The private endpoint connection with updated properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of an IotHub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner update(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
         Context context) {
-        return beginUpdate(resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, resourceName,
+            privateEndpointConnectionName, privateEndpointConnection, context));
     }
 
     /**
@@ -496,10 +408,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName) {
-        final String accept = "application/json";
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, privateEndpointConnectionName, accept,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName, Context.NONE);
     }
 
     /**
@@ -547,41 +456,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             this.client.getContext());
     }
 
-    /**
-     * Delete private endpoint connection
-     * 
-     * Delete private endpoint connection with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the IoT Hub.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the private endpoint connection of an IotHub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete private endpoint connection
-     * 
-     * Delete private endpoint connection with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the IoT Hub.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the private endpoint connection of an IotHub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName, Context context) {
@@ -610,40 +492,18 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete private endpoint connection
-     * 
-     * Delete private endpoint connection with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the IoT Hub.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        beginDelete(resourceGroupName, resourceName, privateEndpointConnectionName).getFinalResult();
+        delete(resourceGroupName, resourceName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete private endpoint connection
-     * 
-     * Delete private endpoint connection with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the IoT Hub.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String privateEndpointConnectionName,
         Context context) {
-        beginDelete(resourceGroupName, resourceName, privateEndpointConnectionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, resourceName, privateEndpointConnectionName, context));
     }
 
     /**
@@ -685,19 +545,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         return listWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List private endpoint connections
-     * 
-     * List private endpoint connection properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the IoT Hub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<PrivateEndpointConnectionInner>> listWithResponse(String resourceGroupName,
         String resourceName, Context context) {
@@ -706,18 +554,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * List private endpoint connections
-     * 
-     * List private endpoint connection properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the IoT Hub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<PrivateEndpointConnectionInner> list(String resourceGroupName, String resourceName) {
         return listWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();

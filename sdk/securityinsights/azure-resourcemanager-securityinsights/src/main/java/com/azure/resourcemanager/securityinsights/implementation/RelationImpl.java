@@ -78,12 +78,7 @@ public final class RelationImpl implements Relation, Relation.Definition, Relati
     }
 
     public Relation create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidentRelations()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, relationName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Relation create(Context context) {
@@ -106,12 +101,7 @@ public final class RelationImpl implements Relation, Relation.Definition, Relati
     }
 
     public Relation apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidentRelations()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, relationName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Relation apply(Context context) {
@@ -172,11 +162,7 @@ public final class RelationImpl implements Relation, Relation.Definition, Relati
     }
 
     public Relation refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidentRelations()
-            .getWithResponse(resourceGroupName, workspaceName, incidentId, relationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Relation refresh(Context context) {

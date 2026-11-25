@@ -210,19 +210,7 @@ public final class BookshelfPrivateEndpointConnectionsClientImpl implements Book
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified private endpoint connection associated with the bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the bookshelf along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BookshelfPrivateEndpointConnectionInner> getWithResponse(String resourceGroupName,
         String bookshelfName, String privateEndpointConnectionName, Context context) {
@@ -231,18 +219,7 @@ public final class BookshelfPrivateEndpointConnectionsClientImpl implements Book
             resourceGroupName, bookshelfName, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Gets the specified private endpoint connection associated with the bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the bookshelf.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BookshelfPrivateEndpointConnectionInner get(String resourceGroupName, String bookshelfName,
         String privateEndpointConnectionName) {
@@ -292,11 +269,8 @@ public final class BookshelfPrivateEndpointConnectionsClientImpl implements Book
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String bookshelfName,
         String privateEndpointConnectionName, BookshelfPrivateEndpointConnectionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bookshelfName, privateEndpointConnectionName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, bookshelfName, privateEndpointConnectionName, resource,
+            Context.NONE);
     }
 
     /**
@@ -348,45 +322,16 @@ public final class BookshelfPrivateEndpointConnectionsClientImpl implements Book
                 BookshelfPrivateEndpointConnectionInner.class, this.client.getContext());
     }
 
-    /**
-     * Approves or updates the specified private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Private Endpoint Connection resource for Bookshelf.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BookshelfPrivateEndpointConnectionInner>, BookshelfPrivateEndpointConnectionInner>
         beginCreateOrUpdate(String resourceGroupName, String bookshelfName, String privateEndpointConnectionName,
             BookshelfPrivateEndpointConnectionInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, bookshelfName, privateEndpointConnectionName, resource);
-        return this.client
-            .<BookshelfPrivateEndpointConnectionInner, BookshelfPrivateEndpointConnectionInner>getLroResult(response,
-                BookshelfPrivateEndpointConnectionInner.class, BookshelfPrivateEndpointConnectionInner.class,
-                Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, bookshelfName, privateEndpointConnectionName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Approves or updates the specified private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Private Endpoint Connection resource for Bookshelf.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BookshelfPrivateEndpointConnectionInner>, BookshelfPrivateEndpointConnectionInner>
         beginCreateOrUpdate(String resourceGroupName, String bookshelfName, String privateEndpointConnectionName,
@@ -419,45 +364,19 @@ public final class BookshelfPrivateEndpointConnectionsClientImpl implements Book
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Approves or updates the specified private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource for Bookshelf.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BookshelfPrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String bookshelfName,
         String privateEndpointConnectionName, BookshelfPrivateEndpointConnectionInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, bookshelfName, privateEndpointConnectionName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, bookshelfName, privateEndpointConnectionName, resource, Context.NONE);
     }
 
-    /**
-     * Approves or updates the specified private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource for Bookshelf.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BookshelfPrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String bookshelfName,
         String privateEndpointConnectionName, BookshelfPrivateEndpointConnectionInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, bookshelfName, privateEndpointConnectionName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, bookshelfName, privateEndpointConnectionName, resource, context));
     }
 
     /**
@@ -495,9 +414,7 @@ public final class BookshelfPrivateEndpointConnectionsClientImpl implements Book
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String bookshelfName,
         String privateEndpointConnectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, bookshelfName, privateEndpointConnectionName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, bookshelfName, privateEndpointConnectionName, Context.NONE);
     }
 
     /**
@@ -541,39 +458,14 @@ public final class BookshelfPrivateEndpointConnectionsClientImpl implements Book
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bookshelfName,
         String privateEndpointConnectionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, bookshelfName, privateEndpointConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, bookshelfName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bookshelfName,
         String privateEndpointConnectionName, Context context) {
@@ -601,38 +493,18 @@ public final class BookshelfPrivateEndpointConnectionsClientImpl implements Book
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String bookshelfName, String privateEndpointConnectionName) {
-        beginDelete(resourceGroupName, bookshelfName, privateEndpointConnectionName).getFinalResult();
+        delete(resourceGroupName, bookshelfName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String bookshelfName, String privateEndpointConnectionName,
         Context context) {
-        beginDelete(resourceGroupName, bookshelfName, privateEndpointConnectionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, bookshelfName, privateEndpointConnectionName, context));
     }
 
     /**
@@ -690,12 +562,7 @@ public final class BookshelfPrivateEndpointConnectionsClientImpl implements Book
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BookshelfPrivateEndpointConnectionInner> listByBookshelfSinglePage(String resourceGroupName,
         String bookshelfName) {
-        final String accept = "application/json";
-        Response<BookshelfPrivateEndpointConnectionListResult> res
-            = service.listByBookshelfSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, bookshelfName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBookshelfSinglePage(resourceGroupName, bookshelfName, Context.NONE);
     }
 
     /**
@@ -720,36 +587,14 @@ public final class BookshelfPrivateEndpointConnectionsClientImpl implements Book
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all private endpoint connections for a bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a BookshelfPrivateEndpointConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BookshelfPrivateEndpointConnectionInner> listByBookshelf(String resourceGroupName,
         String bookshelfName) {
-        return new PagedIterable<>(() -> listByBookshelfSinglePage(resourceGroupName, bookshelfName),
-            nextLink -> listByBookshelfNextSinglePage(nextLink));
+        return listByBookshelf(resourceGroupName, bookshelfName, Context.NONE);
     }
 
-    /**
-     * Lists all private endpoint connections for a bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a BookshelfPrivateEndpointConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BookshelfPrivateEndpointConnectionInner> listByBookshelf(String resourceGroupName,
         String bookshelfName, Context context) {
@@ -790,11 +635,7 @@ public final class BookshelfPrivateEndpointConnectionsClientImpl implements Book
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BookshelfPrivateEndpointConnectionInner> listByBookshelfNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BookshelfPrivateEndpointConnectionListResult> res
-            = service.listByBookshelfNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBookshelfNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

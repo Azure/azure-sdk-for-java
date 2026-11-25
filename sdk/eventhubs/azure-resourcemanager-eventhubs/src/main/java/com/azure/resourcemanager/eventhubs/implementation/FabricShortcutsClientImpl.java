@@ -134,18 +134,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Fabric shortcut along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FabricShortcutInner>> getWithResponseAsync(String resourceGroupName, String namespaceName,
         String eventHubName, String fabricShortcutName) {
@@ -223,18 +212,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             resourceGroupName, namespaceName, eventHubName, fabricShortcutName, accept, context);
     }
 
-    /**
-     * Gets a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Fabric shortcut on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FabricShortcutInner> getAsync(String resourceGroupName, String namespaceName, String eventHubName,
         String fabricShortcutName) {
@@ -242,19 +220,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Fabric shortcut along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FabricShortcutInner> getWithResponse(String resourceGroupName, String namespaceName,
         String eventHubName, String fabricShortcutName, Context context) {
@@ -262,18 +228,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             .block();
     }
 
-    /**
-     * Gets a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Fabric shortcut.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricShortcutInner get(String resourceGroupName, String namespaceName, String eventHubName,
         String fabricShortcutName) {
@@ -281,20 +236,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             .getValue();
     }
 
-    /**
-     * Creates or updates a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @param resource The Microsoft Fabric shortcut.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Fabric shortcut attached to an Event Hub along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FabricShortcutInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String namespaceName, String eventHubName, String fabricShortcutName, FabricShortcutInner resource) {
@@ -388,19 +330,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or updates a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @param resource The Microsoft Fabric shortcut.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Fabric shortcut attached to an Event Hub on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FabricShortcutInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
         String eventHubName, String fabricShortcutName, FabricShortcutInner resource) {
@@ -408,20 +338,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             resource).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @param resource The Microsoft Fabric shortcut.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Fabric shortcut attached to an Event Hub along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FabricShortcutInner> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         String eventHubName, String fabricShortcutName, FabricShortcutInner resource, Context context) {
@@ -429,19 +346,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             resource, context).block();
     }
 
-    /**
-     * Creates or updates a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @param resource The Microsoft Fabric shortcut.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Fabric shortcut attached to an Event Hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricShortcutInner createOrUpdate(String resourceGroupName, String namespaceName, String eventHubName,
         String fabricShortcutName, FabricShortcutInner resource) {
@@ -534,17 +439,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists Microsoft Fabric shortcuts for an Event Hub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricShortcut list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FabricShortcutInner> listByEventHubAsync(String resourceGroupName, String namespaceName,
         String eventHubName) {
@@ -572,53 +467,21 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             nextLink -> listByEventHubNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists Microsoft Fabric shortcuts for an Event Hub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricShortcut list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FabricShortcutInner> listByEventHub(String resourceGroupName, String namespaceName,
         String eventHubName) {
         return new PagedIterable<>(listByEventHubAsync(resourceGroupName, namespaceName, eventHubName));
     }
 
-    /**
-     * Lists Microsoft Fabric shortcuts for an Event Hub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricShortcut list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FabricShortcutInner> listByEventHub(String resourceGroupName, String namespaceName,
         String eventHubName, Context context) {
         return new PagedIterable<>(listByEventHubAsync(resourceGroupName, namespaceName, eventHubName, context));
     }
 
-    /**
-     * Deletes a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
         String eventHubName, String fabricShortcutName) {
@@ -694,18 +557,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             resourceGroupName, namespaceName, eventHubName, fabricShortcutName, context);
     }
 
-    /**
-     * Deletes a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String eventHubName,
         String fabricShortcutName) {
@@ -713,19 +565,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String namespaceName, String eventHubName,
         String fabricShortcutName, Context context) {
@@ -733,35 +573,13 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             .block();
     }
 
-    /**
-     * Deletes a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String eventHubName, String fabricShortcutName) {
         deleteWithResponse(resourceGroupName, namespaceName, eventHubName, fabricShortcutName, Context.NONE);
     }
 
-    /**
-     * Approves a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Fabric shortcut attached to an Event Hub along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FabricShortcutInner>> approveWithResponseAsync(String resourceGroupName, String namespaceName,
         String eventHubName, String fabricShortcutName) {
@@ -840,18 +658,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             resourceGroupName, namespaceName, eventHubName, fabricShortcutName, accept, context);
     }
 
-    /**
-     * Approves a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Fabric shortcut attached to an Event Hub on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FabricShortcutInner> approveAsync(String resourceGroupName, String namespaceName, String eventHubName,
         String fabricShortcutName) {
@@ -859,19 +666,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Approves a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Fabric shortcut attached to an Event Hub along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FabricShortcutInner> approveWithResponse(String resourceGroupName, String namespaceName,
         String eventHubName, String fabricShortcutName, Context context) {
@@ -879,18 +674,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             .block();
     }
 
-    /**
-     * Approves a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Fabric shortcut attached to an Event Hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricShortcutInner approve(String resourceGroupName, String namespaceName, String eventHubName,
         String fabricShortcutName) {
@@ -898,19 +682,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             .getValue();
     }
 
-    /**
-     * Rejects a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Fabric shortcut attached to an Event Hub along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FabricShortcutInner>> rejectWithResponseAsync(String resourceGroupName, String namespaceName,
         String eventHubName, String fabricShortcutName) {
@@ -989,18 +761,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             resourceGroupName, namespaceName, eventHubName, fabricShortcutName, accept, context);
     }
 
-    /**
-     * Rejects a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Fabric shortcut attached to an Event Hub on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FabricShortcutInner> rejectAsync(String resourceGroupName, String namespaceName, String eventHubName,
         String fabricShortcutName) {
@@ -1008,19 +769,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Rejects a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Fabric shortcut attached to an Event Hub along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FabricShortcutInner> rejectWithResponse(String resourceGroupName, String namespaceName,
         String eventHubName, String fabricShortcutName, Context context) {
@@ -1028,18 +777,7 @@ public final class FabricShortcutsClientImpl implements FabricShortcutsClient {
             .block();
     }
 
-    /**
-     * Rejects a Microsoft Fabric shortcut.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param fabricShortcutName The Microsoft Fabric shortcut name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Fabric shortcut attached to an Event Hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricShortcutInner reject(String resourceGroupName, String namespaceName, String eventHubName,
         String fabricShortcutName) {

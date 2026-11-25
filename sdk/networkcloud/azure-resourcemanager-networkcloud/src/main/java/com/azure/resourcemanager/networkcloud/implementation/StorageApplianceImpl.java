@@ -204,11 +204,7 @@ public final class StorageApplianceImpl
     }
 
     public StorageAppliance create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageAppliances()
-            .createOrUpdate(resourceGroupName, storageApplianceName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StorageAppliance create(Context context) {
@@ -235,11 +231,7 @@ public final class StorageApplianceImpl
     }
 
     public StorageAppliance apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageAppliances()
-            .update(resourceGroupName, storageApplianceName, updateIfMatch, updateIfNoneMatch,
-                updateStorageApplianceUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StorageAppliance apply(Context context) {
@@ -263,11 +255,7 @@ public final class StorageApplianceImpl
     }
 
     public StorageAppliance refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageAppliances()
-            .getByResourceGroupWithResponse(resourceGroupName, storageApplianceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StorageAppliance refresh(Context context) {

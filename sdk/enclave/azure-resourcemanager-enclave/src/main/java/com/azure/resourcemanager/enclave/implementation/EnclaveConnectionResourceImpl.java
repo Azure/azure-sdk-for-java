@@ -89,10 +89,7 @@ public final class EnclaveConnectionResourceImpl
     }
 
     public EnclaveConnectionResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnclaveConnections()
-            .createOrUpdate(resourceGroupName, enclaveConnectionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EnclaveConnectionResource create(Context context) {
@@ -114,10 +111,7 @@ public final class EnclaveConnectionResourceImpl
     }
 
     public EnclaveConnectionResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnclaveConnections()
-            .update(resourceGroupName, enclaveConnectionName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EnclaveConnectionResource apply(Context context) {
@@ -140,11 +134,7 @@ public final class EnclaveConnectionResourceImpl
     }
 
     public EnclaveConnectionResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnclaveConnections()
-            .getByResourceGroupWithResponse(resourceGroupName, enclaveConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EnclaveConnectionResource refresh(Context context) {

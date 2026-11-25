@@ -75,12 +75,7 @@ public final class EncryptionScopeImpl implements EncryptionScope, EncryptionSco
     }
 
     public EncryptionScope create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEncryptionScopes()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, encryptionScopeName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EncryptionScope create(Context context) {
@@ -103,12 +98,7 @@ public final class EncryptionScopeImpl implements EncryptionScope, EncryptionSco
     }
 
     public EncryptionScope apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEncryptionScopes()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, encryptionScopeName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EncryptionScope apply(Context context) {
@@ -135,11 +125,7 @@ public final class EncryptionScopeImpl implements EncryptionScope, EncryptionSco
     }
 
     public EncryptionScope refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEncryptionScopes()
-            .getWithResponse(resourceGroupName, accountName, encryptionScopeName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EncryptionScope refresh(Context context) {

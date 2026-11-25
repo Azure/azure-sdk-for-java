@@ -238,18 +238,7 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the replica and its properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the replica and its properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicaInner> getWithResponse(String resourceGroupName, String resourceName, String replicaName,
         Context context) {
@@ -258,17 +247,7 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
             resourceGroupName, resourceName, replicaName, accept, context);
     }
 
-    /**
-     * Get the replica and its properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the replica and its properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicaInner get(String resourceGroupName, String resourceName, String replicaName) {
         return getWithResponse(resourceGroupName, resourceName, replicaName, Context.NONE).getValue();
@@ -314,11 +293,7 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
         String replicaName, ReplicaInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, replicaName, contentType, accept,
-            parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, resourceName, replicaName, parameters, Context.NONE);
     }
 
     /**
@@ -365,40 +340,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
             ReplicaInner.class, ReplicaInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param parameters Parameters for the create or update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class represent a replica resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdate(String resourceGroupName,
         String resourceName, String replicaName, ReplicaInner parameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, resourceName, replicaName, parameters);
-        return this.client.<ReplicaInner, ReplicaInner>getLroResult(response, ReplicaInner.class, ReplicaInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, resourceName, replicaName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param parameters Parameters for the create or update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class represent a replica resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdate(String resourceGroupName,
         String resourceName, String replicaName, ReplicaInner parameters, Context context) {
@@ -427,41 +376,19 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param parameters Parameters for the create or update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a replica resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicaInner createOrUpdate(String resourceGroupName, String resourceName, String replicaName,
         ReplicaInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, replicaName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, resourceName, replicaName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param parameters Parameters for the create or update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a replica resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicaInner createOrUpdate(String resourceGroupName, String resourceName, String replicaName,
         ReplicaInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, replicaName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, resourceName, replicaName, parameters, context));
     }
 
     /**
@@ -504,11 +431,7 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String resourceName, String replicaName,
         ReplicaInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, replicaName, contentType, accept,
-            parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, resourceName, replicaName, parameters, Context.NONE);
     }
 
     /**
@@ -555,39 +478,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
             ReplicaInner.class, ReplicaInner.class, this.client.getContext());
     }
 
-    /**
-     * Operation to update an exiting replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param parameters Parameters for the update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class represent a replica resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginUpdate(String resourceGroupName, String resourceName,
         String replicaName, ReplicaInner parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, resourceName, replicaName, parameters);
-        return this.client.<ReplicaInner, ReplicaInner>getLroResult(response, ReplicaInner.class, ReplicaInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, resourceName, replicaName, parameters, Context.NONE);
     }
 
-    /**
-     * Operation to update an exiting replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param parameters Parameters for the update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class represent a replica resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginUpdate(String resourceGroupName, String resourceName,
         String replicaName, ReplicaInner parameters, Context context) {
@@ -616,41 +514,19 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Operation to update an exiting replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param parameters Parameters for the update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a replica resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicaInner update(String resourceGroupName, String resourceName, String replicaName,
         ReplicaInner parameters) {
-        return beginUpdate(resourceGroupName, resourceName, replicaName, parameters).getFinalResult();
+        return update(resourceGroupName, resourceName, replicaName, parameters, Context.NONE);
     }
 
-    /**
-     * Operation to update an exiting replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param parameters Parameters for the update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a replica resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicaInner update(String resourceGroupName, String resourceName, String replicaName,
         ReplicaInner parameters, Context context) {
-        return beginUpdate(resourceGroupName, resourceName, replicaName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, resourceName, replicaName, parameters, context));
     }
 
     /**
@@ -689,18 +565,7 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
         return deleteWithResponseAsync(resourceGroupName, resourceName, replicaName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Operation to delete a replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String replicaName,
         Context context) {
@@ -708,16 +573,7 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
             this.client.getSubscriptionId(), resourceGroupName, resourceName, replicaName, context);
     }
 
-    /**
-     * Operation to delete a replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String replicaName) {
         deleteWithResponse(resourceGroupName, resourceName, replicaName, Context.NONE);
@@ -773,11 +629,7 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicaInner> listSinglePage(String resourceGroupName, String resourceName) {
-        final String accept = "application/json";
-        Response<ReplicaList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -800,33 +652,13 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all replicas belong to this resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Replica items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicaInner> list(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * List all replicas belong to this resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Replica items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicaInner> list(String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, context),
@@ -867,8 +699,7 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restartWithResponse(String resourceGroupName, String resourceName,
         String replicaName) {
-        return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, replicaName, Context.NONE);
+        return restartWithResponse(resourceGroupName, resourceName, replicaName, Context.NONE);
     }
 
     /**
@@ -909,36 +740,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
             this.client.getContext());
     }
 
-    /**
-     * Operation to restart a replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String resourceName,
         String replicaName) {
-        Response<BinaryData> response = restartWithResponse(resourceGroupName, resourceName, replicaName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRestart(resourceGroupName, resourceName, replicaName, Context.NONE);
     }
 
-    /**
-     * Operation to restart a replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String resourceName,
         String replicaName, Context context) {
@@ -963,35 +772,16 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Operation to restart a replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String resourceName, String replicaName) {
-        beginRestart(resourceGroupName, resourceName, replicaName).getFinalResult();
+        restart(resourceGroupName, resourceName, replicaName, Context.NONE);
     }
 
-    /**
-     * Operation to restart a replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
-     * @param replicaName The name of the replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String resourceName, String replicaName, Context context) {
-        beginRestart(resourceGroupName, resourceName, replicaName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRestart(resourceGroupName, resourceName, replicaName, context));
     }
 
     /**
@@ -1024,10 +814,7 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicaInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ReplicaList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

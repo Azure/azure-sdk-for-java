@@ -88,10 +88,7 @@ public final class AppLinkMemberImpl implements AppLinkMember, AppLinkMember.Def
     }
 
     public AppLinkMember create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppLinkMembers()
-            .createOrUpdate(resourceGroupName, appLinkName, appLinkMemberName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AppLinkMember create(Context context) {
@@ -113,10 +110,7 @@ public final class AppLinkMemberImpl implements AppLinkMember, AppLinkMember.Def
     }
 
     public AppLinkMember apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppLinkMembers()
-            .update(resourceGroupName, appLinkName, appLinkMemberName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AppLinkMember apply(Context context) {
@@ -142,11 +136,7 @@ public final class AppLinkMemberImpl implements AppLinkMember, AppLinkMember.Def
     }
 
     public AppLinkMember refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppLinkMembers()
-            .getWithResponse(resourceGroupName, appLinkName, appLinkMemberName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AppLinkMember refresh(Context context) {

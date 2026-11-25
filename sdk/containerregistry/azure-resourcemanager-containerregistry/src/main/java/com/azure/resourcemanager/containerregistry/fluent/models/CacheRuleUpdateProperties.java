@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.containerregistry.models.AdditionalAuthenticationUpdateProperties;
 import java.io.IOException;
 
 /**
@@ -21,14 +20,6 @@ public final class CacheRuleUpdateProperties implements JsonSerializable<CacheRu
      * The ARM resource ID of the credential store which is associated with the Cache rule.
      */
     private String credentialSetResourceId;
-
-    /*
-     * Authentication configuration used by the cache rule to access the upstream source repository.
-     * Omitted fields retain their current values. When authentication is first configured, all
-     * required fields of the selected authentication type must be supplied. Changing an existing
-     * authentication type is not supported.
-     */
-    private AdditionalAuthenticationUpdateProperties additionalAuthenticationProperties;
 
     /**
      * Creates an instance of CacheRuleUpdateProperties class.
@@ -59,43 +50,11 @@ public final class CacheRuleUpdateProperties implements JsonSerializable<CacheRu
     }
 
     /**
-     * Get the additionalAuthenticationProperties property: Authentication configuration used by the cache rule to
-     * access the upstream source repository.
-     * Omitted fields retain their current values. When authentication is first configured, all
-     * required fields of the selected authentication type must be supplied. Changing an existing
-     * authentication type is not supported.
-     * 
-     * @return the additionalAuthenticationProperties value.
-     */
-    public AdditionalAuthenticationUpdateProperties additionalAuthenticationProperties() {
-        return this.additionalAuthenticationProperties;
-    }
-
-    /**
-     * Set the additionalAuthenticationProperties property: Authentication configuration used by the cache rule to
-     * access the upstream source repository.
-     * Omitted fields retain their current values. When authentication is first configured, all
-     * required fields of the selected authentication type must be supplied. Changing an existing
-     * authentication type is not supported.
-     * 
-     * @param additionalAuthenticationProperties the additionalAuthenticationProperties value to set.
-     * @return the CacheRuleUpdateProperties object itself.
-     */
-    public CacheRuleUpdateProperties withAdditionalAuthenticationProperties(
-        AdditionalAuthenticationUpdateProperties additionalAuthenticationProperties) {
-        this.additionalAuthenticationProperties = additionalAuthenticationProperties;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (additionalAuthenticationProperties() != null) {
-            additionalAuthenticationProperties().validate();
-        }
     }
 
     /**
@@ -105,7 +64,6 @@ public final class CacheRuleUpdateProperties implements JsonSerializable<CacheRu
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("credentialSetResourceId", this.credentialSetResourceId);
-        jsonWriter.writeJsonField("additionalAuthenticationProperties", this.additionalAuthenticationProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -126,9 +84,6 @@ public final class CacheRuleUpdateProperties implements JsonSerializable<CacheRu
 
                 if ("credentialSetResourceId".equals(fieldName)) {
                     deserializedCacheRuleUpdateProperties.credentialSetResourceId = reader.getString();
-                } else if ("additionalAuthenticationProperties".equals(fieldName)) {
-                    deserializedCacheRuleUpdateProperties.additionalAuthenticationProperties
-                        = AdditionalAuthenticationUpdateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

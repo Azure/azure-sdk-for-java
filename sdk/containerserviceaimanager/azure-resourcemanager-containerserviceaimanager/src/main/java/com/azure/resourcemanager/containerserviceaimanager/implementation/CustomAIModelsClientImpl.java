@@ -227,18 +227,7 @@ public final class CustomAIModelsClientImpl implements CustomAIModelsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a CustomAIModel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param customAIModelName The name of the custom AI model resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CustomAIModel along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomAIModelInner> getWithResponse(String resourceGroupName, String aiManagerName,
         String customAIModelName, Context context) {
@@ -247,17 +236,7 @@ public final class CustomAIModelsClientImpl implements CustomAIModelsClient {
             resourceGroupName, aiManagerName, customAIModelName, accept, context);
     }
 
-    /**
-     * Get a CustomAIModel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param customAIModelName The name of the custom AI model resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CustomAIModel.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomAIModelInner get(String resourceGroupName, String aiManagerName, String customAIModelName) {
         return getWithResponse(resourceGroupName, aiManagerName, customAIModelName, Context.NONE).getValue();
@@ -315,11 +294,8 @@ public final class CustomAIModelsClientImpl implements CustomAIModelsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String aiManagerName,
         String customAIModelName, CustomAIModelInner resource, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, aiManagerName, customAIModelName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, aiManagerName, customAIModelName, resource, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -428,58 +404,21 @@ public final class CustomAIModelsClientImpl implements CustomAIModelsClient {
     private SyncPoller<PollResult<CustomAIModelInner>, CustomAIModelInner> beginCreateOrUpdate(String resourceGroupName,
         String aiManagerName, String customAIModelName, CustomAIModelInner resource, String ifMatch,
         String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, aiManagerName, customAIModelName,
-            resource, ifMatch, ifNoneMatch);
-        return this.client.<CustomAIModelInner, CustomAIModelInner>getLroResult(response, CustomAIModelInner.class,
-            CustomAIModelInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, aiManagerName, customAIModelName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a `CustomAIModel`. This is a full-replace operation: any optional property omitted from the
-     * request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields
-     * (e.g. `description`), perform a GET, modify the returned resource, and PUT it back using the returned ETag via
-     * the `If-Match` header. A PUT that changes the immutable `modelId` or `modelSourceResourceId` is rejected.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param customAIModelName The name of the custom AI model resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a custom AI model registered by the user and scoped to a specific
-     * AIManager.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomAIModelInner>, CustomAIModelInner> beginCreateOrUpdate(String resourceGroupName,
         String aiManagerName, String customAIModelName, CustomAIModelInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, aiManagerName, customAIModelName,
-            resource, ifMatch, ifNoneMatch);
-        return this.client.<CustomAIModelInner, CustomAIModelInner>getLroResult(response, CustomAIModelInner.class,
-            CustomAIModelInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, aiManagerName, customAIModelName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a `CustomAIModel`. This is a full-replace operation: any optional property omitted from the
-     * request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields
-     * (e.g. `description`), perform a GET, modify the returned resource, and PUT it back using the returned ETag via
-     * the `If-Match` header. A PUT that changes the immutable `modelId` or `modelSourceResourceId` is rejected.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param customAIModelName The name of the custom AI model resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a custom AI model registered by the user and scoped to a specific
-     * AIManager.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomAIModelInner>, CustomAIModelInner> beginCreateOrUpdate(String resourceGroupName,
         String aiManagerName, String customAIModelName, CustomAIModelInner resource, String ifMatch, String ifNoneMatch,
@@ -540,55 +479,22 @@ public final class CustomAIModelsClientImpl implements CustomAIModelsClient {
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a `CustomAIModel`. This is a full-replace operation: any optional property omitted from the
-     * request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields
-     * (e.g. `description`), perform a GET, modify the returned resource, and PUT it back using the returned ETag via
-     * the `If-Match` header. A PUT that changes the immutable `modelId` or `modelSourceResourceId` is rejected.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param customAIModelName The name of the custom AI model resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom AI model registered by the user and scoped to a specific
-     * AIManager.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomAIModelInner createOrUpdate(String resourceGroupName, String aiManagerName, String customAIModelName,
         CustomAIModelInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, aiManagerName, customAIModelName, resource, ifMatch, ifNoneMatch)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, aiManagerName, customAIModelName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a `CustomAIModel`. This is a full-replace operation: any optional property omitted from the
-     * request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields
-     * (e.g. `description`), perform a GET, modify the returned resource, and PUT it back using the returned ETag via
-     * the `If-Match` header. A PUT that changes the immutable `modelId` or `modelSourceResourceId` is rejected.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param customAIModelName The name of the custom AI model resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom AI model registered by the user and scoped to a specific
-     * AIManager.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomAIModelInner createOrUpdate(String resourceGroupName, String aiManagerName, String customAIModelName,
         CustomAIModelInner resource, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, aiManagerName, customAIModelName, resource, ifMatch, ifNoneMatch,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, aiManagerName,
+            customAIModelName, resource, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -627,9 +533,7 @@ public final class CustomAIModelsClientImpl implements CustomAIModelsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String aiManagerName,
         String customAIModelName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, aiManagerName, customAIModelName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, aiManagerName, customAIModelName, ifMatch, Context.NONE);
     }
 
     /**
@@ -709,44 +613,18 @@ public final class CustomAIModelsClientImpl implements CustomAIModelsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String customAIModelName, String ifMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, aiManagerName, customAIModelName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, aiManagerName, customAIModelName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a CustomAIModel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param customAIModelName The name of the custom AI model resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String customAIModelName) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, aiManagerName, customAIModelName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, aiManagerName, customAIModelName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a CustomAIModel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param customAIModelName The name of the custom AI model resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String customAIModelName, String ifMatch, Context context) {
@@ -792,38 +670,19 @@ public final class CustomAIModelsClientImpl implements CustomAIModelsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a CustomAIModel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param customAIModelName The name of the custom AI model resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String aiManagerName, String customAIModelName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, aiManagerName, customAIModelName, ifMatch).getFinalResult();
+        delete(resourceGroupName, aiManagerName, customAIModelName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a CustomAIModel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param customAIModelName The name of the custom AI model resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String aiManagerName, String customAIModelName, String ifMatch,
         Context context) {
-        beginDelete(resourceGroupName, aiManagerName, customAIModelName, ifMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, aiManagerName, customAIModelName, ifMatch, context));
     }
 
     /**
@@ -877,11 +736,7 @@ public final class CustomAIModelsClientImpl implements CustomAIModelsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CustomAIModelInner> listSinglePage(String resourceGroupName, String aiManagerName) {
-        final String accept = "application/json";
-        Response<CustomAIModelListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, aiManagerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, aiManagerName, Context.NONE);
     }
 
     /**
@@ -905,33 +760,13 @@ public final class CustomAIModelsClientImpl implements CustomAIModelsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List CustomAIModel resources by AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CustomAIModel list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomAIModelInner> list(String resourceGroupName, String aiManagerName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, aiManagerName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, aiManagerName, Context.NONE);
     }
 
-    /**
-     * List CustomAIModel resources by AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CustomAIModel list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomAIModelInner> list(String resourceGroupName, String aiManagerName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, aiManagerName, context),
@@ -984,21 +819,7 @@ public final class CustomAIModelsClientImpl implements CustomAIModelsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a ranked list of GPU SKU pricing plans for deploying this custom model in the target region, each
-     * annotated with feasibility and per-replica hourly cost. Feasibility is determined by region availability, GPU
-     * quota, and model architecture fit (verified at registration time). `servingPerformanceEstimation` is omitted for
-     * custom models. No Azure or Kubernetes resources are provisioned.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param customAIModelName The name of the custom AI model resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for the AI model `calculateCost` action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CalculateCostResponseInner> calculateCostWithResponse(String resourceGroupName,
         String aiManagerName, String customAIModelName, Context context) {
@@ -1007,20 +828,7 @@ public final class CustomAIModelsClientImpl implements CustomAIModelsClient {
             this.client.getSubscriptionId(), resourceGroupName, aiManagerName, customAIModelName, accept, context);
     }
 
-    /**
-     * Returns a ranked list of GPU SKU pricing plans for deploying this custom model in the target region, each
-     * annotated with feasibility and per-replica hourly cost. Feasibility is determined by region availability, GPU
-     * quota, and model architecture fit (verified at registration time). `servingPerformanceEstimation` is omitted for
-     * custom models. No Azure or Kubernetes resources are provisioned.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param customAIModelName The name of the custom AI model resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for the AI model `calculateCost` action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CalculateCostResponseInner calculateCost(String resourceGroupName, String aiManagerName,
         String customAIModelName) {
@@ -1057,11 +865,7 @@ public final class CustomAIModelsClientImpl implements CustomAIModelsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CustomAIModelInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CustomAIModelListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

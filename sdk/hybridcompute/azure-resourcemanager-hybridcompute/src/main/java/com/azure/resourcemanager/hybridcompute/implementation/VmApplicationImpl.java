@@ -88,10 +88,7 @@ public final class VmApplicationImpl implements VmApplication, VmApplication.Def
     }
 
     public VmApplication create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVmApplications()
-            .createOrUpdate(resourceGroupName, machineName, applicationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VmApplication create(Context context) {
@@ -113,10 +110,7 @@ public final class VmApplicationImpl implements VmApplication, VmApplication.Def
     }
 
     public VmApplication apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVmApplications()
-            .update(resourceGroupName, machineName, applicationName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VmApplication apply(Context context) {
@@ -142,11 +136,7 @@ public final class VmApplicationImpl implements VmApplication, VmApplication.Def
     }
 
     public VmApplication refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVmApplications()
-            .getWithResponse(resourceGroupName, machineName, applicationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VmApplication refresh(Context context) {

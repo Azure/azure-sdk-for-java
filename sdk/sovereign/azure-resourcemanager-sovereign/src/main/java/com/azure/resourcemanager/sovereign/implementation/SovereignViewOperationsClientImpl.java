@@ -417,17 +417,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Sovereign View resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SovereignViewResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String sovereignViewName, Context context) {
@@ -436,16 +426,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             this.client.getSubscriptionId(), resourceGroupName, sovereignViewName, accept, context);
     }
 
-    /**
-     * Gets the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Sovereign View resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SovereignViewResourceInner getByResourceGroup(String resourceGroupName, String sovereignViewName) {
         return getByResourceGroupWithResponse(resourceGroupName, sovereignViewName, Context.NONE).getValue();
@@ -488,11 +469,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String sovereignViewName,
         SovereignViewResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sovereignViewName, contentType, accept, resource,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, sovereignViewName, resource, Context.NONE);
     }
 
     /**
@@ -537,37 +514,14 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Sovereign View resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SovereignViewResourceInner>, SovereignViewResourceInner>
         beginCreate(String resourceGroupName, String sovereignViewName, SovereignViewResourceInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, sovereignViewName, resource);
-        return this.client.<SovereignViewResourceInner, SovereignViewResourceInner>getLroResult(response,
-            SovereignViewResourceInner.class, SovereignViewResourceInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, sovereignViewName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Sovereign View resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SovereignViewResourceInner>, SovereignViewResourceInner> beginCreate(
         String resourceGroupName, String sovereignViewName, SovereignViewResourceInner resource, Context context) {
@@ -594,39 +548,19 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Sovereign View resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SovereignViewResourceInner create(String resourceGroupName, String sovereignViewName,
         SovereignViewResourceInner resource) {
-        return beginCreate(resourceGroupName, sovereignViewName, resource).getFinalResult();
+        return create(resourceGroupName, sovereignViewName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Sovereign View resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SovereignViewResourceInner create(String resourceGroupName, String sovereignViewName,
         SovereignViewResourceInner resource, Context context) {
-        return beginCreate(resourceGroupName, sovereignViewName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, sovereignViewName, resource, context));
     }
 
     /**
@@ -666,11 +600,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String sovereignViewName,
         SovereignViewResourcePatch properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sovereignViewName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, sovereignViewName, properties, Context.NONE);
     }
 
     /**
@@ -716,37 +646,14 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             this.client.getContext());
     }
 
-    /**
-     * Updates the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Sovereign View resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SovereignViewResourceInner>, SovereignViewResourceInner>
         beginUpdate(String resourceGroupName, String sovereignViewName, SovereignViewResourcePatch properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, sovereignViewName, properties);
-        return this.client.<SovereignViewResourceInner, SovereignViewResourceInner>getLroResult(response,
-            SovereignViewResourceInner.class, SovereignViewResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, sovereignViewName, properties, Context.NONE);
     }
 
-    /**
-     * Updates the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Sovereign View resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SovereignViewResourceInner>, SovereignViewResourceInner> beginUpdate(
         String resourceGroupName, String sovereignViewName, SovereignViewResourcePatch properties, Context context) {
@@ -773,39 +680,19 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Sovereign View resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SovereignViewResourceInner update(String resourceGroupName, String sovereignViewName,
         SovereignViewResourcePatch properties) {
-        return beginUpdate(resourceGroupName, sovereignViewName, properties).getFinalResult();
+        return update(resourceGroupName, sovereignViewName, properties, Context.NONE);
     }
 
-    /**
-     * Updates the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Sovereign View resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SovereignViewResourceInner update(String resourceGroupName, String sovereignViewName,
         SovereignViewResourcePatch properties, Context context) {
-        return beginUpdate(resourceGroupName, sovereignViewName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, sovereignViewName, properties, context));
     }
 
     /**
@@ -839,8 +726,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String sovereignViewName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sovereignViewName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, sovereignViewName, Context.NONE);
     }
 
     /**
@@ -878,33 +764,13 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             this.client.getContext());
     }
 
-    /**
-     * Deletes the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sovereignViewName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, sovereignViewName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, sovereignViewName, Context.NONE);
     }
 
-    /**
-     * Deletes the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sovereignViewName,
         Context context) {
@@ -928,33 +794,16 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String sovereignViewName) {
-        beginDelete(resourceGroupName, sovereignViewName).getFinalResult();
+        delete(resourceGroupName, sovereignViewName, Context.NONE);
     }
 
-    /**
-     * Deletes the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String sovereignViewName, Context context) {
-        beginDelete(resourceGroupName, sovereignViewName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, sovereignViewName, context));
     }
 
     /**
@@ -1005,11 +854,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SovereignViewResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<SovereignViewResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1032,31 +877,13 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the Sovereign View resources within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SovereignViewResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SovereignViewResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists the Sovereign View resources within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SovereignViewResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SovereignViewResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1104,11 +931,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SovereignViewResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<SovereignViewResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1129,27 +952,13 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the Sovereign View resources within a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SovereignViewResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SovereignViewResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists the Sovereign View resources within a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SovereignViewResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SovereignViewResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1194,17 +1003,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the compliance summary for the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the compliance summary for the Sovereign View resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SovereignViewComplianceSummaryResultInner> complianceSummaryWithResponse(String resourceGroupName,
         String sovereignViewName, Context context) {
@@ -1213,16 +1012,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             this.client.getSubscriptionId(), resourceGroupName, sovereignViewName, accept, context);
     }
 
-    /**
-     * Gets the compliance summary for the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the compliance summary for the Sovereign View resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SovereignViewComplianceSummaryResultInner complianceSummary(String resourceGroupName,
         String sovereignViewName) {
@@ -1271,18 +1061,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets compliance details for the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compliance details for the Sovereign View resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SovereignViewComplianceDetailsResultInner> complianceDetailsWithResponse(String resourceGroupName,
         String sovereignViewName, SovereignViewComplianceDetailsContent body, Context context) {
@@ -1292,17 +1071,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             this.client.getSubscriptionId(), resourceGroupName, sovereignViewName, contentType, accept, body, context);
     }
 
-    /**
-     * Gets compliance details for the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compliance details for the Sovereign View resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SovereignViewComplianceDetailsResultInner complianceDetails(String resourceGroupName,
         String sovereignViewName, SovereignViewComplianceDetailsContent body) {
@@ -1351,18 +1120,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets filter values for the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return filter values for the Sovereign View resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SovereignViewFilterValuesResultInner> filterValuesWithResponse(String resourceGroupName,
         String sovereignViewName, SovereignViewFilterValuesContent body, Context context) {
@@ -1372,17 +1130,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             this.client.getSubscriptionId(), resourceGroupName, sovereignViewName, contentType, accept, body, context);
     }
 
-    /**
-     * Gets filter values for the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return filter values for the Sovereign View resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SovereignViewFilterValuesResultInner filterValues(String resourceGroupName, String sovereignViewName,
         SovereignViewFilterValuesContent body) {
@@ -1431,18 +1179,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the operational status for the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operational status for the Sovereign View resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SovereignViewOperationalStatusResultInner> operationalStatusWithResponse(String resourceGroupName,
         String sovereignViewName, SovereignViewOperationalStatusContent body, Context context) {
@@ -1452,17 +1189,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             this.client.getSubscriptionId(), resourceGroupName, sovereignViewName, contentType, accept, body, context);
     }
 
-    /**
-     * Gets the operational status for the Sovereign View resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operational status for the Sovereign View resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SovereignViewOperationalStatusResultInner operationalStatus(String resourceGroupName,
         String sovereignViewName, SovereignViewOperationalStatusContent body) {
@@ -1515,20 +1242,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the compliance reasoning for given resource and dimension, including the reasoning for its linked and
-     * replica resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the compliance reasoning for given resource and dimension, including the reasoning for its linked and
-     * replica resources along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SovereignViewComplianceResourceDetailsResultInner> complianceResourceDetailsWithResponse(
         String resourceGroupName, String sovereignViewName, SovereignViewComplianceResourceDetailsContent body,
@@ -1539,19 +1253,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             this.client.getSubscriptionId(), resourceGroupName, sovereignViewName, contentType, accept, body, context);
     }
 
-    /**
-     * Gets the compliance reasoning for given resource and dimension, including the reasoning for its linked and
-     * replica resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the compliance reasoning for given resource and dimension, including the reasoning for its linked and
-     * replica resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SovereignViewComplianceResourceDetailsResultInner complianceResourceDetails(String resourceGroupName,
         String sovereignViewName, SovereignViewComplianceResourceDetailsContent body) {
@@ -1595,11 +1297,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> remediateWithResponse(String resourceGroupName, String sovereignViewName,
         SovereignViewRemediateContent body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.remediateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sovereignViewName, contentType, accept, body,
-            Context.NONE);
+        return remediateWithResponse(resourceGroupName, sovereignViewName, body, Context.NONE);
     }
 
     /**
@@ -1643,37 +1341,14 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             SovereignViewRemediateResultInner.class, this.client.getContext());
     }
 
-    /**
-     * Remediates the Sovereign View resource for the given Azure Resource Manager resource IDs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response for the sovereign view remediate action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SovereignViewRemediateResultInner>, SovereignViewRemediateResultInner>
         beginRemediate(String resourceGroupName, String sovereignViewName, SovereignViewRemediateContent body) {
-        Response<BinaryData> response = remediateWithResponse(resourceGroupName, sovereignViewName, body);
-        return this.client.<SovereignViewRemediateResultInner, SovereignViewRemediateResultInner>getLroResult(response,
-            SovereignViewRemediateResultInner.class, SovereignViewRemediateResultInner.class, Context.NONE);
+        return beginRemediate(resourceGroupName, sovereignViewName, body, Context.NONE);
     }
 
-    /**
-     * Remediates the Sovereign View resource for the given Azure Resource Manager resource IDs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response for the sovereign view remediate action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SovereignViewRemediateResultInner>, SovereignViewRemediateResultInner> beginRemediate(
         String resourceGroupName, String sovereignViewName, SovereignViewRemediateContent body, Context context) {
@@ -1700,39 +1375,19 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Remediates the Sovereign View resource for the given Azure Resource Manager resource IDs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for the sovereign view remediate action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SovereignViewRemediateResultInner remediate(String resourceGroupName, String sovereignViewName,
         SovereignViewRemediateContent body) {
-        return beginRemediate(resourceGroupName, sovereignViewName, body).getFinalResult();
+        return remediate(resourceGroupName, sovereignViewName, body, Context.NONE);
     }
 
-    /**
-     * Remediates the Sovereign View resource for the given Azure Resource Manager resource IDs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for the sovereign view remediate action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SovereignViewRemediateResultInner remediate(String resourceGroupName, String sovereignViewName,
         SovereignViewRemediateContent body, Context context) {
-        return beginRemediate(resourceGroupName, sovereignViewName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginRemediate(resourceGroupName, sovereignViewName, body, context));
     }
 
     /**
@@ -1777,18 +1432,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetches the result of a previously triggered remediation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for the sovereign view remediationResult action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SovereignViewRemediationResultInner> remediationResultWithResponse(String resourceGroupName,
         String sovereignViewName, SovereignViewRemediationResultContent body, Context context) {
@@ -1798,17 +1442,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
             this.client.getSubscriptionId(), resourceGroupName, sovereignViewName, contentType, accept, body, context);
     }
 
-    /**
-     * Fetches the result of a previously triggered remediation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sovereignViewName The name of the Sovereign View resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for the sovereign view remediationResult action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SovereignViewRemediationResultInner remediationResult(String resourceGroupName, String sovereignViewName,
         SovereignViewRemediationResultContent body) {
@@ -1847,11 +1481,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SovereignViewResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SovereignViewResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1906,11 +1536,7 @@ public final class SovereignViewOperationsClientImpl implements SovereignViewOpe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SovereignViewResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SovereignViewResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

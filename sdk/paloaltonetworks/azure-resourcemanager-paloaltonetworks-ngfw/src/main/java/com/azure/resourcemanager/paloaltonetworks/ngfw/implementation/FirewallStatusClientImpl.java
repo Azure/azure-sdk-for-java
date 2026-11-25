@@ -150,17 +150,7 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
         return getWithResponseAsync(resourceGroupName, firewallName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a FirewallStatusResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FirewallStatusResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FirewallStatusResourceInner> getWithResponse(String resourceGroupName, String firewallName,
         Context context) {
@@ -169,16 +159,7 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
             resourceGroupName, firewallName, accept, context);
     }
 
-    /**
-     * Get a FirewallStatusResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FirewallStatusResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallStatusResourceInner get(String resourceGroupName, String firewallName) {
         return getWithResponse(resourceGroupName, firewallName, Context.NONE).getValue();
@@ -236,12 +217,7 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FirewallStatusResourceInner> listByFirewallsSinglePage(String resourceGroupName,
         String firewallName) {
-        final String accept = "application/json";
-        Response<FirewallStatusResourceListResult> res
-            = service.listByFirewallsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, firewallName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFirewallsSinglePage(resourceGroupName, firewallName, Context.NONE);
     }
 
     /**
@@ -266,33 +242,13 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List FirewallStatusResource resources by Firewalls.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FirewallStatusResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallStatusResourceInner> listByFirewalls(String resourceGroupName, String firewallName) {
-        return new PagedIterable<>(() -> listByFirewallsSinglePage(resourceGroupName, firewallName),
-            nextLink -> listByFirewallsNextSinglePage(nextLink));
+        return listByFirewalls(resourceGroupName, firewallName, Context.NONE);
     }
 
-    /**
-     * List FirewallStatusResource resources by Firewalls.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FirewallStatusResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallStatusResourceInner> listByFirewalls(String resourceGroupName, String firewallName,
         Context context) {
@@ -331,11 +287,7 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FirewallStatusResourceInner> listByFirewallsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FirewallStatusResourceListResult> res
-            = service.listByFirewallsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFirewallsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

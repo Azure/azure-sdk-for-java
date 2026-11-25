@@ -68,16 +68,7 @@ public final class PrivateDnsResourceReferencesClientImpl implements PrivateDnsR
             @BodyParam("application/json") PrivateDnsResourceReferenceRequest parameters, Context context);
     }
 
-    /**
-     * Returns the private DNS zone records specified by the referencing targetResourceIds.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the properties of the private DNS Resource Reference Result along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateDnsResourceReferenceResultInner>>
         getByTargetResourcesWithResponseAsync(PrivateDnsResourceReferenceRequest parameters) {
@@ -136,47 +127,21 @@ public final class PrivateDnsResourceReferencesClientImpl implements PrivateDnsR
             this.client.getSubscriptionId(), contentType, accept, parameters, context);
     }
 
-    /**
-     * Returns the private DNS zone records specified by the referencing targetResourceIds.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the properties of the private DNS Resource Reference Result on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateDnsResourceReferenceResultInner>
         getByTargetResourcesAsync(PrivateDnsResourceReferenceRequest parameters) {
         return getByTargetResourcesWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the private DNS zone records specified by the referencing targetResourceIds.
-     * 
-     * @param parameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the properties of the private DNS Resource Reference Result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateDnsResourceReferenceResultInner>
         getByTargetResourcesWithResponse(PrivateDnsResourceReferenceRequest parameters, Context context) {
         return getByTargetResourcesWithResponseAsync(parameters, context).block();
     }
 
-    /**
-     * Returns the private DNS zone records specified by the referencing targetResourceIds.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the properties of the private DNS Resource Reference Result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateDnsResourceReferenceResultInner getByTargetResources(PrivateDnsResourceReferenceRequest parameters) {
         return getByTargetResourcesWithResponse(parameters, Context.NONE).getValue();

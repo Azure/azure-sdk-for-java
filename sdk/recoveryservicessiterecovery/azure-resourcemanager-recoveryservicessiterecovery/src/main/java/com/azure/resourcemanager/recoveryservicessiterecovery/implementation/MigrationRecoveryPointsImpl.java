@@ -51,10 +51,8 @@ public final class MigrationRecoveryPointsImpl implements MigrationRecoveryPoint
 
     public PagedIterable<MigrationRecoveryPoint> listByReplicationMigrationItems(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String migrationItemName) {
-        PagedIterable<MigrationRecoveryPointInner> inner = this.serviceClient()
-            .listByReplicationMigrationItems(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                migrationItemName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MigrationRecoveryPointImpl(inner1, this.manager()));
+        return this.listByReplicationMigrationItems(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, migrationItemName, Context.NONE);
     }
 
     public PagedIterable<MigrationRecoveryPoint> listByReplicationMigrationItems(String resourceGroupName,

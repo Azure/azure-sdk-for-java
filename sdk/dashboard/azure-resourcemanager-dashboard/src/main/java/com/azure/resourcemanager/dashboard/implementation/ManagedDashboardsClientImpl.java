@@ -249,17 +249,7 @@ public final class ManagedDashboardsClientImpl implements ManagedDashboardsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of a specific dashboard for grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dashboardName The name of the Azure Managed Dashboard.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific dashboard for grafana resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedDashboardInner> getByResourceGroupWithResponse(String resourceGroupName,
         String dashboardName, Context context) {
@@ -268,16 +258,7 @@ public final class ManagedDashboardsClientImpl implements ManagedDashboardsClien
             this.client.getSubscriptionId(), resourceGroupName, dashboardName, accept, context);
     }
 
-    /**
-     * Get the properties of a specific dashboard for grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dashboardName The name of the Azure Managed Dashboard.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific dashboard for grafana resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDashboardInner getByResourceGroup(String resourceGroupName, String dashboardName) {
         return getByResourceGroupWithResponse(resourceGroupName, dashboardName, Context.NONE).getValue();
@@ -322,11 +303,7 @@ public final class ManagedDashboardsClientImpl implements ManagedDashboardsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String dashboardName,
         ManagedDashboardInner requestBodyParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dashboardName, contentType, accept,
-            requestBodyParameters, Context.NONE);
+        return createWithResponse(resourceGroupName, dashboardName, requestBodyParameters, Context.NONE);
     }
 
     /**
@@ -374,39 +351,14 @@ public final class ManagedDashboardsClientImpl implements ManagedDashboardsClien
             this.client.getContext());
     }
 
-    /**
-     * Create or update a dashboard for grafana resource. This API is idempotent, so user can either create a new
-     * dashboard or update an existing dashboard.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dashboardName The name of the Azure Managed Dashboard.
-     * @param requestBodyParameters The requestBodyParameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the managed dashboard resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedDashboardInner>, ManagedDashboardInner> beginCreate(String resourceGroupName,
         String dashboardName, ManagedDashboardInner requestBodyParameters) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, dashboardName, requestBodyParameters);
-        return this.client.<ManagedDashboardInner, ManagedDashboardInner>getLroResult(response,
-            ManagedDashboardInner.class, ManagedDashboardInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, dashboardName, requestBodyParameters, Context.NONE);
     }
 
-    /**
-     * Create or update a dashboard for grafana resource. This API is idempotent, so user can either create a new
-     * dashboard or update an existing dashboard.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dashboardName The name of the Azure Managed Dashboard.
-     * @param requestBodyParameters The requestBodyParameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the managed dashboard resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedDashboardInner>, ManagedDashboardInner> beginCreate(String resourceGroupName,
         String dashboardName, ManagedDashboardInner requestBodyParameters, Context context) {
@@ -435,41 +387,19 @@ public final class ManagedDashboardsClientImpl implements ManagedDashboardsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a dashboard for grafana resource. This API is idempotent, so user can either create a new
-     * dashboard or update an existing dashboard.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dashboardName The name of the Azure Managed Dashboard.
-     * @param requestBodyParameters The requestBodyParameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed dashboard resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDashboardInner create(String resourceGroupName, String dashboardName,
         ManagedDashboardInner requestBodyParameters) {
-        return beginCreate(resourceGroupName, dashboardName, requestBodyParameters).getFinalResult();
+        return create(resourceGroupName, dashboardName, requestBodyParameters, Context.NONE);
     }
 
-    /**
-     * Create or update a dashboard for grafana resource. This API is idempotent, so user can either create a new
-     * dashboard or update an existing dashboard.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dashboardName The name of the Azure Managed Dashboard.
-     * @param requestBodyParameters The requestBodyParameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed dashboard resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDashboardInner create(String resourceGroupName, String dashboardName,
         ManagedDashboardInner requestBodyParameters, Context context) {
-        return beginCreate(resourceGroupName, dashboardName, requestBodyParameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, dashboardName, requestBodyParameters, context));
     }
 
     /**
@@ -513,18 +443,7 @@ public final class ManagedDashboardsClientImpl implements ManagedDashboardsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a dashboard for Grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dashboardName The name of the Azure Managed Dashboard.
-     * @param requestBodyParameters The requestBodyParameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed dashboard resource type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedDashboardInner> updateWithResponse(String resourceGroupName, String dashboardName,
         ManagedDashboardUpdateParameters requestBodyParameters, Context context) {
@@ -535,17 +454,7 @@ public final class ManagedDashboardsClientImpl implements ManagedDashboardsClien
             requestBodyParameters, context);
     }
 
-    /**
-     * Update a dashboard for Grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dashboardName The name of the Azure Managed Dashboard.
-     * @param requestBodyParameters The requestBodyParameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed dashboard resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDashboardInner update(String resourceGroupName, String dashboardName,
         ManagedDashboardUpdateParameters requestBodyParameters) {
@@ -585,32 +494,14 @@ public final class ManagedDashboardsClientImpl implements ManagedDashboardsClien
         return deleteWithResponseAsync(resourceGroupName, dashboardName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a dashboard for Grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dashboardName The name of the Azure Managed Dashboard.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String dashboardName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, dashboardName, context);
     }
 
-    /**
-     * Delete a dashboard for Grafana resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dashboardName The name of the Azure Managed Dashboard.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dashboardName) {
         deleteWithResponse(resourceGroupName, dashboardName, Context.NONE);
@@ -663,11 +554,7 @@ public final class ManagedDashboardsClientImpl implements ManagedDashboardsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedDashboardInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ManagedDashboardListResponse> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -690,31 +577,13 @@ public final class ManagedDashboardsClientImpl implements ManagedDashboardsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all resources of dashboards under the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ManagedDashboard items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedDashboardInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List all resources of dashboards under the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ManagedDashboard items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedDashboardInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -762,11 +631,7 @@ public final class ManagedDashboardsClientImpl implements ManagedDashboardsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedDashboardInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ManagedDashboardListResponse> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -787,27 +652,13 @@ public final class ManagedDashboardsClientImpl implements ManagedDashboardsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all resources of dashboards under the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ManagedDashboard items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedDashboardInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List all resources of dashboards under the specified subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ManagedDashboard items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedDashboardInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -844,11 +695,7 @@ public final class ManagedDashboardsClientImpl implements ManagedDashboardsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedDashboardInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ManagedDashboardListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -902,11 +749,7 @@ public final class ManagedDashboardsClientImpl implements ManagedDashboardsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedDashboardInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ManagedDashboardListResponse> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -297,11 +297,7 @@ public final class BareMetalMachineImpl
     }
 
     public BareMetalMachine create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBareMetalMachines()
-            .createOrUpdate(resourceGroupName, bareMetalMachineName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BareMetalMachine create(Context context) {
@@ -328,11 +324,7 @@ public final class BareMetalMachineImpl
     }
 
     public BareMetalMachine apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBareMetalMachines()
-            .update(resourceGroupName, bareMetalMachineName, updateIfMatch, updateIfNoneMatch,
-                updateBareMetalMachineUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BareMetalMachine apply(Context context) {
@@ -356,11 +348,7 @@ public final class BareMetalMachineImpl
     }
 
     public BareMetalMachine refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBareMetalMachines()
-            .getByResourceGroupWithResponse(resourceGroupName, bareMetalMachineName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BareMetalMachine refresh(Context context) {

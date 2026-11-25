@@ -183,18 +183,7 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a HealthValidation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param healthValidationName The health validation resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HealthValidation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HealthValidationInner> getWithResponse(String resourceGroupName, String watcherName,
         String healthValidationName, Context context) {
@@ -203,17 +192,7 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
             resourceGroupName, watcherName, healthValidationName, accept, context);
     }
 
-    /**
-     * Get a HealthValidation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param healthValidationName The health validation resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HealthValidation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HealthValidationInner get(String resourceGroupName, String watcherName, String healthValidationName) {
         return getWithResponse(resourceGroupName, watcherName, healthValidationName, Context.NONE).getValue();
@@ -270,12 +249,7 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HealthValidationInner> listByParentSinglePage(String resourceGroupName, String watcherName) {
-        final String accept = "application/json";
-        Response<HealthValidationListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, watcherName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, watcherName, Context.NONE);
     }
 
     /**
@@ -300,33 +274,13 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List HealthValidation resources by Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HealthValidation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HealthValidationInner> listByParent(String resourceGroupName, String watcherName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, watcherName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, watcherName, Context.NONE);
     }
 
-    /**
-     * List HealthValidation resources by Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HealthValidation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HealthValidationInner> listByParent(String resourceGroupName, String watcherName,
         Context context) {
@@ -371,10 +325,7 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startValidationWithResponse(String resourceGroupName, String watcherName,
         String healthValidationName) {
-        final String accept = "application/json";
-        return service.startValidationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, watcherName, healthValidationName, accept,
-            Context.NONE);
+        return startValidationWithResponse(resourceGroupName, watcherName, healthValidationName, Context.NONE);
     }
 
     /**
@@ -420,40 +371,14 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
             this.client.getContext());
     }
 
-    /**
-     * Starts health validation for a watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param healthValidationName The health validation resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HealthValidationInner>, HealthValidationInner>
         beginStartValidation(String resourceGroupName, String watcherName, String healthValidationName) {
-        Response<BinaryData> response
-            = startValidationWithResponse(resourceGroupName, watcherName, healthValidationName);
-        return this.client.<HealthValidationInner, HealthValidationInner>getLroResult(response,
-            HealthValidationInner.class, HealthValidationInner.class, Context.NONE);
+        return beginStartValidation(resourceGroupName, watcherName, healthValidationName, Context.NONE);
     }
 
-    /**
-     * Starts health validation for a watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param healthValidationName The health validation resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HealthValidationInner>, HealthValidationInner> beginStartValidation(
         String resourceGroupName, String watcherName, String healthValidationName, Context context) {
@@ -482,39 +407,19 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts health validation for a watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param healthValidationName The health validation resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HealthValidationInner startValidation(String resourceGroupName, String watcherName,
         String healthValidationName) {
-        return beginStartValidation(resourceGroupName, watcherName, healthValidationName).getFinalResult();
+        return startValidation(resourceGroupName, watcherName, healthValidationName, Context.NONE);
     }
 
-    /**
-     * Starts health validation for a watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param healthValidationName The health validation resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HealthValidationInner startValidation(String resourceGroupName, String watcherName,
         String healthValidationName, Context context) {
-        return beginStartValidation(resourceGroupName, watcherName, healthValidationName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginStartValidation(resourceGroupName, watcherName, healthValidationName, context));
     }
 
     /**
@@ -548,11 +453,7 @@ public final class HealthValidationsClientImpl implements HealthValidationsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HealthValidationInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<HealthValidationListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
