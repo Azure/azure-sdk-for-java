@@ -50,14 +50,12 @@ public final class EndpointRegistrationsImpl implements EndpointRegistrations {
     }
 
     public void delete(String providerNamespace, String resourceType, String endpointName) {
-        this.serviceClient().delete(providerNamespace, resourceType, endpointName);
+        this.deleteWithResponse(providerNamespace, resourceType, endpointName, Context.NONE);
     }
 
     public PagedIterable<EndpointRegistration> listByResourceTypeRegistration(String providerNamespace,
         String resourceType) {
-        PagedIterable<EndpointRegistrationInner> inner
-            = this.serviceClient().listByResourceTypeRegistration(providerNamespace, resourceType);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EndpointRegistrationImpl(inner1, this.manager()));
+        return this.listByResourceTypeRegistration(providerNamespace, resourceType, Context.NONE);
     }
 
     public PagedIterable<EndpointRegistration> listByResourceTypeRegistration(String providerNamespace,
@@ -118,16 +116,14 @@ public final class EndpointRegistrationsImpl implements EndpointRegistrations {
 
     public void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String endpointName) {
-        this.serviceClient()
-            .deleteNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst, endpointName);
+        this.deleteNestedResourceTypeFirstWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst,
+            endpointName, Context.NONE);
     }
 
     public PagedIterable<EndpointRegistration> listByResourceTypeRegistrationNestedResourceTypeFirst(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst) {
-        PagedIterable<EndpointRegistrationInner> inner = this.serviceClient()
-            .listByResourceTypeRegistrationNestedResourceTypeFirst(providerNamespace, resourceType,
-                nestedResourceTypeFirst);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EndpointRegistrationImpl(inner1, this.manager()));
+        return this.listByResourceTypeRegistrationNestedResourceTypeFirst(providerNamespace, resourceType,
+            nestedResourceTypeFirst, Context.NONE);
     }
 
     public PagedIterable<EndpointRegistration> listByResourceTypeRegistrationNestedResourceTypeFirst(
@@ -192,18 +188,15 @@ public final class EndpointRegistrationsImpl implements EndpointRegistrations {
 
     public void deleteNestedResourceTypeSecond(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String endpointName) {
-        this.serviceClient()
-            .deleteNestedResourceTypeSecond(providerNamespace, resourceType, nestedResourceTypeFirst,
-                nestedResourceTypeSecond, endpointName);
+        this.deleteNestedResourceTypeSecondWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, endpointName, Context.NONE);
     }
 
     public PagedIterable<EndpointRegistration> listByResourceTypeRegistrationNestedResourceTypeSecond(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst,
         String nestedResourceTypeSecond) {
-        PagedIterable<EndpointRegistrationInner> inner = this.serviceClient()
-            .listByResourceTypeRegistrationNestedResourceTypeSecond(providerNamespace, resourceType,
-                nestedResourceTypeFirst, nestedResourceTypeSecond);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EndpointRegistrationImpl(inner1, this.manager()));
+        return this.listByResourceTypeRegistrationNestedResourceTypeSecond(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, Context.NONE);
     }
 
     public PagedIterable<EndpointRegistration> listByResourceTypeRegistrationNestedResourceTypeSecond(
@@ -272,18 +265,15 @@ public final class EndpointRegistrationsImpl implements EndpointRegistrations {
     public void deleteNestedResourceTypeThird(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird,
         String endpointName) {
-        this.serviceClient()
-            .deleteNestedResourceTypeThird(providerNamespace, resourceType, nestedResourceTypeFirst,
-                nestedResourceTypeSecond, nestedResourceTypeThird, endpointName);
+        this.deleteNestedResourceTypeThirdWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst,
+            nestedResourceTypeSecond, nestedResourceTypeThird, endpointName, Context.NONE);
     }
 
     public PagedIterable<EndpointRegistration> listByResourceTypeRegistrationNestedResourceTypeThird(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
         String nestedResourceTypeThird) {
-        PagedIterable<EndpointRegistrationInner> inner = this.serviceClient()
-            .listByResourceTypeRegistrationNestedResourceTypeThird(providerNamespace, resourceType,
-                nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EndpointRegistrationImpl(inner1, this.manager()));
+        return this.listByResourceTypeRegistrationNestedResourceTypeThird(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird, Context.NONE);
     }
 
     public PagedIterable<EndpointRegistration> listByResourceTypeRegistrationNestedResourceTypeThird(
@@ -296,102 +286,36 @@ public final class EndpointRegistrationsImpl implements EndpointRegistrations {
     }
 
     public EndpointRegistration getById(String id) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/endpoints/{endpointName}",
-            "providerNamespace");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String resourceType = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/endpoints/{endpointName}",
-            "resourceType");
-        if (resourceType == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
-        }
-        String endpointName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/endpoints/{endpointName}",
-            "endpointName");
-        if (endpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
-        }
-        return this.getWithResponse(providerNamespace, resourceType, endpointName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<EndpointRegistration> getByIdWithResponse(String id, Context context) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String providerNamespace = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/endpoints/{endpointName}",
-            "providerNamespace");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String resourceType = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "providerNamespace", "providerRegistrations", LOGGER);
+        String resourceType = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/endpoints/{endpointName}",
-            "resourceType");
-        if (resourceType == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
-        }
-        String endpointName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceType", "resourcetypeRegistrations", LOGGER);
+        String endpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/endpoints/{endpointName}",
-            "endpointName");
-        if (endpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
-        }
+            "endpointName", "endpoints", LOGGER);
         return this.getWithResponse(providerNamespace, resourceType, endpointName, context);
     }
 
     public void deleteById(String id) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/endpoints/{endpointName}",
-            "providerNamespace");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String resourceType = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/endpoints/{endpointName}",
-            "resourceType");
-        if (resourceType == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
-        }
-        String endpointName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/endpoints/{endpointName}",
-            "endpointName");
-        if (endpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
-        }
-        this.deleteWithResponse(providerNamespace, resourceType, endpointName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String providerNamespace = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/endpoints/{endpointName}",
-            "providerNamespace");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String resourceType = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "providerNamespace", "providerRegistrations", LOGGER);
+        String resourceType = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/endpoints/{endpointName}",
-            "resourceType");
-        if (resourceType == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
-        }
-        String endpointName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceType", "resourcetypeRegistrations", LOGGER);
+        String endpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/endpoints/{endpointName}",
-            "endpointName");
-        if (endpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
-        }
+            "endpointName", "endpoints", LOGGER);
         return this.deleteWithResponse(providerNamespace, resourceType, endpointName, context);
     }
 

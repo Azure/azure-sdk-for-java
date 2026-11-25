@@ -63,11 +63,7 @@ public final class EndpointRegistrationImpl
     }
 
     public EndpointRegistration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpointRegistrations()
-            .createOrUpdateWithResponse(providerNamespace, resourceType, endpointName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EndpointRegistration create(Context context) {
@@ -89,11 +85,7 @@ public final class EndpointRegistrationImpl
     }
 
     public EndpointRegistration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpointRegistrations()
-            .createOrUpdateWithResponse(providerNamespace, resourceType, endpointName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EndpointRegistration apply(Context context) {
@@ -165,11 +157,7 @@ public final class EndpointRegistrationImpl
     }
 
     public EndpointRegistration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpointRegistrations()
-            .getWithResponse(providerNamespace, resourceType, endpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EndpointRegistration refresh(Context context) {

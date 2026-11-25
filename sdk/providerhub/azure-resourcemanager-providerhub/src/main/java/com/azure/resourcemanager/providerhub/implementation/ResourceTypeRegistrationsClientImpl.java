@@ -807,18 +807,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a nested resource type details in the given subscription and provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a nested resource type details in the given subscription and provider along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceTypeRegistrationInner> getNestedResourceTypeFirstWithResponse(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, Context context) {
@@ -849,17 +838,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
             this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst, accept, context);
     }
 
-    /**
-     * Gets a nested resource type details in the given subscription and provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a nested resource type details in the given subscription and provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceTypeRegistrationInner getNestedResourceTypeFirst(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst) {
@@ -935,39 +914,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateNestedResourceTypeFirstWithResponse(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, ResourceTypeRegistrationInner properties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateNestedResourceTypeFirstSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst, contentType,
-            accept, properties, Context.NONE);
+        return createOrUpdateNestedResourceTypeFirstWithResponse(providerNamespace, resourceType,
+            nestedResourceTypeFirst, properties, Context.NONE);
     }
 
     /**
@@ -1049,45 +997,16 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates a nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner>
         beginCreateOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
             String nestedResourceTypeFirst, ResourceTypeRegistrationInner properties) {
-        Response<BinaryData> response = createOrUpdateNestedResourceTypeFirstWithResponse(providerNamespace,
-            resourceType, nestedResourceTypeFirst, properties);
-        return this.client.<ResourceTypeRegistrationInner, ResourceTypeRegistrationInner>getLroResult(response,
-            ResourceTypeRegistrationInner.class, ResourceTypeRegistrationInner.class, Context.NONE);
+        return beginCreateOrUpdateNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst,
+            properties, Context.NONE);
     }
 
-    /**
-     * Creates or updates a nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner>
         beginCreateOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
@@ -1119,46 +1038,21 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
             properties).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceTypeRegistrationInner createOrUpdateNestedResourceTypeFirst(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, ResourceTypeRegistrationInner properties) {
-        return beginCreateOrUpdateNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst,
-            properties).getFinalResult();
+        return createOrUpdateNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst,
+            properties, Context.NONE);
     }
 
-    /**
-     * Creates or updates a nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceTypeRegistrationInner createOrUpdateNestedResourceTypeFirst(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, ResourceTypeRegistrationInner properties,
         Context context) {
-        return beginCreateOrUpdateNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst,
-            properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdateNestedResourceTypeFirst(providerNamespace,
+            resourceType, nestedResourceTypeFirst, properties, context));
     }
 
     /**
@@ -1215,30 +1109,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteNestedResourceTypeFirstWithResponse(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        return service.deleteNestedResourceTypeFirstSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), providerNamespace, resourceType, nestedResourceTypeFirst, Context.NONE);
+        return deleteNestedResourceTypeFirstWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst,
+            Context.NONE);
     }
 
     /**
@@ -1302,37 +1174,15 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
             this.client.getContext());
     }
 
-    /**
-     * Deletes a nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteNestedResourceTypeFirst(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst) {
-        Response<BinaryData> response
-            = deleteNestedResourceTypeFirstWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst,
+            Context.NONE);
     }
 
-    /**
-     * Deletes a nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteNestedResourceTypeFirst(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, Context context) {
@@ -1359,38 +1209,19 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst) {
-        beginDeleteNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst).getFinalResult();
+        deleteNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst, Context.NONE);
     }
 
-    /**
-     * Deletes a nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, Context context) {
-        beginDeleteNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDeleteNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst, context));
     }
 
     /**

@@ -558,18 +558,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an endpoint registration.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param endpointName The endpoint registration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an endpoint registration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointRegistrationInner> getWithResponse(String providerNamespace, String resourceType,
         String endpointName, Context context) {
@@ -600,17 +589,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             providerNamespace, resourceType, endpointName, accept, context);
     }
 
-    /**
-     * Gets an endpoint registration.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param endpointName The endpoint registration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an endpoint registration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointRegistrationInner get(String providerNamespace, String resourceType, String endpointName) {
         return getWithResponse(providerNamespace, resourceType, endpointName, Context.NONE).getValue();
@@ -684,20 +663,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or replaces an endpoint registration.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param endpointName The endpoint registration name.
-     * @param properties The endpoint registration supplied to the CreateOrUpdate operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an independently managed endpoint definition for a Resource Type Registration along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointRegistrationInner> createOrUpdateWithResponse(String providerNamespace, String resourceType,
         String endpointName, EndpointRegistrationInner properties, Context context) {
@@ -736,18 +702,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             properties, context);
     }
 
-    /**
-     * Creates or replaces an endpoint registration.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param endpointName The endpoint registration name.
-     * @param properties The endpoint registration supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an independently managed endpoint definition for a Resource Type Registration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointRegistrationInner createOrUpdate(String providerNamespace, String resourceType, String endpointName,
         EndpointRegistrationInner properties) {
@@ -809,18 +764,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
         return deleteWithResponseAsync(providerNamespace, resourceType, endpointName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes an endpoint registration.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param endpointName The endpoint registration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String providerNamespace, String resourceType, String endpointName,
         Context context) {
@@ -850,16 +794,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             this.client.getSubscriptionId(), providerNamespace, resourceType, endpointName, context);
     }
 
-    /**
-     * Deletes an endpoint registration.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param endpointName The endpoint registration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String providerNamespace, String resourceType, String endpointName) {
         deleteWithResponse(providerNamespace, resourceType, endpointName, Context.NONE);
@@ -934,30 +869,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointRegistrationInner> listByResourceTypeRegistrationSinglePage(String providerNamespace,
         String resourceType) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<EndpointRegistrationArrayResponseWithContinuation> res
-            = service.listByResourceTypeRegistrationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), providerNamespace, resourceType, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceTypeRegistrationSinglePage(providerNamespace, resourceType, Context.NONE);
     }
 
     /**
@@ -1000,34 +912,14 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists endpoint registrations for a resource type registration.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of endpoint registrations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointRegistrationInner> listByResourceTypeRegistration(String providerNamespace,
         String resourceType) {
-        return new PagedIterable<>(() -> listByResourceTypeRegistrationSinglePage(providerNamespace, resourceType),
-            nextLink -> listByResourceTypeRegistrationNextSinglePage(nextLink));
+        return listByResourceTypeRegistration(providerNamespace, resourceType, Context.NONE);
     }
 
-    /**
-     * Lists endpoint registrations for a resource type registration.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of endpoint registrations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointRegistrationInner> listByResourceTypeRegistration(String providerNamespace,
         String resourceType, Context context) {
@@ -1101,19 +993,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             endpointName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an endpoint registration for a first-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param endpointName The endpoint registration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an endpoint registration for a first-level nested resource type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointRegistrationInner> getNestedResourceTypeFirstWithResponse(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, String endpointName, Context context) {
@@ -1149,18 +1029,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             accept, context);
     }
 
-    /**
-     * Gets an endpoint registration for a first-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param endpointName The endpoint registration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an endpoint registration for a first-level nested resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointRegistrationInner getNestedResourceTypeFirst(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String endpointName) {
@@ -1244,21 +1113,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             nestedResourceTypeFirst, endpointName, properties).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or replaces an endpoint registration for a first-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param endpointName The endpoint registration name.
-     * @param properties The endpoint registration supplied to the CreateOrUpdate operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an independently managed endpoint definition for a Resource Type Registration along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointRegistrationInner> createOrUpdateNestedResourceTypeFirstWithResponse(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, String endpointName,
@@ -1302,19 +1157,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             contentType, accept, properties, context);
     }
 
-    /**
-     * Creates or replaces an endpoint registration for a first-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param endpointName The endpoint registration name.
-     * @param properties The endpoint registration supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an independently managed endpoint definition for a Resource Type Registration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointRegistrationInner createOrUpdateNestedResourceTypeFirst(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, String endpointName,
@@ -1386,19 +1229,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             endpointName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes an endpoint registration for a first-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param endpointName The endpoint registration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNestedResourceTypeFirstWithResponse(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String endpointName, Context context) {
@@ -1433,17 +1264,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             context);
     }
 
-    /**
-     * Deletes an endpoint registration for a first-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param endpointName The endpoint registration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String endpointName) {
@@ -1530,35 +1351,8 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointRegistrationInner> listByResourceTypeRegistrationNestedResourceTypeFirstSinglePage(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<EndpointRegistrationArrayResponseWithContinuation> res
-            = service.listByResourceTypeRegistrationNestedResourceTypeFirstSync(this.client.getEndpoint(),
-                this.client.getApiVersion(), this.client.getSubscriptionId(), providerNamespace, resourceType,
-                nestedResourceTypeFirst, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceTypeRegistrationNestedResourceTypeFirstSinglePage(providerNamespace, resourceType,
+            nestedResourceTypeFirst, Context.NONE);
     }
 
     /**
@@ -1607,38 +1401,15 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists endpoint registrations for a first-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of endpoint registrations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointRegistrationInner> listByResourceTypeRegistrationNestedResourceTypeFirst(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst) {
-        return new PagedIterable<>(
-            () -> listByResourceTypeRegistrationNestedResourceTypeFirstSinglePage(providerNamespace, resourceType,
-                nestedResourceTypeFirst),
-            nextLink -> listByResourceTypeRegistrationNestedResourceTypeFirstNextSinglePage(nextLink));
+        return listByResourceTypeRegistrationNestedResourceTypeFirst(providerNamespace, resourceType,
+            nestedResourceTypeFirst, Context.NONE);
     }
 
-    /**
-     * Lists endpoint registrations for a first-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of endpoint registrations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointRegistrationInner> listByResourceTypeRegistrationNestedResourceTypeFirst(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, Context context) {
@@ -1721,20 +1492,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             nestedResourceTypeSecond, endpointName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an endpoint registration for a second-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param endpointName The endpoint registration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an endpoint registration for a second-level nested resource type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointRegistrationInner> getNestedResourceTypeSecondWithResponse(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond, String endpointName,
@@ -1776,19 +1534,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             nestedResourceTypeSecond, endpointName, accept, context);
     }
 
-    /**
-     * Gets an endpoint registration for a second-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param endpointName The endpoint registration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an endpoint registration for a second-level nested resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointRegistrationInner getNestedResourceTypeSecond(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String endpointName) {
@@ -1878,22 +1624,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or replaces an endpoint registration for a second-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param endpointName The endpoint registration name.
-     * @param properties The endpoint registration supplied to the CreateOrUpdate operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an independently managed endpoint definition for a Resource Type Registration along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointRegistrationInner> createOrUpdateNestedResourceTypeSecondWithResponse(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
@@ -1942,20 +1673,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             nestedResourceTypeFirst, nestedResourceTypeSecond, endpointName, contentType, accept, properties, context);
     }
 
-    /**
-     * Creates or replaces an endpoint registration for a second-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param endpointName The endpoint registration name.
-     * @param properties The endpoint registration supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an independently managed endpoint definition for a Resource Type Registration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointRegistrationInner createOrUpdateNestedResourceTypeSecond(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond, String endpointName,
@@ -2033,20 +1751,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             nestedResourceTypeSecond, endpointName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes an endpoint registration for a second-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param endpointName The endpoint registration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNestedResourceTypeSecondWithResponse(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String endpointName, Context context) {
@@ -2086,18 +1791,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             nestedResourceTypeSecond, endpointName, context);
     }
 
-    /**
-     * Deletes an endpoint registration for a second-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param endpointName The endpoint registration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteNestedResourceTypeSecond(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String endpointName) {
@@ -2193,40 +1887,8 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
     private PagedResponse<EndpointRegistrationInner> listByResourceTypeRegistrationNestedResourceTypeSecondSinglePage(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst,
         String nestedResourceTypeSecond) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (nestedResourceTypeSecond == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<EndpointRegistrationArrayResponseWithContinuation> res
-            = service.listByResourceTypeRegistrationNestedResourceTypeSecondSync(this.client.getEndpoint(),
-                this.client.getApiVersion(), this.client.getSubscriptionId(), providerNamespace, resourceType,
-                nestedResourceTypeFirst, nestedResourceTypeSecond, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceTypeRegistrationNestedResourceTypeSecondSinglePage(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, Context.NONE);
     }
 
     /**
@@ -2282,41 +1944,16 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists endpoint registrations for a second-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of endpoint registrations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointRegistrationInner> listByResourceTypeRegistrationNestedResourceTypeSecond(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst,
         String nestedResourceTypeSecond) {
-        return new PagedIterable<>(
-            () -> listByResourceTypeRegistrationNestedResourceTypeSecondSinglePage(providerNamespace, resourceType,
-                nestedResourceTypeFirst, nestedResourceTypeSecond),
-            nextLink -> listByResourceTypeRegistrationNestedResourceTypeSecondNextSinglePage(nextLink));
+        return listByResourceTypeRegistrationNestedResourceTypeSecond(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, Context.NONE);
     }
 
-    /**
-     * Lists endpoint registrations for a second-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of endpoint registrations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointRegistrationInner> listByResourceTypeRegistrationNestedResourceTypeSecond(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
@@ -2408,21 +2045,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an endpoint registration for a third-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param endpointName The endpoint registration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an endpoint registration for a third-level nested resource type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointRegistrationInner> getNestedResourceTypeThirdWithResponse(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
@@ -2468,20 +2091,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             nestedResourceTypeSecond, nestedResourceTypeThird, endpointName, accept, context);
     }
 
-    /**
-     * Gets an endpoint registration for a third-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param endpointName The endpoint registration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an endpoint registration for a third-level nested resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointRegistrationInner getNestedResourceTypeThird(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird,
@@ -2580,23 +2190,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or replaces an endpoint registration for a third-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param endpointName The endpoint registration name.
-     * @param properties The endpoint registration supplied to the CreateOrUpdate operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an independently managed endpoint definition for a Resource Type Registration along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointRegistrationInner> createOrUpdateNestedResourceTypeThirdWithResponse(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
@@ -2649,21 +2243,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             nestedResourceTypeSecond, nestedResourceTypeThird, endpointName, contentType, accept, properties, context);
     }
 
-    /**
-     * Creates or replaces an endpoint registration for a third-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param endpointName The endpoint registration name.
-     * @param properties The endpoint registration supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an independently managed endpoint definition for a Resource Type Registration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointRegistrationInner createOrUpdateNestedResourceTypeThird(String providerNamespace,
         String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
@@ -2750,21 +2330,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             nestedResourceTypeSecond, nestedResourceTypeThird, endpointName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes an endpoint registration for a third-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param endpointName The endpoint registration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNestedResourceTypeThirdWithResponse(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird,
@@ -2809,19 +2375,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             nestedResourceTypeSecond, nestedResourceTypeThird, endpointName, context);
     }
 
-    /**
-     * Deletes an endpoint registration for a third-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param endpointName The endpoint registration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteNestedResourceTypeThird(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird,
@@ -2927,44 +2481,8 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
     private PagedResponse<EndpointRegistrationInner> listByResourceTypeRegistrationNestedResourceTypeThirdSinglePage(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
         String nestedResourceTypeThird) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (nestedResourceTypeFirst == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nestedResourceTypeFirst is required and cannot be null."));
-        }
-        if (nestedResourceTypeSecond == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter nestedResourceTypeSecond is required and cannot be null."));
-        }
-        if (nestedResourceTypeThird == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nestedResourceTypeThird is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<EndpointRegistrationArrayResponseWithContinuation> res
-            = service.listByResourceTypeRegistrationNestedResourceTypeThirdSync(this.client.getEndpoint(),
-                this.client.getApiVersion(), this.client.getSubscriptionId(), providerNamespace, resourceType,
-                nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceTypeRegistrationNestedResourceTypeThirdSinglePage(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird, Context.NONE);
     }
 
     /**
@@ -3025,43 +2543,16 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists endpoint registrations for a third-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of endpoint registrations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointRegistrationInner> listByResourceTypeRegistrationNestedResourceTypeThird(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
         String nestedResourceTypeThird) {
-        return new PagedIterable<>(
-            () -> listByResourceTypeRegistrationNestedResourceTypeThirdSinglePage(providerNamespace, resourceType,
-                nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird),
-            nextLink -> listByResourceTypeRegistrationNestedResourceTypeThirdNextSinglePage(nextLink));
+        return listByResourceTypeRegistrationNestedResourceTypeThird(providerNamespace, resourceType,
+            nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird, Context.NONE);
     }
 
-    /**
-     * Lists endpoint registrations for a third-level nested resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param nestedResourceTypeThird The third child resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of endpoint registrations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointRegistrationInner> listByResourceTypeRegistrationNestedResourceTypeThird(
         String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
@@ -3111,20 +2602,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointRegistrationInner> listByResourceTypeRegistrationNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<EndpointRegistrationArrayResponseWithContinuation> res
-            = service.listByResourceTypeRegistrationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceTypeRegistrationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3197,21 +2675,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointRegistrationInner>
         listByResourceTypeRegistrationNestedResourceTypeFirstNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<EndpointRegistrationArrayResponseWithContinuation> res
-            = service.listByResourceTypeRegistrationNestedResourceTypeFirstNextSync(nextLink, this.client.getEndpoint(),
-                accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceTypeRegistrationNestedResourceTypeFirstNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3285,21 +2749,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointRegistrationInner>
         listByResourceTypeRegistrationNestedResourceTypeSecondNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<EndpointRegistrationArrayResponseWithContinuation> res
-            = service.listByResourceTypeRegistrationNestedResourceTypeSecondNextSync(nextLink,
-                this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceTypeRegistrationNestedResourceTypeSecondNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3373,21 +2823,7 @@ public final class EndpointRegistrationsClientImpl implements EndpointRegistrati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointRegistrationInner>
         listByResourceTypeRegistrationNestedResourceTypeThirdNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<EndpointRegistrationArrayResponseWithContinuation> res
-            = service.listByResourceTypeRegistrationNestedResourceTypeThirdNextSync(nextLink, this.client.getEndpoint(),
-                accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceTypeRegistrationNestedResourceTypeThirdNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

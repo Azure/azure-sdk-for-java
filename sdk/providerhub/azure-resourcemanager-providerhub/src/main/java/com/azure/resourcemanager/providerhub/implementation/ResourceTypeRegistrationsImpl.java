@@ -84,14 +84,8 @@ public final class ResourceTypeRegistrationsImpl implements ResourceTypeRegistra
 
     public ResourceTypeRegistration createOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst, ResourceTypeRegistrationInner properties) {
-        ResourceTypeRegistrationInner inner = this.serviceClient()
-            .createOrUpdateNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst,
-                properties);
-        if (inner != null) {
-            return new ResourceTypeRegistrationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdateNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst,
+            properties, Context.NONE);
     }
 
     public ResourceTypeRegistration createOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
@@ -108,7 +102,7 @@ public final class ResourceTypeRegistrationsImpl implements ResourceTypeRegistra
 
     public void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType,
         String nestedResourceTypeFirst) {
-        this.serviceClient().deleteNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst);
+        this.deleteNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst, Context.NONE);
     }
 
     public void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType,
