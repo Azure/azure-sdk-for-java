@@ -128,21 +128,7 @@ public final class BackupInstanceOperationStatusFromDppCrossTenantVaultsClientIm
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the status of a cross-tenant operation (e.g. a cross-tenant restore) for a backup instance of the mapped
-     * source vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param operationId The name of the BackupInstanceResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a cross-tenant operation (e.g along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationResourceInner> getWithResponse(String resourceGroupName, String vaultName,
         String mappingName, String backupInstanceName, String operationId, Context context) {
@@ -151,20 +137,7 @@ public final class BackupInstanceOperationStatusFromDppCrossTenantVaultsClientIm
             resourceGroupName, vaultName, mappingName, backupInstanceName, operationId, accept, context);
     }
 
-    /**
-     * Gets the status of a cross-tenant operation (e.g. a cross-tenant restore) for a backup instance of the mapped
-     * source vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param operationId The name of the BackupInstanceResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a cross-tenant operation (e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationResourceInner get(String resourceGroupName, String vaultName, String mappingName,
         String backupInstanceName, String operationId) {

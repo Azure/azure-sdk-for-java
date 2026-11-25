@@ -27,10 +27,7 @@ public final class BackupInstancesFromDppCrossTenantVaultsImpl implements Backup
 
     public PagedIterable<CrossTenantBackupInstanceResource> list(String resourceGroupName, String vaultName,
         String mappingName) {
-        PagedIterable<CrossTenantBackupInstanceResourceInner> inner
-            = this.serviceClient().list(resourceGroupName, vaultName, mappingName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new CrossTenantBackupInstanceResourceImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, vaultName, mappingName, Context.NONE);
     }
 
     public PagedIterable<CrossTenantBackupInstanceResource> list(String resourceGroupName, String vaultName,

@@ -124,19 +124,7 @@ public final class BackupInstanceFromDppCrossTenantVaultsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a backup instance of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup instance of the mapped source vault in a different tenant along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CrossTenantBackupInstanceResourceInner> getWithResponse(String resourceGroupName, String vaultName,
         String mappingName, String backupInstanceName, Context context) {
@@ -145,18 +133,7 @@ public final class BackupInstanceFromDppCrossTenantVaultsClientImpl
             resourceGroupName, vaultName, mappingName, backupInstanceName, accept, context);
     }
 
-    /**
-     * Gets a backup instance of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup instance of the mapped source vault in a different tenant.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CrossTenantBackupInstanceResourceInner get(String resourceGroupName, String vaultName, String mappingName,
         String backupInstanceName) {

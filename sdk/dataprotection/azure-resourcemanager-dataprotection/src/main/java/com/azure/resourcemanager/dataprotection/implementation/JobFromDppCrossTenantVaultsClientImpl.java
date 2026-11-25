@@ -120,19 +120,7 @@ public final class JobFromDppCrossTenantVaultsClientImpl implements JobFromDppCr
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a job of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param jobId The name of the AzureBackupJobResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job of the mapped source vault in a different tenant along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureBackupJobResourceInner> getWithResponse(String resourceGroupName, String vaultName,
         String mappingName, String jobId, Context context) {
@@ -141,18 +129,7 @@ public final class JobFromDppCrossTenantVaultsClientImpl implements JobFromDppCr
             resourceGroupName, vaultName, mappingName, jobId, accept, context);
     }
 
-    /**
-     * Gets a job of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param jobId The name of the AzureBackupJobResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job of the mapped source vault in a different tenant.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureBackupJobResourceInner get(String resourceGroupName, String vaultName, String mappingName,
         String jobId) {

@@ -199,18 +199,7 @@ public final class DppCrossTenantVaultMappingsClientImpl implements DppCrossTena
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a cross-tenant vault mapping by name from the target vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param mappingName The name of the cross-tenant vault mapping.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cross-tenant vault mapping by name from the target vault along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CrossTenantVaultMappingInner> getWithResponse(String resourceGroupName, String vaultName,
         String mappingName, Context context) {
@@ -219,17 +208,7 @@ public final class DppCrossTenantVaultMappingsClientImpl implements DppCrossTena
             resourceGroupName, vaultName, mappingName, accept, context);
     }
 
-    /**
-     * Gets a cross-tenant vault mapping by name from the target vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param mappingName The name of the cross-tenant vault mapping.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cross-tenant vault mapping by name from the target vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CrossTenantVaultMappingInner get(String resourceGroupName, String vaultName, String mappingName) {
         return getWithResponse(resourceGroupName, vaultName, mappingName, Context.NONE).getValue();
@@ -279,19 +258,7 @@ public final class DppCrossTenantVaultMappingsClientImpl implements DppCrossTena
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a cross-tenant vault mapping under the target vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param mappingName The name of the cross-tenant vault mapping.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cross-tenant vault mapping resource for cross-tenant restore along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CrossTenantVaultMappingInner> createOrUpdateWithResponse(String resourceGroupName, String vaultName,
         String mappingName, CrossTenantVaultMappingInner resource, Context context) {
@@ -302,18 +269,7 @@ public final class DppCrossTenantVaultMappingsClientImpl implements DppCrossTena
             context);
     }
 
-    /**
-     * Creates or updates a cross-tenant vault mapping under the target vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param mappingName The name of the cross-tenant vault mapping.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cross-tenant vault mapping resource for cross-tenant restore.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CrossTenantVaultMappingInner createOrUpdate(String resourceGroupName, String vaultName, String mappingName,
         CrossTenantVaultMappingInner resource) {
@@ -371,12 +327,7 @@ public final class DppCrossTenantVaultMappingsClientImpl implements DppCrossTena
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CrossTenantVaultMappingInner> listSinglePage(String resourceGroupName, String vaultName) {
-        final String accept = "application/json";
-        Response<CrossTenantVaultMappingList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, Context.NONE);
     }
 
     /**
@@ -401,33 +352,13 @@ public final class DppCrossTenantVaultMappingsClientImpl implements DppCrossTena
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the cross-tenant vault mappings under the target vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of cross-tenant vault mapping resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CrossTenantVaultMappingInner> list(String resourceGroupName, String vaultName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, Context.NONE);
     }
 
-    /**
-     * Lists the cross-tenant vault mappings under the target vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of cross-tenant vault mapping resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CrossTenantVaultMappingInner> list(String resourceGroupName, String vaultName,
         Context context) {
@@ -474,19 +405,7 @@ public final class DppCrossTenantVaultMappingsClientImpl implements DppCrossTena
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Removes a cross-tenant vault mapping from the target vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param mappingName The name of the cross-tenant vault mapping.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeWithResponse(String resourceGroupName, String vaultName, String mappingName,
         CrossTenantVaultMappingRemoveRequest body, Context context) {
@@ -494,16 +413,7 @@ public final class DppCrossTenantVaultMappingsClientImpl implements DppCrossTena
             this.client.getSubscriptionId(), resourceGroupName, vaultName, mappingName, body, context);
     }
 
-    /**
-     * Removes a cross-tenant vault mapping from the target vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param mappingName The name of the cross-tenant vault mapping.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void remove(String resourceGroupName, String vaultName, String mappingName) {
         final CrossTenantVaultMappingRemoveRequest body = null;
@@ -540,11 +450,7 @@ public final class DppCrossTenantVaultMappingsClientImpl implements DppCrossTena
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CrossTenantVaultMappingInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CrossTenantVaultMappingList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

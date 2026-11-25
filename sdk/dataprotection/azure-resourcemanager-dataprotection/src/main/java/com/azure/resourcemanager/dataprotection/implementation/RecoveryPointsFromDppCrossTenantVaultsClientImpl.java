@@ -186,12 +186,7 @@ public final class RecoveryPointsFromDppCrossTenantVaultsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AzureBackupRecoveryPointResourceInner> listSinglePage(String resourceGroupName,
         String vaultName, String mappingName, String backupInstanceName, String filter) {
-        final String accept = "application/json";
-        Response<AzureBackupRecoveryPointResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, mappingName, backupInstanceName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, mappingName, backupInstanceName, filter, Context.NONE);
     }
 
     /**
@@ -219,41 +214,15 @@ public final class RecoveryPointsFromDppCrossTenantVaultsClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the vault-tier recovery points for a backup instance of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure backup recoveryPoint resource list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBackupRecoveryPointResourceInner> list(String resourceGroupName, String vaultName,
         String mappingName, String backupInstanceName) {
         final String filter = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, vaultName, mappingName, backupInstanceName, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, mappingName, backupInstanceName, filter, Context.NONE);
     }
 
-    /**
-     * Lists the vault-tier recovery points for a backup instance of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param filter OData filter options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure backup recoveryPoint resource list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBackupRecoveryPointResourceInner> list(String resourceGroupName, String vaultName,
         String mappingName, String backupInstanceName, String filter, Context context) {
@@ -292,11 +261,7 @@ public final class RecoveryPointsFromDppCrossTenantVaultsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AzureBackupRecoveryPointResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AzureBackupRecoveryPointResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

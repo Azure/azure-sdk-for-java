@@ -126,11 +126,7 @@ public final class RestoresFromDppCrossTenantVaultsClientImpl implements Restore
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> triggerWithResponse(String resourceGroupName, String vaultName, String mappingName,
         String backupInstanceName, AzureBackupRestoreRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.triggerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, mappingName, backupInstanceName, contentType,
-            accept, body, Context.NONE);
+        return triggerWithResponse(resourceGroupName, vaultName, mappingName, backupInstanceName, body, Context.NONE);
     }
 
     /**
@@ -181,43 +177,15 @@ public final class RestoresFromDppCrossTenantVaultsClientImpl implements Restore
             this.client.getContext());
     }
 
-    /**
-     * Triggers restore for a backup instance of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param body Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginTrigger(
         String resourceGroupName, String vaultName, String mappingName, String backupInstanceName,
         AzureBackupRestoreRequest body) {
-        Response<BinaryData> response
-            = triggerWithResponse(resourceGroupName, vaultName, mappingName, backupInstanceName, body);
-        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(response,
-            OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class, Context.NONE);
+        return beginTrigger(resourceGroupName, vaultName, mappingName, backupInstanceName, body, Context.NONE);
     }
 
-    /**
-     * Triggers restore for a backup instance of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param body Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginTrigger(
         String resourceGroupName, String vaultName, String mappingName, String backupInstanceName,
@@ -248,43 +216,18 @@ public final class RestoresFromDppCrossTenantVaultsClientImpl implements Restore
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Triggers restore for a backup instance of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param body Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner trigger(String resourceGroupName, String vaultName, String mappingName,
         String backupInstanceName, AzureBackupRestoreRequest body) {
-        return beginTrigger(resourceGroupName, vaultName, mappingName, backupInstanceName, body).getFinalResult();
+        return trigger(resourceGroupName, vaultName, mappingName, backupInstanceName, body, Context.NONE);
     }
 
-    /**
-     * Triggers restore for a backup instance of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param body Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner trigger(String resourceGroupName, String vaultName, String mappingName,
         String backupInstanceName, AzureBackupRestoreRequest body, Context context) {
-        return beginTrigger(resourceGroupName, vaultName, mappingName, backupInstanceName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginTrigger(resourceGroupName, vaultName, mappingName, backupInstanceName, body, context));
     }
 }

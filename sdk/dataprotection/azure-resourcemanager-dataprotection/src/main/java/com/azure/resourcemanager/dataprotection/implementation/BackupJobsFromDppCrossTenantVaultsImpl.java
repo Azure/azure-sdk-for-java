@@ -26,9 +26,7 @@ public final class BackupJobsFromDppCrossTenantVaultsImpl implements BackupJobsF
     }
 
     public PagedIterable<AzureBackupJobResource> list(String resourceGroupName, String vaultName, String mappingName) {
-        PagedIterable<AzureBackupJobResourceInner> inner
-            = this.serviceClient().list(resourceGroupName, vaultName, mappingName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureBackupJobResourceImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, vaultName, mappingName, Context.NONE);
     }
 
     public PagedIterable<AzureBackupJobResource> list(String resourceGroupName, String vaultName, String mappingName,

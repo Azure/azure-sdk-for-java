@@ -130,22 +130,7 @@ public final class BackupInstanceOperationResultFromDppCrossTenantVaultsClientIm
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetches the result of a cross-tenant operation (e.g. a cross-tenant restore) for a backup instance of the
-     * mapped source vault - the leg the restore's Location header points at. Returns 202 with Location/Retry-After
-     * while pending, and 200 with the operation result body when complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param operationId The name of the BackupInstanceResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInstanceOperationResultFromDppCrossTenantVaultsGetResponse getWithResponse(String resourceGroupName,
         String vaultName, String mappingName, String backupInstanceName, String operationId, Context context) {
@@ -154,21 +139,7 @@ public final class BackupInstanceOperationResultFromDppCrossTenantVaultsClientIm
             resourceGroupName, vaultName, mappingName, backupInstanceName, operationId, accept, context);
     }
 
-    /**
-     * Fetches the result of a cross-tenant operation (e.g. a cross-tenant restore) for a backup instance of the
-     * mapped source vault - the leg the restore's Location header points at. Returns 202 with Location/Retry-After
-     * while pending, and 200 with the operation result body when complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param operationId The name of the BackupInstanceResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner get(String resourceGroupName, String vaultName, String mappingName,
         String backupInstanceName, String operationId) {

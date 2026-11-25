@@ -113,18 +113,7 @@ public final class DppCrossTenantVaultMappingStatusClientImpl implements DppCros
         return checkWithResponseAsync(resourceGroupName, vaultName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the status (Active/Inactive) of a cross-tenant vault mapping from the source vault side.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status (Active/Inactive) of a cross-tenant vault mapping from the source vault side along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CrossTenantVaultMappingStatusResponseInner> checkWithResponse(String resourceGroupName,
         String vaultName, Context context) {
@@ -133,16 +122,7 @@ public final class DppCrossTenantVaultMappingStatusClientImpl implements DppCros
             this.client.getSubscriptionId(), resourceGroupName, vaultName, accept, context);
     }
 
-    /**
-     * Gets the status (Active/Inactive) of a cross-tenant vault mapping from the source vault side.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status (Active/Inactive) of a cross-tenant vault mapping from the source vault side.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CrossTenantVaultMappingStatusResponseInner check(String resourceGroupName, String vaultName) {
         return checkWithResponse(resourceGroupName, vaultName, Context.NONE).getValue();

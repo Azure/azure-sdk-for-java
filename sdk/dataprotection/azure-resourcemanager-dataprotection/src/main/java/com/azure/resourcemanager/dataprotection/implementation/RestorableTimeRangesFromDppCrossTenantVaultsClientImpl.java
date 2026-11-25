@@ -131,20 +131,7 @@ public final class RestorableTimeRangesFromDppCrossTenantVaultsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Finds the restorable time ranges for a backup instance of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param body Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Restore Ranges Response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureBackupFindRestorableTimeRangesResponseResourceInner> findWithResponse(String resourceGroupName,
         String vaultName, String mappingName, String backupInstanceName,
@@ -155,19 +142,7 @@ public final class RestorableTimeRangesFromDppCrossTenantVaultsClientImpl
             resourceGroupName, vaultName, mappingName, backupInstanceName, contentType, accept, body, context);
     }
 
-    /**
-     * Finds the restorable time ranges for a backup instance of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param body Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Restore Ranges Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureBackupFindRestorableTimeRangesResponseResourceInner find(String resourceGroupName, String vaultName,
         String mappingName, String backupInstanceName, AzureBackupFindRestorableTimeRangesRequest body) {

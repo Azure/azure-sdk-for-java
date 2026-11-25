@@ -155,12 +155,7 @@ public final class BackupInstancesFromDppCrossTenantVaultsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CrossTenantBackupInstanceResourceInner> listSinglePage(String resourceGroupName,
         String vaultName, String mappingName) {
-        final String accept = "application/json";
-        Response<CrossTenantBackupInstanceResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, mappingName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, mappingName, Context.NONE);
     }
 
     /**
@@ -186,36 +181,14 @@ public final class BackupInstancesFromDppCrossTenantVaultsClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the backup instances of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cross-tenant BackupInstance resource list response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CrossTenantBackupInstanceResourceInner> list(String resourceGroupName, String vaultName,
         String mappingName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName, mappingName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, mappingName, Context.NONE);
     }
 
-    /**
-     * Lists the backup instances of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cross-tenant BackupInstance resource list response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CrossTenantBackupInstanceResourceInner> list(String resourceGroupName, String vaultName,
         String mappingName, Context context) {
@@ -253,11 +226,7 @@ public final class BackupInstancesFromDppCrossTenantVaultsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CrossTenantBackupInstanceResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CrossTenantBackupInstanceResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -153,12 +153,7 @@ public final class BackupJobsFromDppCrossTenantVaultsClientImpl implements Backu
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AzureBackupJobResourceInner> listSinglePage(String resourceGroupName, String vaultName,
         String mappingName) {
-        final String accept = "application/json";
-        Response<AzureBackupJobResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, mappingName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, mappingName, Context.NONE);
     }
 
     /**
@@ -184,36 +179,14 @@ public final class BackupJobsFromDppCrossTenantVaultsClientImpl implements Backu
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the jobs of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AzureBackup Job resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBackupJobResourceInner> list(String resourceGroupName, String vaultName,
         String mappingName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName, mappingName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, mappingName, Context.NONE);
     }
 
-    /**
-     * Lists the jobs of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AzureBackup Job resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBackupJobResourceInner> list(String resourceGroupName, String vaultName,
         String mappingName, Context context) {
@@ -251,11 +224,7 @@ public final class BackupJobsFromDppCrossTenantVaultsClientImpl implements Backu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AzureBackupJobResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AzureBackupJobResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

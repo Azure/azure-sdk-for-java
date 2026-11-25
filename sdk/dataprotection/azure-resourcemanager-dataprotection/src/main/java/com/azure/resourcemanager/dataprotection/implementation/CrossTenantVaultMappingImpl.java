@@ -63,11 +63,7 @@ public final class CrossTenantVaultMappingImpl
     }
 
     public CrossTenantVaultMapping create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDppCrossTenantVaultMappings()
-            .createOrUpdateWithResponse(resourceGroupName, vaultName, mappingName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CrossTenantVaultMapping create(Context context) {
@@ -90,11 +86,7 @@ public final class CrossTenantVaultMappingImpl
     }
 
     public CrossTenantVaultMapping apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDppCrossTenantVaultMappings()
-            .createOrUpdateWithResponse(resourceGroupName, vaultName, mappingName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CrossTenantVaultMapping apply(Context context) {
@@ -121,11 +113,7 @@ public final class CrossTenantVaultMappingImpl
     }
 
     public CrossTenantVaultMapping refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDppCrossTenantVaultMappings()
-            .getWithResponse(resourceGroupName, vaultName, mappingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CrossTenantVaultMapping refresh(Context context) {

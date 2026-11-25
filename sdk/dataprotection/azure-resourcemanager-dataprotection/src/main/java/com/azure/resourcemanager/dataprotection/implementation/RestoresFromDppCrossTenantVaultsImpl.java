@@ -27,13 +27,7 @@ public final class RestoresFromDppCrossTenantVaultsImpl implements RestoresFromD
 
     public OperationJobExtendedInfo trigger(String resourceGroupName, String vaultName, String mappingName,
         String backupInstanceName, AzureBackupRestoreRequest body) {
-        OperationJobExtendedInfoInner inner
-            = this.serviceClient().trigger(resourceGroupName, vaultName, mappingName, backupInstanceName, body);
-        if (inner != null) {
-            return new OperationJobExtendedInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.trigger(resourceGroupName, vaultName, mappingName, backupInstanceName, body, Context.NONE);
     }
 
     public OperationJobExtendedInfo trigger(String resourceGroupName, String vaultName, String mappingName,

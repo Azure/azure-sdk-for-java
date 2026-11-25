@@ -128,21 +128,7 @@ public final class RecoveryPointFromDppCrossTenantVaultsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a vault-tier recovery point for a backup instance of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param recoveryPointId The name of the AzureBackupRecoveryPointResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vault-tier recovery point for a backup instance of the mapped source vault in a different tenant along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureBackupRecoveryPointResourceInner> getWithResponse(String resourceGroupName, String vaultName,
         String mappingName, String backupInstanceName, String recoveryPointId, Context context) {
@@ -151,19 +137,7 @@ public final class RecoveryPointFromDppCrossTenantVaultsClientImpl
             resourceGroupName, vaultName, mappingName, backupInstanceName, recoveryPointId, accept, context);
     }
 
-    /**
-     * Gets a vault-tier recovery point for a backup instance of the mapped source vault in a different tenant.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param mappingName The name of the CrossTenantVaultMapping.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param recoveryPointId The name of the AzureBackupRecoveryPointResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vault-tier recovery point for a backup instance of the mapped source vault in a different tenant.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureBackupRecoveryPointResourceInner get(String resourceGroupName, String vaultName, String mappingName,
         String backupInstanceName, String recoveryPointId) {
