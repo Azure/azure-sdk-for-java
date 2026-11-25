@@ -51,13 +51,8 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
 
     public EventSubscription createOrUpdate(String resourceGroupName, String domainName, String eventSubscriptionName,
         EventSubscriptionInner eventSubscriptionInfo) {
-        EventSubscriptionInner inner = this.serviceClient()
-            .createOrUpdate(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionInfo);
-        if (inner != null) {
-            return new EventSubscriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionInfo,
+            Context.NONE);
     }
 
     public EventSubscription createOrUpdate(String resourceGroupName, String domainName, String eventSubscriptionName,
@@ -73,13 +68,8 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
 
     public EventSubscription update(String resourceGroupName, String domainName, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        EventSubscriptionInner inner = this.serviceClient()
-            .update(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionUpdateParameters);
-        if (inner != null) {
-            return new EventSubscriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionUpdateParameters,
+            Context.NONE);
     }
 
     public EventSubscription update(String resourceGroupName, String domainName, String eventSubscriptionName,
@@ -94,7 +84,7 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
     }
 
     public void delete(String resourceGroupName, String domainName, String eventSubscriptionName) {
-        this.serviceClient().delete(resourceGroupName, domainName, eventSubscriptionName);
+        this.delete(resourceGroupName, domainName, eventSubscriptionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String domainName, String eventSubscriptionName, Context context) {

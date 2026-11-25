@@ -89,10 +89,7 @@ public final class ClientImpl implements Client, Client.Definition, Client.Updat
     }
 
     public Client create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClients()
-            .createOrUpdate(resourceGroupName, namespaceName, clientName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Client create(Context context) {
@@ -113,10 +110,7 @@ public final class ClientImpl implements Client, Client.Definition, Client.Updat
     }
 
     public Client apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClients()
-            .createOrUpdate(resourceGroupName, namespaceName, clientName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Client apply(Context context) {
@@ -141,11 +135,7 @@ public final class ClientImpl implements Client, Client.Definition, Client.Updat
     }
 
     public Client refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClients()
-            .getWithResponse(resourceGroupName, namespaceName, clientName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Client refresh(Context context) {

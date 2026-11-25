@@ -52,13 +52,8 @@ public final class PartnerTopicEventSubscriptionsImpl implements PartnerTopicEve
 
     public EventSubscription createOrUpdate(String resourceGroupName, String partnerTopicName,
         String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
-        EventSubscriptionInner inner = this.serviceClient()
-            .createOrUpdate(resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionInfo);
-        if (inner != null) {
-            return new EventSubscriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionInfo,
+            Context.NONE);
     }
 
     public EventSubscription createOrUpdate(String resourceGroupName, String partnerTopicName,
@@ -74,13 +69,8 @@ public final class PartnerTopicEventSubscriptionsImpl implements PartnerTopicEve
 
     public EventSubscription update(String resourceGroupName, String partnerTopicName, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        EventSubscriptionInner inner = this.serviceClient()
-            .update(resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters);
-        if (inner != null) {
-            return new EventSubscriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, partnerTopicName, eventSubscriptionName,
+            eventSubscriptionUpdateParameters, Context.NONE);
     }
 
     public EventSubscription update(String resourceGroupName, String partnerTopicName, String eventSubscriptionName,
@@ -96,7 +86,7 @@ public final class PartnerTopicEventSubscriptionsImpl implements PartnerTopicEve
     }
 
     public void delete(String resourceGroupName, String partnerTopicName, String eventSubscriptionName) {
-        this.serviceClient().delete(resourceGroupName, partnerTopicName, eventSubscriptionName);
+        this.delete(resourceGroupName, partnerTopicName, eventSubscriptionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String partnerTopicName, String eventSubscriptionName,

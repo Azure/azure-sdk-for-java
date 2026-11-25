@@ -212,22 +212,7 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a permission binding.
-     * 
-     * Get properties of a permission binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param permissionBindingName Name of the permission binding.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a permission binding.
-     * 
-     * Get properties of a permission binding along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PermissionBindingInner> getWithResponse(String resourceGroupName, String namespaceName,
         String permissionBindingName, Context context) {
@@ -236,21 +221,7 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
             resourceGroupName, namespaceName, permissionBindingName, accept, context);
     }
 
-    /**
-     * Get a permission binding.
-     * 
-     * Get properties of a permission binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param permissionBindingName Name of the permission binding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a permission binding.
-     * 
-     * Get properties of a permission binding.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PermissionBindingInner get(String resourceGroupName, String namespaceName, String permissionBindingName) {
         return getWithResponse(resourceGroupName, namespaceName, permissionBindingName, Context.NONE).getValue();
@@ -299,11 +270,8 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         String permissionBindingName, PermissionBindingInner permissionBindingInfo) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, permissionBindingName, contentType,
-            accept, permissionBindingInfo, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, namespaceName, permissionBindingName,
+            permissionBindingInfo, Context.NONE);
     }
 
     /**
@@ -356,45 +324,16 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
             this.client.getContext());
     }
 
-    /**
-     * Create or update a permission binding.
-     * 
-     * Create or update a permission binding with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param permissionBindingName Name of the permission binding.
-     * @param permissionBindingInfo Permission binding information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Permission binding resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PermissionBindingInner>, PermissionBindingInner> beginCreateOrUpdate(
         String resourceGroupName, String namespaceName, String permissionBindingName,
         PermissionBindingInner permissionBindingInfo) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, namespaceName,
-            permissionBindingName, permissionBindingInfo);
-        return this.client.<PermissionBindingInner, PermissionBindingInner>getLroResult(response,
-            PermissionBindingInner.class, PermissionBindingInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, namespaceName, permissionBindingName, permissionBindingInfo,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a permission binding.
-     * 
-     * Create or update a permission binding with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param permissionBindingName Name of the permission binding.
-     * @param permissionBindingInfo Permission binding information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Permission binding resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PermissionBindingInner>, PermissionBindingInner> beginCreateOrUpdate(
         String resourceGroupName, String namespaceName, String permissionBindingName,
@@ -427,47 +366,20 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a permission binding.
-     * 
-     * Create or update a permission binding with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param permissionBindingName Name of the permission binding.
-     * @param permissionBindingInfo Permission binding information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Permission binding resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PermissionBindingInner createOrUpdate(String resourceGroupName, String namespaceName,
         String permissionBindingName, PermissionBindingInner permissionBindingInfo) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, permissionBindingName, permissionBindingInfo)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, namespaceName, permissionBindingName, permissionBindingInfo,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a permission binding.
-     * 
-     * Create or update a permission binding with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param permissionBindingName Name of the permission binding.
-     * @param permissionBindingInfo Permission binding information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Permission binding resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PermissionBindingInner createOrUpdate(String resourceGroupName, String namespaceName,
         String permissionBindingName, PermissionBindingInner permissionBindingInfo, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, permissionBindingName, permissionBindingInfo,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, namespaceName,
+            permissionBindingName, permissionBindingInfo, context));
     }
 
     /**
@@ -508,8 +420,7 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String namespaceName,
         String permissionBindingName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, permissionBindingName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, namespaceName, permissionBindingName, Context.NONE);
     }
 
     /**
@@ -555,40 +466,14 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
             this.client.getContext());
     }
 
-    /**
-     * Delete a permission binding.
-     * 
-     * Delete an existing permission binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param permissionBindingName Name of the permission binding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String permissionBindingName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, namespaceName, permissionBindingName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, namespaceName, permissionBindingName, Context.NONE);
     }
 
-    /**
-     * Delete a permission binding.
-     * 
-     * Delete an existing permission binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param permissionBindingName Name of the permission binding.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String permissionBindingName, Context context) {
@@ -616,39 +501,17 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a permission binding.
-     * 
-     * Delete an existing permission binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param permissionBindingName Name of the permission binding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String permissionBindingName) {
-        beginDelete(resourceGroupName, namespaceName, permissionBindingName).getFinalResult();
+        delete(resourceGroupName, namespaceName, permissionBindingName, Context.NONE);
     }
 
-    /**
-     * Delete a permission binding.
-     * 
-     * Delete an existing permission binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param permissionBindingName Name of the permission binding.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String permissionBindingName, Context context) {
-        beginDelete(resourceGroupName, namespaceName, permissionBindingName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, namespaceName, permissionBindingName, context));
     }
 
     /**
@@ -751,12 +614,7 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PermissionBindingInner> listByNamespaceSinglePage(String resourceGroupName,
         String namespaceName, String filter, Integer top) {
-        final String accept = "application/json";
-        Response<PermissionBindingsListResult> res
-            = service.listByNamespaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceSinglePage(resourceGroupName, namespaceName, filter, top, Context.NONE);
     }
 
     /**
@@ -790,46 +648,15 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all permission bindings under a namespace.
-     * 
-     * Get all the permission bindings under a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Permission Binding operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PermissionBindingInner> listByNamespace(String resourceGroupName, String namespaceName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listByNamespaceSinglePage(resourceGroupName, namespaceName, filter, top),
-            nextLink -> listByNamespaceNextSinglePage(nextLink));
+        return listByNamespace(resourceGroupName, namespaceName, filter, top, Context.NONE);
     }
 
-    /**
-     * List all permission bindings under a namespace.
-     * 
-     * Get all the permission bindings under a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Permission Binding operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PermissionBindingInner> listByNamespace(String resourceGroupName, String namespaceName,
         String filter, Integer top, Context context) {
@@ -873,11 +700,7 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PermissionBindingInner> listByNamespaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PermissionBindingsListResult> res
-            = service.listByNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

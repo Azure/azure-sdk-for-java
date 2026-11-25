@@ -213,22 +213,7 @@ public final class CaCertificatesClientImpl implements CaCertificatesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a CA certificate.
-     * 
-     * Get properties of a CA certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param caCertificateName Name of the CA certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CA certificate.
-     * 
-     * Get properties of a CA certificate along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CaCertificateInner> getWithResponse(String resourceGroupName, String namespaceName,
         String caCertificateName, Context context) {
@@ -237,21 +222,7 @@ public final class CaCertificatesClientImpl implements CaCertificatesClient {
             resourceGroupName, namespaceName, caCertificateName, accept, context);
     }
 
-    /**
-     * Get a CA certificate.
-     * 
-     * Get properties of a CA certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param caCertificateName Name of the CA certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CA certificate.
-     * 
-     * Get properties of a CA certificate.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CaCertificateInner get(String resourceGroupName, String namespaceName, String caCertificateName) {
         return getWithResponse(resourceGroupName, namespaceName, caCertificateName, Context.NONE).getValue();
@@ -300,11 +271,8 @@ public final class CaCertificatesClientImpl implements CaCertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         String caCertificateName, CaCertificateInner caCertificateInfo) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, caCertificateName, contentType, accept,
-            caCertificateInfo, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, namespaceName, caCertificateName, caCertificateInfo,
+            Context.NONE);
     }
 
     /**
@@ -356,44 +324,15 @@ public final class CaCertificatesClientImpl implements CaCertificatesClient {
             CaCertificateInner.class, CaCertificateInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a CA certificate.
-     * 
-     * Create or update a CA certificate with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param caCertificateName Name of the CA certificate.
-     * @param caCertificateInfo CA certificate information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the CA Certificate resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CaCertificateInner>, CaCertificateInner> beginCreateOrUpdate(String resourceGroupName,
         String namespaceName, String caCertificateName, CaCertificateInner caCertificateInfo) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, namespaceName, caCertificateName, caCertificateInfo);
-        return this.client.<CaCertificateInner, CaCertificateInner>getLroResult(response, CaCertificateInner.class,
-            CaCertificateInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, namespaceName, caCertificateName, caCertificateInfo,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a CA certificate.
-     * 
-     * Create or update a CA certificate with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param caCertificateName Name of the CA certificate.
-     * @param caCertificateInfo CA certificate information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the CA Certificate resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CaCertificateInner>, CaCertificateInner> beginCreateOrUpdate(String resourceGroupName,
         String namespaceName, String caCertificateName, CaCertificateInner caCertificateInfo, Context context) {
@@ -424,47 +363,19 @@ public final class CaCertificatesClientImpl implements CaCertificatesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a CA certificate.
-     * 
-     * Create or update a CA certificate with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param caCertificateName Name of the CA certificate.
-     * @param caCertificateInfo CA certificate information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CA Certificate resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CaCertificateInner createOrUpdate(String resourceGroupName, String namespaceName, String caCertificateName,
         CaCertificateInner caCertificateInfo) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, caCertificateName, caCertificateInfo)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, namespaceName, caCertificateName, caCertificateInfo, Context.NONE);
     }
 
-    /**
-     * Create or update a CA certificate.
-     * 
-     * Create or update a CA certificate with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param caCertificateName Name of the CA certificate.
-     * @param caCertificateInfo CA certificate information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CA Certificate resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CaCertificateInner createOrUpdate(String resourceGroupName, String namespaceName, String caCertificateName,
         CaCertificateInner caCertificateInfo, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, caCertificateName, caCertificateInfo, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, namespaceName, caCertificateName, caCertificateInfo, context));
     }
 
     /**
@@ -505,8 +416,7 @@ public final class CaCertificatesClientImpl implements CaCertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String namespaceName,
         String caCertificateName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, caCertificateName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, namespaceName, caCertificateName, Context.NONE);
     }
 
     /**
@@ -552,40 +462,14 @@ public final class CaCertificatesClientImpl implements CaCertificatesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a CA certificate.
-     * 
-     * Delete an existing CA certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param caCertificateName Name of the CA certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String caCertificateName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, namespaceName, caCertificateName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, namespaceName, caCertificateName, Context.NONE);
     }
 
-    /**
-     * Delete a CA certificate.
-     * 
-     * Delete an existing CA certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param caCertificateName Name of the CA certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String caCertificateName, Context context) {
@@ -613,39 +497,16 @@ public final class CaCertificatesClientImpl implements CaCertificatesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a CA certificate.
-     * 
-     * Delete an existing CA certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param caCertificateName Name of the CA certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String caCertificateName) {
-        beginDelete(resourceGroupName, namespaceName, caCertificateName).getFinalResult();
+        delete(resourceGroupName, namespaceName, caCertificateName, Context.NONE);
     }
 
-    /**
-     * Delete a CA certificate.
-     * 
-     * Delete an existing CA certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param caCertificateName Name of the CA certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String caCertificateName, Context context) {
-        beginDelete(resourceGroupName, namespaceName, caCertificateName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, namespaceName, caCertificateName, context));
     }
 
     /**
@@ -748,12 +609,7 @@ public final class CaCertificatesClientImpl implements CaCertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CaCertificateInner> listByNamespaceSinglePage(String resourceGroupName, String namespaceName,
         String filter, Integer top) {
-        final String accept = "application/json";
-        Response<CaCertificatesListResult> res
-            = service.listByNamespaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceSinglePage(resourceGroupName, namespaceName, filter, top, Context.NONE);
     }
 
     /**
@@ -787,46 +643,15 @@ public final class CaCertificatesClientImpl implements CaCertificatesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all CA certificates under a namespace.
-     * 
-     * Get all the CA certificates under a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List CA Certificate operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CaCertificateInner> listByNamespace(String resourceGroupName, String namespaceName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listByNamespaceSinglePage(resourceGroupName, namespaceName, filter, top),
-            nextLink -> listByNamespaceNextSinglePage(nextLink));
+        return listByNamespace(resourceGroupName, namespaceName, filter, top, Context.NONE);
     }
 
-    /**
-     * List all CA certificates under a namespace.
-     * 
-     * Get all the CA certificates under a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List CA Certificate operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CaCertificateInner> listByNamespace(String resourceGroupName, String namespaceName,
         String filter, Integer top, Context context) {
@@ -870,11 +695,7 @@ public final class CaCertificatesClientImpl implements CaCertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CaCertificateInner> listByNamespaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CaCertificatesListResult> res
-            = service.listByNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

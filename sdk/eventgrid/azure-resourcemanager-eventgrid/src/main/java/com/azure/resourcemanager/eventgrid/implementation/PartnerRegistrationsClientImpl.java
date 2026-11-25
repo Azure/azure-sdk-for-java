@@ -268,21 +268,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a partner registration.
-     * 
-     * Gets a partner registration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a partner registration.
-     * 
-     * Gets a partner registration with the specified parameters along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartnerRegistrationInner> getByResourceGroupWithResponse(String resourceGroupName,
         String partnerRegistrationName, Context context) {
@@ -291,20 +277,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
             this.client.getSubscriptionId(), resourceGroupName, partnerRegistrationName, accept, context);
     }
 
-    /**
-     * Get a partner registration.
-     * 
-     * Gets a partner registration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a partner registration.
-     * 
-     * Gets a partner registration with the specified parameters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerRegistrationInner getByResourceGroup(String resourceGroupName, String partnerRegistrationName) {
         return getByResourceGroupWithResponse(resourceGroupName, partnerRegistrationName, Context.NONE).getValue();
@@ -352,11 +325,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String partnerRegistrationName,
         PartnerRegistrationInner partnerRegistrationInfo) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, partnerRegistrationName, contentType, accept,
-            partnerRegistrationInfo, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo,
+            Context.NONE);
     }
 
     /**
@@ -406,42 +376,14 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
             this.client.getContext());
     }
 
-    /**
-     * Create a partner registration.
-     * 
-     * Creates a new partner registration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @param partnerRegistrationInfo PartnerRegistration information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information about a partner registration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginCreateOrUpdate(
         String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo);
-        return this.client.<PartnerRegistrationInner, PartnerRegistrationInner>getLroResult(response,
-            PartnerRegistrationInner.class, PartnerRegistrationInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, Context.NONE);
     }
 
-    /**
-     * Create a partner registration.
-     * 
-     * Creates a new partner registration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @param partnerRegistrationInfo PartnerRegistration information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information about a partner registration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginCreateOrUpdate(
         String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo,
@@ -472,45 +414,19 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a partner registration.
-     * 
-     * Creates a new partner registration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @param partnerRegistrationInfo PartnerRegistration information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a partner registration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerRegistrationInner createOrUpdate(String resourceGroupName, String partnerRegistrationName,
         PartnerRegistrationInner partnerRegistrationInfo) {
-        return beginCreateOrUpdate(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, Context.NONE);
     }
 
-    /**
-     * Create a partner registration.
-     * 
-     * Creates a new partner registration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @param partnerRegistrationInfo PartnerRegistration information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a partner registration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerRegistrationInner createOrUpdate(String resourceGroupName, String partnerRegistrationName,
         PartnerRegistrationInner partnerRegistrationInfo, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, context));
     }
 
     /**
@@ -554,11 +470,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String partnerRegistrationName,
         PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, partnerRegistrationName, contentType, accept,
-            partnerRegistrationUpdateParameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters,
+            Context.NONE);
     }
 
     /**
@@ -609,43 +522,16 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
             this.client.getContext());
     }
 
-    /**
-     * Update a partner registration.
-     * 
-     * Updates a partner registration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @param partnerRegistrationUpdateParameters Partner registration update information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginUpdate(
         String resourceGroupName, String partnerRegistrationName,
         PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters);
-        return this.client.<PartnerRegistrationInner, PartnerRegistrationInner>getLroResult(response,
-            PartnerRegistrationInner.class, PartnerRegistrationInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters,
+            Context.NONE);
     }
 
-    /**
-     * Update a partner registration.
-     * 
-     * Updates a partner registration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @param partnerRegistrationUpdateParameters Partner registration update information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginUpdate(
         String resourceGroupName, String partnerRegistrationName,
@@ -676,45 +562,19 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a partner registration.
-     * 
-     * Updates a partner registration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @param partnerRegistrationUpdateParameters Partner registration update information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerRegistrationInner update(String resourceGroupName, String partnerRegistrationName,
         PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters) {
-        return beginUpdate(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters)
-            .getFinalResult();
+        return update(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Update a partner registration.
-     * 
-     * Updates a partner registration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @param partnerRegistrationUpdateParameters Partner registration update information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerRegistrationInner update(String resourceGroupName, String partnerRegistrationName,
         PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters, Context context) {
-        return beginUpdate(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters, context));
     }
 
     /**
@@ -752,8 +612,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String partnerRegistrationName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, partnerRegistrationName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, partnerRegistrationName, Context.NONE);
     }
 
     /**
@@ -796,37 +655,13 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
             this.client.getContext());
     }
 
-    /**
-     * Delete a partner registration.
-     * 
-     * Deletes a partner registration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerRegistrationName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, partnerRegistrationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, partnerRegistrationName, Context.NONE);
     }
 
-    /**
-     * Delete a partner registration.
-     * 
-     * Deletes a partner registration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerRegistrationName,
         Context context) {
@@ -852,37 +687,16 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a partner registration.
-     * 
-     * Deletes a partner registration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String partnerRegistrationName) {
-        beginDelete(resourceGroupName, partnerRegistrationName).getFinalResult();
+        delete(resourceGroupName, partnerRegistrationName, Context.NONE);
     }
 
-    /**
-     * Delete a partner registration.
-     * 
-     * Deletes a partner registration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String partnerRegistrationName, Context context) {
-        beginDelete(resourceGroupName, partnerRegistrationName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, partnerRegistrationName, context));
     }
 
     /**
@@ -981,12 +795,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PartnerRegistrationInner> listByResourceGroupSinglePage(String resourceGroupName,
         String filter, Integer top) {
-        final String accept = "application/json";
-        Response<PartnerRegistrationsListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, filter, top, Context.NONE);
     }
 
     /**
@@ -1019,44 +828,15 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List partner registrations under a resource group.
-     * 
-     * List all the partner registrations under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerRegistrationInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, filter, top),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, filter, top, Context.NONE);
     }
 
-    /**
-     * List partner registrations under a resource group.
-     * 
-     * List all the partner registrations under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerRegistrationInner> listByResourceGroup(String resourceGroupName, String filter,
         Integer top, Context context) {
@@ -1152,11 +932,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PartnerRegistrationInner> listSinglePage(String filter, Integer top) {
-        final String accept = "application/json";
-        Response<PartnerRegistrationsListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, top, Context.NONE);
     }
 
     /**
@@ -1186,41 +962,15 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List partner registrations under an Azure subscription.
-     * 
-     * List all the partner registrations under an Azure subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerRegistrationInner> list() {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(filter, top),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(filter, top, Context.NONE);
     }
 
-    /**
-     * List partner registrations under an Azure subscription.
-     * 
-     * List all the partner registrations under an Azure subscription.
-     * 
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerRegistrationInner> list(String filter, Integer top, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, top, context),
@@ -1263,11 +1013,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PartnerRegistrationInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PartnerRegistrationsListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1328,11 +1074,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PartnerRegistrationInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PartnerRegistrationsListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

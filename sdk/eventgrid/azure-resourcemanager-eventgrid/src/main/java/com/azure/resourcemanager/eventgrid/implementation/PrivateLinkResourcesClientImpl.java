@@ -177,26 +177,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a private link resource.
-     * 
-     * Get properties of a private link resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentType The type of the parent resource. This can be either \\'topics\\', \\'domains\\', or
-     * \\'partnerNamespaces\\' or \\'namespaces\\'.
-     * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     * namespace name or namespace name).
-     * @param privateLinkResourceName The name of private link resource will be either topic, domain, partnerNamespace
-     * or namespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource.
-     * 
-     * Get properties of a private link resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String parentType,
         String parentName, String privateLinkResourceName, Context context) {
@@ -205,25 +186,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             resourceGroupName, parentType, parentName, privateLinkResourceName, accept, context);
     }
 
-    /**
-     * Get a private link resource.
-     * 
-     * Get properties of a private link resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentType The type of the parent resource. This can be either \\'topics\\', \\'domains\\', or
-     * \\'partnerNamespaces\\' or \\'namespaces\\'.
-     * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     * namespace name or namespace name).
-     * @param privateLinkResourceName The name of private link resource will be either topic, domain, partnerNamespace
-     * or namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource.
-     * 
-     * Get properties of a private link resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourceInner get(String resourceGroupName, String parentType, String parentName,
         String privateLinkResourceName) {
@@ -347,12 +310,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByResourceSinglePage(String resourceGroupName,
         String parentType, String parentName, String filter, Integer top) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourcesListResult> res = service.listByResourceSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, parentType, parentName,
-            filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceSinglePage(resourceGroupName, parentType, parentName, filter, top, Context.NONE);
     }
 
     /**
@@ -389,54 +347,16 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List private link resources under specific topic, domain, or partner namespace or namespace.
-     * 
-     * List all the private link resources under a topic, domain, or partner namespace or namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentType The type of the parent resource. This can be either \\'topics\\', \\'domains\\', or
-     * \\'partnerNamespaces\\' or \\'namespaces\\'.
-     * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     * namespace name or namespace name).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List private link resources operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByResource(String resourceGroupName, String parentType,
         String parentName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(
-            () -> listByResourceSinglePage(resourceGroupName, parentType, parentName, filter, top),
-            nextLink -> listByResourceNextSinglePage(nextLink));
+        return listByResource(resourceGroupName, parentType, parentName, filter, top, Context.NONE);
     }
 
-    /**
-     * List private link resources under specific topic, domain, or partner namespace or namespace.
-     * 
-     * List all the private link resources under a topic, domain, or partner namespace or namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentType The type of the parent resource. This can be either \\'topics\\', \\'domains\\', or
-     * \\'partnerNamespaces\\' or \\'namespaces\\'.
-     * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     * namespace name or namespace name).
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List private link resources operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByResource(String resourceGroupName, String parentType,
         String parentName, String filter, Integer top, Context context) {
@@ -480,11 +400,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourcesListResult> res
-            = service.listByResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

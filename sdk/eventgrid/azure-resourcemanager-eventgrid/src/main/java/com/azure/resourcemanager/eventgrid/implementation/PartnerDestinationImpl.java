@@ -112,10 +112,7 @@ public final class PartnerDestinationImpl
     }
 
     public PartnerDestination create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPartnerDestinations()
-            .createOrUpdate(resourceGroupName, partnerDestinationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PartnerDestination create(Context context) {
@@ -137,10 +134,7 @@ public final class PartnerDestinationImpl
     }
 
     public PartnerDestination apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPartnerDestinations()
-            .update(resourceGroupName, partnerDestinationName, updatePartnerDestinationUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PartnerDestination apply(Context context) {
@@ -163,11 +157,7 @@ public final class PartnerDestinationImpl
     }
 
     public PartnerDestination refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPartnerDestinations()
-            .getByResourceGroupWithResponse(resourceGroupName, partnerDestinationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PartnerDestination refresh(Context context) {

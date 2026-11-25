@@ -275,22 +275,7 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a namespace topic.
-     * 
-     * Get properties of a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a namespace topic.
-     * 
-     * Get properties of a namespace topic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NamespaceTopicInner> getWithResponse(String resourceGroupName, String namespaceName,
         String topicName, Context context) {
@@ -299,21 +284,7 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
             resourceGroupName, namespaceName, topicName, accept, context);
     }
 
-    /**
-     * Get a namespace topic.
-     * 
-     * Get properties of a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a namespace topic.
-     * 
-     * Get properties of a namespace topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceTopicInner get(String resourceGroupName, String namespaceName, String topicName) {
         return getWithResponse(resourceGroupName, namespaceName, topicName, Context.NONE).getValue();
@@ -362,11 +333,8 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         String topicName, NamespaceTopicInner namespaceTopicInfo) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, topicName, contentType, accept,
-            namespaceTopicInfo, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, namespaceName, topicName, namespaceTopicInfo,
+            Context.NONE);
     }
 
     /**
@@ -417,44 +385,14 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
             NamespaceTopicInner.class, NamespaceTopicInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a namespace topic.
-     * 
-     * Asynchronously creates a new namespace topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param namespaceTopicInfo Namespace topic information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of namespace topic details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceTopicInner>, NamespaceTopicInner> beginCreateOrUpdate(
         String resourceGroupName, String namespaceName, String topicName, NamespaceTopicInner namespaceTopicInfo) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, namespaceName, topicName, namespaceTopicInfo);
-        return this.client.<NamespaceTopicInner, NamespaceTopicInner>getLroResult(response, NamespaceTopicInner.class,
-            NamespaceTopicInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, namespaceName, topicName, namespaceTopicInfo, Context.NONE);
     }
 
-    /**
-     * Create a namespace topic.
-     * 
-     * Asynchronously creates a new namespace topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param namespaceTopicInfo Namespace topic information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of namespace topic details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceTopicInner>, NamespaceTopicInner> beginCreateOrUpdate(
         String resourceGroupName, String namespaceName, String topicName, NamespaceTopicInner namespaceTopicInfo,
@@ -486,46 +424,19 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a namespace topic.
-     * 
-     * Asynchronously creates a new namespace topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param namespaceTopicInfo Namespace topic information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace topic details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceTopicInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName,
         NamespaceTopicInner namespaceTopicInfo) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, topicName, namespaceTopicInfo).getFinalResult();
+        return createOrUpdate(resourceGroupName, namespaceName, topicName, namespaceTopicInfo, Context.NONE);
     }
 
-    /**
-     * Create a namespace topic.
-     * 
-     * Asynchronously creates a new namespace topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param namespaceTopicInfo Namespace topic information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace topic details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceTopicInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName,
         NamespaceTopicInner namespaceTopicInfo, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, topicName, namespaceTopicInfo, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, namespaceName, topicName, namespaceTopicInfo, context));
     }
 
     /**
@@ -571,11 +482,8 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String namespaceName, String topicName,
         NamespaceTopicUpdateParameters namespaceTopicUpdateParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, topicName, contentType, accept,
-            namespaceTopicUpdateParameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, namespaceName, topicName, namespaceTopicUpdateParameters,
+            Context.NONE);
     }
 
     /**
@@ -626,44 +534,14 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
             NamespaceTopicInner.class, NamespaceTopicInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a namespace topic.
-     * 
-     * Asynchronously updates a namespace topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param namespaceTopicUpdateParameters Namespace topic update information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of namespace topic details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceTopicInner>, NamespaceTopicInner> beginUpdate(String resourceGroupName,
         String namespaceName, String topicName, NamespaceTopicUpdateParameters namespaceTopicUpdateParameters) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, namespaceName, topicName, namespaceTopicUpdateParameters);
-        return this.client.<NamespaceTopicInner, NamespaceTopicInner>getLroResult(response, NamespaceTopicInner.class,
-            NamespaceTopicInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, namespaceName, topicName, namespaceTopicUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Update a namespace topic.
-     * 
-     * Asynchronously updates a namespace topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param namespaceTopicUpdateParameters Namespace topic update information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of namespace topic details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceTopicInner>, NamespaceTopicInner> beginUpdate(String resourceGroupName,
         String namespaceName, String topicName, NamespaceTopicUpdateParameters namespaceTopicUpdateParameters,
@@ -695,47 +573,19 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a namespace topic.
-     * 
-     * Asynchronously updates a namespace topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param namespaceTopicUpdateParameters Namespace topic update information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace topic details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceTopicInner update(String resourceGroupName, String namespaceName, String topicName,
         NamespaceTopicUpdateParameters namespaceTopicUpdateParameters) {
-        return beginUpdate(resourceGroupName, namespaceName, topicName, namespaceTopicUpdateParameters)
-            .getFinalResult();
+        return update(resourceGroupName, namespaceName, topicName, namespaceTopicUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Update a namespace topic.
-     * 
-     * Asynchronously updates a namespace topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param namespaceTopicUpdateParameters Namespace topic update information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace topic details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceTopicInner update(String resourceGroupName, String namespaceName, String topicName,
         NamespaceTopicUpdateParameters namespaceTopicUpdateParameters, Context context) {
-        return beginUpdate(resourceGroupName, namespaceName, topicName, namespaceTopicUpdateParameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, namespaceName, topicName, namespaceTopicUpdateParameters, context));
     }
 
     /**
@@ -775,8 +625,7 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String namespaceName, String topicName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, topicName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, namespaceName, topicName, Context.NONE);
     }
 
     /**
@@ -821,40 +670,14 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a namespace topic.
-     * 
-     * Delete existing namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String topicName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, namespaceName, topicName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, namespaceName, topicName, Context.NONE);
     }
 
-    /**
-     * Delete a namespace topic.
-     * 
-     * Delete existing namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String topicName, Context context) {
@@ -881,39 +704,16 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a namespace topic.
-     * 
-     * Delete existing namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String topicName) {
-        beginDelete(resourceGroupName, namespaceName, topicName).getFinalResult();
+        delete(resourceGroupName, namespaceName, topicName, Context.NONE);
     }
 
-    /**
-     * Delete a namespace topic.
-     * 
-     * Delete existing namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String topicName, Context context) {
-        beginDelete(resourceGroupName, namespaceName, topicName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, namespaceName, topicName, context));
     }
 
     /**
@@ -1016,12 +816,7 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NamespaceTopicInner> listByNamespaceSinglePage(String resourceGroupName, String namespaceName,
         String filter, Integer top) {
-        final String accept = "application/json";
-        Response<NamespaceTopicsListResult> res
-            = service.listByNamespaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceSinglePage(resourceGroupName, namespaceName, filter, top, Context.NONE);
     }
 
     /**
@@ -1055,46 +850,15 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List namespace topics under a namespace.
-     * 
-     * List all the namespace topics under a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List namespace topics operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NamespaceTopicInner> listByNamespace(String resourceGroupName, String namespaceName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listByNamespaceSinglePage(resourceGroupName, namespaceName, filter, top),
-            nextLink -> listByNamespaceNextSinglePage(nextLink));
+        return listByNamespace(resourceGroupName, namespaceName, filter, top, Context.NONE);
     }
 
-    /**
-     * List namespace topics under a namespace.
-     * 
-     * List all the namespace topics under a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List namespace topics operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NamespaceTopicInner> listByNamespace(String resourceGroupName, String namespaceName,
         String filter, Integer top, Context context) {
@@ -1146,20 +910,7 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List keys for a namespace topic.
-     * 
-     * List the two keys used to publish to a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicSharedAccessKeysInner> listSharedAccessKeysWithResponse(String resourceGroupName,
         String namespaceName, String topicName, Context context) {
@@ -1168,19 +919,7 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
             this.client.getSubscriptionId(), resourceGroupName, namespaceName, topicName, accept, context);
     }
 
-    /**
-     * List keys for a namespace topic.
-     * 
-     * List the two keys used to publish to a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicSharedAccessKeysInner listSharedAccessKeys(String resourceGroupName, String namespaceName,
         String topicName) {
@@ -1230,11 +969,8 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> regenerateKeyWithResponse(String resourceGroupName, String namespaceName,
         String topicName, TopicRegenerateKeyRequest regenerateKeyRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.regenerateKeySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, topicName, contentType, accept,
-            regenerateKeyRequest, Context.NONE);
+        return regenerateKeyWithResponse(resourceGroupName, namespaceName, topicName, regenerateKeyRequest,
+            Context.NONE);
     }
 
     /**
@@ -1287,45 +1023,15 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
             this.client.getContext());
     }
 
-    /**
-     * Regenerate key for a namespace topic.
-     * 
-     * Regenerate a shared access key for a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param regenerateKeyRequest Request body to regenerate key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of shared access keys of the Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKey(
         String resourceGroupName, String namespaceName, String topicName,
         TopicRegenerateKeyRequest regenerateKeyRequest) {
-        Response<BinaryData> response
-            = regenerateKeyWithResponse(resourceGroupName, namespaceName, topicName, regenerateKeyRequest);
-        return this.client.<TopicSharedAccessKeysInner, TopicSharedAccessKeysInner>getLroResult(response,
-            TopicSharedAccessKeysInner.class, TopicSharedAccessKeysInner.class, Context.NONE);
+        return beginRegenerateKey(resourceGroupName, namespaceName, topicName, regenerateKeyRequest, Context.NONE);
     }
 
-    /**
-     * Regenerate key for a namespace topic.
-     * 
-     * Regenerate a shared access key for a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param regenerateKeyRequest Request body to regenerate key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of shared access keys of the Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKey(
         String resourceGroupName, String namespaceName, String topicName,
@@ -1357,46 +1063,19 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Regenerate key for a namespace topic.
-     * 
-     * Regenerate a shared access key for a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param regenerateKeyRequest Request body to regenerate key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicSharedAccessKeysInner regenerateKey(String resourceGroupName, String namespaceName, String topicName,
         TopicRegenerateKeyRequest regenerateKeyRequest) {
-        return beginRegenerateKey(resourceGroupName, namespaceName, topicName, regenerateKeyRequest).getFinalResult();
+        return regenerateKey(resourceGroupName, namespaceName, topicName, regenerateKeyRequest, Context.NONE);
     }
 
-    /**
-     * Regenerate key for a namespace topic.
-     * 
-     * Regenerate a shared access key for a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param regenerateKeyRequest Request body to regenerate key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicSharedAccessKeysInner regenerateKey(String resourceGroupName, String namespaceName, String topicName,
         TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
-        return beginRegenerateKey(resourceGroupName, namespaceName, topicName, regenerateKeyRequest, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginRegenerateKey(resourceGroupName, namespaceName, topicName, regenerateKeyRequest, context));
     }
 
     /**
@@ -1434,11 +1113,7 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NamespaceTopicInner> listByNamespaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NamespaceTopicsListResult> res
-            = service.listByNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

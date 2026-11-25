@@ -212,22 +212,7 @@ public final class ClientGroupsClientImpl implements ClientGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a client group.
-     * 
-     * Get properties of a client group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientGroupName Name of the client group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a client group.
-     * 
-     * Get properties of a client group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClientGroupInner> getWithResponse(String resourceGroupName, String namespaceName,
         String clientGroupName, Context context) {
@@ -236,21 +221,7 @@ public final class ClientGroupsClientImpl implements ClientGroupsClient {
             resourceGroupName, namespaceName, clientGroupName, accept, context);
     }
 
-    /**
-     * Get a client group.
-     * 
-     * Get properties of a client group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientGroupName Name of the client group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a client group.
-     * 
-     * Get properties of a client group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClientGroupInner get(String resourceGroupName, String namespaceName, String clientGroupName) {
         return getWithResponse(resourceGroupName, namespaceName, clientGroupName, Context.NONE).getValue();
@@ -299,11 +270,8 @@ public final class ClientGroupsClientImpl implements ClientGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         String clientGroupName, ClientGroupInner clientGroupInfo) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, clientGroupName, contentType, accept,
-            clientGroupInfo, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, namespaceName, clientGroupName, clientGroupInfo,
+            Context.NONE);
     }
 
     /**
@@ -354,44 +322,14 @@ public final class ClientGroupsClientImpl implements ClientGroupsClient {
             ClientGroupInner.class, ClientGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a client group.
-     * 
-     * Create or update a client group with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientGroupName Name of the client group.
-     * @param clientGroupInfo Client group information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Client group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClientGroupInner>, ClientGroupInner> beginCreateOrUpdate(String resourceGroupName,
         String namespaceName, String clientGroupName, ClientGroupInner clientGroupInfo) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, namespaceName, clientGroupName, clientGroupInfo);
-        return this.client.<ClientGroupInner, ClientGroupInner>getLroResult(response, ClientGroupInner.class,
-            ClientGroupInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, namespaceName, clientGroupName, clientGroupInfo, Context.NONE);
     }
 
-    /**
-     * Create or update a client group.
-     * 
-     * Create or update a client group with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientGroupName Name of the client group.
-     * @param clientGroupInfo Client group information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Client group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClientGroupInner>, ClientGroupInner> beginCreateOrUpdate(String resourceGroupName,
         String namespaceName, String clientGroupName, ClientGroupInner clientGroupInfo, Context context) {
@@ -422,46 +360,19 @@ public final class ClientGroupsClientImpl implements ClientGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a client group.
-     * 
-     * Create or update a client group with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientGroupName Name of the client group.
-     * @param clientGroupInfo Client group information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Client group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClientGroupInner createOrUpdate(String resourceGroupName, String namespaceName, String clientGroupName,
         ClientGroupInner clientGroupInfo) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, clientGroupName, clientGroupInfo).getFinalResult();
+        return createOrUpdate(resourceGroupName, namespaceName, clientGroupName, clientGroupInfo, Context.NONE);
     }
 
-    /**
-     * Create or update a client group.
-     * 
-     * Create or update a client group with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientGroupName Name of the client group.
-     * @param clientGroupInfo Client group information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Client group resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClientGroupInner createOrUpdate(String resourceGroupName, String namespaceName, String clientGroupName,
         ClientGroupInner clientGroupInfo, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, clientGroupName, clientGroupInfo, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, namespaceName, clientGroupName, clientGroupInfo, context));
     }
 
     /**
@@ -502,8 +413,7 @@ public final class ClientGroupsClientImpl implements ClientGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String namespaceName,
         String clientGroupName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, clientGroupName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, namespaceName, clientGroupName, Context.NONE);
     }
 
     /**
@@ -549,40 +459,14 @@ public final class ClientGroupsClientImpl implements ClientGroupsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a client group.
-     * 
-     * Delete an existing client group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientGroupName Name of the client group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String clientGroupName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, namespaceName, clientGroupName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, namespaceName, clientGroupName, Context.NONE);
     }
 
-    /**
-     * Delete a client group.
-     * 
-     * Delete an existing client group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientGroupName Name of the client group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String clientGroupName, Context context) {
@@ -609,39 +493,16 @@ public final class ClientGroupsClientImpl implements ClientGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a client group.
-     * 
-     * Delete an existing client group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientGroupName Name of the client group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String clientGroupName) {
-        beginDelete(resourceGroupName, namespaceName, clientGroupName).getFinalResult();
+        delete(resourceGroupName, namespaceName, clientGroupName, Context.NONE);
     }
 
-    /**
-     * Delete a client group.
-     * 
-     * Delete an existing client group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientGroupName Name of the client group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String clientGroupName, Context context) {
-        beginDelete(resourceGroupName, namespaceName, clientGroupName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, namespaceName, clientGroupName, context));
     }
 
     /**
@@ -744,12 +605,7 @@ public final class ClientGroupsClientImpl implements ClientGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClientGroupInner> listByNamespaceSinglePage(String resourceGroupName, String namespaceName,
         String filter, Integer top) {
-        final String accept = "application/json";
-        Response<ClientGroupsListResult> res
-            = service.listByNamespaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceSinglePage(resourceGroupName, namespaceName, filter, top, Context.NONE);
     }
 
     /**
@@ -783,46 +639,15 @@ public final class ClientGroupsClientImpl implements ClientGroupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all client groups under a namespace.
-     * 
-     * Get all the client groups under a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Client Group operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClientGroupInner> listByNamespace(String resourceGroupName, String namespaceName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listByNamespaceSinglePage(resourceGroupName, namespaceName, filter, top),
-            nextLink -> listByNamespaceNextSinglePage(nextLink));
+        return listByNamespace(resourceGroupName, namespaceName, filter, top, Context.NONE);
     }
 
-    /**
-     * List all client groups under a namespace.
-     * 
-     * Get all the client groups under a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Client Group operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClientGroupInner> listByNamespace(String resourceGroupName, String namespaceName,
         String filter, Integer top, Context context) {
@@ -866,11 +691,7 @@ public final class ClientGroupsClientImpl implements ClientGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClientGroupInner> listByNamespaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ClientGroupsListResult> res
-            = service.listByNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

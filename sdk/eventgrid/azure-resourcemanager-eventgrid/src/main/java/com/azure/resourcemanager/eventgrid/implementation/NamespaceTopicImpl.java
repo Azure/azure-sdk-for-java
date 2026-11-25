@@ -80,10 +80,7 @@ public final class NamespaceTopicImpl implements NamespaceTopic, NamespaceTopic.
     }
 
     public NamespaceTopic create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceTopics()
-            .createOrUpdate(resourceGroupName, namespaceName, topicName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NamespaceTopic create(Context context) {
@@ -105,10 +102,7 @@ public final class NamespaceTopicImpl implements NamespaceTopic, NamespaceTopic.
     }
 
     public NamespaceTopic apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceTopics()
-            .update(resourceGroupName, namespaceName, topicName, updateNamespaceTopicUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NamespaceTopic apply(Context context) {
@@ -134,11 +128,7 @@ public final class NamespaceTopicImpl implements NamespaceTopic, NamespaceTopic.
     }
 
     public NamespaceTopic refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceTopics()
-            .getWithResponse(resourceGroupName, namespaceName, topicName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NamespaceTopic refresh(Context context) {

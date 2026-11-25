@@ -261,22 +261,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a channel.
-     * 
-     * Get properties of a channel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a channel.
-     * 
-     * Get properties of a channel along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChannelInner> getWithResponse(String resourceGroupName, String partnerNamespaceName,
         String channelName, Context context) {
@@ -285,21 +270,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
             resourceGroupName, partnerNamespaceName, channelName, accept, context);
     }
 
-    /**
-     * Get a channel.
-     * 
-     * Get properties of a channel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a channel.
-     * 
-     * Get properties of a channel.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChannelInner get(String resourceGroupName, String partnerNamespaceName, String channelName) {
         return getWithResponse(resourceGroupName, partnerNamespaceName, channelName, Context.NONE).getValue();
@@ -352,21 +323,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a channel.
-     * 
-     * Synchronously creates or updates a new channel with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @param channelInfo Channel information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return channel info along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChannelInner> createOrUpdateWithResponse(String resourceGroupName, String partnerNamespaceName,
         String channelName, ChannelInner channelInfo, Context context) {
@@ -377,20 +334,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
             channelInfo, context);
     }
 
-    /**
-     * Create or update a channel.
-     * 
-     * Synchronously creates or updates a new channel with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @param channelInfo Channel information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return channel info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChannelInner createOrUpdate(String resourceGroupName, String partnerNamespaceName, String channelName,
         ChannelInner channelInfo) {
@@ -444,21 +388,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Update a Channel.
-     * 
-     * Synchronously updates a channel with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @param channelUpdateParameters Channel update information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateWithResponse(String resourceGroupName, String partnerNamespaceName, String channelName,
         ChannelUpdateParameters channelUpdateParameters, Context context) {
@@ -468,19 +398,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
             channelUpdateParameters, context);
     }
 
-    /**
-     * Update a Channel.
-     * 
-     * Synchronously updates a channel with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @param channelUpdateParameters Channel update information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String partnerNamespaceName, String channelName,
         ChannelUpdateParameters channelUpdateParameters) {
@@ -525,8 +443,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String partnerNamespaceName,
         String channelName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, partnerNamespaceName, channelName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, partnerNamespaceName, channelName, Context.NONE);
     }
 
     /**
@@ -572,40 +489,14 @@ public final class ChannelsClientImpl implements ChannelsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a channel.
-     * 
-     * Delete an existing channel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerNamespaceName,
         String channelName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, partnerNamespaceName, channelName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, partnerNamespaceName, channelName, Context.NONE);
     }
 
-    /**
-     * Delete a channel.
-     * 
-     * Delete an existing channel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerNamespaceName,
         String channelName, Context context) {
@@ -633,39 +524,17 @@ public final class ChannelsClientImpl implements ChannelsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a channel.
-     * 
-     * Delete an existing channel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String partnerNamespaceName, String channelName) {
-        beginDelete(resourceGroupName, partnerNamespaceName, channelName).getFinalResult();
+        delete(resourceGroupName, partnerNamespaceName, channelName, Context.NONE);
     }
 
-    /**
-     * Delete a channel.
-     * 
-     * Delete an existing channel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String partnerNamespaceName, String channelName, Context context) {
-        beginDelete(resourceGroupName, partnerNamespaceName, channelName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, partnerNamespaceName, channelName, context));
     }
 
     /**
@@ -771,12 +640,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ChannelInner> listByPartnerNamespaceSinglePage(String resourceGroupName,
         String partnerNamespaceName, String filter, Integer top) {
-        final String accept = "application/json";
-        Response<ChannelsListResult> res = service.listByPartnerNamespaceSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, partnerNamespaceName,
-            filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPartnerNamespaceSinglePage(resourceGroupName, partnerNamespaceName, filter, top, Context.NONE);
     }
 
     /**
@@ -810,47 +674,15 @@ public final class ChannelsClientImpl implements ChannelsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List channels.
-     * 
-     * List all the channels in a partner namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Channels operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChannelInner> listByPartnerNamespace(String resourceGroupName, String partnerNamespaceName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(
-            () -> listByPartnerNamespaceSinglePage(resourceGroupName, partnerNamespaceName, filter, top),
-            nextLink -> listByPartnerNamespaceNextSinglePage(nextLink));
+        return listByPartnerNamespace(resourceGroupName, partnerNamespaceName, filter, top, Context.NONE);
     }
 
-    /**
-     * List channels.
-     * 
-     * List all the channels in a partner namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Channels operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChannelInner> listByPartnerNamespace(String resourceGroupName, String partnerNamespaceName,
         String filter, Integer top, Context context) {
@@ -907,22 +739,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get full URL of partner destination channel.
-     * 
-     * Get the full endpoint URL of a partner destination channel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full URL of partner destination channel.
-     * 
-     * Get the full endpoint URL of a partner destination channel along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EventSubscriptionFullUrlInner> getFullUrlWithResponse(String resourceGroupName,
         String partnerNamespaceName, String channelName, Context context) {
@@ -931,21 +748,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
             this.client.getSubscriptionId(), resourceGroupName, partnerNamespaceName, channelName, accept, context);
     }
 
-    /**
-     * Get full URL of partner destination channel.
-     * 
-     * Get the full endpoint URL of a partner destination channel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full URL of partner destination channel.
-     * 
-     * Get the full endpoint URL of a partner destination channel.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventSubscriptionFullUrlInner getFullUrl(String resourceGroupName, String partnerNamespaceName,
         String channelName) {
@@ -988,11 +791,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ChannelInner> listByPartnerNamespaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ChannelsListResult> res
-            = service.listByPartnerNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPartnerNamespaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

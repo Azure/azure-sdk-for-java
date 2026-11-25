@@ -52,13 +52,8 @@ public final class SystemTopicEventSubscriptionsImpl implements SystemTopicEvent
 
     public EventSubscription createOrUpdate(String resourceGroupName, String systemTopicName,
         String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
-        EventSubscriptionInner inner = this.serviceClient()
-            .createOrUpdate(resourceGroupName, systemTopicName, eventSubscriptionName, eventSubscriptionInfo);
-        if (inner != null) {
-            return new EventSubscriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, systemTopicName, eventSubscriptionName, eventSubscriptionInfo,
+            Context.NONE);
     }
 
     public EventSubscription createOrUpdate(String resourceGroupName, String systemTopicName,
@@ -74,13 +69,8 @@ public final class SystemTopicEventSubscriptionsImpl implements SystemTopicEvent
 
     public EventSubscription update(String resourceGroupName, String systemTopicName, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        EventSubscriptionInner inner = this.serviceClient()
-            .update(resourceGroupName, systemTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters);
-        if (inner != null) {
-            return new EventSubscriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, systemTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters,
+            Context.NONE);
     }
 
     public EventSubscription update(String resourceGroupName, String systemTopicName, String eventSubscriptionName,
@@ -96,7 +86,7 @@ public final class SystemTopicEventSubscriptionsImpl implements SystemTopicEvent
     }
 
     public void delete(String resourceGroupName, String systemTopicName, String eventSubscriptionName) {
-        this.serviceClient().delete(resourceGroupName, systemTopicName, eventSubscriptionName);
+        this.delete(resourceGroupName, systemTopicName, eventSubscriptionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String systemTopicName, String eventSubscriptionName,

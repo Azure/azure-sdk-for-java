@@ -643,12 +643,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listByResourceGroupSinglePage(String resourceGroupName, String filter,
         Integer top) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, filter, top, Context.NONE);
     }
 
     /**
@@ -681,44 +676,15 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all global event subscriptions under an Azure subscription and resource group.
-     * 
-     * List all global event subscriptions under a specific Azure subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, filter, top),
-            nextLink -> listGlobalByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, filter, top, Context.NONE);
     }
 
-    /**
-     * List all global event subscriptions under an Azure subscription and resource group.
-     * 
-     * List all global event subscriptions under a specific Azure subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listByResourceGroup(String resourceGroupName, String filter,
         Integer top, Context context) {
@@ -834,12 +800,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listByDomainTopicSinglePage(String resourceGroupName,
         String domainName, String topicName, String filter, Integer top) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res = service.listByDomainTopicSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, domainName, topicName,
-            filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByDomainTopicSinglePage(resourceGroupName, domainName, topicName, filter, top, Context.NONE);
     }
 
     /**
@@ -874,50 +835,16 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all event subscriptions for a specific domain topic.
-     * 
-     * List all event subscriptions that have been created for a specific domain topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param domainName Name of the top level domain.
-     * @param topicName Name of the domain topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listByDomainTopic(String resourceGroupName, String domainName,
         String topicName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(
-            () -> listByDomainTopicSinglePage(resourceGroupName, domainName, topicName, filter, top),
-            nextLink -> listByDomainTopicNextSinglePage(nextLink));
+        return listByDomainTopic(resourceGroupName, domainName, topicName, filter, top, Context.NONE);
     }
 
-    /**
-     * List all event subscriptions for a specific domain topic.
-     * 
-     * List all event subscriptions that have been created for a specific domain topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param domainName Name of the top level domain.
-     * @param topicName Name of the domain topic.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listByDomainTopic(String resourceGroupName, String domainName,
         String topicName, String filter, Integer top, Context context) {
@@ -968,21 +895,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         return getWithResponseAsync(scope, eventSubscriptionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an event subscription.
-     * 
-     * Get properties of an event subscription.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an event subscription.
-     * 
-     * Get properties of an event subscription along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EventSubscriptionInner> getWithResponse(String scope, String eventSubscriptionName,
         Context context) {
@@ -991,20 +904,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             accept, context);
     }
 
-    /**
-     * Get an event subscription.
-     * 
-     * Get properties of an event subscription.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an event subscription.
-     * 
-     * Get properties of an event subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventSubscriptionInner get(String scope, String eventSubscriptionName) {
         return getWithResponse(scope, eventSubscriptionName, Context.NONE).getValue();
@@ -1052,10 +952,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String scope, String eventSubscriptionName,
         EventSubscriptionInner eventSubscriptionInfo) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), scope,
-            eventSubscriptionName, contentType, accept, eventSubscriptionInfo, Context.NONE);
+        return createOrUpdateWithResponse(scope, eventSubscriptionName, eventSubscriptionInfo, Context.NONE);
     }
 
     /**
@@ -1106,43 +1003,14 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             this.client.getContext());
     }
 
-    /**
-     * Create or update an event subscription.
-     * 
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of event Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(String scope,
         String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
-        Response<BinaryData> response = createOrUpdateWithResponse(scope, eventSubscriptionName, eventSubscriptionInfo);
-        return this.client.<EventSubscriptionInner, EventSubscriptionInner>getLroResult(response,
-            EventSubscriptionInner.class, EventSubscriptionInner.class, Context.NONE);
+        return beginCreateOrUpdate(scope, eventSubscriptionName, eventSubscriptionInfo, Context.NONE);
     }
 
-    /**
-     * Create or update an event subscription.
-     * 
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of event Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(String scope,
         String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
@@ -1173,45 +1041,19 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update an event subscription.
-     * 
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventSubscriptionInner createOrUpdate(String scope, String eventSubscriptionName,
         EventSubscriptionInner eventSubscriptionInfo) {
-        return beginCreateOrUpdate(scope, eventSubscriptionName, eventSubscriptionInfo).getFinalResult();
+        return createOrUpdate(scope, eventSubscriptionName, eventSubscriptionInfo, Context.NONE);
     }
 
-    /**
-     * Create or update an event subscription.
-     * 
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventSubscriptionInner createOrUpdate(String scope, String eventSubscriptionName,
         EventSubscriptionInner eventSubscriptionInfo, Context context) {
-        return beginCreateOrUpdate(scope, eventSubscriptionName, eventSubscriptionInfo, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(scope, eventSubscriptionName, eventSubscriptionInfo, context));
     }
 
     /**
@@ -1254,10 +1096,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String scope, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, eventSubscriptionName,
-            contentType, accept, eventSubscriptionUpdateParameters, Context.NONE);
+        return updateWithResponse(scope, eventSubscriptionName, eventSubscriptionUpdateParameters, Context.NONE);
     }
 
     /**
@@ -1306,42 +1145,14 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             this.client.getContext());
     }
 
-    /**
-     * Update an event subscription.
-     * 
-     * Asynchronously updates an existing event subscription.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param eventSubscriptionUpdateParameters Updated event subscription information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of event Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(String scope,
         String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        Response<BinaryData> response
-            = updateWithResponse(scope, eventSubscriptionName, eventSubscriptionUpdateParameters);
-        return this.client.<EventSubscriptionInner, EventSubscriptionInner>getLroResult(response,
-            EventSubscriptionInner.class, EventSubscriptionInner.class, Context.NONE);
+        return beginUpdate(scope, eventSubscriptionName, eventSubscriptionUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Update an event subscription.
-     * 
-     * Asynchronously updates an existing event subscription.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param eventSubscriptionUpdateParameters Updated event subscription information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of event Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(String scope,
         String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
@@ -1372,43 +1183,19 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update an event subscription.
-     * 
-     * Asynchronously updates an existing event subscription.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param eventSubscriptionUpdateParameters Updated event subscription information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventSubscriptionInner update(String scope, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        return beginUpdate(scope, eventSubscriptionName, eventSubscriptionUpdateParameters).getFinalResult();
+        return update(scope, eventSubscriptionName, eventSubscriptionUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Update an event subscription.
-     * 
-     * Asynchronously updates an existing event subscription.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param eventSubscriptionUpdateParameters Updated event subscription information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventSubscriptionInner update(String scope, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
-        return beginUpdate(scope, eventSubscriptionName, eventSubscriptionUpdateParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(scope, eventSubscriptionName, eventSubscriptionUpdateParameters, context));
     }
 
     /**
@@ -1445,8 +1232,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String scope, String eventSubscriptionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, eventSubscriptionName,
-            Context.NONE);
+        return deleteWithResponse(scope, eventSubscriptionName, Context.NONE);
     }
 
     /**
@@ -1487,37 +1273,13 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             this.client.getContext());
     }
 
-    /**
-     * Delete an event subscription.
-     * 
-     * Delete an existing event subscription.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String scope, String eventSubscriptionName) {
-        Response<BinaryData> response = deleteWithResponse(scope, eventSubscriptionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(scope, eventSubscriptionName, Context.NONE);
     }
 
-    /**
-     * Delete an event subscription.
-     * 
-     * Delete an existing event subscription.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String scope, String eventSubscriptionName, Context context) {
         Response<BinaryData> response = deleteWithResponse(scope, eventSubscriptionName, context);
@@ -1541,37 +1303,16 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         return beginDeleteAsync(scope, eventSubscriptionName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete an event subscription.
-     * 
-     * Delete an existing event subscription.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String scope, String eventSubscriptionName) {
-        beginDelete(scope, eventSubscriptionName).getFinalResult();
+        delete(scope, eventSubscriptionName, Context.NONE);
     }
 
-    /**
-     * Delete an event subscription.
-     * 
-     * Delete an existing event subscription.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String scope, String eventSubscriptionName, Context context) {
-        beginDelete(scope, eventSubscriptionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(scope, eventSubscriptionName, context));
     }
 
     /**
@@ -1673,11 +1414,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listSinglePage(String filter, Integer top) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, top, Context.NONE);
     }
 
     /**
@@ -1710,47 +1447,15 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get an aggregated list of all global event subscriptions under an Azure subscription.
-     * 
-     * List all aggregated global event subscriptions under a specific Azure subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an aggregated list of all global event subscriptions under an Azure subscription.
-     * 
-     * List all aggregated global event subscriptions under a specific Azure subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> list() {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(filter, top),
-            nextLink -> listGlobalBySubscriptionNextSinglePage(nextLink));
+        return list(filter, top, Context.NONE);
     }
 
-    /**
-     * Get an aggregated list of all global event subscriptions under an Azure subscription.
-     * 
-     * List all aggregated global event subscriptions under a specific Azure subscription.
-     * 
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an aggregated list of all global event subscriptions under an Azure subscription.
-     * 
-     * List all aggregated global event subscriptions under a specific Azure subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> list(String filter, Integer top, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, top, context),
@@ -1867,12 +1572,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listByResourceSinglePage(String resourceGroupName,
         String providerNamespace, String resourceTypeName, String resourceName, String filter, Integer top) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res = service.listByResourceSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, providerNamespace,
-            resourceTypeName, resourceName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceSinglePage(resourceGroupName, providerNamespace, resourceTypeName, resourceName, filter,
+            top, Context.NONE);
     }
 
     /**
@@ -1909,51 +1610,17 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all event subscriptions.
-     * 
-     * List all event subscriptions that have been created for a specific resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerNamespace Namespace of the provider of the topic.
-     * @param resourceTypeName Name of the resource type.
-     * @param resourceName Name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listByResource(String resourceGroupName, String providerNamespace,
         String resourceTypeName, String resourceName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listByResourceSinglePage(resourceGroupName, providerNamespace,
-            resourceTypeName, resourceName, filter, top), nextLink -> listByResourceNextSinglePage(nextLink));
+        return listByResource(resourceGroupName, providerNamespace, resourceTypeName, resourceName, filter, top,
+            Context.NONE);
     }
 
-    /**
-     * List all event subscriptions.
-     * 
-     * List all event subscriptions that have been created for a specific resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerNamespace Namespace of the provider of the topic.
-     * @param resourceTypeName Name of the resource type.
-     * @param resourceName Name of the resource.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listByResource(String resourceGroupName, String providerNamespace,
         String resourceTypeName, String resourceName, String filter, Integer top, Context context) {
@@ -2008,21 +1675,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get delivery attributes for an event subscription.
-     * 
-     * Get all delivery attributes for an event subscription.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return delivery attributes for an event subscription.
-     * 
-     * Get all delivery attributes for an event subscription along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(String scope,
         String eventSubscriptionName, Context context) {
@@ -2031,20 +1684,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             eventSubscriptionName, accept, context);
     }
 
-    /**
-     * Get delivery attributes for an event subscription.
-     * 
-     * Get all delivery attributes for an event subscription.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return delivery attributes for an event subscription.
-     * 
-     * Get all delivery attributes for an event subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeliveryAttributeListResultInner getDeliveryAttributes(String scope, String eventSubscriptionName) {
         return getDeliveryAttributesWithResponse(scope, eventSubscriptionName, Context.NONE).getValue();
@@ -2095,21 +1735,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get full URL of an event subscription.
-     * 
-     * Get the full endpoint URL for an event subscription.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full URL of an event subscription.
-     * 
-     * Get the full endpoint URL for an event subscription along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EventSubscriptionFullUrlInner> getFullUrlWithResponse(String scope, String eventSubscriptionName,
         Context context) {
@@ -2118,20 +1744,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             eventSubscriptionName, accept, context);
     }
 
-    /**
-     * Get full URL of an event subscription.
-     * 
-     * Get the full endpoint URL for an event subscription.
-     * 
-     * @param scope undefined.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full URL of an event subscription.
-     * 
-     * Get the full endpoint URL for an event subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventSubscriptionFullUrlInner getFullUrl(String scope, String eventSubscriptionName) {
         return getFullUrlWithResponse(scope, eventSubscriptionName, Context.NONE).getValue();
@@ -2232,12 +1845,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listGlobalBySubscriptionForTopicTypeSinglePage(String topicTypeName,
         String filter, Integer top) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res
-            = service.listGlobalBySubscriptionForTopicTypeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), topicTypeName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listGlobalBySubscriptionForTopicTypeSinglePage(topicTypeName, filter, top, Context.NONE);
     }
 
     /**
@@ -2270,44 +1878,15 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all global event subscriptions for a topic type.
-     * 
-     * List all global event subscriptions under an Azure subscription for a topic type.
-     * 
-     * @param topicTypeName Name of the topic type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listGlobalBySubscriptionForTopicType(String topicTypeName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listGlobalBySubscriptionForTopicTypeSinglePage(topicTypeName, filter, top),
-            nextLink -> listGlobalBySubscriptionForTopicTypeNextSinglePage(nextLink));
+        return listGlobalBySubscriptionForTopicType(topicTypeName, filter, top, Context.NONE);
     }
 
-    /**
-     * List all global event subscriptions for a topic type.
-     * 
-     * List all global event subscriptions under an Azure subscription for a topic type.
-     * 
-     * @param topicTypeName Name of the topic type.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listGlobalBySubscriptionForTopicType(String topicTypeName,
         String filter, Integer top, Context context) {
@@ -2420,12 +1999,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listGlobalByResourceGroupForTopicTypeSinglePage(
         String resourceGroupName, String topicTypeName, String filter, Integer top) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res
-            = service.listGlobalByResourceGroupForTopicTypeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, topicTypeName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listGlobalByResourceGroupForTopicTypeSinglePage(resourceGroupName, topicTypeName, filter, top,
+            Context.NONE);
     }
 
     /**
@@ -2459,48 +2034,16 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all global event subscriptions under a resource group for a topic type.
-     * 
-     * List all global event subscriptions under a resource group for a specific topic type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicTypeName Name of the topic type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listGlobalByResourceGroupForTopicType(String resourceGroupName,
         String topicTypeName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(
-            () -> listGlobalByResourceGroupForTopicTypeSinglePage(resourceGroupName, topicTypeName, filter, top),
-            nextLink -> listGlobalByResourceGroupForTopicTypeNextSinglePage(nextLink));
+        return listGlobalByResourceGroupForTopicType(resourceGroupName, topicTypeName, filter, top, Context.NONE);
     }
 
-    /**
-     * List all global event subscriptions under a resource group for a topic type.
-     * 
-     * List all global event subscriptions under a resource group for a specific topic type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicTypeName Name of the topic type.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listGlobalByResourceGroupForTopicType(String resourceGroupName,
         String topicTypeName, String filter, Integer top, Context context) {
@@ -2605,11 +2148,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listRegionalBySubscriptionSinglePage(String location, String filter,
         Integer top) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res = service.listRegionalBySubscriptionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRegionalBySubscriptionSinglePage(location, filter, top, Context.NONE);
     }
 
     /**
@@ -2641,44 +2180,15 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all regional event subscriptions under an Azure subscription.
-     * 
-     * List all event subscriptions from the given location under a specific Azure subscription.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listRegionalBySubscription(String location) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listRegionalBySubscriptionSinglePage(location, filter, top),
-            nextLink -> listRegionalBySubscriptionNextSinglePage(nextLink));
+        return listRegionalBySubscription(location, filter, top, Context.NONE);
     }
 
-    /**
-     * List all regional event subscriptions under an Azure subscription.
-     * 
-     * List all event subscriptions from the given location under a specific Azure subscription.
-     * 
-     * @param location The location name.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listRegionalBySubscription(String location, String filter, Integer top,
         Context context) {
@@ -2790,12 +2300,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listRegionalByResourceGroupSinglePage(String resourceGroupName,
         String location, String filter, Integer top) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res
-            = service.listRegionalByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, location, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRegionalByResourceGroupSinglePage(resourceGroupName, location, filter, top, Context.NONE);
     }
 
     /**
@@ -2829,48 +2334,16 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all regional event subscriptions under an Azure subscription and resource group.
-     * 
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listRegionalByResourceGroup(String resourceGroupName,
         String location) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(
-            () -> listRegionalByResourceGroupSinglePage(resourceGroupName, location, filter, top),
-            nextLink -> listRegionalByResourceGroupNextSinglePage(nextLink));
+        return listRegionalByResourceGroup(resourceGroupName, location, filter, top, Context.NONE);
     }
 
-    /**
-     * List all regional event subscriptions under an Azure subscription and resource group.
-     * 
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listRegionalByResourceGroup(String resourceGroupName, String location,
         String filter, Integer top, Context context) {
@@ -2983,12 +2456,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listRegionalBySubscriptionForTopicTypeSinglePage(String location,
         String topicTypeName, String filter, Integer top) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res
-            = service.listRegionalBySubscriptionForTopicTypeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, topicTypeName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRegionalBySubscriptionForTopicTypeSinglePage(location, topicTypeName, filter, top, Context.NONE);
     }
 
     /**
@@ -3022,48 +2490,16 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all regional event subscriptions under an Azure subscription for a topic type.
-     * 
-     * List all event subscriptions from the given location under a specific Azure subscription and topic type.
-     * 
-     * @param location The location name.
-     * @param topicTypeName Name of the topic type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listRegionalBySubscriptionForTopicType(String location,
         String topicTypeName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(
-            () -> listRegionalBySubscriptionForTopicTypeSinglePage(location, topicTypeName, filter, top),
-            nextLink -> listRegionalBySubscriptionForTopicTypeNextSinglePage(nextLink));
+        return listRegionalBySubscriptionForTopicType(location, topicTypeName, filter, top, Context.NONE);
     }
 
-    /**
-     * List all regional event subscriptions under an Azure subscription for a topic type.
-     * 
-     * List all event subscriptions from the given location under a specific Azure subscription and topic type.
-     * 
-     * @param location The location name.
-     * @param topicTypeName Name of the topic type.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listRegionalBySubscriptionForTopicType(String location,
         String topicTypeName, String filter, Integer top, Context context) {
@@ -3184,12 +2620,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listRegionalByResourceGroupForTopicTypeSinglePage(
         String resourceGroupName, String location, String topicTypeName, String filter, Integer top) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res = service.listRegionalByResourceGroupForTopicTypeSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            location, topicTypeName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRegionalByResourceGroupForTopicTypeSinglePage(resourceGroupName, location, topicTypeName, filter,
+            top, Context.NONE);
     }
 
     /**
@@ -3225,51 +2657,17 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
-     * 
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group and
-     * topic type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param topicTypeName Name of the topic type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listRegionalByResourceGroupForTopicType(String resourceGroupName,
         String location, String topicTypeName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listRegionalByResourceGroupForTopicTypeSinglePage(resourceGroupName, location,
-            topicTypeName, filter, top), nextLink -> listRegionalByResourceGroupForTopicTypeNextSinglePage(nextLink));
+        return listRegionalByResourceGroupForTopicType(resourceGroupName, location, topicTypeName, filter, top,
+            Context.NONE);
     }
 
-    /**
-     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
-     * 
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group and
-     * topic type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param topicTypeName Name of the topic type.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listRegionalByResourceGroupForTopicType(String resourceGroupName,
         String location, String topicTypeName, String filter, Integer top, Context context) {
@@ -3314,11 +2712,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listGlobalByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res
-            = service.listGlobalByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listGlobalByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3378,11 +2772,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listByDomainTopicNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res
-            = service.listByDomainTopicNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByDomainTopicNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3447,11 +2837,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listGlobalBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res
-            = service.listGlobalBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listGlobalBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3514,11 +2900,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listByResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res
-            = service.listByResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3579,11 +2961,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listGlobalBySubscriptionForTopicTypeNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res = service.listGlobalBySubscriptionForTopicTypeNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listGlobalBySubscriptionForTopicTypeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3645,11 +3023,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listGlobalByResourceGroupForTopicTypeNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res = service.listGlobalByResourceGroupForTopicTypeNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listGlobalByResourceGroupForTopicTypeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3710,11 +3084,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listRegionalBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res
-            = service.listRegionalBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRegionalBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3775,11 +3145,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner> listRegionalByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res
-            = service.listRegionalByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRegionalByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3842,11 +3208,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner>
         listRegionalBySubscriptionForTopicTypeNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res = service.listRegionalBySubscriptionForTopicTypeNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRegionalBySubscriptionForTopicTypeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3909,11 +3271,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventSubscriptionInner>
         listRegionalByResourceGroupForTopicTypeNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventSubscriptionsListResult> res = service.listRegionalByResourceGroupForTopicTypeNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRegionalByResourceGroupForTopicTypeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -172,10 +172,7 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
     }
 
     public Domain create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDomains()
-            .createOrUpdate(resourceGroupName, domainName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Domain create(Context context) {
@@ -197,10 +194,7 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
     }
 
     public Domain apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDomains()
-            .update(resourceGroupName, domainName, updateDomainUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Domain apply(Context context) {
@@ -222,11 +216,7 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
     }
 
     public Domain refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDomains()
-            .getByResourceGroupWithResponse(resourceGroupName, domainName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Domain refresh(Context context) {

@@ -286,23 +286,7 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an event subscription of a namespace topic.
-     * 
-     * Get properties of an event subscription of a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an event subscription of a namespace topic.
-     * 
-     * Get properties of an event subscription of a namespace topic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionInner> getWithResponse(String resourceGroupName, String namespaceName, String topicName,
         String eventSubscriptionName, Context context) {
@@ -311,22 +295,7 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
             resourceGroupName, namespaceName, topicName, eventSubscriptionName, accept, context);
     }
 
-    /**
-     * Get an event subscription of a namespace topic.
-     * 
-     * Get properties of an event subscription of a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an event subscription of a namespace topic.
-     * 
-     * Get properties of an event subscription of a namespace topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubscriptionInner get(String resourceGroupName, String namespaceName, String topicName,
         String eventSubscriptionName) {
@@ -383,11 +352,8 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         String topicName, String eventSubscriptionName, SubscriptionInner eventSubscriptionInfo) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, topicName, eventSubscriptionName,
-            contentType, accept, eventSubscriptionInfo, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionInfo, Context.NONE);
     }
 
     /**
@@ -445,50 +411,15 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
             SubscriptionInner.class, SubscriptionInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update an event subscription of a namespace topic.
-     * 
-     * Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
-     * Existing event subscriptions will be updated with this API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
-     * others.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of event Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SubscriptionInner>, SubscriptionInner> beginCreateOrUpdate(String resourceGroupName,
         String namespaceName, String topicName, String eventSubscriptionName, SubscriptionInner eventSubscriptionInfo) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, namespaceName, topicName,
-            eventSubscriptionName, eventSubscriptionInfo);
-        return this.client.<SubscriptionInner, SubscriptionInner>getLroResult(response, SubscriptionInner.class,
-            SubscriptionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionInfo, Context.NONE);
     }
 
-    /**
-     * Create or update an event subscription of a namespace topic.
-     * 
-     * Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
-     * Existing event subscriptions will be updated with this API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
-     * others.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of event Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SubscriptionInner>, SubscriptionInner> beginCreateOrUpdate(String resourceGroupName,
         String namespaceName, String topicName, String eventSubscriptionName, SubscriptionInner eventSubscriptionInfo,
@@ -523,53 +454,20 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
             eventSubscriptionInfo).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update an event subscription of a namespace topic.
-     * 
-     * Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
-     * Existing event subscriptions will be updated with this API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
-     * others.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubscriptionInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName,
         String eventSubscriptionName, SubscriptionInner eventSubscriptionInfo) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
-            eventSubscriptionInfo).getFinalResult();
+        return createOrUpdate(resourceGroupName, namespaceName, topicName, eventSubscriptionName, eventSubscriptionInfo,
+            Context.NONE);
     }
 
-    /**
-     * Create or update an event subscription of a namespace topic.
-     * 
-     * Asynchronously creates or updates an event subscription of a namespace topic with the specified parameters.
-     * Existing event subscriptions will be updated with this API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
-     * others.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubscriptionInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName,
         String eventSubscriptionName, SubscriptionInner eventSubscriptionInfo, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
-            eventSubscriptionInfo, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, namespaceName, topicName,
+            eventSubscriptionName, eventSubscriptionInfo, context));
     }
 
     /**
@@ -618,11 +516,8 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String namespaceName, String topicName,
         String eventSubscriptionName, SubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, topicName, eventSubscriptionName,
-            contentType, accept, eventSubscriptionUpdateParameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionUpdateParameters, Context.NONE);
     }
 
     /**
@@ -676,47 +571,16 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
             SubscriptionInner.class, SubscriptionInner.class, this.client.getContext());
     }
 
-    /**
-     * Update event subscription of a namespace topic.
-     * 
-     * Update an existing event subscription of a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param eventSubscriptionUpdateParameters Updated event subscription information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of event Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SubscriptionInner>, SubscriptionInner> beginUpdate(String resourceGroupName,
         String namespaceName, String topicName, String eventSubscriptionName,
         SubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, namespaceName, topicName,
-            eventSubscriptionName, eventSubscriptionUpdateParameters);
-        return this.client.<SubscriptionInner, SubscriptionInner>getLroResult(response, SubscriptionInner.class,
-            SubscriptionInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Update event subscription of a namespace topic.
-     * 
-     * Update an existing event subscription of a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param eventSubscriptionUpdateParameters Updated event subscription information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of event Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SubscriptionInner>, SubscriptionInner> beginUpdate(String resourceGroupName,
         String namespaceName, String topicName, String eventSubscriptionName,
@@ -749,49 +613,20 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
             eventSubscriptionUpdateParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update event subscription of a namespace topic.
-     * 
-     * Update an existing event subscription of a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param eventSubscriptionUpdateParameters Updated event subscription information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubscriptionInner update(String resourceGroupName, String namespaceName, String topicName,
         String eventSubscriptionName, SubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        return beginUpdate(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
-            eventSubscriptionUpdateParameters).getFinalResult();
+        return update(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
+            eventSubscriptionUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Update event subscription of a namespace topic.
-     * 
-     * Update an existing event subscription of a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param eventSubscriptionUpdateParameters Updated event subscription information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubscriptionInner update(String resourceGroupName, String namespaceName, String topicName,
         String eventSubscriptionName, SubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
-        return beginUpdate(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
-            eventSubscriptionUpdateParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, namespaceName, topicName,
+            eventSubscriptionName, eventSubscriptionUpdateParameters, context));
     }
 
     /**
@@ -835,9 +670,7 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String namespaceName, String topicName,
         String eventSubscriptionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, topicName, eventSubscriptionName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, namespaceName, topicName, eventSubscriptionName, Context.NONE);
     }
 
     /**
@@ -886,43 +719,14 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
             this.client.getContext());
     }
 
-    /**
-     * Delete an event subscription of a namespace topic.
-     * 
-     * Delete an existing event subscription of a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String topicName, String eventSubscriptionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, namespaceName, topicName, eventSubscriptionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, namespaceName, topicName, eventSubscriptionName, Context.NONE);
     }
 
-    /**
-     * Delete an event subscription of a namespace topic.
-     * 
-     * Delete an existing event subscription of a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String topicName, String eventSubscriptionName, Context context) {
@@ -952,42 +756,18 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete an event subscription of a namespace topic.
-     * 
-     * Delete an existing event subscription of a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName) {
-        beginDelete(resourceGroupName, namespaceName, topicName, eventSubscriptionName).getFinalResult();
+        delete(resourceGroupName, namespaceName, topicName, eventSubscriptionName, Context.NONE);
     }
 
-    /**
-     * Delete an event subscription of a namespace topic.
-     * 
-     * Delete an existing event subscription of a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName,
         Context context) {
-        beginDelete(resourceGroupName, namespaceName, topicName, eventSubscriptionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, namespaceName, topicName, eventSubscriptionName, context));
     }
 
     /**
@@ -1098,12 +878,7 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SubscriptionInner> listByNamespaceTopicSinglePage(String resourceGroupName,
         String namespaceName, String topicName, String filter, Integer top) {
-        final String accept = "application/json";
-        Response<SubscriptionsListResult> res = service.listByNamespaceTopicSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, namespaceName, topicName,
-            filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceTopicSinglePage(resourceGroupName, namespaceName, topicName, filter, top, Context.NONE);
     }
 
     /**
@@ -1138,50 +913,16 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List event subscriptions of a namespace topic.
-     * 
-     * List event subscriptions that belong to a specific namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List event subscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionInner> listByNamespaceTopic(String resourceGroupName, String namespaceName,
         String topicName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(
-            () -> listByNamespaceTopicSinglePage(resourceGroupName, namespaceName, topicName, filter, top),
-            nextLink -> listByNamespaceTopicNextSinglePage(nextLink));
+        return listByNamespaceTopic(resourceGroupName, namespaceName, topicName, filter, top, Context.NONE);
     }
 
-    /**
-     * List event subscriptions of a namespace topic.
-     * 
-     * List event subscriptions that belong to a specific namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List event subscriptions operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionInner> listByNamespaceTopic(String resourceGroupName, String namespaceName,
         String topicName, String filter, Integer top, Context context) {
@@ -1242,23 +983,7 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
             eventSubscriptionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get delivery attributes for an event subscription of a namespace topic.
-     * 
-     * Get all delivery attributes for an event subscription of a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return delivery attributes for an event subscription of a namespace topic.
-     * 
-     * Get all delivery attributes for an event subscription of a namespace topic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(String resourceGroupName,
         String namespaceName, String topicName, String eventSubscriptionName, Context context) {
@@ -1268,22 +993,7 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
             context);
     }
 
-    /**
-     * Get delivery attributes for an event subscription of a namespace topic.
-     * 
-     * Get all delivery attributes for an event subscription of a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return delivery attributes for an event subscription of a namespace topic.
-     * 
-     * Get all delivery attributes for an event subscription of a namespace topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeliveryAttributeListResultInner getDeliveryAttributes(String resourceGroupName, String namespaceName,
         String topicName, String eventSubscriptionName) {
@@ -1343,23 +1053,7 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get full URL of an event subscription of a namespace topic.
-     * 
-     * Get the full endpoint URL for an event subscription of a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full URL of an event subscription of a namespace topic.
-     * 
-     * Get the full endpoint URL for an event subscription of a namespace topic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionFullUrlInner> getFullUrlWithResponse(String resourceGroupName, String namespaceName,
         String topicName, String eventSubscriptionName, Context context) {
@@ -1369,22 +1063,7 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
             context);
     }
 
-    /**
-     * Get full URL of an event subscription of a namespace topic.
-     * 
-     * Get the full endpoint URL for an event subscription of a namespace topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be found.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full URL of an event subscription of a namespace topic.
-     * 
-     * Get the full endpoint URL for an event subscription of a namespace topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubscriptionFullUrlInner getFullUrl(String resourceGroupName, String namespaceName, String topicName,
         String eventSubscriptionName) {
@@ -1428,11 +1107,7 @@ public final class NamespaceTopicEventSubscriptionsClientImpl implements Namespa
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SubscriptionInner> listByNamespaceTopicNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SubscriptionsListResult> res
-            = service.listByNamespaceTopicNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceTopicNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

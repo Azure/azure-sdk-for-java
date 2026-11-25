@@ -50,7 +50,7 @@ public final class NamespacesImpl implements Namespaces {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String namespaceName) {
-        this.serviceClient().delete(resourceGroupName, namespaceName);
+        this.delete(resourceGroupName, namespaceName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String namespaceName, Context context) {
@@ -99,13 +99,7 @@ public final class NamespacesImpl implements Namespaces {
 
     public NamespaceSharedAccessKeys regenerateKey(String resourceGroupName, String namespaceName,
         NamespaceRegenerateKeyRequest regenerateKeyRequest) {
-        NamespaceSharedAccessKeysInner inner
-            = this.serviceClient().regenerateKey(resourceGroupName, namespaceName, regenerateKeyRequest);
-        if (inner != null) {
-            return new NamespaceSharedAccessKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.regenerateKey(resourceGroupName, namespaceName, regenerateKeyRequest, Context.NONE);
     }
 
     public NamespaceSharedAccessKeys regenerateKey(String resourceGroupName, String namespaceName,
@@ -121,13 +115,7 @@ public final class NamespacesImpl implements Namespaces {
 
     public CustomDomainOwnershipValidationResult validateCustomDomainOwnership(String resourceGroupName,
         String namespaceName) {
-        CustomDomainOwnershipValidationResultInner inner
-            = this.serviceClient().validateCustomDomainOwnership(resourceGroupName, namespaceName);
-        if (inner != null) {
-            return new CustomDomainOwnershipValidationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.validateCustomDomainOwnership(resourceGroupName, namespaceName, Context.NONE);
     }
 
     public CustomDomainOwnershipValidationResult validateCustomDomainOwnership(String resourceGroupName,
@@ -142,74 +130,30 @@ public final class NamespacesImpl implements Namespaces {
     }
 
     public Namespace getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}",
-            "namespaceName");
-        if (namespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, namespaceName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Namespace> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String namespaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}",
-            "namespaceName");
-        if (namespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
-        }
+            "namespaceName", "namespaces", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, namespaceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}",
-            "namespaceName");
-        if (namespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
-        }
-        this.delete(resourceGroupName, namespaceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String namespaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}",
-            "namespaceName");
-        if (namespaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
-        }
+            "namespaceName", "namespaces", LOGGER);
         this.delete(resourceGroupName, namespaceName, context);
     }
 

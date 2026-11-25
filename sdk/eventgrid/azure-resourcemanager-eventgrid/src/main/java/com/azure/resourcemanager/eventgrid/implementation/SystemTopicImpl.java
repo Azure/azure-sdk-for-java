@@ -111,10 +111,7 @@ public final class SystemTopicImpl implements SystemTopic, SystemTopic.Definitio
     }
 
     public SystemTopic create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSystemTopics()
-            .createOrUpdate(resourceGroupName, systemTopicName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SystemTopic create(Context context) {
@@ -136,10 +133,7 @@ public final class SystemTopicImpl implements SystemTopic, SystemTopic.Definitio
     }
 
     public SystemTopic apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSystemTopics()
-            .update(resourceGroupName, systemTopicName, updateSystemTopicUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SystemTopic apply(Context context) {
@@ -161,11 +155,7 @@ public final class SystemTopicImpl implements SystemTopic, SystemTopic.Definitio
     }
 
     public SystemTopic refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSystemTopics()
-            .getByResourceGroupWithResponse(resourceGroupName, systemTopicName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SystemTopic refresh(Context context) {

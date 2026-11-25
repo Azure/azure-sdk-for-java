@@ -91,12 +91,7 @@ public final class ChannelImpl implements Channel, Channel.Definition, Channel.U
     }
 
     public Channel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChannels()
-            .createOrUpdateWithResponse(resourceGroupName, partnerNamespaceName, channelName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Channel create(Context context) {
@@ -119,12 +114,7 @@ public final class ChannelImpl implements Channel, Channel.Definition, Channel.U
     }
 
     public Channel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChannels()
-            .createOrUpdateWithResponse(resourceGroupName, partnerNamespaceName, channelName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Channel apply(Context context) {
@@ -151,11 +141,7 @@ public final class ChannelImpl implements Channel, Channel.Definition, Channel.U
     }
 
     public Channel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChannels()
-            .getWithResponse(resourceGroupName, partnerNamespaceName, channelName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Channel refresh(Context context) {

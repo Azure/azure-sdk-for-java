@@ -48,7 +48,7 @@ public final class TopicsImpl implements Topics {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String topicName) {
-        this.serviceClient().delete(resourceGroupName, topicName);
+        this.delete(resourceGroupName, topicName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String topicName, Context context) {
@@ -96,13 +96,7 @@ public final class TopicsImpl implements Topics {
 
     public TopicSharedAccessKeys regenerateKey(String resourceGroupName, String topicName,
         TopicRegenerateKeyRequest regenerateKeyRequest) {
-        TopicSharedAccessKeysInner inner
-            = this.serviceClient().regenerateKey(resourceGroupName, topicName, regenerateKeyRequest);
-        if (inner != null) {
-            return new TopicSharedAccessKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.regenerateKey(resourceGroupName, topicName, regenerateKeyRequest, Context.NONE);
     }
 
     public TopicSharedAccessKeys regenerateKey(String resourceGroupName, String topicName,
@@ -118,9 +112,7 @@ public final class TopicsImpl implements Topics {
 
     public PagedIterable<EventType> listEventTypes(String resourceGroupName, String providerNamespace,
         String resourceTypeName, String resourceName) {
-        PagedIterable<EventTypeInner> inner
-            = this.serviceClient().listEventTypes(resourceGroupName, providerNamespace, resourceTypeName, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventTypeImpl(inner1, this.manager()));
+        return this.listEventTypes(resourceGroupName, providerNamespace, resourceTypeName, resourceName, Context.NONE);
     }
 
     public PagedIterable<EventType> listEventTypes(String resourceGroupName, String providerNamespace,
@@ -131,74 +123,30 @@ public final class TopicsImpl implements Topics {
     }
 
     public Topic getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String topicName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}",
-            "topicName");
-        if (topicName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'topics'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, topicName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Topic> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String topicName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String topicName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}",
-            "topicName");
-        if (topicName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'topics'.", id)));
-        }
+            "topicName", "topics", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, topicName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String topicName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}",
-            "topicName");
-        if (topicName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'topics'.", id)));
-        }
-        this.delete(resourceGroupName, topicName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String topicName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String topicName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}",
-            "topicName");
-        if (topicName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'topics'.", id)));
-        }
+            "topicName", "topics", LOGGER);
         this.delete(resourceGroupName, topicName, context);
     }
 

@@ -335,21 +335,7 @@ public final class TopicsClientImpl implements TopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a topic.
-     * 
-     * Get properties of a topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a topic.
-     * 
-     * Get properties of a topic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicInner> getByResourceGroupWithResponse(String resourceGroupName, String topicName,
         Context context) {
@@ -358,20 +344,7 @@ public final class TopicsClientImpl implements TopicsClient {
             this.client.getSubscriptionId(), resourceGroupName, topicName, accept, context);
     }
 
-    /**
-     * Get a topic.
-     * 
-     * Get properties of a topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a topic.
-     * 
-     * Get properties of a topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicInner getByResourceGroup(String resourceGroupName, String topicName) {
         return getByResourceGroupWithResponse(resourceGroupName, topicName, Context.NONE).getValue();
@@ -417,11 +390,7 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String topicName,
         TopicInner topicInfo) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, topicName, contentType, accept, topicInfo,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, topicName, topicInfo, Context.NONE);
     }
 
     /**
@@ -469,41 +438,14 @@ public final class TopicsClientImpl implements TopicsClient {
             TopicInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a topic.
-     * 
-     * Asynchronously creates a new topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @param topicInfo Topic information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of eventGrid Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicInner>, TopicInner> beginCreateOrUpdate(String resourceGroupName,
         String topicName, TopicInner topicInfo) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, topicName, topicInfo);
-        return this.client.<TopicInner, TopicInner>getLroResult(response, TopicInner.class, TopicInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, topicName, topicInfo, Context.NONE);
     }
 
-    /**
-     * Create a topic.
-     * 
-     * Asynchronously creates a new topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @param topicInfo Topic information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of eventGrid Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicInner>, TopicInner> beginCreateOrUpdate(String resourceGroupName,
         String topicName, TopicInner topicInfo, Context context) {
@@ -530,42 +472,18 @@ public final class TopicsClientImpl implements TopicsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a topic.
-     * 
-     * Asynchronously creates a new topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @param topicInfo Topic information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicInner createOrUpdate(String resourceGroupName, String topicName, TopicInner topicInfo) {
-        return beginCreateOrUpdate(resourceGroupName, topicName, topicInfo).getFinalResult();
+        return createOrUpdate(resourceGroupName, topicName, topicInfo, Context.NONE);
     }
 
-    /**
-     * Create a topic.
-     * 
-     * Asynchronously creates a new topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @param topicInfo Topic information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicInner createOrUpdate(String resourceGroupName, String topicName, TopicInner topicInfo,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, topicName, topicInfo, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, topicName, topicInfo, context));
     }
 
     /**
@@ -609,11 +527,7 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String topicName,
         TopicUpdateParameters topicUpdateParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, topicName, contentType, accept, topicUpdateParameters,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, topicName, topicUpdateParameters, Context.NONE);
     }
 
     /**
@@ -662,41 +576,14 @@ public final class TopicsClientImpl implements TopicsClient {
             TopicInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a topic.
-     * 
-     * Asynchronously updates a topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @param topicUpdateParameters Topic update information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicInner>, TopicInner> beginUpdate(String resourceGroupName, String topicName,
         TopicUpdateParameters topicUpdateParameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, topicName, topicUpdateParameters);
-        return this.client.<TopicInner, TopicInner>getLroResult(response, TopicInner.class, TopicInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, topicName, topicUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Update a topic.
-     * 
-     * Asynchronously updates a topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @param topicUpdateParameters Topic update information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicInner>, TopicInner> beginUpdate(String resourceGroupName, String topicName,
         TopicUpdateParameters topicUpdateParameters, Context context) {
@@ -725,42 +612,18 @@ public final class TopicsClientImpl implements TopicsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a topic.
-     * 
-     * Asynchronously updates a topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @param topicUpdateParameters Topic update information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicInner update(String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters) {
-        return beginUpdate(resourceGroupName, topicName, topicUpdateParameters).getFinalResult();
+        return update(resourceGroupName, topicName, topicUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Update a topic.
-     * 
-     * Asynchronously updates a topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @param topicUpdateParameters Topic update information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicInner update(String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters,
         Context context) {
-        return beginUpdate(resourceGroupName, topicName, topicUpdateParameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, topicName, topicUpdateParameters, context));
     }
 
     /**
@@ -797,8 +660,7 @@ public final class TopicsClientImpl implements TopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String topicName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, topicName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, topicName, Context.NONE);
     }
 
     /**
@@ -839,37 +701,13 @@ public final class TopicsClientImpl implements TopicsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a topic.
-     * 
-     * Delete existing topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String topicName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, topicName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, topicName, Context.NONE);
     }
 
-    /**
-     * Delete a topic.
-     * 
-     * Delete existing topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String topicName, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, topicName, context);
@@ -893,37 +731,16 @@ public final class TopicsClientImpl implements TopicsClient {
         return beginDeleteAsync(resourceGroupName, topicName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a topic.
-     * 
-     * Delete existing topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String topicName) {
-        beginDelete(resourceGroupName, topicName).getFinalResult();
+        delete(resourceGroupName, topicName, Context.NONE);
     }
 
-    /**
-     * Delete a topic.
-     * 
-     * Delete existing topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String topicName, Context context) {
-        beginDelete(resourceGroupName, topicName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, topicName, context));
     }
 
     /**
@@ -1021,12 +838,7 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TopicInner> listByResourceGroupSinglePage(String resourceGroupName, String filter,
         Integer top) {
-        final String accept = "application/json";
-        Response<TopicsListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, filter, top, Context.NONE);
     }
 
     /**
@@ -1059,44 +871,15 @@ public final class TopicsClientImpl implements TopicsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List topics under a resource group.
-     * 
-     * List all the topics under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopicInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, filter, top),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, filter, top, Context.NONE);
     }
 
-    /**
-     * List topics under a resource group.
-     * 
-     * List all the topics under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopicInner> listByResourceGroup(String resourceGroupName, String filter, Integer top,
         Context context) {
@@ -1192,11 +975,7 @@ public final class TopicsClientImpl implements TopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TopicInner> listSinglePage(String filter, Integer top) {
-        final String accept = "application/json";
-        Response<TopicsListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, top, Context.NONE);
     }
 
     /**
@@ -1226,41 +1005,15 @@ public final class TopicsClientImpl implements TopicsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List topics under an Azure subscription.
-     * 
-     * List all the topics under an Azure subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopicInner> list() {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(filter, top),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(filter, top, Context.NONE);
     }
 
-    /**
-     * List topics under an Azure subscription.
-     * 
-     * List all the topics under an Azure subscription.
-     * 
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopicInner> list(String filter, Integer top, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, top, context),
@@ -1307,19 +1060,7 @@ public final class TopicsClientImpl implements TopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List keys for a topic.
-     * 
-     * List the two keys used to publish to a topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicSharedAccessKeysInner> listSharedAccessKeysWithResponse(String resourceGroupName,
         String topicName, Context context) {
@@ -1328,18 +1069,7 @@ public final class TopicsClientImpl implements TopicsClient {
             this.client.getSubscriptionId(), resourceGroupName, topicName, accept, context);
     }
 
-    /**
-     * List keys for a topic.
-     * 
-     * List the two keys used to publish to a topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicSharedAccessKeysInner listSharedAccessKeys(String resourceGroupName, String topicName) {
         return listSharedAccessKeysWithResponse(resourceGroupName, topicName, Context.NONE).getValue();
@@ -1386,11 +1116,7 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> regenerateKeyWithResponse(String resourceGroupName, String topicName,
         TopicRegenerateKeyRequest regenerateKeyRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.regenerateKeySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, topicName, contentType, accept, regenerateKeyRequest,
-            Context.NONE);
+        return regenerateKeyWithResponse(resourceGroupName, topicName, regenerateKeyRequest, Context.NONE);
     }
 
     /**
@@ -1440,41 +1166,14 @@ public final class TopicsClientImpl implements TopicsClient {
             this.client.getContext());
     }
 
-    /**
-     * Regenerate key for a topic.
-     * 
-     * Regenerate a shared access key for a topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @param regenerateKeyRequest Request body to regenerate key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of shared access keys of the Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner>
         beginRegenerateKey(String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest) {
-        Response<BinaryData> response = regenerateKeyWithResponse(resourceGroupName, topicName, regenerateKeyRequest);
-        return this.client.<TopicSharedAccessKeysInner, TopicSharedAccessKeysInner>getLroResult(response,
-            TopicSharedAccessKeysInner.class, TopicSharedAccessKeysInner.class, Context.NONE);
+        return beginRegenerateKey(resourceGroupName, topicName, regenerateKeyRequest, Context.NONE);
     }
 
-    /**
-     * Regenerate key for a topic.
-     * 
-     * Regenerate a shared access key for a topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @param regenerateKeyRequest Request body to regenerate key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of shared access keys of the Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKey(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
@@ -1504,43 +1203,19 @@ public final class TopicsClientImpl implements TopicsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Regenerate key for a topic.
-     * 
-     * Regenerate a shared access key for a topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @param regenerateKeyRequest Request body to regenerate key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicSharedAccessKeysInner regenerateKey(String resourceGroupName, String topicName,
         TopicRegenerateKeyRequest regenerateKeyRequest) {
-        return beginRegenerateKey(resourceGroupName, topicName, regenerateKeyRequest).getFinalResult();
+        return regenerateKey(resourceGroupName, topicName, regenerateKeyRequest, Context.NONE);
     }
 
-    /**
-     * Regenerate key for a topic.
-     * 
-     * Regenerate a shared access key for a topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param topicName Name of the topic.
-     * @param regenerateKeyRequest Request body to regenerate key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicSharedAccessKeysInner regenerateKey(String resourceGroupName, String topicName,
         TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
-        return beginRegenerateKey(resourceGroupName, topicName, regenerateKeyRequest, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginRegenerateKey(resourceGroupName, topicName, regenerateKeyRequest, context));
     }
 
     /**
@@ -1610,12 +1285,8 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventTypeInner> listEventTypesSinglePage(String resourceGroupName, String providerNamespace,
         String resourceTypeName, String resourceName) {
-        final String accept = "application/json";
-        Response<EventTypesListResult> res = service.listEventTypesSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, providerNamespace,
-            resourceTypeName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listEventTypesSinglePage(resourceGroupName, providerNamespace, resourceTypeName, resourceName,
+            Context.NONE);
     }
 
     /**
@@ -1644,43 +1315,14 @@ public final class TopicsClientImpl implements TopicsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List topic event types.
-     * 
-     * List event types for a topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerNamespace the provider namespace.
-     * @param resourceTypeName Name of the topic type.
-     * @param resourceName Name of the topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Event Types operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventTypeInner> listEventTypes(String resourceGroupName, String providerNamespace,
         String resourceTypeName, String resourceName) {
-        return new PagedIterable<>(
-            () -> listEventTypesSinglePage(resourceGroupName, providerNamespace, resourceTypeName, resourceName),
-            nextLink -> listEventTypesNextSinglePage(nextLink));
+        return listEventTypes(resourceGroupName, providerNamespace, resourceTypeName, resourceName, Context.NONE);
     }
 
-    /**
-     * List topic event types.
-     * 
-     * List event types for a topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerNamespace the provider namespace.
-     * @param resourceTypeName Name of the topic type.
-     * @param resourceName Name of the topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Event Types operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventTypeInner> listEventTypes(String resourceGroupName, String providerNamespace,
         String resourceTypeName, String resourceName, Context context) {
@@ -1724,11 +1366,7 @@ public final class TopicsClientImpl implements TopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TopicInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TopicsListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1788,11 +1426,7 @@ public final class TopicsClientImpl implements TopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TopicInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TopicsListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1851,11 +1485,7 @@ public final class TopicsClientImpl implements TopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventTypeInner> listEventTypesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventTypesListResult> res
-            = service.listEventTypesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listEventTypesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

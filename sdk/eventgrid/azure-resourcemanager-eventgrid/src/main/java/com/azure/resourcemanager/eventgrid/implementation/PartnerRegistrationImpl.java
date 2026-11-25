@@ -89,10 +89,7 @@ public final class PartnerRegistrationImpl
     }
 
     public PartnerRegistration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPartnerRegistrations()
-            .createOrUpdate(resourceGroupName, partnerRegistrationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PartnerRegistration create(Context context) {
@@ -114,11 +111,7 @@ public final class PartnerRegistrationImpl
     }
 
     public PartnerRegistration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPartnerRegistrations()
-            .update(resourceGroupName, partnerRegistrationName, updatePartnerRegistrationUpdateParameters,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PartnerRegistration apply(Context context) {
@@ -141,11 +134,7 @@ public final class PartnerRegistrationImpl
     }
 
     public PartnerRegistration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPartnerRegistrations()
-            .getByResourceGroupWithResponse(resourceGroupName, partnerRegistrationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PartnerRegistration refresh(Context context) {

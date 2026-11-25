@@ -47,13 +47,7 @@ public final class PartnerConfigurationsImpl implements PartnerConfigurations {
 
     public PartnerConfiguration createOrUpdate(String resourceGroupName,
         PartnerConfigurationInner partnerConfigurationInfo) {
-        PartnerConfigurationInner inner
-            = this.serviceClient().createOrUpdate(resourceGroupName, partnerConfigurationInfo);
-        if (inner != null) {
-            return new PartnerConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, partnerConfigurationInfo, Context.NONE);
     }
 
     public PartnerConfiguration createOrUpdate(String resourceGroupName,
@@ -69,13 +63,7 @@ public final class PartnerConfigurationsImpl implements PartnerConfigurations {
 
     public PartnerConfiguration update(String resourceGroupName,
         PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters) {
-        PartnerConfigurationInner inner
-            = this.serviceClient().update(resourceGroupName, partnerConfigurationUpdateParameters);
-        if (inner != null) {
-            return new PartnerConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, partnerConfigurationUpdateParameters, Context.NONE);
     }
 
     public PartnerConfiguration update(String resourceGroupName,
@@ -90,7 +78,7 @@ public final class PartnerConfigurationsImpl implements PartnerConfigurations {
     }
 
     public void delete(String resourceGroupName) {
-        this.serviceClient().delete(resourceGroupName);
+        this.delete(resourceGroupName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, Context context) {
@@ -98,8 +86,7 @@ public final class PartnerConfigurationsImpl implements PartnerConfigurations {
     }
 
     public PagedIterable<PartnerConfiguration> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<PartnerConfigurationInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PartnerConfigurationImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<PartnerConfiguration> listByResourceGroup(String resourceGroupName, Context context) {

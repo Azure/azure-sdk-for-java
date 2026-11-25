@@ -78,10 +78,7 @@ public final class PermissionBindingImpl
     }
 
     public PermissionBinding create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPermissionBindings()
-            .createOrUpdate(resourceGroupName, namespaceName, permissionBindingName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PermissionBinding create(Context context) {
@@ -102,10 +99,7 @@ public final class PermissionBindingImpl
     }
 
     public PermissionBinding apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPermissionBindings()
-            .createOrUpdate(resourceGroupName, namespaceName, permissionBindingName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PermissionBinding apply(Context context) {
@@ -131,11 +125,7 @@ public final class PermissionBindingImpl
     }
 
     public PermissionBinding refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPermissionBindings()
-            .getWithResponse(resourceGroupName, namespaceName, permissionBindingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PermissionBinding refresh(Context context) {

@@ -181,39 +181,14 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
         return getWithResponseAsync(topicTypeName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a topic type.
-     * 
-     * Get information about a topic type.
-     * 
-     * @param topicTypeName Name of the topic type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a topic type.
-     * 
-     * Get information about a topic type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicTypeInfoInner> getWithResponse(String topicTypeName, Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), topicTypeName, accept, context);
     }
 
-    /**
-     * Get a topic type.
-     * 
-     * Get information about a topic type.
-     * 
-     * @param topicTypeName Name of the topic type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a topic type.
-     * 
-     * Get information about a topic type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicTypeInfoInner get(String topicTypeName) {
         return getWithResponse(topicTypeName, Context.NONE).getValue();
@@ -265,11 +240,7 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TopicTypeInfoInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<TopicTypesListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -292,31 +263,13 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List topic types.
-     * 
-     * List all registered topic types.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topic Types operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopicTypeInfoInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List topic types.
-     * 
-     * List all registered topic types.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topic Types operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopicTypeInfoInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -375,11 +328,7 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventTypeInner> listEventTypesSinglePage(String topicTypeName) {
-        final String accept = "application/json";
-        Response<EventTypesListResult> res = service.listEventTypesSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), topicTypeName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listEventTypesSinglePage(topicTypeName, Context.NONE);
     }
 
     /**
@@ -403,35 +352,13 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List event types.
-     * 
-     * List event types for a topic type.
-     * 
-     * @param topicTypeName Name of the topic type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Event Types operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventTypeInner> listEventTypes(String topicTypeName) {
-        return new PagedIterable<>(() -> listEventTypesSinglePage(topicTypeName),
-            nextLink -> listEventTypesNextSinglePage(nextLink));
+        return listEventTypes(topicTypeName, Context.NONE);
     }
 
-    /**
-     * List event types.
-     * 
-     * List event types for a topic type.
-     * 
-     * @param topicTypeName Name of the topic type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Event Types operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventTypeInner> listEventTypes(String topicTypeName, Context context) {
         return new PagedIterable<>(() -> listEventTypesSinglePage(topicTypeName, context),
@@ -472,11 +399,7 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TopicTypeInfoInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TopicTypesListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -534,11 +457,7 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventTypeInner> listEventTypesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventTypesListResult> res
-            = service.listEventTypesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listEventTypesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

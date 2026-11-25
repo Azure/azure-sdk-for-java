@@ -121,11 +121,7 @@ public final class PartnerTopicImpl implements PartnerTopic, PartnerTopic.Defini
     }
 
     public PartnerTopic create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPartnerTopics()
-            .createOrUpdateWithResponse(resourceGroupName, partnerTopicName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PartnerTopic create(Context context) {
@@ -148,11 +144,7 @@ public final class PartnerTopicImpl implements PartnerTopic, PartnerTopic.Defini
     }
 
     public PartnerTopic apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPartnerTopics()
-            .updateWithResponse(resourceGroupName, partnerTopicName, updatePartnerTopicUpdateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PartnerTopic apply(Context context) {
@@ -176,11 +168,7 @@ public final class PartnerTopicImpl implements PartnerTopic, PartnerTopic.Defini
     }
 
     public PartnerTopic refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPartnerTopics()
-            .getByResourceGroupWithResponse(resourceGroupName, partnerTopicName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PartnerTopic refresh(Context context) {

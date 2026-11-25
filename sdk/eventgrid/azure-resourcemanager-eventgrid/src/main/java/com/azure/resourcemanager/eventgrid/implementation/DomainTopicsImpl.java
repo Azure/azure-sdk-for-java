@@ -45,12 +45,7 @@ public final class DomainTopicsImpl implements DomainTopics {
     }
 
     public DomainTopic createOrUpdate(String resourceGroupName, String domainName, String domainTopicName) {
-        DomainTopicInner inner = this.serviceClient().createOrUpdate(resourceGroupName, domainName, domainTopicName);
-        if (inner != null) {
-            return new DomainTopicImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, domainName, domainTopicName, Context.NONE);
     }
 
     public DomainTopic createOrUpdate(String resourceGroupName, String domainName, String domainTopicName,
@@ -65,7 +60,7 @@ public final class DomainTopicsImpl implements DomainTopics {
     }
 
     public void delete(String resourceGroupName, String domainName, String domainTopicName) {
-        this.serviceClient().delete(resourceGroupName, domainName, domainTopicName);
+        this.delete(resourceGroupName, domainName, domainTopicName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String domainName, String domainTopicName, Context context) {

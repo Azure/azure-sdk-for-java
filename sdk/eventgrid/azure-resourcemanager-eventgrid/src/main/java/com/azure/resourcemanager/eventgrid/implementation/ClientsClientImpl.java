@@ -209,22 +209,7 @@ public final class ClientsClientImpl implements ClientsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a client.
-     * 
-     * Get properties of a client.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientName Name of the client.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a client.
-     * 
-     * Get properties of a client along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClientInner> getWithResponse(String resourceGroupName, String namespaceName, String clientName,
         Context context) {
@@ -233,21 +218,7 @@ public final class ClientsClientImpl implements ClientsClient {
             resourceGroupName, namespaceName, clientName, accept, context);
     }
 
-    /**
-     * Get a client.
-     * 
-     * Get properties of a client.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientName Name of the client.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a client.
-     * 
-     * Get properties of a client.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClientInner get(String resourceGroupName, String namespaceName, String clientName) {
         return getWithResponse(resourceGroupName, namespaceName, clientName, Context.NONE).getValue();
@@ -296,11 +267,7 @@ public final class ClientsClientImpl implements ClientsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         String clientName, ClientInner clientInfo) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, clientName, contentType, accept,
-            clientInfo, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, namespaceName, clientName, clientInfo, Context.NONE);
     }
 
     /**
@@ -351,44 +318,14 @@ public final class ClientsClientImpl implements ClientsClient {
             ClientInner.class, ClientInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a client.
-     * 
-     * Create or update a client with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientName Name of the client.
-     * @param clientInfo Client information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Client resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClientInner>, ClientInner> beginCreateOrUpdate(String resourceGroupName,
         String namespaceName, String clientName, ClientInner clientInfo) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, namespaceName, clientName, clientInfo);
-        return this.client.<ClientInner, ClientInner>getLroResult(response, ClientInner.class, ClientInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, namespaceName, clientName, clientInfo, Context.NONE);
     }
 
-    /**
-     * Create or update a client.
-     * 
-     * Create or update a client with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientName Name of the client.
-     * @param clientInfo Client information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Client resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClientInner>, ClientInner> beginCreateOrUpdate(String resourceGroupName,
         String namespaceName, String clientName, ClientInner clientInfo, Context context) {
@@ -419,45 +356,19 @@ public final class ClientsClientImpl implements ClientsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a client.
-     * 
-     * Create or update a client with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientName Name of the client.
-     * @param clientInfo Client information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Client resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClientInner createOrUpdate(String resourceGroupName, String namespaceName, String clientName,
         ClientInner clientInfo) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, clientName, clientInfo).getFinalResult();
+        return createOrUpdate(resourceGroupName, namespaceName, clientName, clientInfo, Context.NONE);
     }
 
-    /**
-     * Create or update a client.
-     * 
-     * Create or update a client with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientName Name of the client.
-     * @param clientInfo Client information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Client resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClientInner createOrUpdate(String resourceGroupName, String namespaceName, String clientName,
         ClientInner clientInfo, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, clientName, clientInfo, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, namespaceName, clientName, clientInfo, context));
     }
 
     /**
@@ -497,8 +408,7 @@ public final class ClientsClientImpl implements ClientsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String namespaceName, String clientName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, clientName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, namespaceName, clientName, Context.NONE);
     }
 
     /**
@@ -543,40 +453,14 @@ public final class ClientsClientImpl implements ClientsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a client.
-     * 
-     * Delete an existing client.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientName Name of the client.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String clientName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, namespaceName, clientName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, namespaceName, clientName, Context.NONE);
     }
 
-    /**
-     * Delete a client.
-     * 
-     * Delete an existing client.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientName Name of the client.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String clientName, Context context) {
@@ -603,39 +487,16 @@ public final class ClientsClientImpl implements ClientsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a client.
-     * 
-     * Delete an existing client.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientName Name of the client.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String clientName) {
-        beginDelete(resourceGroupName, namespaceName, clientName).getFinalResult();
+        delete(resourceGroupName, namespaceName, clientName, Context.NONE);
     }
 
-    /**
-     * Delete a client.
-     * 
-     * Delete an existing client.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param clientName Name of the client.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String clientName, Context context) {
-        beginDelete(resourceGroupName, namespaceName, clientName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, namespaceName, clientName, context));
     }
 
     /**
@@ -738,12 +599,7 @@ public final class ClientsClientImpl implements ClientsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClientInner> listByNamespaceSinglePage(String resourceGroupName, String namespaceName,
         String filter, Integer top) {
-        final String accept = "application/json";
-        Response<ClientsListResult> res
-            = service.listByNamespaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceSinglePage(resourceGroupName, namespaceName, filter, top, Context.NONE);
     }
 
     /**
@@ -777,46 +633,15 @@ public final class ClientsClientImpl implements ClientsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all permission bindings under a namespace.
-     * 
-     * Get all the permission bindings under a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Client operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClientInner> listByNamespace(String resourceGroupName, String namespaceName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listByNamespaceSinglePage(resourceGroupName, namespaceName, filter, top),
-            nextLink -> listByNamespaceNextSinglePage(nextLink));
+        return listByNamespace(resourceGroupName, namespaceName, filter, top, Context.NONE);
     }
 
-    /**
-     * List all permission bindings under a namespace.
-     * 
-     * Get all the permission bindings under a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Client operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClientInner> listByNamespace(String resourceGroupName, String namespaceName, String filter,
         Integer top, Context context) {
@@ -860,11 +685,7 @@ public final class ClientsClientImpl implements ClientsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClientInner> listByNamespaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ClientsListResult> res
-            = service.listByNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

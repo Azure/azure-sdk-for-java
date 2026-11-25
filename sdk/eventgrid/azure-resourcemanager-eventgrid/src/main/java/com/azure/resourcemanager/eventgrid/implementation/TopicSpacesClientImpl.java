@@ -210,22 +210,7 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a topic space.
-     * 
-     * Get properties of a topic space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicSpaceName Name of the Topic space.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a topic space.
-     * 
-     * Get properties of a topic space along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicSpaceInner> getWithResponse(String resourceGroupName, String namespaceName,
         String topicSpaceName, Context context) {
@@ -234,21 +219,7 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
             resourceGroupName, namespaceName, topicSpaceName, accept, context);
     }
 
-    /**
-     * Get a topic space.
-     * 
-     * Get properties of a topic space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicSpaceName Name of the Topic space.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a topic space.
-     * 
-     * Get properties of a topic space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicSpaceInner get(String resourceGroupName, String namespaceName, String topicSpaceName) {
         return getWithResponse(resourceGroupName, namespaceName, topicSpaceName, Context.NONE).getValue();
@@ -297,11 +268,8 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         String topicSpaceName, TopicSpaceInner topicSpaceInfo) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, topicSpaceName, contentType, accept,
-            topicSpaceInfo, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo,
+            Context.NONE);
     }
 
     /**
@@ -352,44 +320,14 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
             TopicSpaceInner.class, TopicSpaceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a topic space.
-     * 
-     * Create or update a topic space with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicSpaceName Name of the Topic space.
-     * @param topicSpaceInfo Topic space information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Topic space resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicSpaceInner>, TopicSpaceInner> beginCreateOrUpdate(String resourceGroupName,
         String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo);
-        return this.client.<TopicSpaceInner, TopicSpaceInner>getLroResult(response, TopicSpaceInner.class,
-            TopicSpaceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo, Context.NONE);
     }
 
-    /**
-     * Create or update a topic space.
-     * 
-     * Create or update a topic space with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicSpaceName Name of the Topic space.
-     * @param topicSpaceInfo Topic space information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Topic space resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicSpaceInner>, TopicSpaceInner> beginCreateOrUpdate(String resourceGroupName,
         String namespaceName, String topicSpaceName, TopicSpaceInner topicSpaceInfo, Context context) {
@@ -420,46 +358,19 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a topic space.
-     * 
-     * Create or update a topic space with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicSpaceName Name of the Topic space.
-     * @param topicSpaceInfo Topic space information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Topic space resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicSpaceInner createOrUpdate(String resourceGroupName, String namespaceName, String topicSpaceName,
         TopicSpaceInner topicSpaceInfo) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo).getFinalResult();
+        return createOrUpdate(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo, Context.NONE);
     }
 
-    /**
-     * Create or update a topic space.
-     * 
-     * Create or update a topic space with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicSpaceName Name of the Topic space.
-     * @param topicSpaceInfo Topic space information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Topic space resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicSpaceInner createOrUpdate(String resourceGroupName, String namespaceName, String topicSpaceName,
         TopicSpaceInner topicSpaceInfo, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo, context));
     }
 
     /**
@@ -500,8 +411,7 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String namespaceName,
         String topicSpaceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, topicSpaceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, namespaceName, topicSpaceName, Context.NONE);
     }
 
     /**
@@ -547,40 +457,14 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a topic space.
-     * 
-     * Delete an existing topic space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicSpaceName Name of the Topic space.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String topicSpaceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, namespaceName, topicSpaceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, namespaceName, topicSpaceName, Context.NONE);
     }
 
-    /**
-     * Delete a topic space.
-     * 
-     * Delete an existing topic space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicSpaceName Name of the Topic space.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         String topicSpaceName, Context context) {
@@ -607,39 +491,16 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a topic space.
-     * 
-     * Delete an existing topic space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicSpaceName Name of the Topic space.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String topicSpaceName) {
-        beginDelete(resourceGroupName, namespaceName, topicSpaceName).getFinalResult();
+        delete(resourceGroupName, namespaceName, topicSpaceName, Context.NONE);
     }
 
-    /**
-     * Delete a topic space.
-     * 
-     * Delete an existing topic space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param topicSpaceName Name of the Topic space.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, String topicSpaceName, Context context) {
-        beginDelete(resourceGroupName, namespaceName, topicSpaceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, namespaceName, topicSpaceName, context));
     }
 
     /**
@@ -742,12 +603,7 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TopicSpaceInner> listByNamespaceSinglePage(String resourceGroupName, String namespaceName,
         String filter, Integer top) {
-        final String accept = "application/json";
-        Response<TopicSpacesListResult> res
-            = service.listByNamespaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceSinglePage(resourceGroupName, namespaceName, filter, top, Context.NONE);
     }
 
     /**
@@ -781,46 +637,15 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all topic spaces under a namespace.
-     * 
-     * Get all the topic spaces under a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topic Space operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopicSpaceInner> listByNamespace(String resourceGroupName, String namespaceName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listByNamespaceSinglePage(resourceGroupName, namespaceName, filter, top),
-            nextLink -> listByNamespaceNextSinglePage(nextLink));
+        return listByNamespace(resourceGroupName, namespaceName, filter, top, Context.NONE);
     }
 
-    /**
-     * List all topic spaces under a namespace.
-     * 
-     * Get all the topic spaces under a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Name of the namespace.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topic Space operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopicSpaceInner> listByNamespace(String resourceGroupName, String namespaceName, String filter,
         Integer top, Context context) {
@@ -864,11 +689,7 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TopicSpaceInner> listByNamespaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TopicSpacesListResult> res
-            = service.listByNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNamespaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

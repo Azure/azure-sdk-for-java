@@ -151,20 +151,7 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
         return getWithResponseAsync(verifiedPartnerName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a verified partner.
-     * 
-     * Get properties of a verified partner.
-     * 
-     * @param verifiedPartnerName Name of the verified partner.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a verified partner.
-     * 
-     * Get properties of a verified partner along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VerifiedPartnerInner> getWithResponse(String verifiedPartnerName, Context context) {
         final String accept = "application/json";
@@ -172,19 +159,7 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
             context);
     }
 
-    /**
-     * Get a verified partner.
-     * 
-     * Get properties of a verified partner.
-     * 
-     * @param verifiedPartnerName Name of the verified partner.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a verified partner.
-     * 
-     * Get properties of a verified partner.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifiedPartnerInner get(String verifiedPartnerName) {
         return getWithResponse(verifiedPartnerName, Context.NONE).getValue();
@@ -276,11 +251,7 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VerifiedPartnerInner> listSinglePage(String filter, Integer top) {
-        final String accept = "application/json";
-        Response<VerifiedPartnersListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, top, Context.NONE);
     }
 
     /**
@@ -310,40 +281,15 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all verified partners.
-     * 
-     * Get a list of all verified partners.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topic Types operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VerifiedPartnerInner> list() {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(filter, top), nextLink -> listNextSinglePage(nextLink));
+        return list(filter, top, Context.NONE);
     }
 
-    /**
-     * List all verified partners.
-     * 
-     * Get a list of all verified partners.
-     * 
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topic Types operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VerifiedPartnerInner> list(String filter, Integer top, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, top, context),
@@ -384,11 +330,7 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VerifiedPartnerInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VerifiedPartnersListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

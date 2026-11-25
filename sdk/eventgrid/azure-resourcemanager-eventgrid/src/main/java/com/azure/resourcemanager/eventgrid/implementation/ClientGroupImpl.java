@@ -68,10 +68,7 @@ public final class ClientGroupImpl implements ClientGroup, ClientGroup.Definitio
     }
 
     public ClientGroup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClientGroups()
-            .createOrUpdate(resourceGroupName, namespaceName, clientGroupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ClientGroup create(Context context) {
@@ -92,10 +89,7 @@ public final class ClientGroupImpl implements ClientGroup, ClientGroup.Definitio
     }
 
     public ClientGroup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClientGroups()
-            .createOrUpdate(resourceGroupName, namespaceName, clientGroupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ClientGroup apply(Context context) {
@@ -120,11 +114,7 @@ public final class ClientGroupImpl implements ClientGroup, ClientGroup.Definitio
     }
 
     public ClientGroup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClientGroups()
-            .getWithResponse(resourceGroupName, namespaceName, clientGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ClientGroup refresh(Context context) {

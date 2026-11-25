@@ -77,10 +77,7 @@ public final class CaCertificateImpl implements CaCertificate, CaCertificate.Def
     }
 
     public CaCertificate create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCaCertificates()
-            .createOrUpdate(resourceGroupName, namespaceName, caCertificateName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CaCertificate create(Context context) {
@@ -101,10 +98,7 @@ public final class CaCertificateImpl implements CaCertificate, CaCertificate.Def
     }
 
     public CaCertificate apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCaCertificates()
-            .createOrUpdate(resourceGroupName, namespaceName, caCertificateName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CaCertificate apply(Context context) {
@@ -130,11 +124,7 @@ public final class CaCertificateImpl implements CaCertificate, CaCertificate.Def
     }
 
     public CaCertificate refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCaCertificates()
-            .getWithResponse(resourceGroupName, namespaceName, caCertificateName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CaCertificate refresh(Context context) {

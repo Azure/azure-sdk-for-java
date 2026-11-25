@@ -184,10 +184,7 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
     }
 
     public Topic create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTopics()
-            .createOrUpdate(resourceGroupName, topicName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Topic create(Context context) {
@@ -209,10 +206,7 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
     }
 
     public Topic apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTopics()
-            .update(resourceGroupName, topicName, updateTopicUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Topic apply(Context context) {
@@ -234,11 +228,7 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
     }
 
     public Topic refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTopics()
-            .getByResourceGroupWithResponse(resourceGroupName, topicName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Topic refresh(Context context) {

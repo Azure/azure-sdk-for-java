@@ -305,21 +305,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a partner topic.
-     * 
-     * Get properties of a partner topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerTopicName Name of the partner topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a partner topic.
-     * 
-     * Get properties of a partner topic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartnerTopicInner> getByResourceGroupWithResponse(String resourceGroupName, String partnerTopicName,
         Context context) {
@@ -328,20 +314,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
             this.client.getSubscriptionId(), resourceGroupName, partnerTopicName, accept, context);
     }
 
-    /**
-     * Get a partner topic.
-     * 
-     * Get properties of a partner topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerTopicName Name of the partner topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a partner topic.
-     * 
-     * Get properties of a partner topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerTopicInner getByResourceGroup(String resourceGroupName, String partnerTopicName) {
         return getByResourceGroupWithResponse(resourceGroupName, partnerTopicName, Context.NONE).getValue();
@@ -392,20 +365,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a partner topic.
-     * 
-     * Asynchronously creates a new partner topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerTopicName Name of the partner topic.
-     * @param partnerTopicInfo Partner Topic information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Topic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartnerTopicInner> createOrUpdateWithResponse(String resourceGroupName, String partnerTopicName,
         PartnerTopicInner partnerTopicInfo, Context context) {
@@ -416,19 +376,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
             context);
     }
 
-    /**
-     * Create a partner topic.
-     * 
-     * Asynchronously creates a new partner topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerTopicName Name of the partner topic.
-     * @param partnerTopicInfo Partner Topic information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerTopicInner createOrUpdate(String resourceGroupName, String partnerTopicName,
         PartnerTopicInner partnerTopicInfo) {
@@ -481,20 +429,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a partner topic.
-     * 
-     * Asynchronously updates a partner topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerTopicName Name of the partner topic.
-     * @param partnerTopicUpdateParameters PartnerTopic update information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartnerTopicInner> updateWithResponse(String resourceGroupName, String partnerTopicName,
         PartnerTopicUpdateParameters partnerTopicUpdateParameters, Context context) {
@@ -505,19 +440,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
             partnerTopicUpdateParameters, context);
     }
 
-    /**
-     * Update a partner topic.
-     * 
-     * Asynchronously updates a partner topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerTopicName Name of the partner topic.
-     * @param partnerTopicUpdateParameters PartnerTopic update information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerTopicInner update(String resourceGroupName, String partnerTopicName,
         PartnerTopicUpdateParameters partnerTopicUpdateParameters) {
@@ -560,8 +483,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String partnerTopicName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, partnerTopicName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, partnerTopicName, Context.NONE);
     }
 
     /**
@@ -603,37 +525,13 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a partner topic.
-     * 
-     * Delete existing partner topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerTopicName Name of the partner topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerTopicName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, partnerTopicName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, partnerTopicName, Context.NONE);
     }
 
-    /**
-     * Delete a partner topic.
-     * 
-     * Delete existing partner topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerTopicName Name of the partner topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerTopicName,
         Context context) {
@@ -659,37 +557,16 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a partner topic.
-     * 
-     * Delete existing partner topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerTopicName Name of the partner topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String partnerTopicName) {
-        beginDelete(resourceGroupName, partnerTopicName).getFinalResult();
+        delete(resourceGroupName, partnerTopicName, Context.NONE);
     }
 
-    /**
-     * Delete a partner topic.
-     * 
-     * Delete existing partner topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerTopicName Name of the partner topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String partnerTopicName, Context context) {
-        beginDelete(resourceGroupName, partnerTopicName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, partnerTopicName, context));
     }
 
     /**
@@ -788,12 +665,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PartnerTopicInner> listByResourceGroupSinglePage(String resourceGroupName, String filter,
         Integer top) {
-        final String accept = "application/json";
-        Response<PartnerTopicsListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, filter, top, Context.NONE);
     }
 
     /**
@@ -826,44 +698,15 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List partner topics under a resource group.
-     * 
-     * List all the partner topics under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerTopicInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, filter, top),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, filter, top, Context.NONE);
     }
 
-    /**
-     * List partner topics under a resource group.
-     * 
-     * List all the partner topics under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerTopicInner> listByResourceGroup(String resourceGroupName, String filter, Integer top,
         Context context) {
@@ -959,11 +802,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PartnerTopicInner> listSinglePage(String filter, Integer top) {
-        final String accept = "application/json";
-        Response<PartnerTopicsListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, top, Context.NONE);
     }
 
     /**
@@ -993,41 +832,15 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List partner topics under an Azure subscription.
-     * 
-     * List all the partner topics under an Azure subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerTopicInner> list() {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(filter, top),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(filter, top, Context.NONE);
     }
 
-    /**
-     * List partner topics under an Azure subscription.
-     * 
-     * List all the partner topics under an Azure subscription.
-     * 
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerTopicInner> list(String filter, Integer top, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, top, context),
@@ -1074,19 +887,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Activate a partner topic.
-     * 
-     * Activate a newly created partner topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerTopicName Name of the partner topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Topic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartnerTopicInner> activateWithResponse(String resourceGroupName, String partnerTopicName,
         Context context) {
@@ -1095,18 +896,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
             this.client.getSubscriptionId(), resourceGroupName, partnerTopicName, accept, context);
     }
 
-    /**
-     * Activate a partner topic.
-     * 
-     * Activate a newly created partner topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerTopicName Name of the partner topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerTopicInner activate(String resourceGroupName, String partnerTopicName) {
         return activateWithResponse(resourceGroupName, partnerTopicName, Context.NONE).getValue();
@@ -1152,19 +942,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Deactivate a partner topic.
-     * 
-     * Deactivate specific partner topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerTopicName Name of the partner topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Topic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartnerTopicInner> deactivateWithResponse(String resourceGroupName, String partnerTopicName,
         Context context) {
@@ -1173,18 +951,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
             this.client.getSubscriptionId(), resourceGroupName, partnerTopicName, accept, context);
     }
 
-    /**
-     * Deactivate a partner topic.
-     * 
-     * Deactivate specific partner topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerTopicName Name of the partner topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerTopicInner deactivate(String resourceGroupName, String partnerTopicName) {
         return deactivateWithResponse(resourceGroupName, partnerTopicName, Context.NONE).getValue();
@@ -1226,11 +993,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PartnerTopicInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PartnerTopicsListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1290,11 +1053,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PartnerTopicInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PartnerTopicsListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

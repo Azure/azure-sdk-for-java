@@ -75,10 +75,7 @@ public final class TopicSpaceImpl implements TopicSpace, TopicSpace.Definition, 
     }
 
     public TopicSpace create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTopicSpaces()
-            .createOrUpdate(resourceGroupName, namespaceName, topicSpaceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TopicSpace create(Context context) {
@@ -99,10 +96,7 @@ public final class TopicSpaceImpl implements TopicSpace, TopicSpace.Definition, 
     }
 
     public TopicSpace apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTopicSpaces()
-            .createOrUpdate(resourceGroupName, namespaceName, topicSpaceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public TopicSpace apply(Context context) {
@@ -127,11 +121,7 @@ public final class TopicSpaceImpl implements TopicSpace, TopicSpace.Definition, 
     }
 
     public TopicSpace refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTopicSpaces()
-            .getWithResponse(resourceGroupName, namespaceName, topicSpaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TopicSpace refresh(Context context) {

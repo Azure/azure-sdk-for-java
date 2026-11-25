@@ -211,22 +211,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a domain topic.
-     * 
-     * Get properties of a domain topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param domainName Name of the domain.
-     * @param domainTopicName Name of the topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a domain topic.
-     * 
-     * Get properties of a domain topic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DomainTopicInner> getWithResponse(String resourceGroupName, String domainName,
         String domainTopicName, Context context) {
@@ -235,21 +220,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
             resourceGroupName, domainName, domainTopicName, accept, context);
     }
 
-    /**
-     * Get a domain topic.
-     * 
-     * Get properties of a domain topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param domainName Name of the domain.
-     * @param domainTopicName Name of the topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a domain topic.
-     * 
-     * Get properties of a domain topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DomainTopicInner get(String resourceGroupName, String domainName, String domainTopicName) {
         return getWithResponse(resourceGroupName, domainName, domainTopicName, Context.NONE).getValue();
@@ -294,9 +265,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String domainName,
         String domainTopicName) {
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, domainName, domainTopicName, accept, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, domainName, domainTopicName, Context.NONE);
     }
 
     /**
@@ -343,41 +312,14 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
             DomainTopicInner.class, DomainTopicInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a domain topic.
-     * 
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param domainName Name of the domain.
-     * @param domainTopicName Name of the topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of domain Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdate(String resourceGroupName,
         String domainName, String domainTopicName) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, domainName, domainTopicName);
-        return this.client.<DomainTopicInner, DomainTopicInner>getLroResult(response, DomainTopicInner.class,
-            DomainTopicInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, domainName, domainTopicName, Context.NONE);
     }
 
-    /**
-     * Create or update a domain topic.
-     * 
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param domainName Name of the domain.
-     * @param domainTopicName Name of the topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of domain Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdate(String resourceGroupName,
         String domainName, String domainTopicName, Context context) {
@@ -407,42 +349,18 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a domain topic.
-     * 
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param domainName Name of the domain.
-     * @param domainTopicName Name of the topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DomainTopicInner createOrUpdate(String resourceGroupName, String domainName, String domainTopicName) {
-        return beginCreateOrUpdate(resourceGroupName, domainName, domainTopicName).getFinalResult();
+        return createOrUpdate(resourceGroupName, domainName, domainTopicName, Context.NONE);
     }
 
-    /**
-     * Create or update a domain topic.
-     * 
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param domainName Name of the domain.
-     * @param domainTopicName Name of the topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DomainTopicInner createOrUpdate(String resourceGroupName, String domainName, String domainTopicName,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, domainName, domainTopicName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, domainName, domainTopicName, context));
     }
 
     /**
@@ -483,8 +401,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String domainName,
         String domainTopicName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, domainName, domainTopicName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, domainName, domainTopicName, Context.NONE);
     }
 
     /**
@@ -529,40 +446,14 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a domain topic.
-     * 
-     * Delete existing domain topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param domainName Name of the domain.
-     * @param domainTopicName Name of the topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String domainName,
         String domainTopicName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, domainName, domainTopicName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, domainName, domainTopicName, Context.NONE);
     }
 
-    /**
-     * Delete a domain topic.
-     * 
-     * Delete existing domain topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param domainName Name of the domain.
-     * @param domainTopicName Name of the topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String domainName,
         String domainTopicName, Context context) {
@@ -589,39 +480,16 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a domain topic.
-     * 
-     * Delete existing domain topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param domainName Name of the domain.
-     * @param domainTopicName Name of the topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String domainName, String domainTopicName) {
-        beginDelete(resourceGroupName, domainName, domainTopicName).getFinalResult();
+        delete(resourceGroupName, domainName, domainTopicName, Context.NONE);
     }
 
-    /**
-     * Delete a domain topic.
-     * 
-     * Delete existing domain topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param domainName Name of the domain.
-     * @param domainTopicName Name of the topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String domainName, String domainTopicName, Context context) {
-        beginDelete(resourceGroupName, domainName, domainTopicName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, domainName, domainTopicName, context));
     }
 
     /**
@@ -724,12 +592,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DomainTopicInner> listByDomainSinglePage(String resourceGroupName, String domainName,
         String filter, Integer top) {
-        final String accept = "application/json";
-        Response<DomainTopicsListResult> res
-            = service.listByDomainSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, domainName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByDomainSinglePage(resourceGroupName, domainName, filter, top, Context.NONE);
     }
 
     /**
@@ -763,46 +626,15 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List domain topics.
-     * 
-     * List all the topics in a domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param domainName Name of the domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Domain Topics operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DomainTopicInner> listByDomain(String resourceGroupName, String domainName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listByDomainSinglePage(resourceGroupName, domainName, filter, top),
-            nextLink -> listByDomainNextSinglePage(nextLink));
+        return listByDomain(resourceGroupName, domainName, filter, top, Context.NONE);
     }
 
-    /**
-     * List domain topics.
-     * 
-     * List all the topics in a domain.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param domainName Name of the domain.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Domain Topics operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DomainTopicInner> listByDomain(String resourceGroupName, String domainName, String filter,
         Integer top, Context context) {
@@ -845,11 +677,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DomainTopicInner> listByDomainNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DomainTopicsListResult> res
-            = service.listByDomainNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByDomainNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

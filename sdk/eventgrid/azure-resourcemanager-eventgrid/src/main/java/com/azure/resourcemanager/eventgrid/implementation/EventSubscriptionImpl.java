@@ -115,10 +115,7 @@ public final class EventSubscriptionImpl
     }
 
     public EventSubscription create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEventSubscriptions()
-            .createOrUpdate(scope, eventSubscriptionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EventSubscription create(Context context) {
@@ -140,10 +137,7 @@ public final class EventSubscriptionImpl
     }
 
     public EventSubscription apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEventSubscriptions()
-            .update(scope, eventSubscriptionName, updateEventSubscriptionUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EventSubscription apply(Context context) {
@@ -190,11 +184,7 @@ public final class EventSubscriptionImpl
     }
 
     public EventSubscription refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEventSubscriptions()
-            .getWithResponse(scope, eventSubscriptionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EventSubscription refresh(Context context) {

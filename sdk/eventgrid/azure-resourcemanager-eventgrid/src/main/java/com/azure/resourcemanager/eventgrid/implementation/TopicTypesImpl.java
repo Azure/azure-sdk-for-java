@@ -45,8 +45,7 @@ public final class TopicTypesImpl implements TopicTypes {
     }
 
     public PagedIterable<TopicTypeInfo> list() {
-        PagedIterable<TopicTypeInfoInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TopicTypeInfoImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<TopicTypeInfo> list(Context context) {
@@ -55,8 +54,7 @@ public final class TopicTypesImpl implements TopicTypes {
     }
 
     public PagedIterable<EventType> listEventTypes(String topicTypeName) {
-        PagedIterable<EventTypeInner> inner = this.serviceClient().listEventTypes(topicTypeName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventTypeImpl(inner1, this.manager()));
+        return this.listEventTypes(topicTypeName, Context.NONE);
     }
 
     public PagedIterable<EventType> listEventTypes(String topicTypeName, Context context) {

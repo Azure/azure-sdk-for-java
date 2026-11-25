@@ -114,39 +114,14 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
         return getWithResponseAsync(scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get properties of an extension topic.
-     * 
-     * Get the properties of an extension topic.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an extension topic.
-     * 
-     * Get the properties of an extension topic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExtensionTopicInner> getWithResponse(String scope, Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, accept, context);
     }
 
-    /**
-     * Get properties of an extension topic.
-     * 
-     * Get the properties of an extension topic.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an extension topic.
-     * 
-     * Get the properties of an extension topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExtensionTopicInner get(String scope) {
         return getWithResponse(scope, Context.NONE).getValue();

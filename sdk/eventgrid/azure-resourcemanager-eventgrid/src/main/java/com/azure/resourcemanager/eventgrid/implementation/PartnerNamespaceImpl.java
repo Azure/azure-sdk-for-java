@@ -140,10 +140,7 @@ public final class PartnerNamespaceImpl
     }
 
     public PartnerNamespace create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPartnerNamespaces()
-            .createOrUpdate(resourceGroupName, partnerNamespaceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PartnerNamespace create(Context context) {
@@ -165,10 +162,7 @@ public final class PartnerNamespaceImpl
     }
 
     public PartnerNamespace apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPartnerNamespaces()
-            .update(resourceGroupName, partnerNamespaceName, updatePartnerNamespaceUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PartnerNamespace apply(Context context) {
@@ -191,11 +185,7 @@ public final class PartnerNamespaceImpl
     }
 
     public PartnerNamespace refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPartnerNamespaces()
-            .getByResourceGroupWithResponse(resourceGroupName, partnerNamespaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PartnerNamespace refresh(Context context) {

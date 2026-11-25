@@ -100,11 +100,7 @@ public final class SubscriptionImpl implements Subscription, Subscription.Defini
     }
 
     public Subscription create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceTopicEventSubscriptions()
-            .createOrUpdate(resourceGroupName, namespaceName, topicName, eventSubscriptionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Subscription create(Context context) {
@@ -127,11 +123,7 @@ public final class SubscriptionImpl implements Subscription, Subscription.Defini
     }
 
     public Subscription apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceTopicEventSubscriptions()
-            .update(resourceGroupName, namespaceName, topicName, eventSubscriptionName,
-                updateEventSubscriptionUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Subscription apply(Context context) {
@@ -161,11 +153,7 @@ public final class SubscriptionImpl implements Subscription, Subscription.Defini
     }
 
     public Subscription refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceTopicEventSubscriptions()
-            .getWithResponse(resourceGroupName, namespaceName, topicName, eventSubscriptionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Subscription refresh(Context context) {

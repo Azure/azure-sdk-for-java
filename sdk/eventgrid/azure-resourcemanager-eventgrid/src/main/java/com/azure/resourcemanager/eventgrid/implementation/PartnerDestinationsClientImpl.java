@@ -288,21 +288,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a partner destination.
-     * 
-     * Get properties of a partner destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerDestinationName Name of the partner destination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a partner destination.
-     * 
-     * Get properties of a partner destination along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartnerDestinationInner> getByResourceGroupWithResponse(String resourceGroupName,
         String partnerDestinationName, Context context) {
@@ -311,20 +297,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
             this.client.getSubscriptionId(), resourceGroupName, partnerDestinationName, accept, context);
     }
 
-    /**
-     * Get a partner destination.
-     * 
-     * Get properties of a partner destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerDestinationName Name of the partner destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a partner destination.
-     * 
-     * Get properties of a partner destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerDestinationInner getByResourceGroup(String resourceGroupName, String partnerDestinationName) {
         return getByResourceGroupWithResponse(resourceGroupName, partnerDestinationName, Context.NONE).getValue();
@@ -371,11 +344,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String partnerDestinationName,
         PartnerDestinationInner partnerDestination) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, partnerDestinationName, contentType, accept,
-            partnerDestination, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, partnerDestinationName, partnerDestination, Context.NONE);
     }
 
     /**
@@ -425,42 +394,14 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
             this.client.getContext());
     }
 
-    /**
-     * Create a partner destination.
-     * 
-     * Asynchronously creates a new partner destination with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerDestinationName Name of the partner destination.
-     * @param partnerDestination Partner destination create information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of event Grid Partner Destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginCreateOrUpdate(
         String resourceGroupName, String partnerDestinationName, PartnerDestinationInner partnerDestination) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, partnerDestinationName, partnerDestination);
-        return this.client.<PartnerDestinationInner, PartnerDestinationInner>getLroResult(response,
-            PartnerDestinationInner.class, PartnerDestinationInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, partnerDestinationName, partnerDestination, Context.NONE);
     }
 
-    /**
-     * Create a partner destination.
-     * 
-     * Asynchronously creates a new partner destination with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerDestinationName Name of the partner destination.
-     * @param partnerDestination Partner destination create information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of event Grid Partner Destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginCreateOrUpdate(
         String resourceGroupName, String partnerDestinationName, PartnerDestinationInner partnerDestination,
@@ -491,44 +432,19 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a partner destination.
-     * 
-     * Asynchronously creates a new partner destination with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerDestinationName Name of the partner destination.
-     * @param partnerDestination Partner destination create information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerDestinationInner createOrUpdate(String resourceGroupName, String partnerDestinationName,
         PartnerDestinationInner partnerDestination) {
-        return beginCreateOrUpdate(resourceGroupName, partnerDestinationName, partnerDestination).getFinalResult();
+        return createOrUpdate(resourceGroupName, partnerDestinationName, partnerDestination, Context.NONE);
     }
 
-    /**
-     * Create a partner destination.
-     * 
-     * Asynchronously creates a new partner destination with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerDestinationName Name of the partner destination.
-     * @param partnerDestination Partner destination create information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerDestinationInner createOrUpdate(String resourceGroupName, String partnerDestinationName,
         PartnerDestinationInner partnerDestination, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, partnerDestinationName, partnerDestination, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, partnerDestinationName, partnerDestination, context));
     }
 
     /**
@@ -572,11 +488,8 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String partnerDestinationName,
         PartnerDestinationUpdateParameters partnerDestinationUpdateParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, partnerDestinationName, contentType, accept,
-            partnerDestinationUpdateParameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters,
+            Context.NONE);
     }
 
     /**
@@ -627,43 +540,15 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
             this.client.getContext());
     }
 
-    /**
-     * Update a partner destination.
-     * 
-     * Asynchronously updates a partner destination with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerDestinationName Name of the partner destination.
-     * @param partnerDestinationUpdateParameters Partner destination update information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of event Grid Partner Destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginUpdate(
         String resourceGroupName, String partnerDestinationName,
         PartnerDestinationUpdateParameters partnerDestinationUpdateParameters) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters);
-        return this.client.<PartnerDestinationInner, PartnerDestinationInner>getLroResult(response,
-            PartnerDestinationInner.class, PartnerDestinationInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Update a partner destination.
-     * 
-     * Asynchronously updates a partner destination with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerDestinationName Name of the partner destination.
-     * @param partnerDestinationUpdateParameters Partner destination update information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of event Grid Partner Destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginUpdate(
         String resourceGroupName, String partnerDestinationName,
@@ -694,45 +579,19 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a partner destination.
-     * 
-     * Asynchronously updates a partner destination with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerDestinationName Name of the partner destination.
-     * @param partnerDestinationUpdateParameters Partner destination update information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerDestinationInner update(String resourceGroupName, String partnerDestinationName,
         PartnerDestinationUpdateParameters partnerDestinationUpdateParameters) {
-        return beginUpdate(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters)
-            .getFinalResult();
+        return update(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Update a partner destination.
-     * 
-     * Asynchronously updates a partner destination with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerDestinationName Name of the partner destination.
-     * @param partnerDestinationUpdateParameters Partner destination update information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerDestinationInner update(String resourceGroupName, String partnerDestinationName,
         PartnerDestinationUpdateParameters partnerDestinationUpdateParameters, Context context) {
-        return beginUpdate(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, context));
     }
 
     /**
@@ -770,8 +629,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String partnerDestinationName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, partnerDestinationName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, partnerDestinationName, Context.NONE);
     }
 
     /**
@@ -814,37 +672,13 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
             this.client.getContext());
     }
 
-    /**
-     * Delete a partner destination.
-     * 
-     * Delete existing partner destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerDestinationName Name of the partner destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerDestinationName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, partnerDestinationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, partnerDestinationName, Context.NONE);
     }
 
-    /**
-     * Delete a partner destination.
-     * 
-     * Delete existing partner destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerDestinationName Name of the partner destination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerDestinationName,
         Context context) {
@@ -870,37 +704,16 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a partner destination.
-     * 
-     * Delete existing partner destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerDestinationName Name of the partner destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String partnerDestinationName) {
-        beginDelete(resourceGroupName, partnerDestinationName).getFinalResult();
+        delete(resourceGroupName, partnerDestinationName, Context.NONE);
     }
 
-    /**
-     * Delete a partner destination.
-     * 
-     * Delete existing partner destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerDestinationName Name of the partner destination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String partnerDestinationName, Context context) {
-        beginDelete(resourceGroupName, partnerDestinationName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, partnerDestinationName, context));
     }
 
     /**
@@ -999,12 +812,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PartnerDestinationInner> listByResourceGroupSinglePage(String resourceGroupName,
         String filter, Integer top) {
-        final String accept = "application/json";
-        Response<PartnerDestinationsListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, filter, top, Context.NONE);
     }
 
     /**
@@ -1037,44 +845,15 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List partner destinations under a resource group.
-     * 
-     * List all the partner destinations under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Destinations operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerDestinationInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, filter, top),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, filter, top, Context.NONE);
     }
 
-    /**
-     * List partner destinations under a resource group.
-     * 
-     * List all the partner destinations under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Destinations operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerDestinationInner> listByResourceGroup(String resourceGroupName, String filter,
         Integer top, Context context) {
@@ -1170,11 +949,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PartnerDestinationInner> listSinglePage(String filter, Integer top) {
-        final String accept = "application/json";
-        Response<PartnerDestinationsListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, top, Context.NONE);
     }
 
     /**
@@ -1204,41 +979,15 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List partner destinations under an Azure subscription.
-     * 
-     * List all the partner destinations under an Azure subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Destinations operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerDestinationInner> list() {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(filter, top),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(filter, top, Context.NONE);
     }
 
-    /**
-     * List partner destinations under an Azure subscription.
-     * 
-     * List all the partner destinations under an Azure subscription.
-     * 
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Destinations operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerDestinationInner> list(String filter, Integer top, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, top, context),
@@ -1285,19 +1034,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Activate a partner destination.
-     * 
-     * Activate a newly created partner destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerDestinationName Name of the partner destination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Destination along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartnerDestinationInner> activateWithResponse(String resourceGroupName,
         String partnerDestinationName, Context context) {
@@ -1306,18 +1043,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
             this.client.getSubscriptionId(), resourceGroupName, partnerDestinationName, accept, context);
     }
 
-    /**
-     * Activate a partner destination.
-     * 
-     * Activate a newly created partner destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param partnerDestinationName Name of the partner destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerDestinationInner activate(String resourceGroupName, String partnerDestinationName) {
         return activateWithResponse(resourceGroupName, partnerDestinationName, Context.NONE).getValue();
@@ -1359,11 +1085,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PartnerDestinationInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PartnerDestinationsListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1423,11 +1145,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PartnerDestinationInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PartnerDestinationsListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
