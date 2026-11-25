@@ -6,12 +6,18 @@
 .SYNOPSIS
 Generates a Java API review bundle using a staged executable JAR.
 
+.PARAMETER PackagePath
+Repository-relative path to the exact SDK package directory.
+
 .PARAMETER SourcesJar
 Optional prebuilt sources JAR for local validation. Otherwise builds the selected SDK package.
 #>
 [CmdletBinding(SupportsShouldProcess)]
 param(
     [Parameter(Mandatory)][string]$RepositoryRoot,
+    [Parameter(Mandatory)]
+    [ValidatePattern('^sdk/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$')]
+    [string]$PackagePath,
     [Parameter(Mandatory)][ValidatePattern('^[A-Za-z0-9][A-Za-z0-9_.-]*$')][string]$PackageName,
     [Parameter(Mandatory)][string]$ToolJar,
     [Parameter(Mandatory)][string]$OutputDirectory,
@@ -27,13 +33,16 @@ $tool = (Resolve-Path -LiteralPath $ToolJar).Path
 if (-not (Test-Path -LiteralPath $tool -PathType Leaf)) {
     throw "Expected an executable Java API review JAR: $tool"
 }
-$sdkRoot = Join-Path $root 'sdk'
-$packages = @(Get-ChildItem -Path (Join-Path $sdkRoot '*' $PackageName 'pom.xml') -File)
-if ($packages.Count -ne 1) {
-    throw "Expected one package directory for $PackageName; found $($packages.Count)."
+$package = (Resolve-Path -LiteralPath (Join-Path $root $PackagePath)).Path
+$sdkRoot = (Resolve-Path -LiteralPath (Join-Path $root 'sdk')).Path.TrimEnd('\', '/')
+if (-not $package.StartsWith("$sdkRoot$([IO.Path]::DirectorySeparatorChar)", [StringComparison]::Ordinal)) {
+    throw "Package path is outside the SDK directory: $PackagePath"
 }
-$package = $packages[0].Directory.FullName
-$pom = [xml](Get-Content -LiteralPath $packages[0].FullName -Raw)
+$pomPath = Join-Path $package 'pom.xml'
+if (-not (Test-Path -LiteralPath $pomPath -PathType Leaf)) {
+    throw "Expected a package POM at $PackagePath/pom.xml."
+}
+$pom = [xml](Get-Content -LiteralPath $pomPath -Raw)
 $artifact = $pom.SelectSingleNode("/*[local-name()='project']/*[local-name()='artifactId']")
 $version = $pom.SelectSingleNode("/*[local-name()='project']/*[local-name()='version']")
 if (-not $artifact -or $artifact.InnerText -ne $PackageName -or -not $version -or
@@ -41,7 +50,7 @@ if (-not $artifact -or $artifact.InnerText -ne $PackageName -or -not $version -o
     throw 'The package POM must declare the expected artifact ID and a literal project version.'
 }
 $packageVersion = $version.InnerText.Trim()
-$relativePath = [IO.Path]::GetRelativePath($root, $package).Replace('\', '/')
+$relativePath = $PackagePath
 $output = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($OutputDirectory)
 if ($output.TrimEnd('\', '/') -eq $package.TrimEnd('\', '/') -or
     $output.TrimEnd('\', '/') -eq $root.TrimEnd('\', '/')) {

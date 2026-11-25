@@ -219,7 +219,8 @@ steps:
               continue
             }
             $packageRoot = Split-Path -Parent $pomPath
-            $sourcesJarDirectory = Join-Path $hostRoot 'api-review-sources'
+            $packageKey = $packagePath.Replace('/', '__')
+            $sourcesJarDirectory = Join-Path (Join-Path $hostRoot 'api-review-sources') $packageKey
             $sourcesJar = Join-Path $sourcesJarDirectory "$artifact-$version-sources.jar"
             $jarArguments = @('--create', '--file', $sourcesJar)
             $jarInputCount = 0
@@ -253,9 +254,10 @@ steps:
             if ($LASTEXITCODE -ne 0) {
               throw "Sources JAR creation failed with exit code $LASTEXITCODE."
             }
-            $outputDirectory = Join-Path $outputRoot $artifact
+            $outputDirectory = Join-Path $outputRoot $packageKey
             & ./eng/scripts/Generate-ApiReviewArtifact.ps1 `
               -RepositoryRoot $prRoot `
+              -PackagePath $packagePath `
               -PackageName $artifact `
               -ToolJar $toolJar `
               -OutputDirectory $outputDirectory `
