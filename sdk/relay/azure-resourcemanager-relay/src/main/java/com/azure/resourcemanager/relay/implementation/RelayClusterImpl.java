@@ -90,10 +90,7 @@ public final class RelayClusterImpl implements RelayCluster, RelayCluster.Defini
     }
 
     public RelayCluster create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusters()
-            .createOrUpdate(resourceGroupName, clusterName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RelayCluster create(Context context) {
@@ -115,11 +112,7 @@ public final class RelayClusterImpl implements RelayCluster, RelayCluster.Defini
     }
 
     public RelayCluster apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusters()
-            .updateWithResponse(resourceGroupName, clusterName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RelayCluster apply(Context context) {
@@ -142,11 +135,7 @@ public final class RelayClusterImpl implements RelayCluster, RelayCluster.Defini
     }
 
     public RelayCluster refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusters()
-            .getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RelayCluster refresh(Context context) {

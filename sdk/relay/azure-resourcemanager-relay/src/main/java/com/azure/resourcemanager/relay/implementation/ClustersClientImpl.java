@@ -302,17 +302,7 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Relay cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Relay cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Relay cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RelayClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
         Context context) {
@@ -321,16 +311,7 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Gets a Relay cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Relay cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Relay cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelayClusterInner getByResourceGroup(String resourceGroupName, String clusterName) {
         return getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
@@ -373,11 +354,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         RelayClusterInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, clusterName, resource, Context.NONE);
     }
 
     /**
@@ -421,37 +398,14 @@ public final class ClustersClientImpl implements ClustersClient {
             RelayClusterInner.class, RelayClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a Relay cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Relay cluster.
-     * @param resource Parameters for creating or updating a Relay cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Relay dedicated cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RelayClusterInner>, RelayClusterInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, RelayClusterInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterName, resource);
-        return this.client.<RelayClusterInner, RelayClusterInner>getLroResult(response, RelayClusterInner.class,
-            RelayClusterInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, clusterName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Relay cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Relay cluster.
-     * @param resource Parameters for creating or updating a Relay cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Relay dedicated cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RelayClusterInner>, RelayClusterInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, RelayClusterInner resource, Context context) {
@@ -478,38 +432,18 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a Relay cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Relay cluster.
-     * @param resource Parameters for creating or updating a Relay cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Relay dedicated cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelayClusterInner createOrUpdate(String resourceGroupName, String clusterName, RelayClusterInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, clusterName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Relay cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Relay cluster.
-     * @param resource Parameters for creating or updating a Relay cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Relay dedicated cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelayClusterInner createOrUpdate(String resourceGroupName, String clusterName, RelayClusterInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, clusterName, resource, context));
     }
 
     /**
@@ -551,18 +485,7 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates mutable properties of a Relay cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Relay cluster.
-     * @param properties The Relay cluster properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Relay dedicated cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RelayClusterInner> updateWithResponse(String resourceGroupName, String clusterName,
         RelayClusterUpdate properties, Context context) {
@@ -572,17 +495,7 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, properties, context);
     }
 
-    /**
-     * Updates mutable properties of a Relay cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Relay cluster.
-     * @param properties The Relay cluster properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Relay dedicated cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelayClusterInner update(String resourceGroupName, String clusterName, RelayClusterUpdate properties) {
         return updateWithResponse(resourceGroupName, clusterName, properties, Context.NONE).getValue();
@@ -618,8 +531,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -656,33 +568,13 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a Relay cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Relay cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Deletes a Relay cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Relay cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         Context context) {
@@ -705,33 +597,16 @@ public final class ClustersClientImpl implements ClustersClient {
         return beginDeleteAsync(resourceGroupName, clusterName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Relay cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Relay cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName) {
-        beginDelete(resourceGroupName, clusterName).getFinalResult();
+        delete(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Deletes a Relay cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Relay cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, Context context) {
-        beginDelete(resourceGroupName, clusterName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, context));
     }
 
     /**
@@ -781,11 +656,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RelayClusterInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<RelayClusterListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -807,31 +678,13 @@ public final class ClustersClientImpl implements ClustersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists Relay clusters in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RelayCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelayClusterInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists Relay clusters in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RelayCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelayClusterInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -879,11 +732,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RelayClusterInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<RelayClusterListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -904,27 +753,13 @@ public final class ClustersClientImpl implements ClustersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists Relay clusters in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RelayCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelayClusterInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists Relay clusters in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RelayCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelayClusterInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -969,17 +804,7 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists Relay namespace resource IDs assigned to a Relay cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Relay cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from listing Relay namespace references in a cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RelayNamespaceIdListResultInner> listNamespacesWithResponse(String resourceGroupName,
         String clusterName, Context context) {
@@ -988,16 +813,7 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Lists Relay namespace resource IDs assigned to a Relay cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Relay cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from listing Relay namespace references in a cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelayNamespaceIdListResultInner listNamespaces(String resourceGroupName, String clusterName) {
         return listNamespacesWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
@@ -1040,17 +856,7 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists SKUs supported by a Relay cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Relay cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from listing supported SKUs for a Relay cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RelayClusterSkuListResultInner> listSkusWithResponse(String resourceGroupName, String clusterName,
         Context context) {
@@ -1059,16 +865,7 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Lists SKUs supported by a Relay cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Relay cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from listing supported SKUs for a Relay cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelayClusterSkuListResultInner listSkus(String resourceGroupName, String clusterName) {
         return listSkusWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
@@ -1104,15 +901,7 @@ public final class ClustersClientImpl implements ClustersClient {
         return listAvailableClusterRegionWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists regions containing available pre-provisioned Relay clusters.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from listing regions that have available Relay cluster capacity along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvailableRelayClustersListInner> listAvailableClusterRegionWithResponse(Context context) {
         final String accept = "application/json";
@@ -1120,13 +909,7 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * Lists regions containing available pre-provisioned Relay clusters.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from listing regions that have available Relay cluster capacity.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvailableRelayClustersListInner listAvailableClusterRegion() {
         return listAvailableClusterRegionWithResponse(Context.NONE).getValue();
@@ -1164,11 +947,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RelayClusterInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RelayClusterListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1222,11 +1001,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RelayClusterInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RelayClusterListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
