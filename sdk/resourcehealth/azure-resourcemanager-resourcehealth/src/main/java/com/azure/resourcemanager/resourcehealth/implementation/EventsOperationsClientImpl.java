@@ -227,11 +227,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventInner> listSinglePage(String filter, String queryStartTime) {
-        final String accept = "application/json";
-        Response<Events> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), filter, queryStartTime, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, queryStartTime, Context.NONE);
     }
 
     /**
@@ -256,34 +252,15 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists service health events in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventInner> list() {
         final String filter = null;
         final String queryStartTime = null;
-        return new PagedIterable<>(() -> listSinglePage(filter, queryStartTime),
-            nextLink -> listBySubscriptionIdNextSinglePage(nextLink));
+        return list(filter, queryStartTime, Context.NONE);
     }
 
-    /**
-     * Lists service health events in the subscription.
-     * 
-     * @param filter The filter to apply on the operation. For more information please see
-     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
-     * @param queryStartTime Specifies from when to return events (default is 3 days), based on the lastUpdateTime
-     * property. For example, queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventInner> list(String filter, String queryStartTime, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, queryStartTime, context),
@@ -361,11 +338,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventInner> listByTenantIdSinglePage(String filter, String queryStartTime) {
-        final String accept = "application/json";
-        Response<Events> res = service.listByTenantIdSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            filter, queryStartTime, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTenantIdSinglePage(filter, queryStartTime, Context.NONE);
     }
 
     /**
@@ -390,34 +363,15 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists current service health events in the tenant.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventInner> listByTenantId() {
         final String filter = null;
         final String queryStartTime = null;
-        return new PagedIterable<>(() -> listByTenantIdSinglePage(filter, queryStartTime),
-            nextLink -> listByTenantIdNextSinglePage(nextLink));
+        return listByTenantId(filter, queryStartTime, Context.NONE);
     }
 
-    /**
-     * Lists current service health events in the tenant.
-     * 
-     * @param filter The filter to apply on the operation. For more information please see
-     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
-     * @param queryStartTime Specifies from when to return events (default is 3 days), based on the lastUpdateTime
-     * property. For example, queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventInner> listByTenantId(String filter, String queryStartTime, Context context) {
         return new PagedIterable<>(() -> listByTenantIdSinglePage(filter, queryStartTime, context),
@@ -493,11 +447,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventInner> listBySingleResourceSinglePage(String resourceUri, String filter) {
-        final String accept = "application/json";
-        Response<Events> res = service.listBySingleResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            resourceUri, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySingleResourceSinglePage(resourceUri, filter, Context.NONE);
     }
 
     /**
@@ -522,34 +472,14 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists current service health events for given resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventInner> listBySingleResource(String resourceUri) {
         final String filter = null;
-        return new PagedIterable<>(() -> listBySingleResourceSinglePage(resourceUri, filter),
-            nextLink -> listBySingleResourceNextSinglePage(nextLink));
+        return listBySingleResource(resourceUri, filter, Context.NONE);
     }
 
-    /**
-     * Lists current service health events for given resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param filter The filter to apply on the operation. For more information please see
-     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventInner> listBySingleResource(String resourceUri, String filter, Context context) {
         return new PagedIterable<>(() -> listBySingleResourceSinglePage(resourceUri, filter, context),
@@ -588,11 +518,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventInner> listBySubscriptionIdNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<Events> res
-            = service.listBySubscriptionIdNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionIdNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -645,11 +571,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventInner> listByTenantIdNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<Events> res
-            = service.listByTenantIdNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTenantIdNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -702,11 +624,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventInner> listBySingleResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<Events> res
-            = service.listBySingleResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySingleResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

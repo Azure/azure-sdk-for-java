@@ -99,28 +99,14 @@ public final class OperationsClientImpl implements OperationsClient {
         return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists available operations for the resourcehealth resource provider.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lists the operations response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationListResultInner> listWithResponse(Context context) {
         final String accept = "application/json";
         return service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
-    /**
-     * Lists available operations for the resourcehealth resource provider.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lists the operations response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationListResultInner list() {
         return listWithResponse(Context.NONE).getValue();

@@ -223,19 +223,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets current availability status for a single resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param filter The filter to apply on the operation. For more information please see
-     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
-     * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current availability status for a single resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvailabilityStatusInner> getByResourceWithResponse(String resourceUri, String filter, String expand,
         Context context) {
@@ -244,15 +232,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
             expand, accept, context);
     }
 
-    /**
-     * Gets current availability status for a single resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current availability status for a single resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvailabilityStatusInner getByResource(String resourceUri) {
         final String filter = null;
@@ -329,11 +309,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvailabilityStatusInner> listBySubscriptionIdSinglePage(String filter, String expand) {
-        final String accept = "application/json";
-        Response<AvailabilityStatusListResult> res = service.listBySubscriptionIdSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), filter, expand, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionIdSinglePage(filter, expand, Context.NONE);
     }
 
     /**
@@ -358,33 +334,15 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the current availability status for all the resources in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilityStatusInner> listBySubscriptionId() {
         final String filter = null;
         final String expand = null;
-        return new PagedIterable<>(() -> listBySubscriptionIdSinglePage(filter, expand),
-            nextLink -> listBySubscriptionIdNextSinglePage(nextLink));
+        return listBySubscriptionId(filter, expand, Context.NONE);
     }
 
-    /**
-     * Lists the current availability status for all the resources in the subscription.
-     * 
-     * @param filter The filter to apply on the operation. For more information please see
-     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
-     * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilityStatusInner> listBySubscriptionId(String filter, String expand, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionIdSinglePage(filter, expand, context),
@@ -465,11 +423,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvailabilityStatusInner> listSinglePage(String resourceUri, String filter, String expand) {
-        final String accept = "application/json";
-        Response<AvailabilityStatusListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, filter, expand, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceUri, filter, expand, Context.NONE);
     }
 
     /**
@@ -495,36 +449,15 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all historical availability transitions and impacting events for a single resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilityStatusInner> list(String resourceUri) {
         final String filter = null;
         final String expand = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceUri, filter, expand),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceUri, filter, expand, Context.NONE);
     }
 
-    /**
-     * Lists all historical availability transitions and impacting events for a single resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param filter The filter to apply on the operation. For more information please see
-     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
-     * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilityStatusInner> list(String resourceUri, String filter, String expand,
         Context context) {
@@ -608,12 +541,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvailabilityStatusInner> listByResourceGroupSinglePage(String resourceGroupName,
         String filter, String expand) {
-        final String accept = "application/json";
-        Response<AvailabilityStatusListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, filter, expand, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, filter, expand, Context.NONE);
     }
 
     /**
@@ -640,36 +568,15 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the current availability status for all the resources in the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilityStatusInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
         final String expand = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, filter, expand),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, filter, expand, Context.NONE);
     }
 
-    /**
-     * Lists the current availability status for all the resources in the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param filter The filter to apply on the operation. For more information please see
-     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
-     * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilityStatusInner> listByResourceGroup(String resourceGroupName, String filter,
         String expand, Context context) {
@@ -709,11 +616,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvailabilityStatusInner> listBySubscriptionIdNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AvailabilityStatusListResult> res
-            = service.listBySubscriptionIdNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionIdNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -766,11 +669,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvailabilityStatusInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AvailabilityStatusListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -824,11 +723,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvailabilityStatusInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AvailabilityStatusListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -139,31 +139,14 @@ public final class MetadatasClientImpl implements MetadatasClient {
         return getEntityWithResponseAsync(name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the list of metadata entities.
-     * 
-     * @param name Name of metadata entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of metadata entities along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetadataEntityInner> getEntityWithResponse(String name, Context context) {
         final String accept = "application/json";
         return service.getEntitySync(this.client.getEndpoint(), this.client.getApiVersion(), name, accept, context);
     }
 
-    /**
-     * Gets the list of metadata entities.
-     * 
-     * @param name Name of metadata entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of metadata entities.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetadataEntityInner getEntity(String name) {
         return getEntityWithResponse(name, Context.NONE).getValue();
@@ -208,11 +191,7 @@ public final class MetadatasClientImpl implements MetadatasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MetadataEntityInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<MetadataEntityListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -233,27 +212,13 @@ public final class MetadatasClientImpl implements MetadatasClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of metadata entities.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of metadata entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetadataEntityInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets the list of metadata entities.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of metadata entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetadataEntityInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -288,11 +253,7 @@ public final class MetadatasClientImpl implements MetadatasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MetadataEntityInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MetadataEntityListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

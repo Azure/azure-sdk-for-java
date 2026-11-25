@@ -204,17 +204,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specific impacted resource in the tenant by an event.
-     * 
-     * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
-     * @param impactedResourceName Name of the Impacted Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific impacted resource in the tenant by an event along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EventImpactedResourceInner> getByTenantIdWithResponse(String eventTrackingId,
         String impactedResourceName, Context context) {
@@ -223,16 +213,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
             impactedResourceName, accept, context);
     }
 
-    /**
-     * Gets the specific impacted resource in the tenant by an event.
-     * 
-     * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
-     * @param impactedResourceName Name of the Impacted Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific impacted resource in the tenant by an event.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventImpactedResourceInner getByTenantId(String eventTrackingId, String impactedResourceName) {
         return getByTenantIdWithResponse(eventTrackingId, impactedResourceName, Context.NONE).getValue();
@@ -309,11 +290,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventImpactedResourceInner> listByTenantIdAndEventIdSinglePage(String eventTrackingId,
         String filter) {
-        final String accept = "application/json";
-        Response<EventImpactedResourceListResult> res = service.listByTenantIdAndEventIdSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), eventTrackingId, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTenantIdAndEventIdSinglePage(eventTrackingId, filter, Context.NONE);
     }
 
     /**
@@ -338,34 +315,14 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists impacted resources in the tenant by an event.
-     * 
-     * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventImpactedResourceInner> listByTenantIdAndEventId(String eventTrackingId) {
         final String filter = null;
-        return new PagedIterable<>(() -> listByTenantIdAndEventIdSinglePage(eventTrackingId, filter),
-            nextLink -> listByTenantIdAndEventIdNextSinglePage(nextLink));
+        return listByTenantIdAndEventId(eventTrackingId, filter, Context.NONE);
     }
 
-    /**
-     * Lists impacted resources in the tenant by an event.
-     * 
-     * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
-     * @param filter The filter to apply on the operation. For more information please see
-     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventImpactedResourceInner> listByTenantIdAndEventId(String eventTrackingId, String filter,
         Context context) {
@@ -410,17 +367,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specific impacted resource in the subscription by an event.
-     * 
-     * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
-     * @param impactedResourceName Name of the Impacted Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific impacted resource in the subscription by an event along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EventImpactedResourceInner> getWithResponse(String eventTrackingId, String impactedResourceName,
         Context context) {
@@ -429,16 +376,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
             eventTrackingId, impactedResourceName, accept, context);
     }
 
-    /**
-     * Gets the specific impacted resource in the subscription by an event.
-     * 
-     * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
-     * @param impactedResourceName Name of the Impacted Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific impacted resource in the subscription by an event.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventImpactedResourceInner get(String eventTrackingId, String impactedResourceName) {
         return getWithResponse(eventTrackingId, impactedResourceName, Context.NONE).getValue();
@@ -516,12 +454,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventImpactedResourceInner> listBySubscriptionIdAndEventIdSinglePage(String eventTrackingId,
         String filter) {
-        final String accept = "application/json";
-        Response<EventImpactedResourceListResult> res
-            = service.listBySubscriptionIdAndEventIdSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), eventTrackingId, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionIdAndEventIdSinglePage(eventTrackingId, filter, Context.NONE);
     }
 
     /**
@@ -547,34 +480,14 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists impacted resources in the subscription by an event.
-     * 
-     * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventImpactedResourceInner> listBySubscriptionIdAndEventId(String eventTrackingId) {
         final String filter = null;
-        return new PagedIterable<>(() -> listBySubscriptionIdAndEventIdSinglePage(eventTrackingId, filter),
-            nextLink -> listBySubscriptionIdAndEventIdNextSinglePage(nextLink));
+        return listBySubscriptionIdAndEventId(eventTrackingId, filter, Context.NONE);
     }
 
-    /**
-     * Lists impacted resources in the subscription by an event.
-     * 
-     * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
-     * @param filter The filter to apply on the operation. For more information please see
-     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventImpactedResourceInner> listBySubscriptionIdAndEventId(String eventTrackingId,
         String filter, Context context) {
@@ -615,11 +528,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventImpactedResourceInner> listByTenantIdAndEventIdNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventImpactedResourceListResult> res
-            = service.listByTenantIdAndEventIdNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTenantIdAndEventIdNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -674,11 +583,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventImpactedResourceInner> listBySubscriptionIdAndEventIdNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventImpactedResourceListResult> res
-            = service.listBySubscriptionIdAndEventIdNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionIdAndEventIdNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

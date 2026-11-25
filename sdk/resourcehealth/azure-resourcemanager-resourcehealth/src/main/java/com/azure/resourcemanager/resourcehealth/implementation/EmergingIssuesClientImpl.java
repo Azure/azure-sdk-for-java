@@ -139,31 +139,14 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
         return getWithResponseAsync(issueName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets Azure services' emerging issues.
-     * 
-     * @param issueName The name of the emerging issue.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure services' emerging issues along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EmergingIssuesGetResultInner> getWithResponse(IssueNameParameter issueName, Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), issueName, accept, context);
     }
 
-    /**
-     * Gets Azure services' emerging issues.
-     * 
-     * @param issueName The name of the emerging issue.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure services' emerging issues.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EmergingIssuesGetResultInner get(IssueNameParameter issueName) {
         return getWithResponse(issueName, Context.NONE).getValue();
@@ -208,11 +191,7 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EmergingIssuesGetResultInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<EmergingIssueListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -233,27 +212,13 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists Azure services' emerging issues.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of emerging issues as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EmergingIssuesGetResultInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists Azure services' emerging issues.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of emerging issues as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EmergingIssuesGetResultInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -288,11 +253,7 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EmergingIssuesGetResultInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EmergingIssueListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

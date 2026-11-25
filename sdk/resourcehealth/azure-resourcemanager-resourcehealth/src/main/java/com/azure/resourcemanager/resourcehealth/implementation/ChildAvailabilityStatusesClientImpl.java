@@ -155,19 +155,7 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets current availability status for a single resource.
-     * 
-     * @param resourceUri undefined.
-     * @param filter The filter to apply on the operation. For more information please see
-     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
-     * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current availability status for a single resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvailabilityStatusInner> getByResourceWithResponse(String resourceUri, String filter, String expand,
         Context context) {
@@ -176,15 +164,7 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
             expand, accept, context);
     }
 
-    /**
-     * Gets current availability status for a single resource.
-     * 
-     * @param resourceUri undefined.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current availability status for a single resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvailabilityStatusInner getByResource(String resourceUri) {
         final String filter = null;
@@ -270,11 +250,7 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvailabilityStatusInner> listSinglePage(String resourceUri, String filter, String expand) {
-        final String accept = "application/json";
-        Response<AvailabilityStatusListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, filter, expand, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceUri, filter, expand, Context.NONE);
     }
 
     /**
@@ -301,38 +277,15 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the historical availability statuses for a single child resource. Use the nextLink property in the response
-     * to get the next page of availability status.
-     * 
-     * @param resourceUri undefined.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilityStatusInner> list(String resourceUri) {
         final String filter = null;
         final String expand = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceUri, filter, expand),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceUri, filter, expand, Context.NONE);
     }
 
-    /**
-     * Lists the historical availability statuses for a single child resource. Use the nextLink property in the response
-     * to get the next page of availability status.
-     * 
-     * @param resourceUri undefined.
-     * @param filter The filter to apply on the operation. For more information please see
-     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
-     * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilityStatusInner> list(String resourceUri, String filter, String expand,
         Context context) {
@@ -370,11 +323,7 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvailabilityStatusInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AvailabilityStatusListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -202,12 +202,7 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventImpactedResourceInner> listBySubscriptionIdAndEventIdSinglePage(String eventTrackingId,
         String filter) {
-        final String accept = "application/json";
-        Response<EventImpactedResourceListResult> res
-            = service.listBySubscriptionIdAndEventIdSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), eventTrackingId, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionIdAndEventIdSinglePage(eventTrackingId, filter, Context.NONE);
     }
 
     /**
@@ -233,34 +228,14 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists impacted resources in the subscription by an event (Security Advisory).
-     * 
-     * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventImpactedResourceInner> listBySubscriptionIdAndEventId(String eventTrackingId) {
         final String filter = null;
-        return new PagedIterable<>(() -> listBySubscriptionIdAndEventIdSinglePage(eventTrackingId, filter),
-            nextLink -> listBySubscriptionIdAndEventIdNextSinglePage(nextLink));
+        return listBySubscriptionIdAndEventId(eventTrackingId, filter, Context.NONE);
     }
 
-    /**
-     * Lists impacted resources in the subscription by an event (Security Advisory).
-     * 
-     * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
-     * @param filter The filter to apply on the operation. For more information please see
-     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventImpactedResourceInner> listBySubscriptionIdAndEventId(String eventTrackingId,
         String filter, Context context) {
@@ -339,11 +314,7 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventImpactedResourceInner> listByTenantIdAndEventIdSinglePage(String eventTrackingId,
         String filter) {
-        final String accept = "application/json";
-        Response<EventImpactedResourceListResult> res = service.listByTenantIdAndEventIdSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), eventTrackingId, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTenantIdAndEventIdSinglePage(eventTrackingId, filter, Context.NONE);
     }
 
     /**
@@ -368,34 +339,14 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists impacted resources in the tenant by an event (Security Advisory).
-     * 
-     * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventImpactedResourceInner> listByTenantIdAndEventId(String eventTrackingId) {
         final String filter = null;
-        return new PagedIterable<>(() -> listByTenantIdAndEventIdSinglePage(eventTrackingId, filter),
-            nextLink -> listByTenantIdAndEventIdNextSinglePage(nextLink));
+        return listByTenantIdAndEventId(eventTrackingId, filter, Context.NONE);
     }
 
-    /**
-     * Lists impacted resources in the tenant by an event (Security Advisory).
-     * 
-     * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
-     * @param filter The filter to apply on the operation. For more information please see
-     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventImpactedResourceInner> listByTenantIdAndEventId(String eventTrackingId, String filter,
         Context context) {
@@ -435,11 +386,7 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventImpactedResourceInner> listBySubscriptionIdAndEventIdNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventImpactedResourceListResult> res
-            = service.listBySubscriptionIdAndEventIdNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionIdAndEventIdNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -495,11 +442,7 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventImpactedResourceInner> listByTenantIdAndEventIdNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EventImpactedResourceListResult> res
-            = service.listByTenantIdAndEventIdNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTenantIdAndEventIdNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

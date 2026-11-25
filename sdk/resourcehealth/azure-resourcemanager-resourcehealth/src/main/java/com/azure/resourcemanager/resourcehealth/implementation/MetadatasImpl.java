@@ -43,8 +43,7 @@ public final class MetadatasImpl implements Metadatas {
     }
 
     public PagedIterable<MetadataEntity> list() {
-        PagedIterable<MetadataEntityInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MetadataEntityImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<MetadataEntity> list(Context context) {

@@ -44,8 +44,7 @@ public final class EmergingIssuesImpl implements EmergingIssues {
     }
 
     public PagedIterable<EmergingIssuesGetResult> list() {
-        PagedIterable<EmergingIssuesGetResultInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmergingIssuesGetResultImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<EmergingIssuesGetResult> list(Context context) {
