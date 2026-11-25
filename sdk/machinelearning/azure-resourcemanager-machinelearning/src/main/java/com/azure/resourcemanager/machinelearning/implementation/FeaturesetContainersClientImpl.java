@@ -207,18 +207,7 @@ public final class FeaturesetContainersClientImpl implements FeaturesetContainer
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FeaturesetContainerInner> getEntityWithResponse(String resourceGroupName, String workspaceName,
         String name, Context context) {
@@ -227,17 +216,7 @@ public final class FeaturesetContainersClientImpl implements FeaturesetContainer
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, accept, context);
     }
 
-    /**
-     * Get container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FeaturesetContainerInner getEntity(String resourceGroupName, String workspaceName, String name) {
         return getEntityWithResponse(resourceGroupName, workspaceName, name, Context.NONE).getValue();
@@ -283,11 +262,7 @@ public final class FeaturesetContainersClientImpl implements FeaturesetContainer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String name,
         FeaturesetContainerInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, contentType, accept, body,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
     /**
@@ -335,39 +310,14 @@ public final class FeaturesetContainersClientImpl implements FeaturesetContainer
             this.client.getContext());
     }
 
-    /**
-     * Create or update container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param body Container entity to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FeaturesetContainerInner>, FeaturesetContainerInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String name, FeaturesetContainerInner body) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, workspaceName, name, body);
-        return this.client.<FeaturesetContainerInner, FeaturesetContainerInner>getLroResult(response,
-            FeaturesetContainerInner.class, FeaturesetContainerInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
-    /**
-     * Create or update container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param body Container entity to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FeaturesetContainerInner>, FeaturesetContainerInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String name, FeaturesetContainerInner body, Context context) {
@@ -396,41 +346,19 @@ public final class FeaturesetContainersClientImpl implements FeaturesetContainer
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param body Container entity to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FeaturesetContainerInner createOrUpdate(String resourceGroupName, String workspaceName, String name,
         FeaturesetContainerInner body) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, name, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
-    /**
-     * Create or update container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param body Container entity to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FeaturesetContainerInner createOrUpdate(String resourceGroupName, String workspaceName, String name,
         FeaturesetContainerInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, name, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, workspaceName, name, body, context));
     }
 
     /**
@@ -466,8 +394,7 @@ public final class FeaturesetContainersClientImpl implements FeaturesetContainer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, name, Context.NONE);
     }
 
     /**
@@ -508,35 +435,13 @@ public final class FeaturesetContainersClientImpl implements FeaturesetContainer
             this.client.getContext());
     }
 
-    /**
-     * Delete container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, name, Context.NONE);
     }
 
-    /**
-     * Delete container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String name,
         Context context) {
@@ -561,35 +466,16 @@ public final class FeaturesetContainersClientImpl implements FeaturesetContainer
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String name) {
-        beginDelete(resourceGroupName, workspaceName, name).getFinalResult();
+        delete(resourceGroupName, workspaceName, name, Context.NONE);
     }
 
-    /**
-     * Delete container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String name, Context context) {
-        beginDelete(resourceGroupName, workspaceName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, name, context));
     }
 
     /**
@@ -695,12 +581,8 @@ public final class FeaturesetContainersClientImpl implements FeaturesetContainer
     private PagedResponse<FeaturesetContainerInner> listSinglePage(String resourceGroupName, String workspaceName,
         String skip, String tags, ListViewType listViewType, Integer pageSize, String name, String description,
         String createdBy) {
-        final String accept = "application/json";
-        Response<FeaturesetContainerResourceArmPaginatedResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, workspaceName, skip, tags,
-            listViewType, pageSize, name, description, createdBy, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, skip, tags, listViewType, pageSize, name, description,
+            createdBy, Context.NONE);
     }
 
     /**
@@ -734,16 +616,7 @@ public final class FeaturesetContainersClientImpl implements FeaturesetContainer
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List featurestore entity containers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of FeaturesetContainer entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FeaturesetContainerInner> list(String resourceGroupName, String workspaceName) {
         final String skip = null;
@@ -753,29 +626,11 @@ public final class FeaturesetContainersClientImpl implements FeaturesetContainer
         final String name = null;
         final String description = null;
         final String createdBy = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, skip, tags, listViewType,
-            pageSize, name, description, createdBy), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, skip, tags, listViewType, pageSize, name, description, createdBy,
+            Context.NONE);
     }
 
-    /**
-     * List featurestore entity containers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param skip Continuation token for pagination.
-     * @param tags Comma-separated list of tag names (and optionally values). Example: tag1,tag2=value2.
-     * @param listViewType [ListViewType.ActiveOnly, ListViewType.ArchivedOnly, ListViewType.All]View type for
-     * including/excluding (for example) archived entities.
-     * @param pageSize page size.
-     * @param name name for the featureset.
-     * @param description description for the feature set.
-     * @param createdBy createdBy user name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of FeaturesetContainer entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FeaturesetContainerInner> list(String resourceGroupName, String workspaceName, String skip,
         String tags, ListViewType listViewType, Integer pageSize, String name, String description, String createdBy,
@@ -818,11 +673,7 @@ public final class FeaturesetContainersClientImpl implements FeaturesetContainer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FeaturesetContainerInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FeaturesetContainerResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

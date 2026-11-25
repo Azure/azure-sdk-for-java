@@ -201,18 +201,7 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of the replication extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param replicationExtensionName The replication extension name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the replication extension along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicationExtensionInner> getWithResponse(String resourceGroupName, String vaultName,
         String replicationExtensionName, Context context) {
@@ -221,17 +210,7 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
             resourceGroupName, vaultName, replicationExtensionName, accept, context);
     }
 
-    /**
-     * Gets the details of the replication extension.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param replicationExtensionName The replication extension name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the replication extension.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationExtensionInner get(String resourceGroupName, String vaultName, String replicationExtensionName) {
         return getWithResponse(resourceGroupName, vaultName, replicationExtensionName, Context.NONE).getValue();
@@ -276,11 +255,7 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String vaultName,
         String replicationExtensionName, ReplicationExtensionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, replicationExtensionName, contentType,
-            accept, resource, Context.NONE);
+        return createWithResponse(resourceGroupName, vaultName, replicationExtensionName, resource, Context.NONE);
     }
 
     /**
@@ -329,41 +304,15 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
             this.client.getContext());
     }
 
-    /**
-     * Creates the replication extension in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param replicationExtensionName The replication extension name.
-     * @param resource Replication extension model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication extension model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationExtensionInner>, ReplicationExtensionInner> beginCreate(
         String resourceGroupName, String vaultName, String replicationExtensionName,
         ReplicationExtensionInner resource) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, vaultName, replicationExtensionName, resource);
-        return this.client.<ReplicationExtensionInner, ReplicationExtensionInner>getLroResult(response,
-            ReplicationExtensionInner.class, ReplicationExtensionInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, vaultName, replicationExtensionName, resource, Context.NONE);
     }
 
-    /**
-     * Creates the replication extension in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param replicationExtensionName The replication extension name.
-     * @param resource Replication extension model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication extension model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationExtensionInner>, ReplicationExtensionInner> beginCreate(
         String resourceGroupName, String vaultName, String replicationExtensionName, ReplicationExtensionInner resource,
@@ -393,41 +342,19 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates the replication extension in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param replicationExtensionName The replication extension name.
-     * @param resource Replication extension model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication extension model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationExtensionInner create(String resourceGroupName, String vaultName, String replicationExtensionName,
         ReplicationExtensionInner resource) {
-        return beginCreate(resourceGroupName, vaultName, replicationExtensionName, resource).getFinalResult();
+        return create(resourceGroupName, vaultName, replicationExtensionName, resource, Context.NONE);
     }
 
-    /**
-     * Creates the replication extension in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param replicationExtensionName The replication extension name.
-     * @param resource Replication extension model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication extension model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationExtensionInner create(String resourceGroupName, String vaultName, String replicationExtensionName,
         ReplicationExtensionInner resource, Context context) {
-        return beginCreate(resourceGroupName, vaultName, replicationExtensionName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, vaultName, replicationExtensionName, resource, context));
     }
 
     /**
@@ -464,8 +391,7 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String vaultName,
         String replicationExtensionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, replicationExtensionName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, vaultName, replicationExtensionName, Context.NONE);
     }
 
     /**
@@ -507,36 +433,14 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
             this.client.getContext());
     }
 
-    /**
-     * Deletes the replication extension in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param replicationExtensionName The replication extension name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
         String replicationExtensionName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, vaultName, replicationExtensionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, vaultName, replicationExtensionName, Context.NONE);
     }
 
-    /**
-     * Deletes the replication extension in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param replicationExtensionName The replication extension name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
         String replicationExtensionName, Context context) {
@@ -562,35 +466,17 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the replication extension in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param replicationExtensionName The replication extension name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName, String replicationExtensionName) {
-        beginDelete(resourceGroupName, vaultName, replicationExtensionName).getFinalResult();
+        delete(resourceGroupName, vaultName, replicationExtensionName, Context.NONE);
     }
 
-    /**
-     * Deletes the replication extension in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param replicationExtensionName The replication extension name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName, String replicationExtensionName, Context context) {
-        beginDelete(resourceGroupName, vaultName, replicationExtensionName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, vaultName, replicationExtensionName, context));
     }
 
     /**
@@ -644,11 +530,7 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationExtensionInner> listSinglePage(String resourceGroupName, String vaultName) {
-        final String accept = "application/json";
-        Response<RepExtModelListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, Context.NONE);
     }
 
     /**
@@ -672,33 +554,13 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of replication extensions in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of replication extensions in the given vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationExtensionInner> list(String resourceGroupName, String vaultName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, Context.NONE);
     }
 
-    /**
-     * Gets the list of replication extensions in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of replication extensions in the given vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationExtensionInner> list(String resourceGroupName, String vaultName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName, context),
@@ -735,11 +597,7 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationExtensionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RepExtModelListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

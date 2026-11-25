@@ -149,12 +149,7 @@ public final class WorkbookImpl implements Workbook, Workbook.Definition, Workbo
     }
 
     public Workbook create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkbooks()
-            .createOrUpdateWithResponse(resourceGroupName, resourceName, this.innerModel(), createSourceId,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Workbook create(Context context) {
@@ -179,12 +174,7 @@ public final class WorkbookImpl implements Workbook, Workbook.Definition, Workbo
     }
 
     public Workbook apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkbooks()
-            .updateWithResponse(resourceGroupName, resourceName, updateSourceId, updateWorkbookUpdateParameters,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Workbook apply(Context context) {
@@ -209,12 +199,7 @@ public final class WorkbookImpl implements Workbook, Workbook.Definition, Workbo
     }
 
     public Workbook refresh() {
-        Boolean localCanFetchContent = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkbooks()
-            .getByResourceGroupWithResponse(resourceGroupName, resourceName, localCanFetchContent, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Workbook refresh(Context context) {

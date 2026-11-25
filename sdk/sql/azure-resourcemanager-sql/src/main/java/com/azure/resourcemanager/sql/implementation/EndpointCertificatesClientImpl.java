@@ -91,18 +91,7 @@ public final class EndpointCertificatesClientImpl implements EndpointCertificate
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a certificate used on the endpoint with the given id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param endpointType Type of the endpoint whose certificate the customer is looking for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate used on the endpoint with the given id along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EndpointCertificateInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String endpointType) {
@@ -173,17 +162,7 @@ public final class EndpointCertificatesClientImpl implements EndpointCertificate
             resourceGroupName, managedInstanceName, endpointType, accept, context);
     }
 
-    /**
-     * Gets a certificate used on the endpoint with the given id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param endpointType Type of the endpoint whose certificate the customer is looking for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate used on the endpoint with the given id on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EndpointCertificateInner> getAsync(String resourceGroupName, String managedInstanceName,
         String endpointType) {
@@ -191,35 +170,14 @@ public final class EndpointCertificatesClientImpl implements EndpointCertificate
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a certificate used on the endpoint with the given id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param endpointType Type of the endpoint whose certificate the customer is looking for.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate used on the endpoint with the given id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointCertificateInner> getWithResponse(String resourceGroupName, String managedInstanceName,
         String endpointType, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, endpointType, context).block();
     }
 
-    /**
-     * Gets a certificate used on the endpoint with the given id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param endpointType Type of the endpoint whose certificate the customer is looking for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate used on the endpoint with the given id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointCertificateInner get(String resourceGroupName, String managedInstanceName, String endpointType) {
         return getWithResponse(resourceGroupName, managedInstanceName, endpointType, Context.NONE).getValue();
@@ -304,16 +262,7 @@ public final class EndpointCertificatesClientImpl implements EndpointCertificate
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List certificates used on endpoints on the target instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EndpointCertificate list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EndpointCertificateInner> listByInstanceAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -339,33 +288,14 @@ public final class EndpointCertificatesClientImpl implements EndpointCertificate
             nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List certificates used on endpoints on the target instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EndpointCertificate list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointCertificateInner> listByInstance(String resourceGroupName,
         String managedInstanceName) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
-    /**
-     * List certificates used on endpoints on the target instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EndpointCertificate list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointCertificateInner> listByInstance(String resourceGroupName, String managedInstanceName,
         Context context) {

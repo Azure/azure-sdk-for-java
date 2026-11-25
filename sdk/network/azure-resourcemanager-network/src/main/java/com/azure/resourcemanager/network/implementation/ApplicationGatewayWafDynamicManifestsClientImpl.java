@@ -149,15 +149,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the regional application gateway waf manifest.
-     * 
-     * @param location The location for which the WAF dynamic manifest is requested.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the regional application gateway waf manifest as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationGatewayWafDynamicManifestResultInner> getAsync(String location) {
         return new PagedFlux<>(() -> getSinglePageAsync(location), nextLink -> getNextSinglePageAsync(nextLink));
@@ -179,30 +171,13 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
             nextLink -> getNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the regional application gateway waf manifest.
-     * 
-     * @param location The location for which the WAF dynamic manifest is requested.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the regional application gateway waf manifest as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGatewayWafDynamicManifestResultInner> get(String location) {
         return new PagedIterable<>(getAsync(location));
     }
 
-    /**
-     * Gets the regional application gateway waf manifest.
-     * 
-     * @param location The location for which the WAF dynamic manifest is requested.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the regional application gateway waf manifest as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGatewayWafDynamicManifestResultInner> get(String location, Context context) {
         return new PagedIterable<>(getAsync(location, context));

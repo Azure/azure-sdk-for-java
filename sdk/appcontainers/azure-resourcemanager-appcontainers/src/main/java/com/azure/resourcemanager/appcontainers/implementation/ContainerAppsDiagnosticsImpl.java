@@ -78,8 +78,7 @@ public final class ContainerAppsDiagnosticsImpl implements ContainerAppsDiagnost
     }
 
     public PagedIterable<Diagnostics> listDetectors(String resourceGroupName, String containerAppName) {
-        PagedIterable<DiagnosticsInner> inner = this.serviceClient().listDetectors(resourceGroupName, containerAppName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DiagnosticsImpl(inner1, this.manager()));
+        return this.listDetectors(resourceGroupName, containerAppName, Context.NONE);
     }
 
     public PagedIterable<Diagnostics> listDetectors(String resourceGroupName, String containerAppName,

@@ -151,17 +151,7 @@ public final class QuotasClientImpl implements QuotasClient {
         return updateWithResponseAsync(location, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update quota for each VM family in workspace.
-     * 
-     * @param location The location name.
-     * @param parameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of update workspace quota along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpdateWorkspaceQuotasResultInner> updateWithResponse(String location,
         QuotaUpdateParameters parameters, Context context) {
@@ -171,16 +161,7 @@ public final class QuotasClientImpl implements QuotasClient {
             this.client.getSubscriptionId(), location, contentType, accept, parameters, context);
     }
 
-    /**
-     * Update quota for each VM family in workspace.
-     * 
-     * @param location The location name.
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of update workspace quota.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateWorkspaceQuotasResultInner update(String location, QuotaUpdateParameters parameters) {
         return updateWithResponse(location, parameters, Context.NONE).getValue();
@@ -232,11 +213,7 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceQuotaInner> listSinglePage(String location) {
-        final String accept = "application/json";
-        Response<ListWorkspaceQuotas> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, Context.NONE);
     }
 
     /**
@@ -258,32 +235,13 @@ public final class QuotasClientImpl implements QuotasClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the currently assigned Workspace Quotas based on VMFamily.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently assigned Workspace Quotas based on VMFamily as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceQuotaInner> list(String location) {
-        return new PagedIterable<>(() -> listSinglePage(location), nextLink -> listNextSinglePage(nextLink));
+        return list(location, Context.NONE);
     }
 
-    /**
-     * Gets the currently assigned Workspace Quotas based on VMFamily.
-     * 
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently assigned Workspace Quotas based on VMFamily as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceQuotaInner> list(String location, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, context),
@@ -320,11 +278,7 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceQuotaInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ListWorkspaceQuotas> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

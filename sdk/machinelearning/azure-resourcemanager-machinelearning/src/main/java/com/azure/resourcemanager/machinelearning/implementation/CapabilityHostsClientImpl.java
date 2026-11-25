@@ -161,18 +161,7 @@ public final class CapabilityHostsClientImpl implements CapabilityHostsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name CapabilityHost name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capabilityHost along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CapabilityHostInner> getWithResponse(String resourceGroupName, String workspaceName, String name,
         Context context) {
@@ -181,17 +170,7 @@ public final class CapabilityHostsClientImpl implements CapabilityHostsClient {
             resourceGroupName, workspaceName, name, accept, context);
     }
 
-    /**
-     * Get capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name CapabilityHost name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capabilityHost.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapabilityHostInner get(String resourceGroupName, String workspaceName, String name) {
         return getWithResponse(resourceGroupName, workspaceName, name, Context.NONE).getValue();
@@ -237,11 +216,7 @@ public final class CapabilityHostsClientImpl implements CapabilityHostsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String name,
         CapabilityHostInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, contentType, accept, body,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
     /**
@@ -288,39 +263,14 @@ public final class CapabilityHostsClientImpl implements CapabilityHostsClient {
             CapabilityHostInner.class, CapabilityHostInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name CapabilityHost name.
-     * @param body CapabilityHost definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapabilityHostInner>, CapabilityHostInner>
         beginCreateOrUpdate(String resourceGroupName, String workspaceName, String name, CapabilityHostInner body) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, workspaceName, name, body);
-        return this.client.<CapabilityHostInner, CapabilityHostInner>getLroResult(response, CapabilityHostInner.class,
-            CapabilityHostInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
-    /**
-     * Create or update capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name CapabilityHost name.
-     * @param body CapabilityHost definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapabilityHostInner>, CapabilityHostInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String name, CapabilityHostInner body, Context context) {
@@ -349,41 +299,19 @@ public final class CapabilityHostsClientImpl implements CapabilityHostsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name CapabilityHost name.
-     * @param body CapabilityHost definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapabilityHostInner createOrUpdate(String resourceGroupName, String workspaceName, String name,
         CapabilityHostInner body) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, name, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
-    /**
-     * Create or update capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name CapabilityHost name.
-     * @param body CapabilityHost definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapabilityHostInner createOrUpdate(String resourceGroupName, String workspaceName, String name,
         CapabilityHostInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, name, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, workspaceName, name, body, context));
     }
 
     /**
@@ -419,8 +347,7 @@ public final class CapabilityHostsClientImpl implements CapabilityHostsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, name, Context.NONE);
     }
 
     /**
@@ -461,35 +388,13 @@ public final class CapabilityHostsClientImpl implements CapabilityHostsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name CapabilityHost name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, name, Context.NONE);
     }
 
-    /**
-     * Delete capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name CapabilityHost name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String name,
         Context context) {
@@ -514,34 +419,15 @@ public final class CapabilityHostsClientImpl implements CapabilityHostsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name CapabilityHost name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String name) {
-        beginDelete(resourceGroupName, workspaceName, name).getFinalResult();
+        delete(resourceGroupName, workspaceName, name, Context.NONE);
     }
 
-    /**
-     * Delete capabilityHost.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name CapabilityHost name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String name, Context context) {
-        beginDelete(resourceGroupName, workspaceName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, name, context));
     }
 }

@@ -114,18 +114,7 @@ public final class BackupVaultOperationResultsClientImpl implements BackupVaultO
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a BackupVaultResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param operationId The name of the BackupVaultResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a BackupVaultResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupVaultOperationResultsGetResponse getWithResponse(String resourceGroupName, String vaultName,
         String operationId, Context context) {
@@ -134,17 +123,7 @@ public final class BackupVaultOperationResultsClientImpl implements BackupVaultO
             resourceGroupName, vaultName, operationId, accept, context);
     }
 
-    /**
-     * Get a BackupVaultResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param operationId The name of the BackupVaultResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a BackupVaultResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupVaultResourceInner get(String resourceGroupName, String vaultName, String operationId) {
         return getWithResponse(resourceGroupName, vaultName, operationId, Context.NONE).getValue();

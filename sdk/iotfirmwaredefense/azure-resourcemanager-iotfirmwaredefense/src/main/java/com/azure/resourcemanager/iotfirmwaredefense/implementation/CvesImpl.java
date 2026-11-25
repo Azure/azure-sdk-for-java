@@ -27,9 +27,7 @@ public final class CvesImpl implements Cves {
 
     public PagedIterable<CveResource> listByFirmware(String resourceGroupName, String workspaceName,
         String firmwareId) {
-        PagedIterable<CveResourceInner> inner
-            = this.serviceClient().listByFirmware(resourceGroupName, workspaceName, firmwareId);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CveResourceImpl(inner1, this.manager()));
+        return this.listByFirmware(resourceGroupName, workspaceName, firmwareId, Context.NONE);
     }
 
     public PagedIterable<CveResource> listByFirmware(String resourceGroupName, String workspaceName, String firmwareId,

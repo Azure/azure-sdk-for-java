@@ -208,32 +208,13 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
         return getWithResponseAsync(scope, ruleId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific governance rule for the requested scope by ruleId.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific governance rule for the requested scope by ruleId along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GovernanceRuleInner> getWithResponse(String scope, String ruleId, Context context) {
         return getWithResponseAsync(scope, ruleId, context).block();
     }
 
-    /**
-     * Get a specific governance rule for the requested scope by ruleId.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific governance rule for the requested scope by ruleId.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GovernanceRuleInner get(String scope, String ruleId) {
         return getWithResponse(scope, ruleId, Context.NONE).getValue();
@@ -333,35 +314,14 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a governance rule over a given scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
-     * @param governanceRule Governance rule over a given scope.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return governance rule over a given scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GovernanceRuleInner> createOrUpdateWithResponse(String scope, String ruleId,
         GovernanceRuleInner governanceRule, Context context) {
         return createOrUpdateWithResponseAsync(scope, ruleId, governanceRule, context).block();
     }
 
-    /**
-     * Creates or updates a governance rule over a given scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
-     * @param governanceRule Governance rule over a given scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return governance rule over a given scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GovernanceRuleInner createOrUpdate(String scope, String ruleId, GovernanceRuleInner governanceRule) {
         return createOrUpdateWithResponse(scope, ruleId, governanceRule, Context.NONE).getValue();
@@ -459,32 +419,13 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
             context);
     }
 
-    /**
-     * Delete a Governance rule over a given scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String scope, String ruleId) {
         return this.beginDeleteAsync(scope, ruleId).getSyncPoller();
     }
 
-    /**
-     * Delete a Governance rule over a given scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String scope, String ruleId, Context context) {
         return this.beginDeleteAsync(scope, ruleId, context).getSyncPoller();
@@ -521,30 +462,13 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
         return beginDeleteAsync(scope, ruleId, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Governance rule over a given scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String scope, String ruleId) {
         deleteAsync(scope, ruleId).block();
     }
 
-    /**
-     * Delete a Governance rule over a given scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String scope, String ruleId, Context context) {
         deleteAsync(scope, ruleId, context).block();
@@ -636,30 +560,13 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get a list of all relevant governance rules over a scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant governance rules over a scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GovernanceRuleInner> list(String scope) {
         return new PagedIterable<>(listAsync(scope));
     }
 
-    /**
-     * Get a list of all relevant governance rules over a scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant governance rules over a scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GovernanceRuleInner> list(String scope, Context context) {
         return new PagedIterable<>(listAsync(scope, context));
@@ -792,34 +699,14 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
             context);
     }
 
-    /**
-     * Execute a governance rule.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecute(String scope, String ruleId) {
         final ExecuteGovernanceRuleParams executeGovernanceRuleParams = null;
         return this.beginExecuteAsync(scope, ruleId, executeGovernanceRuleParams).getSyncPoller();
     }
 
-    /**
-     * Execute a governance rule.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
-     * @param executeGovernanceRuleParams Execute governance rule over a given scope.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecute(String scope, String ruleId,
         ExecuteGovernanceRuleParams executeGovernanceRuleParams, Context context) {
@@ -880,32 +767,14 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute a governance rule.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void execute(String scope, String ruleId) {
         final ExecuteGovernanceRuleParams executeGovernanceRuleParams = null;
         executeAsync(scope, ruleId, executeGovernanceRuleParams).block();
     }
 
-    /**
-     * Execute a governance rule.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
-     * @param executeGovernanceRuleParams Execute governance rule over a given scope.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void execute(String scope, String ruleId, ExecuteGovernanceRuleParams executeGovernanceRuleParams,
         Context context) {
@@ -1002,35 +871,14 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get governance rules long run operation result for the requested scope by ruleId and operationId.
-     * 
-     * @param scope The scope of the governance rule.
-     * @param ruleId The governance rule key.
-     * @param operationId The governance rule long running operation unique key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return governance rules long run operation result for the requested scope by ruleId and operationId.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GovernanceRulesOperationResultsResponse operationResultsWithResponse(String scope, String ruleId,
         String operationId, Context context) {
         return operationResultsWithResponseAsync(scope, ruleId, operationId, context).block();
     }
 
-    /**
-     * Get governance rules long run operation result for the requested scope by ruleId and operationId.
-     * 
-     * @param scope The scope of the governance rule.
-     * @param ruleId The governance rule key.
-     * @param operationId The governance rule long running operation unique key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return governance rules long run operation result for the requested scope by ruleId and operationId.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationResultInner operationResults(String scope, String ruleId, String operationId) {
         return operationResultsWithResponse(scope, ruleId, operationId, Context.NONE).getValue();

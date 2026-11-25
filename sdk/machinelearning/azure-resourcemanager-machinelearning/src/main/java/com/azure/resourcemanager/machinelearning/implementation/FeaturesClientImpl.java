@@ -171,20 +171,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get feature.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param featuresetName Name of Azure Machine Learning featuresets.
-     * @param featuresetVersion Inference Version name.
-     * @param featureName Inference FeatureName name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return feature along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FeatureInner> getWithResponse(String resourceGroupName, String workspaceName, String featuresetName,
         String featuresetVersion, String featureName, Context context) {
@@ -193,19 +180,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
             resourceGroupName, workspaceName, featuresetName, featuresetVersion, featureName, accept, context);
     }
 
-    /**
-     * Get feature.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param featuresetName Name of Azure Machine Learning featuresets.
-     * @param featuresetVersion Inference Version name.
-     * @param featureName Inference FeatureName name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return feature.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FeatureInner get(String resourceGroupName, String workspaceName, String featuresetName,
         String featuresetVersion, String featureName) {
@@ -324,13 +299,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
     private PagedResponse<FeatureInner> listSinglePage(String resourceGroupName, String workspaceName,
         String featuresetName, String featuresetVersion, String skip, String tags, String featureName,
         String description, ListViewType listViewType, Integer pageSize) {
-        final String accept = "application/json";
-        Response<FeatureResourceArmPaginatedResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, featuresetName, featuresetVersion, skip, tags, featureName,
-                description, listViewType, pageSize, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, featuresetName, featuresetVersion, skip, tags,
+            featureName, description, listViewType, pageSize, Context.NONE);
     }
 
     /**
@@ -366,18 +336,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Features.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param featuresetName Name of Azure Machine Learning featuresets.
-     * @param featuresetVersion Inference Version name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of Feature entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FeatureInner> list(String resourceGroupName, String workspaceName, String featuresetName,
         String featuresetVersion) {
@@ -387,31 +346,11 @@ public final class FeaturesClientImpl implements FeaturesClient {
         final String description = null;
         final ListViewType listViewType = null;
         final Integer pageSize = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, featuresetName,
-            featuresetVersion, skip, tags, featureName, description, listViewType, pageSize),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, featuresetName, featuresetVersion, skip, tags, featureName,
+            description, listViewType, pageSize, Context.NONE);
     }
 
-    /**
-     * List Features.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param featuresetName Name of Azure Machine Learning featuresets.
-     * @param featuresetVersion Inference Version name.
-     * @param skip Continuation token for pagination.
-     * @param tags Comma-separated list of tag names (and optionally values). Example: tag1,tag2=value2.
-     * @param featureName feature name.
-     * @param description Description of the featureset.
-     * @param listViewType [ListViewType.ActiveOnly, ListViewType.ArchivedOnly, ListViewType.All]View type for
-     * including/excluding (for example) archived entities.
-     * @param pageSize Page size.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of Feature entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FeatureInner> list(String resourceGroupName, String workspaceName, String featuresetName,
         String featuresetVersion, String skip, String tags, String featureName, String description,
@@ -456,11 +395,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FeatureInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FeatureResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

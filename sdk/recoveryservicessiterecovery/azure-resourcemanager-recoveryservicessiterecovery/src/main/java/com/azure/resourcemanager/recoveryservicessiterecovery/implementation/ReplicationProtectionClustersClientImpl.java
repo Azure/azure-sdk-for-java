@@ -476,24 +476,7 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             replicationProtectionClusterName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of a Replication protection cluster.
-     * 
-     * Gets the details of an ASR replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Replication protection cluster.
-     * 
-     * Gets the details of an ASR replication protection cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicationProtectionClusterInner> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName, Context context) {
@@ -534,23 +517,7 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             accept, context);
     }
 
-    /**
-     * Gets the details of a Replication protection cluster.
-     * 
-     * Gets the details of an ASR replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Replication protection cluster.
-     * 
-     * Gets the details of an ASR replication protection cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionClusterInner get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicationProtectionClusterName) {
@@ -639,49 +606,8 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
     private Response<BinaryData> createWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicationProtectionClusterName,
         ReplicationProtectionClusterInner replicationProtectionCluster) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicationProtectionClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicationProtectionClusterName is required and cannot be null."));
-        }
-        if (replicationProtectionCluster == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicationProtectionCluster is required and cannot be null."));
-        } else {
-            replicationProtectionCluster.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, contentType, accept, replicationProtectionCluster, Context.NONE);
+        return createWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, replicationProtectionCluster, Context.NONE);
     }
 
     /**
@@ -778,49 +704,16 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             ReplicationProtectionClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Create Replication protection Cluster.
-     * 
-     * The operation to create an ASR replication protection cluster item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param replicationProtectionCluster Create replication protection cluster Input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protection Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectionClusterInner>, ReplicationProtectionClusterInner> beginCreate(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicationProtectionClusterName, ReplicationProtectionClusterInner replicationProtectionCluster) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicationProtectionClusterName, replicationProtectionCluster);
-        return this.client.<ReplicationProtectionClusterInner, ReplicationProtectionClusterInner>getLroResult(response,
-            ReplicationProtectionClusterInner.class, ReplicationProtectionClusterInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, replicationProtectionCluster, Context.NONE);
     }
 
-    /**
-     * Create Replication protection Cluster.
-     * 
-     * The operation to create an ASR replication protection cluster item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param replicationProtectionCluster Create replication protection cluster Input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of replication protection Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectionClusterInner>, ReplicationProtectionClusterInner> beginCreate(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -857,53 +750,22 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create Replication protection Cluster.
-     * 
-     * The operation to create an ASR replication protection cluster item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param replicationProtectionCluster Create replication protection cluster Input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protection Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionClusterInner create(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicationProtectionClusterName,
         ReplicationProtectionClusterInner replicationProtectionCluster) {
-        return beginCreate(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, replicationProtectionCluster).getFinalResult();
+        return create(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, replicationProtectionCluster, Context.NONE);
     }
 
-    /**
-     * Create Replication protection Cluster.
-     * 
-     * The operation to create an ASR replication protection cluster item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param replicationProtectionCluster Create replication protection cluster Input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protection Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionClusterInner create(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicationProtectionClusterName,
         ReplicationProtectionClusterInner replicationProtectionCluster, Context context) {
-        return beginCreate(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, replicationProtectionCluster, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicationProtectionClusterName, replicationProtectionCluster, context));
     }
 
     /**
@@ -979,39 +841,7 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> purgeWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicationProtectionClusterName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicationProtectionClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicationProtectionClusterName is required and cannot be null."));
-        }
-        return service.purgeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
+        return purgeWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
             replicationProtectionClusterName, Context.NONE);
     }
 
@@ -1098,49 +928,15 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             this.client.getContext());
     }
 
-    /**
-     * Purge the replication protection cluster.
-     * 
-     * The operation to purge the replication protection cluster. This operation will force delete the replication
-     * protection cluster. Use the remove operation on replication protection cluster to perform a clean disable
-     * replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName) {
-        Response<BinaryData> response = purgeWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicationProtectionClusterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginPurge(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, Context.NONE);
     }
 
-    /**
-     * Purge the replication protection cluster.
-     * 
-     * The operation to purge the replication protection cluster. This operation will force delete the replication
-     * protection cluster. Use the remove operation on replication protection cluster to perform a clean disable
-     * replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName, Context context) {
@@ -1173,51 +969,20 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             replicationProtectionClusterName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Purge the replication protection cluster.
-     * 
-     * The operation to purge the replication protection cluster. This operation will force delete the replication
-     * protection cluster. Use the remove operation on replication protection cluster to perform a clean disable
-     * replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purge(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicationProtectionClusterName) {
-        beginPurge(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName).getFinalResult();
+        purge(resourceGroupName, resourceName, fabricName, protectionContainerName, replicationProtectionClusterName,
+            Context.NONE);
     }
 
-    /**
-     * Purge the replication protection cluster.
-     * 
-     * The operation to purge the replication protection cluster. This operation will force delete the replication
-     * protection cluster. Use the remove operation on replication protection cluster to perform a clean disable
-     * replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purge(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicationProtectionClusterName, Context context) {
-        beginPurge(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginPurge(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicationProtectionClusterName, context));
     }
 
     /**
@@ -1301,49 +1066,8 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
     private Response<BinaryData> applyRecoveryPointWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName,
         ApplyClusterRecoveryPointInput applyClusterRecoveryPointInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicationProtectionClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicationProtectionClusterName is required and cannot be null."));
-        }
-        if (applyClusterRecoveryPointInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter applyClusterRecoveryPointInput is required and cannot be null."));
-        } else {
-            applyClusterRecoveryPointInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.applyRecoveryPointSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, contentType, accept, applyClusterRecoveryPointInput, Context.NONE);
+        return applyRecoveryPointWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, applyClusterRecoveryPointInput, Context.NONE);
     }
 
     /**
@@ -1440,50 +1164,17 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             ReplicationProtectionClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Execute the change recovery point operation for cluster.
-     * 
-     * Operation to apply a new cluster recovery point on the Protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param applyClusterRecoveryPointInput Apply recovery point input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectionClusterInner>, ReplicationProtectionClusterInner>
         beginApplyRecoveryPoint(String resourceGroupName, String resourceName, String fabricName,
             String protectionContainerName, String replicationProtectionClusterName,
             ApplyClusterRecoveryPointInput applyClusterRecoveryPointInput) {
-        Response<BinaryData> response = applyRecoveryPointWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicationProtectionClusterName, applyClusterRecoveryPointInput);
-        return this.client.<ReplicationProtectionClusterInner, ReplicationProtectionClusterInner>getLroResult(response,
-            ReplicationProtectionClusterInner.class, ReplicationProtectionClusterInner.class, Context.NONE);
+        return beginApplyRecoveryPoint(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, applyClusterRecoveryPointInput, Context.NONE);
     }
 
-    /**
-     * Execute the change recovery point operation for cluster.
-     * 
-     * Operation to apply a new cluster recovery point on the Protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param applyClusterRecoveryPointInput Apply recovery point input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectionClusterInner>, ReplicationProtectionClusterInner>
         beginApplyRecoveryPoint(String resourceGroupName, String resourceName, String fabricName,
@@ -1520,53 +1211,22 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute the change recovery point operation for cluster.
-     * 
-     * Operation to apply a new cluster recovery point on the Protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param applyClusterRecoveryPointInput Apply recovery point input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionClusterInner applyRecoveryPoint(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName,
         ApplyClusterRecoveryPointInput applyClusterRecoveryPointInput) {
-        return beginApplyRecoveryPoint(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, applyClusterRecoveryPointInput).getFinalResult();
+        return applyRecoveryPoint(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, applyClusterRecoveryPointInput, Context.NONE);
     }
 
-    /**
-     * Execute the change recovery point operation for cluster.
-     * 
-     * Operation to apply a new cluster recovery point on the Protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param applyClusterRecoveryPointInput Apply recovery point input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionClusterInner applyRecoveryPoint(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName,
         ApplyClusterRecoveryPointInput applyClusterRecoveryPointInput, Context context) {
-        return beginApplyRecoveryPoint(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, applyClusterRecoveryPointInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginApplyRecoveryPoint(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicationProtectionClusterName, applyClusterRecoveryPointInput, context));
     }
 
     /**
@@ -1640,41 +1300,8 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> failoverCommitWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicationProtectionClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicationProtectionClusterName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.failoverCommitSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, accept, Context.NONE);
+        return failoverCommitWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, Context.NONE);
     }
 
     /**
@@ -1759,47 +1386,16 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             ReplicationProtectionClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Execute commit failover for cluster.
-     * 
-     * Operation to initiate commit failover of the replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectionClusterInner>, ReplicationProtectionClusterInner>
         beginFailoverCommit(String resourceGroupName, String resourceName, String fabricName,
             String protectionContainerName, String replicationProtectionClusterName) {
-        Response<BinaryData> response = failoverCommitWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicationProtectionClusterName);
-        return this.client.<ReplicationProtectionClusterInner, ReplicationProtectionClusterInner>getLroResult(response,
-            ReplicationProtectionClusterInner.class, ReplicationProtectionClusterInner.class, Context.NONE);
+        return beginFailoverCommit(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, Context.NONE);
     }
 
-    /**
-     * Execute commit failover for cluster.
-     * 
-     * Operation to initiate commit failover of the replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectionClusterInner>, ReplicationProtectionClusterInner>
         beginFailoverCommit(String resourceGroupName, String resourceName, String fabricName,
@@ -1832,49 +1428,20 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             replicationProtectionClusterName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute commit failover for cluster.
-     * 
-     * Operation to initiate commit failover of the replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionClusterInner failoverCommit(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName) {
-        return beginFailoverCommit(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName).getFinalResult();
+        return failoverCommit(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, Context.NONE);
     }
 
-    /**
-     * Execute commit failover for cluster.
-     * 
-     * Operation to initiate commit failover of the replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionClusterInner failoverCommit(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName, Context context) {
-        return beginFailoverCommit(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginFailoverCommit(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicationProtectionClusterName, context));
     }
 
     /**
@@ -1948,41 +1515,8 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> repairReplicationWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicationProtectionClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicationProtectionClusterName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.repairReplicationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, accept, Context.NONE);
+        return repairReplicationWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, Context.NONE);
     }
 
     /**
@@ -2067,47 +1601,16 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             ReplicationProtectionClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Resynchronize or repair replication of protection cluster.
-     * 
-     * The operation to repair replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectionClusterInner>, ReplicationProtectionClusterInner>
         beginRepairReplication(String resourceGroupName, String resourceName, String fabricName,
             String protectionContainerName, String replicationProtectionClusterName) {
-        Response<BinaryData> response = repairReplicationWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicationProtectionClusterName);
-        return this.client.<ReplicationProtectionClusterInner, ReplicationProtectionClusterInner>getLroResult(response,
-            ReplicationProtectionClusterInner.class, ReplicationProtectionClusterInner.class, Context.NONE);
+        return beginRepairReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, Context.NONE);
     }
 
-    /**
-     * Resynchronize or repair replication of protection cluster.
-     * 
-     * The operation to repair replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectionClusterInner>, ReplicationProtectionClusterInner>
         beginRepairReplication(String resourceGroupName, String resourceName, String fabricName,
@@ -2141,49 +1644,20 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             replicationProtectionClusterName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resynchronize or repair replication of protection cluster.
-     * 
-     * The operation to repair replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionClusterInner repairReplication(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName) {
-        return beginRepairReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName).getFinalResult();
+        return repairReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, Context.NONE);
     }
 
-    /**
-     * Resynchronize or repair replication of protection cluster.
-     * 
-     * The operation to repair replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionClusterInner repairReplication(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName, Context context) {
-        return beginRepairReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginRepairReplication(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicationProtectionClusterName, context));
     }
 
     /**
@@ -2266,48 +1740,8 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
     private Response<BinaryData> testFailoverWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName,
         ClusterTestFailoverInput failoverInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicationProtectionClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicationProtectionClusterName is required and cannot be null."));
-        }
-        if (failoverInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter failoverInput is required and cannot be null."));
-        } else {
-            failoverInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.testFailoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, contentType, accept, failoverInput, Context.NONE);
+        return testFailoverWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, failoverInput, Context.NONE);
     }
 
     /**
@@ -2403,50 +1837,17 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             ReplicationProtectionClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Execute test failover for cluster.
-     * 
-     * Operation to initiate a failover of the replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param failoverInput Cluster test failover input body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectionClusterInner>, ReplicationProtectionClusterInner>
         beginTestFailover(String resourceGroupName, String resourceName, String fabricName,
             String protectionContainerName, String replicationProtectionClusterName,
             ClusterTestFailoverInput failoverInput) {
-        Response<BinaryData> response = testFailoverWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicationProtectionClusterName, failoverInput);
-        return this.client.<ReplicationProtectionClusterInner, ReplicationProtectionClusterInner>getLroResult(response,
-            ReplicationProtectionClusterInner.class, ReplicationProtectionClusterInner.class, Context.NONE);
+        return beginTestFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, failoverInput, Context.NONE);
     }
 
-    /**
-     * Execute test failover for cluster.
-     * 
-     * Operation to initiate a failover of the replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param failoverInput Cluster test failover input body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectionClusterInner>, ReplicationProtectionClusterInner>
         beginTestFailover(String resourceGroupName, String resourceName, String fabricName,
@@ -2482,53 +1883,22 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             replicationProtectionClusterName, failoverInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute test failover for cluster.
-     * 
-     * Operation to initiate a failover of the replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param failoverInput Cluster test failover input body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionClusterInner testFailover(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName,
         ClusterTestFailoverInput failoverInput) {
-        return beginTestFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, failoverInput).getFinalResult();
+        return testFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, failoverInput, Context.NONE);
     }
 
-    /**
-     * Execute test failover for cluster.
-     * 
-     * Operation to initiate a failover of the replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param failoverInput Cluster test failover input body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionClusterInner testFailover(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName,
         ClusterTestFailoverInput failoverInput, Context context) {
-        return beginTestFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, failoverInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginTestFailover(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicationProtectionClusterName, failoverInput, context));
     }
 
     /**
@@ -2611,48 +1981,8 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
     private Response<BinaryData> testFailoverCleanupWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName,
         ClusterTestFailoverCleanupInput cleanupInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicationProtectionClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicationProtectionClusterName is required and cannot be null."));
-        }
-        if (cleanupInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cleanupInput is required and cannot be null."));
-        } else {
-            cleanupInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.testFailoverCleanupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, contentType, accept, cleanupInput, Context.NONE);
+        return testFailoverCleanupWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, cleanupInput, Context.NONE);
     }
 
     /**
@@ -2748,50 +2078,17 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             ReplicationProtectionClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Execute test failover cleanup for cluster.
-     * 
-     * Operation to clean up the test failover of a replication protected cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param cleanupInput Test failover cleanup input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectionClusterInner>, ReplicationProtectionClusterInner>
         beginTestFailoverCleanup(String resourceGroupName, String resourceName, String fabricName,
             String protectionContainerName, String replicationProtectionClusterName,
             ClusterTestFailoverCleanupInput cleanupInput) {
-        Response<BinaryData> response = testFailoverCleanupWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicationProtectionClusterName, cleanupInput);
-        return this.client.<ReplicationProtectionClusterInner, ReplicationProtectionClusterInner>getLroResult(response,
-            ReplicationProtectionClusterInner.class, ReplicationProtectionClusterInner.class, Context.NONE);
+        return beginTestFailoverCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, cleanupInput, Context.NONE);
     }
 
-    /**
-     * Execute test failover cleanup for cluster.
-     * 
-     * Operation to clean up the test failover of a replication protected cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param cleanupInput Test failover cleanup input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectionClusterInner>, ReplicationProtectionClusterInner>
         beginTestFailoverCleanup(String resourceGroupName, String resourceName, String fabricName,
@@ -2827,53 +2124,22 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             replicationProtectionClusterName, cleanupInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute test failover cleanup for cluster.
-     * 
-     * Operation to clean up the test failover of a replication protected cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param cleanupInput Test failover cleanup input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionClusterInner testFailoverCleanup(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName,
         ClusterTestFailoverCleanupInput cleanupInput) {
-        return beginTestFailoverCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, cleanupInput).getFinalResult();
+        return testFailoverCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, cleanupInput, Context.NONE);
     }
 
-    /**
-     * Execute test failover cleanup for cluster.
-     * 
-     * Operation to clean up the test failover of a replication protected cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param cleanupInput Test failover cleanup input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionClusterInner testFailoverCleanup(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName,
         ClusterTestFailoverCleanupInput cleanupInput, Context context) {
-        return beginTestFailoverCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, cleanupInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginTestFailoverCleanup(resourceGroupName, resourceName,
+            fabricName, protectionContainerName, replicationProtectionClusterName, cleanupInput, context));
     }
 
     /**
@@ -2956,48 +2222,8 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
     private Response<BinaryData> unplannedFailoverWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName,
         ClusterUnplannedFailoverInput failoverInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicationProtectionClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicationProtectionClusterName is required and cannot be null."));
-        }
-        if (failoverInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter failoverInput is required and cannot be null."));
-        } else {
-            failoverInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.unplannedFailoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, contentType, accept, failoverInput, Context.NONE);
+        return unplannedFailoverWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, failoverInput, Context.NONE);
     }
 
     /**
@@ -3093,50 +2319,17 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             ReplicationProtectionClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Execute unplanned cluster failover.
-     * 
-     * Operation to initiate a failover of the replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param failoverInput Failover input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectionClusterInner>, ReplicationProtectionClusterInner>
         beginUnplannedFailover(String resourceGroupName, String resourceName, String fabricName,
             String protectionContainerName, String replicationProtectionClusterName,
             ClusterUnplannedFailoverInput failoverInput) {
-        Response<BinaryData> response = unplannedFailoverWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicationProtectionClusterName, failoverInput);
-        return this.client.<ReplicationProtectionClusterInner, ReplicationProtectionClusterInner>getLroResult(response,
-            ReplicationProtectionClusterInner.class, ReplicationProtectionClusterInner.class, Context.NONE);
+        return beginUnplannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, failoverInput, Context.NONE);
     }
 
-    /**
-     * Execute unplanned cluster failover.
-     * 
-     * Operation to initiate a failover of the replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param failoverInput Failover input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationProtectionClusterInner>, ReplicationProtectionClusterInner>
         beginUnplannedFailover(String resourceGroupName, String resourceName, String fabricName,
@@ -3172,53 +2365,22 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             replicationProtectionClusterName, failoverInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute unplanned cluster failover.
-     * 
-     * Operation to initiate a failover of the replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param failoverInput Failover input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionClusterInner unplannedFailover(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName,
         ClusterUnplannedFailoverInput failoverInput) {
-        return beginUnplannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, failoverInput).getFinalResult();
+        return unplannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicationProtectionClusterName, failoverInput, Context.NONE);
     }
 
-    /**
-     * Execute unplanned cluster failover.
-     * 
-     * Operation to initiate a failover of the replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param failoverInput Failover input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionClusterInner unplannedFailover(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName,
         ClusterUnplannedFailoverInput failoverInput, Context context) {
-        return beginUnplannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            replicationProtectionClusterName, failoverInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUnplannedFailover(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicationProtectionClusterName, failoverInput, context));
     }
 
     /**
@@ -3303,23 +2465,7 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Tracks the Replication protection cluster async operation.
-     * 
-     * Track the results of an asynchronous operation on the replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param jobId job id to track.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protection Cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicationProtectionClusterInner> getOperationResultsWithResponse(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String replicationProtectionClusterName,
@@ -3364,22 +2510,7 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             replicationProtectionClusterName, jobId, accept, context);
     }
 
-    /**
-     * Tracks the Replication protection cluster async operation.
-     * 
-     * Track the results of an asynchronous operation on the replication protection cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicationProtectionClusterName Replication protection cluster name.
-     * @param jobId job id to track.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication protection Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationProtectionClusterInner getOperationResults(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicationProtectionClusterName, String jobId) {
@@ -3484,38 +2615,8 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationProtectionClusterInner> listByReplicationProtectionContainersSinglePage(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ReplicationProtectionClusterCollection> res = service.listByReplicationProtectionContainersSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            resourceName, fabricName, protectionContainerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationProtectionContainersSinglePage(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, Context.NONE);
     }
 
     /**
@@ -3573,49 +2674,15 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of Replication protection clusters in fabric, container.
-     * 
-     * Gets the list of ASR replication protected clusters in the protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Replication protection clusters in fabric, container.
-     * 
-     * Gets the list of ASR replication protected clusters in the protection container as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationProtectionClusterInner> listByReplicationProtectionContainers(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName) {
-        return new PagedIterable<>(() -> listByReplicationProtectionContainersSinglePage(resourceGroupName,
-            resourceName, fabricName, protectionContainerName),
-            nextLink -> listByReplicationProtectionContainersNextSinglePage(nextLink));
+        return listByReplicationProtectionContainers(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, Context.NONE);
     }
 
-    /**
-     * Gets the list of Replication protection clusters in fabric, container.
-     * 
-     * Gets the list of ASR replication protected clusters in the protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Replication protection clusters in fabric, container.
-     * 
-     * Gets the list of ASR replication protected clusters in the protection container as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationProtectionClusterInner> listByReplicationProtectionContainers(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -3734,30 +2801,7 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationProtectionClusterInner> listSinglePage(String resourceGroupName,
         String resourceName, String skipToken, String filter) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ReplicationProtectionClusterCollection> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, resourceName, skipToken, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, skipToken, filter, Context.NONE);
     }
 
     /**
@@ -3806,47 +2850,15 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of Replication protection clusters in vault.
-     * 
-     * Gets the list of ASR replication protected clusters in the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Replication protection clusters in vault.
-     * 
-     * Gets the list of ASR replication protected clusters in the vault as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationProtectionClusterInner> list(String resourceGroupName, String resourceName) {
         final String skipToken = null;
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, skipToken, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, skipToken, filter, Context.NONE);
     }
 
-    /**
-     * Gets the list of Replication protection clusters in vault.
-     * 
-     * Gets the list of ASR replication protected clusters in the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param skipToken The pagination token. Possible values: "FabricId" or "FabricId_CloudId" or null.
-     * @param filter OData filter options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Replication protection clusters in vault.
-     * 
-     * Gets the list of ASR replication protected clusters in the vault as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationProtectionClusterInner> list(String resourceGroupName, String resourceName,
         String skipToken, String filter, Context context) {
@@ -3903,20 +2915,7 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationProtectionClusterInner>
         listByReplicationProtectionContainersNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ReplicationProtectionClusterCollection> res = service
-            .listByReplicationProtectionContainersNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationProtectionContainersNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -3997,20 +2996,7 @@ public final class ReplicationProtectionClustersClientImpl implements Replicatio
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationProtectionClusterInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ReplicationProtectionClusterCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

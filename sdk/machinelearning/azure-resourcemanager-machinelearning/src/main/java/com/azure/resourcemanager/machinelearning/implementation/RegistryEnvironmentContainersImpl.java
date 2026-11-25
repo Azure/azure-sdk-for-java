@@ -47,13 +47,7 @@ public final class RegistryEnvironmentContainersImpl implements RegistryEnvironm
 
     public EnvironmentContainer createOrUpdate(String resourceGroupName, String registryName, String environmentName,
         EnvironmentContainerInner body) {
-        EnvironmentContainerInner inner
-            = this.serviceClient().createOrUpdate(resourceGroupName, registryName, environmentName, body);
-        if (inner != null) {
-            return new EnvironmentContainerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, registryName, environmentName, body, Context.NONE);
     }
 
     public EnvironmentContainer createOrUpdate(String resourceGroupName, String registryName, String environmentName,
@@ -68,7 +62,7 @@ public final class RegistryEnvironmentContainersImpl implements RegistryEnvironm
     }
 
     public void delete(String resourceGroupName, String registryName, String environmentName) {
-        this.serviceClient().delete(resourceGroupName, registryName, environmentName);
+        this.delete(resourceGroupName, registryName, environmentName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String registryName, String environmentName, Context context) {

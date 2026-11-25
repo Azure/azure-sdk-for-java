@@ -60,10 +60,7 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
     }
 
     public Schedule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchedules()
-            .createOrUpdate(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Schedule create(Context context) {
@@ -84,10 +81,7 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
     }
 
     public Schedule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchedules()
-            .createOrUpdate(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Schedule apply(Context context) {
@@ -113,11 +107,7 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
     }
 
     public Schedule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchedules()
-            .getWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Schedule refresh(Context context) {

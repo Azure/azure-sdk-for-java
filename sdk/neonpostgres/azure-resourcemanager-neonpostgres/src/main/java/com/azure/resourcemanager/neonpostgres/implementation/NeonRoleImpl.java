@@ -67,11 +67,7 @@ public final class NeonRoleImpl implements NeonRole, NeonRole.Definition, NeonRo
     }
 
     public NeonRole create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNeonRoles()
-            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonRoleName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NeonRole create(Context context) {
@@ -93,11 +89,7 @@ public final class NeonRoleImpl implements NeonRole, NeonRole.Definition, NeonRo
     }
 
     public NeonRole apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNeonRoles()
-            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonRoleName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NeonRole apply(Context context) {

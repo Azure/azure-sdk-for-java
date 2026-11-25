@@ -114,18 +114,7 @@ public final class SecretsClientImpl implements SecretsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets an existing Secret within a profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing Secret within a profile along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretInner>> getWithResponseAsync(String resourceGroupName, String profileName,
         String secretName) {
@@ -194,74 +183,27 @@ public final class SecretsClientImpl implements SecretsClient {
             resourceGroupName, profileName, secretName, accept, context);
     }
 
-    /**
-     * Gets an existing Secret within a profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing Secret within a profile on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretInner> getAsync(String resourceGroupName, String profileName, String secretName) {
         return getWithResponseAsync(resourceGroupName, profileName, secretName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an existing Secret within a profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing Secret within a profile along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretInner> getWithResponse(String resourceGroupName, String profileName, String secretName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, secretName, context).block();
     }
 
-    /**
-     * Gets an existing Secret within a profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing Secret within a profile.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretInner get(String resourceGroupName, String profileName, String secretName) {
         return getWithResponse(resourceGroupName, profileName, secretName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a new Secret within the specified profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @param secret The Secret properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Secret name mapping to the any Secret or secret related information along with {@link Response}
-     * on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
         String secretName, SecretInner secret) {
@@ -345,20 +287,7 @@ public final class SecretsClientImpl implements SecretsClient {
             resourceGroupName, profileName, secretName, contentType, accept, secret, context);
     }
 
-    /**
-     * Creates a new Secret within the specified profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @param secret The Secret properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of friendly Secret name mapping to the any Secret or secret related
-     * information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SecretInner>, SecretInner> beginCreateAsync(String resourceGroupName,
         String profileName, String secretName, SecretInner secret) {
@@ -393,61 +322,21 @@ public final class SecretsClientImpl implements SecretsClient {
             SecretInner.class, SecretInner.class, context);
     }
 
-    /**
-     * Creates a new Secret within the specified profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @param secret The Secret properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly Secret name mapping to the any Secret or secret related
-     * information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecretInner>, SecretInner> beginCreate(String resourceGroupName, String profileName,
         String secretName, SecretInner secret) {
         return this.beginCreateAsync(resourceGroupName, profileName, secretName, secret).getSyncPoller();
     }
 
-    /**
-     * Creates a new Secret within the specified profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @param secret The Secret properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly Secret name mapping to the any Secret or secret related
-     * information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecretInner>, SecretInner> beginCreate(String resourceGroupName, String profileName,
         String secretName, SecretInner secret, Context context) {
         return this.beginCreateAsync(resourceGroupName, profileName, secretName, secret, context).getSyncPoller();
     }
 
-    /**
-     * Creates a new Secret within the specified profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @param secret The Secret properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Secret name mapping to the any Secret or secret related information on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretInner> createAsync(String resourceGroupName, String profileName, String secretName,
         SecretInner secret) {
@@ -477,56 +366,20 @@ public final class SecretsClientImpl implements SecretsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new Secret within the specified profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @param secret The Secret properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Secret name mapping to the any Secret or secret related information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretInner create(String resourceGroupName, String profileName, String secretName, SecretInner secret) {
         return createAsync(resourceGroupName, profileName, secretName, secret).block();
     }
 
-    /**
-     * Creates a new Secret within the specified profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @param secret The Secret properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Secret name mapping to the any Secret or secret related information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretInner create(String resourceGroupName, String profileName, String secretName, SecretInner secret,
         Context context) {
         return createAsync(resourceGroupName, profileName, secretName, secret, context).block();
     }
 
-    /**
-     * Deletes an existing Secret within profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
         String secretName) {
@@ -593,18 +446,7 @@ public final class SecretsClientImpl implements SecretsClient {
             resourceGroupName, profileName, secretName, context);
     }
 
-    /**
-     * Deletes an existing Secret within profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
         String secretName) {
@@ -636,55 +478,21 @@ public final class SecretsClientImpl implements SecretsClient {
             context);
     }
 
-    /**
-     * Deletes an existing Secret within profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
         String secretName) {
         return this.beginDeleteAsync(resourceGroupName, profileName, secretName).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Secret within profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
         String secretName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, profileName, secretName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Secret within profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String profileName, String secretName) {
         return beginDeleteAsync(resourceGroupName, profileName, secretName).last()
@@ -710,34 +518,13 @@ public final class SecretsClientImpl implements SecretsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing Secret within profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String profileName, String secretName) {
         deleteAsync(resourceGroupName, profileName, secretName).block();
     }
 
-    /**
-     * Deletes an existing Secret within profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param secretName Name of the Secret under the profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String profileName, String secretName, Context context) {
         deleteAsync(resourceGroupName, profileName, secretName, context).block();
@@ -822,17 +609,7 @@ public final class SecretsClientImpl implements SecretsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists existing AzureFrontDoor secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Secret list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretInner> listByProfileAsync(String resourceGroupName, String profileName) {
         return new PagedFlux<>(() -> listByProfileSinglePageAsync(resourceGroupName, profileName),
@@ -857,34 +634,13 @@ public final class SecretsClientImpl implements SecretsClient {
             nextLink -> listByProfileNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists existing AzureFrontDoor secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Secret list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretInner> listByProfile(String resourceGroupName, String profileName) {
         return new PagedIterable<>(listByProfileAsync(resourceGroupName, profileName));
     }
 
-    /**
-     * Lists existing AzureFrontDoor secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     * unique within the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Secret list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretInner> listByProfile(String resourceGroupName, String profileName, Context context) {
         return new PagedIterable<>(listByProfileAsync(resourceGroupName, profileName, context));

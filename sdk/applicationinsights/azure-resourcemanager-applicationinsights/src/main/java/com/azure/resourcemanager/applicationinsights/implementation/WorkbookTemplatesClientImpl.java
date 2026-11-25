@@ -216,17 +216,7 @@ public final class WorkbookTemplatesClientImpl implements WorkbookTemplatesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a single workbook template by its resourceName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single workbook template by its resourceName along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkbookTemplateInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
         Context context) {
@@ -236,16 +226,7 @@ public final class WorkbookTemplatesClientImpl implements WorkbookTemplatesClien
             resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Get a single workbook template by its resourceName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single workbook template by its resourceName.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkbookTemplateInner getByResourceGroup(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
@@ -294,18 +275,7 @@ public final class WorkbookTemplatesClientImpl implements WorkbookTemplatesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a new workbook template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param workbookTemplateProperties Properties that need to be specified to create a new workbook.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights workbook template definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkbookTemplateInner> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
         WorkbookTemplateInner workbookTemplateProperties, Context context) {
@@ -316,17 +286,7 @@ public final class WorkbookTemplatesClientImpl implements WorkbookTemplatesClien
             resourceGroupName, resourceName, contentType, accept, workbookTemplateProperties, context);
     }
 
-    /**
-     * Create a new workbook template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param workbookTemplateProperties Properties that need to be specified to create a new workbook.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights workbook template definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkbookTemplateInner createOrUpdate(String resourceGroupName, String resourceName,
         WorkbookTemplateInner workbookTemplateProperties) {
@@ -375,18 +335,7 @@ public final class WorkbookTemplatesClientImpl implements WorkbookTemplatesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a workbook template that has already been added.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param workbookTemplateUpdateParameters Properties that need to be specified to patch a workbook template.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights workbook template definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkbookTemplateInner> updateWithResponse(String resourceGroupName, String resourceName,
         WorkbookTemplateUpdateParameters workbookTemplateUpdateParameters, Context context) {
@@ -396,16 +345,7 @@ public final class WorkbookTemplatesClientImpl implements WorkbookTemplatesClien
             resourceGroupName, resourceName, accept, workbookTemplateUpdateParameters, context);
     }
 
-    /**
-     * Updates a workbook template that has already been added.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights workbook template definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkbookTemplateInner update(String resourceGroupName, String resourceName) {
         final WorkbookTemplateUpdateParameters workbookTemplateUpdateParameters = null;
@@ -447,17 +387,7 @@ public final class WorkbookTemplatesClientImpl implements WorkbookTemplatesClien
         return deleteWithResponseAsync(resourceGroupName, resourceName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a workbook template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context) {
         final String apiVersion = "2020-11-20";
@@ -465,15 +395,7 @@ public final class WorkbookTemplatesClientImpl implements WorkbookTemplatesClien
             resourceGroupName, resourceName, context);
     }
 
-    /**
-     * Delete a workbook template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName) {
         deleteWithResponse(resourceGroupName, resourceName, Context.NONE);
@@ -528,12 +450,7 @@ public final class WorkbookTemplatesClientImpl implements WorkbookTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkbookTemplateInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String apiVersion = "2020-11-20";
-        final String accept = "application/json";
-        Response<WorkbookTemplatesListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            apiVersion, this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -557,33 +474,13 @@ public final class WorkbookTemplatesClientImpl implements WorkbookTemplatesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all Workbook templates defined within a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Workbook templates defined within a specified resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkbookTemplateInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Get all Workbook templates defined within a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Workbook templates defined within a specified resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkbookTemplateInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -622,11 +519,7 @@ public final class WorkbookTemplatesClientImpl implements WorkbookTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkbookTemplateInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkbookTemplatesListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

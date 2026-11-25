@@ -282,11 +282,7 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OracleSubscriptionInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<OracleSubscriptionListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -307,27 +303,13 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List OracleSubscription resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OracleSubscription list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OracleSubscriptionInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List OracleSubscription resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OracleSubscription list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OracleSubscriptionInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -365,10 +347,7 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(OracleSubscriptionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resource, Context.NONE);
     }
 
     /**
@@ -407,33 +386,14 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
             this.client.getContext());
     }
 
-    /**
-     * Create a OracleSubscription.
-     * 
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of oracleSubscription resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OracleSubscriptionInner>, OracleSubscriptionInner>
         beginCreateOrUpdate(OracleSubscriptionInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resource);
-        return this.client.<OracleSubscriptionInner, OracleSubscriptionInner>getLroResult(response,
-            OracleSubscriptionInner.class, OracleSubscriptionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resource, Context.NONE);
     }
 
-    /**
-     * Create a OracleSubscription.
-     * 
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of oracleSubscription resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OracleSubscriptionInner>, OracleSubscriptionInner>
         beginCreateOrUpdate(OracleSubscriptionInner resource, Context context) {
@@ -456,33 +416,16 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
         return beginCreateOrUpdateAsync(resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a OracleSubscription.
-     * 
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oracleSubscription resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OracleSubscriptionInner createOrUpdate(OracleSubscriptionInner resource) {
-        return beginCreateOrUpdate(resource).getFinalResult();
+        return createOrUpdate(resource, Context.NONE);
     }
 
-    /**
-     * Create a OracleSubscription.
-     * 
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oracleSubscription resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OracleSubscriptionInner createOrUpdate(OracleSubscriptionInner resource, Context context) {
-        return beginCreateOrUpdate(resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resource, context));
     }
 
     /**
@@ -513,15 +456,7 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
         return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a OracleSubscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a OracleSubscription along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OracleSubscriptionInner> getWithResponse(Context context) {
         final String accept = "application/json";
@@ -529,13 +464,7 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
             accept, context);
     }
 
-    /**
-     * Get a OracleSubscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a OracleSubscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OracleSubscriptionInner get() {
         return getWithResponse(Context.NONE).getValue();
@@ -572,10 +501,7 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(OracleSubscriptionUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), contentType, accept, properties, Context.NONE);
+        return updateWithResponse(properties, Context.NONE);
     }
 
     /**
@@ -614,33 +540,14 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
             this.client.getContext());
     }
 
-    /**
-     * Update a OracleSubscription.
-     * 
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of oracleSubscription resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OracleSubscriptionInner>, OracleSubscriptionInner>
         beginUpdate(OracleSubscriptionUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(properties);
-        return this.client.<OracleSubscriptionInner, OracleSubscriptionInner>getLroResult(response,
-            OracleSubscriptionInner.class, OracleSubscriptionInner.class, Context.NONE);
+        return beginUpdate(properties, Context.NONE);
     }
 
-    /**
-     * Update a OracleSubscription.
-     * 
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of oracleSubscription resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OracleSubscriptionInner>, OracleSubscriptionInner>
         beginUpdate(OracleSubscriptionUpdate properties, Context context) {
@@ -663,33 +570,16 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
         return beginUpdateAsync(properties).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a OracleSubscription.
-     * 
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oracleSubscription resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OracleSubscriptionInner update(OracleSubscriptionUpdate properties) {
-        return beginUpdate(properties).getFinalResult();
+        return update(properties, Context.NONE);
     }
 
-    /**
-     * Update a OracleSubscription.
-     * 
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oracleSubscription resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OracleSubscriptionInner update(OracleSubscriptionUpdate properties, Context context) {
-        return beginUpdate(properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(properties, context));
     }
 
     /**
@@ -716,8 +606,7 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse() {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), Context.NONE);
+        return deleteWithResponse(Context.NONE);
     }
 
     /**
@@ -749,28 +638,13 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
             this.client.getContext());
     }
 
-    /**
-     * Delete a OracleSubscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete() {
-        Response<BinaryData> response = deleteWithResponse();
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(Context.NONE);
     }
 
-    /**
-     * Delete a OracleSubscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(Context context) {
         Response<BinaryData> response = deleteWithResponse(context);
@@ -789,28 +663,16 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
         return beginDeleteAsync().last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a OracleSubscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete() {
-        beginDelete().getFinalResult();
+        delete(Context.NONE);
     }
 
-    /**
-     * Delete a OracleSubscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(Context context) {
-        beginDelete(context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(context));
     }
 
     /**
@@ -838,9 +700,7 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> listCloudAccountDetailsWithResponse() {
-        final String accept = "application/json";
-        return service.listCloudAccountDetailsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
+        return listCloudAccountDetailsWithResponse(Context.NONE);
     }
 
     /**
@@ -875,29 +735,13 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
             this.client.getContext());
     }
 
-    /**
-     * List Cloud Account Details.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloud Account Details model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudAccountDetailsInner>, CloudAccountDetailsInner> beginListCloudAccountDetails() {
-        Response<BinaryData> response = listCloudAccountDetailsWithResponse();
-        return this.client.<CloudAccountDetailsInner, CloudAccountDetailsInner>getLroResult(response,
-            CloudAccountDetailsInner.class, CloudAccountDetailsInner.class, Context.NONE);
+        return beginListCloudAccountDetails(Context.NONE);
     }
 
-    /**
-     * List Cloud Account Details.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloud Account Details model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudAccountDetailsInner>, CloudAccountDetailsInner>
         beginListCloudAccountDetails(Context context) {
@@ -918,30 +762,16 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
         return beginListCloudAccountDetailsAsync().last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * List Cloud Account Details.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloud Account Details model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudAccountDetailsInner listCloudAccountDetails() {
-        return beginListCloudAccountDetails().getFinalResult();
+        return listCloudAccountDetails(Context.NONE);
     }
 
-    /**
-     * List Cloud Account Details.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloud Account Details model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudAccountDetailsInner listCloudAccountDetails(Context context) {
-        return beginListCloudAccountDetails(context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginListCloudAccountDetails(context));
     }
 
     /**
@@ -969,9 +799,7 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> listSaasSubscriptionDetailsWithResponse() {
-        final String accept = "application/json";
-        return service.listSaasSubscriptionDetailsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
+        return listSaasSubscriptionDetailsWithResponse(Context.NONE);
     }
 
     /**
@@ -1006,30 +834,14 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
             this.client.getContext());
     }
 
-    /**
-     * List Saas Subscription Details.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of saaS Subscription Details model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SaasSubscriptionDetailsInner>, SaasSubscriptionDetailsInner>
         beginListSaasSubscriptionDetails() {
-        Response<BinaryData> response = listSaasSubscriptionDetailsWithResponse();
-        return this.client.<SaasSubscriptionDetailsInner, SaasSubscriptionDetailsInner>getLroResult(response,
-            SaasSubscriptionDetailsInner.class, SaasSubscriptionDetailsInner.class, Context.NONE);
+        return beginListSaasSubscriptionDetails(Context.NONE);
     }
 
-    /**
-     * List Saas Subscription Details.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of saaS Subscription Details model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SaasSubscriptionDetailsInner>, SaasSubscriptionDetailsInner>
         beginListSaasSubscriptionDetails(Context context) {
@@ -1050,30 +862,16 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
         return beginListSaasSubscriptionDetailsAsync().last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * List Saas Subscription Details.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return saaS Subscription Details model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SaasSubscriptionDetailsInner listSaasSubscriptionDetails() {
-        return beginListSaasSubscriptionDetails().getFinalResult();
+        return listSaasSubscriptionDetails(Context.NONE);
     }
 
-    /**
-     * List Saas Subscription Details.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return saaS Subscription Details model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SaasSubscriptionDetailsInner listSaasSubscriptionDetails(Context context) {
-        return beginListSaasSubscriptionDetails(context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginListSaasSubscriptionDetails(context));
     }
 
     /**
@@ -1101,9 +899,7 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> listActivationLinksWithResponse() {
-        final String accept = "application/json";
-        return service.listActivationLinksSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
+        return listActivationLinksWithResponse(Context.NONE);
     }
 
     /**
@@ -1136,29 +932,13 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
             ActivationLinksInner.class, ActivationLinksInner.class, this.client.getContext());
     }
 
-    /**
-     * List Activation Links.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of activation Links model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ActivationLinksInner>, ActivationLinksInner> beginListActivationLinks() {
-        Response<BinaryData> response = listActivationLinksWithResponse();
-        return this.client.<ActivationLinksInner, ActivationLinksInner>getLroResult(response,
-            ActivationLinksInner.class, ActivationLinksInner.class, Context.NONE);
+        return beginListActivationLinks(Context.NONE);
     }
 
-    /**
-     * List Activation Links.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of activation Links model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ActivationLinksInner>, ActivationLinksInner>
         beginListActivationLinks(Context context) {
@@ -1179,30 +959,16 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
         return beginListActivationLinksAsync().last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * List Activation Links.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return activation Links model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActivationLinksInner listActivationLinks() {
-        return beginListActivationLinks().getFinalResult();
+        return listActivationLinks(Context.NONE);
     }
 
-    /**
-     * List Activation Links.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return activation Links model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActivationLinksInner listActivationLinks(Context context) {
-        return beginListActivationLinks(context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginListActivationLinks(context));
     }
 
     /**
@@ -1234,9 +1000,7 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> addAzureSubscriptionsWithResponse(AzureSubscriptions body) {
-        final String contentType = "application/json";
-        return service.addAzureSubscriptionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), contentType, body, Context.NONE);
+        return addAzureSubscriptionsWithResponse(body, Context.NONE);
     }
 
     /**
@@ -1272,31 +1036,13 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
             this.client.getContext());
     }
 
-    /**
-     * Add Azure Subscriptions.
-     * 
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAddAzureSubscriptions(AzureSubscriptions body) {
-        Response<BinaryData> response = addAzureSubscriptionsWithResponse(body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginAddAzureSubscriptions(body, Context.NONE);
     }
 
-    /**
-     * Add Azure Subscriptions.
-     * 
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAddAzureSubscriptions(AzureSubscriptions body, Context context) {
         Response<BinaryData> response = addAzureSubscriptionsWithResponse(body, context);
@@ -1317,31 +1063,16 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
         return beginAddAzureSubscriptionsAsync(body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Add Azure Subscriptions.
-     * 
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addAzureSubscriptions(AzureSubscriptions body) {
-        beginAddAzureSubscriptions(body).getFinalResult();
+        addAzureSubscriptions(body, Context.NONE);
     }
 
-    /**
-     * Add Azure Subscriptions.
-     * 
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addAzureSubscriptions(AzureSubscriptions body, Context context) {
-        beginAddAzureSubscriptions(body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginAddAzureSubscriptions(body, context));
     }
 
     /**
@@ -1376,11 +1107,7 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OracleSubscriptionInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OracleSubscriptionListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

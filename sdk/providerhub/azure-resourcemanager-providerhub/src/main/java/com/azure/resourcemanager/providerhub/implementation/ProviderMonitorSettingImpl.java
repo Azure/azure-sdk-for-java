@@ -89,10 +89,7 @@ public final class ProviderMonitorSettingImpl implements ProviderMonitorSetting,
     }
 
     public ProviderMonitorSetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProviderMonitorSettings()
-            .create(resourceGroupName, providerMonitorSettingName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProviderMonitorSetting create(Context context) {
@@ -109,11 +106,7 @@ public final class ProviderMonitorSettingImpl implements ProviderMonitorSetting,
     }
 
     public ProviderMonitorSetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProviderMonitorSettings()
-            .getByResourceGroupWithResponse(resourceGroupName, providerMonitorSettingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProviderMonitorSetting refresh(Context context) {

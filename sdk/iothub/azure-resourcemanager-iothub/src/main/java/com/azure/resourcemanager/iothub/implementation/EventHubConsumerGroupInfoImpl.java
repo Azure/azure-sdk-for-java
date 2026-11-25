@@ -93,12 +93,7 @@ public final class EventHubConsumerGroupInfoImpl
     }
 
     public EventHubConsumerGroupInfo create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIotHubResources()
-            .createEventHubConsumerGroupWithResponse(resourceGroupName, resourceName, eventHubEndpointName, name,
-                createConsumerGroupBody, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EventHubConsumerGroupInfo create(Context context) {
@@ -117,12 +112,7 @@ public final class EventHubConsumerGroupInfoImpl
     }
 
     public EventHubConsumerGroupInfo refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIotHubResources()
-            .getEventHubConsumerGroupWithResponse(resourceGroupName, resourceName, eventHubEndpointName, name,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EventHubConsumerGroupInfo refresh(Context context) {

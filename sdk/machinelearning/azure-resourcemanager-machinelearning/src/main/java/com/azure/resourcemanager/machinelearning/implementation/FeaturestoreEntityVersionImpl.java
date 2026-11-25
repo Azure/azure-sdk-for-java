@@ -65,10 +65,7 @@ public final class FeaturestoreEntityVersionImpl
     }
 
     public FeaturestoreEntityVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFeaturestoreEntityVersions()
-            .createOrUpdate(resourceGroupName, workspaceName, name, version, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FeaturestoreEntityVersion create(Context context) {
@@ -90,10 +87,7 @@ public final class FeaturestoreEntityVersionImpl
     }
 
     public FeaturestoreEntityVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFeaturestoreEntityVersions()
-            .createOrUpdate(resourceGroupName, workspaceName, name, version, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FeaturestoreEntityVersion apply(Context context) {
@@ -122,11 +116,7 @@ public final class FeaturestoreEntityVersionImpl
     }
 
     public FeaturestoreEntityVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFeaturestoreEntityVersions()
-            .getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FeaturestoreEntityVersion refresh(Context context) {

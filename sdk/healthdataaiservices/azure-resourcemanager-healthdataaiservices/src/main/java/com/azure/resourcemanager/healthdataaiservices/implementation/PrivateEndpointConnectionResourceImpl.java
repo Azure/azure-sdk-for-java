@@ -73,10 +73,7 @@ public final class PrivateEndpointConnectionResourceImpl
     }
 
     public PrivateEndpointConnectionResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnections()
-            .create(resourceGroupName, deidServiceName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PrivateEndpointConnectionResource create(Context context) {
@@ -94,11 +91,7 @@ public final class PrivateEndpointConnectionResourceImpl
     }
 
     public PrivateEndpointConnectionResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, deidServiceName, privateEndpointConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PrivateEndpointConnectionResource refresh(Context context) {

@@ -236,17 +236,7 @@ public final class DataCollectionRuleAssociationsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists associations for the specified data collection endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataCollectionRuleAssociationProxyOnlyResource list operation as paginated response
-     * with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataCollectionRuleAssociationProxyOnlyResourceInner>
         listByDataCollectionEndpointAsync(String resourceGroupName, String dataCollectionEndpointName) {
@@ -275,35 +265,14 @@ public final class DataCollectionRuleAssociationsClientImpl
             nextLink -> listByDataCollectionEndpointNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists associations for the specified data collection endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataCollectionRuleAssociationProxyOnlyResource list operation as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner>
         listByDataCollectionEndpoint(String resourceGroupName, String dataCollectionEndpointName) {
         return new PagedIterable<>(listByDataCollectionEndpointAsync(resourceGroupName, dataCollectionEndpointName));
     }
 
-    /**
-     * Lists associations for the specified data collection endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataCollectionRuleAssociationProxyOnlyResource list operation as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner>
         listByDataCollectionEndpoint(String resourceGroupName, String dataCollectionEndpointName, Context context) {
@@ -311,17 +280,7 @@ public final class DataCollectionRuleAssociationsClientImpl
             listByDataCollectionEndpointAsync(resourceGroupName, dataCollectionEndpointName, context));
     }
 
-    /**
-     * Returns the specified association.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataCollectionRuleAssociationProxyOnlyResourceInner>> getWithResponseAsync(String resourceUri,
         String associationName) {
@@ -376,66 +335,27 @@ public final class DataCollectionRuleAssociationsClientImpl
         return service.get(this.client.getEndpoint(), apiVersion, resourceUri, associationName, accept, context);
     }
 
-    /**
-     * Returns the specified association.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataCollectionRuleAssociationProxyOnlyResourceInner> getAsync(String resourceUri,
         String associationName) {
         return getWithResponseAsync(resourceUri, associationName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the specified association.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataCollectionRuleAssociationProxyOnlyResourceInner> getWithResponse(String resourceUri,
         String associationName, Context context) {
         return getWithResponseAsync(resourceUri, associationName, context).block();
     }
 
-    /**
-     * Returns the specified association.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataCollectionRuleAssociationProxyOnlyResourceInner get(String resourceUri, String associationName) {
         return getWithResponse(resourceUri, associationName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an association.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
-     * @param body The payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataCollectionRuleAssociationProxyOnlyResourceInner>> createWithResponseAsync(
         String resourceUri, String associationName, DataCollectionRuleAssociationProxyOnlyResourceInner body) {
@@ -499,16 +419,7 @@ public final class DataCollectionRuleAssociationsClientImpl
             context);
     }
 
-    /**
-     * Creates or updates an association.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataCollectionRuleAssociationProxyOnlyResourceInner> createAsync(String resourceUri,
         String associationName) {
@@ -517,50 +428,21 @@ public final class DataCollectionRuleAssociationsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates an association.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
-     * @param body The payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataCollectionRuleAssociationProxyOnlyResourceInner> createWithResponse(String resourceUri,
         String associationName, DataCollectionRuleAssociationProxyOnlyResourceInner body, Context context) {
         return createWithResponseAsync(resourceUri, associationName, body, context).block();
     }
 
-    /**
-     * Creates or updates an association.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataCollectionRuleAssociationProxyOnlyResourceInner create(String resourceUri, String associationName) {
         final DataCollectionRuleAssociationProxyOnlyResourceInner body = null;
         return createWithResponse(resourceUri, associationName, body, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes an association.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceUri, String associationName) {
         if (this.client.getEndpoint() == null) {
@@ -610,46 +492,19 @@ public final class DataCollectionRuleAssociationsClientImpl
         return service.delete(this.client.getEndpoint(), apiVersion, resourceUri, associationName, context);
     }
 
-    /**
-     * Deletes an association.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceUri, String associationName) {
         return deleteWithResponseAsync(resourceUri, associationName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes an association.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceUri, String associationName, Context context) {
         return deleteWithResponseAsync(resourceUri, associationName, context).block();
     }
 
-    /**
-     * Deletes an association.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, String associationName) {
         deleteWithResponse(resourceUri, associationName, Context.NONE);
@@ -715,16 +570,7 @@ public final class DataCollectionRuleAssociationsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists associations for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataCollectionRuleAssociationProxyOnlyResource list operation as paginated response
-     * with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataCollectionRuleAssociationProxyOnlyResourceInner> listByResourceAsync(String resourceUri) {
         return new PagedFlux<>(() -> listByResourceSinglePageAsync(resourceUri),
@@ -749,32 +595,13 @@ public final class DataCollectionRuleAssociationsClientImpl
             nextLink -> listByResourceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists associations for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataCollectionRuleAssociationProxyOnlyResource list operation as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByResource(String resourceUri) {
         return new PagedIterable<>(listByResourceAsync(resourceUri));
     }
 
-    /**
-     * Lists associations for the specified resource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataCollectionRuleAssociationProxyOnlyResource list operation as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByResource(String resourceUri,
         Context context) {
@@ -868,19 +695,7 @@ public final class DataCollectionRuleAssociationsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists associations for the specified data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @param skipToken (Optional) The continuation token for paginated responses.
-     * @param top (Optional) The max number of items to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataCollectionRuleAssociationProxyOnlyResource list operation as paginated response
-     * with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRuleAsync(String resourceGroupName,
         String dataCollectionRuleName, String skipToken, Integer top) {
@@ -889,17 +704,7 @@ public final class DataCollectionRuleAssociationsClientImpl
             nextLink -> listByRuleNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists associations for the specified data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataCollectionRuleAssociationProxyOnlyResource list operation as paginated response
-     * with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRuleAsync(String resourceGroupName,
         String dataCollectionRuleName) {
@@ -932,17 +737,7 @@ public final class DataCollectionRuleAssociationsClientImpl
             nextLink -> listByRuleNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists associations for the specified data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataCollectionRuleAssociationProxyOnlyResource list operation as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRule(String resourceGroupName,
         String dataCollectionRuleName) {
@@ -951,20 +746,7 @@ public final class DataCollectionRuleAssociationsClientImpl
         return new PagedIterable<>(listByRuleAsync(resourceGroupName, dataCollectionRuleName, skipToken, top));
     }
 
-    /**
-     * Lists associations for the specified data collection rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @param skipToken (Optional) The continuation token for paginated responses.
-     * @param top (Optional) The max number of items to return per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataCollectionRuleAssociationProxyOnlyResource list operation as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRule(String resourceGroupName,
         String dataCollectionRuleName, String skipToken, Integer top, Context context) {

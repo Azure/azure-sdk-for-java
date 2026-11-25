@@ -480,18 +480,7 @@ public final class FlowsClientImpl implements FlowsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return flow resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FlowInner> getWithResponse(String resourceGroupName, String connectionName, String flowName,
         Context context) {
@@ -500,17 +489,7 @@ public final class FlowsClientImpl implements FlowsClient {
             resourceGroupName, connectionName, flowName, accept, context);
     }
 
-    /**
-     * Gets flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return flow resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner get(String resourceGroupName, String connectionName, String flowName) {
         return getWithResponse(resourceGroupName, connectionName, flowName, Context.NONE).getValue();
@@ -555,11 +534,7 @@ public final class FlowsClientImpl implements FlowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String connectionName,
         String flowName, FlowInner flow) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectionName, flowName, contentType, accept, flow,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, connectionName, flowName, flow, Context.NONE);
     }
 
     /**
@@ -606,38 +581,14 @@ public final class FlowsClientImpl implements FlowsClient {
             FlowInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates the flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param flow Flow body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginCreateOrUpdate(String resourceGroupName,
         String connectionName, String flowName, FlowInner flow) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, connectionName, flowName, flow);
-        return this.client.<FlowInner, FlowInner>getLroResult(response, FlowInner.class, FlowInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, connectionName, flowName, flow, Context.NONE);
     }
 
-    /**
-     * Creates or updates the flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param flow Flow body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginCreateOrUpdate(String resourceGroupName,
         String connectionName, String flowName, FlowInner flow, Context context) {
@@ -665,40 +616,18 @@ public final class FlowsClientImpl implements FlowsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates the flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param flow Flow body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner createOrUpdate(String resourceGroupName, String connectionName, String flowName, FlowInner flow) {
-        return beginCreateOrUpdate(resourceGroupName, connectionName, flowName, flow).getFinalResult();
+        return createOrUpdate(resourceGroupName, connectionName, flowName, flow, Context.NONE);
     }
 
-    /**
-     * Creates or updates the flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param flow Flow body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner createOrUpdate(String resourceGroupName, String connectionName, String flowName, FlowInner flow,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, connectionName, flowName, flow, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, connectionName, flowName, flow, context));
     }
 
     /**
@@ -740,11 +669,7 @@ public final class FlowsClientImpl implements FlowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String connectionName, String flowName,
         FlowsPatch flow) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectionName, flowName, contentType, accept, flow,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, connectionName, flowName, flow, Context.NONE);
     }
 
     /**
@@ -791,38 +716,14 @@ public final class FlowsClientImpl implements FlowsClient {
             this.client.getContext());
     }
 
-    /**
-     * Updates the flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param flow Flow body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String connectionName,
         String flowName, FlowsPatch flow) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, connectionName, flowName, flow);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUpdate(resourceGroupName, connectionName, flowName, flow, Context.NONE);
     }
 
-    /**
-     * Updates the flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param flow Flow body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String connectionName,
         String flowName, FlowsPatch flow, Context context) {
@@ -848,38 +749,17 @@ public final class FlowsClientImpl implements FlowsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param flow Flow body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String connectionName, String flowName, FlowsPatch flow) {
-        beginUpdate(resourceGroupName, connectionName, flowName, flow).getFinalResult();
+        update(resourceGroupName, connectionName, flowName, flow, Context.NONE);
     }
 
-    /**
-     * Updates the flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param flow Flow body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String connectionName, String flowName, FlowsPatch flow,
         Context context) {
-        beginUpdate(resourceGroupName, connectionName, flowName, flow, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, connectionName, flowName, flow, context));
     }
 
     /**
@@ -915,8 +795,7 @@ public final class FlowsClientImpl implements FlowsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String connectionName, String flowName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectionName, flowName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, connectionName, flowName, Context.NONE);
     }
 
     /**
@@ -957,36 +836,14 @@ public final class FlowsClientImpl implements FlowsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectionName,
         String flowName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, connectionName, flowName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, connectionName, flowName, Context.NONE);
     }
 
-    /**
-     * Deletes the flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectionName,
         String flowName, Context context) {
@@ -1011,35 +868,16 @@ public final class FlowsClientImpl implements FlowsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String connectionName, String flowName) {
-        beginDelete(resourceGroupName, connectionName, flowName).getFinalResult();
+        delete(resourceGroupName, connectionName, flowName, Context.NONE);
     }
 
-    /**
-     * Deletes the flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String connectionName, String flowName, Context context) {
-        beginDelete(resourceGroupName, connectionName, flowName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, connectionName, flowName, context));
     }
 
     /**
@@ -1092,12 +930,7 @@ public final class FlowsClientImpl implements FlowsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FlowInner> listByConnectionSinglePage(String resourceGroupName, String connectionName) {
-        final String accept = "application/json";
-        Response<FlowListResult> res
-            = service.listByConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, connectionName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByConnectionSinglePage(resourceGroupName, connectionName, Context.NONE);
     }
 
     /**
@@ -1122,33 +955,13 @@ public final class FlowsClientImpl implements FlowsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets flows in a connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return flows in a connection as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FlowInner> listByConnection(String resourceGroupName, String connectionName) {
-        return new PagedIterable<>(() -> listByConnectionSinglePage(resourceGroupName, connectionName),
-            nextLink -> listByConnectionNextSinglePage(nextLink));
+        return listByConnection(resourceGroupName, connectionName, Context.NONE);
     }
 
-    /**
-     * Gets flows in a connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return flows in a connection as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FlowInner> listByConnection(String resourceGroupName, String connectionName, Context context) {
         return new PagedIterable<>(() -> listByConnectionSinglePage(resourceGroupName, connectionName, context),
@@ -1189,9 +1002,7 @@ public final class FlowsClientImpl implements FlowsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> disableWithResponse(String resourceGroupName, String connectionName, String flowName) {
-        final String accept = "application/json";
-        return service.disableSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectionName, flowName, accept, Context.NONE);
+        return disableWithResponse(resourceGroupName, connectionName, flowName, Context.NONE);
     }
 
     /**
@@ -1233,36 +1044,14 @@ public final class FlowsClientImpl implements FlowsClient {
             FlowInner.class, this.client.getContext());
     }
 
-    /**
-     * Disables the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginDisable(String resourceGroupName, String connectionName,
         String flowName) {
-        Response<BinaryData> response = disableWithResponse(resourceGroupName, connectionName, flowName);
-        return this.client.<FlowInner, FlowInner>getLroResult(response, FlowInner.class, FlowInner.class, Context.NONE);
+        return beginDisable(resourceGroupName, connectionName, flowName, Context.NONE);
     }
 
-    /**
-     * Disables the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginDisable(String resourceGroupName, String connectionName,
         String flowName, Context context) {
@@ -1287,37 +1076,16 @@ public final class FlowsClientImpl implements FlowsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Disables the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner disable(String resourceGroupName, String connectionName, String flowName) {
-        return beginDisable(resourceGroupName, connectionName, flowName).getFinalResult();
+        return disable(resourceGroupName, connectionName, flowName, Context.NONE);
     }
 
-    /**
-     * Disables the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner disable(String resourceGroupName, String connectionName, String flowName, Context context) {
-        return beginDisable(resourceGroupName, connectionName, flowName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginDisable(resourceGroupName, connectionName, flowName, context));
     }
 
     /**
@@ -1354,9 +1122,7 @@ public final class FlowsClientImpl implements FlowsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> enableWithResponse(String resourceGroupName, String connectionName, String flowName) {
-        final String accept = "application/json";
-        return service.enableSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectionName, flowName, accept, Context.NONE);
+        return enableWithResponse(resourceGroupName, connectionName, flowName, Context.NONE);
     }
 
     /**
@@ -1398,36 +1164,14 @@ public final class FlowsClientImpl implements FlowsClient {
             FlowInner.class, this.client.getContext());
     }
 
-    /**
-     * Enables the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginEnable(String resourceGroupName, String connectionName,
         String flowName) {
-        Response<BinaryData> response = enableWithResponse(resourceGroupName, connectionName, flowName);
-        return this.client.<FlowInner, FlowInner>getLroResult(response, FlowInner.class, FlowInner.class, Context.NONE);
+        return beginEnable(resourceGroupName, connectionName, flowName, Context.NONE);
     }
 
-    /**
-     * Enables the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginEnable(String resourceGroupName, String connectionName,
         String flowName, Context context) {
@@ -1452,37 +1196,16 @@ public final class FlowsClientImpl implements FlowsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enables the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner enable(String resourceGroupName, String connectionName, String flowName) {
-        return beginEnable(resourceGroupName, connectionName, flowName).getFinalResult();
+        return enable(resourceGroupName, connectionName, flowName, Context.NONE);
     }
 
-    /**
-     * Enables the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner enable(String resourceGroupName, String connectionName, String flowName, Context context) {
-        return beginEnable(resourceGroupName, connectionName, flowName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginEnable(resourceGroupName, connectionName, flowName, context));
     }
 
     /**
@@ -1520,9 +1243,7 @@ public final class FlowsClientImpl implements FlowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> generatePassphraseWithResponse(String resourceGroupName, String connectionName,
         String flowName) {
-        final String accept = "application/json";
-        return service.generatePassphraseSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectionName, flowName, accept, Context.NONE);
+        return generatePassphraseWithResponse(resourceGroupName, connectionName, flowName, Context.NONE);
     }
 
     /**
@@ -1565,36 +1286,14 @@ public final class FlowsClientImpl implements FlowsClient {
             FlowInner.class, this.client.getContext());
     }
 
-    /**
-     * Generate a compliant passphrase for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginGeneratePassphrase(String resourceGroupName,
         String connectionName, String flowName) {
-        Response<BinaryData> response = generatePassphraseWithResponse(resourceGroupName, connectionName, flowName);
-        return this.client.<FlowInner, FlowInner>getLroResult(response, FlowInner.class, FlowInner.class, Context.NONE);
+        return beginGeneratePassphrase(resourceGroupName, connectionName, flowName, Context.NONE);
     }
 
-    /**
-     * Generate a compliant passphrase for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginGeneratePassphrase(String resourceGroupName,
         String connectionName, String flowName, Context context) {
@@ -1620,38 +1319,18 @@ public final class FlowsClientImpl implements FlowsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Generate a compliant passphrase for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner generatePassphrase(String resourceGroupName, String connectionName, String flowName) {
-        return beginGeneratePassphrase(resourceGroupName, connectionName, flowName).getFinalResult();
+        return generatePassphrase(resourceGroupName, connectionName, flowName, Context.NONE);
     }
 
-    /**
-     * Generate a compliant passphrase for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner generatePassphrase(String resourceGroupName, String connectionName, String flowName,
         Context context) {
-        return beginGeneratePassphrase(resourceGroupName, connectionName, flowName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginGeneratePassphrase(resourceGroupName, connectionName, flowName, context));
     }
 
     /**
@@ -1695,18 +1374,7 @@ public final class FlowsClientImpl implements FlowsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the destination endpoint ports for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the destination endpoint ports for the specified flow along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetDestinationEndpointPortsResultInner> getDestinationEndpointPortsWithResponse(
         String resourceGroupName, String connectionName, String flowName, Context context) {
@@ -1715,17 +1383,7 @@ public final class FlowsClientImpl implements FlowsClient {
             this.client.getSubscriptionId(), resourceGroupName, connectionName, flowName, accept, context);
     }
 
-    /**
-     * Get the destination endpoint ports for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the destination endpoint ports for the specified flow.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetDestinationEndpointPortsResultInner getDestinationEndpointPorts(String resourceGroupName,
         String connectionName, String flowName) {
@@ -1774,18 +1432,7 @@ public final class FlowsClientImpl implements FlowsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the destination endpoints for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the destination endpoints for the specified flow along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetDestinationEndpointsResultInner> getDestinationEndpointsWithResponse(String resourceGroupName,
         String connectionName, String flowName, Context context) {
@@ -1794,17 +1441,7 @@ public final class FlowsClientImpl implements FlowsClient {
             this.client.getSubscriptionId(), resourceGroupName, connectionName, flowName, accept, context);
     }
 
-    /**
-     * Get the destination endpoints for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the destination endpoints for the specified flow.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetDestinationEndpointsResultInner getDestinationEndpoints(String resourceGroupName, String connectionName,
         String flowName) {
@@ -1852,18 +1489,7 @@ public final class FlowsClientImpl implements FlowsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the source addresses for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source addresses for the specified flow along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StreamSourceAddressesInner> getSourceAddressesWithResponse(String resourceGroupName,
         String connectionName, String flowName, Context context) {
@@ -1872,17 +1498,7 @@ public final class FlowsClientImpl implements FlowsClient {
             this.client.getSubscriptionId(), resourceGroupName, connectionName, flowName, accept, context);
     }
 
-    /**
-     * Get the source addresses for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source addresses for the specified flow.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StreamSourceAddressesInner getSourceAddresses(String resourceGroupName, String connectionName,
         String flowName) {
@@ -1930,18 +1546,7 @@ public final class FlowsClientImpl implements FlowsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the connection string for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection string for the specified flow along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetStreamConnectionStringResultInner> getStreamConnectionStringWithResponse(
         String resourceGroupName, String connectionName, String flowName, Context context) {
@@ -1950,17 +1555,7 @@ public final class FlowsClientImpl implements FlowsClient {
             this.client.getSubscriptionId(), resourceGroupName, connectionName, flowName, accept, context);
     }
 
-    /**
-     * Get the connection string for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection string for the specified flow.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetStreamConnectionStringResultInner getStreamConnectionString(String resourceGroupName,
         String connectionName, String flowName) {
@@ -2007,10 +1602,7 @@ public final class FlowsClientImpl implements FlowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> linkWithResponse(String resourceGroupName, String connectionName, String flowName,
         ResourceBody flow) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.linkSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, connectionName, flowName, contentType, accept, flow, Context.NONE);
+        return linkWithResponse(resourceGroupName, connectionName, flowName, flow, Context.NONE);
     }
 
     /**
@@ -2056,38 +1648,14 @@ public final class FlowsClientImpl implements FlowsClient {
             FlowInner.class, this.client.getContext());
     }
 
-    /**
-     * Links the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param flow Flow body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginLink(String resourceGroupName, String connectionName,
         String flowName, ResourceBody flow) {
-        Response<BinaryData> response = linkWithResponse(resourceGroupName, connectionName, flowName, flow);
-        return this.client.<FlowInner, FlowInner>getLroResult(response, FlowInner.class, FlowInner.class, Context.NONE);
+        return beginLink(resourceGroupName, connectionName, flowName, flow, Context.NONE);
     }
 
-    /**
-     * Links the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param flow Flow body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginLink(String resourceGroupName, String connectionName,
         String flowName, ResourceBody flow, Context context) {
@@ -2114,40 +1682,18 @@ public final class FlowsClientImpl implements FlowsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Links the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param flow Flow body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner link(String resourceGroupName, String connectionName, String flowName, ResourceBody flow) {
-        return beginLink(resourceGroupName, connectionName, flowName, flow).getFinalResult();
+        return link(resourceGroupName, connectionName, flowName, flow, Context.NONE);
     }
 
-    /**
-     * Links the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param flow Flow body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner link(String resourceGroupName, String connectionName, String flowName, ResourceBody flow,
         Context context) {
-        return beginLink(resourceGroupName, connectionName, flowName, flow, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginLink(resourceGroupName, connectionName, flowName, flow, context));
     }
 
     /**
@@ -2189,10 +1735,7 @@ public final class FlowsClientImpl implements FlowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> setDestinationEndpointPortsWithResponse(String resourceGroupName,
         String connectionName, String flowName, SetDestinationEndpointPorts streamDestinationEndpointPorts) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.setDestinationEndpointPortsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectionName, flowName, contentType, accept,
+        return setDestinationEndpointPortsWithResponse(resourceGroupName, connectionName, flowName,
             streamDestinationEndpointPorts, Context.NONE);
     }
 
@@ -2241,39 +1784,15 @@ public final class FlowsClientImpl implements FlowsClient {
             FlowInner.class, this.client.getContext());
     }
 
-    /**
-     * Set the destination endpoint ports for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param streamDestinationEndpointPorts The destination endpoint ports wanted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginSetDestinationEndpointPorts(String resourceGroupName,
         String connectionName, String flowName, SetDestinationEndpointPorts streamDestinationEndpointPorts) {
-        Response<BinaryData> response = setDestinationEndpointPortsWithResponse(resourceGroupName, connectionName,
-            flowName, streamDestinationEndpointPorts);
-        return this.client.<FlowInner, FlowInner>getLroResult(response, FlowInner.class, FlowInner.class, Context.NONE);
+        return beginSetDestinationEndpointPorts(resourceGroupName, connectionName, flowName,
+            streamDestinationEndpointPorts, Context.NONE);
     }
 
-    /**
-     * Set the destination endpoint ports for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param streamDestinationEndpointPorts The destination endpoint ports wanted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginSetDestinationEndpointPorts(String resourceGroupName,
         String connectionName, String flowName, SetDestinationEndpointPorts streamDestinationEndpointPorts,
@@ -2302,43 +1821,20 @@ public final class FlowsClientImpl implements FlowsClient {
             streamDestinationEndpointPorts).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Set the destination endpoint ports for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param streamDestinationEndpointPorts The destination endpoint ports wanted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner setDestinationEndpointPorts(String resourceGroupName, String connectionName, String flowName,
         SetDestinationEndpointPorts streamDestinationEndpointPorts) {
-        return beginSetDestinationEndpointPorts(resourceGroupName, connectionName, flowName,
-            streamDestinationEndpointPorts).getFinalResult();
+        return setDestinationEndpointPorts(resourceGroupName, connectionName, flowName, streamDestinationEndpointPorts,
+            Context.NONE);
     }
 
-    /**
-     * Set the destination endpoint ports for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param streamDestinationEndpointPorts The destination endpoint ports wanted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner setDestinationEndpointPorts(String resourceGroupName, String connectionName, String flowName,
         SetDestinationEndpointPorts streamDestinationEndpointPorts, Context context) {
-        return beginSetDestinationEndpointPorts(resourceGroupName, connectionName, flowName,
-            streamDestinationEndpointPorts, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginSetDestinationEndpointPorts(resourceGroupName, connectionName,
+            flowName, streamDestinationEndpointPorts, context));
     }
 
     /**
@@ -2380,10 +1876,7 @@ public final class FlowsClientImpl implements FlowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> setDestinationEndpointsWithResponse(String resourceGroupName, String connectionName,
         String flowName, SetDestinationEndpoints streamDestinationEndpoints) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.setDestinationEndpointsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectionName, flowName, contentType, accept,
+        return setDestinationEndpointsWithResponse(resourceGroupName, connectionName, flowName,
             streamDestinationEndpoints, Context.NONE);
     }
 
@@ -2431,39 +1924,15 @@ public final class FlowsClientImpl implements FlowsClient {
             FlowInner.class, this.client.getContext());
     }
 
-    /**
-     * Set the destination endpoints for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param streamDestinationEndpoints Destination endpoints wanted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginSetDestinationEndpoints(String resourceGroupName,
         String connectionName, String flowName, SetDestinationEndpoints streamDestinationEndpoints) {
-        Response<BinaryData> response = setDestinationEndpointsWithResponse(resourceGroupName, connectionName, flowName,
-            streamDestinationEndpoints);
-        return this.client.<FlowInner, FlowInner>getLroResult(response, FlowInner.class, FlowInner.class, Context.NONE);
+        return beginSetDestinationEndpoints(resourceGroupName, connectionName, flowName, streamDestinationEndpoints,
+            Context.NONE);
     }
 
-    /**
-     * Set the destination endpoints for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param streamDestinationEndpoints Destination endpoints wanted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginSetDestinationEndpoints(String resourceGroupName,
         String connectionName, String flowName, SetDestinationEndpoints streamDestinationEndpoints, Context context) {
@@ -2491,43 +1960,20 @@ public final class FlowsClientImpl implements FlowsClient {
             streamDestinationEndpoints).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Set the destination endpoints for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param streamDestinationEndpoints Destination endpoints wanted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner setDestinationEndpoints(String resourceGroupName, String connectionName, String flowName,
         SetDestinationEndpoints streamDestinationEndpoints) {
-        return beginSetDestinationEndpoints(resourceGroupName, connectionName, flowName, streamDestinationEndpoints)
-            .getFinalResult();
+        return setDestinationEndpoints(resourceGroupName, connectionName, flowName, streamDestinationEndpoints,
+            Context.NONE);
     }
 
-    /**
-     * Set the destination endpoints for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param streamDestinationEndpoints Destination endpoints wanted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner setDestinationEndpoints(String resourceGroupName, String connectionName, String flowName,
         SetDestinationEndpoints streamDestinationEndpoints, Context context) {
-        return beginSetDestinationEndpoints(resourceGroupName, connectionName, flowName, streamDestinationEndpoints,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginSetDestinationEndpoints(resourceGroupName, connectionName,
+            flowName, streamDestinationEndpoints, context));
     }
 
     /**
@@ -2569,11 +2015,7 @@ public final class FlowsClientImpl implements FlowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> setPassphraseWithResponse(String resourceGroupName, String connectionName,
         String flowName, SetStreamPassphrase passphrase) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.setPassphraseSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectionName, flowName, contentType, accept,
-            passphrase, Context.NONE);
+        return setPassphraseWithResponse(resourceGroupName, connectionName, flowName, passphrase, Context.NONE);
     }
 
     /**
@@ -2620,39 +2062,14 @@ public final class FlowsClientImpl implements FlowsClient {
             FlowInner.class, this.client.getContext());
     }
 
-    /**
-     * Sets the passphrase of the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param passphrase Passphrase to set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginSetPassphrase(String resourceGroupName,
         String connectionName, String flowName, SetStreamPassphrase passphrase) {
-        Response<BinaryData> response
-            = setPassphraseWithResponse(resourceGroupName, connectionName, flowName, passphrase);
-        return this.client.<FlowInner, FlowInner>getLroResult(response, FlowInner.class, FlowInner.class, Context.NONE);
+        return beginSetPassphrase(resourceGroupName, connectionName, flowName, passphrase, Context.NONE);
     }
 
-    /**
-     * Sets the passphrase of the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param passphrase Passphrase to set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginSetPassphrase(String resourceGroupName,
         String connectionName, String flowName, SetStreamPassphrase passphrase, Context context) {
@@ -2680,41 +2097,19 @@ public final class FlowsClientImpl implements FlowsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Sets the passphrase of the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param passphrase Passphrase to set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner setPassphrase(String resourceGroupName, String connectionName, String flowName,
         SetStreamPassphrase passphrase) {
-        return beginSetPassphrase(resourceGroupName, connectionName, flowName, passphrase).getFinalResult();
+        return setPassphrase(resourceGroupName, connectionName, flowName, passphrase, Context.NONE);
     }
 
-    /**
-     * Sets the passphrase of the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param passphrase Passphrase to set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner setPassphrase(String resourceGroupName, String connectionName, String flowName,
         SetStreamPassphrase passphrase, Context context) {
-        return beginSetPassphrase(resourceGroupName, connectionName, flowName, passphrase, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginSetPassphrase(resourceGroupName, connectionName, flowName, passphrase, context));
     }
 
     /**
@@ -2756,11 +2151,8 @@ public final class FlowsClientImpl implements FlowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> setSourceAddressesWithResponse(String resourceGroupName, String connectionName,
         String flowName, SetSourceAddresses sourceAddresses) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.setSourceAddressesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectionName, flowName, contentType, accept,
-            sourceAddresses, Context.NONE);
+        return setSourceAddressesWithResponse(resourceGroupName, connectionName, flowName, sourceAddresses,
+            Context.NONE);
     }
 
     /**
@@ -2807,39 +2199,14 @@ public final class FlowsClientImpl implements FlowsClient {
             FlowInner.class, this.client.getContext());
     }
 
-    /**
-     * Set the source addresses for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param sourceAddresses Source addresses wanted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginSetSourceAddresses(String resourceGroupName,
         String connectionName, String flowName, SetSourceAddresses sourceAddresses) {
-        Response<BinaryData> response
-            = setSourceAddressesWithResponse(resourceGroupName, connectionName, flowName, sourceAddresses);
-        return this.client.<FlowInner, FlowInner>getLroResult(response, FlowInner.class, FlowInner.class, Context.NONE);
+        return beginSetSourceAddresses(resourceGroupName, connectionName, flowName, sourceAddresses, Context.NONE);
     }
 
-    /**
-     * Set the source addresses for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param sourceAddresses Source addresses wanted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowInner>, FlowInner> beginSetSourceAddresses(String resourceGroupName,
         String connectionName, String flowName, SetSourceAddresses sourceAddresses, Context context) {
@@ -2867,42 +2234,19 @@ public final class FlowsClientImpl implements FlowsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Set the source addresses for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param sourceAddresses Source addresses wanted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner setSourceAddresses(String resourceGroupName, String connectionName, String flowName,
         SetSourceAddresses sourceAddresses) {
-        return beginSetSourceAddresses(resourceGroupName, connectionName, flowName, sourceAddresses).getFinalResult();
+        return setSourceAddresses(resourceGroupName, connectionName, flowName, sourceAddresses, Context.NONE);
     }
 
-    /**
-     * Set the source addresses for the specified flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectionName The name for the connection to perform the operation on.
-     * @param flowName The name for the flow to perform the operation on.
-     * @param sourceAddresses Source addresses wanted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowInner setSourceAddresses(String resourceGroupName, String connectionName, String flowName,
         SetSourceAddresses sourceAddresses, Context context) {
-        return beginSetSourceAddresses(resourceGroupName, connectionName, flowName, sourceAddresses, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginSetSourceAddresses(resourceGroupName, connectionName, flowName, sourceAddresses, context));
     }
 
     /**
@@ -2935,11 +2279,7 @@ public final class FlowsClientImpl implements FlowsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FlowInner> listByConnectionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FlowListResult> res
-            = service.listByConnectionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByConnectionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

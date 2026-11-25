@@ -248,22 +248,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the requested policy.
-     * 
-     * Gets the details of a replication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param policyName Replication policy name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the requested policy.
-     * 
-     * Gets the details of a replication policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyInner> getWithResponse(String resourceGroupName, String resourceName, String policyName,
         Context context) {
@@ -294,21 +279,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
             resourceGroupName, resourceName, policyName, accept, context);
     }
 
-    /**
-     * Gets the requested policy.
-     * 
-     * Gets the details of a replication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param policyName Replication policy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the requested policy.
-     * 
-     * Gets the details of a replication policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyInner get(String resourceGroupName, String resourceName, String policyName) {
         return getWithResponse(resourceGroupName, resourceName, policyName, Context.NONE).getValue();
@@ -380,38 +351,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String resourceName, String policyName,
         CreatePolicyInput input) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (policyName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
-        }
-        if (input == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter input is required and cannot be null."));
-        } else {
-            input.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, policyName, contentType, accept, input,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, resourceName, policyName, input, Context.NONE);
     }
 
     /**
@@ -489,43 +429,14 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
             PolicyInner.class, PolicyInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates the policy.
-     * 
-     * The operation to create a replication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param policyName Replication policy name.
-     * @param input Create policy input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of protection profile details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginCreate(String resourceGroupName, String resourceName,
         String policyName, CreatePolicyInput input) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, resourceName, policyName, input);
-        return this.client.<PolicyInner, PolicyInner>getLroResult(response, PolicyInner.class, PolicyInner.class,
-            Context.NONE);
+        return beginCreate(resourceGroupName, resourceName, policyName, input, Context.NONE);
     }
 
-    /**
-     * Creates the policy.
-     * 
-     * The operation to create a replication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param policyName Replication policy name.
-     * @param input Create policy input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of protection profile details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginCreate(String resourceGroupName, String resourceName,
         String policyName, CreatePolicyInput input, Context context) {
@@ -555,45 +466,19 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates the policy.
-     * 
-     * The operation to create a replication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param policyName Replication policy name.
-     * @param input Create policy input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return protection profile details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyInner create(String resourceGroupName, String resourceName, String policyName,
         CreatePolicyInput input) {
-        return beginCreate(resourceGroupName, resourceName, policyName, input).getFinalResult();
+        return create(resourceGroupName, resourceName, policyName, input, Context.NONE);
     }
 
-    /**
-     * Creates the policy.
-     * 
-     * The operation to create a replication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param policyName Replication policy name.
-     * @param input Create policy input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return protection profile details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyInner create(String resourceGroupName, String resourceName, String policyName, CreatePolicyInput input,
         Context context) {
-        return beginCreate(resourceGroupName, resourceName, policyName, input, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, resourceName, policyName, input, context));
     }
 
     /**
@@ -662,38 +547,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String resourceName, String policyName,
         UpdatePolicyInput input) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (policyName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
-        }
-        if (input == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter input is required and cannot be null."));
-        } else {
-            input.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, policyName, contentType, accept, input,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, resourceName, policyName, input, Context.NONE);
     }
 
     /**
@@ -771,43 +625,14 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
             PolicyInner.class, PolicyInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates the policy.
-     * 
-     * The operation to update a replication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param policyName Replication policy name.
-     * @param input Update Policy Input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of protection profile details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginUpdate(String resourceGroupName, String resourceName,
         String policyName, UpdatePolicyInput input) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, resourceName, policyName, input);
-        return this.client.<PolicyInner, PolicyInner>getLroResult(response, PolicyInner.class, PolicyInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, resourceName, policyName, input, Context.NONE);
     }
 
-    /**
-     * Updates the policy.
-     * 
-     * The operation to update a replication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param policyName Replication policy name.
-     * @param input Update Policy Input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of protection profile details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginUpdate(String resourceGroupName, String resourceName,
         String policyName, UpdatePolicyInput input, Context context) {
@@ -837,45 +662,19 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the policy.
-     * 
-     * The operation to update a replication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param policyName Replication policy name.
-     * @param input Update Policy Input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return protection profile details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyInner update(String resourceGroupName, String resourceName, String policyName,
         UpdatePolicyInput input) {
-        return beginUpdate(resourceGroupName, resourceName, policyName, input).getFinalResult();
+        return update(resourceGroupName, resourceName, policyName, input, Context.NONE);
     }
 
-    /**
-     * Updates the policy.
-     * 
-     * The operation to update a replication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param policyName Replication policy name.
-     * @param input Update Policy Input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return protection profile details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyInner update(String resourceGroupName, String resourceName, String policyName, UpdatePolicyInput input,
         Context context) {
-        return beginUpdate(resourceGroupName, resourceName, policyName, input, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, resourceName, policyName, input, context));
     }
 
     /**
@@ -933,30 +732,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceName, String policyName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (policyName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, policyName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, resourceName, policyName, Context.NONE);
     }
 
     /**
@@ -1023,40 +799,14 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
             this.client.getContext());
     }
 
-    /**
-     * Delete the policy.
-     * 
-     * The operation to delete a replication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param policyName Replication policy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String policyName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, resourceName, policyName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, policyName, Context.NONE);
     }
 
-    /**
-     * Delete the policy.
-     * 
-     * The operation to delete a replication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param policyName Replication policy name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String policyName, Context context) {
@@ -1083,39 +833,16 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the policy.
-     * 
-     * The operation to delete a replication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param policyName Replication policy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String policyName) {
-        beginDelete(resourceGroupName, resourceName, policyName).getFinalResult();
+        delete(resourceGroupName, resourceName, policyName, Context.NONE);
     }
 
-    /**
-     * Delete the policy.
-     * 
-     * The operation to delete a replication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param policyName Replication policy name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String policyName, Context context) {
-        beginDelete(resourceGroupName, resourceName, policyName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, resourceName, policyName, context));
     }
 
     /**
@@ -1195,29 +922,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyInner> listSinglePage(String resourceGroupName, String resourceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<PolicyCollection> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -1262,41 +967,13 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of replication policies.
-     * 
-     * Lists the replication policies for a vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of replication policies.
-     * 
-     * Lists the replication policies for a vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyInner> list(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Gets the list of replication policies.
-     * 
-     * Lists the replication policies for a vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of replication policies.
-     * 
-     * Lists the replication policies for a vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyInner> list(String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, context),
@@ -1348,20 +1025,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<PolicyCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

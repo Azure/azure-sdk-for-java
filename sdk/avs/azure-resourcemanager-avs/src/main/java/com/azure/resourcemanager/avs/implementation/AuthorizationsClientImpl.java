@@ -241,30 +241,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExpressRouteAuthorizationInner> listSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ExpressRouteAuthorizationList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, privateCloudName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -307,35 +284,13 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ExpressRouteAuthorization resources by PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExpressRouteAuthorization list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteAuthorizationInner> list(String resourceGroupName, String privateCloudName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, privateCloudName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * List ExpressRouteAuthorization resources by PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExpressRouteAuthorization list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteAuthorizationInner> list(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -401,18 +356,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ExpressRouteAuthorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ExpressRouteAuthorization along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteAuthorizationInner> getWithResponse(String resourceGroupName, String privateCloudName,
         String authorizationName, Context context) {
@@ -443,17 +387,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
             resourceGroupName, privateCloudName, authorizationName, accept, context);
     }
 
-    /**
-     * Get a ExpressRouteAuthorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ExpressRouteAuthorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteAuthorizationInner get(String resourceGroupName, String privateCloudName,
         String authorizationName) {
@@ -524,39 +458,8 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String privateCloudName,
         String authorizationName, ExpressRouteAuthorizationInner authorization) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (authorizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
-        }
-        if (authorization == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter authorization is required and cannot be null."));
-        } else {
-            authorization.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, authorizationName, contentType,
-            accept, authorization, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, privateCloudName, authorizationName, authorization,
+            Context.NONE);
     }
 
     /**
@@ -633,41 +536,15 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Create a ExpressRouteAuthorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
-     * @param authorization Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of expressRoute Circuit Authorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteAuthorizationInner>, ExpressRouteAuthorizationInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, String authorizationName,
         ExpressRouteAuthorizationInner authorization) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, privateCloudName, authorizationName, authorization);
-        return this.client.<ExpressRouteAuthorizationInner, ExpressRouteAuthorizationInner>getLroResult(response,
-            ExpressRouteAuthorizationInner.class, ExpressRouteAuthorizationInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, privateCloudName, authorizationName, authorization, Context.NONE);
     }
 
-    /**
-     * Create a ExpressRouteAuthorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
-     * @param authorization Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of expressRoute Circuit Authorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteAuthorizationInner>, ExpressRouteAuthorizationInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, String authorizationName,
@@ -697,43 +574,19 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a ExpressRouteAuthorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
-     * @param authorization Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute Circuit Authorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteAuthorizationInner createOrUpdate(String resourceGroupName, String privateCloudName,
         String authorizationName, ExpressRouteAuthorizationInner authorization) {
-        return beginCreateOrUpdate(resourceGroupName, privateCloudName, authorizationName, authorization)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, privateCloudName, authorizationName, authorization, Context.NONE);
     }
 
-    /**
-     * Create a ExpressRouteAuthorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
-     * @param authorization Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute Circuit Authorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteAuthorizationInner createOrUpdate(String resourceGroupName, String privateCloudName,
         String authorizationName, ExpressRouteAuthorizationInner authorization, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, privateCloudName, authorizationName, authorization, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, privateCloudName, authorizationName, authorization, context));
     }
 
     /**
@@ -790,30 +643,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String privateCloudName,
         String authorizationName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (authorizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, authorizationName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, privateCloudName, authorizationName, Context.NONE);
     }
 
     /**
@@ -877,36 +707,14 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a ExpressRouteAuthorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
         String authorizationName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, privateCloudName, authorizationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, privateCloudName, authorizationName, Context.NONE);
     }
 
-    /**
-     * Delete a ExpressRouteAuthorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
         String authorizationName, Context context) {
@@ -932,35 +740,17 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ExpressRouteAuthorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName, String authorizationName) {
-        beginDelete(resourceGroupName, privateCloudName, authorizationName).getFinalResult();
+        delete(resourceGroupName, privateCloudName, authorizationName, Context.NONE);
     }
 
-    /**
-     * Delete a ExpressRouteAuthorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName, String authorizationName, Context context) {
-        beginDelete(resourceGroupName, privateCloudName, authorizationName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, privateCloudName, authorizationName, context));
     }
 
     /**
@@ -1000,20 +790,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExpressRouteAuthorizationInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ExpressRouteAuthorizationList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

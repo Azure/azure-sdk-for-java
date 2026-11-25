@@ -66,67 +66,31 @@ public final class AssessmentsImpl implements Assessments {
     }
 
     public SecurityAssessmentResponse getById(String id) {
-        String resourceId = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId");
-        if (resourceId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
-        }
-        String assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName");
-        if (assessmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
-        }
         ExpandEnum localExpand = null;
-        return this.getWithResponse(resourceId, assessmentName, localExpand, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, localExpand, Context.NONE).getValue();
     }
 
     public Response<SecurityAssessmentResponse> getByIdWithResponse(String id, ExpandEnum expand, Context context) {
-        String resourceId = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId");
-        if (resourceId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
-        }
-        String assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName");
-        if (assessmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
-        }
+        String resourceId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId", "resourceId",
+            LOGGER);
+        String assessmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName", "assessments",
+            LOGGER);
         return this.getWithResponse(resourceId, assessmentName, expand, context);
     }
 
     public void deleteById(String id) {
-        String resourceId = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId");
-        if (resourceId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
-        }
-        String assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName");
-        if (assessmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(resourceId, assessmentName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceId = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId");
-        if (resourceId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
-        }
-        String assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName");
-        if (assessmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
-        }
+        String resourceId = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId", "resourceId",
+            LOGGER);
+        String assessmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName", "assessments",
+            LOGGER);
         return this.deleteByResourceGroupWithResponse(resourceId, assessmentName, context);
     }
 

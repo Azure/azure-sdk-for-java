@@ -192,18 +192,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a bookmark.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param bookmarkId Bookmark ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a bookmark along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BookmarkInner> getWithResponse(String resourceGroupName, String workspaceName, String bookmarkId,
         Context context) {
@@ -212,17 +201,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
             resourceGroupName, workspaceName, bookmarkId, accept, context);
     }
 
-    /**
-     * Gets a bookmark.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param bookmarkId Bookmark ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a bookmark.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BookmarkInner get(String resourceGroupName, String workspaceName, String bookmarkId) {
         return getWithResponse(resourceGroupName, workspaceName, bookmarkId, Context.NONE).getValue();
@@ -272,19 +251,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the bookmark.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param bookmarkId Bookmark ID.
-     * @param bookmark The bookmark.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a bookmark in Azure Security Insights along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BookmarkInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String bookmarkId, BookmarkInner bookmark, Context context) {
@@ -295,18 +262,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
             bookmark, context);
     }
 
-    /**
-     * Creates or updates the bookmark.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param bookmarkId Bookmark ID.
-     * @param bookmark The bookmark.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a bookmark in Azure Security Insights.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BookmarkInner createOrUpdate(String resourceGroupName, String workspaceName, String bookmarkId,
         BookmarkInner bookmark) {
@@ -350,18 +306,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, bookmarkId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete the bookmark.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param bookmarkId Bookmark ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String bookmarkId,
         Context context) {
@@ -369,16 +314,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, bookmarkId, context);
     }
 
-    /**
-     * Delete the bookmark.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param bookmarkId Bookmark ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String bookmarkId) {
         deleteWithResponse(resourceGroupName, workspaceName, bookmarkId, Context.NONE);
@@ -433,11 +369,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BookmarkInner> listSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<BookmarkList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -461,33 +393,13 @@ public final class BookmarksClientImpl implements BookmarksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all bookmarks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all bookmarks as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BookmarkInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Gets all bookmarks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all bookmarks as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BookmarkInner> list(String resourceGroupName, String workspaceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, context),
@@ -523,10 +435,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BookmarkInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BookmarkList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

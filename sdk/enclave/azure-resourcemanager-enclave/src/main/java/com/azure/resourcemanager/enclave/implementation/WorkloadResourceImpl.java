@@ -89,10 +89,7 @@ public final class WorkloadResourceImpl
     }
 
     public WorkloadResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloads()
-            .createOrUpdate(resourceGroupName, virtualEnclaveName, workloadName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkloadResource create(Context context) {
@@ -114,10 +111,7 @@ public final class WorkloadResourceImpl
     }
 
     public WorkloadResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloads()
-            .update(resourceGroupName, virtualEnclaveName, workloadName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkloadResource apply(Context context) {
@@ -143,11 +137,7 @@ public final class WorkloadResourceImpl
     }
 
     public WorkloadResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloads()
-            .getWithResponse(resourceGroupName, virtualEnclaveName, workloadName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkloadResource refresh(Context context) {

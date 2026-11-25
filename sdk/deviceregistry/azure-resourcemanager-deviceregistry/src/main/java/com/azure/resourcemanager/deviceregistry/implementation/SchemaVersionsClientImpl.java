@@ -214,19 +214,7 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a SchemaVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param schemaName Schema name parameter.
-     * @param schemaVersionName Schema version name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SchemaVersion along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaVersionInner> getWithResponse(String resourceGroupName, String schemaRegistryName,
         String schemaName, String schemaVersionName, Context context) {
@@ -235,18 +223,7 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
             resourceGroupName, schemaRegistryName, schemaName, schemaVersionName, accept, context);
     }
 
-    /**
-     * Get a SchemaVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param schemaName Schema name parameter.
-     * @param schemaVersionName Schema version name parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SchemaVersion.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaVersionInner get(String resourceGroupName, String schemaRegistryName, String schemaName,
         String schemaVersionName) {
@@ -299,20 +276,7 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
             resource).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a SchemaVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param schemaName Schema name parameter.
-     * @param schemaVersionName Schema version name parameter.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema version's definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaVersionInner> createOrReplaceWithResponse(String resourceGroupName, String schemaRegistryName,
         String schemaName, String schemaVersionName, SchemaVersionInner resource, Context context) {
@@ -323,19 +287,7 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
             contentType, accept, resource, context);
     }
 
-    /**
-     * Create a SchemaVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param schemaName Schema name parameter.
-     * @param schemaVersionName Schema version name parameter.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema version's definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaVersionInner createOrReplace(String resourceGroupName, String schemaRegistryName, String schemaName,
         String schemaVersionName, SchemaVersionInner resource) {
@@ -380,9 +332,7 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String schemaRegistryName,
         String schemaName, String schemaVersionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schemaRegistryName, schemaName, schemaVersionName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, schemaRegistryName, schemaName, schemaVersionName, Context.NONE);
     }
 
     /**
@@ -427,39 +377,14 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a SchemaVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param schemaName Schema name parameter.
-     * @param schemaVersionName Schema version name parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schemaRegistryName,
         String schemaName, String schemaVersionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, schemaRegistryName, schemaName, schemaVersionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, schemaRegistryName, schemaName, schemaVersionName, Context.NONE);
     }
 
-    /**
-     * Delete a SchemaVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param schemaName Schema name parameter.
-     * @param schemaVersionName Schema version name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schemaRegistryName,
         String schemaName, String schemaVersionName, Context context) {
@@ -487,39 +412,19 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a SchemaVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param schemaName Schema name parameter.
-     * @param schemaVersionName Schema version name parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schemaRegistryName, String schemaName,
         String schemaVersionName) {
-        beginDelete(resourceGroupName, schemaRegistryName, schemaName, schemaVersionName).getFinalResult();
+        delete(resourceGroupName, schemaRegistryName, schemaName, schemaVersionName, Context.NONE);
     }
 
-    /**
-     * Delete a SchemaVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param schemaName Schema name parameter.
-     * @param schemaVersionName Schema version name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schemaRegistryName, String schemaName, String schemaVersionName,
         Context context) {
-        beginDelete(resourceGroupName, schemaRegistryName, schemaName, schemaVersionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, schemaRegistryName, schemaName, schemaVersionName, context));
     }
 
     /**
@@ -578,12 +483,7 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaVersionInner> listBySchemaSinglePage(String resourceGroupName,
         String schemaRegistryName, String schemaName) {
-        final String accept = "application/json";
-        Response<SchemaVersionListResult> res = service.listBySchemaSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, schemaRegistryName,
-            schemaName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySchemaSinglePage(resourceGroupName, schemaRegistryName, schemaName, Context.NONE);
     }
 
     /**
@@ -609,36 +509,14 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List SchemaVersion resources by Schema.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param schemaName Schema name parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SchemaVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchemaVersionInner> listBySchema(String resourceGroupName, String schemaRegistryName,
         String schemaName) {
-        return new PagedIterable<>(() -> listBySchemaSinglePage(resourceGroupName, schemaRegistryName, schemaName),
-            nextLink -> listBySchemaNextSinglePage(nextLink));
+        return listBySchema(resourceGroupName, schemaRegistryName, schemaName, Context.NONE);
     }
 
-    /**
-     * List SchemaVersion resources by Schema.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param schemaName Schema name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SchemaVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchemaVersionInner> listBySchema(String resourceGroupName, String schemaRegistryName,
         String schemaName, Context context) {
@@ -678,11 +556,7 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaVersionInner> listBySchemaNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SchemaVersionListResult> res
-            = service.listBySchemaNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySchemaNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

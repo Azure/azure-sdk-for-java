@@ -291,19 +291,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the certificate from the provisioning service.
-     * 
-     * @param certificateName Name of the certificate to retrieve.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
-     * @param ifMatch ETag of the certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate from the provisioning service along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateResponseInner> getWithResponse(String certificateName, String resourceGroupName,
         String provisioningServiceName, String ifMatch, Context context) {
@@ -312,17 +300,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
             resourceGroupName, provisioningServiceName, certificateName, ifMatch, accept, context);
     }
 
-    /**
-     * Get the certificate from the provisioning service.
-     * 
-     * @param certificateName Name of the certificate to retrieve.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate from the provisioning service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateResponseInner get(String certificateName, String resourceGroupName,
         String provisioningServiceName) {
@@ -378,21 +356,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
             certificateDescription, ifMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Add new certificate or update an existing certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
-     * @param certificateName Name of the certificate to retrieve.
-     * @param certificateDescription The certificate body.
-     * @param ifMatch ETag of the certificate. This is required to update an existing certificate, and ignored while
-     * creating a brand new certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateResponseInner> createOrUpdateWithResponse(String resourceGroupName,
         String provisioningServiceName, String certificateName, CertificateResponseInner certificateDescription,
@@ -404,18 +368,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
             contentType, accept, certificateDescription, context);
     }
 
-    /**
-     * Add new certificate or update an existing certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
-     * @param certificateName Name of the certificate to retrieve.
-     * @param certificateDescription The certificate body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateResponseInner createOrUpdate(String resourceGroupName, String provisioningServiceName,
         String certificateName, CertificateResponseInner certificateDescription) {
@@ -486,27 +439,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
             certificateLastUpdated, certificateHasPrivateKey, certificateNonce).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the specified certificate associated with the Provisioning Service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ifMatch ETag of the certificate.
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
-     * @param certificateName Name of the certificate to retrieve.
-     * @param certificateNameParam This is optional, and it is the Common Name of the certificate.
-     * @param certificateRawBytes Raw data within the certificate.
-     * @param certificateIsVerified Indicates if certificate has been verified by owner of the private key.
-     * @param certificatePurpose A description that mentions the purpose of the certificate.
-     * @param certificateCreated Time the certificate is created.
-     * @param certificateLastUpdated Certificate last updated time.
-     * @param certificateHasPrivateKey Indicates if the certificate contains a private key.
-     * @param certificateNonce Random number generated to indicate Proof of Possession.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String ifMatch, String provisioningServiceName,
         String certificateName, String certificateNameParam, byte[] certificateRawBytes, Boolean certificateIsVerified,
@@ -519,17 +452,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
             certificateCreated, certificateLastUpdated, certificateHasPrivateKey, certificateNonce, context);
     }
 
-    /**
-     * Deletes the specified certificate associated with the Provisioning Service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ifMatch ETag of the certificate.
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
-     * @param certificateName Name of the certificate to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String ifMatch, String provisioningServiceName,
         String certificateName) {
@@ -597,12 +520,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CertificateResponseInner> listSinglePage(String resourceGroupName,
         String provisioningServiceName) {
-        final String accept = "application/json";
-        Response<CertificateListDescription> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, provisioningServiceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            null, null);
+        return listSinglePage(resourceGroupName, provisioningServiceName, Context.NONE);
     }
 
     /**
@@ -627,32 +545,13 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
             null, null);
     }
 
-    /**
-     * Get all the certificates tied to the provisioning service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the certificates tied to the provisioning service as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateResponseInner> list(String resourceGroupName, String provisioningServiceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, provisioningServiceName));
+        return list(resourceGroupName, provisioningServiceName, Context.NONE);
     }
 
-    /**
-     * Get all the certificates tied to the provisioning service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the certificates tied to the provisioning service as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateResponseInner> list(String resourceGroupName, String provisioningServiceName,
         Context context) {
@@ -728,28 +627,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generate verification code for Proof of Possession.
-     * 
-     * @param certificateName Name of the certificate to retrieve.
-     * @param ifMatch ETag of the certificate. This is required to update an existing certificate, and ignored while
-     * creating a brand new certificate.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
-     * @param certificateNameParam Common Name for the certificate.
-     * @param certificateRawBytes Raw data of certificate.
-     * @param certificateIsVerified Indicates if the certificate has been verified by owner of the private key.
-     * @param certificatePurpose Description mentioning the purpose of the certificate.
-     * @param certificateCreated Time the certificate is created.
-     * @param certificateLastUpdated Certificate last updated time.
-     * @param certificateHasPrivateKey Indicates if the certificate contains private key.
-     * @param certificateNonce Random number generated to indicate Proof of Possession.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of the response of the verification code along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VerificationCodeResponseInner> generateVerificationCodeWithResponse(String certificateName,
         String ifMatch, String resourceGroupName, String provisioningServiceName, String certificateNameParam,
@@ -764,19 +642,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
             certificateCreated, certificateLastUpdated, certificateHasPrivateKey, certificateNonce, accept, context);
     }
 
-    /**
-     * Generate verification code for Proof of Possession.
-     * 
-     * @param certificateName Name of the certificate to retrieve.
-     * @param ifMatch ETag of the certificate. This is required to update an existing certificate, and ignored while
-     * creating a brand new certificate.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of the response of the verification code.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerificationCodeResponseInner generateVerificationCode(String certificateName, String ifMatch,
         String resourceGroupName, String provisioningServiceName) {
@@ -865,29 +731,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
-     * certificate.
-     * 
-     * @param certificateName Name of the certificate to retrieve.
-     * @param ifMatch ETag of the certificate.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
-     * @param request The name of the certificate.
-     * @param certificateNameParam Common Name for the certificate.
-     * @param certificateRawBytes Raw data of certificate.
-     * @param certificateIsVerified Indicates if the certificate has been verified by owner of the private key.
-     * @param certificatePurpose Describe the purpose of the certificate.
-     * @param certificateCreated Time the certificate is created.
-     * @param certificateLastUpdated Certificate last updated time.
-     * @param certificateHasPrivateKey Indicates if the certificate contains private key.
-     * @param certificateNonce Random number generated to indicate Proof of Possession.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateResponseInner> verifyCertificateWithResponse(String certificateName, String ifMatch,
         String resourceGroupName, String provisioningServiceName, VerificationCodeRequest request,
@@ -904,20 +748,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
             request, context);
     }
 
-    /**
-     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
-     * certificate.
-     * 
-     * @param certificateName Name of the certificate to retrieve.
-     * @param ifMatch ETag of the certificate.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
-     * @param request The name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateResponseInner verifyCertificate(String certificateName, String ifMatch, String resourceGroupName,
         String provisioningServiceName, VerificationCodeRequest request) {

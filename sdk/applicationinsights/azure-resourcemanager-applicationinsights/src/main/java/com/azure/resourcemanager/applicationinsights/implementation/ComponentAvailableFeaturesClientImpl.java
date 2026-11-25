@@ -114,17 +114,7 @@ public final class ComponentAvailableFeaturesClientImpl implements ComponentAvai
         return getWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns all available features of the application insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component available features along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentAvailableFeaturesInner> getWithResponse(String resourceGroupName,
         String resourceName, Context context) {
@@ -134,16 +124,7 @@ public final class ComponentAvailableFeaturesClientImpl implements ComponentAvai
             resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Returns all available features of the application insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component available features.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInsightsComponentAvailableFeaturesInner get(String resourceGroupName, String resourceName) {
         return getWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();

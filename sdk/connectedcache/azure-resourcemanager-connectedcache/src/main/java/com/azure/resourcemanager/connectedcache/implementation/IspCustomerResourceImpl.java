@@ -85,10 +85,7 @@ public final class IspCustomerResourceImpl
     }
 
     public IspCustomerResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIspCustomers()
-            .createOrUpdate(resourceGroupName, customerResourceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IspCustomerResource create(Context context) {
@@ -111,11 +108,7 @@ public final class IspCustomerResourceImpl
     }
 
     public IspCustomerResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIspCustomers()
-            .updateWithResponse(resourceGroupName, customerResourceName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IspCustomerResource apply(Context context) {
@@ -139,11 +132,7 @@ public final class IspCustomerResourceImpl
     }
 
     public IspCustomerResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIspCustomers()
-            .getByResourceGroupWithResponse(resourceGroupName, customerResourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IspCustomerResource refresh(Context context) {

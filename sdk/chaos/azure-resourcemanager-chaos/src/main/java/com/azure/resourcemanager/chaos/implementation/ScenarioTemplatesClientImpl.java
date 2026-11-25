@@ -144,16 +144,7 @@ public final class ScenarioTemplatesClientImpl implements ScenarioTemplatesClien
         return getWithResponseAsync(scenarioTemplateName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a scenario template, described by its newest published version.
-     * 
-     * @param scenarioTemplateName Name of the scenario template.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario template, described by its newest published version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScenarioTemplateInner> getWithResponse(String scenarioTemplateName, Context context) {
         final String accept = "application/json";
@@ -161,15 +152,7 @@ public final class ScenarioTemplatesClientImpl implements ScenarioTemplatesClien
             context);
     }
 
-    /**
-     * Get a scenario template, described by its newest published version.
-     * 
-     * @param scenarioTemplateName Name of the scenario template.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario template, described by its newest published version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScenarioTemplateInner get(String scenarioTemplateName) {
         return getWithResponse(scenarioTemplateName, Context.NONE).getValue();
@@ -215,11 +198,7 @@ public final class ScenarioTemplatesClientImpl implements ScenarioTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScenarioTemplateInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ScenarioTemplateListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -240,27 +219,13 @@ public final class ScenarioTemplatesClientImpl implements ScenarioTemplatesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of the scenario templates published by Microsoft.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the scenario templates published by Microsoft as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScenarioTemplateInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Get a list of the scenario templates published by Microsoft.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the scenario templates published by Microsoft as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScenarioTemplateInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -296,11 +261,7 @@ public final class ScenarioTemplatesClientImpl implements ScenarioTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScenarioTemplateInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ScenarioTemplateListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

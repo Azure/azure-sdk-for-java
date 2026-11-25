@@ -201,12 +201,7 @@ public final class ManagedComputeCapacitiesClientImpl implements ManagedComputeC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedComputeCapacityInner> listSinglePage(String offer, String acceleratorType,
         String deploymentId, String location) {
-        final String accept = "application/json";
-        Response<ManagedComputeCapacityListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                offer, acceleratorType, deploymentId, location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(offer, acceleratorType, deploymentId, location, Context.NONE);
     }
 
     /**
@@ -241,46 +236,16 @@ public final class ManagedComputeCapacitiesClientImpl implements ManagedComputeC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the managed compute capacities for a subscription. Returns available capacity
-     * per accelerator type, including deployment size information.
-     * 
-     * @param offer The offer name to query capacity for (required).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed compute capacities for a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedComputeCapacityInner> list(String offer) {
         final String acceleratorType = null;
         final String deploymentId = null;
         final String location = null;
-        return new PagedIterable<>(() -> listSinglePage(offer, acceleratorType, deploymentId, location),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(offer, acceleratorType, deploymentId, location, Context.NONE);
     }
 
-    /**
-     * Gets the managed compute capacities for a subscription. Returns available capacity
-     * per accelerator type, including deployment size information.
-     * 
-     * @param offer The offer name to query capacity for (required).
-     * @param acceleratorType Optional accelerator type filter to narrow results to a specific accelerator type.
-     * @param deploymentId Optional deployment resource ID. When provided, returns capacity for the specific region
-     * where the deployment is hosted rather than the best available region.
-     * @param location Optional Azure location used to select a DataZone scope. Without a deployment ID,
-     * omitted or blank location returns Global and both US and EU DataZone capacities.
-     * A supported location returns Global and the matching DataZone capacities; an
-     * unsupported location returns Global capacity only. With a deployment ID, a
-     * nonblank location must match the parent account location, ignoring case and
-     * surrounding whitespace, or the request returns HTTP 400. Capacity is still
-     * returned for the deployment's backend region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed compute capacities for a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedComputeCapacityInner> list(String offer, String acceleratorType, String deploymentId,
         String location, Context context) {
@@ -318,11 +283,7 @@ public final class ManagedComputeCapacitiesClientImpl implements ManagedComputeC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedComputeCapacityInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ManagedComputeCapacityListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

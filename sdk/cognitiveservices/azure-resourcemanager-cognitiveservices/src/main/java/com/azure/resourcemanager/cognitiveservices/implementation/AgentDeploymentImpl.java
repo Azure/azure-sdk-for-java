@@ -68,11 +68,7 @@ public final class AgentDeploymentImpl implements AgentDeployment, AgentDeployme
     }
 
     public AgentDeployment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentDeployments()
-            .createOrUpdate(resourceGroupName, accountName, projectName, appName, deploymentName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AgentDeployment create(Context context) {
@@ -95,11 +91,7 @@ public final class AgentDeploymentImpl implements AgentDeployment, AgentDeployme
     }
 
     public AgentDeployment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentDeployments()
-            .createOrUpdate(resourceGroupName, accountName, projectName, appName, deploymentName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AgentDeployment apply(Context context) {
@@ -132,11 +124,7 @@ public final class AgentDeploymentImpl implements AgentDeployment, AgentDeployme
     }
 
     public AgentDeployment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentDeployments()
-            .getWithResponse(resourceGroupName, accountName, projectName, appName, deploymentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AgentDeployment refresh(Context context) {

@@ -186,18 +186,7 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a change data capture configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a change data capture configuration along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ChangeDataCaptureConfigurationInner>> getWithResponseAsync(String resourceGroupName,
         String clusterName, String configurationName) {
@@ -208,18 +197,7 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets a change data capture configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a change data capture configuration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChangeDataCaptureConfigurationInner> getAsync(String resourceGroupName, String clusterName,
         String configurationName) {
@@ -227,19 +205,7 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a change data capture configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a change data capture configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChangeDataCaptureConfigurationInner> getWithResponse(String resourceGroupName, String clusterName,
         String configurationName, Context context) {
@@ -248,39 +214,14 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
             resourceGroupName, clusterName, configurationName, accept, context);
     }
 
-    /**
-     * Gets a change data capture configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a change data capture configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureConfigurationInner get(String resourceGroupName, String clusterName,
         String configurationName) {
         return getWithResponse(resourceGroupName, clusterName, configurationName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or replaces a change data capture configuration that enrolls a PostgreSQL database for Microsoft Fabric
-     * Mirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HorizonDB database enrollment for Microsoft Fabric Mirroring along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrReplaceWithResponseAsync(String resourceGroupName,
         String clusterName, String configurationName, ChangeDataCaptureConfigurationInner resource) {
@@ -310,11 +251,7 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String clusterName,
         String configurationName, ChangeDataCaptureConfigurationInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, configurationName, contentType, accept,
-            resource, Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, clusterName, configurationName, resource, Context.NONE);
     }
 
     /**
@@ -342,20 +279,7 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
             resource, context);
     }
 
-    /**
-     * Creates or replaces a change data capture configuration that enrolls a PostgreSQL database for Microsoft Fabric
-     * Mirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a HorizonDB database enrollment for Microsoft Fabric Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ChangeDataCaptureConfigurationInner>, ChangeDataCaptureConfigurationInner>
         beginCreateOrReplaceAsync(String resourceGroupName, String clusterName, String configurationName,
@@ -367,46 +291,15 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
             ChangeDataCaptureConfigurationInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or replaces a change data capture configuration that enrolls a PostgreSQL database for Microsoft Fabric
-     * Mirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a HorizonDB database enrollment for Microsoft Fabric Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChangeDataCaptureConfigurationInner>, ChangeDataCaptureConfigurationInner>
         beginCreateOrReplace(String resourceGroupName, String clusterName, String configurationName,
             ChangeDataCaptureConfigurationInner resource) {
-        Response<BinaryData> response
-            = createOrReplaceWithResponse(resourceGroupName, clusterName, configurationName, resource);
-        return this.client.<ChangeDataCaptureConfigurationInner, ChangeDataCaptureConfigurationInner>getLroResult(
-            response, ChangeDataCaptureConfigurationInner.class, ChangeDataCaptureConfigurationInner.class,
-            Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, clusterName, configurationName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a change data capture configuration that enrolls a PostgreSQL database for Microsoft Fabric
-     * Mirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a HorizonDB database enrollment for Microsoft Fabric Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChangeDataCaptureConfigurationInner>, ChangeDataCaptureConfigurationInner>
         beginCreateOrReplace(String resourceGroupName, String clusterName, String configurationName,
@@ -417,20 +310,7 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
             response, ChangeDataCaptureConfigurationInner.class, ChangeDataCaptureConfigurationInner.class, context);
     }
 
-    /**
-     * Creates or replaces a change data capture configuration that enrolls a PostgreSQL database for Microsoft Fabric
-     * Mirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HorizonDB database enrollment for Microsoft Fabric Mirroring on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChangeDataCaptureConfigurationInner> createOrReplaceAsync(String resourceGroupName, String clusterName,
         String configurationName, ChangeDataCaptureConfigurationInner resource) {
@@ -438,62 +318,22 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces a change data capture configuration that enrolls a PostgreSQL database for Microsoft Fabric
-     * Mirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HorizonDB database enrollment for Microsoft Fabric Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureConfigurationInner createOrReplace(String resourceGroupName, String clusterName,
         String configurationName, ChangeDataCaptureConfigurationInner resource) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, configurationName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, clusterName, configurationName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a change data capture configuration that enrolls a PostgreSQL database for Microsoft Fabric
-     * Mirroring.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HorizonDB database enrollment for Microsoft Fabric Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureConfigurationInner createOrReplace(String resourceGroupName, String clusterName,
         String configurationName, ChangeDataCaptureConfigurationInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, configurationName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrReplace(resourceGroupName, clusterName, configurationName, resource, context));
     }
 
-    /**
-     * Updates mutable change data capture configuration properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HorizonDB database enrollment for Microsoft Fabric Mirroring along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         String configurationName, ChangeDataCaptureConfigurationForPatchUpdate properties) {
@@ -522,11 +362,7 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
         String configurationName, ChangeDataCaptureConfigurationForPatchUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, configurationName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, clusterName, configurationName, properties, Context.NONE);
     }
 
     /**
@@ -553,19 +389,7 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
             properties, context);
     }
 
-    /**
-     * Updates mutable change data capture configuration properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a HorizonDB database enrollment for Microsoft Fabric Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ChangeDataCaptureConfigurationInner>, ChangeDataCaptureConfigurationInner>
         beginUpdateAsync(String resourceGroupName, String clusterName, String configurationName,
@@ -577,44 +401,15 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
             ChangeDataCaptureConfigurationInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates mutable change data capture configuration properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a HorizonDB database enrollment for Microsoft Fabric Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChangeDataCaptureConfigurationInner>, ChangeDataCaptureConfigurationInner> beginUpdate(
         String resourceGroupName, String clusterName, String configurationName,
         ChangeDataCaptureConfigurationForPatchUpdate properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, clusterName, configurationName, properties);
-        return this.client.<ChangeDataCaptureConfigurationInner, ChangeDataCaptureConfigurationInner>getLroResult(
-            response, ChangeDataCaptureConfigurationInner.class, ChangeDataCaptureConfigurationInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, configurationName, properties, Context.NONE);
     }
 
-    /**
-     * Updates mutable change data capture configuration properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a HorizonDB database enrollment for Microsoft Fabric Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChangeDataCaptureConfigurationInner>, ChangeDataCaptureConfigurationInner> beginUpdate(
         String resourceGroupName, String clusterName, String configurationName,
@@ -625,19 +420,7 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
             response, ChangeDataCaptureConfigurationInner.class, ChangeDataCaptureConfigurationInner.class, context);
     }
 
-    /**
-     * Updates mutable change data capture configuration properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HorizonDB database enrollment for Microsoft Fabric Mirroring on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChangeDataCaptureConfigurationInner> updateAsync(String resourceGroupName, String clusterName,
         String configurationName, ChangeDataCaptureConfigurationForPatchUpdate properties) {
@@ -645,58 +428,22 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates mutable change data capture configuration properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HorizonDB database enrollment for Microsoft Fabric Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureConfigurationInner update(String resourceGroupName, String clusterName,
         String configurationName, ChangeDataCaptureConfigurationForPatchUpdate properties) {
-        return beginUpdate(resourceGroupName, clusterName, configurationName, properties).getFinalResult();
+        return update(resourceGroupName, clusterName, configurationName, properties, Context.NONE);
     }
 
-    /**
-     * Updates mutable change data capture configuration properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HorizonDB database enrollment for Microsoft Fabric Mirroring.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureConfigurationInner update(String resourceGroupName, String clusterName,
         String configurationName, ChangeDataCaptureConfigurationForPatchUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, clusterName, configurationName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, clusterName, configurationName, properties, context));
     }
 
-    /**
-     * Deletes a change data capture configuration after destination-side replication has been stopped or detached. This
-     * operation never deletes the Microsoft Fabric mirrored-database item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
         String configurationName) {
@@ -722,8 +469,7 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
         String configurationName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, configurationName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, configurationName, Context.NONE);
     }
 
     /**
@@ -747,19 +493,7 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
             this.client.getSubscriptionId(), resourceGroupName, clusterName, configurationName, context);
     }
 
-    /**
-     * Deletes a change data capture configuration after destination-side replication has been stopped or detached. This
-     * operation never deletes the Microsoft Fabric mirrored-database item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
         String configurationName) {
@@ -769,40 +503,14 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
             this.client.getContext());
     }
 
-    /**
-     * Deletes a change data capture configuration after destination-side replication has been stopped or detached. This
-     * operation never deletes the Microsoft Fabric mirrored-database item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String configurationName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, configurationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, configurationName, Context.NONE);
     }
 
-    /**
-     * Deletes a change data capture configuration after destination-side replication has been stopped or detached. This
-     * operation never deletes the Microsoft Fabric mirrored-database item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String configurationName, Context context) {
@@ -810,58 +518,23 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
-    /**
-     * Deletes a change data capture configuration after destination-side replication has been stopped or detached. This
-     * operation never deletes the Microsoft Fabric mirrored-database item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String configurationName) {
         return beginDeleteAsync(resourceGroupName, clusterName, configurationName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a change data capture configuration after destination-side replication has been stopped or detached. This
-     * operation never deletes the Microsoft Fabric mirrored-database item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String configurationName) {
-        beginDelete(resourceGroupName, clusterName, configurationName).getFinalResult();
+        delete(resourceGroupName, clusterName, configurationName, Context.NONE);
     }
 
-    /**
-     * Deletes a change data capture configuration after destination-side replication has been stopped or detached. This
-     * operation never deletes the Microsoft Fabric mirrored-database item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param configurationName The caller-selected ARM-safe name of the change data capture configuration. The exact
-     * PostgreSQL database name is stored in properties.databaseName.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String configurationName, Context context) {
-        beginDelete(resourceGroupName, clusterName, configurationName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, configurationName, context));
     }
 
     /**
@@ -887,17 +560,7 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists change data capture configurations in a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ChangeDataCaptureConfiguration list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChangeDataCaptureConfigurationInner> listAsync(String resourceGroupName, String clusterName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName),
@@ -917,12 +580,7 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ChangeDataCaptureConfigurationInner> listSinglePage(String resourceGroupName,
         String clusterName) {
-        final String accept = "application/json";
-        Response<ChangeDataCaptureConfigurationListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -947,35 +605,13 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists change data capture configurations in a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ChangeDataCaptureConfiguration list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChangeDataCaptureConfigurationInner> list(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Lists change data capture configurations in a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ChangeDataCaptureConfiguration list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChangeDataCaptureConfigurationInner> list(String resourceGroupName, String clusterName,
         Context context) {
@@ -1013,11 +649,7 @@ public final class ChangeDataCaptureConfigurationsClientImpl implements ChangeDa
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ChangeDataCaptureConfigurationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ChangeDataCaptureConfigurationListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

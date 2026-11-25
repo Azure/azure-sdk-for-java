@@ -56,12 +56,7 @@ public final class ReportsImpl implements Reports {
     }
 
     public ReportResource createOrUpdate(String reportName, ReportResourceInner properties) {
-        ReportResourceInner inner = this.serviceClient().createOrUpdate(reportName, properties);
-        if (inner != null) {
-            return new ReportResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(reportName, properties, Context.NONE);
     }
 
     public ReportResource createOrUpdate(String reportName, ReportResourceInner properties, Context context) {
@@ -74,12 +69,7 @@ public final class ReportsImpl implements Reports {
     }
 
     public ReportResource update(String reportName, ReportResourcePatch properties) {
-        ReportResourceInner inner = this.serviceClient().update(reportName, properties);
-        if (inner != null) {
-            return new ReportResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(reportName, properties, Context.NONE);
     }
 
     public ReportResource update(String reportName, ReportResourcePatch properties, Context context) {
@@ -92,7 +82,7 @@ public final class ReportsImpl implements Reports {
     }
 
     public void delete(String reportName) {
-        this.serviceClient().delete(reportName);
+        this.delete(reportName, Context.NONE);
     }
 
     public void delete(String reportName, Context context) {
@@ -112,12 +102,7 @@ public final class ReportsImpl implements Reports {
     }
 
     public SyncCertRecordResponse syncCertRecord(String reportName, SyncCertRecordRequest body) {
-        SyncCertRecordResponseInner inner = this.serviceClient().syncCertRecord(reportName, body);
-        if (inner != null) {
-            return new SyncCertRecordResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.syncCertRecord(reportName, body, Context.NONE);
     }
 
     public SyncCertRecordResponse syncCertRecord(String reportName, SyncCertRecordRequest body, Context context) {
@@ -149,12 +134,7 @@ public final class ReportsImpl implements Reports {
     }
 
     public ReportFixResult fix(String reportName) {
-        ReportFixResultInner inner = this.serviceClient().fix(reportName);
-        if (inner != null) {
-            return new ReportFixResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.fix(reportName, Context.NONE);
     }
 
     public ReportFixResult fix(String reportName, Context context) {
@@ -183,12 +163,7 @@ public final class ReportsImpl implements Reports {
     }
 
     public ReportVerificationResult verify(String reportName) {
-        ReportVerificationResultInner inner = this.serviceClient().verify(reportName);
-        if (inner != null) {
-            return new ReportVerificationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.verify(reportName, Context.NONE);
     }
 
     public ReportVerificationResult verify(String reportName, Context context) {

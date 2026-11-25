@@ -177,12 +177,7 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectableContainerResourceInner> listSinglePage(String vaultName, String resourceGroupName,
         String fabricName, String filter) {
-        final String accept = "application/json";
-        Response<ProtectableContainerResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
-                this.client.getSubscriptionId(), fabricName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(vaultName, resourceGroupName, fabricName, filter, Context.NONE);
     }
 
     /**
@@ -209,38 +204,15 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the containers that can be registered to Recovery Services Vault.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The fabricName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectableContainerResourceInner> list(String vaultName, String resourceGroupName,
         String fabricName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, fabricName, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(vaultName, resourceGroupName, fabricName, filter, Context.NONE);
     }
 
-    /**
-     * Lists the containers that can be registered to Recovery Services Vault.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The fabricName parameter.
-     * @param filter OData filter options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectableContainerResourceInner> list(String vaultName, String resourceGroupName,
         String fabricName, String filter, Context context) {
@@ -278,11 +250,7 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectableContainerResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProtectableContainerResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

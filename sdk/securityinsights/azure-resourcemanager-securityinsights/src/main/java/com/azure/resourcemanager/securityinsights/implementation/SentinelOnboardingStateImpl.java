@@ -74,12 +74,7 @@ public final class SentinelOnboardingStateImpl implements SentinelOnboardingStat
     }
 
     public SentinelOnboardingState create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSentinelOnboardingStates()
-            .createWithResponse(resourceGroupName, workspaceName, sentinelOnboardingStateName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SentinelOnboardingState create(Context context) {
@@ -99,11 +94,7 @@ public final class SentinelOnboardingStateImpl implements SentinelOnboardingStat
     }
 
     public SentinelOnboardingState refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSentinelOnboardingStates()
-            .getWithResponse(resourceGroupName, workspaceName, sentinelOnboardingStateName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SentinelOnboardingState refresh(Context context) {

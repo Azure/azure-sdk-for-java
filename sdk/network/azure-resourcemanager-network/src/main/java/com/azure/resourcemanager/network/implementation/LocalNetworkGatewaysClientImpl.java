@@ -132,17 +132,7 @@ public final class LocalNetworkGatewaysClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified local network gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified local network gateway in a resource group along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LocalNetworkGatewayInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String localNetworkGatewayName) {
@@ -208,16 +198,7 @@ public final class LocalNetworkGatewaysClientImpl
             resourceGroupName, localNetworkGatewayName, accept, context);
     }
 
-    /**
-     * Gets the specified local network gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified local network gateway in a resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LocalNetworkGatewayInner> getByResourceGroupAsync(String resourceGroupName,
         String localNetworkGatewayName) {
@@ -225,50 +206,20 @@ public final class LocalNetworkGatewaysClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified local network gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified local network gateway in a resource group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LocalNetworkGatewayInner> getByResourceGroupWithResponse(String resourceGroupName,
         String localNetworkGatewayName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, localNetworkGatewayName, context).block();
     }
 
-    /**
-     * Gets the specified local network gateway in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified local network gateway in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocalNetworkGatewayInner getByResourceGroup(String resourceGroupName, String localNetworkGatewayName) {
         return getByResourceGroupWithResponse(resourceGroupName, localNetworkGatewayName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a local network gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to the create or update local network gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
@@ -348,17 +299,7 @@ public final class LocalNetworkGatewaysClientImpl
             resourceGroupName, localNetworkGatewayName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a local network gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to the create or update local network gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a common class for general resource information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LocalNetworkGatewayInner>, LocalNetworkGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
@@ -392,35 +333,14 @@ public final class LocalNetworkGatewaysClientImpl
             this.client.getHttpPipeline(), LocalNetworkGatewayInner.class, LocalNetworkGatewayInner.class, context);
     }
 
-    /**
-     * Creates or updates a local network gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to the create or update local network gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a common class for general resource information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LocalNetworkGatewayInner>, LocalNetworkGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, localNetworkGatewayName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a local network gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to the create or update local network gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a common class for general resource information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LocalNetworkGatewayInner>, LocalNetworkGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters,
@@ -429,17 +349,7 @@ public final class LocalNetworkGatewaysClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a local network gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to the create or update local network gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LocalNetworkGatewayInner> createOrUpdateAsync(String resourceGroupName, String localNetworkGatewayName,
         LocalNetworkGatewayInner parameters) {
@@ -466,53 +376,21 @@ public final class LocalNetworkGatewaysClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a local network gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to the create or update local network gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocalNetworkGatewayInner createOrUpdate(String resourceGroupName, String localNetworkGatewayName,
         LocalNetworkGatewayInner parameters) {
         return createOrUpdateAsync(resourceGroupName, localNetworkGatewayName, parameters).block();
     }
 
-    /**
-     * Creates or updates a local network gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to the create or update local network gateway operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocalNetworkGatewayInner createOrUpdate(String resourceGroupName, String localNetworkGatewayName,
         LocalNetworkGatewayInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, localNetworkGatewayName, parameters, context).block();
     }
 
-    /**
-     * Updates a local network gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to update local network gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LocalNetworkGatewayInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String localNetworkGatewayName, TagsObject parameters) {
@@ -592,17 +470,7 @@ public final class LocalNetworkGatewaysClientImpl
             resourceGroupName, localNetworkGatewayName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a local network gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to update local network gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LocalNetworkGatewayInner> updateTagsAsync(String resourceGroupName, String localNetworkGatewayName,
         TagsObject parameters) {
@@ -610,51 +478,21 @@ public final class LocalNetworkGatewaysClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a local network gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to update local network gateway tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LocalNetworkGatewayInner> updateTagsWithResponse(String resourceGroupName,
         String localNetworkGatewayName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, localNetworkGatewayName, parameters, context).block();
     }
 
-    /**
-     * Updates a local network gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to update local network gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocalNetworkGatewayInner updateTags(String resourceGroupName, String localNetworkGatewayName,
         TagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, localNetworkGatewayName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes the specified local network gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String localNetworkGatewayName) {
@@ -717,16 +555,7 @@ public final class LocalNetworkGatewaysClientImpl
             localNetworkGatewayName, context);
     }
 
-    /**
-     * Deletes the specified local network gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
         String localNetworkGatewayName) {
@@ -756,48 +585,20 @@ public final class LocalNetworkGatewaysClientImpl
             context);
     }
 
-    /**
-     * Deletes the specified local network gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localNetworkGatewayName) {
         return this.beginDeleteAsync(resourceGroupName, localNetworkGatewayName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified local network gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localNetworkGatewayName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, localNetworkGatewayName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified local network gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String localNetworkGatewayName) {
         return beginDeleteAsync(resourceGroupName, localNetworkGatewayName).last()
@@ -821,30 +622,13 @@ public final class LocalNetworkGatewaysClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified local network gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String localNetworkGatewayName) {
         deleteAsync(resourceGroupName, localNetworkGatewayName).block();
     }
 
-    /**
-     * Deletes the specified local network gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String localNetworkGatewayName, Context context) {
         deleteAsync(resourceGroupName, localNetworkGatewayName, context).block();
@@ -920,15 +704,7 @@ public final class LocalNetworkGatewaysClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the local network gateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the local network gateways in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LocalNetworkGatewayInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -951,30 +727,13 @@ public final class LocalNetworkGatewaysClientImpl
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the local network gateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the local network gateways in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocalNetworkGatewayInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets all the local network gateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the local network gateways in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocalNetworkGatewayInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));

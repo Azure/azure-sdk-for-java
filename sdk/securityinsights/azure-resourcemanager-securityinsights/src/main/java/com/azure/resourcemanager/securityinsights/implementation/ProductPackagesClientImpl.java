@@ -115,18 +115,7 @@ public final class ProductPackagesClientImpl implements ProductPackagesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a package by its identifier from the catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param packageId package Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a package by its identifier from the catalog along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProductPackageModelInner> getWithResponse(String resourceGroupName, String workspaceName,
         String packageId, Context context) {
@@ -135,17 +124,7 @@ public final class ProductPackagesClientImpl implements ProductPackagesClient {
             resourceGroupName, workspaceName, packageId, accept, context);
     }
 
-    /**
-     * Gets a package by its identifier from the catalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param packageId package Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a package by its identifier from the catalog.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProductPackageModelInner get(String resourceGroupName, String workspaceName, String packageId) {
         return getWithResponse(resourceGroupName, workspaceName, packageId, Context.NONE).getValue();

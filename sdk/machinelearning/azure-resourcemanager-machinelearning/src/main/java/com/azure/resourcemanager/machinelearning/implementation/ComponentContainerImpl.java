@@ -61,11 +61,7 @@ public final class ComponentContainerImpl
     }
 
     public ComponentContainer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComponentContainers()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ComponentContainer create(Context context) {
@@ -88,11 +84,7 @@ public final class ComponentContainerImpl
     }
 
     public ComponentContainer apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComponentContainers()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ComponentContainer apply(Context context) {
@@ -129,11 +121,7 @@ public final class ComponentContainerImpl
     }
 
     public ComponentContainer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComponentContainers()
-            .getWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ComponentContainer refresh(Context context) {

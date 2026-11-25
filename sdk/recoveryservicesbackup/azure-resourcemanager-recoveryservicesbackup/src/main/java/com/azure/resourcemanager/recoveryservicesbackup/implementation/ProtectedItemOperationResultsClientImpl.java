@@ -126,21 +126,7 @@ public final class ProtectedItemOperationResultsClientImpl implements ProtectedI
             operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetches the result of any operation on the backup item.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName backupFabrics.
-     * @param containerName The name of the ProtectionContainerResource.
-     * @param protectedItemName The name of the ProtectedItemResource.
-     * @param operationId The name of the ProtectedItemResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectedItemResourceInner> getWithResponse(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String operationId, Context context) {
@@ -149,20 +135,7 @@ public final class ProtectedItemOperationResultsClientImpl implements ProtectedI
             resourceGroupName, vaultName, fabricName, containerName, protectedItemName, operationId, accept, context);
     }
 
-    /**
-     * Fetches the result of any operation on the backup item.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName backupFabrics.
-     * @param containerName The name of the ProtectionContainerResource.
-     * @param protectedItemName The name of the ProtectedItemResource.
-     * @param operationId The name of the ProtectedItemResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectedItemResourceInner get(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, String operationId) {

@@ -142,10 +142,7 @@ public final class RegistryImpl implements Registry, Registry.Definition, Regist
     }
 
     public Registry create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRegistries()
-            .createOrUpdate(resourceGroupName, registryName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Registry create(Context context) {
@@ -167,11 +164,7 @@ public final class RegistryImpl implements Registry, Registry.Definition, Regist
     }
 
     public Registry apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRegistries()
-            .updateWithResponse(resourceGroupName, registryName, updateBody, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Registry apply(Context context) {
@@ -195,11 +188,7 @@ public final class RegistryImpl implements Registry, Registry.Definition, Regist
     }
 
     public Registry refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRegistries()
-            .getByResourceGroupWithResponse(resourceGroupName, registryName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Registry refresh(Context context) {

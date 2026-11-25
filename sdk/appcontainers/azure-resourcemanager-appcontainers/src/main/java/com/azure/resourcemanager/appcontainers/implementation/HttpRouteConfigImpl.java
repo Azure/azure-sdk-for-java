@@ -60,12 +60,7 @@ public final class HttpRouteConfigImpl implements HttpRouteConfig, HttpRouteConf
     }
 
     public HttpRouteConfig create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHttpRouteConfigs()
-            .createOrUpdateWithResponse(resourceGroupName, environmentName, httpRouteName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public HttpRouteConfig create(Context context) {
@@ -87,11 +82,7 @@ public final class HttpRouteConfigImpl implements HttpRouteConfig, HttpRouteConf
     }
 
     public HttpRouteConfig apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHttpRouteConfigs()
-            .updateWithResponse(resourceGroupName, environmentName, httpRouteName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public HttpRouteConfig apply(Context context) {
@@ -118,11 +109,7 @@ public final class HttpRouteConfigImpl implements HttpRouteConfig, HttpRouteConf
     }
 
     public HttpRouteConfig refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHttpRouteConfigs()
-            .getWithResponse(resourceGroupName, environmentName, httpRouteName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public HttpRouteConfig refresh(Context context) {

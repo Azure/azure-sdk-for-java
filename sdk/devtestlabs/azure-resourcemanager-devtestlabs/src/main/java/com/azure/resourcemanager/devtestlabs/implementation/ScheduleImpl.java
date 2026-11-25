@@ -130,11 +130,7 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
     }
 
     public Schedule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalSchedules()
-            .createOrUpdateWithResponse(resourceGroupName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Schedule create(Context context) {
@@ -157,11 +153,7 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
     }
 
     public Schedule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalSchedules()
-            .updateWithResponse(resourceGroupName, name, updateSchedule, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Schedule apply(Context context) {
@@ -214,12 +206,7 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
     }
 
     public Schedule refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalSchedules()
-            .getByResourceGroupWithResponse(resourceGroupName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Schedule refresh(Context context) {

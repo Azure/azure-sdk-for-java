@@ -85,12 +85,7 @@ public final class HuntRelationImpl implements HuntRelation, HuntRelation.Defini
     }
 
     public HuntRelation create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHuntRelations()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, huntId, huntRelationId, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public HuntRelation create(Context context) {
@@ -113,12 +108,7 @@ public final class HuntRelationImpl implements HuntRelation, HuntRelation.Defini
     }
 
     public HuntRelation apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHuntRelations()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, huntId, huntRelationId, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public HuntRelation apply(Context context) {
@@ -149,11 +139,7 @@ public final class HuntRelationImpl implements HuntRelation, HuntRelation.Defini
     }
 
     public HuntRelation refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHuntRelations()
-            .getWithResponse(resourceGroupName, workspaceName, huntId, huntRelationId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public HuntRelation refresh(Context context) {

@@ -183,33 +183,14 @@ public final class RegulatoryComplianceControlsClientImpl implements RegulatoryC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Selected regulatory compliance control details and state.
-     * 
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance control details and state along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RegulatoryComplianceControlInner> getWithResponse(String regulatoryComplianceStandardName,
         String regulatoryComplianceControlName, Context context) {
         return getWithResponseAsync(regulatoryComplianceStandardName, regulatoryComplianceControlName, context).block();
     }
 
-    /**
-     * Selected regulatory compliance control details and state.
-     * 
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance control details and state.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegulatoryComplianceControlInner get(String regulatoryComplianceStandardName,
         String regulatoryComplianceControlName) {
@@ -341,32 +322,14 @@ public final class RegulatoryComplianceControlsClientImpl implements RegulatoryC
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * All supported regulatory compliance controls details and state for selected standard.
-     * 
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance controls response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegulatoryComplianceControlInner> list(String regulatoryComplianceStandardName) {
         final String filter = null;
         return new PagedIterable<>(listAsync(regulatoryComplianceStandardName, filter));
     }
 
-    /**
-     * All supported regulatory compliance controls details and state for selected standard.
-     * 
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @param filter OData filter. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance controls response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegulatoryComplianceControlInner> list(String regulatoryComplianceStandardName, String filter,
         Context context) {

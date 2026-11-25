@@ -180,17 +180,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
         return getWithResponseAsync(reportName, snapshotName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the AppComplianceAutomation snapshot and its properties.
-     * 
-     * @param reportName Report Name.
-     * @param snapshotName Snapshot Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AppComplianceAutomation snapshot and its properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SnapshotResourceInner> getWithResponse(String reportName, String snapshotName, Context context) {
         final String accept = "application/json";
@@ -198,16 +188,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             context);
     }
 
-    /**
-     * Get the AppComplianceAutomation snapshot and its properties.
-     * 
-     * @param reportName Report Name.
-     * @param snapshotName Snapshot Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AppComplianceAutomation snapshot and its properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SnapshotResourceInner get(String reportName, String snapshotName) {
         return getWithResponse(reportName, snapshotName, Context.NONE).getValue();
@@ -309,12 +290,8 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SnapshotResourceInner> listSinglePage(String reportName, String skipToken, Integer top,
         String select, String filter, String orderby, String offerGuid, String reportCreatorTenantId) {
-        final String accept = "application/json";
-        Response<SnapshotResourceListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), skipToken, top, select, filter,
-                orderby, offerGuid, reportCreatorTenantId, reportName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(reportName, skipToken, top, select, filter, orderby, offerGuid, reportCreatorTenantId,
+            Context.NONE);
     }
 
     /**
@@ -346,15 +323,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the AppComplianceAutomation snapshot list.
-     * 
-     * @param reportName Report Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AppComplianceAutomation snapshot list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SnapshotResourceInner> list(String reportName) {
         final String skipToken = null;
@@ -364,29 +333,11 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
         final String orderby = null;
         final String offerGuid = null;
         final String reportCreatorTenantId = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(reportName, skipToken, top, select, filter, orderby, offerGuid, reportCreatorTenantId),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(reportName, skipToken, top, select, filter, orderby, offerGuid, reportCreatorTenantId,
+            Context.NONE);
     }
 
-    /**
-     * Get the AppComplianceAutomation snapshot list.
-     * 
-     * @param reportName Report Name.
-     * @param skipToken Skip over when retrieving results.
-     * @param top Number of elements to return when retrieving results.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     * ?$select=reportName,id.
-     * @param filter The filter to apply on the operation.
-     * @param orderby OData order by query option.
-     * @param offerGuid The offerGuid which mapping to the reports.
-     * @param reportCreatorTenantId The tenant id of the report creator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AppComplianceAutomation snapshot list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SnapshotResourceInner> list(String reportName, String skipToken, Integer top, String select,
         String filter, String orderby, String offerGuid, String reportCreatorTenantId, Context context) {
@@ -431,10 +382,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> downloadWithResponse(String reportName, String snapshotName,
         SnapshotDownloadRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.downloadSync(this.client.getEndpoint(), this.client.getApiVersion(), reportName, snapshotName,
-            contentType, accept, body, Context.NONE);
+        return downloadWithResponse(reportName, snapshotName, body, Context.NONE);
     }
 
     /**
@@ -479,39 +427,14 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             this.client.getContext());
     }
 
-    /**
-     * Download compliance needs from snapshot, like: Compliance Report, Resource List.
-     * 
-     * @param reportName Report Name.
-     * @param snapshotName Snapshot Name.
-     * @param body Parameters for the query operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of object that includes all the possible response for the download
-     * operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadResponseInner>, DownloadResponseInner> beginDownload(String reportName,
         String snapshotName, SnapshotDownloadRequest body) {
-        Response<BinaryData> response = downloadWithResponse(reportName, snapshotName, body);
-        return this.client.<DownloadResponseInner, DownloadResponseInner>getLroResult(response,
-            DownloadResponseInner.class, DownloadResponseInner.class, Context.NONE);
+        return beginDownload(reportName, snapshotName, body, Context.NONE);
     }
 
-    /**
-     * Download compliance needs from snapshot, like: Compliance Report, Resource List.
-     * 
-     * @param reportName Report Name.
-     * @param snapshotName Snapshot Name.
-     * @param body Parameters for the query operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of object that includes all the possible response for the download
-     * operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadResponseInner>, DownloadResponseInner> beginDownload(String reportName,
         String snapshotName, SnapshotDownloadRequest body, Context context) {
@@ -538,38 +461,17 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
         return beginDownloadAsync(reportName, snapshotName, body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Download compliance needs from snapshot, like: Compliance Report, Resource List.
-     * 
-     * @param reportName Report Name.
-     * @param snapshotName Snapshot Name.
-     * @param body Parameters for the query operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes all the possible response for the download operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DownloadResponseInner download(String reportName, String snapshotName, SnapshotDownloadRequest body) {
-        return beginDownload(reportName, snapshotName, body).getFinalResult();
+        return download(reportName, snapshotName, body, Context.NONE);
     }
 
-    /**
-     * Download compliance needs from snapshot, like: Compliance Report, Resource List.
-     * 
-     * @param reportName Report Name.
-     * @param snapshotName Snapshot Name.
-     * @param body Parameters for the query operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes all the possible response for the download operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DownloadResponseInner download(String reportName, String snapshotName, SnapshotDownloadRequest body,
         Context context) {
-        return beginDownload(reportName, snapshotName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginDownload(reportName, snapshotName, body, context));
     }
 
     /**
@@ -602,11 +504,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SnapshotResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SnapshotResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

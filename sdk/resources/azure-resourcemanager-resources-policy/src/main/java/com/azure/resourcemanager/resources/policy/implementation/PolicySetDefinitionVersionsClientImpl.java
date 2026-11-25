@@ -399,21 +399,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This operation retrieves the policy set definition version in the given subscription with the given name and
-     * version.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param policyDefinitionVersion The policy set definition version. The format is x.y.z where x is the major
-     * version number, y is the minor version number, and z is the patch number.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicySetDefinitionVersionInner> getWithResponse(String policySetDefinitionName,
         String policyDefinitionVersion, String expand, Context context) {
@@ -422,18 +408,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             policySetDefinitionName, policyDefinitionVersion, expand, accept, context);
     }
 
-    /**
-     * This operation retrieves the policy set definition version in the given subscription with the given name and
-     * version.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param policyDefinitionVersion The policy set definition version. The format is x.y.z where x is the major
-     * version number, y is the minor version number, and z is the patch number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicySetDefinitionVersionInner get(String policySetDefinitionName, String policyDefinitionVersion) {
         final String expand = null;
@@ -485,20 +460,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This operation creates or updates a policy set definition version in the given subscription with the given name
-     * and version.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param policyDefinitionVersion The policy set definition version. The format is x.y.z where x is the major
-     * version number, y is the minor version number, and z is the patch number.
-     * @param parameters The policy set definition properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicySetDefinitionVersionInner> createOrUpdateWithResponse(String policySetDefinitionName,
         String policyDefinitionVersion, PolicySetDefinitionVersionInner parameters, Context context) {
@@ -509,19 +471,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             parameters, context);
     }
 
-    /**
-     * This operation creates or updates a policy set definition version in the given subscription with the given name
-     * and version.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param policyDefinitionVersion The policy set definition version. The format is x.y.z where x is the major
-     * version number, y is the minor version number, and z is the patch number.
-     * @param parameters The policy set definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicySetDefinitionVersionInner createOrUpdate(String policySetDefinitionName,
         String policyDefinitionVersion, PolicySetDefinitionVersionInner parameters) {
@@ -568,19 +518,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * This operation deletes the policy set definition version in the given subscription with the given name and
-     * version.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param policyDefinitionVersion The policy set definition version. The format is x.y.z where x is the major
-     * version number, y is the minor version number, and z is the patch number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String policySetDefinitionName, String policyDefinitionVersion,
         Context context) {
@@ -588,17 +526,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             this.client.getSubscriptionId(), policySetDefinitionName, policyDefinitionVersion, context);
     }
 
-    /**
-     * This operation deletes the policy set definition version in the given subscription with the given name and
-     * version.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param policyDefinitionVersion The policy set definition version. The format is x.y.z where x is the major
-     * version number, y is the minor version number, and z is the patch number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String policySetDefinitionName, String policyDefinitionVersion) {
         deleteWithResponse(policySetDefinitionName, policyDefinitionVersion, Context.NONE);
@@ -680,12 +608,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicySetDefinitionVersionInner> listSinglePage(String policySetDefinitionName, String expand,
         Integer top) {
-        final String accept = "application/json";
-        Response<PolicySetDefinitionVersionListResultInner> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                policySetDefinitionName, expand, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(policySetDefinitionName, expand, top, Context.NONE);
     }
 
     /**
@@ -712,38 +635,15 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * This operation retrieves a list of all the policy set definition versions for the given policy set definition.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicySetDefinitionVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicySetDefinitionVersionInner> list(String policySetDefinitionName) {
         final String expand = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(policySetDefinitionName, expand, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(policySetDefinitionName, expand, top, Context.NONE);
     }
 
-    /**
-     * This operation retrieves a list of all the policy set definition versions for the given policy set definition.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicySetDefinitionVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicySetDefinitionVersionInner> list(String policySetDefinitionName, String expand,
         Integer top, Context context) {
@@ -793,20 +693,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This operation retrieves the built-in policy set definition version with the given name and version.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param policyDefinitionVersion The policy set definition version. The format is x.y.z where x is the major
-     * version number, y is the minor version number, and z is the patch number.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicySetDefinitionVersionInner> getBuiltInWithResponse(String policySetDefinitionName,
         String policyDefinitionVersion, String expand, Context context) {
@@ -815,17 +702,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             policyDefinitionVersion, expand, accept, context);
     }
 
-    /**
-     * This operation retrieves the built-in policy set definition version with the given name and version.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param policyDefinitionVersion The policy set definition version. The format is x.y.z where x is the major
-     * version number, y is the minor version number, and z is the patch number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicySetDefinitionVersionInner getBuiltIn(String policySetDefinitionName, String policyDefinitionVersion) {
         final String expand = null;
@@ -913,11 +790,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicySetDefinitionVersionInner> listBuiltInSinglePage(String policySetDefinitionName,
         String expand, Integer top) {
-        final String accept = "application/json";
-        Response<PolicySetDefinitionVersionListResultInner> res = service.listBuiltInSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), policySetDefinitionName, expand, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBuiltInSinglePage(policySetDefinitionName, expand, top, Context.NONE);
     }
 
     /**
@@ -944,40 +817,15 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * This operation retrieves a list of all the built-in policy set definition versions for the given built-in policy
-     * set definition.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicySetDefinitionVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicySetDefinitionVersionInner> listBuiltIn(String policySetDefinitionName) {
         final String expand = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listBuiltInSinglePage(policySetDefinitionName, expand, top),
-            nextLink -> listBuiltInNextSinglePage(nextLink));
+        return listBuiltIn(policySetDefinitionName, expand, top, Context.NONE);
     }
 
-    /**
-     * This operation retrieves a list of all the built-in policy set definition versions for the given built-in policy
-     * set definition.
-     * 
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicySetDefinitionVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicySetDefinitionVersionInner> listBuiltIn(String policySetDefinitionName, String expand,
         Integer top, Context context) {
@@ -1031,22 +879,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             policyDefinitionVersion, expand).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This operation retrieves the policy set definition version in the given management group with the given name and
-     * version.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param policyDefinitionVersion The policy set definition version. The format is x.y.z where x is the major
-     * version number, y is the minor version number, and z is the patch number.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicySetDefinitionVersionInner> getAtManagementGroupWithResponse(String managementGroupName,
         String policySetDefinitionName, String policyDefinitionVersion, String expand, Context context) {
@@ -1055,19 +888,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             managementGroupName, policySetDefinitionName, policyDefinitionVersion, expand, accept, context);
     }
 
-    /**
-     * This operation retrieves the policy set definition version in the given management group with the given name and
-     * version.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param policyDefinitionVersion The policy set definition version. The format is x.y.z where x is the major
-     * version number, y is the minor version number, and z is the patch number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicySetDefinitionVersionInner getAtManagementGroup(String managementGroupName,
         String policySetDefinitionName, String policyDefinitionVersion) {
@@ -1124,21 +945,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             policyDefinitionVersion, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This operation creates or updates a policy set definition version in the given management group with the given
-     * name and version.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param policyDefinitionVersion The policy set definition version. The format is x.y.z where x is the major
-     * version number, y is the minor version number, and z is the patch number.
-     * @param parameters The policy set definition version properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicySetDefinitionVersionInner> createOrUpdateAtManagementGroupWithResponse(
         String managementGroupName, String policySetDefinitionName, String policyDefinitionVersion,
@@ -1150,20 +957,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             context);
     }
 
-    /**
-     * This operation creates or updates a policy set definition version in the given management group with the given
-     * name and version.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param policyDefinitionVersion The policy set definition version. The format is x.y.z where x is the major
-     * version number, y is the minor version number, and z is the patch number.
-     * @param parameters The policy set definition version properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicySetDefinitionVersionInner createOrUpdateAtManagementGroup(String managementGroupName,
         String policySetDefinitionName, String policyDefinitionVersion, PolicySetDefinitionVersionInner parameters) {
@@ -1214,20 +1008,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             policyDefinitionVersion).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * This operation deletes the policy set definition version in the given management group with the given name and
-     * version.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param policyDefinitionVersion The policy set definition version. The format is x.y.z where x is the major
-     * version number, y is the minor version number, and z is the patch number.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAtManagementGroupWithResponse(String managementGroupName,
         String policySetDefinitionName, String policyDefinitionVersion, Context context) {
@@ -1235,18 +1016,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             managementGroupName, policySetDefinitionName, policyDefinitionVersion, context);
     }
 
-    /**
-     * This operation deletes the policy set definition version in the given management group with the given name and
-     * version.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param policyDefinitionVersion The policy set definition version. The format is x.y.z where x is the major
-     * version number, y is the minor version number, and z is the patch number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtManagementGroup(String managementGroupName, String policySetDefinitionName,
         String policyDefinitionVersion) {
@@ -1342,12 +1112,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicySetDefinitionVersionInner> listByManagementGroupSinglePage(String managementGroupName,
         String policySetDefinitionName, String expand, Integer top) {
-        final String accept = "application/json";
-        Response<PolicySetDefinitionVersionListResultInner> res
-            = service.listByManagementGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                managementGroupName, policySetDefinitionName, expand, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByManagementGroupSinglePage(managementGroupName, policySetDefinitionName, expand, top, Context.NONE);
     }
 
     /**
@@ -1376,44 +1141,16 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * This operation retrieves a list of all the policy set definition versions for the given policy set definition in
-     * a given management group.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicySetDefinitionVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicySetDefinitionVersionInner> listByManagementGroup(String managementGroupName,
         String policySetDefinitionName) {
         final String expand = null;
         final Integer top = null;
-        return new PagedIterable<>(
-            () -> listByManagementGroupSinglePage(managementGroupName, policySetDefinitionName, expand, top),
-            nextLink -> listByManagementGroupNextSinglePage(nextLink));
+        return listByManagementGroup(managementGroupName, policySetDefinitionName, expand, top, Context.NONE);
     }
 
-    /**
-     * This operation retrieves a list of all the policy set definition versions for the given policy set definition in
-     * a given management group.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param policySetDefinitionName The name of the policy set definition.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
-     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicySetDefinitionVersion list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicySetDefinitionVersionInner> listByManagementGroup(String managementGroupName,
         String policySetDefinitionName, String expand, Integer top, Context context) {
@@ -1454,32 +1191,14 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
         return listAllBuiltinsWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists all built-in policy set definition versions.
-     * 
-     * This operation lists all the built-in policy set definition versions for all built-in policy set definitions.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicySetDefinitionVersion list operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicySetDefinitionVersionListResultInner> listAllBuiltinsWithResponse(Context context) {
         final String accept = "application/json";
         return service.listAllBuiltinsSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
-    /**
-     * Lists all built-in policy set definition versions.
-     * 
-     * This operation lists all the built-in policy set definition versions for all built-in policy set definitions.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicySetDefinitionVersion list operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicySetDefinitionVersionListResultInner listAllBuiltins() {
         return listAllBuiltinsWithResponse(Context.NONE).getValue();
@@ -1526,19 +1245,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists all policy set definition versions at management group scope.
-     * 
-     * This operation lists all the policy set definition versions for all policy set definitions at the management
-     * group scope.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicySetDefinitionVersion list operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicySetDefinitionVersionListResultInner>
         listAllAtManagementGroupWithResponse(String managementGroupName, Context context) {
@@ -1547,18 +1254,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             this.client.getApiVersion(), accept, context);
     }
 
-    /**
-     * Lists all policy set definition versions at management group scope.
-     * 
-     * This operation lists all the policy set definition versions for all policy set definitions at the management
-     * group scope.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicySetDefinitionVersion list operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicySetDefinitionVersionListResultInner listAllAtManagementGroup(String managementGroupName) {
         return listAllAtManagementGroupWithResponse(managementGroupName, Context.NONE).getValue();
@@ -1597,17 +1293,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
         return listAllWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists all policy set definition versions within a subscription.
-     * 
-     * This operation lists all the policy set definition versions for all policy set definitions within a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicySetDefinitionVersion list operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicySetDefinitionVersionListResultInner> listAllWithResponse(Context context) {
         final String accept = "application/json";
@@ -1615,15 +1301,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * Lists all policy set definition versions within a subscription.
-     * 
-     * This operation lists all the policy set definition versions for all policy set definitions within a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicySetDefinitionVersion list operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicySetDefinitionVersionListResultInner listAll() {
         return listAllWithResponse(Context.NONE).getValue();
@@ -1659,11 +1337,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicySetDefinitionVersionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PolicySetDefinitionVersionListResultInner> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1716,11 +1390,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicySetDefinitionVersionInner> listBuiltInNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PolicySetDefinitionVersionListResultInner> res
-            = service.listBuiltInNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBuiltInNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1775,11 +1445,7 @@ public final class PolicySetDefinitionVersionsClientImpl implements PolicySetDef
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicySetDefinitionVersionInner> listByManagementGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PolicySetDefinitionVersionListResultInner> res
-            = service.listByManagementGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByManagementGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

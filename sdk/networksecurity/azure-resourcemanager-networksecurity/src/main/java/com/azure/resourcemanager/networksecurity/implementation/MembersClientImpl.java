@@ -227,18 +227,7 @@ public final class MembersClientImpl implements MembersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param memberName The name of the Member.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Member along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MemberInner> getWithResponse(String resourceGroupName, String agentFabricName, String memberName,
         Context context) {
@@ -248,17 +237,7 @@ public final class MembersClientImpl implements MembersClient {
             resourceGroupName, agentFabricName, memberName, accept, context);
     }
 
-    /**
-     * Get a Member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param memberName The name of the Member.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Member.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MemberInner get(String resourceGroupName, String agentFabricName, String memberName) {
         return getWithResponse(resourceGroupName, agentFabricName, memberName, Context.NONE).getValue();
@@ -304,11 +283,7 @@ public final class MembersClientImpl implements MembersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String agentFabricName,
         String memberName, MemberInner resource) {
-        final String apiVersion = "2026-11-03-preview";
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, agentFabricName, memberName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, agentFabricName, memberName, resource, Context.NONE);
     }
 
     /**
@@ -355,40 +330,14 @@ public final class MembersClientImpl implements MembersClient {
             MemberInner.class, MemberInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param memberName The name of the Member.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of member resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MemberInner>, MemberInner> beginCreateOrUpdate(String resourceGroupName,
         String agentFabricName, String memberName, MemberInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, agentFabricName, memberName, resource);
-        return this.client.<MemberInner, MemberInner>getLroResult(response, MemberInner.class, MemberInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, agentFabricName, memberName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param memberName The name of the Member.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of member resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MemberInner>, MemberInner> beginCreateOrUpdate(String resourceGroupName,
         String agentFabricName, String memberName, MemberInner resource, Context context) {
@@ -417,41 +366,19 @@ public final class MembersClientImpl implements MembersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param memberName The name of the Member.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return member resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MemberInner createOrUpdate(String resourceGroupName, String agentFabricName, String memberName,
         MemberInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, agentFabricName, memberName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, agentFabricName, memberName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param memberName The name of the Member.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return member resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MemberInner createOrUpdate(String resourceGroupName, String agentFabricName, String memberName,
         MemberInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, agentFabricName, memberName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, agentFabricName, memberName, resource, context));
     }
 
     /**
@@ -494,11 +421,7 @@ public final class MembersClientImpl implements MembersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String agentFabricName, String memberName,
         MemberTagsUpdate properties) {
-        final String apiVersion = "2026-11-03-preview";
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, agentFabricName, memberName, contentType, accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, agentFabricName, memberName, properties, Context.NONE);
     }
 
     /**
@@ -545,39 +468,14 @@ public final class MembersClientImpl implements MembersClient {
             MemberInner.class, MemberInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param memberName The name of the Member.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of member resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MemberInner>, MemberInner> beginUpdate(String resourceGroupName,
         String agentFabricName, String memberName, MemberTagsUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, agentFabricName, memberName, properties);
-        return this.client.<MemberInner, MemberInner>getLroResult(response, MemberInner.class, MemberInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, agentFabricName, memberName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param memberName The name of the Member.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of member resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MemberInner>, MemberInner> beginUpdate(String resourceGroupName,
         String agentFabricName, String memberName, MemberTagsUpdate properties, Context context) {
@@ -606,41 +504,19 @@ public final class MembersClientImpl implements MembersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param memberName The name of the Member.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return member resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MemberInner update(String resourceGroupName, String agentFabricName, String memberName,
         MemberTagsUpdate properties) {
-        return beginUpdate(resourceGroupName, agentFabricName, memberName, properties).getFinalResult();
+        return update(resourceGroupName, agentFabricName, memberName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param memberName The name of the Member.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return member resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MemberInner update(String resourceGroupName, String agentFabricName, String memberName,
         MemberTagsUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, agentFabricName, memberName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, agentFabricName, memberName, properties, context));
     }
 
     /**
@@ -678,9 +554,7 @@ public final class MembersClientImpl implements MembersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String agentFabricName,
         String memberName) {
-        final String apiVersion = "2026-11-03-preview";
-        return service.deleteSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, agentFabricName, memberName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, agentFabricName, memberName, Context.NONE);
     }
 
     /**
@@ -722,36 +596,14 @@ public final class MembersClientImpl implements MembersClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param memberName The name of the Member.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String agentFabricName,
         String memberName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, agentFabricName, memberName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, agentFabricName, memberName, Context.NONE);
     }
 
-    /**
-     * Delete a Member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param memberName The name of the Member.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String agentFabricName,
         String memberName, Context context) {
@@ -776,35 +628,16 @@ public final class MembersClientImpl implements MembersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param memberName The name of the Member.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String agentFabricName, String memberName) {
-        beginDelete(resourceGroupName, agentFabricName, memberName).getFinalResult();
+        delete(resourceGroupName, agentFabricName, memberName, Context.NONE);
     }
 
-    /**
-     * Delete a Member.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param memberName The name of the Member.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String agentFabricName, String memberName, Context context) {
-        beginDelete(resourceGroupName, agentFabricName, memberName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, agentFabricName, memberName, context));
     }
 
     /**
@@ -859,12 +692,7 @@ public final class MembersClientImpl implements MembersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MemberInner> listByParentSinglePage(String resourceGroupName, String agentFabricName) {
-        final String apiVersion = "2026-11-03-preview";
-        final String accept = "application/json";
-        Response<MemberListResult> res = service.listByParentSync(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), resourceGroupName, agentFabricName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, agentFabricName, Context.NONE);
     }
 
     /**
@@ -889,33 +717,13 @@ public final class MembersClientImpl implements MembersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Member resources by AgentFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Member list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MemberInner> listByParent(String resourceGroupName, String agentFabricName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, agentFabricName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, agentFabricName, Context.NONE);
     }
 
-    /**
-     * List Member resources by AgentFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Member list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MemberInner> listByParent(String resourceGroupName, String agentFabricName, Context context) {
         return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, agentFabricName, context),
@@ -953,11 +761,7 @@ public final class MembersClientImpl implements MembersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MemberInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MemberListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

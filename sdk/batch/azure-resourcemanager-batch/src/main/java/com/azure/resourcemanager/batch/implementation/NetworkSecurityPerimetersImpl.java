@@ -49,10 +49,7 @@ public final class NetworkSecurityPerimetersImpl implements NetworkSecurityPerim
 
     public PagedIterable<NetworkSecurityPerimeterConfiguration> listConfigurations(String resourceGroupName,
         String accountName) {
-        PagedIterable<NetworkSecurityPerimeterConfigurationInner> inner
-            = this.serviceClient().listConfigurations(resourceGroupName, accountName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new NetworkSecurityPerimeterConfigurationImpl(inner1, this.manager()));
+        return this.listConfigurations(resourceGroupName, accountName, Context.NONE);
     }
 
     public PagedIterable<NetworkSecurityPerimeterConfiguration> listConfigurations(String resourceGroupName,
@@ -65,8 +62,8 @@ public final class NetworkSecurityPerimetersImpl implements NetworkSecurityPerim
 
     public void reconcileConfiguration(String resourceGroupName, String accountName,
         String networkSecurityPerimeterConfigurationName) {
-        this.serviceClient()
-            .reconcileConfiguration(resourceGroupName, accountName, networkSecurityPerimeterConfigurationName);
+        this.reconcileConfiguration(resourceGroupName, accountName, networkSecurityPerimeterConfigurationName,
+            Context.NONE);
     }
 
     public void reconcileConfiguration(String resourceGroupName, String accountName,

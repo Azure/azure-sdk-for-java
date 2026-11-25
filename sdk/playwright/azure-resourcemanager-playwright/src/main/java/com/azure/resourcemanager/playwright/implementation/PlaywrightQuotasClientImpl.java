@@ -150,17 +150,7 @@ public final class PlaywrightQuotasClientImpl implements PlaywrightQuotasClient 
         return getWithResponseAsync(location, playwrightQuotaName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a subscription-level location-based Playwright quota resource by name.
-     * 
-     * @param location The name of the Azure region.
-     * @param playwrightQuotaName The name of the PlaywrightQuota.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a subscription-level location-based Playwright quota resource by name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlaywrightQuotaInner> getWithResponse(String location, QuotaName playwrightQuotaName,
         Context context) {
@@ -169,16 +159,7 @@ public final class PlaywrightQuotasClientImpl implements PlaywrightQuotasClient 
             location, playwrightQuotaName, accept, context);
     }
 
-    /**
-     * Gets a subscription-level location-based Playwright quota resource by name.
-     * 
-     * @param location The name of the Azure region.
-     * @param playwrightQuotaName The name of the PlaywrightQuota.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a subscription-level location-based Playwright quota resource by name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlaywrightQuotaInner get(String location, QuotaName playwrightQuotaName) {
         return getWithResponse(location, playwrightQuotaName, Context.NONE).getValue();
@@ -231,11 +212,7 @@ public final class PlaywrightQuotasClientImpl implements PlaywrightQuotasClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlaywrightQuotaInner> listBySubscriptionSinglePage(String location) {
-        final String accept = "application/json";
-        Response<PlaywrightQuotaListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionSinglePage(location, Context.NONE);
     }
 
     /**
@@ -257,31 +234,13 @@ public final class PlaywrightQuotasClientImpl implements PlaywrightQuotasClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists Playwright quota resources for a given subscription ID.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PlaywrightQuota list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PlaywrightQuotaInner> listBySubscription(String location) {
-        return new PagedIterable<>(() -> listBySubscriptionSinglePage(location),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return listBySubscription(location, Context.NONE);
     }
 
-    /**
-     * Lists Playwright quota resources for a given subscription ID.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PlaywrightQuota list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PlaywrightQuotaInner> listBySubscription(String location, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionSinglePage(location, context),
@@ -320,11 +279,7 @@ public final class PlaywrightQuotasClientImpl implements PlaywrightQuotasClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlaywrightQuotaInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PlaywrightQuotaListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -72,10 +72,7 @@ public final class WorkflowVersionImpl implements WorkflowVersion, WorkflowVersi
     }
 
     public WorkflowVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkflowVersions()
-            .createOrUpdate(resourceGroupName, contextName, workflowName, versionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkflowVersion create(Context context) {
@@ -97,10 +94,7 @@ public final class WorkflowVersionImpl implements WorkflowVersion, WorkflowVersi
     }
 
     public WorkflowVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkflowVersions()
-            .update(resourceGroupName, contextName, workflowName, versionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkflowVersion apply(Context context) {
@@ -129,11 +123,7 @@ public final class WorkflowVersionImpl implements WorkflowVersion, WorkflowVersi
     }
 
     public WorkflowVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkflowVersions()
-            .getWithResponse(resourceGroupName, contextName, workflowName, versionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkflowVersion refresh(Context context) {

@@ -222,16 +222,7 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves the requested ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteLagInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String expressRouteLagName) {
@@ -296,65 +287,27 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             resourceGroupName, expressRouteLagName, accept, context);
     }
 
-    /**
-     * Retrieves the requested ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteLagInner> getByResourceGroupAsync(String resourceGroupName, String expressRouteLagName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, expressRouteLagName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the requested ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteLagInner> getByResourceGroupWithResponse(String resourceGroupName,
         String expressRouteLagName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, expressRouteLagName, context).block();
     }
 
-    /**
-     * Retrieves the requested ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteLagInner getByResourceGroup(String resourceGroupName, String expressRouteLagName) {
         return getByResourceGroupWithResponse(resourceGroupName, expressRouteLagName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param resource Parameters supplied to the create ExpressRouteLag operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String expressRouteLagName, ExpressRouteLagInner resource) {
@@ -433,17 +386,7 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             resourceGroupName, expressRouteLagName, contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or updates the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param resource Parameters supplied to the create ExpressRouteLag operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of expressRoute LAG.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExpressRouteLagInner>, ExpressRouteLagInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String expressRouteLagName, ExpressRouteLagInner resource) {
@@ -475,52 +418,21 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             ExpressRouteLagInner.class, ExpressRouteLagInner.class, context);
     }
 
-    /**
-     * Creates or updates the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param resource Parameters supplied to the create ExpressRouteLag operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of expressRoute LAG.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteLagInner>, ExpressRouteLagInner>
         beginCreateOrUpdate(String resourceGroupName, String expressRouteLagName, ExpressRouteLagInner resource) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, expressRouteLagName, resource).getSyncPoller();
     }
 
-    /**
-     * Creates or updates the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param resource Parameters supplied to the create ExpressRouteLag operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of expressRoute LAG.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteLagInner>, ExpressRouteLagInner> beginCreateOrUpdate(
         String resourceGroupName, String expressRouteLagName, ExpressRouteLagInner resource, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, expressRouteLagName, resource, context).getSyncPoller();
     }
 
-    /**
-     * Creates or updates the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param resource Parameters supplied to the create ExpressRouteLag operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteLagInner> createOrUpdateAsync(String resourceGroupName, String expressRouteLagName,
         ExpressRouteLagInner resource) {
@@ -547,52 +459,21 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param resource Parameters supplied to the create ExpressRouteLag operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteLagInner createOrUpdate(String resourceGroupName, String expressRouteLagName,
         ExpressRouteLagInner resource) {
         return createOrUpdateAsync(resourceGroupName, expressRouteLagName, resource).block();
     }
 
-    /**
-     * Creates or updates the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param resource Parameters supplied to the create ExpressRouteLag operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteLagInner createOrUpdate(String resourceGroupName, String expressRouteLagName,
         ExpressRouteLagInner resource, Context context) {
         return createOrUpdateAsync(resourceGroupName, expressRouteLagName, resource, context).block();
     }
 
-    /**
-     * Update ExpressRouteLag tags or identity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param properties Parameters supplied to update ExpressRouteLag resource tags or identity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteLagInner>> updateWithResponseAsync(String resourceGroupName,
         String expressRouteLagName, ExpressRouteLagUpdateTagsOrIdentityRequest properties) {
@@ -671,17 +552,7 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             expressRouteLagName, contentType, accept, properties, context);
     }
 
-    /**
-     * Update ExpressRouteLag tags or identity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param properties Parameters supplied to update ExpressRouteLag resource tags or identity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteLagInner> updateAsync(String resourceGroupName, String expressRouteLagName,
         ExpressRouteLagUpdateTagsOrIdentityRequest properties) {
@@ -689,51 +560,21 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update ExpressRouteLag tags or identity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param properties Parameters supplied to update ExpressRouteLag resource tags or identity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteLagInner> updateWithResponse(String resourceGroupName, String expressRouteLagName,
         ExpressRouteLagUpdateTagsOrIdentityRequest properties, Context context) {
         return updateWithResponseAsync(resourceGroupName, expressRouteLagName, properties, context).block();
     }
 
-    /**
-     * Update ExpressRouteLag tags or identity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param properties Parameters supplied to update ExpressRouteLag resource tags or identity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteLagInner update(String resourceGroupName, String expressRouteLagName,
         ExpressRouteLagUpdateTagsOrIdentityRequest properties) {
         return updateWithResponse(resourceGroupName, expressRouteLagName, properties, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String expressRouteLagName) {
@@ -796,16 +637,7 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             expressRouteLagName, context);
     }
 
-    /**
-     * Deletes the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String expressRouteLagName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, expressRouteLagName);
@@ -834,48 +666,20 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             context);
     }
 
-    /**
-     * Deletes the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String expressRouteLagName) {
         return this.beginDeleteAsync(resourceGroupName, expressRouteLagName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String expressRouteLagName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, expressRouteLagName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String expressRouteLagName) {
         return beginDeleteAsync(resourceGroupName, expressRouteLagName).last()
@@ -899,30 +703,13 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String expressRouteLagName) {
         deleteAsync(resourceGroupName, expressRouteLagName).block();
     }
 
-    /**
-     * Deletes the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String expressRouteLagName, Context context) {
         deleteAsync(resourceGroupName, expressRouteLagName, context).block();
@@ -996,15 +783,7 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List all the ExpressRouteLag resources in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG List Result as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteLagInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1027,30 +806,13 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List all the ExpressRouteLag resources in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG List Result as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteLagInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * List all the ExpressRouteLag resources in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG List Result as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteLagInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1110,13 +872,7 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List all the ExpressRouteLag resources in the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG List Result as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteLagInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -1137,44 +893,19 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List all the ExpressRouteLag resources in the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG List Result as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteLagInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * List all the ExpressRouteLag resources in the specified subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG List Result as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteLagInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * Generate a letter of authorization for the requested ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param body Request parameters supplied to generate a letter of authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GenerateExpressRouteLagsLOA API service call along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GenerateExpressRouteLagsLOAResultInner>> generateLoaWithResponseAsync(String resourceGroupName,
         String expressRouteLagName, GenerateExpressRouteLagsLOARequest body) {
@@ -1255,17 +986,7 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             resourceGroupName, expressRouteLagName, contentType, accept, body, context);
     }
 
-    /**
-     * Generate a letter of authorization for the requested ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param body Request parameters supplied to generate a letter of authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GenerateExpressRouteLagsLOA API service call on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GenerateExpressRouteLagsLOAResultInner> generateLoaAsync(String resourceGroupName,
         String expressRouteLagName, GenerateExpressRouteLagsLOARequest body) {
@@ -1273,52 +994,21 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generate a letter of authorization for the requested ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param body Request parameters supplied to generate a letter of authorization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GenerateExpressRouteLagsLOA API service call along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GenerateExpressRouteLagsLOAResultInner> generateLoaWithResponse(String resourceGroupName,
         String expressRouteLagName, GenerateExpressRouteLagsLOARequest body, Context context) {
         return generateLoaWithResponseAsync(resourceGroupName, expressRouteLagName, body, context).block();
     }
 
-    /**
-     * Generate a letter of authorization for the requested ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param body Request parameters supplied to generate a letter of authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GenerateExpressRouteLagsLOA API service call.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenerateExpressRouteLagsLOAResultInner generateLoa(String resourceGroupName, String expressRouteLagName,
         GenerateExpressRouteLagsLOARequest body) {
         return generateLoaWithResponse(resourceGroupName, expressRouteLagName, body, Context.NONE).getValue();
     }
 
-    /**
-     * Retrieves the specified ExpressRouteLagLink resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param linkName The name of the express route LAG link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLagLink along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteLagLinkInner>> linksGetWithResponseAsync(String resourceGroupName,
         String expressRouteLagName, String linkName) {
@@ -1390,17 +1080,7 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             resourceGroupName, expressRouteLagName, linkName, accept, context);
     }
 
-    /**
-     * Retrieves the specified ExpressRouteLagLink resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param linkName The name of the express route LAG link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLagLink on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteLagLinkInner> linksGetAsync(String resourceGroupName, String expressRouteLagName,
         String linkName) {
@@ -1408,35 +1088,14 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the specified ExpressRouteLagLink resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param linkName The name of the express route LAG link.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLagLink along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteLagLinkInner> linksGetWithResponse(String resourceGroupName, String expressRouteLagName,
         String linkName, Context context) {
         return linksGetWithResponseAsync(resourceGroupName, expressRouteLagName, linkName, context).block();
     }
 
-    /**
-     * Retrieves the specified ExpressRouteLagLink resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param linkName The name of the express route LAG link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLagLink.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteLagLinkInner linksGet(String resourceGroupName, String expressRouteLagName, String linkName) {
         return linksGetWithResponse(resourceGroupName, expressRouteLagName, linkName, Context.NONE).getValue();
@@ -1523,16 +1182,7 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieve the ExpressRouteLagLink sub-resources of the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG Link List Result as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteLagLinkInner> linksListAsync(String resourceGroupName, String expressRouteLagName) {
         return new PagedFlux<>(() -> linksListSinglePageAsync(resourceGroupName, expressRouteLagName),
@@ -1557,50 +1207,20 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             nextLink -> linksListNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieve the ExpressRouteLagLink sub-resources of the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG Link List Result as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteLagLinkInner> linksList(String resourceGroupName, String expressRouteLagName) {
         return new PagedIterable<>(linksListAsync(resourceGroupName, expressRouteLagName));
     }
 
-    /**
-     * Retrieve the ExpressRouteLagLink sub-resources of the specified ExpressRouteLag resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of ExpressRouteLag.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG Link List Result as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteLagLinkInner> linksList(String resourceGroupName, String expressRouteLagName,
         Context context) {
         return new PagedIterable<>(linksListAsync(resourceGroupName, expressRouteLagName, context));
     }
 
-    /**
-     * Retrieves the specified ExpressRouteLagMember resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param linkName The name of the express route LAG link.
-     * @param memberName The name of the express route LAG member.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLagMember along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteLagMemberInner>> membersGetWithResponseAsync(String resourceGroupName,
         String expressRouteLagName, String linkName, String memberName) {
@@ -1680,18 +1300,7 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             resourceGroupName, expressRouteLagName, linkName, memberName, accept, context);
     }
 
-    /**
-     * Retrieves the specified ExpressRouteLagMember resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param linkName The name of the express route LAG link.
-     * @param memberName The name of the express route LAG member.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLagMember on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteLagMemberInner> membersGetAsync(String resourceGroupName, String expressRouteLagName,
         String linkName, String memberName) {
@@ -1699,19 +1308,7 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the specified ExpressRouteLagMember resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param linkName The name of the express route LAG link.
-     * @param memberName The name of the express route LAG member.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLagMember along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteLagMemberInner> membersGetWithResponse(String resourceGroupName,
         String expressRouteLagName, String linkName, String memberName, Context context) {
@@ -1719,18 +1316,7 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             .block();
     }
 
-    /**
-     * Retrieves the specified ExpressRouteLagMember resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param linkName The name of the express route LAG link.
-     * @param memberName The name of the express route LAG member.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLagMember.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteLagMemberInner membersGet(String resourceGroupName, String expressRouteLagName, String linkName,
         String memberName) {
@@ -1827,17 +1413,7 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieve the ExpressRouteLagMember sub-resources of the specified ExpressRouteLagLink resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param linkName The name of the express route LAG link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG Member List Result as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteLagMemberInner> membersListAsync(String resourceGroupName, String expressRouteLagName,
         String linkName) {
@@ -1865,35 +1441,14 @@ public final class ExpressRouteLagsClientImpl implements InnerSupportsGet<Expres
             nextLink -> membersListNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieve the ExpressRouteLagMember sub-resources of the specified ExpressRouteLagLink resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param linkName The name of the express route LAG link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG Member List Result as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteLagMemberInner> membersList(String resourceGroupName, String expressRouteLagName,
         String linkName) {
         return new PagedIterable<>(membersListAsync(resourceGroupName, expressRouteLagName, linkName));
     }
 
-    /**
-     * Retrieve the ExpressRouteLagMember sub-resources of the specified ExpressRouteLagLink resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param linkName The name of the express route LAG link.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute LAG Member List Result as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteLagMemberInner> membersList(String resourceGroupName, String expressRouteLagName,
         String linkName, Context context) {

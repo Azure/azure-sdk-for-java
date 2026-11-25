@@ -147,17 +147,7 @@ public final class QuotasClientImpl implements QuotasClient {
         return getWithResponseAsync(location, quotaName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get subscription quota by name.
-     * 
-     * @param location The location of quota in ARM Normalized format like eastus, southeastasia etc.
-     * @param quotaName The quota name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription quota by name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QuotaInner> getWithResponse(String location, QuotaNames quotaName, Context context) {
         final String accept = "application/json";
@@ -165,16 +155,7 @@ public final class QuotasClientImpl implements QuotasClient {
             location, quotaName, accept, context);
     }
 
-    /**
-     * Get subscription quota by name.
-     * 
-     * @param location The location of quota in ARM Normalized format like eastus, southeastasia etc.
-     * @param quotaName The quota name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription quota by name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QuotaInner get(String location, QuotaNames quotaName) {
         return getWithResponse(location, quotaName, Context.NONE).getValue();
@@ -227,11 +208,7 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaInner> listBySubscriptionSinglePage(String location) {
-        final String accept = "application/json";
-        Response<QuotaListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionSinglePage(location, Context.NONE);
     }
 
     /**
@@ -253,31 +230,13 @@ public final class QuotasClientImpl implements QuotasClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List quotas for a given subscription Id.
-     * 
-     * @param location The location of quota in ARM Normalized format like eastus, southeastasia etc.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Quota list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaInner> listBySubscription(String location) {
-        return new PagedIterable<>(() -> listBySubscriptionSinglePage(location),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return listBySubscription(location, Context.NONE);
     }
 
-    /**
-     * List quotas for a given subscription Id.
-     * 
-     * @param location The location of quota in ARM Normalized format like eastus, southeastasia etc.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Quota list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaInner> listBySubscription(String location, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionSinglePage(location, context),
@@ -316,11 +275,7 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<QuotaListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

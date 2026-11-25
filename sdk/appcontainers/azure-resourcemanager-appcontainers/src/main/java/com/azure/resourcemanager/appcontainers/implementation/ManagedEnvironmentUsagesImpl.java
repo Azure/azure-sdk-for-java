@@ -26,8 +26,7 @@ public final class ManagedEnvironmentUsagesImpl implements ManagedEnvironmentUsa
     }
 
     public PagedIterable<Usage> list(String resourceGroupName, String environmentName) {
-        PagedIterable<UsageInner> inner = this.serviceClient().list(resourceGroupName, environmentName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new UsageImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, environmentName, Context.NONE);
     }
 
     public PagedIterable<Usage> list(String resourceGroupName, String environmentName, Context context) {

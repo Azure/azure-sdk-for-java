@@ -125,12 +125,7 @@ public final class PolicyImpl implements Policy, Policy.Definition, Policy.Updat
     }
 
     public Policy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, labName, policySetName, name, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Policy create(Context context) {
@@ -153,11 +148,7 @@ public final class PolicyImpl implements Policy, Policy.Definition, Policy.Updat
     }
 
     public Policy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicies()
-            .updateWithResponse(resourceGroupName, labName, policySetName, name, updatePolicy, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Policy apply(Context context) {
@@ -186,12 +177,7 @@ public final class PolicyImpl implements Policy, Policy.Definition, Policy.Updat
     }
 
     public Policy refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicies()
-            .getWithResponse(resourceGroupName, labName, policySetName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Policy refresh(Context context) {

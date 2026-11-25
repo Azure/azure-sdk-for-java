@@ -50,12 +50,11 @@ public final class WebTestsImpl implements WebTests {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String webTestName) {
-        this.serviceClient().delete(resourceGroupName, webTestName);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, webTestName, Context.NONE);
     }
 
     public PagedIterable<WebTest> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<WebTestInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebTestImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<WebTest> listByResourceGroup(String resourceGroupName, Context context) {
@@ -64,8 +63,7 @@ public final class WebTestsImpl implements WebTests {
     }
 
     public PagedIterable<WebTest> list() {
-        PagedIterable<WebTestInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebTestImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<WebTest> list(Context context) {
@@ -74,8 +72,7 @@ public final class WebTestsImpl implements WebTests {
     }
 
     public PagedIterable<WebTest> listByComponent(String componentName, String resourceGroupName) {
-        PagedIterable<WebTestInner> inner = this.serviceClient().listByComponent(componentName, resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebTestImpl(inner1, this.manager()));
+        return this.listByComponent(componentName, resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<WebTest> listByComponent(String componentName, String resourceGroupName, Context context) {
@@ -85,74 +82,30 @@ public final class WebTestsImpl implements WebTests {
     }
 
     public WebTest getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/webtests/{webTestName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String webTestName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/webtests/{webTestName}",
-            "webTestName");
-        if (webTestName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'webtests'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, webTestName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<WebTest> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/webtests/{webTestName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String webTestName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String webTestName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/webtests/{webTestName}",
-            "webTestName");
-        if (webTestName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'webtests'.", id)));
-        }
+            "webTestName", "webtests", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, webTestName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/webtests/{webTestName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String webTestName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/webtests/{webTestName}",
-            "webTestName");
-        if (webTestName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'webtests'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(resourceGroupName, webTestName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/webtests/{webTestName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String webTestName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String webTestName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/webtests/{webTestName}",
-            "webTestName");
-        if (webTestName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'webtests'.", id)));
-        }
+            "webTestName", "webtests", LOGGER);
         return this.deleteByResourceGroupWithResponse(resourceGroupName, webTestName, context);
     }
 

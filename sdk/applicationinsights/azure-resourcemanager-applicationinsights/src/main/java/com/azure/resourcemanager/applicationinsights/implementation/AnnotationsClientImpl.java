@@ -217,12 +217,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AnnotationInner> listSinglePage(String resourceGroupName, String resourceName, String start,
         String end) {
-        final String apiVersion = "2015-05-01";
-        final String accept = "application/json";
-        Response<AnnotationsListResult> res = service.listSync(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, start, end, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, start, end, Context.NONE);
     }
 
     /**
@@ -249,40 +244,14 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of annotations for a component for given time range.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param start The start time to query from for annotations, cannot be older than 90 days from current date.
-     * @param end The end time to query for annotations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnnotationErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of annotations for a component for given time range as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnnotationInner> list(String resourceGroupName, String resourceName, String start,
         String end) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, start, end),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, start, end, Context.NONE);
     }
 
-    /**
-     * Gets the list of annotations for a component for given time range.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param start The start time to query from for annotations, cannot be older than 90 days from current date.
-     * @param end The end time to query for annotations.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnnotationErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of annotations for a component for given time range as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnnotationInner> list(String resourceGroupName, String resourceName, String start, String end,
         Context context) {
@@ -334,19 +303,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create an Annotation of an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param annotationProperties Properties that need to be specified to create an annotation of a Application
-     * Insights component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnnotationErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<AnnotationInner>> createWithResponse(String resourceGroupName, String resourceName,
         AnnotationInner annotationProperties, Context context) {
@@ -357,18 +314,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
             resourceGroupName, resourceName, contentType, accept, annotationProperties, context);
     }
 
-    /**
-     * Create an Annotation of an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param annotationProperties Properties that need to be specified to create an annotation of a Application
-     * Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnnotationErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<AnnotationInner> create(String resourceGroupName, String resourceName,
         AnnotationInner annotationProperties) {
@@ -412,18 +358,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
         return deleteWithResponseAsync(resourceGroupName, resourceName, annotationId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete an Annotation of an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String annotationId,
         Context context) {
@@ -432,16 +367,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
             this.client.getSubscriptionId(), resourceName, annotationId, context);
     }
 
-    /**
-     * Delete an Annotation of an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String annotationId) {
         deleteWithResponse(resourceGroupName, resourceName, annotationId, Context.NONE);
@@ -486,18 +412,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the annotation for given id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnnotationErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the annotation for given id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<AnnotationInner>> getWithResponse(String resourceGroupName, String resourceName,
         String annotationId, Context context) {
@@ -507,17 +422,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
             this.client.getSubscriptionId(), resourceName, annotationId, accept, context);
     }
 
-    /**
-     * Get the annotation for given id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnnotationErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the annotation for given id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<AnnotationInner> get(String resourceGroupName, String resourceName, String annotationId) {
         return getWithResponse(resourceGroupName, resourceName, annotationId, Context.NONE).getValue();
@@ -553,11 +458,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AnnotationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AnnotationsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

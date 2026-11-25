@@ -226,18 +226,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get datastore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Datastore name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return datastore along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatastoreInner> getWithResponse(String resourceGroupName, String workspaceName, String name,
         Context context) {
@@ -246,17 +235,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
             resourceGroupName, workspaceName, name, accept, context);
     }
 
-    /**
-     * Get datastore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Datastore name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return datastore.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatastoreInner get(String resourceGroupName, String workspaceName, String name) {
         return getWithResponse(resourceGroupName, workspaceName, name, Context.NONE).getValue();
@@ -308,20 +287,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update datastore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Datastore name.
-     * @param body Datastore entity to create or update.
-     * @param skipValidation Flag to skip validation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatastoreInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String name, DatastoreInner body, Boolean skipValidation, Context context) {
@@ -332,18 +298,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
             accept, body, context);
     }
 
-    /**
-     * Create or update datastore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Datastore name.
-     * @param body Datastore entity to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatastoreInner createOrUpdate(String resourceGroupName, String workspaceName, String name,
         DatastoreInner body) {
@@ -387,18 +342,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, name).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete datastore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Datastore name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name,
         Context context) {
@@ -406,16 +350,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, context);
     }
 
-    /**
-     * Delete datastore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Datastore name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String name) {
         deleteWithResponse(resourceGroupName, workspaceName, name, Context.NONE);
@@ -525,17 +460,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatastoreInner> listSinglePage(String resourceGroupName, String workspaceName, String skip,
         Integer count, Boolean isDefault, List<String> names, String searchText, String orderBy, Boolean orderByAsc) {
-        final String accept = "application/json";
-        String namesConverted = (names == null)
-            ? null
-            : names.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        Response<DatastoreResourceArmPaginatedResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, workspaceName, skip, count,
-            isDefault, namesConverted, searchText, orderBy, orderByAsc, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, skip, count, isDefault, names, searchText, orderBy,
+            orderByAsc, Context.NONE);
     }
 
     /**
@@ -573,16 +499,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List datastores.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of Datastore entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatastoreInner> list(String resourceGroupName, String workspaceName) {
         final String skip = null;
@@ -592,28 +509,11 @@ public final class DatastoresClientImpl implements DatastoresClient {
         final String searchText = null;
         final String orderBy = null;
         final Boolean orderByAsc = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, skip, count, isDefault, names,
-            searchText, orderBy, orderByAsc), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, skip, count, isDefault, names, searchText, orderBy, orderByAsc,
+            Context.NONE);
     }
 
-    /**
-     * List datastores.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param skip Continuation token for pagination.
-     * @param count Maximum number of results to return.
-     * @param isDefault Filter down to the workspace default datastore.
-     * @param names Names of datastores to return.
-     * @param searchText Text to search for in the datastore names.
-     * @param orderBy Order by property (createdtime | modifiedtime | name).
-     * @param orderByAsc Order by property in ascending order.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of Datastore entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatastoreInner> list(String resourceGroupName, String workspaceName, String skip,
         Integer count, Boolean isDefault, List<String> names, String searchText, String orderBy, Boolean orderByAsc,
@@ -662,19 +562,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get datastore secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Datastore name.
-     * @param body Secret expiry information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return datastore secrets along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatastoreSecretsInner> listSecretsWithResponse(String resourceGroupName, String workspaceName,
         String name, SecretExpiry body, Context context) {
@@ -683,17 +571,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, accept, body, context);
     }
 
-    /**
-     * Get datastore secrets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Datastore name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return datastore secrets.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatastoreSecretsInner listSecrets(String resourceGroupName, String workspaceName, String name) {
         final SecretExpiry body = null;
@@ -734,11 +612,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatastoreInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DatastoreResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

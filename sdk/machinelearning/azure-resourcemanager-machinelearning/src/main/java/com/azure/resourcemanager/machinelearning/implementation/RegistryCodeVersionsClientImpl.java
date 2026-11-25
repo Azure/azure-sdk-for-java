@@ -234,19 +234,7 @@ public final class RegistryCodeVersionsClientImpl implements RegistryCodeVersion
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param version Version identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CodeVersionInner> getWithResponse(String resourceGroupName, String registryName, String codeName,
         String version, Context context) {
@@ -255,18 +243,7 @@ public final class RegistryCodeVersionsClientImpl implements RegistryCodeVersion
             resourceGroupName, registryName, codeName, version, accept, context);
     }
 
-    /**
-     * Get version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param version Version identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CodeVersionInner get(String resourceGroupName, String registryName, String codeName, String version) {
         return getWithResponse(resourceGroupName, registryName, codeName, version, Context.NONE).getValue();
@@ -314,11 +291,7 @@ public final class RegistryCodeVersionsClientImpl implements RegistryCodeVersion
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String registryName,
         String codeName, String version, CodeVersionInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, registryName, codeName, version, contentType, accept,
-            body, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, registryName, codeName, version, body, Context.NONE);
     }
 
     /**
@@ -367,42 +340,14 @@ public final class RegistryCodeVersionsClientImpl implements RegistryCodeVersion
             CodeVersionInner.class, CodeVersionInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param version Version identifier.
-     * @param body Version entity to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CodeVersionInner>, CodeVersionInner> beginCreateOrUpdate(String resourceGroupName,
         String registryName, String codeName, String version, CodeVersionInner body) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, registryName, codeName, version, body);
-        return this.client.<CodeVersionInner, CodeVersionInner>getLroResult(response, CodeVersionInner.class,
-            CodeVersionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, registryName, codeName, version, body, Context.NONE);
     }
 
-    /**
-     * Create or update version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param version Version identifier.
-     * @param body Version entity to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CodeVersionInner>, CodeVersionInner> beginCreateOrUpdate(String resourceGroupName,
         String registryName, String codeName, String version, CodeVersionInner body, Context context) {
@@ -432,43 +377,19 @@ public final class RegistryCodeVersionsClientImpl implements RegistryCodeVersion
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param version Version identifier.
-     * @param body Version entity to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CodeVersionInner createOrUpdate(String resourceGroupName, String registryName, String codeName,
         String version, CodeVersionInner body) {
-        return beginCreateOrUpdate(resourceGroupName, registryName, codeName, version, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, registryName, codeName, version, body, Context.NONE);
     }
 
-    /**
-     * Create or update version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param version Version identifier.
-     * @param body Version entity to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CodeVersionInner createOrUpdate(String resourceGroupName, String registryName, String codeName,
         String version, CodeVersionInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, registryName, codeName, version, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, registryName, codeName, version, body, context));
     }
 
     /**
@@ -507,8 +428,7 @@ public final class RegistryCodeVersionsClientImpl implements RegistryCodeVersion
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String registryName, String codeName,
         String version) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, registryName, codeName, version, Context.NONE);
+        return deleteWithResponse(resourceGroupName, registryName, codeName, version, Context.NONE);
     }
 
     /**
@@ -552,38 +472,14 @@ public final class RegistryCodeVersionsClientImpl implements RegistryCodeVersion
             this.client.getContext());
     }
 
-    /**
-     * Delete version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param version Version identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
         String codeName, String version) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, registryName, codeName, version);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, registryName, codeName, version, Context.NONE);
     }
 
-    /**
-     * Delete version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param version Version identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
         String codeName, String version, Context context) {
@@ -609,38 +505,17 @@ public final class RegistryCodeVersionsClientImpl implements RegistryCodeVersion
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param version Version identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String registryName, String codeName, String version) {
-        beginDelete(resourceGroupName, registryName, codeName, version).getFinalResult();
+        delete(resourceGroupName, registryName, codeName, version, Context.NONE);
     }
 
-    /**
-     * Delete version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param version Version identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String registryName, String codeName, String version,
         Context context) {
-        beginDelete(resourceGroupName, registryName, codeName, version, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, registryName, codeName, version, context));
     }
 
     /**
@@ -729,12 +604,7 @@ public final class RegistryCodeVersionsClientImpl implements RegistryCodeVersion
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CodeVersionInner> listSinglePage(String resourceGroupName, String registryName,
         String codeName, String orderBy, Integer top, String skip) {
-        final String accept = "application/json";
-        Response<CodeVersionResourceArmPaginatedResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, codeName, orderBy, top, skip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, registryName, codeName, orderBy, top, skip, Context.NONE);
     }
 
     /**
@@ -763,41 +633,16 @@ public final class RegistryCodeVersionsClientImpl implements RegistryCodeVersion
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List versions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of CodeVersion entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CodeVersionInner> list(String resourceGroupName, String registryName, String codeName) {
         final String orderBy = null;
         final Integer top = null;
         final String skip = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, registryName, codeName, orderBy, top, skip),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, registryName, codeName, orderBy, top, skip, Context.NONE);
     }
 
-    /**
-     * List versions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param orderBy Ordering of list.
-     * @param top Maximum number of records to return.
-     * @param skip Continuation token for pagination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of CodeVersion entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CodeVersionInner> list(String resourceGroupName, String registryName, String codeName,
         String orderBy, Integer top, String skip, Context context) {
@@ -851,20 +696,7 @@ public final class RegistryCodeVersionsClientImpl implements RegistryCodeVersion
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generate a storage location and credential for the client to upload a code asset to.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param version Version identifier.
-     * @param body Pending upload request object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PendingUploadResponseDtoInner> createOrGetStartPendingUploadWithResponse(String resourceGroupName,
         String registryName, String codeName, String version, PendingUploadRequestDto body, Context context) {
@@ -875,19 +707,7 @@ public final class RegistryCodeVersionsClientImpl implements RegistryCodeVersion
             body, context);
     }
 
-    /**
-     * Generate a storage location and credential for the client to upload a code asset to.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param version Version identifier.
-     * @param body Pending upload request object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PendingUploadResponseDtoInner createOrGetStartPendingUpload(String resourceGroupName, String registryName,
         String codeName, String version, PendingUploadRequestDto body) {
@@ -929,11 +749,7 @@ public final class RegistryCodeVersionsClientImpl implements RegistryCodeVersion
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CodeVersionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CodeVersionResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

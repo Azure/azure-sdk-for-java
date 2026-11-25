@@ -26,8 +26,7 @@ public final class AvailableEnvironmentModesImpl implements AvailableEnvironment
     }
 
     public PagedIterable<AvailableEnvironmentMode> list(String location) {
-        PagedIterable<AvailableEnvironmentModeInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailableEnvironmentModeImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<AvailableEnvironmentMode> list(String location, Context context) {

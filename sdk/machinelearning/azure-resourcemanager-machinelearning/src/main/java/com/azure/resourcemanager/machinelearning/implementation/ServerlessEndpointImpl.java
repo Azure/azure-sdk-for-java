@@ -107,10 +107,7 @@ public final class ServerlessEndpointImpl
     }
 
     public ServerlessEndpoint create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServerlessEndpoints()
-            .createOrUpdate(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ServerlessEndpoint create(Context context) {
@@ -133,10 +130,7 @@ public final class ServerlessEndpointImpl
     }
 
     public ServerlessEndpoint apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServerlessEndpoints()
-            .update(resourceGroupName, workspaceName, name, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ServerlessEndpoint apply(Context context) {
@@ -162,11 +156,7 @@ public final class ServerlessEndpointImpl
     }
 
     public ServerlessEndpoint refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServerlessEndpoints()
-            .getWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ServerlessEndpoint refresh(Context context) {

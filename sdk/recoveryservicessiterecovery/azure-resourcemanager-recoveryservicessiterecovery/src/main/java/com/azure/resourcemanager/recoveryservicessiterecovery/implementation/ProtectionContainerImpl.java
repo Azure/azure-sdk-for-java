@@ -98,11 +98,7 @@ public final class ProtectionContainerImpl implements ProtectionContainer, Prote
     }
 
     public ProtectionContainer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationProtectionContainers()
-            .create(resourceGroupName, resourceName, fabricName, protectionContainerName, createCreationInput,
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProtectionContainer create(Context context) {
@@ -120,11 +116,7 @@ public final class ProtectionContainerImpl implements ProtectionContainer, Prote
     }
 
     public ProtectionContainer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationProtectionContainers()
-            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProtectionContainer refresh(Context context) {

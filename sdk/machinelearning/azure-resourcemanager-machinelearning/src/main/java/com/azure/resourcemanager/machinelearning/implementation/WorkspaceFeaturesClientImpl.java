@@ -147,12 +147,7 @@ public final class WorkspaceFeaturesClientImpl implements WorkspaceFeaturesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AmlUserFeatureInner> listSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<ListAmlUserFeatureResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -177,33 +172,13 @@ public final class WorkspaceFeaturesClientImpl implements WorkspaceFeaturesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all enabled features for a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Aml user feature operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AmlUserFeatureInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Lists all enabled features for a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Aml user feature operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AmlUserFeatureInner> list(String resourceGroupName, String workspaceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, context),
@@ -240,11 +215,7 @@ public final class WorkspaceFeaturesClientImpl implements WorkspaceFeaturesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AmlUserFeatureInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ListAmlUserFeatureResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

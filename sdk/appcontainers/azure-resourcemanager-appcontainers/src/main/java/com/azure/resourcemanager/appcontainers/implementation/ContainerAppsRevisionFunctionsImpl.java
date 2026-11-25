@@ -48,9 +48,7 @@ public final class ContainerAppsRevisionFunctionsImpl implements ContainerAppsRe
 
     public PagedIterable<ContainerAppsFunction> list(String resourceGroupName, String containerAppName,
         String revisionName) {
-        PagedIterable<ContainerAppsFunctionInner> inner
-            = this.serviceClient().list(resourceGroupName, containerAppName, revisionName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContainerAppsFunctionImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, containerAppName, revisionName, Context.NONE);
     }
 
     public PagedIterable<ContainerAppsFunction> list(String resourceGroupName, String containerAppName,

@@ -175,10 +175,7 @@ public final class RegisteredServerImpl
     }
 
     public RegisteredServer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRegisteredServers()
-            .create(resourceGroupName, storageSyncServiceName, serverId, createParameters, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RegisteredServer create(Context context) {
@@ -200,10 +197,7 @@ public final class RegisteredServerImpl
     }
 
     public RegisteredServer apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRegisteredServers()
-            .update(resourceGroupName, storageSyncServiceName, serverId, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RegisteredServer apply(Context context) {
@@ -229,11 +223,7 @@ public final class RegisteredServerImpl
     }
 
     public RegisteredServer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRegisteredServers()
-            .getWithResponse(resourceGroupName, storageSyncServiceName, serverId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RegisteredServer refresh(Context context) {

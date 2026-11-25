@@ -145,16 +145,7 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
         return getWithResponseAsync(networkDeviceSkuName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Network Device SKU details.
-     * 
-     * @param networkDeviceSkuName Name of the Network Device SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Network Device SKU details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkDeviceSkuInner> getWithResponse(String networkDeviceSkuName, Context context) {
         final String accept = "application/json";
@@ -162,15 +153,7 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
             networkDeviceSkuName, accept, context);
     }
 
-    /**
-     * Get a Network Device SKU details.
-     * 
-     * @param networkDeviceSkuName Name of the Network Device SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Network Device SKU details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceSkuInner get(String networkDeviceSkuName) {
         return getWithResponse(networkDeviceSkuName, Context.NONE).getValue();
@@ -217,11 +200,7 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkDeviceSkuInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<NetworkDeviceSkusListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -242,27 +221,13 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Network Device SKUs for the given subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkDeviceSku items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkDeviceSkuInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List Network Device SKUs for the given subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkDeviceSku items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkDeviceSkuInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -301,11 +266,7 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkDeviceSkuInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkDeviceSkusListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

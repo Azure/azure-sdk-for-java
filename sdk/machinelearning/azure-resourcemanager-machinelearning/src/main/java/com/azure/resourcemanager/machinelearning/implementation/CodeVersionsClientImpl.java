@@ -257,19 +257,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CodeVersionInner> getWithResponse(String resourceGroupName, String workspaceName, String name,
         String version, Context context) {
@@ -278,18 +266,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
             resourceGroupName, workspaceName, name, version, accept, context);
     }
 
-    /**
-     * Get version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CodeVersionInner get(String resourceGroupName, String workspaceName, String name, String version) {
         return getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE).getValue();
@@ -341,20 +318,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param body Version entity to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CodeVersionInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String name, String version, CodeVersionInner body, Context context) {
@@ -365,19 +329,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
             context);
     }
 
-    /**
-     * Create or update version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param body Version entity to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CodeVersionInner createOrUpdate(String resourceGroupName, String workspaceName, String name, String version,
         CodeVersionInner body) {
@@ -424,19 +376,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name,
         String version, Context context) {
@@ -444,17 +384,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, version, context);
     }
 
-    /**
-     * Delete version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String name, String version) {
         deleteWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE);
@@ -556,12 +486,8 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CodeVersionInner> listSinglePage(String resourceGroupName, String workspaceName, String name,
         String orderBy, Integer top, String skip, String hash, String hashVersion) {
-        final String accept = "application/json";
-        Response<CodeVersionResourceArmPaginatedResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, name, orderBy, top, skip, hash, hashVersion, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, name, orderBy, top, skip, hash, hashVersion,
+            Context.NONE);
     }
 
     /**
@@ -592,17 +518,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List versions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of CodeVersion entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CodeVersionInner> list(String resourceGroupName, String workspaceName, String name) {
         final String orderBy = null;
@@ -610,28 +526,10 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
         final String skip = null;
         final String hash = null;
         final String hashVersion = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, workspaceName, name, orderBy, top, skip, hash, hashVersion),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, name, orderBy, top, skip, hash, hashVersion, Context.NONE);
     }
 
-    /**
-     * List versions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param orderBy Ordering of list.
-     * @param top Maximum number of records to return.
-     * @param skip Continuation token for pagination.
-     * @param hash If specified, return CodeVersion assets with specified content hash value, regardless of name.
-     * @param hashVersion Hash algorithm version when listing by hash.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of CodeVersion entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CodeVersionInner> list(String resourceGroupName, String workspaceName, String name,
         String orderBy, Integer top, String skip, String hash, String hashVersion, Context context) {
@@ -679,10 +577,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> publishWithResponse(String resourceGroupName, String workspaceName, String name,
         String version, DestinationAsset body) {
-        final String contentType = "application/json";
-        return service.publishSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, version, contentType, body,
-            Context.NONE);
+        return publishWithResponse(resourceGroupName, workspaceName, name, version, body, Context.NONE);
     }
 
     /**
@@ -730,40 +625,14 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
             this.client.getContext());
     }
 
-    /**
-     * Publish version asset into registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param body Destination registry info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPublish(String resourceGroupName, String workspaceName, String name,
         String version, DestinationAsset body) {
-        Response<BinaryData> response = publishWithResponse(resourceGroupName, workspaceName, name, version, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginPublish(resourceGroupName, workspaceName, name, version, body, Context.NONE);
     }
 
-    /**
-     * Publish version asset into registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param body Destination registry info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPublish(String resourceGroupName, String workspaceName, String name,
         String version, DestinationAsset body, Context context) {
@@ -792,41 +661,19 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Publish version asset into registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param body Destination registry info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void publish(String resourceGroupName, String workspaceName, String name, String version,
         DestinationAsset body) {
-        beginPublish(resourceGroupName, workspaceName, name, version, body).getFinalResult();
+        publish(resourceGroupName, workspaceName, name, version, body, Context.NONE);
     }
 
-    /**
-     * Publish version asset into registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param body Destination registry info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void publish(String resourceGroupName, String workspaceName, String name, String version,
         DestinationAsset body, Context context) {
-        beginPublish(resourceGroupName, workspaceName, name, version, body, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginPublish(resourceGroupName, workspaceName, name, version, body, context));
     }
 
     /**
@@ -874,20 +721,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generate a storage location and credential for the client to upload a code asset to.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param body Pending upload request object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PendingUploadResponseDtoInner> createOrGetStartPendingUploadWithResponse(String resourceGroupName,
         String workspaceName, String name, String version, PendingUploadRequestDto body, Context context) {
@@ -898,19 +732,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
             context);
     }
 
-    /**
-     * Generate a storage location and credential for the client to upload a code asset to.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param body Pending upload request object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PendingUploadResponseDtoInner createOrGetStartPendingUpload(String resourceGroupName, String workspaceName,
         String name, String version, PendingUploadRequestDto body) {
@@ -952,11 +774,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CodeVersionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CodeVersionResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

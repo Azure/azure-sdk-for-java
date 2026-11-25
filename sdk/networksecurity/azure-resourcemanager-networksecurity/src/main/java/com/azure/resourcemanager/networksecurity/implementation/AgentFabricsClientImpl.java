@@ -255,17 +255,7 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a AgentFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AgentFabric along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentFabricInner> getByResourceGroupWithResponse(String resourceGroupName, String agentFabricName,
         Context context) {
@@ -275,16 +265,7 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
             resourceGroupName, agentFabricName, accept, context);
     }
 
-    /**
-     * Get a AgentFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AgentFabric.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentFabricInner getByResourceGroup(String resourceGroupName, String agentFabricName) {
         return getByResourceGroupWithResponse(resourceGroupName, agentFabricName, Context.NONE).getValue();
@@ -486,11 +467,7 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String agentFabricName,
         AgentFabricInner resource) {
-        final String apiVersion = "2026-11-03-preview";
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, agentFabricName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, agentFabricName, resource, Context.NONE);
     }
 
     /**
@@ -693,195 +670,14 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
             AgentFabricInner.class, AgentFabricInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or replaces an AgentFabric.
-     * 
-     * Before accepting the request or changing policy-group associations, validate the policy
-     * types in every proposed defaultPolicyGroups reference against the fabric's effective
-     * inspection configuration. If no connection is configured and any referenced group contains a
-     * ContentInspection policy, reject the request with HTTP 409 and error code
-     * ContentInspectionCapabilityDisabled, targeting properties.defaultPolicyGroups. No incompatible
-     * association change is accepted. This check does not depend on whether policy selectors
-     * currently match traffic.
-     * 
-     * Omitting contentInspectionProfile or supplying {} on PUT for an existing fabric preserves its
-     * customer-owned connection, legacy regional connection, or absence of connection.
-     * Do not persist {} over the stored connection or cancel a pending connection update.
-     * New-fabric omission or {} requests no inspection capability and no regional fallback.
-     * Existing legacy fabrics without a profile retain their regional Content Safety connection,
-     * which satisfies the inspection prerequisite without new probes, management calls, or key
-     * retrieval. A connection still being validated is not an absent connection.
-     * Error messages must not disclose associated fabric IDs the caller is not authorized to read.
-     * 
-     * If a connection update is in progress for this fabric, reject a PUT requesting a different
-     * connection with HTTP 409 Conflict, without changing the connection update already in progress.
-     * A retry of the same requested connection is not a conflicting change. This does not prevent
-     * later key rotations or endpoint replacements.
-     * 
-     * In API version `2026-10-07-preview` and later, reject definite invalid customer connection input before
-     * accepting PUT with HTTP 400 Bad Request. A nonempty profile must contain both endpoint and apiKey.
-     * Reject a missing field before connection validation, without retrieving a saved key or comparing
-     * with the saved endpoint to permit key omission. Only a truly empty object is a connection no-op;
-     * partial objects or objects containing only unrecognized fields must not be treated as empty.
-     * Invalid input also includes a null or nonobject profile;
-     * a malformed, untrusted, or unsupported endpoint (including a non-HTTPS or unrecognized Azure
-     * account host or an unsupported cloud); and explicit null, empty, or wrong-type endpoint or key.
-     * An endpoint without a key is invalid even when unchanged; a key without an endpoint is invalid.
-     * An omitted profile or {} is not invalid connection input. Its no-op applies only to connection
-     * handling; caller authorization, other Fabric fields, policy compatibility, and ordinary
-     * pending-operation rules still apply.
-     * 
-     * For service-level connection validation rejection, return ContentInspectionConnectionValidationFailed
-     * in the standard error response, targeting properties.contentInspectionProfile or its endpoint
-     * or apiKey field when the invalid field is known. Ordinary schema/model validation may retain
-     * its standard HTTP 400 errors. The connection code also applies to definitively rejected
-     * credentials or a confirmed account/access setting or missing required Content Safety API
-     * capability that prevents use of the supplied connection. Interpret upstream 401/403 responses
-     * to distinguish credentials from account access, local authentication, or network restrictions;
-     * do not report them as authentication/authorization failures of the Fabric caller.
-     * 
-     * Throttling (HTTP 429), service failures (5xx), DNS/TLS failures, timeouts, and inconclusive
-     * availability do not establish bad customer input and must not be classified as this HTTP 400
-     * rejection. A DNS timeout or an arbitrary upstream 404 does not prove that the account is absent.
-     * If a definite validation rejection is discovered after PUT acceptance, report terminal Failed
-     * with the corresponding error in the established long-running operation status response;
-     * the accepted PUT response does not become HTTP 400. Failed replacement preserves the previously
-     * active connection; never validate or operate failed customer input using regional credentials.
-     * Error responses must not contain key values or raw upstream response bodies.
-     * 
-     * Example connection rejection response (HTTP 400 Bad Request):
-     * 
-     * ```json
-     * {
-     * "error": {
-     * "code": "ContentInspectionConnectionValidationFailed",
-     * "message": "The supplied Content Safety connection could not be validated. Verify the endpoint, API key, and
-     * account access settings.",
-     * "target": "properties.contentInspectionProfile"
-     * }
-     * }
-     * ```
-     * 
-     * Example rejection response (HTTP 409 Conflict):
-     * 
-     * ```json
-     * {
-     * "error": {
-     * "code": "ContentInspectionCapabilityDisabled",
-     * "message": "The referenced policy group contains a ContentInspection policy, but this fabric has no configured
-     * inspection connection.",
-     * "target": "properties.defaultPolicyGroups"
-     * }
-     * }
-     * ```.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of agentFabric resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentFabricInner>, AgentFabricInner> beginCreateOrUpdate(String resourceGroupName,
         String agentFabricName, AgentFabricInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, agentFabricName, resource);
-        return this.client.<AgentFabricInner, AgentFabricInner>getLroResult(response, AgentFabricInner.class,
-            AgentFabricInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, agentFabricName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces an AgentFabric.
-     * 
-     * Before accepting the request or changing policy-group associations, validate the policy
-     * types in every proposed defaultPolicyGroups reference against the fabric's effective
-     * inspection configuration. If no connection is configured and any referenced group contains a
-     * ContentInspection policy, reject the request with HTTP 409 and error code
-     * ContentInspectionCapabilityDisabled, targeting properties.defaultPolicyGroups. No incompatible
-     * association change is accepted. This check does not depend on whether policy selectors
-     * currently match traffic.
-     * 
-     * Omitting contentInspectionProfile or supplying {} on PUT for an existing fabric preserves its
-     * customer-owned connection, legacy regional connection, or absence of connection.
-     * Do not persist {} over the stored connection or cancel a pending connection update.
-     * New-fabric omission or {} requests no inspection capability and no regional fallback.
-     * Existing legacy fabrics without a profile retain their regional Content Safety connection,
-     * which satisfies the inspection prerequisite without new probes, management calls, or key
-     * retrieval. A connection still being validated is not an absent connection.
-     * Error messages must not disclose associated fabric IDs the caller is not authorized to read.
-     * 
-     * If a connection update is in progress for this fabric, reject a PUT requesting a different
-     * connection with HTTP 409 Conflict, without changing the connection update already in progress.
-     * A retry of the same requested connection is not a conflicting change. This does not prevent
-     * later key rotations or endpoint replacements.
-     * 
-     * In API version `2026-10-07-preview` and later, reject definite invalid customer connection input before
-     * accepting PUT with HTTP 400 Bad Request. A nonempty profile must contain both endpoint and apiKey.
-     * Reject a missing field before connection validation, without retrieving a saved key or comparing
-     * with the saved endpoint to permit key omission. Only a truly empty object is a connection no-op;
-     * partial objects or objects containing only unrecognized fields must not be treated as empty.
-     * Invalid input also includes a null or nonobject profile;
-     * a malformed, untrusted, or unsupported endpoint (including a non-HTTPS or unrecognized Azure
-     * account host or an unsupported cloud); and explicit null, empty, or wrong-type endpoint or key.
-     * An endpoint without a key is invalid even when unchanged; a key without an endpoint is invalid.
-     * An omitted profile or {} is not invalid connection input. Its no-op applies only to connection
-     * handling; caller authorization, other Fabric fields, policy compatibility, and ordinary
-     * pending-operation rules still apply.
-     * 
-     * For service-level connection validation rejection, return ContentInspectionConnectionValidationFailed
-     * in the standard error response, targeting properties.contentInspectionProfile or its endpoint
-     * or apiKey field when the invalid field is known. Ordinary schema/model validation may retain
-     * its standard HTTP 400 errors. The connection code also applies to definitively rejected
-     * credentials or a confirmed account/access setting or missing required Content Safety API
-     * capability that prevents use of the supplied connection. Interpret upstream 401/403 responses
-     * to distinguish credentials from account access, local authentication, or network restrictions;
-     * do not report them as authentication/authorization failures of the Fabric caller.
-     * 
-     * Throttling (HTTP 429), service failures (5xx), DNS/TLS failures, timeouts, and inconclusive
-     * availability do not establish bad customer input and must not be classified as this HTTP 400
-     * rejection. A DNS timeout or an arbitrary upstream 404 does not prove that the account is absent.
-     * If a definite validation rejection is discovered after PUT acceptance, report terminal Failed
-     * with the corresponding error in the established long-running operation status response;
-     * the accepted PUT response does not become HTTP 400. Failed replacement preserves the previously
-     * active connection; never validate or operate failed customer input using regional credentials.
-     * Error responses must not contain key values or raw upstream response bodies.
-     * 
-     * Example connection rejection response (HTTP 400 Bad Request):
-     * 
-     * ```json
-     * {
-     * "error": {
-     * "code": "ContentInspectionConnectionValidationFailed",
-     * "message": "The supplied Content Safety connection could not be validated. Verify the endpoint, API key, and
-     * account access settings.",
-     * "target": "properties.contentInspectionProfile"
-     * }
-     * }
-     * ```
-     * 
-     * Example rejection response (HTTP 409 Conflict):
-     * 
-     * ```json
-     * {
-     * "error": {
-     * "code": "ContentInspectionCapabilityDisabled",
-     * "message": "The referenced policy group contains a ContentInspection policy, but this fabric has no configured
-     * inspection connection.",
-     * "target": "properties.defaultPolicyGroups"
-     * }
-     * }
-     * ```.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of agentFabric resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentFabricInner>, AgentFabricInner> beginCreateOrUpdate(String resourceGroupName,
         String agentFabricName, AgentFabricInner resource, Context context) {
@@ -988,197 +784,19 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces an AgentFabric.
-     * 
-     * Before accepting the request or changing policy-group associations, validate the policy
-     * types in every proposed defaultPolicyGroups reference against the fabric's effective
-     * inspection configuration. If no connection is configured and any referenced group contains a
-     * ContentInspection policy, reject the request with HTTP 409 and error code
-     * ContentInspectionCapabilityDisabled, targeting properties.defaultPolicyGroups. No incompatible
-     * association change is accepted. This check does not depend on whether policy selectors
-     * currently match traffic.
-     * 
-     * Omitting contentInspectionProfile or supplying {} on PUT for an existing fabric preserves its
-     * customer-owned connection, legacy regional connection, or absence of connection.
-     * Do not persist {} over the stored connection or cancel a pending connection update.
-     * New-fabric omission or {} requests no inspection capability and no regional fallback.
-     * Existing legacy fabrics without a profile retain their regional Content Safety connection,
-     * which satisfies the inspection prerequisite without new probes, management calls, or key
-     * retrieval. A connection still being validated is not an absent connection.
-     * Error messages must not disclose associated fabric IDs the caller is not authorized to read.
-     * 
-     * If a connection update is in progress for this fabric, reject a PUT requesting a different
-     * connection with HTTP 409 Conflict, without changing the connection update already in progress.
-     * A retry of the same requested connection is not a conflicting change. This does not prevent
-     * later key rotations or endpoint replacements.
-     * 
-     * In API version `2026-10-07-preview` and later, reject definite invalid customer connection input before
-     * accepting PUT with HTTP 400 Bad Request. A nonempty profile must contain both endpoint and apiKey.
-     * Reject a missing field before connection validation, without retrieving a saved key or comparing
-     * with the saved endpoint to permit key omission. Only a truly empty object is a connection no-op;
-     * partial objects or objects containing only unrecognized fields must not be treated as empty.
-     * Invalid input also includes a null or nonobject profile;
-     * a malformed, untrusted, or unsupported endpoint (including a non-HTTPS or unrecognized Azure
-     * account host or an unsupported cloud); and explicit null, empty, or wrong-type endpoint or key.
-     * An endpoint without a key is invalid even when unchanged; a key without an endpoint is invalid.
-     * An omitted profile or {} is not invalid connection input. Its no-op applies only to connection
-     * handling; caller authorization, other Fabric fields, policy compatibility, and ordinary
-     * pending-operation rules still apply.
-     * 
-     * For service-level connection validation rejection, return ContentInspectionConnectionValidationFailed
-     * in the standard error response, targeting properties.contentInspectionProfile or its endpoint
-     * or apiKey field when the invalid field is known. Ordinary schema/model validation may retain
-     * its standard HTTP 400 errors. The connection code also applies to definitively rejected
-     * credentials or a confirmed account/access setting or missing required Content Safety API
-     * capability that prevents use of the supplied connection. Interpret upstream 401/403 responses
-     * to distinguish credentials from account access, local authentication, or network restrictions;
-     * do not report them as authentication/authorization failures of the Fabric caller.
-     * 
-     * Throttling (HTTP 429), service failures (5xx), DNS/TLS failures, timeouts, and inconclusive
-     * availability do not establish bad customer input and must not be classified as this HTTP 400
-     * rejection. A DNS timeout or an arbitrary upstream 404 does not prove that the account is absent.
-     * If a definite validation rejection is discovered after PUT acceptance, report terminal Failed
-     * with the corresponding error in the established long-running operation status response;
-     * the accepted PUT response does not become HTTP 400. Failed replacement preserves the previously
-     * active connection; never validate or operate failed customer input using regional credentials.
-     * Error responses must not contain key values or raw upstream response bodies.
-     * 
-     * Example connection rejection response (HTTP 400 Bad Request):
-     * 
-     * ```json
-     * {
-     * "error": {
-     * "code": "ContentInspectionConnectionValidationFailed",
-     * "message": "The supplied Content Safety connection could not be validated. Verify the endpoint, API key, and
-     * account access settings.",
-     * "target": "properties.contentInspectionProfile"
-     * }
-     * }
-     * ```
-     * 
-     * Example rejection response (HTTP 409 Conflict):
-     * 
-     * ```json
-     * {
-     * "error": {
-     * "code": "ContentInspectionCapabilityDisabled",
-     * "message": "The referenced policy group contains a ContentInspection policy, but this fabric has no configured
-     * inspection connection.",
-     * "target": "properties.defaultPolicyGroups"
-     * }
-     * }
-     * ```.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agentFabric resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentFabricInner createOrUpdate(String resourceGroupName, String agentFabricName,
         AgentFabricInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, agentFabricName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, agentFabricName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces an AgentFabric.
-     * 
-     * Before accepting the request or changing policy-group associations, validate the policy
-     * types in every proposed defaultPolicyGroups reference against the fabric's effective
-     * inspection configuration. If no connection is configured and any referenced group contains a
-     * ContentInspection policy, reject the request with HTTP 409 and error code
-     * ContentInspectionCapabilityDisabled, targeting properties.defaultPolicyGroups. No incompatible
-     * association change is accepted. This check does not depend on whether policy selectors
-     * currently match traffic.
-     * 
-     * Omitting contentInspectionProfile or supplying {} on PUT for an existing fabric preserves its
-     * customer-owned connection, legacy regional connection, or absence of connection.
-     * Do not persist {} over the stored connection or cancel a pending connection update.
-     * New-fabric omission or {} requests no inspection capability and no regional fallback.
-     * Existing legacy fabrics without a profile retain their regional Content Safety connection,
-     * which satisfies the inspection prerequisite without new probes, management calls, or key
-     * retrieval. A connection still being validated is not an absent connection.
-     * Error messages must not disclose associated fabric IDs the caller is not authorized to read.
-     * 
-     * If a connection update is in progress for this fabric, reject a PUT requesting a different
-     * connection with HTTP 409 Conflict, without changing the connection update already in progress.
-     * A retry of the same requested connection is not a conflicting change. This does not prevent
-     * later key rotations or endpoint replacements.
-     * 
-     * In API version `2026-10-07-preview` and later, reject definite invalid customer connection input before
-     * accepting PUT with HTTP 400 Bad Request. A nonempty profile must contain both endpoint and apiKey.
-     * Reject a missing field before connection validation, without retrieving a saved key or comparing
-     * with the saved endpoint to permit key omission. Only a truly empty object is a connection no-op;
-     * partial objects or objects containing only unrecognized fields must not be treated as empty.
-     * Invalid input also includes a null or nonobject profile;
-     * a malformed, untrusted, or unsupported endpoint (including a non-HTTPS or unrecognized Azure
-     * account host or an unsupported cloud); and explicit null, empty, or wrong-type endpoint or key.
-     * An endpoint without a key is invalid even when unchanged; a key without an endpoint is invalid.
-     * An omitted profile or {} is not invalid connection input. Its no-op applies only to connection
-     * handling; caller authorization, other Fabric fields, policy compatibility, and ordinary
-     * pending-operation rules still apply.
-     * 
-     * For service-level connection validation rejection, return ContentInspectionConnectionValidationFailed
-     * in the standard error response, targeting properties.contentInspectionProfile or its endpoint
-     * or apiKey field when the invalid field is known. Ordinary schema/model validation may retain
-     * its standard HTTP 400 errors. The connection code also applies to definitively rejected
-     * credentials or a confirmed account/access setting or missing required Content Safety API
-     * capability that prevents use of the supplied connection. Interpret upstream 401/403 responses
-     * to distinguish credentials from account access, local authentication, or network restrictions;
-     * do not report them as authentication/authorization failures of the Fabric caller.
-     * 
-     * Throttling (HTTP 429), service failures (5xx), DNS/TLS failures, timeouts, and inconclusive
-     * availability do not establish bad customer input and must not be classified as this HTTP 400
-     * rejection. A DNS timeout or an arbitrary upstream 404 does not prove that the account is absent.
-     * If a definite validation rejection is discovered after PUT acceptance, report terminal Failed
-     * with the corresponding error in the established long-running operation status response;
-     * the accepted PUT response does not become HTTP 400. Failed replacement preserves the previously
-     * active connection; never validate or operate failed customer input using regional credentials.
-     * Error responses must not contain key values or raw upstream response bodies.
-     * 
-     * Example connection rejection response (HTTP 400 Bad Request):
-     * 
-     * ```json
-     * {
-     * "error": {
-     * "code": "ContentInspectionConnectionValidationFailed",
-     * "message": "The supplied Content Safety connection could not be validated. Verify the endpoint, API key, and
-     * account access settings.",
-     * "target": "properties.contentInspectionProfile"
-     * }
-     * }
-     * ```
-     * 
-     * Example rejection response (HTTP 409 Conflict):
-     * 
-     * ```json
-     * {
-     * "error": {
-     * "code": "ContentInspectionCapabilityDisabled",
-     * "message": "The referenced policy group contains a ContentInspection policy, but this fabric has no configured
-     * inspection connection.",
-     * "target": "properties.defaultPolicyGroups"
-     * }
-     * }
-     * ```.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agentFabric resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentFabricInner createOrUpdate(String resourceGroupName, String agentFabricName, AgentFabricInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, agentFabricName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, agentFabricName, resource, context));
     }
 
     /**
@@ -1219,11 +837,7 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String agentFabricName,
         AgentFabricTagsUpdate properties) {
-        final String apiVersion = "2026-11-03-preview";
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, agentFabricName, contentType, accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, agentFabricName, properties, Context.NONE);
     }
 
     /**
@@ -1267,37 +881,14 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
             AgentFabricInner.class, AgentFabricInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a AgentFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of agentFabric resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentFabricInner>, AgentFabricInner> beginUpdate(String resourceGroupName,
         String agentFabricName, AgentFabricTagsUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, agentFabricName, properties);
-        return this.client.<AgentFabricInner, AgentFabricInner>getLroResult(response, AgentFabricInner.class,
-            AgentFabricInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, agentFabricName, properties, Context.NONE);
     }
 
-    /**
-     * Update a AgentFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of agentFabric resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentFabricInner>, AgentFabricInner> beginUpdate(String resourceGroupName,
         String agentFabricName, AgentFabricTagsUpdate properties, Context context) {
@@ -1324,38 +915,18 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a AgentFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agentFabric resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentFabricInner update(String resourceGroupName, String agentFabricName, AgentFabricTagsUpdate properties) {
-        return beginUpdate(resourceGroupName, agentFabricName, properties).getFinalResult();
+        return update(resourceGroupName, agentFabricName, properties, Context.NONE);
     }
 
-    /**
-     * Update a AgentFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agentFabric resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentFabricInner update(String resourceGroupName, String agentFabricName, AgentFabricTagsUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, agentFabricName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, agentFabricName, properties, context));
     }
 
     /**
@@ -1389,9 +960,7 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String agentFabricName) {
-        final String apiVersion = "2026-11-03-preview";
-        return service.deleteSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, agentFabricName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, agentFabricName, Context.NONE);
     }
 
     /**
@@ -1429,33 +998,13 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a AgentFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String agentFabricName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, agentFabricName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, agentFabricName, Context.NONE);
     }
 
-    /**
-     * Delete a AgentFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String agentFabricName,
         Context context) {
@@ -1479,33 +1028,16 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a AgentFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String agentFabricName) {
-        beginDelete(resourceGroupName, agentFabricName).getFinalResult();
+        delete(resourceGroupName, agentFabricName, Context.NONE);
     }
 
-    /**
-     * Delete a AgentFabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param agentFabricName The name of the AgentFabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String agentFabricName, Context context) {
-        beginDelete(resourceGroupName, agentFabricName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, agentFabricName, context));
     }
 
     /**
@@ -1556,12 +1088,7 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AgentFabricInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String apiVersion = "2026-11-03-preview";
-        final String accept = "application/json";
-        Response<AgentFabricListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1584,31 +1111,13 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AgentFabric resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AgentFabric list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentFabricInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List AgentFabric resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AgentFabric list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentFabricInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1657,12 +1166,7 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AgentFabricInner> listSinglePage() {
-        final String apiVersion = "2026-11-03-preview";
-        final String accept = "application/json";
-        Response<AgentFabricListResult> res = service.listSync(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1684,27 +1188,13 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AgentFabric resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AgentFabric list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentFabricInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List AgentFabric resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AgentFabric list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentFabricInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1743,11 +1233,7 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AgentFabricInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AgentFabricListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1801,11 +1287,7 @@ public final class AgentFabricsClientImpl implements AgentFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AgentFabricInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AgentFabricListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

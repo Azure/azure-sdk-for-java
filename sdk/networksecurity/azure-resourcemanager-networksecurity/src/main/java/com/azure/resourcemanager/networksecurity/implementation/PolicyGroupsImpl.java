@@ -45,7 +45,7 @@ public final class PolicyGroupsImpl implements PolicyGroups {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String policyGroupName) {
-        this.serviceClient().delete(resourceGroupName, policyGroupName);
+        this.delete(resourceGroupName, policyGroupName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String policyGroupName, Context context) {
@@ -53,8 +53,7 @@ public final class PolicyGroupsImpl implements PolicyGroups {
     }
 
     public PagedIterable<PolicyGroup> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<PolicyGroupInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyGroupImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<PolicyGroup> listByResourceGroup(String resourceGroupName, Context context) {
@@ -63,8 +62,7 @@ public final class PolicyGroupsImpl implements PolicyGroups {
     }
 
     public PagedIterable<PolicyGroup> list() {
-        PagedIterable<PolicyGroupInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyGroupImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<PolicyGroup> list(Context context) {
@@ -73,74 +71,30 @@ public final class PolicyGroupsImpl implements PolicyGroups {
     }
 
     public PolicyGroup getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/policyGroups/{policyGroupName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String policyGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/policyGroups/{policyGroupName}",
-            "policyGroupName");
-        if (policyGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policyGroups'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, policyGroupName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<PolicyGroup> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/policyGroups/{policyGroupName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String policyGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String policyGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/policyGroups/{policyGroupName}",
-            "policyGroupName");
-        if (policyGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policyGroups'.", id)));
-        }
+            "policyGroupName", "policyGroups", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, policyGroupName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/policyGroups/{policyGroupName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String policyGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/policyGroups/{policyGroupName}",
-            "policyGroupName");
-        if (policyGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policyGroups'.", id)));
-        }
-        this.delete(resourceGroupName, policyGroupName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/policyGroups/{policyGroupName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String policyGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String policyGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/policyGroups/{policyGroupName}",
-            "policyGroupName");
-        if (policyGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policyGroups'.", id)));
-        }
+            "policyGroupName", "policyGroups", LOGGER);
         this.delete(resourceGroupName, policyGroupName, context);
     }
 

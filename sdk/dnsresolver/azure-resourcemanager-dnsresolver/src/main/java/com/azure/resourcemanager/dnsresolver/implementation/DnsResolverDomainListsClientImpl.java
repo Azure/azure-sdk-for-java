@@ -286,17 +286,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets properties of a DNS resolver domain list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a DNS resolver domain list along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DnsResolverDomainListInner> getByResourceGroupWithResponse(String resourceGroupName,
         String dnsResolverDomainListName, Context context) {
@@ -305,16 +295,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
             this.client.getSubscriptionId(), resourceGroupName, dnsResolverDomainListName, accept, context);
     }
 
-    /**
-     * Gets properties of a DNS resolver domain list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a DNS resolver domain list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverDomainListInner getByResourceGroup(String resourceGroupName, String dnsResolverDomainListName) {
         return getByResourceGroupWithResponse(resourceGroupName, dnsResolverDomainListName, Context.NONE).getValue();
@@ -366,11 +347,8 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String dnsResolverDomainListName,
         DnsResolverDomainListInner parameters, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsResolverDomainListName, ifMatch, ifNoneMatch,
-            contentType, accept, parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -467,50 +445,21 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
     private SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsResolverDomainListName, DnsResolverDomainListInner parameters,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, dnsResolverDomainListName,
-            parameters, ifMatch, ifNoneMatch);
-        return this.client.<DnsResolverDomainListInner, DnsResolverDomainListInner>getLroResult(response,
-            DnsResolverDomainListInner.class, DnsResolverDomainListInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Creates or updates a DNS resolver domain list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS resolver domain list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsResolverDomainListName, DnsResolverDomainListInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, dnsResolverDomainListName,
-            parameters, ifMatch, ifNoneMatch);
-        return this.client.<DnsResolverDomainListInner, DnsResolverDomainListInner>getLroResult(response,
-            DnsResolverDomainListInner.class, DnsResolverDomainListInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Creates or updates a DNS resolver domain list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS resolver domain list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsResolverDomainListName, DnsResolverDomainListInner parameters,
@@ -565,47 +514,22 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a DNS resolver domain list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS resolver domain list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverDomainListInner createOrUpdate(String resourceGroupName, String dnsResolverDomainListName,
         DnsResolverDomainListInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, ifNoneMatch)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Creates or updates a DNS resolver domain list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS resolver domain list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverDomainListInner createOrUpdate(String resourceGroupName, String dnsResolverDomainListName,
         DnsResolverDomainListInner parameters, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, ifNoneMatch,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, dnsResolverDomainListName,
+            parameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -650,11 +574,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String dnsResolverDomainListName,
         DnsResolverDomainListPatch parameters, String ifMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsResolverDomainListName, ifMatch, contentType, accept,
-            parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, Context.NONE);
     }
 
     /**
@@ -744,47 +664,18 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
     private SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginUpdate(
         String resourceGroupName, String dnsResolverDomainListName, DnsResolverDomainListPatch parameters,
         String ifMatch) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch);
-        return this.client.<DnsResolverDomainListInner, DnsResolverDomainListInner>getLroResult(response,
-            DnsResolverDomainListInner.class, DnsResolverDomainListInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates a DNS resolver domain list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS resolver domain list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner>
         beginUpdate(String resourceGroupName, String dnsResolverDomainListName, DnsResolverDomainListPatch parameters) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch);
-        return this.client.<DnsResolverDomainListInner, DnsResolverDomainListInner>getLroResult(response,
-            DnsResolverDomainListInner.class, DnsResolverDomainListInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates a DNS resolver domain list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS resolver domain list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginUpdate(
         String resourceGroupName, String dnsResolverDomainListName, DnsResolverDomainListPatch parameters,
@@ -834,42 +725,20 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a DNS resolver domain list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS resolver domain list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverDomainListInner update(String resourceGroupName, String dnsResolverDomainListName,
         DnsResolverDomainListPatch parameters) {
         final String ifMatch = null;
-        return beginUpdate(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch).getFinalResult();
+        return update(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates a DNS resolver domain list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS resolver domain list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverDomainListInner update(String resourceGroupName, String dnsResolverDomainListName,
         DnsResolverDomainListPatch parameters, String ifMatch, Context context) {
-        return beginUpdate(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, context));
     }
 
     /**
@@ -908,8 +777,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String dnsResolverDomainListName,
         String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsResolverDomainListName, ifMatch, Context.NONE);
+        return deleteWithResponse(resourceGroupName, dnsResolverDomainListName, ifMatch, Context.NONE);
     }
 
     /**
@@ -988,40 +856,17 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverDomainListName,
         String ifMatch) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, dnsResolverDomainListName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, dnsResolverDomainListName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Deletes a DNS resolver domain list. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverDomainListName) {
         final String ifMatch = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, dnsResolverDomainListName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, dnsResolverDomainListName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Deletes a DNS resolver domain list. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverDomainListName,
         String ifMatch, Context context) {
@@ -1065,36 +910,18 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a DNS resolver domain list. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dnsResolverDomainListName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, dnsResolverDomainListName, ifMatch).getFinalResult();
+        delete(resourceGroupName, dnsResolverDomainListName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Deletes a DNS resolver domain list. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dnsResolverDomainListName, String ifMatch, Context context) {
-        beginDelete(resourceGroupName, dnsResolverDomainListName, ifMatch, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, dnsResolverDomainListName, ifMatch, context));
     }
 
     /**
@@ -1165,11 +992,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsResolverDomainListInner> listByResourceGroupSinglePage(String resourceGroupName,
         Integer top) {
-        final String accept = "application/json";
-        Response<DnsResolverDomainListListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, top, Context.NONE);
     }
 
     /**
@@ -1193,33 +1016,14 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists DNS resolver domain lists within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DnsResolverDomainList list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsResolverDomainListInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, top, Context.NONE);
     }
 
-    /**
-     * Lists DNS resolver domain lists within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top The maximum number of results to return. If not specified, returns up to 100 results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DnsResolverDomainList list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsResolverDomainListInner> listByResourceGroup(String resourceGroupName, Integer top,
         Context context) {
@@ -1286,11 +1090,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsResolverDomainListInner> listSinglePage(Integer top) {
-        final String accept = "application/json";
-        Response<DnsResolverDomainListListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(top, Context.NONE);
     }
 
     /**
@@ -1312,29 +1112,14 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists DNS resolver domain lists in all resource groups of a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DnsResolverDomainList list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsResolverDomainListInner> list() {
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(top), nextLink -> listNextSinglePage(nextLink));
+        return list(top, Context.NONE);
     }
 
-    /**
-     * Lists DNS resolver domain lists in all resource groups of a subscription.
-     * 
-     * @param top The maximum number of results to return. If not specified, returns up to 100 results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DnsResolverDomainList list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsResolverDomainListInner> list(Integer top, Context context) {
         return new PagedIterable<>(() -> listSinglePage(top, context),
@@ -1387,10 +1172,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> bulkWithResponse(String resourceGroupName, String dnsResolverDomainListName,
         DnsResolverDomainListBulk parameters, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.bulkSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, dnsResolverDomainListName, ifMatch, ifNoneMatch, contentType, accept, parameters,
+        return bulkWithResponse(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, ifNoneMatch,
             Context.NONE);
     }
 
@@ -1488,50 +1270,19 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
     private SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginBulk(
         String resourceGroupName, String dnsResolverDomainListName, DnsResolverDomainListBulk parameters,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response
-            = bulkWithResponse(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, ifNoneMatch);
-        return this.client.<DnsResolverDomainListInner, DnsResolverDomainListInner>getLroResult(response,
-            DnsResolverDomainListInner.class, DnsResolverDomainListInner.class, Context.NONE);
+        return beginBulk(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Uploads or downloads the list of domains for a DNS Resolver Domain List from a storage link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @param parameters Parameters supplied to the bulk domain list operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS resolver domain list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner>
         beginBulk(String resourceGroupName, String dnsResolverDomainListName, DnsResolverDomainListBulk parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response
-            = bulkWithResponse(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, ifNoneMatch);
-        return this.client.<DnsResolverDomainListInner, DnsResolverDomainListInner>getLroResult(response,
-            DnsResolverDomainListInner.class, DnsResolverDomainListInner.class, Context.NONE);
+        return beginBulk(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Uploads or downloads the list of domains for a DNS Resolver Domain List from a storage link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @param parameters Parameters supplied to the bulk domain list operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS resolver domain list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginBulk(
         String resourceGroupName, String dnsResolverDomainListName, DnsResolverDomainListBulk parameters,
@@ -1584,47 +1335,21 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Uploads or downloads the list of domains for a DNS Resolver Domain List from a storage link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @param parameters Parameters supplied to the bulk domain list operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS resolver domain list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverDomainListInner bulk(String resourceGroupName, String dnsResolverDomainListName,
         DnsResolverDomainListBulk parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginBulk(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, ifNoneMatch)
-            .getFinalResult();
+        return bulk(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Uploads or downloads the list of domains for a DNS Resolver Domain List from a storage link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverDomainListName The name of the DNS resolver domain list.
-     * @param parameters Parameters supplied to the bulk domain list operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS resolver domain list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverDomainListInner bulk(String resourceGroupName, String dnsResolverDomainListName,
         DnsResolverDomainListBulk parameters, String ifMatch, String ifNoneMatch, Context context) {
-        return beginBulk(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, ifNoneMatch, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginBulk(resourceGroupName, dnsResolverDomainListName, parameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -1659,11 +1384,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsResolverDomainListInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DnsResolverDomainListListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1716,11 +1437,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsResolverDomainListInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DnsResolverDomainListListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

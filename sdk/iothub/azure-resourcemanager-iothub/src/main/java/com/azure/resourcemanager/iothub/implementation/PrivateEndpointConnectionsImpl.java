@@ -50,13 +50,8 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
 
     public PrivateEndpointConnection update(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
-        PrivateEndpointConnectionInner inner = this.serviceClient()
-            .update(resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection);
-        if (inner != null) {
-            return new PrivateEndpointConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection,
+            Context.NONE);
     }
 
     public PrivateEndpointConnection update(String resourceGroupName, String resourceName,
@@ -72,7 +67,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public void delete(String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        this.serviceClient().delete(resourceGroupName, resourceName, privateEndpointConnectionName);
+        this.delete(resourceGroupName, resourceName, privateEndpointConnectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String resourceName, String privateEndpointConnectionName,

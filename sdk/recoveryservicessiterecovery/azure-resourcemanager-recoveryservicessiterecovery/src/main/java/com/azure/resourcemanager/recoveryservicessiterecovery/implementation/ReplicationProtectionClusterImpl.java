@@ -89,11 +89,7 @@ public final class ReplicationProtectionClusterImpl
     }
 
     public ReplicationProtectionCluster create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationProtectionClusters()
-            .create(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicationProtectionClusterName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ReplicationProtectionCluster create(Context context) {
@@ -112,12 +108,7 @@ public final class ReplicationProtectionClusterImpl
     }
 
     public ReplicationProtectionCluster refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationProtectionClusters()
-            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
-                replicationProtectionClusterName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ReplicationProtectionCluster refresh(Context context) {

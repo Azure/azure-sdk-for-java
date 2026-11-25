@@ -50,9 +50,7 @@ public final class ScenarioRunsImpl implements ScenarioRuns {
     }
 
     public PagedIterable<ScenarioRun> listAll(String resourceGroupName, String workspaceName, String scenarioName) {
-        PagedIterable<ScenarioRunInner> inner
-            = this.serviceClient().listAll(resourceGroupName, workspaceName, scenarioName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScenarioRunImpl(inner1, this.manager()));
+        return this.listAll(resourceGroupName, workspaceName, scenarioName, Context.NONE);
     }
 
     public PagedIterable<ScenarioRun> listAll(String resourceGroupName, String workspaceName, String scenarioName,
@@ -63,12 +61,7 @@ public final class ScenarioRunsImpl implements ScenarioRuns {
     }
 
     public ScenarioRun cancel(String resourceGroupName, String workspaceName, String scenarioName, String runId) {
-        ScenarioRunInner inner = this.serviceClient().cancel(resourceGroupName, workspaceName, scenarioName, runId);
-        if (inner != null) {
-            return new ScenarioRunImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.cancel(resourceGroupName, workspaceName, scenarioName, runId, Context.NONE);
     }
 
     public ScenarioRun cancel(String resourceGroupName, String workspaceName, String scenarioName, String runId,

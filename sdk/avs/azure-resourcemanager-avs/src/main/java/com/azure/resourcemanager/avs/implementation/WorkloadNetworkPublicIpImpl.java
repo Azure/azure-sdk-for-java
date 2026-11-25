@@ -83,10 +83,7 @@ public final class WorkloadNetworkPublicIpImpl implements WorkloadNetworkPublicI
     }
 
     public WorkloadNetworkPublicIp create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .createPublicIp(resourceGroupName, privateCloudName, publicIPId, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkloadNetworkPublicIp create(Context context) {
@@ -103,11 +100,7 @@ public final class WorkloadNetworkPublicIpImpl implements WorkloadNetworkPublicI
     }
 
     public WorkloadNetworkPublicIp refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .getPublicIpWithResponse(resourceGroupName, privateCloudName, publicIPId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkloadNetworkPublicIp refresh(Context context) {

@@ -65,11 +65,7 @@ public final class SharedLimitImpl implements SharedLimit, SharedLimit.Definitio
     }
 
     public SharedLimit create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSharedLimits()
-            .createWithResponse(location, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SharedLimit create(Context context) {
@@ -87,9 +83,7 @@ public final class SharedLimitImpl implements SharedLimit, SharedLimit.Definitio
     }
 
     public SharedLimit refresh() {
-        this.innerObject
-            = serviceManager.serviceClient().getSharedLimits().getWithResponse(location, name, Context.NONE).getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SharedLimit refresh(Context context) {

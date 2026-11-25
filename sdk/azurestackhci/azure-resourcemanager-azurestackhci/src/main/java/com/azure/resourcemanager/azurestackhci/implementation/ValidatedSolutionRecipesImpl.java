@@ -45,9 +45,7 @@ public final class ValidatedSolutionRecipesImpl implements ValidatedSolutionReci
     }
 
     public PagedIterable<ValidatedSolutionRecipe> listBySubscriptionLocationResource(String location) {
-        PagedIterable<ValidatedSolutionRecipeInner> inner
-            = this.serviceClient().listBySubscriptionLocationResource(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ValidatedSolutionRecipeImpl(inner1, this.manager()));
+        return this.listBySubscriptionLocationResource(location, Context.NONE);
     }
 
     public PagedIterable<ValidatedSolutionRecipe> listBySubscriptionLocationResource(String location, Context context) {

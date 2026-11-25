@@ -276,17 +276,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an Organization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Organization along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OrganizationResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String organizationName, Context context) {
@@ -295,16 +285,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             this.client.getSubscriptionId(), resourceGroupName, organizationName, accept, context);
     }
 
-    /**
-     * Get an Organization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Organization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OrganizationResourceInner getByResourceGroup(String resourceGroupName, String organizationName) {
         return getByResourceGroupWithResponse(resourceGroupName, organizationName, Context.NONE).getValue();
@@ -351,11 +332,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String organizationName,
         OrganizationResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, contentType, accept, resource,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, organizationName, resource, Context.NONE);
     }
 
     /**
@@ -404,41 +381,14 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Create or update an Organization (long-running).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Organization resource in the Kore.AgentPlatform provider.
-     * 
-     * Top-level tracked ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner>
         beginCreate(String resourceGroupName, String organizationName, OrganizationResourceInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, organizationName, resource);
-        return this.client.<OrganizationResourceInner, OrganizationResourceInner>getLroResult(response,
-            OrganizationResourceInner.class, OrganizationResourceInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, organizationName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update an Organization (long-running).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Organization resource in the Kore.AgentPlatform provider.
-     * 
-     * Top-level tracked ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner> beginCreate(
         String resourceGroupName, String organizationName, OrganizationResourceInner resource, Context context) {
@@ -467,43 +417,19 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update an Organization (long-running).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Organization resource in the Kore.AgentPlatform provider.
-     * 
-     * Top-level tracked ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OrganizationResourceInner create(String resourceGroupName, String organizationName,
         OrganizationResourceInner resource) {
-        return beginCreate(resourceGroupName, organizationName, resource).getFinalResult();
+        return create(resourceGroupName, organizationName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update an Organization (long-running).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Organization resource in the Kore.AgentPlatform provider.
-     * 
-     * Top-level tracked ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OrganizationResourceInner create(String resourceGroupName, String organizationName,
         OrganizationResourceInner resource, Context context) {
-        return beginCreate(resourceGroupName, organizationName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, organizationName, resource, context));
     }
 
     /**
@@ -547,11 +473,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String organizationName,
         OrganizationResourceUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, organizationName, properties, Context.NONE);
     }
 
     /**
@@ -601,41 +523,14 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Update mutable properties of an Organization (long-running).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Organization resource in the Kore.AgentPlatform provider.
-     * 
-     * Top-level tracked ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner>
         beginUpdate(String resourceGroupName, String organizationName, OrganizationResourceUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, organizationName, properties);
-        return this.client.<OrganizationResourceInner, OrganizationResourceInner>getLroResult(response,
-            OrganizationResourceInner.class, OrganizationResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, organizationName, properties, Context.NONE);
     }
 
-    /**
-     * Update mutable properties of an Organization (long-running).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Organization resource in the Kore.AgentPlatform provider.
-     * 
-     * Top-level tracked ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner> beginUpdate(
         String resourceGroupName, String organizationName, OrganizationResourceUpdate properties, Context context) {
@@ -664,43 +559,19 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update mutable properties of an Organization (long-running).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Organization resource in the Kore.AgentPlatform provider.
-     * 
-     * Top-level tracked ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OrganizationResourceInner update(String resourceGroupName, String organizationName,
         OrganizationResourceUpdate properties) {
-        return beginUpdate(resourceGroupName, organizationName, properties).getFinalResult();
+        return update(resourceGroupName, organizationName, properties, Context.NONE);
     }
 
-    /**
-     * Update mutable properties of an Organization (long-running).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Organization resource in the Kore.AgentPlatform provider.
-     * 
-     * Top-level tracked ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OrganizationResourceInner update(String resourceGroupName, String organizationName,
         OrganizationResourceUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, organizationName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, organizationName, properties, context));
     }
 
     /**
@@ -740,8 +611,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String organizationName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, organizationName, Context.NONE);
     }
 
     /**
@@ -785,39 +655,13 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete an Organization (long-running).
-     * 
-     * Permanently removes the Organization and cascades the deletion to all
-     * child Workspaces at the partner. This operation is irreversible.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, organizationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, organizationName, Context.NONE);
     }
 
-    /**
-     * Delete an Organization (long-running).
-     * 
-     * Permanently removes the Organization and cascades the deletion to all
-     * child Workspaces at the partner. This operation is irreversible.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         Context context) {
@@ -844,39 +688,16 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete an Organization (long-running).
-     * 
-     * Permanently removes the Organization and cascades the deletion to all
-     * child Workspaces at the partner. This operation is irreversible.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName) {
-        beginDelete(resourceGroupName, organizationName).getFinalResult();
+        delete(resourceGroupName, organizationName, Context.NONE);
     }
 
-    /**
-     * Delete an Organization (long-running).
-     * 
-     * Permanently removes the Organization and cascades the deletion to all
-     * child Workspaces at the partner. This operation is irreversible.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, Context context) {
-        beginDelete(resourceGroupName, organizationName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, organizationName, context));
     }
 
     /**
@@ -927,11 +748,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OrganizationResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<OrganizationResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -954,31 +771,13 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Organizations in a Resource Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OrganizationResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrganizationResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List Organizations in a Resource Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OrganizationResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrganizationResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1026,11 +825,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OrganizationResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<OrganizationResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1051,27 +846,13 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Organizations in a Subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OrganizationResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrganizationResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List Organizations in a Subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OrganizationResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrganizationResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1123,21 +904,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists all Workspaces in the Kore Organization, including Workspaces not managed through Liftr.
-     * 
-     * This discovery operation uses POST because its response combines ARM-tracked
-     * Workspaces with Kore-only Workspaces that have no ARM resource ID and cannot
-     * be represented by the standard Workspaces collection GET.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing all Workspaces in a Kore Organization along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListWorkspacesResponseInner> listWorkspacesWithResponse(String resourceGroupName,
         String organizationName, Context context) {
@@ -1146,20 +913,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             this.client.getSubscriptionId(), resourceGroupName, organizationName, accept, context);
     }
 
-    /**
-     * Lists all Workspaces in the Kore Organization, including Workspaces not managed through Liftr.
-     * 
-     * This discovery operation uses POST because its response combines ARM-tracked
-     * Workspaces with Kore-only Workspaces that have no ARM resource ID and cannot
-     * be represented by the standard Workspaces collection GET.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing all Workspaces in a Kore Organization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListWorkspacesResponseInner listWorkspaces(String resourceGroupName, String organizationName) {
         return listWorkspacesWithResponse(resourceGroupName, organizationName, Context.NONE).getValue();
@@ -1197,11 +951,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OrganizationResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OrganizationResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1256,11 +1006,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OrganizationResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OrganizationResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -258,22 +258,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about the specified application package.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param versionName The version of the application.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified application package along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationPackageInner> getWithResponse(String resourceGroupName, String accountName,
         String applicationName, String versionName, Context context) {
@@ -308,21 +293,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
             resourceGroupName, accountName, applicationName, versionName, accept, context);
     }
 
-    /**
-     * Gets information about the specified application package.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param versionName The version of the application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified application package.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationPackageInner get(String resourceGroupName, String accountName, String applicationName,
         String versionName) {
@@ -410,26 +381,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates an application package record. The record contains a storageUrl where the package should be uploaded to.
-     * Once it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can
-     * be used. If the auto storage account was configured to use storage keys, the URL returned will contain a SAS.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param versionName The version of the application.
-     * @param parameters The parameters for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application package which represents a particular version of an application along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationPackageInner> createWithResponse(String resourceGroupName, String accountName,
         String applicationName, String versionName, ApplicationPackageInner parameters, Context context) {
@@ -468,23 +420,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
             parameters, context);
     }
 
-    /**
-     * Creates an application package record. The record contains a storageUrl where the package should be uploaded to.
-     * Once it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can
-     * be used. If the auto storage account was configured to use storage keys, the URL returned will contain a SAS.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param versionName The version of the application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application package which represents a particular version of an application.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationPackageInner create(String resourceGroupName, String accountName, String applicationName,
         String versionName) {
@@ -561,22 +497,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes an application package record and its associated binary file.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param versionName The version of the application.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String applicationName,
         String versionName, Context context) {
@@ -610,20 +531,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
             this.client.getSubscriptionId(), resourceGroupName, accountName, applicationName, versionName, context);
     }
 
-    /**
-     * Deletes an application package record and its associated binary file.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param versionName The version of the application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String applicationName, String versionName) {
         deleteWithResponse(resourceGroupName, accountName, applicationName, versionName, Context.NONE);
@@ -739,34 +647,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationPackageInner> listSinglePage(String resourceGroupName, String accountName,
         String applicationName, Integer maxresults) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ListApplicationPackagesResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, applicationName, maxresults, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, applicationName, maxresults, Context.NONE);
     }
 
     /**
@@ -818,44 +699,15 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the application packages in the specified application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of performing list application packages as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationPackageInner> list(String resourceGroupName, String accountName,
         String applicationName) {
         final Integer maxresults = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, applicationName, maxresults),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, applicationName, maxresults, Context.NONE);
     }
 
-    /**
-     * Lists all of the application packages in the specified application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param maxresults The maximum number of items to return in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of performing list application packages as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationPackageInner> list(String resourceGroupName, String accountName,
         String applicationName, Integer maxresults, Context context) {
@@ -947,25 +799,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Activates the specified application package. This should be done after the `ApplicationPackage` was created and
-     * uploaded. This needs to be done before an `ApplicationPackage` can be used on Pools or Tasks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param versionName The version of the application.
-     * @param parameters The parameters for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application package which represents a particular version of an application along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationPackageInner> activateWithResponse(String resourceGroupName, String accountName,
         String applicationName, String versionName, ActivateApplicationPackageParameters parameters, Context context) {
@@ -1008,23 +842,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
             accept, parameters, context);
     }
 
-    /**
-     * Activates the specified application package. This should be done after the `ApplicationPackage` was created and
-     * uploaded. This needs to be done before an `ApplicationPackage` can be used on Pools or Tasks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param versionName The version of the application.
-     * @param parameters The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application package which represents a particular version of an application.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationPackageInner activate(String resourceGroupName, String accountName, String applicationName,
         String versionName, ActivateApplicationPackageParameters parameters) {
@@ -1069,20 +887,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationPackageInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ListApplicationPackagesResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

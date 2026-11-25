@@ -47,12 +47,7 @@ public final class RegistryDataContainersImpl implements RegistryDataContainers 
 
     public DataContainer createOrUpdate(String resourceGroupName, String registryName, String name,
         DataContainerInner body) {
-        DataContainerInner inner = this.serviceClient().createOrUpdate(resourceGroupName, registryName, name, body);
-        if (inner != null) {
-            return new DataContainerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, registryName, name, body, Context.NONE);
     }
 
     public DataContainer createOrUpdate(String resourceGroupName, String registryName, String name,
@@ -67,7 +62,7 @@ public final class RegistryDataContainersImpl implements RegistryDataContainers 
     }
 
     public void delete(String resourceGroupName, String registryName, String name) {
-        this.serviceClient().delete(resourceGroupName, registryName, name);
+        this.delete(resourceGroupName, registryName, name, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String registryName, String name, Context context) {
