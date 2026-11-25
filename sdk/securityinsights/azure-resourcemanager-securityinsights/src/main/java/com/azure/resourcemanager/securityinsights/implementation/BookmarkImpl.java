@@ -150,11 +150,7 @@ public final class BookmarkImpl implements Bookmark, Bookmark.Definition, Bookma
     }
 
     public Bookmark create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookmarks()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Bookmark create(Context context) {
@@ -176,11 +172,7 @@ public final class BookmarkImpl implements Bookmark, Bookmark.Definition, Bookma
     }
 
     public Bookmark apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookmarks()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Bookmark apply(Context context) {
@@ -207,11 +199,7 @@ public final class BookmarkImpl implements Bookmark, Bookmark.Definition, Bookma
     }
 
     public Bookmark refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookmarks()
-            .getWithResponse(resourceGroupName, workspaceName, bookmarkId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Bookmark refresh(Context context) {

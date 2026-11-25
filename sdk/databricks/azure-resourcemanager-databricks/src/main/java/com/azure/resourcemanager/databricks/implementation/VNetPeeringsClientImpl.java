@@ -201,18 +201,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the workspace vNet Peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace vNet Peering along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualNetworkPeeringInner> getWithResponse(String resourceGroupName, String workspaceName,
         String peeringName, Context context) {
@@ -221,17 +210,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
             resourceGroupName, workspaceName, peeringName, accept, context);
     }
 
-    /**
-     * Gets the workspace vNet Peering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace vNet Peering.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkPeeringInner get(String resourceGroupName, String workspaceName, String peeringName) {
         return getWithResponse(resourceGroupName, workspaceName, peeringName, Context.NONE).getValue();
@@ -277,10 +256,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String peeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, peeringName, contentType, accept,
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, peeringName,
             virtualNetworkPeeringParameters, Context.NONE);
     }
 
@@ -330,41 +306,16 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
             this.client.getContext());
     }
 
-    /**
-     * Creates vNet Peering for workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create workspace vNet Peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of peerings in a VirtualNetwork resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String peeringName,
         VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, workspaceName, peeringName,
-            virtualNetworkPeeringParameters);
-        return this.client.<VirtualNetworkPeeringInner, VirtualNetworkPeeringInner>getLroResult(response,
-            VirtualNetworkPeeringInner.class, VirtualNetworkPeeringInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, peeringName, virtualNetworkPeeringParameters,
+            Context.NONE);
     }
 
-    /**
-     * Creates vNet Peering for workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create workspace vNet Peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of peerings in a VirtualNetwork resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String peeringName,
@@ -395,43 +346,20 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates vNet Peering for workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create workspace vNet Peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a VirtualNetwork resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkPeeringInner createOrUpdate(String resourceGroupName, String workspaceName, String peeringName,
         VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, peeringName, virtualNetworkPeeringParameters)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, peeringName, virtualNetworkPeeringParameters,
+            Context.NONE);
     }
 
-    /**
-     * Creates vNet Peering for workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create workspace vNet Peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a VirtualNetwork resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkPeeringInner createOrUpdate(String resourceGroupName, String workspaceName, String peeringName,
         VirtualNetworkPeeringInner virtualNetworkPeeringParameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, peeringName, virtualNetworkPeeringParameters,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, workspaceName, peeringName,
+            virtualNetworkPeeringParameters, context));
     }
 
     /**
@@ -468,8 +396,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName,
         String peeringName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, peeringName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, peeringName, Context.NONE);
     }
 
     /**
@@ -510,36 +437,14 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the workspace vNetPeering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String peeringName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, peeringName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, peeringName, Context.NONE);
     }
 
-    /**
-     * Deletes the workspace vNetPeering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String peeringName, Context context) {
@@ -564,35 +469,16 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the workspace vNetPeering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String peeringName) {
-        beginDelete(resourceGroupName, workspaceName, peeringName).getFinalResult();
+        delete(resourceGroupName, workspaceName, peeringName, Context.NONE);
     }
 
-    /**
-     * Deletes the workspace vNetPeering.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String peeringName, Context context) {
-        beginDelete(resourceGroupName, workspaceName, peeringName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, peeringName, context));
     }
 
     /**
@@ -647,12 +533,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualNetworkPeeringInner> listByWorkspaceSinglePage(String resourceGroupName,
         String workspaceName) {
-        final String accept = "application/json";
-        Response<VirtualNetworkPeeringList> res
-            = service.listByWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -677,33 +558,13 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the workspace vNet Peerings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets all virtual network peerings under a workspace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkPeeringInner> listByWorkspace(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listByWorkspaceSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listByWorkspaceNextSinglePage(nextLink));
+        return listByWorkspace(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Lists the workspace vNet Peerings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets all virtual network peerings under a workspace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkPeeringInner> listByWorkspace(String resourceGroupName, String workspaceName,
         Context context) {
@@ -742,11 +603,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualNetworkPeeringInner> listByWorkspaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VirtualNetworkPeeringList> res
-            = service.listByWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

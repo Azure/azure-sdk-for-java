@@ -26,8 +26,7 @@ public final class AuthenticationsImpl implements Authentications {
     }
 
     public PagedIterable<Authentication> list(String resourceGroupName, String clusterName) {
-        PagedIterable<AuthenticationInner> inner = this.serviceClient().list(resourceGroupName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AuthenticationImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, clusterName, Context.NONE);
     }
 
     public PagedIterable<Authentication> list(String resourceGroupName, String clusterName, Context context) {

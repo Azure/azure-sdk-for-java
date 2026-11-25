@@ -239,18 +239,7 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets properties of an outbound endpoint for a DNS resolver.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param outboundEndpointName The name of the outbound endpoint for the DNS resolver.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an outbound endpoint for a DNS resolver along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OutboundEndpointInner> getWithResponse(String resourceGroupName, String dnsResolverName,
         String outboundEndpointName, Context context) {
@@ -259,17 +248,7 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
             resourceGroupName, dnsResolverName, outboundEndpointName, accept, context);
     }
 
-    /**
-     * Gets properties of an outbound endpoint for a DNS resolver.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param outboundEndpointName The name of the outbound endpoint for the DNS resolver.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an outbound endpoint for a DNS resolver.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OutboundEndpointInner get(String resourceGroupName, String dnsResolverName, String outboundEndpointName) {
         return getWithResponse(resourceGroupName, dnsResolverName, outboundEndpointName, Context.NONE).getValue();
@@ -324,11 +303,8 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String dnsResolverName,
         String outboundEndpointName, OutboundEndpointInner parameters, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsResolverName, outboundEndpointName, ifMatch,
-            ifNoneMatch, contentType, accept, parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, dnsResolverName, outboundEndpointName, parameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -428,56 +404,25 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
      * @return the {@link SyncPoller} for polling of describes an outbound endpoint for a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OutboundEndpointInner>, OutboundEndpointInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<OutboundEndpointInner>, OutboundEndpointInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsResolverName, String outboundEndpointName, OutboundEndpointInner parameters,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, dnsResolverName,
-            outboundEndpointName, parameters, ifMatch, ifNoneMatch);
-        return this.client.<OutboundEndpointInner, OutboundEndpointInner>getLroResult(response,
-            OutboundEndpointInner.class, OutboundEndpointInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, dnsResolverName, outboundEndpointName, parameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates or updates an outbound endpoint for a DNS resolver.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param outboundEndpointName The name of the outbound endpoint for the DNS resolver.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes an outbound endpoint for a DNS resolver.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OutboundEndpointInner>, OutboundEndpointInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsResolverName, String outboundEndpointName,
         OutboundEndpointInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, dnsResolverName,
-            outboundEndpointName, parameters, ifMatch, ifNoneMatch);
-        return this.client.<OutboundEndpointInner, OutboundEndpointInner>getLroResult(response,
-            OutboundEndpointInner.class, OutboundEndpointInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, dnsResolverName, outboundEndpointName, parameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates or updates an outbound endpoint for a DNS resolver.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param outboundEndpointName The name of the outbound endpoint for the DNS resolver.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes an outbound endpoint for a DNS resolver.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OutboundEndpointInner>, OutboundEndpointInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsResolverName, String outboundEndpointName, OutboundEndpointInner parameters,
@@ -532,50 +477,23 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an outbound endpoint for a DNS resolver.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param outboundEndpointName The name of the outbound endpoint for the DNS resolver.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an outbound endpoint for a DNS resolver.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OutboundEndpointInner createOrUpdate(String resourceGroupName, String dnsResolverName,
         String outboundEndpointName, OutboundEndpointInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, dnsResolverName, outboundEndpointName, parameters, ifMatch,
-            ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, dnsResolverName, outboundEndpointName, parameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates or updates an outbound endpoint for a DNS resolver.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param outboundEndpointName The name of the outbound endpoint for the DNS resolver.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an outbound endpoint for a DNS resolver.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OutboundEndpointInner createOrUpdate(String resourceGroupName, String dnsResolverName,
         String outboundEndpointName, OutboundEndpointInner parameters, String ifMatch, String ifNoneMatch,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, dnsResolverName, outboundEndpointName, parameters, ifMatch,
-            ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, dnsResolverName,
+            outboundEndpointName, parameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -622,11 +540,8 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String dnsResolverName,
         String outboundEndpointName, OutboundEndpointPatch parameters, String ifMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsResolverName, outboundEndpointName, ifMatch,
-            contentType, accept, parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, dnsResolverName, outboundEndpointName, parameters, ifMatch,
+            Context.NONE);
     }
 
     /**
@@ -718,51 +633,20 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
      * @return the {@link SyncPoller} for polling of describes an outbound endpoint for a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OutboundEndpointInner>, OutboundEndpointInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<OutboundEndpointInner>, OutboundEndpointInner> beginUpdate(String resourceGroupName,
         String dnsResolverName, String outboundEndpointName, OutboundEndpointPatch parameters, String ifMatch) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, dnsResolverName, outboundEndpointName, parameters, ifMatch);
-        return this.client.<OutboundEndpointInner, OutboundEndpointInner>getLroResult(response,
-            OutboundEndpointInner.class, OutboundEndpointInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, dnsResolverName, outboundEndpointName, parameters, ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates an outbound endpoint for a DNS resolver.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param outboundEndpointName The name of the outbound endpoint for the DNS resolver.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes an outbound endpoint for a DNS resolver.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OutboundEndpointInner>, OutboundEndpointInner> beginUpdate(String resourceGroupName,
         String dnsResolverName, String outboundEndpointName, OutboundEndpointPatch parameters) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, dnsResolverName, outboundEndpointName, parameters, ifMatch);
-        return this.client.<OutboundEndpointInner, OutboundEndpointInner>getLroResult(response,
-            OutboundEndpointInner.class, OutboundEndpointInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, dnsResolverName, outboundEndpointName, parameters, ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates an outbound endpoint for a DNS resolver.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param outboundEndpointName The name of the outbound endpoint for the DNS resolver.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes an outbound endpoint for a DNS resolver.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OutboundEndpointInner>, OutboundEndpointInner> beginUpdate(String resourceGroupName,
         String dnsResolverName, String outboundEndpointName, OutboundEndpointPatch parameters, String ifMatch,
@@ -814,46 +698,20 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an outbound endpoint for a DNS resolver.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param outboundEndpointName The name of the outbound endpoint for the DNS resolver.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an outbound endpoint for a DNS resolver.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OutboundEndpointInner update(String resourceGroupName, String dnsResolverName, String outboundEndpointName,
         OutboundEndpointPatch parameters) {
         final String ifMatch = null;
-        return beginUpdate(resourceGroupName, dnsResolverName, outboundEndpointName, parameters, ifMatch)
-            .getFinalResult();
+        return update(resourceGroupName, dnsResolverName, outboundEndpointName, parameters, ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates an outbound endpoint for a DNS resolver.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param outboundEndpointName The name of the outbound endpoint for the DNS resolver.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an outbound endpoint for a DNS resolver.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OutboundEndpointInner update(String resourceGroupName, String dnsResolverName, String outboundEndpointName,
         OutboundEndpointPatch parameters, String ifMatch, Context context) {
-        return beginUpdate(resourceGroupName, dnsResolverName, outboundEndpointName, parameters, ifMatch, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, dnsResolverName, outboundEndpointName, parameters, ifMatch, context));
     }
 
     /**
@@ -895,9 +753,7 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String dnsResolverName,
         String outboundEndpointName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsResolverName, outboundEndpointName, ifMatch,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, dnsResolverName, outboundEndpointName, ifMatch, Context.NONE);
     }
 
     /**
@@ -979,47 +835,20 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverName,
         String outboundEndpointName, String ifMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, dnsResolverName, outboundEndpointName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, dnsResolverName, outboundEndpointName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Deletes an outbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param outboundEndpointName The name of the outbound endpoint for the DNS resolver.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverName,
         String outboundEndpointName) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, dnsResolverName, outboundEndpointName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, dnsResolverName, outboundEndpointName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Deletes an outbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param outboundEndpointName The name of the outbound endpoint for the DNS resolver.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverName,
         String outboundEndpointName, String ifMatch, Context context) {
@@ -1066,39 +895,19 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an outbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param outboundEndpointName The name of the outbound endpoint for the DNS resolver.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dnsResolverName, String outboundEndpointName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, dnsResolverName, outboundEndpointName, ifMatch).getFinalResult();
+        delete(resourceGroupName, dnsResolverName, outboundEndpointName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Deletes an outbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param outboundEndpointName The name of the outbound endpoint for the DNS resolver.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dnsResolverName, String outboundEndpointName, String ifMatch,
         Context context) {
-        beginDelete(resourceGroupName, dnsResolverName, outboundEndpointName, ifMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, dnsResolverName, outboundEndpointName, ifMatch, context));
     }
 
     /**
@@ -1173,12 +982,7 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OutboundEndpointInner> listSinglePage(String resourceGroupName, String dnsResolverName,
         Integer top) {
-        final String accept = "application/json";
-        Response<OutboundEndpointListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, dnsResolverName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, dnsResolverName, top, Context.NONE);
     }
 
     /**
@@ -1204,35 +1008,14 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists outbound endpoints for a DNS resolver.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OutboundEndpoint list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundEndpointInner> list(String resourceGroupName, String dnsResolverName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, dnsResolverName, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, dnsResolverName, top, Context.NONE);
     }
 
-    /**
-     * Lists outbound endpoints for a DNS resolver.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param top The maximum number of results to return. If not specified, returns up to 100 results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OutboundEndpoint list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundEndpointInner> list(String resourceGroupName, String dnsResolverName, Integer top,
         Context context) {
@@ -1270,11 +1053,7 @@ public final class OutboundEndpointsClientImpl implements OutboundEndpointsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OutboundEndpointInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OutboundEndpointListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

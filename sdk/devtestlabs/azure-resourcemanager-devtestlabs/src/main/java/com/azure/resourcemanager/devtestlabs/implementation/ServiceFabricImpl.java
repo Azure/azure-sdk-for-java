@@ -113,10 +113,7 @@ public final class ServiceFabricImpl implements ServiceFabric, ServiceFabric.Def
     }
 
     public ServiceFabric create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceFabrics()
-            .createOrUpdate(resourceGroupName, labName, userName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ServiceFabric create(Context context) {
@@ -138,11 +135,7 @@ public final class ServiceFabricImpl implements ServiceFabric, ServiceFabric.Def
     }
 
     public ServiceFabric apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceFabrics()
-            .updateWithResponse(resourceGroupName, labName, userName, name, updateServiceFabric, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ServiceFabric apply(Context context) {
@@ -172,12 +165,7 @@ public final class ServiceFabricImpl implements ServiceFabric, ServiceFabric.Def
     }
 
     public ServiceFabric refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceFabrics()
-            .getWithResponse(resourceGroupName, labName, userName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ServiceFabric refresh(Context context) {

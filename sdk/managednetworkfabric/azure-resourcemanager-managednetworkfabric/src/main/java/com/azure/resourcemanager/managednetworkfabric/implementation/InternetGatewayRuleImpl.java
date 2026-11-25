@@ -109,10 +109,7 @@ public final class InternetGatewayRuleImpl
     }
 
     public InternetGatewayRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInternetGatewayRules()
-            .create(resourceGroupName, internetGatewayRuleName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public InternetGatewayRule create(Context context) {
@@ -135,10 +132,7 @@ public final class InternetGatewayRuleImpl
     }
 
     public InternetGatewayRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInternetGatewayRules()
-            .update(resourceGroupName, internetGatewayRuleName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public InternetGatewayRule apply(Context context) {
@@ -161,11 +155,7 @@ public final class InternetGatewayRuleImpl
     }
 
     public InternetGatewayRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInternetGatewayRules()
-            .getByResourceGroupWithResponse(resourceGroupName, internetGatewayRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public InternetGatewayRule refresh(Context context) {

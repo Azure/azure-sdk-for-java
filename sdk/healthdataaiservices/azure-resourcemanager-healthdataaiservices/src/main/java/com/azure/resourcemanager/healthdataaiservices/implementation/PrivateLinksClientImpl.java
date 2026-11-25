@@ -152,12 +152,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByDeidServiceSinglePage(String resourceGroupName,
         String deidServiceName) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listByDeidServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, deidServiceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByDeidServiceSinglePage(resourceGroupName, deidServiceName, Context.NONE);
     }
 
     /**
@@ -182,33 +177,13 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List private links on the given resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateLinkResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByDeidService(String resourceGroupName, String deidServiceName) {
-        return new PagedIterable<>(() -> listByDeidServiceSinglePage(resourceGroupName, deidServiceName),
-            nextLink -> listByDeidServiceNextSinglePage(nextLink));
+        return listByDeidService(resourceGroupName, deidServiceName, Context.NONE);
     }
 
-    /**
-     * List private links on the given resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateLinkResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByDeidService(String resourceGroupName, String deidServiceName,
         Context context) {
@@ -247,11 +222,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByDeidServiceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listByDeidServiceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByDeidServiceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

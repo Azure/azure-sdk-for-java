@@ -127,23 +127,7 @@ public final class PlatformWorkloadIdentityRoleSetOperationsClientImpl
         return getWithResponseAsync(location, openShiftMinorVersion).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a mapping of an OpenShift version to identity requirements, which includes operatorName, roleDefinitionName,
-     * roleDefinitionId, and serviceAccounts.
-     * 
-     * This operation returns Platform Workload Identity Role Set as a string.
-     * 
-     * @param location The name of the Azure region.
-     * @param openShiftMinorVersion The desired version value of the PlatformWorkloadIdentityRoleSet resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a mapping of an OpenShift version to identity requirements, which includes operatorName,
-     * roleDefinitionName, roleDefinitionId, and serviceAccounts.
-     * 
-     * This operation returns Platform Workload Identity Role Set as a string along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlatformWorkloadIdentityRoleSetInner> getWithResponse(String location, String openShiftMinorVersion,
         Context context) {
@@ -152,22 +136,7 @@ public final class PlatformWorkloadIdentityRoleSetOperationsClientImpl
             location, openShiftMinorVersion, accept, context);
     }
 
-    /**
-     * Gets a mapping of an OpenShift version to identity requirements, which includes operatorName, roleDefinitionName,
-     * roleDefinitionId, and serviceAccounts.
-     * 
-     * This operation returns Platform Workload Identity Role Set as a string.
-     * 
-     * @param location The name of the Azure region.
-     * @param openShiftMinorVersion The desired version value of the PlatformWorkloadIdentityRoleSet resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a mapping of an OpenShift version to identity requirements, which includes operatorName,
-     * roleDefinitionName, roleDefinitionId, and serviceAccounts.
-     * 
-     * This operation returns Platform Workload Identity Role Set as a string.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlatformWorkloadIdentityRoleSetInner get(String location, String openShiftMinorVersion) {
         return getWithResponse(location, openShiftMinorVersion, Context.NONE).getValue();

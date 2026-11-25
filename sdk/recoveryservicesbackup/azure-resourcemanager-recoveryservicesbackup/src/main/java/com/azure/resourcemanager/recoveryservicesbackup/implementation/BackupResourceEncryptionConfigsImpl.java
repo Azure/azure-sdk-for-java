@@ -51,7 +51,7 @@ public final class BackupResourceEncryptionConfigsImpl implements BackupResource
     }
 
     public void update(String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters) {
-        this.serviceClient().update(vaultName, resourceGroupName, parameters);
+        this.updateWithResponse(vaultName, resourceGroupName, parameters, Context.NONE);
     }
 
     private BackupResourceEncryptionConfigsClient serviceClient() {

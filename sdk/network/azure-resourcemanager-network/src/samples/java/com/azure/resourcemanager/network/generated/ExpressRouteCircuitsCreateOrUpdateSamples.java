@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class ExpressRouteCircuitsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01/ExpressRouteCircuitCreate.json
+     * x-ms-original-file: 2026-05-01/ExpressRouteCircuitCreate.json
      */
     /**
      * Sample code: Create ExpressRouteCircuit.
@@ -43,7 +43,7 @@ public final class ExpressRouteCircuitsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/ExpressRouteCircuitCreateOnExpressRoutePort.json
+     * x-ms-original-file: 2026-05-01/ExpressRouteCircuitCreateOnExpressRoutePort.json
      */
     /**
      * Sample code: Create ExpressRouteCircuit on ExpressRoutePort.
@@ -66,7 +66,7 @@ public final class ExpressRouteCircuitsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/ExpressRouteCircuitCreateOnExpressRouteLag.json
+     * x-ms-original-file: 2026-05-01/ExpressRouteCircuitCreateOnExpressRouteLag.json
      */
     /**
      * Sample code: Create ExpressRouteCircuit on ExpressRouteLag.
@@ -88,7 +88,7 @@ public final class ExpressRouteCircuitsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/ExpressRouteMultiCloudCircuitCreateWithPartnerAccountId.json
+     * x-ms-original-file: 2026-05-01/ExpressRouteMultiCloudCircuitCreateWithPartnerAccountId.json
      */
     /**
      * Sample code: Create MultiCloud ExpressRouteCircuit with PartnerAccountId.
@@ -113,7 +113,7 @@ public final class ExpressRouteCircuitsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/ExpressRouteCircuitCreateOnExpressRouteLagWithAuthorizationKey.json
+     * x-ms-original-file: 2026-05-01/ExpressRouteCircuitCreateOnExpressRouteLagWithAuthorizationKey.json
      */
     /**
      * Sample code: Create ExpressRouteCircuit on ExpressRouteLag with Authorization Key.
@@ -136,7 +136,7 @@ public final class ExpressRouteCircuitsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/ExpressRouteMultiCloudCircuitCreateWithActivationKey.json
+     * x-ms-original-file: 2026-05-01/ExpressRouteMultiCloudCircuitCreateWithActivationKey.json
      */
     /**
      * Sample code: Create MultiCloud ExpressRouteCircuit with ActivationKey.

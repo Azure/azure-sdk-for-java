@@ -44,8 +44,7 @@ public final class NetAppResourceQuotaLimitsImpl implements NetAppResourceQuotaL
     }
 
     public PagedIterable<SubscriptionQuotaItem> list(String location) {
-        PagedIterable<SubscriptionQuotaItemInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SubscriptionQuotaItemImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<SubscriptionQuotaItem> list(String location, Context context) {

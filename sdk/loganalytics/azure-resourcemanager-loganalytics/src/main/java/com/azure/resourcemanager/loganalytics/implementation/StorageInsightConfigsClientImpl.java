@@ -197,18 +197,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a storage insight instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param storageInsightName Name of the storageInsightsConfigs resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a storage insight instance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageInsightInner> getWithResponse(String resourceGroupName, String workspaceName,
         String storageInsightName, Context context) {
@@ -217,17 +206,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
             resourceGroupName, workspaceName, storageInsightName, accept, context);
     }
 
-    /**
-     * Gets a storage insight instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param storageInsightName Name of the storageInsightsConfigs resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a storage insight instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageInsightInner get(String resourceGroupName, String workspaceName, String storageInsightName) {
         return getWithResponse(resourceGroupName, workspaceName, storageInsightName, Context.NONE).getValue();
@@ -277,19 +256,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a storage insight.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param storageInsightName Name of the storageInsightsConfigs resource.
-     * @param parameters The parameters required to create or update a storage insight.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level storage insight resource container along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageInsightInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String storageInsightName, StorageInsightInner parameters, Context context) {
@@ -300,18 +267,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
             parameters, context);
     }
 
-    /**
-     * Create or update a storage insight.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param storageInsightName Name of the storageInsightsConfigs resource.
-     * @param parameters The parameters required to create or update a storage insight.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level storage insight resource container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageInsightInner createOrUpdate(String resourceGroupName, String workspaceName, String storageInsightName,
         StorageInsightInner parameters) {
@@ -356,18 +312,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a storageInsightsConfigs resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param storageInsightName Name of the storageInsightsConfigs resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String storageInsightName,
         Context context) {
@@ -375,16 +320,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, storageInsightName, context);
     }
 
-    /**
-     * Deletes a storageInsightsConfigs resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param storageInsightName Name of the storageInsightsConfigs resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String storageInsightName) {
         deleteWithResponse(resourceGroupName, workspaceName, storageInsightName, Context.NONE);
@@ -442,12 +378,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageInsightInner> listByWorkspaceSinglePage(String resourceGroupName,
         String workspaceName) {
-        final String accept = "application/json";
-        Response<StorageInsightListResult> res
-            = service.listByWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().odataNextLink(), null);
+        return listByWorkspaceSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -472,33 +403,13 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
             res.getValue().odataNextLink(), null);
     }
 
-    /**
-     * Lists the storage insight instances within a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list storage insights operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageInsightInner> listByWorkspace(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listByWorkspaceSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listByWorkspaceNextSinglePage(nextLink));
+        return listByWorkspace(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Lists the storage insight instances within a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list storage insights operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageInsightInner> listByWorkspace(String resourceGroupName, String workspaceName,
         Context context) {
@@ -537,11 +448,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageInsightInner> listByWorkspaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageInsightListResult> res
-            = service.listByWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().odataNextLink(), null);
+        return listByWorkspaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

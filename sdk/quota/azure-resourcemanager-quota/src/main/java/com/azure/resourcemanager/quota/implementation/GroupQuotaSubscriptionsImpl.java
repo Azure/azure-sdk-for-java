@@ -45,12 +45,7 @@ public final class GroupQuotaSubscriptionsImpl implements GroupQuotaSubscription
     }
 
     public GroupQuotaSubscriptionId createOrUpdate(String managementGroupId, String groupQuotaName) {
-        GroupQuotaSubscriptionIdInner inner = this.serviceClient().createOrUpdate(managementGroupId, groupQuotaName);
-        if (inner != null) {
-            return new GroupQuotaSubscriptionIdImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(managementGroupId, groupQuotaName, Context.NONE);
     }
 
     public GroupQuotaSubscriptionId createOrUpdate(String managementGroupId, String groupQuotaName, Context context) {
@@ -64,12 +59,7 @@ public final class GroupQuotaSubscriptionsImpl implements GroupQuotaSubscription
     }
 
     public GroupQuotaSubscriptionId update(String managementGroupId, String groupQuotaName) {
-        GroupQuotaSubscriptionIdInner inner = this.serviceClient().update(managementGroupId, groupQuotaName);
-        if (inner != null) {
-            return new GroupQuotaSubscriptionIdImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(managementGroupId, groupQuotaName, Context.NONE);
     }
 
     public GroupQuotaSubscriptionId update(String managementGroupId, String groupQuotaName, Context context) {
@@ -82,7 +72,7 @@ public final class GroupQuotaSubscriptionsImpl implements GroupQuotaSubscription
     }
 
     public void deleteByResourceGroup(String managementGroupId, String groupQuotaName) {
-        this.serviceClient().delete(managementGroupId, groupQuotaName);
+        this.delete(managementGroupId, groupQuotaName, Context.NONE);
     }
 
     public void delete(String managementGroupId, String groupQuotaName, Context context) {
@@ -90,9 +80,7 @@ public final class GroupQuotaSubscriptionsImpl implements GroupQuotaSubscription
     }
 
     public PagedIterable<GroupQuotaSubscriptionId> list(String managementGroupId, String groupQuotaName) {
-        PagedIterable<GroupQuotaSubscriptionIdInner> inner
-            = this.serviceClient().list(managementGroupId, groupQuotaName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new GroupQuotaSubscriptionIdImpl(inner1, this.manager()));
+        return this.list(managementGroupId, groupQuotaName, Context.NONE);
     }
 
     public PagedIterable<GroupQuotaSubscriptionId> list(String managementGroupId, String groupQuotaName,

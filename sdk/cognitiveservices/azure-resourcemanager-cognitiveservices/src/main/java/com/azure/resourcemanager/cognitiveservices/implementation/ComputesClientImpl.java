@@ -254,18 +254,7 @@ public final class ComputesClientImpl implements ComputesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified compute associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified compute associated with the Cognitive Services account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ComputeInner> getWithResponse(String resourceGroupName, String accountName, String computeName,
         Context context) {
@@ -274,17 +263,7 @@ public final class ComputesClientImpl implements ComputesClient {
             resourceGroupName, accountName, computeName, accept, context);
     }
 
-    /**
-     * Gets the specified compute associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified compute associated with the Cognitive Services account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComputeInner get(String resourceGroupName, String accountName, String computeName) {
         return getWithResponse(resourceGroupName, accountName, computeName, Context.NONE).getValue();
@@ -328,10 +307,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String computeName, ComputeInner resource) {
-        final String contentType = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, computeName, contentType, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, accountName, computeName, resource, Context.NONE);
     }
 
     /**
@@ -377,40 +353,14 @@ public final class ComputesClientImpl implements ComputesClient {
             ComputeInner.class, ComputeInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a compute associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param resource The compute properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ComputeInner>, ComputeInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, String computeName, ComputeInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, accountName, computeName, resource);
-        return this.client.<ComputeInner, ComputeInner>getLroResult(response, ComputeInner.class, ComputeInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, accountName, computeName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a compute associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param resource The compute properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ComputeInner>, ComputeInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, String computeName, ComputeInner resource, Context context) {
@@ -439,41 +389,19 @@ public final class ComputesClientImpl implements ComputesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a compute associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param resource The compute properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComputeInner createOrUpdate(String resourceGroupName, String accountName, String computeName,
         ComputeInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, computeName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, accountName, computeName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a compute associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param resource The compute properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComputeInner createOrUpdate(String resourceGroupName, String accountName, String computeName,
         ComputeInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, computeName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, accountName, computeName, resource, context));
     }
 
     /**
@@ -509,8 +437,7 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String computeName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, computeName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, computeName, Context.NONE);
     }
 
     /**
@@ -551,36 +478,14 @@ public final class ComputesClientImpl implements ComputesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified compute associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String computeName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, computeName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, computeName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified compute associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String computeName, Context context) {
@@ -605,35 +510,16 @@ public final class ComputesClientImpl implements ComputesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified compute associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String computeName) {
-        beginDelete(resourceGroupName, accountName, computeName).getFinalResult();
+        delete(resourceGroupName, accountName, computeName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified compute associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String computeName, Context context) {
-        beginDelete(resourceGroupName, accountName, computeName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, computeName, context));
     }
 
     /**
@@ -686,11 +572,7 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ComputeInner> listSinglePage(String resourceGroupName, String accountName) {
-        final String accept = "application/json";
-        Response<ComputeListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -713,35 +595,13 @@ public final class ComputesClientImpl implements ComputesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the computes associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the computes associated with the Cognitive Services account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ComputeInner> list(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Gets the computes associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the computes associated with the Cognitive Services account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ComputeInner> list(String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, context),
@@ -785,8 +645,7 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String accountName, String computeName) {
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, computeName, Context.NONE);
+        return startWithResponse(resourceGroupName, accountName, computeName, Context.NONE);
     }
 
     /**
@@ -831,40 +690,14 @@ public final class ComputesClientImpl implements ComputesClient {
             this.client.getContext());
     }
 
-    /**
-     * Starts a stopped ContainerInstance compute resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Only applicable when computeType is ContainerInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String accountName,
         String computeName) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, accountName, computeName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStart(resourceGroupName, accountName, computeName, Context.NONE);
     }
 
-    /**
-     * Starts a stopped ContainerInstance compute resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Only applicable when computeType is ContainerInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String accountName,
         String computeName, Context context) {
@@ -891,39 +724,16 @@ public final class ComputesClientImpl implements ComputesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts a stopped ContainerInstance compute resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Only applicable when computeType is ContainerInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String accountName, String computeName) {
-        beginStart(resourceGroupName, accountName, computeName).getFinalResult();
+        start(resourceGroupName, accountName, computeName, Context.NONE);
     }
 
-    /**
-     * Starts a stopped ContainerInstance compute resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Only applicable when computeType is ContainerInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String accountName, String computeName, Context context) {
-        beginStart(resourceGroupName, accountName, computeName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStart(resourceGroupName, accountName, computeName, context));
     }
 
     /**
@@ -963,8 +773,7 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopWithResponse(String resourceGroupName, String accountName, String computeName) {
-        return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, accountName, computeName, Context.NONE);
+        return stopWithResponse(resourceGroupName, accountName, computeName, Context.NONE);
     }
 
     /**
@@ -1009,40 +818,14 @@ public final class ComputesClientImpl implements ComputesClient {
             this.client.getContext());
     }
 
-    /**
-     * Stops a running ContainerInstance compute resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Only applicable when computeType is ContainerInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String accountName,
         String computeName) {
-        Response<BinaryData> response = stopWithResponse(resourceGroupName, accountName, computeName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStop(resourceGroupName, accountName, computeName, Context.NONE);
     }
 
-    /**
-     * Stops a running ContainerInstance compute resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Only applicable when computeType is ContainerInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String accountName,
         String computeName, Context context) {
@@ -1069,39 +852,16 @@ public final class ComputesClientImpl implements ComputesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stops a running ContainerInstance compute resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Only applicable when computeType is ContainerInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String accountName, String computeName) {
-        beginStop(resourceGroupName, accountName, computeName).getFinalResult();
+        stop(resourceGroupName, accountName, computeName, Context.NONE);
     }
 
-    /**
-     * Stops a running ContainerInstance compute resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Only applicable when computeType is ContainerInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String accountName, String computeName, Context context) {
-        beginStop(resourceGroupName, accountName, computeName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStop(resourceGroupName, accountName, computeName, context));
     }
 
     /**
@@ -1141,8 +901,7 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restartWithResponse(String resourceGroupName, String accountName, String computeName) {
-        return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, computeName, Context.NONE);
+        return restartWithResponse(resourceGroupName, accountName, computeName, Context.NONE);
     }
 
     /**
@@ -1187,40 +946,14 @@ public final class ComputesClientImpl implements ComputesClient {
             this.client.getContext());
     }
 
-    /**
-     * Restarts a running ContainerInstance compute resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Only applicable when computeType is ContainerInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String accountName,
         String computeName) {
-        Response<BinaryData> response = restartWithResponse(resourceGroupName, accountName, computeName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRestart(resourceGroupName, accountName, computeName, Context.NONE);
     }
 
-    /**
-     * Restarts a running ContainerInstance compute resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Only applicable when computeType is ContainerInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String accountName,
         String computeName, Context context) {
@@ -1247,39 +980,16 @@ public final class ComputesClientImpl implements ComputesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restarts a running ContainerInstance compute resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Only applicable when computeType is ContainerInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String accountName, String computeName) {
-        beginRestart(resourceGroupName, accountName, computeName).getFinalResult();
+        restart(resourceGroupName, accountName, computeName, Context.NONE);
     }
 
-    /**
-     * Restarts a running ContainerInstance compute resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Only applicable when computeType is ContainerInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String accountName, String computeName, Context context) {
-        beginRestart(resourceGroupName, accountName, computeName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRestart(resourceGroupName, accountName, computeName, context));
     }
 
     /**
@@ -1312,11 +1022,7 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ComputeInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ComputeListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

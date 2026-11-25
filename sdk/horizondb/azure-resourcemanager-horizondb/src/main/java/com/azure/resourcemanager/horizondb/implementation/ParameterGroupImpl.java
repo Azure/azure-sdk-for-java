@@ -85,10 +85,7 @@ public final class ParameterGroupImpl implements ParameterGroup, ParameterGroup.
     }
 
     public ParameterGroup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getParameterGroups()
-            .createOrReplace(resourceGroupName, parameterGroupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ParameterGroup create(Context context) {
@@ -110,10 +107,7 @@ public final class ParameterGroupImpl implements ParameterGroup, ParameterGroup.
     }
 
     public ParameterGroup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getParameterGroups()
-            .update(resourceGroupName, parameterGroupName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ParameterGroup apply(Context context) {
@@ -136,11 +130,7 @@ public final class ParameterGroupImpl implements ParameterGroup, ParameterGroup.
     }
 
     public ParameterGroup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getParameterGroups()
-            .getByResourceGroupWithResponse(resourceGroupName, parameterGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ParameterGroup refresh(Context context) {

@@ -94,10 +94,7 @@ public final class SapVirtualInstanceImpl
     }
 
     public SapVirtualInstance create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapVirtualInstances()
-            .create(resourceGroupName, sapVirtualInstanceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SapVirtualInstance create(Context context) {
@@ -120,10 +117,7 @@ public final class SapVirtualInstanceImpl
     }
 
     public SapVirtualInstance apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapVirtualInstances()
-            .update(resourceGroupName, sapVirtualInstanceName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SapVirtualInstance apply(Context context) {
@@ -146,11 +140,7 @@ public final class SapVirtualInstanceImpl
     }
 
     public SapVirtualInstance refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapVirtualInstances()
-            .getByResourceGroupWithResponse(resourceGroupName, sapVirtualInstanceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SapVirtualInstance refresh(Context context) {

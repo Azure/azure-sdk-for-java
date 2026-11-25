@@ -147,17 +147,7 @@ public final class GetUsagesInLocationsClientImpl implements GetUsagesInLocation
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists subscription core usages for all skus used in a location, for a given type of quota.
-     * 
-     * List usages in cores for all skus used by a subscription in a given location, for a specific quota type.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of CsmUsageQuota items as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CsmUsageQuotaInner> listAsync(String location) {
         return new PagedFlux<>(() -> listSinglePageAsync(location), nextLink -> listNextSinglePageAsync(nextLink));
@@ -181,34 +171,13 @@ public final class GetUsagesInLocationsClientImpl implements GetUsagesInLocation
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists subscription core usages for all skus used in a location, for a given type of quota.
-     * 
-     * List usages in cores for all skus used by a subscription in a given location, for a specific quota type.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of CsmUsageQuota items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CsmUsageQuotaInner> list(String location) {
         return new PagedIterable<>(listAsync(location));
     }
 
-    /**
-     * Lists subscription core usages for all skus used in a location, for a given type of quota.
-     * 
-     * List usages in cores for all skus used by a subscription in a given location, for a specific quota type.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of CsmUsageQuota items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CsmUsageQuotaInner> list(String location, Context context) {
         return new PagedIterable<>(listAsync(location, context));

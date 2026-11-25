@@ -227,18 +227,7 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param nodePoolName The name of the NodePool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NodePool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NodePoolInner> getWithResponse(String resourceGroupName, String supercomputerName,
         String nodePoolName, Context context) {
@@ -247,17 +236,7 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             resourceGroupName, supercomputerName, nodePoolName, accept, context);
     }
 
-    /**
-     * Get a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param nodePoolName The name of the NodePool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NodePool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodePoolInner get(String resourceGroupName, String supercomputerName, String nodePoolName) {
         return getWithResponse(resourceGroupName, supercomputerName, nodePoolName, Context.NONE).getValue();
@@ -302,11 +281,7 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String supercomputerName,
         String nodePoolName, NodePoolInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, supercomputerName, nodePoolName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, supercomputerName, nodePoolName, resource, Context.NONE);
     }
 
     /**
@@ -353,40 +328,14 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             NodePoolInner.class, NodePoolInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param nodePoolName The name of the NodePool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nodePool tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NodePoolInner>, NodePoolInner> beginCreateOrUpdate(String resourceGroupName,
         String supercomputerName, String nodePoolName, NodePoolInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, supercomputerName, nodePoolName, resource);
-        return this.client.<NodePoolInner, NodePoolInner>getLroResult(response, NodePoolInner.class,
-            NodePoolInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, supercomputerName, nodePoolName, resource, Context.NONE);
     }
 
-    /**
-     * Create a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param nodePoolName The name of the NodePool.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nodePool tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NodePoolInner>, NodePoolInner> beginCreateOrUpdate(String resourceGroupName,
         String supercomputerName, String nodePoolName, NodePoolInner resource, Context context) {
@@ -415,42 +364,19 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param nodePoolName The name of the NodePool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nodePool tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodePoolInner createOrUpdate(String resourceGroupName, String supercomputerName, String nodePoolName,
         NodePoolInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, supercomputerName, nodePoolName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, supercomputerName, nodePoolName, resource, Context.NONE);
     }
 
-    /**
-     * Create a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param nodePoolName The name of the NodePool.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nodePool tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodePoolInner createOrUpdate(String resourceGroupName, String supercomputerName, String nodePoolName,
         NodePoolInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, supercomputerName, nodePoolName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, supercomputerName, nodePoolName, resource, context));
     }
 
     /**
@@ -492,11 +418,7 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String supercomputerName,
         String nodePoolName, NodePoolInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, supercomputerName, nodePoolName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, supercomputerName, nodePoolName, properties, Context.NONE);
     }
 
     /**
@@ -543,40 +465,14 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             NodePoolInner.class, NodePoolInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param nodePoolName The name of the NodePool.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nodePool tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NodePoolInner>, NodePoolInner> beginUpdate(String resourceGroupName,
         String supercomputerName, String nodePoolName, NodePoolInner properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, supercomputerName, nodePoolName, properties);
-        return this.client.<NodePoolInner, NodePoolInner>getLroResult(response, NodePoolInner.class,
-            NodePoolInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, supercomputerName, nodePoolName, properties, Context.NONE);
     }
 
-    /**
-     * Update a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param nodePoolName The name of the NodePool.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nodePool tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NodePoolInner>, NodePoolInner> beginUpdate(String resourceGroupName,
         String supercomputerName, String nodePoolName, NodePoolInner properties, Context context) {
@@ -605,41 +501,19 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param nodePoolName The name of the NodePool.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nodePool tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodePoolInner update(String resourceGroupName, String supercomputerName, String nodePoolName,
         NodePoolInner properties) {
-        return beginUpdate(resourceGroupName, supercomputerName, nodePoolName, properties).getFinalResult();
+        return update(resourceGroupName, supercomputerName, nodePoolName, properties, Context.NONE);
     }
 
-    /**
-     * Update a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param nodePoolName The name of the NodePool.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nodePool tracked resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodePoolInner update(String resourceGroupName, String supercomputerName, String nodePoolName,
         NodePoolInner properties, Context context) {
-        return beginUpdate(resourceGroupName, supercomputerName, nodePoolName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, supercomputerName, nodePoolName, properties, context));
     }
 
     /**
@@ -676,8 +550,7 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String supercomputerName,
         String nodePoolName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, supercomputerName, nodePoolName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, supercomputerName, nodePoolName, Context.NONE);
     }
 
     /**
@@ -719,36 +592,14 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param nodePoolName The name of the NodePool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String supercomputerName,
         String nodePoolName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, supercomputerName, nodePoolName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, supercomputerName, nodePoolName, Context.NONE);
     }
 
-    /**
-     * Delete a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param nodePoolName The name of the NodePool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String supercomputerName,
         String nodePoolName, Context context) {
@@ -773,35 +624,16 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param nodePoolName The name of the NodePool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String supercomputerName, String nodePoolName) {
-        beginDelete(resourceGroupName, supercomputerName, nodePoolName).getFinalResult();
+        delete(resourceGroupName, supercomputerName, nodePoolName, Context.NONE);
     }
 
-    /**
-     * Delete a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param nodePoolName The name of the NodePool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String supercomputerName, String nodePoolName, Context context) {
-        beginDelete(resourceGroupName, supercomputerName, nodePoolName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, supercomputerName, nodePoolName, context));
     }
 
     /**
@@ -856,12 +688,7 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodePoolInner> listBySupercomputerSinglePage(String resourceGroupName,
         String supercomputerName) {
-        final String accept = "application/json";
-        Response<NodePoolListResult> res
-            = service.listBySupercomputerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, supercomputerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySupercomputerSinglePage(resourceGroupName, supercomputerName, Context.NONE);
     }
 
     /**
@@ -886,33 +713,13 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List NodePool resources by Supercomputer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NodePool list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NodePoolInner> listBySupercomputer(String resourceGroupName, String supercomputerName) {
-        return new PagedIterable<>(() -> listBySupercomputerSinglePage(resourceGroupName, supercomputerName),
-            nextLink -> listBySupercomputerNextSinglePage(nextLink));
+        return listBySupercomputer(resourceGroupName, supercomputerName, Context.NONE);
     }
 
-    /**
-     * List NodePool resources by Supercomputer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param supercomputerName The name of the Supercomputer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NodePool list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NodePoolInner> listBySupercomputer(String resourceGroupName, String supercomputerName,
         Context context) {
@@ -952,11 +759,7 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodePoolInner> listBySupercomputerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NodePoolListResult> res
-            = service.listBySupercomputerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySupercomputerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

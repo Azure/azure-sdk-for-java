@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed buffered producer `maxWaitTime` batching so that later arrivals do not extend a partial batch's deadline.
+  The wait starts with the first event in each batch, including after a flush or size-based rollover.
+  Sustained traffic can produce smaller batches more often. Buffering, sends, and retries can add further latency.
 - Fixed `EventContext.updateCheckpointAsync()` so that the `offsetString` from the received `EventData` is propagated
   to the `Checkpoint` passed to the `CheckpointStore`. Previously only the deprecated `offset` (Long) was set, which
   caused checkpoint stores that read `offsetString` (such as `BlobCheckpointStore`) to persist a `null` offset, breaking

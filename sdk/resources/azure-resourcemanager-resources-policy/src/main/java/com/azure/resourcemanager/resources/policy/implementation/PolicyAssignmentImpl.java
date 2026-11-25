@@ -174,11 +174,7 @@ public final class PolicyAssignmentImpl
     }
 
     public PolicyAssignment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicyAssignments()
-            .createWithResponse(scope, policyAssignmentName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PolicyAssignment create(Context context) {
@@ -201,11 +197,7 @@ public final class PolicyAssignmentImpl
     }
 
     public PolicyAssignment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicyAssignments()
-            .updateWithResponse(scope, policyAssignmentName, updateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PolicyAssignment apply(Context context) {
@@ -228,12 +220,7 @@ public final class PolicyAssignmentImpl
     }
 
     public PolicyAssignment refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicyAssignments()
-            .getWithResponse(scope, policyAssignmentName, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PolicyAssignment refresh(Context context) {

@@ -46,8 +46,7 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
     }
 
     public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String vaultName) {
-        PagedIterable<PrivateLinkResourceInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, vaultName, Context.NONE);
     }
 
     public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String vaultName, Context context) {

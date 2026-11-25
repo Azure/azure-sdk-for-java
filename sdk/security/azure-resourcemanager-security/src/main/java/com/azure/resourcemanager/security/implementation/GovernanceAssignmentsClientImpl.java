@@ -199,35 +199,14 @@ public final class GovernanceAssignmentsClientImpl implements GovernanceAssignme
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific governanceAssignment for the requested scope by AssignmentKey.
-     * 
-     * @param scope The scope of the governance assignment.
-     * @param assessmentName The assessment key of the governance assignment.
-     * @param assignmentKey The governance assignment key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific governanceAssignment for the requested scope by AssignmentKey along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GovernanceAssignmentInner> getWithResponse(String scope, String assessmentName,
         String assignmentKey, Context context) {
         return getWithResponseAsync(scope, assessmentName, assignmentKey, context).block();
     }
 
-    /**
-     * Get a specific governanceAssignment for the requested scope by AssignmentKey.
-     * 
-     * @param scope The scope of the governance assignment.
-     * @param assessmentName The assessment key of the governance assignment.
-     * @param assignmentKey The governance assignment key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific governanceAssignment for the requested scope by AssignmentKey.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GovernanceAssignmentInner get(String scope, String assessmentName, String assignmentKey) {
         return getWithResponse(scope, assessmentName, assignmentKey, Context.NONE).getValue();
@@ -340,19 +319,7 @@ public final class GovernanceAssignmentsClientImpl implements GovernanceAssignme
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a governance assignment on the given subscription.
-     * 
-     * @param scope The scope of the governance assignment.
-     * @param assessmentName The assessment key of the governance assignment.
-     * @param assignmentKey The governance assignment key.
-     * @param governanceAssignment Governance assignment over a subscription scope.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return governance assignment over a given scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GovernanceAssignmentInner> createOrUpdateWithResponse(String scope, String assessmentName,
         String assignmentKey, GovernanceAssignmentInner governanceAssignment, Context context) {
@@ -360,18 +327,7 @@ public final class GovernanceAssignmentsClientImpl implements GovernanceAssignme
             .block();
     }
 
-    /**
-     * Creates or updates a governance assignment on the given subscription.
-     * 
-     * @param scope The scope of the governance assignment.
-     * @param assessmentName The assessment key of the governance assignment.
-     * @param assignmentKey The governance assignment key.
-     * @param governanceAssignment Governance assignment over a subscription scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return governance assignment over a given scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GovernanceAssignmentInner createOrUpdate(String scope, String assessmentName, String assignmentKey,
         GovernanceAssignmentInner governanceAssignment) {
@@ -461,34 +417,14 @@ public final class GovernanceAssignmentsClientImpl implements GovernanceAssignme
         return deleteWithResponseAsync(scope, assessmentName, assignmentKey).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a GovernanceAssignment over a given scope.
-     * 
-     * @param scope The scope of the governance assignment.
-     * @param assessmentName The assessment key of the governance assignment.
-     * @param assignmentKey The governance assignment key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String scope, String assessmentName, String assignmentKey,
         Context context) {
         return deleteWithResponseAsync(scope, assessmentName, assignmentKey, context).block();
     }
 
-    /**
-     * Delete a GovernanceAssignment over a given scope.
-     * 
-     * @param scope The scope of the governance assignment.
-     * @param assessmentName The assessment key of the governance assignment.
-     * @param assignmentKey The governance assignment key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String scope, String assessmentName, String assignmentKey) {
         deleteWithResponse(scope, assessmentName, assignmentKey, Context.NONE);
@@ -595,34 +531,13 @@ public final class GovernanceAssignmentsClientImpl implements GovernanceAssignme
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get governance assignments on all of your resources inside a scope.
-     * 
-     * @param scope The scope of the governance assignment.
-     * @param assessmentName The assessment key of the governance assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return governance assignments on all of your resources inside a scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GovernanceAssignmentInner> list(String scope, String assessmentName) {
         return new PagedIterable<>(listAsync(scope, assessmentName));
     }
 
-    /**
-     * Get governance assignments on all of your resources inside a scope.
-     * 
-     * @param scope The scope of the governance assignment.
-     * @param assessmentName The assessment key of the governance assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return governance assignments on all of your resources inside a scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GovernanceAssignmentInner> list(String scope, String assessmentName, Context context) {
         return new PagedIterable<>(listAsync(scope, assessmentName, context));

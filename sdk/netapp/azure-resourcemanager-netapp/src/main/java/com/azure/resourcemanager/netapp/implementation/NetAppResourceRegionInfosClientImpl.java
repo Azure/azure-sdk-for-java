@@ -154,16 +154,7 @@ public final class NetAppResourceRegionInfosClientImpl implements NetAppResource
         return getWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Provides storage to network proximity and logical zone mapping information.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding regionInfo Item along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RegionInfoResourceInner> getWithResponse(String location, Context context) {
         if (this.client.getEndpoint() == null) {
@@ -185,15 +176,7 @@ public final class NetAppResourceRegionInfosClientImpl implements NetAppResource
             location, accept, context);
     }
 
-    /**
-     * Provides storage to network proximity and logical zone mapping information.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding regionInfo Item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegionInfoResourceInner get(String location) {
         return getWithResponse(location, Context.NONE).getValue();
@@ -255,25 +238,7 @@ public final class NetAppResourceRegionInfosClientImpl implements NetAppResource
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RegionInfoResourceInner> listSinglePage(String location) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<RegionInfosList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, Context.NONE);
     }
 
     /**
@@ -309,30 +274,13 @@ public final class NetAppResourceRegionInfosClientImpl implements NetAppResource
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Provides region specific information.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regionInfo resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegionInfoResourceInner> list(String location) {
-        return new PagedIterable<>(() -> listSinglePage(location), nextLink -> listNextSinglePage(nextLink));
+        return list(location, Context.NONE);
     }
 
-    /**
-     * Provides region specific information.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regionInfo resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegionInfoResourceInner> list(String location, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, context),
@@ -375,19 +323,7 @@ public final class NetAppResourceRegionInfosClientImpl implements NetAppResource
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RegionInfoResourceInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<RegionInfosList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

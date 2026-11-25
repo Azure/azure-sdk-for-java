@@ -225,18 +225,7 @@ public final class ChatModelDeploymentsClientImpl implements ChatModelDeployment
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ChatModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param chatModelDeploymentName The name of the ChatModelDeployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ChatModelDeployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChatModelDeploymentInner> getWithResponse(String resourceGroupName, String workspaceName,
         String chatModelDeploymentName, Context context) {
@@ -245,17 +234,7 @@ public final class ChatModelDeploymentsClientImpl implements ChatModelDeployment
             resourceGroupName, workspaceName, chatModelDeploymentName, accept, context);
     }
 
-    /**
-     * Get a ChatModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param chatModelDeploymentName The name of the ChatModelDeployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ChatModelDeployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChatModelDeploymentInner get(String resourceGroupName, String workspaceName,
         String chatModelDeploymentName) {
@@ -303,11 +282,8 @@ public final class ChatModelDeploymentsClientImpl implements ChatModelDeployment
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String chatModelDeploymentName, ChatModelDeploymentInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, chatModelDeploymentName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, chatModelDeploymentName, resource,
+            Context.NONE);
     }
 
     /**
@@ -358,43 +334,15 @@ public final class ChatModelDeploymentsClientImpl implements ChatModelDeployment
             this.client.getContext());
     }
 
-    /**
-     * Create a ChatModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param chatModelDeploymentName The name of the ChatModelDeployment.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a deployment that ties a specific model family to a user
-     * defined deployment name used when invoking the chat model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChatModelDeploymentInner>, ChatModelDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String chatModelDeploymentName,
         ChatModelDeploymentInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, workspaceName, chatModelDeploymentName, resource);
-        return this.client.<ChatModelDeploymentInner, ChatModelDeploymentInner>getLroResult(response,
-            ChatModelDeploymentInner.class, ChatModelDeploymentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, chatModelDeploymentName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ChatModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param chatModelDeploymentName The name of the ChatModelDeployment.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a deployment that ties a specific model family to a user
-     * defined deployment name used when invoking the chat model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChatModelDeploymentInner>, ChatModelDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String chatModelDeploymentName,
@@ -425,45 +373,19 @@ public final class ChatModelDeploymentsClientImpl implements ChatModelDeployment
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a ChatModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param chatModelDeploymentName The name of the ChatModelDeployment.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a deployment that ties a specific model family to a user defined deployment name used when
-     * invoking the chat model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChatModelDeploymentInner createOrUpdate(String resourceGroupName, String workspaceName,
         String chatModelDeploymentName, ChatModelDeploymentInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, chatModelDeploymentName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, chatModelDeploymentName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ChatModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param chatModelDeploymentName The name of the ChatModelDeployment.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a deployment that ties a specific model family to a user defined deployment name used when
-     * invoking the chat model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChatModelDeploymentInner createOrUpdate(String resourceGroupName, String workspaceName,
         String chatModelDeploymentName, ChatModelDeploymentInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, chatModelDeploymentName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, workspaceName, chatModelDeploymentName, resource, context));
     }
 
     /**
@@ -507,11 +429,7 @@ public final class ChatModelDeploymentsClientImpl implements ChatModelDeployment
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String workspaceName,
         String chatModelDeploymentName, ChatModelDeploymentInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, chatModelDeploymentName, contentType,
-            accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, workspaceName, chatModelDeploymentName, properties, Context.NONE);
     }
 
     /**
@@ -562,43 +480,15 @@ public final class ChatModelDeploymentsClientImpl implements ChatModelDeployment
             this.client.getContext());
     }
 
-    /**
-     * Update a ChatModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param chatModelDeploymentName The name of the ChatModelDeployment.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a deployment that ties a specific model family to a user
-     * defined deployment name used when invoking the chat model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChatModelDeploymentInner>, ChatModelDeploymentInner> beginUpdate(
         String resourceGroupName, String workspaceName, String chatModelDeploymentName,
         ChatModelDeploymentInner properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, workspaceName, chatModelDeploymentName, properties);
-        return this.client.<ChatModelDeploymentInner, ChatModelDeploymentInner>getLroResult(response,
-            ChatModelDeploymentInner.class, ChatModelDeploymentInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, workspaceName, chatModelDeploymentName, properties, Context.NONE);
     }
 
-    /**
-     * Update a ChatModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param chatModelDeploymentName The name of the ChatModelDeployment.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a deployment that ties a specific model family to a user
-     * defined deployment name used when invoking the chat model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChatModelDeploymentInner>, ChatModelDeploymentInner> beginUpdate(
         String resourceGroupName, String workspaceName, String chatModelDeploymentName,
@@ -629,44 +519,19 @@ public final class ChatModelDeploymentsClientImpl implements ChatModelDeployment
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a ChatModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param chatModelDeploymentName The name of the ChatModelDeployment.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a deployment that ties a specific model family to a user defined deployment name used when
-     * invoking the chat model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChatModelDeploymentInner update(String resourceGroupName, String workspaceName,
         String chatModelDeploymentName, ChatModelDeploymentInner properties) {
-        return beginUpdate(resourceGroupName, workspaceName, chatModelDeploymentName, properties).getFinalResult();
+        return update(resourceGroupName, workspaceName, chatModelDeploymentName, properties, Context.NONE);
     }
 
-    /**
-     * Update a ChatModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param chatModelDeploymentName The name of the ChatModelDeployment.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a deployment that ties a specific model family to a user defined deployment name used when
-     * invoking the chat model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChatModelDeploymentInner update(String resourceGroupName, String workspaceName,
         String chatModelDeploymentName, ChatModelDeploymentInner properties, Context context) {
-        return beginUpdate(resourceGroupName, workspaceName, chatModelDeploymentName, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, workspaceName, chatModelDeploymentName, properties, context));
     }
 
     /**
@@ -703,8 +568,7 @@ public final class ChatModelDeploymentsClientImpl implements ChatModelDeployment
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName,
         String chatModelDeploymentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, chatModelDeploymentName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, chatModelDeploymentName, Context.NONE);
     }
 
     /**
@@ -746,36 +610,14 @@ public final class ChatModelDeploymentsClientImpl implements ChatModelDeployment
             this.client.getContext());
     }
 
-    /**
-     * Delete a ChatModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param chatModelDeploymentName The name of the ChatModelDeployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String chatModelDeploymentName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, chatModelDeploymentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, chatModelDeploymentName, Context.NONE);
     }
 
-    /**
-     * Delete a ChatModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param chatModelDeploymentName The name of the ChatModelDeployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String chatModelDeploymentName, Context context) {
@@ -801,36 +643,18 @@ public final class ChatModelDeploymentsClientImpl implements ChatModelDeployment
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ChatModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param chatModelDeploymentName The name of the ChatModelDeployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String chatModelDeploymentName) {
-        beginDelete(resourceGroupName, workspaceName, chatModelDeploymentName).getFinalResult();
+        delete(resourceGroupName, workspaceName, chatModelDeploymentName, Context.NONE);
     }
 
-    /**
-     * Delete a ChatModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param chatModelDeploymentName The name of the ChatModelDeployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String chatModelDeploymentName,
         Context context) {
-        beginDelete(resourceGroupName, workspaceName, chatModelDeploymentName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, chatModelDeploymentName, context));
     }
 
     /**
@@ -885,12 +709,7 @@ public final class ChatModelDeploymentsClientImpl implements ChatModelDeployment
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ChatModelDeploymentInner> listByWorkspaceSinglePage(String resourceGroupName,
         String workspaceName) {
-        final String accept = "application/json";
-        Response<ChatModelDeploymentListResult> res
-            = service.listByWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -915,33 +734,13 @@ public final class ChatModelDeploymentsClientImpl implements ChatModelDeployment
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ChatModelDeployment resources by Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ChatModelDeployment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChatModelDeploymentInner> listByWorkspace(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listByWorkspaceSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listByWorkspaceNextSinglePage(nextLink));
+        return listByWorkspace(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * List ChatModelDeployment resources by Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ChatModelDeployment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChatModelDeploymentInner> listByWorkspace(String resourceGroupName, String workspaceName,
         Context context) {
@@ -980,11 +779,7 @@ public final class ChatModelDeploymentsClientImpl implements ChatModelDeployment
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ChatModelDeploymentInner> listByWorkspaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ChatModelDeploymentListResult> res
-            = service.listByWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -22,6 +22,15 @@ public final class AlertImpl implements Alert, Alert.Definition {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationAlertSettings/{alertSettingName}",
+            "resourceGroupName");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationAlertSettings/{alertSettingName}",
+            "resourceName");
+        this.alertSettingName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationAlertSettings/{alertSettingName}",
+            "alertSettingName");
     }
 
     public String id() {
@@ -79,11 +88,7 @@ public final class AlertImpl implements Alert, Alert.Definition {
     }
 
     public Alert create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationAlertSettings()
-            .createWithResponse(resourceGroupName, resourceName, alertSettingName, createRequest, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Alert create(Context context) {
@@ -101,11 +106,7 @@ public final class AlertImpl implements Alert, Alert.Definition {
     }
 
     public Alert refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationAlertSettings()
-            .getWithResponse(resourceGroupName, resourceName, alertSettingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Alert refresh(Context context) {

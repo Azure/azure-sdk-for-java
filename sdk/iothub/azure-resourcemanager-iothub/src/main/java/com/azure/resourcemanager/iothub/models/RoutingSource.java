@@ -37,19 +37,9 @@ public final class RoutingSource extends ExpandableStringEnum<RoutingSource> {
     public static final RoutingSource DEVICE_JOB_LIFECYCLE_EVENTS = fromString("DeviceJobLifecycleEvents");
 
     /**
-     * DigitalTwinChangeEvents.
-     */
-    public static final RoutingSource DIGITAL_TWIN_CHANGE_EVENTS = fromString("DigitalTwinChangeEvents");
-
-    /**
      * DeviceConnectionStateEvents.
      */
     public static final RoutingSource DEVICE_CONNECTION_STATE_EVENTS = fromString("DeviceConnectionStateEvents");
-
-    /**
-     * MqttBrokerMessages.
-     */
-    public static final RoutingSource MQTT_BROKER_MESSAGES = fromString("MqttBrokerMessages");
 
     /**
      * Creates a new instance of RoutingSource value.

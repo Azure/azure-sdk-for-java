@@ -22,7 +22,7 @@ public final class RoleMappingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"roles\":[{\"roleName\":\"BackupOperator\",\"entities\":[{},{}]},{\"roleName\":\"BackupOperator\",\"entities\":[{},{},{},{}]},{\"roleName\":\"SecurityAdmin\",\"entities\":[{}]}],\"provisioningState\":\"Failed\"},\"id\":\"w\",\"name\":\"fzwiivwzjbhyz\",\"type\":\"xjrk\"}";
+            = "{\"properties\":{\"roles\":[{\"roleName\":\"BackupOperator\",\"entities\":[{}]},{\"roleName\":\"BackupOperator\",\"entities\":[{},{},{},{}]}],\"provisioningState\":\"Canceled\"},\"id\":\"wytpzdmovz\",\"name\":\"fvaawzqa\",\"type\":\"f\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class RoleMappingsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RoleMapping response = manager.roleMappings()
-            .getWithResponse("ajlyjtlvofqzhv", "cib", com.azure.core.util.Context.NONE)
+            .getWithResponse("zrrjvpgly", "zgkrvqe", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(RoleName.BACKUP_OPERATOR, response.properties().roles().get(0).roleName());

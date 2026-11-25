@@ -159,18 +159,7 @@ public final class DbServersClientImpl implements DbServersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DbServer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param dbserverocid DbServer OCID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DbServer along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DbServerInner> getWithResponse(String resourceGroupName, String cloudexadatainfrastructurename,
         String dbserverocid, Context context) {
@@ -179,17 +168,7 @@ public final class DbServersClientImpl implements DbServersClient {
             resourceGroupName, cloudexadatainfrastructurename, dbserverocid, accept, context);
     }
 
-    /**
-     * Get a DbServer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param dbserverocid DbServer OCID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DbServer.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DbServerInner get(String resourceGroupName, String cloudexadatainfrastructurename, String dbserverocid) {
         return getWithResponse(resourceGroupName, cloudexadatainfrastructurename, dbserverocid, Context.NONE)
@@ -251,12 +230,8 @@ public final class DbServersClientImpl implements DbServersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DbServerInner> listByCloudExadataInfrastructureSinglePage(String resourceGroupName,
         String cloudexadatainfrastructurename) {
-        final String accept = "application/json";
-        Response<DbServerListResult> res = service.listByCloudExadataInfrastructureSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            cloudexadatainfrastructurename, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCloudExadataInfrastructureSinglePage(resourceGroupName, cloudexadatainfrastructurename,
+            Context.NONE);
     }
 
     /**
@@ -281,35 +256,14 @@ public final class DbServersClientImpl implements DbServersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DbServer resources by CloudExadataInfrastructure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DbServer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DbServerInner> listByCloudExadataInfrastructure(String resourceGroupName,
         String cloudexadatainfrastructurename) {
-        return new PagedIterable<>(
-            () -> listByCloudExadataInfrastructureSinglePage(resourceGroupName, cloudexadatainfrastructurename),
-            nextLink -> listByCloudExadataInfrastructureNextSinglePage(nextLink));
+        return listByCloudExadataInfrastructure(resourceGroupName, cloudexadatainfrastructurename, Context.NONE);
     }
 
-    /**
-     * List DbServer resources by CloudExadataInfrastructure.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudexadatainfrastructurename CloudExadataInfrastructure name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DbServer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DbServerInner> listByCloudExadataInfrastructure(String resourceGroupName,
         String cloudexadatainfrastructurename, Context context) {
@@ -350,11 +304,7 @@ public final class DbServersClientImpl implements DbServersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DbServerInner> listByCloudExadataInfrastructureNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DbServerListResult> res = service.listByCloudExadataInfrastructureNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCloudExadataInfrastructureNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

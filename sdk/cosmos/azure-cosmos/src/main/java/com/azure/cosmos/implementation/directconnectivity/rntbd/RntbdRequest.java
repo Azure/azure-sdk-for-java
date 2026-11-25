@@ -131,4 +131,17 @@ public final class RntbdRequest {
 
         return new RntbdRequest(frame, headers, serviceRequest.getContentAsByteArray());
     }
+
+    /**
+     * Creates a wire request with a session token override without modifying the service request.
+     *
+     * @param args the request arguments
+     * @param sessionTokenOverride the wire session token, or null to omit it
+     * @return the wire request
+     */
+    public static RntbdRequest from(final RntbdRequestArgs args, final String sessionTokenOverride) {
+        RntbdRequest request = from(args);
+        request.headers.overrideSessionToken(sessionTokenOverride);
+        return request;
+    }
 }

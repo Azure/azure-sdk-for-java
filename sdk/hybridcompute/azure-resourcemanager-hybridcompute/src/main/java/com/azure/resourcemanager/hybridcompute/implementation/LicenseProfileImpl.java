@@ -167,10 +167,7 @@ public final class LicenseProfileImpl implements LicenseProfile, LicenseProfile.
     }
 
     public LicenseProfile create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLicenseProfiles()
-            .createOrUpdate(resourceGroupName, machineName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LicenseProfile create(Context context) {
@@ -191,10 +188,7 @@ public final class LicenseProfileImpl implements LicenseProfile, LicenseProfile.
     }
 
     public LicenseProfile apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLicenseProfiles()
-            .update(resourceGroupName, machineName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LicenseProfile apply(Context context) {
@@ -217,11 +211,7 @@ public final class LicenseProfileImpl implements LicenseProfile, LicenseProfile.
     }
 
     public LicenseProfile refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLicenseProfiles()
-            .getWithResponse(resourceGroupName, machineName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LicenseProfile refresh(Context context) {

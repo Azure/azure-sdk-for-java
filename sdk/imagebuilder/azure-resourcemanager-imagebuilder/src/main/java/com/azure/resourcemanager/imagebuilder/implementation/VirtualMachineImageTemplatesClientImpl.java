@@ -348,17 +348,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get information about a virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a virtual machine image template along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageTemplateInner> getByResourceGroupWithResponse(String resourceGroupName,
         String imageTemplateName, Context context) {
@@ -367,16 +357,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, accept, context);
     }
 
-    /**
-     * Get information about a virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a virtual machine image template.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageTemplateInner getByResourceGroup(String resourceGroupName, String imageTemplateName) {
         return getByResourceGroupWithResponse(resourceGroupName, imageTemplateName, Context.NONE).getValue();
@@ -421,11 +402,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String imageTemplateName,
         ImageTemplateInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, imageTemplateName, parameters, Context.NONE);
     }
 
     /**
@@ -472,39 +449,14 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             ImageTemplateInner.class, ImageTemplateInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param parameters Parameters supplied to the CreateImageTemplate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of image template is an ARM resource managed by
-     * Microsoft.VirtualMachineImages provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginCreateOrUpdate(String resourceGroupName,
         String imageTemplateName, ImageTemplateInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, imageTemplateName, parameters);
-        return this.client.<ImageTemplateInner, ImageTemplateInner>getLroResult(response, ImageTemplateInner.class,
-            ImageTemplateInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, imageTemplateName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param parameters Parameters supplied to the CreateImageTemplate operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of image template is an ARM resource managed by
-     * Microsoft.VirtualMachineImages provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginCreateOrUpdate(String resourceGroupName,
         String imageTemplateName, ImageTemplateInner parameters, Context context) {
@@ -533,39 +485,19 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param parameters Parameters supplied to the CreateImageTemplate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageTemplateInner createOrUpdate(String resourceGroupName, String imageTemplateName,
         ImageTemplateInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, imageTemplateName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, imageTemplateName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param parameters Parameters supplied to the CreateImageTemplate operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageTemplateInner createOrUpdate(String resourceGroupName, String imageTemplateName,
         ImageTemplateInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, imageTemplateName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, imageTemplateName, parameters, context));
     }
 
     /**
@@ -607,11 +539,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String imageTemplateName,
         ImageTemplateUpdateParameters parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, contentType, accept, parameters,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, imageTemplateName, parameters, Context.NONE);
     }
 
     /**
@@ -658,39 +586,14 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             ImageTemplateInner.class, ImageTemplateInner.class, this.client.getContext());
     }
 
-    /**
-     * Update the tags for this Virtual Machine Image Template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param parameters Additional parameters for Image Template update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of image template is an ARM resource managed by
-     * Microsoft.VirtualMachineImages provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginUpdate(String resourceGroupName,
         String imageTemplateName, ImageTemplateUpdateParameters parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, imageTemplateName, parameters);
-        return this.client.<ImageTemplateInner, ImageTemplateInner>getLroResult(response, ImageTemplateInner.class,
-            ImageTemplateInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, imageTemplateName, parameters, Context.NONE);
     }
 
-    /**
-     * Update the tags for this Virtual Machine Image Template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param parameters Additional parameters for Image Template update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of image template is an ARM resource managed by
-     * Microsoft.VirtualMachineImages provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginUpdate(String resourceGroupName,
         String imageTemplateName, ImageTemplateUpdateParameters parameters, Context context) {
@@ -718,39 +621,19 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update the tags for this Virtual Machine Image Template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param parameters Additional parameters for Image Template update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageTemplateInner update(String resourceGroupName, String imageTemplateName,
         ImageTemplateUpdateParameters parameters) {
-        return beginUpdate(resourceGroupName, imageTemplateName, parameters).getFinalResult();
+        return update(resourceGroupName, imageTemplateName, parameters, Context.NONE);
     }
 
-    /**
-     * Update the tags for this Virtual Machine Image Template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param parameters Additional parameters for Image Template update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageTemplateInner update(String resourceGroupName, String imageTemplateName,
         ImageTemplateUpdateParameters parameters, Context context) {
-        return beginUpdate(resourceGroupName, imageTemplateName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, imageTemplateName, parameters, context));
     }
 
     /**
@@ -784,8 +667,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String imageTemplateName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
     /**
@@ -823,33 +705,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             this.client.getContext());
     }
 
-    /**
-     * Delete a virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageTemplateName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, imageTemplateName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
-    /**
-     * Delete a virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageTemplateName,
         Context context) {
@@ -873,33 +735,16 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String imageTemplateName) {
-        beginDelete(resourceGroupName, imageTemplateName).getFinalResult();
+        delete(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
-    /**
-     * Delete a virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String imageTemplateName, Context context) {
-        beginDelete(resourceGroupName, imageTemplateName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, imageTemplateName, context));
     }
 
     /**
@@ -951,11 +796,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ImageTemplateInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ImageTemplateListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -978,33 +819,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets information about the VM image templates associated with the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the VM image templates associated with the specified resource group as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageTemplateInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets information about the VM image templates associated with the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the VM image templates associated with the specified resource group as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageTemplateInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1053,11 +874,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ImageTemplateInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ImageTemplateListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1079,29 +896,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets information about the VM image templates associated with the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the VM image templates associated with the subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageTemplateInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets information about the VM image templates associated with the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the VM image templates associated with the subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageTemplateInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -1137,8 +938,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> runWithResponse(String resourceGroupName, String imageTemplateName) {
-        return service.runSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, imageTemplateName, Context.NONE);
+        return runWithResponse(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
     /**
@@ -1175,33 +975,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             this.client.getContext());
     }
 
-    /**
-     * Create artifacts from a existing image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRun(String resourceGroupName, String imageTemplateName) {
-        Response<BinaryData> response = runWithResponse(resourceGroupName, imageTemplateName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRun(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
-    /**
-     * Create artifacts from a existing image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRun(String resourceGroupName, String imageTemplateName,
         Context context) {
@@ -1225,33 +1005,16 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create artifacts from a existing image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void run(String resourceGroupName, String imageTemplateName) {
-        beginRun(resourceGroupName, imageTemplateName).getFinalResult();
+        run(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
-    /**
-     * Create artifacts from a existing image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void run(String resourceGroupName, String imageTemplateName, Context context) {
-        beginRun(resourceGroupName, imageTemplateName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRun(resourceGroupName, imageTemplateName, context));
     }
 
     /**
@@ -1285,8 +1048,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> cancelWithResponse(String resourceGroupName, String imageTemplateName) {
-        return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, Context.NONE);
+        return cancelWithResponse(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
     /**
@@ -1324,33 +1086,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             this.client.getContext());
     }
 
-    /**
-     * Cancel the long running image build based on the image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String imageTemplateName) {
-        Response<BinaryData> response = cancelWithResponse(resourceGroupName, imageTemplateName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginCancel(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
-    /**
-     * Cancel the long running image build based on the image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String imageTemplateName,
         Context context) {
@@ -1374,33 +1116,16 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Cancel the long running image build based on the image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String imageTemplateName) {
-        beginCancel(resourceGroupName, imageTemplateName).getFinalResult();
+        cancel(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
-    /**
-     * Cancel the long running image build based on the image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String imageTemplateName, Context context) {
-        beginCancel(resourceGroupName, imageTemplateName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginCancel(resourceGroupName, imageTemplateName, context));
     }
 
     /**
@@ -1444,18 +1169,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified run output for the specified image template resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param runOutputName The name of the run output.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified run output for the specified image template resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RunOutputInner> getRunOutputWithResponse(String resourceGroupName, String imageTemplateName,
         String runOutputName, Context context) {
@@ -1464,17 +1178,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, runOutputName, accept, context);
     }
 
-    /**
-     * Get the specified run output for the specified image template resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param runOutputName The name of the run output.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified run output for the specified image template resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RunOutputInner getRunOutput(String resourceGroupName, String imageTemplateName, String runOutputName) {
         return getRunOutputWithResponse(resourceGroupName, imageTemplateName, runOutputName, Context.NONE).getValue();
@@ -1531,12 +1235,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RunOutputInner> listRunOutputsSinglePage(String resourceGroupName, String imageTemplateName) {
-        final String accept = "application/json";
-        Response<RunOutputCollection> res
-            = service.listRunOutputsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRunOutputsSinglePage(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
     /**
@@ -1561,33 +1260,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all run outputs for the specified Image Template resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of List run outputs operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RunOutputInner> listRunOutputs(String resourceGroupName, String imageTemplateName) {
-        return new PagedIterable<>(() -> listRunOutputsSinglePage(resourceGroupName, imageTemplateName),
-            nextLink -> listRunOutputsNextSinglePage(nextLink));
+        return listRunOutputs(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
-    /**
-     * List all run outputs for the specified Image Template resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of List run outputs operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RunOutputInner> listRunOutputs(String resourceGroupName, String imageTemplateName,
         Context context) {
@@ -1628,11 +1307,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ImageTemplateInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ImageTemplateListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1686,11 +1361,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ImageTemplateInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ImageTemplateListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1744,11 +1415,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RunOutputInner> listRunOutputsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RunOutputCollection> res
-            = service.listRunOutputsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRunOutputsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

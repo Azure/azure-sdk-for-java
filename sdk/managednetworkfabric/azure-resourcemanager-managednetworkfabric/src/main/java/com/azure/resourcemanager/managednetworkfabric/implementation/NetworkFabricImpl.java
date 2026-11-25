@@ -294,10 +294,7 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
     }
 
     public NetworkFabric create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkFabrics()
-            .create(resourceGroupName, networkFabricName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkFabric create(Context context) {
@@ -320,10 +317,7 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
     }
 
     public NetworkFabric apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkFabrics()
-            .update(resourceGroupName, networkFabricName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkFabric apply(Context context) {
@@ -346,11 +340,7 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
     }
 
     public NetworkFabric refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkFabrics()
-            .getByResourceGroupWithResponse(resourceGroupName, networkFabricName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkFabric refresh(Context context) {

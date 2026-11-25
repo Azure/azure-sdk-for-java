@@ -215,24 +215,7 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Service Fabric application type name resource.
-     * 
-     * Get a Service Fabric application type name resource created or in the process of being created in the Service
-     * Fabric cluster resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationTypeName The name of the application type name resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric application type name resource.
-     * 
-     * Get a Service Fabric application type name resource created or in the process of being created in the Service
-     * Fabric cluster resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationTypeResourceInner> getWithResponse(String resourceGroupName, String clusterName,
         String applicationTypeName, Context context) {
@@ -241,23 +224,7 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
             resourceGroupName, clusterName, applicationTypeName, accept, context);
     }
 
-    /**
-     * Gets a Service Fabric application type name resource.
-     * 
-     * Get a Service Fabric application type name resource created or in the process of being created in the Service
-     * Fabric cluster resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationTypeName The name of the application type name resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric application type name resource.
-     * 
-     * Get a Service Fabric application type name resource created or in the process of being created in the Service
-     * Fabric cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationTypeResourceInner get(String resourceGroupName, String clusterName, String applicationTypeName) {
         return getWithResponse(resourceGroupName, clusterName, applicationTypeName, Context.NONE).getValue();
@@ -310,21 +277,7 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a Service Fabric application type name resource.
-     * 
-     * Create or update a Service Fabric application type name resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationTypeName The name of the application type name resource.
-     * @param parameters The application type name resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application type name resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationTypeResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String clusterName, String applicationTypeName, ApplicationTypeResourceInner parameters, Context context) {
@@ -335,20 +288,7 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
             parameters, context);
     }
 
-    /**
-     * Creates or updates a Service Fabric application type name resource.
-     * 
-     * Create or update a Service Fabric application type name resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationTypeName The name of the application type name resource.
-     * @param parameters The application type name resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application type name resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationTypeResourceInner createOrUpdate(String resourceGroupName, String clusterName,
         String applicationTypeName, ApplicationTypeResourceInner parameters) {
@@ -394,8 +334,7 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
         String applicationTypeName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationTypeName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, applicationTypeName, Context.NONE);
     }
 
     /**
@@ -441,40 +380,14 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
             this.client.getContext());
     }
 
-    /**
-     * Deletes a Service Fabric application type name resource.
-     * 
-     * Delete a Service Fabric application type name resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationTypeName The name of the application type name resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String applicationTypeName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, applicationTypeName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, applicationTypeName, Context.NONE);
     }
 
-    /**
-     * Deletes a Service Fabric application type name resource.
-     * 
-     * Delete a Service Fabric application type name resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationTypeName The name of the application type name resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String applicationTypeName, Context context) {
@@ -502,39 +415,16 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Service Fabric application type name resource.
-     * 
-     * Delete a Service Fabric application type name resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationTypeName The name of the application type name resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String applicationTypeName) {
-        beginDelete(resourceGroupName, clusterName, applicationTypeName).getFinalResult();
+        delete(resourceGroupName, clusterName, applicationTypeName, Context.NONE);
     }
 
-    /**
-     * Deletes a Service Fabric application type name resource.
-     * 
-     * Delete a Service Fabric application type name resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationTypeName The name of the application type name resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String applicationTypeName, Context context) {
-        beginDelete(resourceGroupName, clusterName, applicationTypeName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, applicationTypeName, context));
     }
 
     /**
@@ -605,12 +495,7 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationTypeResourceInner> listSinglePage(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        Response<ApplicationTypeResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -641,45 +526,13 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
-     * 
-     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application type name resources created in the specified Service Fabric cluster resource.
-     * 
-     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
-     * resource as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationTypeResourceInner> list(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
-     * 
-     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
-     * resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application type name resources created in the specified Service Fabric cluster resource.
-     * 
-     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
-     * resource as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationTypeResourceInner> list(String resourceGroupName, String clusterName,
         Context context) {
@@ -726,11 +579,7 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationTypeResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ApplicationTypeResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

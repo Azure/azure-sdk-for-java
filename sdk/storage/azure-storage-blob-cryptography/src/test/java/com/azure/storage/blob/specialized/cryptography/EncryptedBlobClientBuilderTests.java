@@ -70,6 +70,8 @@ public class EncryptedBlobClientBuilderTests {
         = CoreUtils.getProperties("azure-storage-blob-cryptography.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
+    private static final String BLOB_VERSION
+        = CoreUtils.getProperties("azure-storage-blob.properties").getOrDefault("version", "UnknownVersion");
     private static final List<Header> CLIENT_OPTIONS_HEADERS;
     private static final Map<HttpHeaderName, String> HEADERS_MAP;
 
@@ -233,9 +235,8 @@ public class EncryptedBlobClientBuilderTests {
             .credential(CREDENTIALS)
             .blobName("foo")
             .containerName("container")
-            .httpClient(
-                new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-"
-                    + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
+            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/" + Pattern.quote(BLOB_VERSION)
+                + " azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
             .buildClient();
 
         EncryptedBlobClient cryptoClient = new EncryptedBlobClientBuilder().blobClient(blobClient)
@@ -252,12 +253,42 @@ public class EncryptedBlobClientBuilderTests {
             .containerName("container")
             .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
             .credential(new AzureSasCredential("foo"))
-            .httpClient(new UAStringTestClient(
-                "azstorage-clientsideencryption/1.0 azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-"
-                    + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
+            .httpClient(new UAStringTestClient("azstorage-clientsideencryption/1.0 azsdk-java-azure-storage-blob/"
+                + Pattern.quote(BLOB_VERSION) + " azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
             .buildEncryptedBlobClient();
 
         sendAndValidateUserAgentHeader(cryptoClient.getHttpPipeline(), cryptoClient.getBlobUrl());
+    }
+
+    @ParameterizedTest
+    @MethodSource("addEncryptionToUserAgentSupplier")
+    public void addEncryptionToUserAgent(String userAgent, String encryptionVersion, String expectedUserAgent) {
+        assertEquals(expectedUserAgent,
+            EncryptedBlobClientBuilder.addEncryptionToUserAgent(userAgent, encryptionVersion));
+    }
+
+    private static Stream<Arguments> addEncryptionToUserAgentSupplier() {
+        String platform = " (11.0.6; Windows 10; 10.0)";
+        return Stream.of(
+            Arguments.of("azsdk-java-azure-storage-blob/12.11.0" + platform, "2.0",
+                "azstorage-clientsideencryption/2.0 azsdk-java-azure-storage-blob/12.11.0" + platform),
+            Arguments.of("azsdk-java-azure-storage-blob/12.11.0-beta.2" + platform, "1.0",
+                "azstorage-clientsideencryption/1.0 azsdk-java-azure-storage-blob/12.11.0-beta.2" + platform),
+            Arguments.of("azsdk-java-azure-storage-blob/12.38.0-private" + platform, "2.1",
+                "azstorage-clientsideencryption/2.1 azsdk-java-azure-storage-blob/12.38.0-private" + platform),
+            Arguments.of("azsdk-java-azure-storage-blob/12.38.0-alpha.20261109.1" + platform, "2.0",
+                "azstorage-clientsideencryption/2.0 azsdk-java-azure-storage-blob/12.38.0-alpha.20261109.1" + platform),
+            Arguments.of("appid azsdk-java-azure-storage-blob/12.38.0-private", "2.0",
+                "appid azstorage-clientsideencryption/2.0 azsdk-java-azure-storage-blob/12.38.0-private"),
+            Arguments.of("azsdk-java-azure-storage-blob/" + BLOB_VERSION + platform, "2.0",
+                "azstorage-clientsideencryption/2.0 azsdk-java-azure-storage-blob/" + BLOB_VERSION + platform),
+            // Already contains the identifier.
+            Arguments.of("azstorage-clientsideencryption/2.0 azsdk-java-azure-storage-blob/12.11.0" + platform, "2.0",
+                "azstorage-clientsideencryption/2.0 azsdk-java-azure-storage-blob/12.11.0" + platform),
+            // No azure-storage-blob token.
+            Arguments.of("azsdk-java-azure-storage-blob-batch/12.8.0" + platform, "2.0",
+                "azsdk-java-azure-storage-blob-batch/12.8.0" + platform),
+            Arguments.of("custom UA header", "2.0", "custom UA header"));
     }
 
     @Test

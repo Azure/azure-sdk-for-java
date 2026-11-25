@@ -73,10 +73,7 @@ public final class ComputeImpl implements Compute, Compute.Definition, Compute.U
     }
 
     public Compute create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComputes()
-            .createOrUpdate(resourceGroupName, accountName, computeName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Compute create(Context context) {
@@ -97,10 +94,7 @@ public final class ComputeImpl implements Compute, Compute.Definition, Compute.U
     }
 
     public Compute apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComputes()
-            .createOrUpdate(resourceGroupName, accountName, computeName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Compute apply(Context context) {
@@ -126,11 +120,7 @@ public final class ComputeImpl implements Compute, Compute.Definition, Compute.U
     }
 
     public Compute refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComputes()
-            .getWithResponse(resourceGroupName, accountName, computeName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Compute refresh(Context context) {

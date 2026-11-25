@@ -237,17 +237,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions
-     * 
-     * Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
-     * metric definitions.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available operations for the Microsoft.Web resource provider as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CsmOperationDescriptionInner> listOperationsAsync() {
         return new PagedFlux<>(() -> listOperationsSinglePageAsync(),
@@ -273,35 +263,13 @@ public final class ProvidersClientImpl implements ProvidersClient {
             nextLink -> listOperationsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions
-     * 
-     * Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
-     * metric definitions.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available operations for the Microsoft.Web resource provider as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CsmOperationDescriptionInner> listOperations() {
         return new PagedIterable<>(listOperationsAsync());
     }
 
-    /**
-     * Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions
-     * 
-     * Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
-     * metric definitions.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available operations for the Microsoft.Web resource provider as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CsmOperationDescriptionInner> listOperations(Context context) {
         return new PagedIterable<>(listOperationsAsync(context));
@@ -367,38 +335,14 @@ public final class ProvidersClientImpl implements ProvidersClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get available application frameworks and their versions
-     * 
-     * Description for Get available application frameworks and their versions.
-     * 
-     * @param osTypeSelected The osTypeSelected parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available application frameworks and their versions
-     * 
-     * Description for Get available application frameworks and their versions as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationStackResourceInner> getAvailableStacksAsync(ProviderOsTypeSelected osTypeSelected) {
         return new PagedFlux<>(() -> getAvailableStacksSinglePageAsync(osTypeSelected),
             nextLink -> getAvailableStacksNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Get available application frameworks and their versions
-     * 
-     * Description for Get available application frameworks and their versions.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available application frameworks and their versions
-     * 
-     * Description for Get available application frameworks and their versions as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationStackResourceInner> getAvailableStacksAsync() {
         final ProviderOsTypeSelected osTypeSelected = null;
@@ -428,39 +372,14 @@ public final class ProvidersClientImpl implements ProvidersClient {
             nextLink -> getAvailableStacksNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get available application frameworks and their versions
-     * 
-     * Description for Get available application frameworks and their versions.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available application frameworks and their versions
-     * 
-     * Description for Get available application frameworks and their versions as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationStackResourceInner> getAvailableStacks() {
         final ProviderOsTypeSelected osTypeSelected = null;
         return new PagedIterable<>(getAvailableStacksAsync(osTypeSelected));
     }
 
-    /**
-     * Get available application frameworks and their versions
-     * 
-     * Description for Get available application frameworks and their versions.
-     * 
-     * @param osTypeSelected The osTypeSelected parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available application frameworks and their versions
-     * 
-     * Description for Get available application frameworks and their versions as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationStackResourceInner> getAvailableStacks(ProviderOsTypeSelected osTypeSelected,
         Context context) {
@@ -527,38 +446,14 @@ public final class ProvidersClientImpl implements ProvidersClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get available Function app frameworks and their versions
-     * 
-     * Description for Get available Function app frameworks and their versions.
-     * 
-     * @param stackOsType Stack OS Type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available Function app frameworks and their versions
-     * 
-     * Description for Get available Function app frameworks and their versions as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FunctionAppStackInner> getFunctionAppStacksAsync(ProviderStackOsType stackOsType) {
         return new PagedFlux<>(() -> getFunctionAppStacksSinglePageAsync(stackOsType),
             nextLink -> getFunctionAppStacksNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Get available Function app frameworks and their versions
-     * 
-     * Description for Get available Function app frameworks and their versions.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available Function app frameworks and their versions
-     * 
-     * Description for Get available Function app frameworks and their versions as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FunctionAppStackInner> getFunctionAppStacksAsync() {
         final ProviderStackOsType stackOsType = null;
@@ -588,39 +483,14 @@ public final class ProvidersClientImpl implements ProvidersClient {
             nextLink -> getFunctionAppStacksNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get available Function app frameworks and their versions
-     * 
-     * Description for Get available Function app frameworks and their versions.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available Function app frameworks and their versions
-     * 
-     * Description for Get available Function app frameworks and their versions as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FunctionAppStackInner> getFunctionAppStacks() {
         final ProviderStackOsType stackOsType = null;
         return new PagedIterable<>(getFunctionAppStacksAsync(stackOsType));
     }
 
-    /**
-     * Get available Function app frameworks and their versions
-     * 
-     * Description for Get available Function app frameworks and their versions.
-     * 
-     * @param stackOsType Stack OS Type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available Function app frameworks and their versions
-     * 
-     * Description for Get available Function app frameworks and their versions as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FunctionAppStackInner> getFunctionAppStacks(ProviderStackOsType stackOsType, Context context) {
         return new PagedIterable<>(getFunctionAppStacksAsync(stackOsType, context));
@@ -695,21 +565,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get available Function app frameworks and their versions for location
-     * 
-     * Description for Get available Function app frameworks and their versions for location.
-     * 
-     * @param location The name of the Azure region.
-     * @param stackOsType Stack OS Type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available Function app frameworks and their versions for location
-     * 
-     * Description for Get available Function app frameworks and their versions for location as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FunctionAppStackInner> getFunctionAppStacksForLocationAsync(String location,
         ProviderStackOsType stackOsType) {
@@ -717,20 +573,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
             nextLink -> getFunctionAppStacksForLocationNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Get available Function app frameworks and their versions for location
-     * 
-     * Description for Get available Function app frameworks and their versions for location.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available Function app frameworks and their versions for location
-     * 
-     * Description for Get available Function app frameworks and their versions for location as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FunctionAppStackInner> getFunctionAppStacksForLocationAsync(String location) {
         final ProviderStackOsType stackOsType = null;
@@ -761,42 +604,14 @@ public final class ProvidersClientImpl implements ProvidersClient {
             nextLink -> getFunctionAppStacksForLocationNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get available Function app frameworks and their versions for location
-     * 
-     * Description for Get available Function app frameworks and their versions for location.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available Function app frameworks and their versions for location
-     * 
-     * Description for Get available Function app frameworks and their versions for location as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FunctionAppStackInner> getFunctionAppStacksForLocation(String location) {
         final ProviderStackOsType stackOsType = null;
         return new PagedIterable<>(getFunctionAppStacksForLocationAsync(location, stackOsType));
     }
 
-    /**
-     * Get available Function app frameworks and their versions for location
-     * 
-     * Description for Get available Function app frameworks and their versions for location.
-     * 
-     * @param location The name of the Azure region.
-     * @param stackOsType Stack OS Type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available Function app frameworks and their versions for location
-     * 
-     * Description for Get available Function app frameworks and their versions for location as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FunctionAppStackInner> getFunctionAppStacksForLocation(String location,
         ProviderStackOsType stackOsType, Context context) {
@@ -872,21 +687,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get available Web app frameworks and their versions for location
-     * 
-     * Description for Get available Web app frameworks and their versions for location.
-     * 
-     * @param location The name of the Azure region.
-     * @param stackOsType Stack OS Type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available Web app frameworks and their versions for location
-     * 
-     * Description for Get available Web app frameworks and their versions for location as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<WebAppStackInner> getWebAppStacksForLocationAsync(String location,
         ProviderStackOsType stackOsType) {
@@ -894,20 +695,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
             nextLink -> getWebAppStacksForLocationNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Get available Web app frameworks and their versions for location
-     * 
-     * Description for Get available Web app frameworks and their versions for location.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available Web app frameworks and their versions for location
-     * 
-     * Description for Get available Web app frameworks and their versions for location as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<WebAppStackInner> getWebAppStacksForLocationAsync(String location) {
         final ProviderStackOsType stackOsType = null;
@@ -938,42 +726,14 @@ public final class ProvidersClientImpl implements ProvidersClient {
             nextLink -> getWebAppStacksForLocationNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get available Web app frameworks and their versions for location
-     * 
-     * Description for Get available Web app frameworks and their versions for location.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available Web app frameworks and their versions for location
-     * 
-     * Description for Get available Web app frameworks and their versions for location as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebAppStackInner> getWebAppStacksForLocation(String location) {
         final ProviderStackOsType stackOsType = null;
         return new PagedIterable<>(getWebAppStacksForLocationAsync(location, stackOsType));
     }
 
-    /**
-     * Get available Web app frameworks and their versions for location
-     * 
-     * Description for Get available Web app frameworks and their versions for location.
-     * 
-     * @param location The name of the Azure region.
-     * @param stackOsType Stack OS Type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available Web app frameworks and their versions for location
-     * 
-     * Description for Get available Web app frameworks and their versions for location as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebAppStackInner> getWebAppStacksForLocation(String location, ProviderStackOsType stackOsType,
         Context context) {
@@ -1039,36 +799,14 @@ public final class ProvidersClientImpl implements ProvidersClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get available Web app frameworks and their versions
-     * 
-     * Description for Get available Web app frameworks and their versions.
-     * 
-     * @param stackOsType Stack OS Type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available Web app frameworks and their versions
-     * 
-     * Description for Get available Web app frameworks and their versions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<WebAppStackInner> getWebAppStacksAsync(ProviderStackOsType stackOsType) {
         return new PagedFlux<>(() -> getWebAppStacksSinglePageAsync(stackOsType),
             nextLink -> getWebAppStacksNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Get available Web app frameworks and their versions
-     * 
-     * Description for Get available Web app frameworks and their versions.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available Web app frameworks and their versions
-     * 
-     * Description for Get available Web app frameworks and their versions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<WebAppStackInner> getWebAppStacksAsync() {
         final ProviderStackOsType stackOsType = null;
@@ -1096,39 +834,14 @@ public final class ProvidersClientImpl implements ProvidersClient {
             nextLink -> getWebAppStacksNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get available Web app frameworks and their versions
-     * 
-     * Description for Get available Web app frameworks and their versions.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available Web app frameworks and their versions
-     * 
-     * Description for Get available Web app frameworks and their versions as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebAppStackInner> getWebAppStacks() {
         final ProviderStackOsType stackOsType = null;
         return new PagedIterable<>(getWebAppStacksAsync(stackOsType));
     }
 
-    /**
-     * Get available Web app frameworks and their versions
-     * 
-     * Description for Get available Web app frameworks and their versions.
-     * 
-     * @param stackOsType Stack OS Type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available Web app frameworks and their versions
-     * 
-     * Description for Get available Web app frameworks and their versions as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebAppStackInner> getWebAppStacks(ProviderStackOsType stackOsType, Context context) {
         return new PagedIterable<>(getWebAppStacksAsync(stackOsType, context));
@@ -1203,38 +916,14 @@ public final class ProvidersClientImpl implements ProvidersClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get available application frameworks and their versions
-     * 
-     * Description for Get available application frameworks and their versions.
-     * 
-     * @param osTypeSelected The osTypeSelected parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available application frameworks and their versions
-     * 
-     * Description for Get available application frameworks and their versions as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationStackResourceInner> listAsync(ProviderOsTypeSelected osTypeSelected) {
         return new PagedFlux<>(() -> listSinglePageAsync(osTypeSelected),
             nextLink -> getAvailableStacksOnPremNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Get available application frameworks and their versions
-     * 
-     * Description for Get available application frameworks and their versions.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available application frameworks and their versions
-     * 
-     * Description for Get available application frameworks and their versions as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationStackResourceInner> listAsync() {
         final ProviderOsTypeSelected osTypeSelected = null;
@@ -1263,39 +952,14 @@ public final class ProvidersClientImpl implements ProvidersClient {
             nextLink -> getAvailableStacksOnPremNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get available application frameworks and their versions
-     * 
-     * Description for Get available application frameworks and their versions.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available application frameworks and their versions
-     * 
-     * Description for Get available application frameworks and their versions as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationStackResourceInner> list() {
         final ProviderOsTypeSelected osTypeSelected = null;
         return new PagedIterable<>(listAsync(osTypeSelected));
     }
 
-    /**
-     * Get available application frameworks and their versions
-     * 
-     * Description for Get available application frameworks and their versions.
-     * 
-     * @param osTypeSelected The osTypeSelected parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available application frameworks and their versions
-     * 
-     * Description for Get available application frameworks and their versions as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationStackResourceInner> list(ProviderOsTypeSelected osTypeSelected, Context context) {
         return new PagedIterable<>(listAsync(osTypeSelected, context));

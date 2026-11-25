@@ -52,7 +52,7 @@ public final class RoutePoliciesImpl implements RoutePolicies {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String routePolicyName) {
-        this.serviceClient().delete(resourceGroupName, routePolicyName);
+        this.delete(resourceGroupName, routePolicyName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String routePolicyName, Context context) {
@@ -60,8 +60,7 @@ public final class RoutePoliciesImpl implements RoutePolicies {
     }
 
     public PagedIterable<RoutePolicy> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<RoutePolicyInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<RoutePolicy> listByResourceGroup(String resourceGroupName, Context context) {
@@ -70,8 +69,7 @@ public final class RoutePoliciesImpl implements RoutePolicies {
     }
 
     public PagedIterable<RoutePolicy> list() {
-        PagedIterable<RoutePolicyInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<RoutePolicy> list(Context context) {
@@ -81,13 +79,7 @@ public final class RoutePoliciesImpl implements RoutePolicies {
 
     public UpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName, String routePolicyName,
         UpdateAdministrativeState body) {
-        UpdateAdministrativeStateResponseInner inner
-            = this.serviceClient().updateAdministrativeState(resourceGroupName, routePolicyName, body);
-        if (inner != null) {
-            return new UpdateAdministrativeStateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateAdministrativeState(resourceGroupName, routePolicyName, body, Context.NONE);
     }
 
     public UpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName, String routePolicyName,
@@ -102,13 +94,7 @@ public final class RoutePoliciesImpl implements RoutePolicies {
     }
 
     public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String routePolicyName) {
-        ValidateConfigurationResponseInner inner
-            = this.serviceClient().validateConfiguration(resourceGroupName, routePolicyName);
-        if (inner != null) {
-            return new ValidateConfigurationResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.validateConfiguration(resourceGroupName, routePolicyName, Context.NONE);
     }
 
     public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String routePolicyName,
@@ -124,13 +110,7 @@ public final class RoutePoliciesImpl implements RoutePolicies {
 
     public CommonPostActionResponseForStateUpdate commitConfiguration(String resourceGroupName,
         String routePolicyName) {
-        CommonPostActionResponseForStateUpdateInner inner
-            = this.serviceClient().commitConfiguration(resourceGroupName, routePolicyName);
-        if (inner != null) {
-            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.commitConfiguration(resourceGroupName, routePolicyName, Context.NONE);
     }
 
     public CommonPostActionResponseForStateUpdate commitConfiguration(String resourceGroupName, String routePolicyName,
@@ -145,74 +125,30 @@ public final class RoutePoliciesImpl implements RoutePolicies {
     }
 
     public RoutePolicy getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String routePolicyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}",
-            "routePolicyName");
-        if (routePolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'routePolicies'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, routePolicyName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<RoutePolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String routePolicyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String routePolicyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}",
-            "routePolicyName");
-        if (routePolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'routePolicies'.", id)));
-        }
+            "routePolicyName", "routePolicies", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, routePolicyName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String routePolicyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}",
-            "routePolicyName");
-        if (routePolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'routePolicies'.", id)));
-        }
-        this.delete(resourceGroupName, routePolicyName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String routePolicyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String routePolicyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}",
-            "routePolicyName");
-        if (routePolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'routePolicies'.", id)));
-        }
+            "routePolicyName", "routePolicies", LOGGER);
         this.delete(resourceGroupName, routePolicyName, context);
     }
 

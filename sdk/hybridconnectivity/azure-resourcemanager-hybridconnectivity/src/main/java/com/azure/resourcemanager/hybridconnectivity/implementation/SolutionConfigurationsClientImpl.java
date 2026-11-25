@@ -243,17 +243,7 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a SolutionConfiguration.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionConfiguration Represent Solution Configuration Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SolutionConfiguration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionConfigurationInner> getWithResponse(String resourceUri, String solutionConfiguration,
         Context context) {
@@ -262,16 +252,7 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
             solutionConfiguration, accept, context);
     }
 
-    /**
-     * Get a SolutionConfiguration.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionConfiguration Represent Solution Configuration Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SolutionConfiguration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionConfigurationInner get(String resourceUri, String solutionConfiguration) {
         return getWithResponse(resourceUri, solutionConfiguration, Context.NONE).getValue();
@@ -317,18 +298,7 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a SolutionConfiguration.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionConfiguration Represent Solution Configuration Resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionConfigurationInner> createOrUpdateWithResponse(String resourceUri,
         String solutionConfiguration, SolutionConfigurationInner resource, Context context) {
@@ -338,17 +308,7 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
             solutionConfiguration, contentType, accept, resource, context);
     }
 
-    /**
-     * Create a SolutionConfiguration.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionConfiguration Represent Solution Configuration Resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionConfigurationInner createOrUpdate(String resourceUri, String solutionConfiguration,
         SolutionConfigurationInner resource) {
@@ -395,18 +355,7 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a SolutionConfiguration.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionConfiguration Represent Solution Configuration Resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionConfigurationInner> updateWithResponse(String resourceUri, String solutionConfiguration,
         SolutionConfigurationUpdate properties, Context context) {
@@ -416,17 +365,7 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
             solutionConfiguration, contentType, accept, properties, context);
     }
 
-    /**
-     * Update a SolutionConfiguration.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionConfiguration Represent Solution Configuration Resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionConfigurationInner update(String resourceUri, String solutionConfiguration,
         SolutionConfigurationUpdate properties) {
@@ -466,32 +405,14 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
         return deleteWithResponseAsync(resourceUri, solutionConfiguration).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a SolutionConfiguration.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionConfiguration Represent Solution Configuration Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceUri, String solutionConfiguration, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
             solutionConfiguration, context);
     }
 
-    /**
-     * Delete a SolutionConfiguration.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionConfiguration Represent Solution Configuration Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, String solutionConfiguration) {
         deleteWithResponse(resourceUri, solutionConfiguration, Context.NONE);
@@ -543,11 +464,7 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionConfigurationInner> listSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<SolutionConfigurationListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceUri, Context.NONE);
     }
 
     /**
@@ -569,30 +486,13 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List SolutionConfiguration resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionConfiguration list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionConfigurationInner> list(String resourceUri) {
-        return new PagedIterable<>(() -> listSinglePage(resourceUri), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceUri, Context.NONE);
     }
 
-    /**
-     * List SolutionConfiguration resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionConfiguration list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionConfigurationInner> list(String resourceUri, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceUri, context),
@@ -632,9 +532,7 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> syncNowWithResponse(String resourceUri, String solutionConfiguration) {
-        final String accept = "application/json";
-        return service.syncNowSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-            solutionConfiguration, accept, Context.NONE);
+        return syncNowWithResponse(resourceUri, solutionConfiguration, Context.NONE);
     }
 
     /**
@@ -675,35 +573,14 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
             this.client.getContext());
     }
 
-    /**
-     * Trigger immediate sync with source cloud.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionConfiguration Represent Solution Configuration Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginSyncNow(String resourceUri, String solutionConfiguration) {
-        Response<BinaryData> response = syncNowWithResponse(resourceUri, solutionConfiguration);
-        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
-            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
+        return beginSyncNow(resourceUri, solutionConfiguration, Context.NONE);
     }
 
-    /**
-     * Trigger immediate sync with source cloud.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionConfiguration Represent Solution Configuration Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginSyncNow(String resourceUri, String solutionConfiguration, Context context) {
@@ -728,35 +605,16 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Trigger immediate sync with source cloud.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionConfiguration Represent Solution Configuration Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner syncNow(String resourceUri, String solutionConfiguration) {
-        return beginSyncNow(resourceUri, solutionConfiguration).getFinalResult();
+        return syncNow(resourceUri, solutionConfiguration, Context.NONE);
     }
 
-    /**
-     * Trigger immediate sync with source cloud.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionConfiguration Represent Solution Configuration Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner syncNow(String resourceUri, String solutionConfiguration, Context context) {
-        return beginSyncNow(resourceUri, solutionConfiguration, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginSyncNow(resourceUri, solutionConfiguration, context));
     }
 
     /**
@@ -789,11 +647,7 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionConfigurationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SolutionConfigurationListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

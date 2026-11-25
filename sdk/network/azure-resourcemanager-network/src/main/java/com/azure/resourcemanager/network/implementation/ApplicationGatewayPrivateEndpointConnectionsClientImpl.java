@@ -124,18 +124,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection on application gateway along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ApplicationGatewayPrivateEndpointConnectionInner>>
         getWithResponseAsync(String resourceGroupName, String applicationGatewayName, String connectionName) {
@@ -158,7 +147,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -201,25 +190,14 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             applicationGatewayName, connectionName, accept, context);
     }
 
-    /**
-     * Gets the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection on application gateway on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayPrivateEndpointConnectionInner> getAsync(String resourceGroupName,
         String applicationGatewayName, String connectionName) {
@@ -227,54 +205,21 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection on application gateway along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationGatewayPrivateEndpointConnectionInner> getWithResponse(String resourceGroupName,
         String applicationGatewayName, String connectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, applicationGatewayName, connectionName, context).block();
     }
 
-    /**
-     * Gets the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection on application gateway.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGatewayPrivateEndpointConnectionInner get(String resourceGroupName, String applicationGatewayName,
         String connectionName) {
         return getWithResponse(resourceGroupName, applicationGatewayName, connectionName, Context.NONE).getValue();
     }
 
-    /**
-     * Updates the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private Endpoint connection on an application gateway along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
         String applicationGatewayName, String connectionName,
@@ -303,7 +248,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -355,7 +300,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -363,18 +308,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             applicationGatewayName, connectionName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of private Endpoint connection on an application gateway.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<ApplicationGatewayPrivateEndpointConnectionInner>, ApplicationGatewayPrivateEndpointConnectionInner>
@@ -415,18 +349,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                 ApplicationGatewayPrivateEndpointConnectionInner.class, context);
     }
 
-    /**
-     * Updates the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of private Endpoint connection on an application gateway.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ApplicationGatewayPrivateEndpointConnectionInner>, ApplicationGatewayPrivateEndpointConnectionInner>
@@ -436,19 +359,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Updates the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of private Endpoint connection on an application gateway.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ApplicationGatewayPrivateEndpointConnectionInner>, ApplicationGatewayPrivateEndpointConnectionInner>
@@ -458,18 +369,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Updates the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private Endpoint connection on an application gateway on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationGatewayPrivateEndpointConnectionInner> updateAsync(String resourceGroupName,
         String applicationGatewayName, String connectionName,
@@ -499,18 +399,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private Endpoint connection on an application gateway.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGatewayPrivateEndpointConnectionInner update(String resourceGroupName,
         String applicationGatewayName, String connectionName,
@@ -518,19 +407,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
         return updateAsync(resourceGroupName, applicationGatewayName, connectionName, parameters).block();
     }
 
-    /**
-     * Updates the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private Endpoint connection on an application gateway.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationGatewayPrivateEndpointConnectionInner update(String resourceGroupName,
         String applicationGatewayName, String connectionName,
@@ -538,17 +415,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
         return updateAsync(resourceGroupName, applicationGatewayName, connectionName, parameters, context).block();
     }
 
-    /**
-     * Deletes the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String applicationGatewayName, String connectionName) {
@@ -571,7 +438,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, applicationGatewayName, connectionName, context))
@@ -612,23 +479,13 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             applicationGatewayName, connectionName, context);
     }
 
-    /**
-     * Deletes the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String applicationGatewayName,
         String connectionName) {
@@ -660,35 +517,14 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             context);
     }
 
-    /**
-     * Deletes the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String applicationGatewayName,
         String connectionName) {
         return this.beginDeleteAsync(resourceGroupName, applicationGatewayName, connectionName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String applicationGatewayName,
         String connectionName, Context context) {
@@ -696,17 +532,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Deletes the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String applicationGatewayName, String connectionName) {
         return beginDeleteAsync(resourceGroupName, applicationGatewayName, connectionName).last()
@@ -732,32 +558,13 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String applicationGatewayName, String connectionName) {
         deleteAsync(resourceGroupName, applicationGatewayName, connectionName).block();
     }
 
-    /**
-     * Deletes the specified private endpoint connection on application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName Name of the private endpoint connection on an application gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String applicationGatewayName, String connectionName,
         Context context) {
@@ -794,7 +601,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -836,7 +643,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -846,17 +653,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all private endpoint connections on an application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ApplicationGatewayPrivateEndpointConnection list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationGatewayPrivateEndpointConnectionInner> listAsync(String resourceGroupName,
         String applicationGatewayName) {
@@ -883,35 +680,14 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all private endpoint connections on an application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ApplicationGatewayPrivateEndpointConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGatewayPrivateEndpointConnectionInner> list(String resourceGroupName,
         String applicationGatewayName) {
         return new PagedIterable<>(listAsync(resourceGroupName, applicationGatewayName));
     }
 
-    /**
-     * Lists all private endpoint connections on an application gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ApplicationGatewayPrivateEndpointConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGatewayPrivateEndpointConnectionInner> list(String resourceGroupName,
         String applicationGatewayName, Context context) {

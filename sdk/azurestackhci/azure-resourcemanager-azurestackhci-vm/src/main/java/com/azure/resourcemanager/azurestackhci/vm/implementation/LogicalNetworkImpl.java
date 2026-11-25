@@ -89,10 +89,7 @@ public final class LogicalNetworkImpl implements LogicalNetwork, LogicalNetwork.
     }
 
     public LogicalNetwork create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLogicalNetworks()
-            .createOrUpdate(resourceGroupName, logicalNetworkName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LogicalNetwork create(Context context) {
@@ -114,10 +111,7 @@ public final class LogicalNetworkImpl implements LogicalNetwork, LogicalNetwork.
     }
 
     public LogicalNetwork apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLogicalNetworks()
-            .update(resourceGroupName, logicalNetworkName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LogicalNetwork apply(Context context) {
@@ -140,11 +134,7 @@ public final class LogicalNetworkImpl implements LogicalNetwork, LogicalNetwork.
     }
 
     public LogicalNetwork refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLogicalNetworks()
-            .getByResourceGroupWithResponse(resourceGroupName, logicalNetworkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LogicalNetwork refresh(Context context) {

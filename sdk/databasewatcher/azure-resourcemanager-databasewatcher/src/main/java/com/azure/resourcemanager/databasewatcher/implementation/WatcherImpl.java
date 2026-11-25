@@ -90,10 +90,7 @@ public final class WatcherImpl implements Watcher, Watcher.Definition, Watcher.U
     }
 
     public Watcher create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWatchers()
-            .createOrUpdate(resourceGroupName, watcherName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Watcher create(Context context) {
@@ -115,10 +112,7 @@ public final class WatcherImpl implements Watcher, Watcher.Definition, Watcher.U
     }
 
     public Watcher apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWatchers()
-            .update(resourceGroupName, watcherName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Watcher apply(Context context) {
@@ -141,11 +135,7 @@ public final class WatcherImpl implements Watcher, Watcher.Definition, Watcher.U
     }
 
     public Watcher refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWatchers()
-            .getByResourceGroupWithResponse(resourceGroupName, watcherName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Watcher refresh(Context context) {

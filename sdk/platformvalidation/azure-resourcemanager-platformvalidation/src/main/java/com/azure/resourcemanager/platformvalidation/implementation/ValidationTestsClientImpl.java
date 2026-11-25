@@ -145,16 +145,7 @@ public final class ValidationTestsClientImpl implements ValidationTestsClient {
         return getWithResponseAsync(validationTestName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a validation test catalog entry.
-     * 
-     * @param validationTestName The name of the ValidationTest.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a validation test catalog entry along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidationTestInner> getWithResponse(String validationTestName, Context context) {
         final String accept = "application/json";
@@ -162,15 +153,7 @@ public final class ValidationTestsClientImpl implements ValidationTestsClient {
             validationTestName, accept, context);
     }
 
-    /**
-     * Get a validation test catalog entry.
-     * 
-     * @param validationTestName The name of the ValidationTest.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a validation test catalog entry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidationTestInner get(String validationTestName) {
         return getWithResponse(validationTestName, Context.NONE).getValue();
@@ -237,11 +220,7 @@ public final class ValidationTestsClientImpl implements ValidationTestsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ValidationTestInner> listSinglePage(String filter) {
-        final String accept = "application/json";
-        Response<ValidationTestListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, Context.NONE);
     }
 
     /**
@@ -263,30 +242,14 @@ public final class ValidationTestsClientImpl implements ValidationTestsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List validation test catalog entries for a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ValidationTest list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ValidationTestInner> list() {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(filter),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(filter, Context.NONE);
     }
 
-    /**
-     * List validation test catalog entries for a subscription.
-     * 
-     * @param filter Filter expression used to constrain the returned items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ValidationTest list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ValidationTestInner> list(String filter, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, context),
@@ -325,11 +288,7 @@ public final class ValidationTestsClientImpl implements ValidationTestsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ValidationTestInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ValidationTestListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

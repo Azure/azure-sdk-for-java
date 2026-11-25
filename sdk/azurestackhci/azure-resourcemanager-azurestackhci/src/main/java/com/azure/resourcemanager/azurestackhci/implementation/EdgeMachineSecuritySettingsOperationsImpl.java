@@ -47,7 +47,7 @@ public final class EdgeMachineSecuritySettingsOperationsImpl implements EdgeMach
     }
 
     public void delete(String resourceGroupName, String edgeMachineName, String securitySettingsName) {
-        this.serviceClient().delete(resourceGroupName, edgeMachineName, securitySettingsName);
+        this.delete(resourceGroupName, edgeMachineName, securitySettingsName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String edgeMachineName, String securitySettingsName, Context context) {
@@ -56,10 +56,7 @@ public final class EdgeMachineSecuritySettingsOperationsImpl implements EdgeMach
 
     public PagedIterable<EdgeMachineSecuritySettings> listByEdgeMachine(String resourceGroupName,
         String edgeMachineName) {
-        PagedIterable<EdgeMachineSecuritySettingsInner> inner
-            = this.serviceClient().listByEdgeMachine(resourceGroupName, edgeMachineName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new EdgeMachineSecuritySettingsImpl(inner1, this.manager()));
+        return this.listByEdgeMachine(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
     public PagedIterable<EdgeMachineSecuritySettings> listByEdgeMachine(String resourceGroupName,
@@ -71,102 +68,36 @@ public final class EdgeMachineSecuritySettingsOperationsImpl implements EdgeMach
     }
 
     public EdgeMachineSecuritySettings getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/securitySettings/{securitySettingsName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeMachineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/securitySettings/{securitySettingsName}",
-            "edgeMachineName");
-        if (edgeMachineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeMachines'.", id)));
-        }
-        String securitySettingsName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/securitySettings/{securitySettingsName}",
-            "securitySettingsName");
-        if (securitySettingsName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'securitySettings'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, edgeMachineName, securitySettingsName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<EdgeMachineSecuritySettings> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/securitySettings/{securitySettingsName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeMachineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String edgeMachineName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/securitySettings/{securitySettingsName}",
-            "edgeMachineName");
-        if (edgeMachineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeMachines'.", id)));
-        }
-        String securitySettingsName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "edgeMachineName", "edgeMachines", LOGGER);
+        String securitySettingsName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/securitySettings/{securitySettingsName}",
-            "securitySettingsName");
-        if (securitySettingsName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'securitySettings'.", id)));
-        }
+            "securitySettingsName", "securitySettings", LOGGER);
         return this.getWithResponse(resourceGroupName, edgeMachineName, securitySettingsName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/securitySettings/{securitySettingsName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeMachineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/securitySettings/{securitySettingsName}",
-            "edgeMachineName");
-        if (edgeMachineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeMachines'.", id)));
-        }
-        String securitySettingsName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/securitySettings/{securitySettingsName}",
-            "securitySettingsName");
-        if (securitySettingsName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'securitySettings'.", id)));
-        }
-        this.delete(resourceGroupName, edgeMachineName, securitySettingsName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/securitySettings/{securitySettingsName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeMachineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String edgeMachineName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/securitySettings/{securitySettingsName}",
-            "edgeMachineName");
-        if (edgeMachineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeMachines'.", id)));
-        }
-        String securitySettingsName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "edgeMachineName", "edgeMachines", LOGGER);
+        String securitySettingsName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/edgeMachines/{edgeMachineName}/securitySettings/{securitySettingsName}",
-            "securitySettingsName");
-        if (securitySettingsName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'securitySettings'.", id)));
-        }
+            "securitySettingsName", "securitySettings", LOGGER);
         this.delete(resourceGroupName, edgeMachineName, securitySettingsName, context);
     }
 

@@ -174,20 +174,7 @@ public final class ValidationTestRunsClientImpl implements ValidationTestRunsCli
             executionPlanRunName, validationTestRunName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a validation test run details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param validationExecutionPlanName The name of the ValidationExecutionPlan.
-     * @param executionPlanRunName The name of the ExecutionPlanRun.
-     * @param validationTestRunName The name of the ValidationTestRun.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a validation test run details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidationTestRunInner> getWithResponse(String resourceGroupName, String cloudValidationName,
         String validationExecutionPlanName, String executionPlanRunName, String validationTestRunName,
@@ -198,19 +185,7 @@ public final class ValidationTestRunsClientImpl implements ValidationTestRunsCli
             validationTestRunName, accept, context);
     }
 
-    /**
-     * Get a validation test run details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param validationExecutionPlanName The name of the ValidationExecutionPlan.
-     * @param executionPlanRunName The name of the ExecutionPlanRun.
-     * @param validationTestRunName The name of the ValidationTestRun.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a validation test run details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidationTestRunInner get(String resourceGroupName, String cloudValidationName,
         String validationExecutionPlanName, String executionPlanRunName, String validationTestRunName) {
@@ -280,12 +255,8 @@ public final class ValidationTestRunsClientImpl implements ValidationTestRunsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ValidationTestRunInner> listByExecutionPlanRunSinglePage(String resourceGroupName,
         String cloudValidationName, String validationExecutionPlanName, String executionPlanRunName) {
-        final String accept = "application/json";
-        Response<ValidationTestRunListResult> res = service.listByExecutionPlanRunSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, cloudValidationName,
-            validationExecutionPlanName, executionPlanRunName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByExecutionPlanRunSinglePage(resourceGroupName, cloudValidationName, validationExecutionPlanName,
+            executionPlanRunName, Context.NONE);
     }
 
     /**
@@ -312,39 +283,15 @@ public final class ValidationTestRunsClientImpl implements ValidationTestRunsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List validation test runs for an execution plan run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param validationExecutionPlanName The name of the ValidationExecutionPlan.
-     * @param executionPlanRunName The name of the ExecutionPlanRun.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ValidationTestRun list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ValidationTestRunInner> listByExecutionPlanRun(String resourceGroupName,
         String cloudValidationName, String validationExecutionPlanName, String executionPlanRunName) {
-        return new PagedIterable<>(() -> listByExecutionPlanRunSinglePage(resourceGroupName, cloudValidationName,
-            validationExecutionPlanName, executionPlanRunName),
-            nextLink -> listByExecutionPlanRunNextSinglePage(nextLink));
+        return listByExecutionPlanRun(resourceGroupName, cloudValidationName, validationExecutionPlanName,
+            executionPlanRunName, Context.NONE);
     }
 
-    /**
-     * List validation test runs for an execution plan run.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param validationExecutionPlanName The name of the ValidationExecutionPlan.
-     * @param executionPlanRunName The name of the ExecutionPlanRun.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ValidationTestRun list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ValidationTestRunInner> listByExecutionPlanRun(String resourceGroupName,
         String cloudValidationName, String validationExecutionPlanName, String executionPlanRunName, Context context) {
@@ -385,11 +332,7 @@ public final class ValidationTestRunsClientImpl implements ValidationTestRunsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ValidationTestRunInner> listByExecutionPlanRunNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ValidationTestRunListResult> res
-            = service.listByExecutionPlanRunNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByExecutionPlanRunNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

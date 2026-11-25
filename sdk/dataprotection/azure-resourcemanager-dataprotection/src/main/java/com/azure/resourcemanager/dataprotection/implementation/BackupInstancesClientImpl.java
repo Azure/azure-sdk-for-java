@@ -492,19 +492,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get result of backup instance creation operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param operationId The name of the BackupInstanceResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of backup instance creation operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupInstanceResourceInner> getBackupInstanceOperationResultWithResponse(String resourceGroupName,
         String vaultName, String backupInstanceName, String operationId, Context context) {
@@ -514,18 +502,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             context);
     }
 
-    /**
-     * Get result of backup instance creation operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param operationId The name of the BackupInstanceResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of backup instance creation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInstanceResourceInner getBackupInstanceOperationResult(String resourceGroupName, String vaultName,
         String backupInstanceName, String operationId) {
@@ -584,12 +561,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BackupInstanceResourceInner> listSinglePage(String resourceGroupName, String vaultName) {
-        final String accept = "application/json";
-        Response<BackupInstanceResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, Context.NONE);
     }
 
     /**
@@ -614,33 +586,13 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a backup instances belonging to a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup instances belonging to a backup vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupInstanceResourceInner> list(String resourceGroupName, String vaultName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, Context.NONE);
     }
 
-    /**
-     * Gets a backup instances belonging to a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup instances belonging to a backup vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupInstanceResourceInner> list(String resourceGroupName, String vaultName,
         Context context) {
@@ -685,11 +637,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateForBackupWithResponse(String resourceGroupName, String vaultName,
         ValidateForBackupRequest parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.validateForBackupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, contentType, accept, parameters,
-            Context.NONE);
+        return validateForBackupWithResponse(resourceGroupName, vaultName, parameters, Context.NONE);
     }
 
     /**
@@ -734,37 +682,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             this.client.getContext());
     }
 
-    /**
-     * Validate whether adhoc backup will be successful or not.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
         beginValidateForBackup(String resourceGroupName, String vaultName, ValidateForBackupRequest parameters) {
-        Response<BinaryData> response = validateForBackupWithResponse(resourceGroupName, vaultName, parameters);
-        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(response,
-            OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class, Context.NONE);
+        return beginValidateForBackup(resourceGroupName, vaultName, parameters, Context.NONE);
     }
 
-    /**
-     * Validate whether adhoc backup will be successful or not.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginValidateForBackup(
         String resourceGroupName, String vaultName, ValidateForBackupRequest parameters, Context context) {
@@ -792,39 +717,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validate whether adhoc backup will be successful or not.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner validateForBackup(String resourceGroupName, String vaultName,
         ValidateForBackupRequest parameters) {
-        return beginValidateForBackup(resourceGroupName, vaultName, parameters).getFinalResult();
+        return validateForBackup(resourceGroupName, vaultName, parameters, Context.NONE);
     }
 
-    /**
-     * Validate whether adhoc backup will be successful or not.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner validateForBackup(String resourceGroupName, String vaultName,
         ValidateForBackupRequest parameters, Context context) {
-        return beginValidateForBackup(resourceGroupName, vaultName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginValidateForBackup(resourceGroupName, vaultName, parameters, context));
     }
 
     /**
@@ -867,18 +772,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a backup instance with name in a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup instance with name in a backup vault along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupInstanceResourceInner> getWithResponse(String resourceGroupName, String vaultName,
         String backupInstanceName, Context context) {
@@ -887,17 +781,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             resourceGroupName, vaultName, backupInstanceName, accept, context);
     }
 
-    /**
-     * Gets a backup instance with name in a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup instance with name in a backup vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInstanceResourceInner get(String resourceGroupName, String vaultName, String backupInstanceName) {
         return getWithResponse(resourceGroupName, vaultName, backupInstanceName, Context.NONE).getValue();
@@ -942,11 +826,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String vaultName,
         String backupInstanceName, BackupInstanceResourceInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, contentType, accept,
-            parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
     /**
@@ -994,40 +874,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             this.client.getContext());
     }
 
-    /**
-     * Create or update a backup instance in a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of backupInstance Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInstanceResourceInner>, BackupInstanceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String vaultName, String backupInstanceName, BackupInstanceResourceInner parameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this.client.<BackupInstanceResourceInner, BackupInstanceResourceInner>getLroResult(response,
-            BackupInstanceResourceInner.class, BackupInstanceResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a backup instance in a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of backupInstance Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInstanceResourceInner>, BackupInstanceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String vaultName, String backupInstanceName, BackupInstanceResourceInner parameters,
@@ -1057,42 +911,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a backup instance in a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupInstance Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInstanceResourceInner createOrUpdate(String resourceGroupName, String vaultName,
         String backupInstanceName, BackupInstanceResourceInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, vaultName, backupInstanceName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a backup instance in a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupInstance Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInstanceResourceInner createOrUpdate(String resourceGroupName, String vaultName,
         String backupInstanceName, BackupInstanceResourceInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, vaultName, backupInstanceName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, vaultName, backupInstanceName, parameters, context));
     }
 
     /**
@@ -1129,8 +960,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String vaultName,
         String backupInstanceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, vaultName, backupInstanceName, Context.NONE);
     }
 
     /**
@@ -1172,36 +1002,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a backup instance in a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
         String backupInstanceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, vaultName, backupInstanceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, vaultName, backupInstanceName, Context.NONE);
     }
 
-    /**
-     * Delete a backup instance in a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
         String backupInstanceName, Context context) {
@@ -1226,35 +1034,16 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a backup instance in a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName, String backupInstanceName) {
-        beginDelete(resourceGroupName, vaultName, backupInstanceName).getFinalResult();
+        delete(resourceGroupName, vaultName, backupInstanceName, Context.NONE);
     }
 
-    /**
-     * Delete a backup instance in a backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
-        beginDelete(resourceGroupName, vaultName, backupInstanceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, vaultName, backupInstanceName, context));
     }
 
     /**
@@ -1296,11 +1085,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> adhocBackupWithResponse(String resourceGroupName, String vaultName,
         String backupInstanceName, TriggerBackupRequest parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.adhocBackupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, contentType, accept,
-            parameters, Context.NONE);
+        return adhocBackupWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
     /**
@@ -1348,40 +1133,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             this.client.getContext());
     }
 
-    /**
-     * Trigger adhoc backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginAdhocBackup(
         String resourceGroupName, String vaultName, String backupInstanceName, TriggerBackupRequest parameters) {
-        Response<BinaryData> response
-            = adhocBackupWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(response,
-            OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class, Context.NONE);
+        return beginAdhocBackup(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * Trigger adhoc backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginAdhocBackup(
         String resourceGroupName, String vaultName, String backupInstanceName, TriggerBackupRequest parameters,
@@ -1411,41 +1170,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Trigger adhoc backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner adhocBackup(String resourceGroupName, String vaultName,
         String backupInstanceName, TriggerBackupRequest parameters) {
-        return beginAdhocBackup(resourceGroupName, vaultName, backupInstanceName, parameters).getFinalResult();
+        return adhocBackup(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * Trigger adhoc backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner adhocBackup(String resourceGroupName, String vaultName,
         String backupInstanceName, TriggerBackupRequest parameters, Context context) {
-        return beginAdhocBackup(resourceGroupName, vaultName, backupInstanceName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginAdhocBackup(resourceGroupName, vaultName, backupInstanceName, parameters, context));
     }
 
     /**
@@ -1486,9 +1223,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateForModifyBackupWithResponse(String resourceGroupName, String vaultName,
         String backupInstanceName, ValidateForModifyBackupRequest parameters) {
-        final String contentType = "application/json";
-        return service.validateForModifyBackupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, contentType, parameters,
+        return validateForModifyBackupWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters,
             Context.NONE);
     }
 
@@ -1535,39 +1270,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             this.client.getContext());
     }
 
-    /**
-     * Validate whether update for backup instance will be successful or not.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateForModifyBackup(String resourceGroupName, String vaultName,
         String backupInstanceName, ValidateForModifyBackupRequest parameters) {
-        Response<BinaryData> response
-            = validateForModifyBackupWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginValidateForModifyBackup(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * Validate whether update for backup instance will be successful or not.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateForModifyBackup(String resourceGroupName, String vaultName,
         String backupInstanceName, ValidateForModifyBackupRequest parameters, Context context) {
@@ -1595,40 +1305,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validate whether update for backup instance will be successful or not.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateForModifyBackup(String resourceGroupName, String vaultName, String backupInstanceName,
         ValidateForModifyBackupRequest parameters) {
-        beginValidateForModifyBackup(resourceGroupName, vaultName, backupInstanceName, parameters).getFinalResult();
+        validateForModifyBackup(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * Validate whether update for backup instance will be successful or not.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateForModifyBackup(String resourceGroupName, String vaultName, String backupInstanceName,
         ValidateForModifyBackupRequest parameters, Context context) {
-        beginValidateForModifyBackup(resourceGroupName, vaultName, backupInstanceName, parameters, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginValidateForModifyBackup(resourceGroupName, vaultName, backupInstanceName, parameters, context));
     }
 
     /**
@@ -1669,10 +1358,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> triggerRehydrateWithResponse(String resourceGroupName, String vaultName,
         String backupInstanceName, AzureBackupRehydrationRequest parameters) {
-        final String contentType = "application/json";
-        return service.triggerRehydrateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, contentType, parameters,
-            Context.NONE);
+        return triggerRehydrateWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
     /**
@@ -1718,39 +1404,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             this.client.getContext());
     }
 
-    /**
-     * rehydrate recovery point for restore for a BackupInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTriggerRehydrate(String resourceGroupName, String vaultName,
         String backupInstanceName, AzureBackupRehydrationRequest parameters) {
-        Response<BinaryData> response
-            = triggerRehydrateWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginTriggerRehydrate(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * rehydrate recovery point for restore for a BackupInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTriggerRehydrate(String resourceGroupName, String vaultName,
         String backupInstanceName, AzureBackupRehydrationRequest parameters, Context context) {
@@ -1778,39 +1439,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * rehydrate recovery point for restore for a BackupInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void triggerRehydrate(String resourceGroupName, String vaultName, String backupInstanceName,
         AzureBackupRehydrationRequest parameters) {
-        beginTriggerRehydrate(resourceGroupName, vaultName, backupInstanceName, parameters).getFinalResult();
+        triggerRehydrate(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * rehydrate recovery point for restore for a BackupInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void triggerRehydrate(String resourceGroupName, String vaultName, String backupInstanceName,
         AzureBackupRehydrationRequest parameters, Context context) {
-        beginTriggerRehydrate(resourceGroupName, vaultName, backupInstanceName, parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginTriggerRehydrate(resourceGroupName, vaultName, backupInstanceName, parameters, context));
     }
 
     /**
@@ -1852,11 +1493,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> triggerRestoreWithResponse(String resourceGroupName, String vaultName,
         String backupInstanceName, AzureBackupRestoreRequest parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.triggerRestoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, contentType, accept,
-            parameters, Context.NONE);
+        return triggerRestoreWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
     /**
@@ -1905,40 +1542,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             this.client.getContext());
     }
 
-    /**
-     * Triggers restore for a BackupInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginTriggerRestore(
         String resourceGroupName, String vaultName, String backupInstanceName, AzureBackupRestoreRequest parameters) {
-        Response<BinaryData> response
-            = triggerRestoreWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(response,
-            OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class, Context.NONE);
+        return beginTriggerRestore(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * Triggers restore for a BackupInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginTriggerRestore(
         String resourceGroupName, String vaultName, String backupInstanceName, AzureBackupRestoreRequest parameters,
@@ -1968,42 +1579,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Triggers restore for a BackupInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner triggerRestore(String resourceGroupName, String vaultName,
         String backupInstanceName, AzureBackupRestoreRequest parameters) {
-        return beginTriggerRestore(resourceGroupName, vaultName, backupInstanceName, parameters).getFinalResult();
+        return triggerRestore(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * Triggers restore for a BackupInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner triggerRestore(String resourceGroupName, String vaultName,
         String backupInstanceName, AzureBackupRestoreRequest parameters, Context context) {
-        return beginTriggerRestore(resourceGroupName, vaultName, backupInstanceName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginTriggerRestore(resourceGroupName, vaultName, backupInstanceName, parameters, context));
     }
 
     /**
@@ -2040,8 +1628,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resumeBackupsWithResponse(String resourceGroupName, String vaultName,
         String backupInstanceName) {
-        return service.resumeBackupsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, Context.NONE);
+        return resumeBackupsWithResponse(resourceGroupName, vaultName, backupInstanceName, Context.NONE);
     }
 
     /**
@@ -2083,36 +1670,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             this.client.getContext());
     }
 
-    /**
-     * This operation will resume backups for backup instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResumeBackups(String resourceGroupName, String vaultName,
         String backupInstanceName) {
-        Response<BinaryData> response = resumeBackupsWithResponse(resourceGroupName, vaultName, backupInstanceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginResumeBackups(resourceGroupName, vaultName, backupInstanceName, Context.NONE);
     }
 
-    /**
-     * This operation will resume backups for backup instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResumeBackups(String resourceGroupName, String vaultName,
         String backupInstanceName, Context context) {
@@ -2138,35 +1703,17 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This operation will resume backups for backup instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resumeBackups(String resourceGroupName, String vaultName, String backupInstanceName) {
-        beginResumeBackups(resourceGroupName, vaultName, backupInstanceName).getFinalResult();
+        resumeBackups(resourceGroupName, vaultName, backupInstanceName, Context.NONE);
     }
 
-    /**
-     * This operation will resume backups for backup instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resumeBackups(String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
-        beginResumeBackups(resourceGroupName, vaultName, backupInstanceName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginResumeBackups(resourceGroupName, vaultName, backupInstanceName, context));
     }
 
     /**
@@ -2203,8 +1750,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resumeProtectionWithResponse(String resourceGroupName, String vaultName,
         String backupInstanceName) {
-        return service.resumeProtectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, Context.NONE);
+        return resumeProtectionWithResponse(resourceGroupName, vaultName, backupInstanceName, Context.NONE);
     }
 
     /**
@@ -2246,36 +1792,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             this.client.getContext());
     }
 
-    /**
-     * This operation will resume protection for a stopped backup instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResumeProtection(String resourceGroupName, String vaultName,
         String backupInstanceName) {
-        Response<BinaryData> response = resumeProtectionWithResponse(resourceGroupName, vaultName, backupInstanceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginResumeProtection(resourceGroupName, vaultName, backupInstanceName, Context.NONE);
     }
 
-    /**
-     * This operation will resume protection for a stopped backup instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResumeProtection(String resourceGroupName, String vaultName,
         String backupInstanceName, Context context) {
@@ -2301,36 +1825,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This operation will resume protection for a stopped backup instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resumeProtection(String resourceGroupName, String vaultName, String backupInstanceName) {
-        beginResumeProtection(resourceGroupName, vaultName, backupInstanceName).getFinalResult();
+        resumeProtection(resourceGroupName, vaultName, backupInstanceName, Context.NONE);
     }
 
-    /**
-     * This operation will resume protection for a stopped backup instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resumeProtection(String resourceGroupName, String vaultName, String backupInstanceName,
         Context context) {
-        beginResumeProtection(resourceGroupName, vaultName, backupInstanceName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginResumeProtection(resourceGroupName, vaultName, backupInstanceName, context));
     }
 
     /**
@@ -2369,9 +1875,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopProtectionWithResponse(String resourceGroupName, String vaultName,
         String backupInstanceName, StopProtectionRequest parameters) {
-        return service.stopProtectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters,
-            Context.NONE);
+        return stopProtectionWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
     /**
@@ -2449,46 +1953,20 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStopProtection(String resourceGroupName, String vaultName,
+    private SyncPoller<PollResult<Void>, Void> beginStopProtection(String resourceGroupName, String vaultName,
         String backupInstanceName, StopProtectionRequest parameters) {
-        Response<BinaryData> response
-            = stopProtectionWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStopProtection(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * This operation will stop protection of a backup instance and data will be held forever.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStopProtection(String resourceGroupName, String vaultName,
         String backupInstanceName) {
         final StopProtectionRequest parameters = null;
-        Response<BinaryData> response
-            = stopProtectionWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStopProtection(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * This operation will stop protection of a backup instance and data will be held forever.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStopProtection(String resourceGroupName, String vaultName,
         String backupInstanceName, StopProtectionRequest parameters, Context context) {
@@ -2534,38 +2012,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This operation will stop protection of a backup instance and data will be held forever.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopProtection(String resourceGroupName, String vaultName, String backupInstanceName) {
         final StopProtectionRequest parameters = null;
-        beginStopProtection(resourceGroupName, vaultName, backupInstanceName, parameters).getFinalResult();
+        stopProtection(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * This operation will stop protection of a backup instance and data will be held forever.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopProtection(String resourceGroupName, String vaultName, String backupInstanceName,
         StopProtectionRequest parameters, Context context) {
-        beginStopProtection(resourceGroupName, vaultName, backupInstanceName, parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginStopProtection(resourceGroupName, vaultName, backupInstanceName, parameters, context));
     }
 
     /**
@@ -2606,9 +2065,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> suspendBackupsWithResponse(String resourceGroupName, String vaultName,
         String backupInstanceName, SuspendBackupRequest parameters) {
-        return service.suspendBackupsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters,
-            Context.NONE);
+        return suspendBackupsWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
     /**
@@ -2690,48 +2147,20 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginSuspendBackups(String resourceGroupName, String vaultName,
+    private SyncPoller<PollResult<Void>, Void> beginSuspendBackups(String resourceGroupName, String vaultName,
         String backupInstanceName, SuspendBackupRequest parameters) {
-        Response<BinaryData> response
-            = suspendBackupsWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginSuspendBackups(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
-     * latest Recovery point, which will be retained forever).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspendBackups(String resourceGroupName, String vaultName,
         String backupInstanceName) {
         final SuspendBackupRequest parameters = null;
-        Response<BinaryData> response
-            = suspendBackupsWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginSuspendBackups(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
-     * latest Recovery point, which will be retained forever).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspendBackups(String resourceGroupName, String vaultName,
         String backupInstanceName, SuspendBackupRequest parameters, Context context) {
@@ -2779,40 +2208,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
-     * latest Recovery point, which will be retained forever).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void suspendBackups(String resourceGroupName, String vaultName, String backupInstanceName) {
         final SuspendBackupRequest parameters = null;
-        beginSuspendBackups(resourceGroupName, vaultName, backupInstanceName, parameters).getFinalResult();
+        suspendBackups(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
-     * latest Recovery point, which will be retained forever).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void suspendBackups(String resourceGroupName, String vaultName, String backupInstanceName,
         SuspendBackupRequest parameters, Context context) {
-        beginSuspendBackups(resourceGroupName, vaultName, backupInstanceName, parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginSuspendBackups(resourceGroupName, vaultName, backupInstanceName, parameters, context));
     }
 
     /**
@@ -2855,9 +2263,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> syncBackupInstanceWithResponse(String resourceGroupName, String vaultName,
         String backupInstanceName, SyncBackupInstanceRequest parameters) {
-        final String contentType = "application/json";
-        return service.syncBackupInstanceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, contentType, parameters,
+        return syncBackupInstanceWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters,
             Context.NONE);
     }
 
@@ -2906,41 +2312,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             this.client.getContext());
     }
 
-    /**
-     * Sync backup instance again in case of failure
-     * This action will retry last failed operation and will bring backup instance to valid state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSyncBackupInstance(String resourceGroupName, String vaultName,
         String backupInstanceName, SyncBackupInstanceRequest parameters) {
-        Response<BinaryData> response
-            = syncBackupInstanceWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginSyncBackupInstance(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * Sync backup instance again in case of failure
-     * This action will retry last failed operation and will bring backup instance to valid state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSyncBackupInstance(String resourceGroupName, String vaultName,
         String backupInstanceName, SyncBackupInstanceRequest parameters, Context context) {
@@ -2969,41 +2348,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Sync backup instance again in case of failure
-     * This action will retry last failed operation and will bring backup instance to valid state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void syncBackupInstance(String resourceGroupName, String vaultName, String backupInstanceName,
         SyncBackupInstanceRequest parameters) {
-        beginSyncBackupInstance(resourceGroupName, vaultName, backupInstanceName, parameters).getFinalResult();
+        syncBackupInstance(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * Sync backup instance again in case of failure
-     * This action will retry last failed operation and will bring backup instance to valid state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void syncBackupInstance(String resourceGroupName, String vaultName, String backupInstanceName,
         SyncBackupInstanceRequest parameters, Context context) {
-        beginSyncBackupInstance(resourceGroupName, vaultName, backupInstanceName, parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginSyncBackupInstance(resourceGroupName, vaultName, backupInstanceName, parameters, context));
     }
 
     /**
@@ -3045,11 +2402,8 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateForRestoreWithResponse(String resourceGroupName, String vaultName,
         String backupInstanceName, ValidateRestoreRequestObject parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.validateForRestoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, contentType, accept,
-            parameters, Context.NONE);
+        return validateForRestoreWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters,
+            Context.NONE);
     }
 
     /**
@@ -3098,41 +2452,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             this.client.getContext());
     }
 
-    /**
-     * Validates if Restore can be triggered for a DataSource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginValidateForRestore(
         String resourceGroupName, String vaultName, String backupInstanceName,
         ValidateRestoreRequestObject parameters) {
-        Response<BinaryData> response
-            = validateForRestoreWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(response,
-            OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class, Context.NONE);
+        return beginValidateForRestore(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * Validates if Restore can be triggered for a DataSource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginValidateForRestore(
         String resourceGroupName, String vaultName, String backupInstanceName, ValidateRestoreRequestObject parameters,
@@ -3162,42 +2490,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validates if Restore can be triggered for a DataSource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner validateForRestore(String resourceGroupName, String vaultName,
         String backupInstanceName, ValidateRestoreRequestObject parameters) {
-        return beginValidateForRestore(resourceGroupName, vaultName, backupInstanceName, parameters).getFinalResult();
+        return validateForRestore(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE);
     }
 
-    /**
-     * Validates if Restore can be triggered for a DataSource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The name of the BackupInstanceResource.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner validateForRestore(String resourceGroupName, String vaultName,
         String backupInstanceName, ValidateRestoreRequestObject parameters, Context context) {
-        return beginValidateForRestore(resourceGroupName, vaultName, backupInstanceName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginValidateForRestore(resourceGroupName, vaultName, backupInstanceName, parameters, context));
     }
 
     /**
@@ -3237,11 +2542,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> triggerCrossRegionRestoreWithResponse(String resourceGroupName, String location,
         CrossRegionRestoreRequestObject parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.triggerCrossRegionRestoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, location, contentType, accept, parameters,
-            Context.NONE);
+        return triggerCrossRegionRestoreWithResponse(resourceGroupName, location, parameters, Context.NONE);
     }
 
     /**
@@ -3287,38 +2588,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             this.client.getContext());
     }
 
-    /**
-     * Triggers Cross Region Restore for BackupInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param parameters Request body for trigger CRR operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
         beginTriggerCrossRegionRestore(String resourceGroupName, String location,
             CrossRegionRestoreRequestObject parameters) {
-        Response<BinaryData> response = triggerCrossRegionRestoreWithResponse(resourceGroupName, location, parameters);
-        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(response,
-            OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class, Context.NONE);
+        return beginTriggerCrossRegionRestore(resourceGroupName, location, parameters, Context.NONE);
     }
 
-    /**
-     * Triggers Cross Region Restore for BackupInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param parameters Request body for trigger CRR operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
         beginTriggerCrossRegionRestore(String resourceGroupName, String location,
@@ -3347,39 +2625,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Triggers Cross Region Restore for BackupInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param parameters Request body for trigger CRR operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner triggerCrossRegionRestore(String resourceGroupName, String location,
         CrossRegionRestoreRequestObject parameters) {
-        return beginTriggerCrossRegionRestore(resourceGroupName, location, parameters).getFinalResult();
+        return triggerCrossRegionRestore(resourceGroupName, location, parameters, Context.NONE);
     }
 
-    /**
-     * Triggers Cross Region Restore for BackupInstance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param parameters Request body for trigger CRR operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner triggerCrossRegionRestore(String resourceGroupName, String location,
         CrossRegionRestoreRequestObject parameters, Context context) {
-        return beginTriggerCrossRegionRestore(resourceGroupName, location, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginTriggerCrossRegionRestore(resourceGroupName, location, parameters, context));
     }
 
     /**
@@ -3419,11 +2677,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateCrossRegionRestoreWithResponse(String resourceGroupName, String location,
         ValidateCrossRegionRestoreRequestObject parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.validateCrossRegionRestoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, location, contentType, accept, parameters,
-            Context.NONE);
+        return validateCrossRegionRestoreWithResponse(resourceGroupName, location, parameters, Context.NONE);
     }
 
     /**
@@ -3469,38 +2723,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             this.client.getContext());
     }
 
-    /**
-     * Validates whether Cross Region Restore can be triggered for DataSource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
         beginValidateCrossRegionRestore(String resourceGroupName, String location,
             ValidateCrossRegionRestoreRequestObject parameters) {
-        Response<BinaryData> response = validateCrossRegionRestoreWithResponse(resourceGroupName, location, parameters);
-        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(response,
-            OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class, Context.NONE);
+        return beginValidateCrossRegionRestore(resourceGroupName, location, parameters, Context.NONE);
     }
 
-    /**
-     * Validates whether Cross Region Restore can be triggered for DataSource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
         beginValidateCrossRegionRestore(String resourceGroupName, String location,
@@ -3529,39 +2760,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validates whether Cross Region Restore can be triggered for DataSource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner validateCrossRegionRestore(String resourceGroupName, String location,
         ValidateCrossRegionRestoreRequestObject parameters) {
-        return beginValidateCrossRegionRestore(resourceGroupName, location, parameters).getFinalResult();
+        return validateCrossRegionRestore(resourceGroupName, location, parameters, Context.NONE);
     }
 
-    /**
-     * Validates whether Cross Region Restore can be triggered for DataSource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Job Extended Info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationJobExtendedInfoInner validateCrossRegionRestore(String resourceGroupName, String location,
         ValidateCrossRegionRestoreRequestObject parameters, Context context) {
-        return beginValidateCrossRegionRestore(resourceGroupName, location, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginValidateCrossRegionRestore(resourceGroupName, location, parameters, context));
     }
 
     /**
@@ -3594,11 +2805,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BackupInstanceResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BackupInstanceResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

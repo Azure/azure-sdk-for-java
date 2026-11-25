@@ -238,18 +238,7 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified Managed Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param managedCertificateName Name of the Managed Certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Managed Certificate along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedCertificateInner> getWithResponse(String resourceGroupName, String environmentName,
         String managedCertificateName, Context context) {
@@ -258,17 +247,7 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
             resourceGroupName, environmentName, managedCertificateName, accept, context);
     }
 
-    /**
-     * Get the specified Managed Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param managedCertificateName Name of the Managed Certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Managed Certificate.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedCertificateInner get(String resourceGroupName, String environmentName,
         String managedCertificateName) {
@@ -317,9 +296,7 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
         String managedCertificateName, ManagedCertificateInner managedCertificateEnvelope) {
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, environmentName, managedCertificateName, accept,
+        return createOrUpdateWithResponse(resourceGroupName, environmentName, managedCertificateName,
             managedCertificateEnvelope, Context.NONE);
     }
 
@@ -411,53 +388,23 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
      * Apps in a Managed Environment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedCertificateInner>, ManagedCertificateInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<ManagedCertificateInner>, ManagedCertificateInner> beginCreateOrUpdate(
         String resourceGroupName, String environmentName, String managedCertificateName,
         ManagedCertificateInner managedCertificateEnvelope) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, environmentName,
-            managedCertificateName, managedCertificateEnvelope);
-        return this.client.<ManagedCertificateInner, ManagedCertificateInner>getLroResult(response,
-            ManagedCertificateInner.class, ManagedCertificateInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, environmentName, managedCertificateName,
+            managedCertificateEnvelope, Context.NONE);
     }
 
-    /**
-     * Create or Update a Managed Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param managedCertificateName Name of the Managed Certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 400.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of managed certificates used for Custom Domain bindings of Container
-     * Apps in a Managed Environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedCertificateInner>, ManagedCertificateInner>
         beginCreateOrUpdate(String resourceGroupName, String environmentName, String managedCertificateName) {
         final ManagedCertificateInner managedCertificateEnvelope = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, environmentName,
-            managedCertificateName, managedCertificateEnvelope);
-        return this.client.<ManagedCertificateInner, ManagedCertificateInner>getLroResult(response,
-            ManagedCertificateInner.class, ManagedCertificateInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, environmentName, managedCertificateName,
+            managedCertificateEnvelope, Context.NONE);
     }
 
-    /**
-     * Create or Update a Managed Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param managedCertificateName Name of the Managed Certificate.
-     * @param managedCertificateEnvelope Managed Certificate to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 400.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of managed certificates used for Custom Domain bindings of Container
-     * Apps in a Managed Environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedCertificateInner>, ManagedCertificateInner> beginCreateOrUpdate(
         String resourceGroupName, String environmentName, String managedCertificateName,
@@ -510,45 +457,21 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
             managedCertificateEnvelope).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or Update a Managed Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param managedCertificateName Name of the Managed Certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 400.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed certificates used for Custom Domain bindings of Container Apps in a Managed Environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedCertificateInner createOrUpdate(String resourceGroupName, String environmentName,
         String managedCertificateName) {
         final ManagedCertificateInner managedCertificateEnvelope = null;
-        return beginCreateOrUpdate(resourceGroupName, environmentName, managedCertificateName,
-            managedCertificateEnvelope).getFinalResult();
+        return createOrUpdate(resourceGroupName, environmentName, managedCertificateName, managedCertificateEnvelope,
+            Context.NONE);
     }
 
-    /**
-     * Create or Update a Managed Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param managedCertificateName Name of the Managed Certificate.
-     * @param managedCertificateEnvelope Managed Certificate to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 400.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed certificates used for Custom Domain bindings of Container Apps in a Managed Environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedCertificateInner createOrUpdate(String resourceGroupName, String environmentName,
         String managedCertificateName, ManagedCertificateInner managedCertificateEnvelope, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, environmentName, managedCertificateName,
-            managedCertificateEnvelope, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, environmentName,
+            managedCertificateName, managedCertificateEnvelope, context));
     }
 
     /**
@@ -600,22 +523,7 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
             managedCertificateEnvelope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update tags of a managed certificate
-     * 
-     * Patches a managed certificate. Oly patching of tags is supported.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param managedCertificateName Name of the Managed Certificate.
-     * @param managedCertificateEnvelope Properties of a managed certificate that need to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed certificates used for Custom Domain bindings of Container Apps in a Managed Environment along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedCertificateInner> updateWithResponse(String resourceGroupName, String environmentName,
         String managedCertificateName, ManagedCertificatePatch managedCertificateEnvelope, Context context) {
@@ -626,20 +534,7 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
             accept, managedCertificateEnvelope, context);
     }
 
-    /**
-     * Update tags of a managed certificate
-     * 
-     * Patches a managed certificate. Oly patching of tags is supported.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param managedCertificateName Name of the Managed Certificate.
-     * @param managedCertificateEnvelope Properties of a managed certificate that need to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed certificates used for Custom Domain bindings of Container Apps in a Managed Environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedCertificateInner update(String resourceGroupName, String environmentName,
         String managedCertificateName, ManagedCertificatePatch managedCertificateEnvelope) {
@@ -684,18 +579,7 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the specified Managed Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param managedCertificateName Name of the Managed Certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName,
         String managedCertificateName, Context context) {
@@ -703,16 +587,7 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
             this.client.getSubscriptionId(), resourceGroupName, environmentName, managedCertificateName, context);
     }
 
-    /**
-     * Deletes the specified Managed Certificate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param managedCertificateName Name of the Managed Certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String managedCertificateName) {
         deleteWithResponse(resourceGroupName, environmentName, managedCertificateName, Context.NONE);
@@ -769,12 +644,7 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedCertificateInner> listSinglePage(String resourceGroupName, String environmentName) {
-        final String accept = "application/json";
-        Response<ManagedCertificateCollection> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, environmentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, environmentName, Context.NONE);
     }
 
     /**
@@ -799,33 +669,13 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the Managed Certificates in a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Certificates in a given managed environment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedCertificateInner> list(String resourceGroupName, String environmentName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, environmentName, Context.NONE);
     }
 
-    /**
-     * Get the Managed Certificates in a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Certificates in a given managed environment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedCertificateInner> list(String resourceGroupName, String environmentName,
         Context context) {
@@ -867,11 +717,7 @@ public final class ManagedCertificatesClientImpl implements ManagedCertificatesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedCertificateInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ManagedCertificateCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

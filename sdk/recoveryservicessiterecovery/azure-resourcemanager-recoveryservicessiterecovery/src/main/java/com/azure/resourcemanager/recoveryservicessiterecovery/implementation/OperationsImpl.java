@@ -26,8 +26,7 @@ public final class OperationsImpl implements Operations {
     }
 
     public PagedIterable<OperationsDiscovery> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<OperationsDiscoveryInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationsDiscoveryImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<OperationsDiscovery> listByResourceGroup(String resourceGroupName, Context context) {

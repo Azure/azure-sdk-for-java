@@ -210,21 +210,7 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
             migrationItemName, migrationRecoveryPointName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a recovery point for a migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param migrationRecoveryPointName The migration recovery point name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recovery point for a migration item along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MigrationRecoveryPointInner> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, String migrationRecoveryPointName,
@@ -270,20 +256,7 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
             migrationRecoveryPointName, accept, context);
     }
 
-    /**
-     * Gets a recovery point for a migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param migrationRecoveryPointName The migration recovery point name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recovery point for a migration item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationRecoveryPointInner get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, String migrationRecoveryPointName) {
@@ -384,42 +357,8 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
     private PagedResponse<MigrationRecoveryPointInner> listByReplicationMigrationItemsSinglePage(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String migrationItemName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (migrationItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter migrationItemName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<MigrationRecoveryPointCollection> res = service.listByReplicationMigrationItemsSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            resourceName, fabricName, protectionContainerName, migrationItemName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationMigrationItemsSinglePage(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, migrationItemName, Context.NONE);
     }
 
     /**
@@ -478,42 +417,15 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the recovery points for a migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the recovery points for a migration item as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MigrationRecoveryPointInner> listByReplicationMigrationItems(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String migrationItemName) {
-        return new PagedIterable<>(
-            () -> listByReplicationMigrationItemsSinglePage(resourceGroupName, resourceName, fabricName,
-                protectionContainerName, migrationItemName),
-            nextLink -> listByReplicationMigrationItemsNextSinglePage(nextLink));
+        return listByReplicationMigrationItems(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            migrationItemName, Context.NONE);
     }
 
-    /**
-     * Gets the recovery points for a migration item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param migrationItemName Migration item name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the recovery points for a migration item as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MigrationRecoveryPointInner> listByReplicationMigrationItems(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
@@ -568,20 +480,7 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MigrationRecoveryPointInner> listByReplicationMigrationItemsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<MigrationRecoveryPointCollection> res = service.listByReplicationMigrationItemsNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationMigrationItemsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

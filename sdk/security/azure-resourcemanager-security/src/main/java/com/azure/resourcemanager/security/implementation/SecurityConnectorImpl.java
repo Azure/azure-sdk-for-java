@@ -115,11 +115,7 @@ public final class SecurityConnectorImpl
     }
 
     public SecurityConnector create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityConnectors()
-            .createOrUpdateWithResponse(resourceGroupName, securityConnectorName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SecurityConnector create(Context context) {
@@ -141,11 +137,7 @@ public final class SecurityConnectorImpl
     }
 
     public SecurityConnector apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityConnectors()
-            .updateWithResponse(resourceGroupName, securityConnectorName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SecurityConnector apply(Context context) {
@@ -169,11 +161,7 @@ public final class SecurityConnectorImpl
     }
 
     public SecurityConnector refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityConnectors()
-            .getByResourceGroupWithResponse(resourceGroupName, securityConnectorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SecurityConnector refresh(Context context) {

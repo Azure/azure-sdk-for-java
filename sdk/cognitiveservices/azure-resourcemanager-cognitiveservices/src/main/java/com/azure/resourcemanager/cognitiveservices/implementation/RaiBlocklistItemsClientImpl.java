@@ -258,19 +258,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified custom blocklist Item associated with the custom blocklist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified custom blocklist Item associated with the custom blocklist along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiBlocklistItemInner> getWithResponse(String resourceGroupName, String accountName,
         String raiBlocklistName, String raiBlocklistItemName, Context context) {
@@ -279,18 +267,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
             resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, accept, context);
     }
 
-    /**
-     * Gets the specified custom blocklist Item associated with the custom blocklist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified custom blocklist Item associated with the custom blocklist.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiBlocklistItemInner get(String resourceGroupName, String accountName, String raiBlocklistName,
         String raiBlocklistItemName) {
@@ -345,20 +322,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
             raiBlocklistItem).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update the state of specified blocklist item associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
-     * @param raiBlocklistItem Properties describing the custom blocklist.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services RaiBlocklist Item along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiBlocklistItemInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String raiBlocklistName, String raiBlocklistItemName, RaiBlocklistItemInner raiBlocklistItem, Context context) {
@@ -369,19 +333,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
             contentType, accept, raiBlocklistItem, context);
     }
 
-    /**
-     * Update the state of specified blocklist item associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
-     * @param raiBlocklistItem Properties describing the custom blocklist.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services RaiBlocklist Item.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiBlocklistItemInner createOrUpdate(String resourceGroupName, String accountName, String raiBlocklistName,
         String raiBlocklistItemName, RaiBlocklistItemInner raiBlocklistItem) {
@@ -426,9 +378,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
         String raiBlocklistName, String raiBlocklistItemName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, Context.NONE);
     }
 
     /**
@@ -473,39 +423,14 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified blocklist Item associated with the custom blocklist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String raiBlocklistName, String raiBlocklistItemName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified blocklist Item associated with the custom blocklist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String raiBlocklistName, String raiBlocklistItemName, Context context) {
@@ -533,39 +458,19 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified blocklist Item associated with the custom blocklist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String raiBlocklistName,
         String raiBlocklistItemName) {
-        beginDelete(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName).getFinalResult();
+        delete(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified blocklist Item associated with the custom blocklist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String raiBlocklistName,
         String raiBlocklistItemName, Context context) {
-        beginDelete(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, context));
     }
 
     /**
@@ -624,11 +529,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RaiBlocklistItemInner> listSinglePage(String resourceGroupName, String accountName,
         String raiBlocklistName) {
-        final String accept = "application/json";
-        Response<RaiBlockListItemsResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, raiBlocklistName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, raiBlocklistName, Context.NONE);
     }
 
     /**
@@ -653,38 +554,14 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the blocklist items associated with the custom blocklist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the blocklist items associated with the custom blocklist as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RaiBlocklistItemInner> list(String resourceGroupName, String accountName,
         String raiBlocklistName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, raiBlocklistName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, raiBlocklistName, Context.NONE);
     }
 
-    /**
-     * Gets the blocklist items associated with the custom blocklist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the blocklist items associated with the custom blocklist as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RaiBlocklistItemInner> list(String resourceGroupName, String accountName,
         String raiBlocklistName, Context context) {
@@ -735,19 +612,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Batch operation to add blocklist items.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItems Properties describing the custom blocklist items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services RaiBlocklist along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiBlocklistInner> batchAddWithResponse(String resourceGroupName, String accountName,
         String raiBlocklistName, List<RaiBlocklistItemBulkRequest> raiBlocklistItems, Context context) {
@@ -758,18 +623,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
             raiBlocklistItems, context);
     }
 
-    /**
-     * Batch operation to add blocklist items.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItems Properties describing the custom blocklist items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services RaiBlocklist.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiBlocklistInner batchAdd(String resourceGroupName, String accountName, String raiBlocklistName,
         List<RaiBlocklistItemBulkRequest> raiBlocklistItems) {
@@ -819,19 +673,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Batch operation to delete blocklist items.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItemsNames List of RAI Blocklist Items Names.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> batchDeleteWithResponse(String resourceGroupName, String accountName, String raiBlocklistName,
         List<String> raiBlocklistItemsNames, Context context) {
@@ -841,17 +683,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
             raiBlocklistItemsNames, context);
     }
 
-    /**
-     * Batch operation to delete blocklist items.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItemsNames List of RAI Blocklist Items Names.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void batchDelete(String resourceGroupName, String accountName, String raiBlocklistName,
         List<String> raiBlocklistItemsNames) {
@@ -888,11 +720,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RaiBlocklistItemInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RaiBlockListItemsResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

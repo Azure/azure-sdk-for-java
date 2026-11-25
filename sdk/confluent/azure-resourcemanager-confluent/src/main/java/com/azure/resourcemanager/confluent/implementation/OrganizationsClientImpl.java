@@ -36,18 +36,22 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.confluent.fluent.OrganizationsClient;
 import com.azure.resourcemanager.confluent.fluent.models.ApiKeyRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.LatestLinkedSaaSResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.ListRegionsSuccessResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
 import com.azure.resourcemanager.confluent.fluent.models.SCClusterRecordInner;
 import com.azure.resourcemanager.confluent.fluent.models.SCEnvironmentRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.SaaSResourceDetailsResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.SchemaRegistryClusterRecordInner;
 import com.azure.resourcemanager.confluent.implementation.models.GetEnvironmentsResponse;
 import com.azure.resourcemanager.confluent.implementation.models.ListClustersSuccessResponse;
 import com.azure.resourcemanager.confluent.implementation.models.ListSchemaRegistryClustersResponse;
 import com.azure.resourcemanager.confluent.implementation.models.OrganizationResourceListResult;
+import com.azure.resourcemanager.confluent.models.ActivateSaaSParameterRequest;
 import com.azure.resourcemanager.confluent.models.CreateApiKeyModel;
 import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
 import com.azure.resourcemanager.confluent.models.OrganizationResourceUpdate;
+import com.azure.resourcemanager.confluent.models.SaaSData;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -255,6 +259,60 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             @PathParam("organizationName") String organizationName, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") ListAccessRequestModel body,
             Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/linkSaaS")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> linkSaaS(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SaaSData body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/linkSaaS")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> linkSaaSSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SaaSData body, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/latestLinkedSaaS")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<LatestLinkedSaaSResponseInner>> latestLinkedSaaS(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/latestLinkedSaaS")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LatestLinkedSaaSResponseInner> latestLinkedSaaSSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/activateSaaS")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> activateResource(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ActivateSaaSParameterRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/activateSaaS")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> activateResourceSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ActivateSaaSParameterRequest body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}")
@@ -527,18 +585,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get API key details of a kafka or schema registry cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param apiKeyId Confluent API Key id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI key details of a kafka or schema registry cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApiKeyRecordInner> getClusterApiKeyWithResponse(String resourceGroupName, String organizationName,
         String apiKeyId, Context context) {
@@ -547,17 +594,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             this.client.getSubscriptionId(), resourceGroupName, organizationName, apiKeyId, accept, context);
     }
 
-    /**
-     * Get API key details of a kafka or schema registry cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param apiKeyId Confluent API Key id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI key details of a kafka or schema registry cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApiKeyRecordInner getClusterApiKey(String resourceGroupName, String organizationName, String apiKeyId) {
         return getClusterApiKeyWithResponse(resourceGroupName, organizationName, apiKeyId, Context.NONE).getValue();
@@ -600,18 +637,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes API key of a kafka or schema registry cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param apiKeyId Confluent API Key id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClusterApiKeyWithResponse(String resourceGroupName, String organizationName,
         String apiKeyId, Context context) {
@@ -619,16 +645,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             this.client.getSubscriptionId(), resourceGroupName, organizationName, apiKeyId, context);
     }
 
-    /**
-     * Deletes API key of a kafka or schema registry cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param apiKeyId Confluent API Key id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteClusterApiKey(String resourceGroupName, String organizationName, String apiKeyId) {
         deleteClusterApiKeyWithResponse(resourceGroupName, organizationName, apiKeyId, Context.NONE);
@@ -671,17 +688,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of a specific Organization resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific Organization resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OrganizationResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String organizationName, Context context) {
@@ -690,16 +697,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             this.client.getSubscriptionId(), resourceGroupName, organizationName, accept, context);
     }
 
-    /**
-     * Get the properties of a specific Organization resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific Organization resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OrganizationResourceInner getByResourceGroup(String resourceGroupName, String organizationName) {
         return getByResourceGroupWithResponse(resourceGroupName, organizationName, Context.NONE).getValue();
@@ -740,9 +738,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String organizationName,
         OrganizationResourceInner body) {
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, accept, body, Context.NONE);
+        return createWithResponse(resourceGroupName, organizationName, body, Context.NONE);
     }
 
     /**
@@ -817,44 +813,20 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      * @return the {@link SyncPoller} for polling of organization resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner>
+    private SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner>
         beginCreate(String resourceGroupName, String organizationName, OrganizationResourceInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, organizationName, body);
-        return this.client.<OrganizationResourceInner, OrganizationResourceInner>getLroResult(response,
-            OrganizationResourceInner.class, OrganizationResourceInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, organizationName, body, Context.NONE);
     }
 
-    /**
-     * Create Organization resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of organization resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner>
         beginCreate(String resourceGroupName, String organizationName) {
         final OrganizationResourceInner body = null;
-        Response<BinaryData> response = createWithResponse(resourceGroupName, organizationName, body);
-        return this.client.<OrganizationResourceInner, OrganizationResourceInner>getLroResult(response,
-            OrganizationResourceInner.class, OrganizationResourceInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, organizationName, body, Context.NONE);
     }
 
-    /**
-     * Create Organization resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param body Organization resource model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of organization resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner> beginCreate(
         String resourceGroupName, String organizationName, OrganizationResourceInner body, Context context) {
@@ -898,38 +870,18 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create Organization resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OrganizationResourceInner create(String resourceGroupName, String organizationName) {
         final OrganizationResourceInner body = null;
-        return beginCreate(resourceGroupName, organizationName, body).getFinalResult();
+        return create(resourceGroupName, organizationName, body, Context.NONE);
     }
 
-    /**
-     * Create Organization resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param body Organization resource model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OrganizationResourceInner create(String resourceGroupName, String organizationName,
         OrganizationResourceInner body, Context context) {
-        return beginCreate(resourceGroupName, organizationName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, organizationName, body, context));
     }
 
     /**
@@ -970,18 +922,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update Organization resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param body Updated Organization resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OrganizationResourceInner> updateWithResponse(String resourceGroupName, String organizationName,
         OrganizationResourceUpdate body, Context context) {
@@ -990,16 +931,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             this.client.getSubscriptionId(), resourceGroupName, organizationName, accept, body, context);
     }
 
-    /**
-     * Update Organization resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OrganizationResourceInner update(String resourceGroupName, String organizationName) {
         final OrganizationResourceUpdate body = null;
@@ -1037,8 +969,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String organizationName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, organizationName, Context.NONE);
     }
 
     /**
@@ -1076,33 +1007,13 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete Organization resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, organizationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, organizationName, Context.NONE);
     }
 
-    /**
-     * Delete Organization resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         Context context) {
@@ -1126,33 +1037,16 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete Organization resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName) {
-        beginDelete(resourceGroupName, organizationName).getFinalResult();
+        delete(resourceGroupName, organizationName, Context.NONE);
     }
 
-    /**
-     * Delete Organization resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, Context context) {
-        beginDelete(resourceGroupName, organizationName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, organizationName, context));
     }
 
     /**
@@ -1203,11 +1097,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OrganizationResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<OrganizationResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1230,31 +1120,13 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all Organizations under the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OrganizationResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrganizationResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List all Organizations under the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OrganizationResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrganizationResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1302,11 +1174,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OrganizationResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<OrganizationResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1327,27 +1195,13 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all organizations under the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OrganizationResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrganizationResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List all organizations under the specified subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OrganizationResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrganizationResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1396,18 +1250,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * cloud provider regions available for creating Schema Registry clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param body List Access Request Model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of POST request to list regions supported by confluent along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListRegionsSuccessResponseInner> listRegionsWithResponse(String resourceGroupName,
         String organizationName, ListAccessRequestModel body, Context context) {
@@ -1417,21 +1260,301 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             this.client.getSubscriptionId(), resourceGroupName, organizationName, contentType, accept, body, context);
     }
 
-    /**
-     * cloud provider regions available for creating Schema Registry clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param body List Access Request Model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of POST request to list regions supported by confluent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListRegionsSuccessResponseInner listRegions(String resourceGroupName, String organizationName,
         ListAccessRequestModel body) {
         return listRegionsWithResponse(resourceGroupName, organizationName, body, Context.NONE).getValue();
+    }
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> linkSaaSWithResponseAsync(String resourceGroupName,
+        String organizationName, SaaSData body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.linkSaaS(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, contentType, accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> linkSaaSWithResponse(String resourceGroupName, String organizationName,
+        SaaSData body) {
+        return linkSaaSWithResponse(resourceGroupName, organizationName, body, Context.NONE);
+    }
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> linkSaaSWithResponse(String resourceGroupName, String organizationName, SaaSData body,
+        Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.linkSaaSSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, contentType, accept, body, context);
+    }
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OrganizationResourceInner>, OrganizationResourceInner>
+        beginLinkSaaSAsync(String resourceGroupName, String organizationName, SaaSData body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = linkSaaSWithResponseAsync(resourceGroupName, organizationName, body);
+        return this.client.<OrganizationResourceInner, OrganizationResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OrganizationResourceInner.class, OrganizationResourceInner.class,
+            this.client.getContext());
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner>
+        beginLinkSaaS(String resourceGroupName, String organizationName, SaaSData body) {
+        return beginLinkSaaS(resourceGroupName, organizationName, body, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner>
+        beginLinkSaaS(String resourceGroupName, String organizationName, SaaSData body, Context context) {
+        Response<BinaryData> response = linkSaaSWithResponse(resourceGroupName, organizationName, body, context);
+        return this.client.<OrganizationResourceInner, OrganizationResourceInner>getLroResult(response,
+            OrganizationResourceInner.class, OrganizationResourceInner.class, context);
+    }
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OrganizationResourceInner> linkSaaSAsync(String resourceGroupName, String organizationName,
+        SaaSData body) {
+        return beginLinkSaaSAsync(resourceGroupName, organizationName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OrganizationResourceInner linkSaaS(String resourceGroupName, String organizationName, SaaSData body) {
+        return linkSaaS(resourceGroupName, organizationName, body, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OrganizationResourceInner linkSaaS(String resourceGroupName, String organizationName, SaaSData body,
+        Context context) {
+        return this.client.getLroFinalResultOrError(beginLinkSaaS(resourceGroupName, organizationName, body, context));
+    }
+
+    /**
+     * Returns the latest SaaS linked to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<LatestLinkedSaaSResponseInner>> latestLinkedSaaSWithResponseAsync(String resourceGroupName,
+        String organizationName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.latestLinkedSaaS(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Returns the latest SaaS linked to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LatestLinkedSaaSResponseInner> latestLinkedSaaSAsync(String resourceGroupName,
+        String organizationName) {
+        return latestLinkedSaaSWithResponseAsync(resourceGroupName, organizationName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LatestLinkedSaaSResponseInner> latestLinkedSaaSWithResponse(String resourceGroupName,
+        String organizationName, Context context) {
+        final String accept = "application/json";
+        return service.latestLinkedSaaSSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, accept, context);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LatestLinkedSaaSResponseInner latestLinkedSaaS(String resourceGroupName, String organizationName) {
+        return latestLinkedSaaSWithResponse(resourceGroupName, organizationName, Context.NONE).getValue();
+    }
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return proxy Resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> activateResourceWithResponseAsync(ActivateSaaSParameterRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.activateResource(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), contentType, accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return proxy Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> activateResourceWithResponse(ActivateSaaSParameterRequest body) {
+        return activateResourceWithResponse(body, Context.NONE);
+    }
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return proxy Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> activateResourceWithResponse(ActivateSaaSParameterRequest body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.activateResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), contentType, accept, body, context);
+    }
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of proxy Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SaaSResourceDetailsResponseInner>, SaaSResourceDetailsResponseInner>
+        beginActivateResourceAsync(ActivateSaaSParameterRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = activateResourceWithResponseAsync(body);
+        return this.client.<SaaSResourceDetailsResponseInner, SaaSResourceDetailsResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SaaSResourceDetailsResponseInner.class,
+            SaaSResourceDetailsResponseInner.class, this.client.getContext());
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SaaSResourceDetailsResponseInner>, SaaSResourceDetailsResponseInner>
+        beginActivateResource(ActivateSaaSParameterRequest body) {
+        return beginActivateResource(body, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SaaSResourceDetailsResponseInner>, SaaSResourceDetailsResponseInner>
+        beginActivateResource(ActivateSaaSParameterRequest body, Context context) {
+        Response<BinaryData> response = activateResourceWithResponse(body, context);
+        return this.client.<SaaSResourceDetailsResponseInner, SaaSResourceDetailsResponseInner>getLroResult(response,
+            SaaSResourceDetailsResponseInner.class, SaaSResourceDetailsResponseInner.class, context);
+    }
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return proxy Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SaaSResourceDetailsResponseInner> activateResourceAsync(ActivateSaaSParameterRequest body) {
+        return beginActivateResourceAsync(body).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SaaSResourceDetailsResponseInner activateResource(ActivateSaaSParameterRequest body) {
+        return activateResource(body, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SaaSResourceDetailsResponseInner activateResource(ActivateSaaSParameterRequest body, Context context) {
+        return this.client.getLroFinalResultOrError(beginActivateResource(body, context));
     }
 
     /**
@@ -1474,18 +1597,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Environment details by environment Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return environment details by environment Id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SCEnvironmentRecordInner> getEnvironmentByIdWithResponse(String resourceGroupName,
         String organizationName, String environmentId, Context context) {
@@ -1494,17 +1606,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, accept, context);
     }
 
-    /**
-     * Get Environment details by environment Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return environment details by environment Id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SCEnvironmentRecordInner getEnvironmentById(String resourceGroupName, String organizationName,
         String environmentId) {
@@ -1593,12 +1695,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SCEnvironmentRecordInner> listEnvironmentsSinglePage(String resourceGroupName,
         String organizationName, Integer pageSize, String pageToken) {
-        final String accept = "application/json";
-        Response<GetEnvironmentsResponse> res = service.listEnvironmentsSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, organizationName, pageSize,
-            pageToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listEnvironmentsSinglePage(resourceGroupName, organizationName, pageSize, pageToken, Context.NONE);
     }
 
     /**
@@ -1625,38 +1722,15 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists of all the environments in a organization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list Confluent operations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SCEnvironmentRecordInner> listEnvironments(String resourceGroupName, String organizationName) {
         final Integer pageSize = null;
         final String pageToken = null;
-        return new PagedIterable<>(
-            () -> listEnvironmentsSinglePage(resourceGroupName, organizationName, pageSize, pageToken),
-            nextLink -> listEnvironmentsNextSinglePage(nextLink));
+        return listEnvironments(resourceGroupName, organizationName, pageSize, pageToken, Context.NONE);
     }
 
-    /**
-     * Lists of all the environments in a organization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param pageSize Pagination size.
-     * @param pageToken An opaque pagination token to fetch the next set of records.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list Confluent operations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SCEnvironmentRecordInner> listEnvironments(String resourceGroupName, String organizationName,
         Integer pageSize, String pageToken, Context context) {
@@ -1747,12 +1821,8 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaRegistryClusterRecordInner> listSchemaRegistryClustersSinglePage(
         String resourceGroupName, String organizationName, String environmentId, Integer pageSize, String pageToken) {
-        final String accept = "application/json";
-        Response<ListSchemaRegistryClustersResponse> res = service.listSchemaRegistryClustersSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            organizationName, environmentId, pageSize, pageToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSchemaRegistryClustersSinglePage(resourceGroupName, organizationName, environmentId, pageSize,
+            pageToken, Context.NONE);
     }
 
     /**
@@ -1781,40 +1851,17 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get schema registry clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema registry clusters as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchemaRegistryClusterRecordInner> listSchemaRegistryClusters(String resourceGroupName,
         String organizationName, String environmentId) {
         final Integer pageSize = null;
         final String pageToken = null;
-        return new PagedIterable<>(() -> listSchemaRegistryClustersSinglePage(resourceGroupName, organizationName,
-            environmentId, pageSize, pageToken), nextLink -> listSchemaRegistryClustersNextSinglePage(nextLink));
+        return listSchemaRegistryClusters(resourceGroupName, organizationName, environmentId, pageSize, pageToken,
+            Context.NONE);
     }
 
-    /**
-     * Get schema registry clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param pageSize Pagination size.
-     * @param pageToken An opaque pagination token to fetch the next set of records.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema registry clusters as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchemaRegistryClusterRecordInner> listSchemaRegistryClusters(String resourceGroupName,
         String organizationName, String environmentId, Integer pageSize, String pageToken, Context context) {
@@ -1865,19 +1912,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             clusterId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get schema registry cluster by Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent connector name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema registry cluster by Id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaRegistryClusterRecordInner> getSchemaRegistryClusterByIdWithResponse(String resourceGroupName,
         String organizationName, String environmentId, String clusterId, Context context) {
@@ -1887,18 +1922,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             context);
     }
 
-    /**
-     * Get schema registry cluster by Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent connector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema registry cluster by Id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaRegistryClusterRecordInner getSchemaRegistryClusterById(String resourceGroupName,
         String organizationName, String environmentId, String clusterId) {
@@ -1948,19 +1972,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get cluster by Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster by Id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SCClusterRecordInner> getClusterByIdWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, Context context) {
@@ -1970,18 +1982,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             context);
     }
 
-    /**
-     * Get cluster by Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster by Id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SCClusterRecordInner getClusterById(String resourceGroupName, String organizationName, String environmentId,
         String clusterId) {
@@ -2077,12 +2078,8 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SCClusterRecordInner> listClustersSinglePage(String resourceGroupName,
         String organizationName, String environmentId, Integer pageSize, String pageToken) {
-        final String accept = "application/json";
-        Response<ListClustersSuccessResponse> res = service.listClustersSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, organizationName,
-            environmentId, pageSize, pageToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listClustersSinglePage(resourceGroupName, organizationName, environmentId, pageSize, pageToken,
+            Context.NONE);
     }
 
     /**
@@ -2111,43 +2108,16 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists of all the clusters in a environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list clusters in the environment of a confluent organization as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SCClusterRecordInner> listClusters(String resourceGroupName, String organizationName,
         String environmentId) {
         final Integer pageSize = null;
         final String pageToken = null;
-        return new PagedIterable<>(
-            () -> listClustersSinglePage(resourceGroupName, organizationName, environmentId, pageSize, pageToken),
-            nextLink -> listClustersNextSinglePage(nextLink));
+        return listClusters(resourceGroupName, organizationName, environmentId, pageSize, pageToken, Context.NONE);
     }
 
-    /**
-     * Lists of all the clusters in a environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param pageSize Pagination size.
-     * @param pageToken An opaque pagination token to fetch the next set of records.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list clusters in the environment of a confluent organization as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SCClusterRecordInner> listClusters(String resourceGroupName, String organizationName,
         String environmentId, Integer pageSize, String pageToken, Context context) {
@@ -2202,21 +2172,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates API key for a schema registry Cluster ID or Kafka Cluster ID under a environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param body Request payload for get creating API Key for schema registry Cluster ID or Kafka Cluster ID under a
-     * environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details API key along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApiKeyRecordInner> createApiKeyWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, CreateApiKeyModel body, Context context) {
@@ -2227,20 +2183,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             accept, body, context);
     }
 
-    /**
-     * Creates API key for a schema registry Cluster ID or Kafka Cluster ID under a environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param body Request payload for get creating API Key for schema registry Cluster ID or Kafka Cluster ID under a
-     * environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details API key.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApiKeyRecordInner createApiKey(String resourceGroupName, String organizationName, String environmentId,
         String clusterId, CreateApiKeyModel body) {
@@ -2280,11 +2223,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OrganizationResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OrganizationResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2339,11 +2278,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OrganizationResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OrganizationResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2397,11 +2332,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SCEnvironmentRecordInner> listEnvironmentsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GetEnvironmentsResponse> res
-            = service.listEnvironmentsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listEnvironmentsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2455,11 +2386,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaRegistryClusterRecordInner> listSchemaRegistryClustersNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ListSchemaRegistryClustersResponse> res
-            = service.listSchemaRegistryClustersNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSchemaRegistryClustersNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2514,11 +2441,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SCClusterRecordInner> listClustersNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ListClustersSuccessResponse> res
-            = service.listClustersNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listClustersNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

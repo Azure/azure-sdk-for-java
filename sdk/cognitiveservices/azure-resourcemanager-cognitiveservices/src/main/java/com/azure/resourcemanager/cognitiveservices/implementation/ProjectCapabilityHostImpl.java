@@ -65,11 +65,7 @@ public final class ProjectCapabilityHostImpl
     }
 
     public ProjectCapabilityHost create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjectCapabilityHosts()
-            .createOrUpdate(resourceGroupName, accountName, projectName, capabilityHostName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProjectCapabilityHost create(Context context) {
@@ -92,11 +88,7 @@ public final class ProjectCapabilityHostImpl
     }
 
     public ProjectCapabilityHost apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjectCapabilityHosts()
-            .createOrUpdate(resourceGroupName, accountName, projectName, capabilityHostName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ProjectCapabilityHost apply(Context context) {
@@ -126,11 +118,7 @@ public final class ProjectCapabilityHostImpl
     }
 
     public ProjectCapabilityHost refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjectCapabilityHosts()
-            .getWithResponse(resourceGroupName, accountName, projectName, capabilityHostName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProjectCapabilityHost refresh(Context context) {

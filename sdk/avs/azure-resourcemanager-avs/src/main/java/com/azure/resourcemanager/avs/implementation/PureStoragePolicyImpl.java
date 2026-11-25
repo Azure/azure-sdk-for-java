@@ -61,10 +61,7 @@ public final class PureStoragePolicyImpl
     }
 
     public PureStoragePolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPureStoragePolicies()
-            .createOrUpdate(resourceGroupName, privateCloudName, storagePolicyName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PureStoragePolicy create(Context context) {
@@ -85,10 +82,7 @@ public final class PureStoragePolicyImpl
     }
 
     public PureStoragePolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPureStoragePolicies()
-            .createOrUpdate(resourceGroupName, privateCloudName, storagePolicyName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PureStoragePolicy apply(Context context) {
@@ -113,11 +107,7 @@ public final class PureStoragePolicyImpl
     }
 
     public PureStoragePolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPureStoragePolicies()
-            .getWithResponse(resourceGroupName, privateCloudName, storagePolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PureStoragePolicy refresh(Context context) {

@@ -93,10 +93,7 @@ public final class LocationBasedLaunchBulkInstancesOperationImpl implements Loca
     }
 
     public LocationBasedLaunchBulkInstancesOperation create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkActions()
-            .createOrUpdate(resourceGroupName, location, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LocationBasedLaunchBulkInstancesOperation create(Context context) {
@@ -118,10 +115,7 @@ public final class LocationBasedLaunchBulkInstancesOperationImpl implements Loca
     }
 
     public LocationBasedLaunchBulkInstancesOperation apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkActions()
-            .createOrUpdate(resourceGroupName, location, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LocationBasedLaunchBulkInstancesOperation apply(Context context) {
@@ -147,11 +141,7 @@ public final class LocationBasedLaunchBulkInstancesOperationImpl implements Loca
     }
 
     public LocationBasedLaunchBulkInstancesOperation refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkActions()
-            .getWithResponse(resourceGroupName, location, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LocationBasedLaunchBulkInstancesOperation refresh(Context context) {

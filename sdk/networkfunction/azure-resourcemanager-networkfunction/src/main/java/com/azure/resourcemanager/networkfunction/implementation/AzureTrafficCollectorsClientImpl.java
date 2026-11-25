@@ -186,17 +186,7 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified Azure Traffic Collector in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Traffic Collector in a specified resource group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureTrafficCollectorInner> getByResourceGroupWithResponse(String resourceGroupName,
         String azureTrafficCollectorName, Context context) {
@@ -205,16 +195,7 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
             this.client.getSubscriptionId(), resourceGroupName, azureTrafficCollectorName, accept, context);
     }
 
-    /**
-     * Gets the specified Azure Traffic Collector in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Traffic Collector in a specified resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureTrafficCollectorInner getByResourceGroup(String resourceGroupName, String azureTrafficCollectorName) {
         return getByResourceGroupWithResponse(resourceGroupName, azureTrafficCollectorName, Context.NONE).getValue();
@@ -257,11 +238,7 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String azureTrafficCollectorName,
         AzureTrafficCollectorInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, azureTrafficCollectorName, contentType, accept,
-            parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, azureTrafficCollectorName, parameters, Context.NONE);
     }
 
     /**
@@ -307,38 +284,14 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates a Azure Traffic Collector resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param parameters The parameters to provide for the created Azure Traffic Collector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Traffic Collector resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureTrafficCollectorInner>, AzureTrafficCollectorInner> beginCreateOrUpdate(
         String resourceGroupName, String azureTrafficCollectorName, AzureTrafficCollectorInner parameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, azureTrafficCollectorName, parameters);
-        return this.client.<AzureTrafficCollectorInner, AzureTrafficCollectorInner>getLroResult(response,
-            AzureTrafficCollectorInner.class, AzureTrafficCollectorInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, azureTrafficCollectorName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Azure Traffic Collector resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param parameters The parameters to provide for the created Azure Traffic Collector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Traffic Collector resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureTrafficCollectorInner>, AzureTrafficCollectorInner> beginCreateOrUpdate(
         String resourceGroupName, String azureTrafficCollectorName, AzureTrafficCollectorInner parameters,
@@ -367,39 +320,19 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a Azure Traffic Collector resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param parameters The parameters to provide for the created Azure Traffic Collector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Traffic Collector resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureTrafficCollectorInner createOrUpdate(String resourceGroupName, String azureTrafficCollectorName,
         AzureTrafficCollectorInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, azureTrafficCollectorName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, azureTrafficCollectorName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Azure Traffic Collector resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param parameters The parameters to provide for the created Azure Traffic Collector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Traffic Collector resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureTrafficCollectorInner createOrUpdate(String resourceGroupName, String azureTrafficCollectorName,
         AzureTrafficCollectorInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, azureTrafficCollectorName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, azureTrafficCollectorName, parameters, context));
     }
 
     /**
@@ -443,18 +376,7 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates the specified Azure Traffic Collector tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param parameters Parameters supplied to update Azure Traffic Collector tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Traffic Collector resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureTrafficCollectorInner> updateTagsWithResponse(String resourceGroupName,
         String azureTrafficCollectorName, TagsObject parameters, Context context) {
@@ -465,17 +387,7 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
             parameters, context);
     }
 
-    /**
-     * Updates the specified Azure Traffic Collector tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param parameters Parameters supplied to update Azure Traffic Collector tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Traffic Collector resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureTrafficCollectorInner updateTags(String resourceGroupName, String azureTrafficCollectorName,
         TagsObject parameters) {
@@ -514,8 +426,7 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String azureTrafficCollectorName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, azureTrafficCollectorName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, azureTrafficCollectorName, Context.NONE);
     }
 
     /**
@@ -554,33 +465,13 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
             this.client.getContext());
     }
 
-    /**
-     * Deletes a specified Azure Traffic Collector resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureTrafficCollectorName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, azureTrafficCollectorName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, azureTrafficCollectorName, Context.NONE);
     }
 
-    /**
-     * Deletes a specified Azure Traffic Collector resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureTrafficCollectorName,
         Context context) {
@@ -604,32 +495,15 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a specified Azure Traffic Collector resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String azureTrafficCollectorName) {
-        beginDelete(resourceGroupName, azureTrafficCollectorName).getFinalResult();
+        delete(resourceGroupName, azureTrafficCollectorName, Context.NONE);
     }
 
-    /**
-     * Deletes a specified Azure Traffic Collector resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String azureTrafficCollectorName, Context context) {
-        beginDelete(resourceGroupName, azureTrafficCollectorName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, azureTrafficCollectorName, context));
     }
 }

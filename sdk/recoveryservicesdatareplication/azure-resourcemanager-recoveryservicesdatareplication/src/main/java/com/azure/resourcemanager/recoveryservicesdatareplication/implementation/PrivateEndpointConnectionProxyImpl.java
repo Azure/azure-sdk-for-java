@@ -21,6 +21,15 @@ public final class PrivateEndpointConnectionProxyImpl
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyName}",
+            "resourceGroupName");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyName}",
+            "vaultName");
+        this.privateEndpointConnectionProxyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyName}",
+            "privateEndpointConnectionProxyName");
     }
 
     public String id() {
@@ -68,12 +77,7 @@ public final class PrivateEndpointConnectionProxyImpl
     }
 
     public PrivateEndpointConnectionProxy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnProxies()
-            .createWithResponse(resourceGroupName, vaultName, privateEndpointConnectionProxyName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PrivateEndpointConnectionProxy create(Context context) {
@@ -93,11 +97,7 @@ public final class PrivateEndpointConnectionProxyImpl
     }
 
     public PrivateEndpointConnectionProxy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnProxies()
-            .getWithResponse(resourceGroupName, vaultName, privateEndpointConnectionProxyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PrivateEndpointConnectionProxy refresh(Context context) {

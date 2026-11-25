@@ -106,19 +106,25 @@ public interface Workspaces {
     PagedIterable<Workspace> list(String continuationToken, Context context);
 
     /**
-     * Triggers resource discovery for the workspace.
+     * Starts discovery for the workspace. The initial 202 has no body. Poll the operation-bound Location URL until
+     * completion: a successful or partially successful discovery returns the typed result; failed or canceled
+     * processing returns an Azure error whose target identifies the discovery resource. Ordinary discovery reads return
+     * the current resource, including failed or canceled results, while retained.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a retained workspace discovery result and its accepted coverage facts.
      */
     WorkspaceDiscovery discover(String resourceGroupName, String workspaceName);
 
     /**
-     * Triggers resource discovery for the workspace.
+     * Starts discovery for the workspace. The initial 202 has no body. Poll the operation-bound Location URL until
+     * completion: a successful or partially successful discovery returns the typed result; failed or canceled
+     * processing returns an Azure error whose target identifies the discovery resource. Ordinary discovery reads return
+     * the current resource, including failed or canceled results, while retained.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -126,24 +132,40 @@ public interface Workspaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a retained workspace discovery result and its accepted coverage facts.
      */
     WorkspaceDiscovery discover(String resourceGroupName, String workspaceName, Context context);
 
     /**
-     * Triggers scenario evaluation for the workspace.
+     * Starts evaluation of published scenario-template versions, including when the workspace has no scenarios.
+     * Acceptance fixes the selected template membership and total count, qualified resource snapshot and canonical
+     * discovery result reference. Without a usable discovery snapshot or valid catalog input, the request is rejected
+     * synchronously with an Azure error and no evaluation result is created. A valid empty catalog completes
+     * successfully with zero counts and an empty results array. Outcome counts reflect processing after acceptance. The
+     * initial 202 has no body. Poll the operation-bound Location URL until completion: a completed successful or
+     * partially successful assessment returns the typed result; failed or canceled processing returns an Azure error
+     * whose target identifies the evaluation resource. Ordinary evaluation reads return the current resource, including
+     * failed or canceled results, while retained.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a retained workspace evaluation of published scenario-template versions.
      */
     WorkspaceEvaluation evaluate(String resourceGroupName, String workspaceName);
 
     /**
-     * Triggers scenario evaluation for the workspace.
+     * Starts evaluation of published scenario-template versions, including when the workspace has no scenarios.
+     * Acceptance fixes the selected template membership and total count, qualified resource snapshot and canonical
+     * discovery result reference. Without a usable discovery snapshot or valid catalog input, the request is rejected
+     * synchronously with an Azure error and no evaluation result is created. A valid empty catalog completes
+     * successfully with zero counts and an empty results array. Outcome counts reflect processing after acceptance. The
+     * initial 202 has no body. Poll the operation-bound Location URL until completion: a completed successful or
+     * partially successful assessment returns the typed result; failed or canceled processing returns an Azure error
+     * whose target identifies the evaluation resource. Ordinary evaluation reads return the current resource, including
+     * failed or canceled results, while retained.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -151,7 +173,7 @@ public interface Workspaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a retained workspace evaluation of published scenario-template versions.
      */
     WorkspaceEvaluation evaluate(String resourceGroupName, String workspaceName, Context context);
 

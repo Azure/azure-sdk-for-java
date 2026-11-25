@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class ConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/Connections_Get.json
+     * x-ms-original-file: 2026-11-01/Connections_Get.json
      */
     /**
      * Sample code: Get a connection.

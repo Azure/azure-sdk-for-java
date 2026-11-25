@@ -9,7 +9,7 @@ package com.azure.resourcemanager.confluent.generated;
  */
 public final class TopicsGetSamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/Topics_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-02-preview/Topics_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Topics_Get_MaximumSet.

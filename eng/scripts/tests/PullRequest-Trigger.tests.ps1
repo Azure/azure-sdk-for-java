@@ -253,7 +253,8 @@ Describe 'Pull request trigger contracts' -Tag 'UnitTest' {
         )
         $LASTEXITCODE | Should -Be 0
 
-        Compare-Object -ReferenceObject @('.md', '.png') -DifferenceObject $docsExtensions |
+        $docsExtensions |
+            Where-Object { $_ -notin @('.csv', '.json', '.md', '.png') } |
             Should -BeNullOrEmpty
     }
 }

@@ -99,11 +99,7 @@ public final class TaskImpl implements Task, Task.Definition, Task.Update {
     }
 
     public Task create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTasks()
-            .createWithResponse(resourceGroupName, registryName, taskName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Task create(Context context) {
@@ -127,11 +123,7 @@ public final class TaskImpl implements Task, Task.Definition, Task.Update {
     }
 
     public Task apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTasks()
-            .updateWithResponse(resourceGroupName, registryName, taskName, updateTaskUpdateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Task apply(Context context) {
@@ -158,11 +150,7 @@ public final class TaskImpl implements Task, Task.Definition, Task.Update {
     }
 
     public Task refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTasks()
-            .getWithResponse(resourceGroupName, registryName, taskName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Task refresh(Context context) {

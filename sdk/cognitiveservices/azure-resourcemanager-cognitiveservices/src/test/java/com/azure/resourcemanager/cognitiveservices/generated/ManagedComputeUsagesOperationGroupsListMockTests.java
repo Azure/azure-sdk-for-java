@@ -23,7 +23,7 @@ public final class ManagedComputeUsagesOperationGroupsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"kmpebfhlgeehb\",\"name\":{\"value\":\"plnl\",\"localizedValue\":\"feszunbua\"},\"type\":\"oubukqmie\",\"unit\":\"CountPerSecond\",\"limit\":31.70518496683885,\"currentValue\":86.93412373008658,\"offerScope\":\"uzyt\",\"deployments\":[{\"deploymentId\":\"dhzbjecdsysxnk\",\"projectId\":\"v\",\"modelId\":\"lsevzc\",\"acceleratorCount\":8509675682036776108,\"instanceCount\":1652790329},{\"deploymentId\":\"dwqymxsfqe\",\"projectId\":\"dqe\",\"modelId\":\"vmsaqhviawg\",\"acceleratorCount\":1799657040793786417,\"instanceCount\":1379759175},{\"deploymentId\":\"zfz\",\"projectId\":\"gpbcbkcpympd\",\"modelId\":\"e\",\"acceleratorCount\":4486389317041166997,\"instanceCount\":1994155276}]}]}";
+            = "{\"value\":[{\"id\":\"yofts\",\"name\":{\"value\":\"ydwklkuamxhojtnq\",\"localizedValue\":\"nyi\"},\"type\":\"dwvgmkztwzlwellh\",\"unit\":\"Seconds\",\"limit\":85.34156626588205,\"currentValue\":0.13765073225912028,\"offerScope\":\"edudk\",\"scopeId\":\"dv\",\"deployments\":[{\"deploymentId\":\"vjvumimb\",\"projectId\":\"lhycluounvr\",\"modelId\":\"xnoazarivczezee\",\"acceleratorCount\":8407011062474989242,\"instanceCount\":1038990887},{\"deploymentId\":\"ddbdhgvjhoezjik\",\"projectId\":\"uxrsoxt\",\"modelId\":\"uypdcgx\",\"acceleratorCount\":2514389012673577279,\"instanceCount\":2007487811},{\"deploymentId\":\"bbz\",\"projectId\":\"pbymsgclksmrg\",\"modelId\":\"yfmjckctybh\",\"acceleratorCount\":6374604100331905237,\"instanceCount\":902278821}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,18 @@ public final class ManagedComputeUsagesOperationGroupsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ManagedComputeUsage> response
-            = manager.managedComputeUsagesOperationGroups().list("tqmlzuwtbdzqa", com.azure.core.util.Context.NONE);
+            = manager.managedComputeUsagesOperationGroups().list("ounzzckogcvazozo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UnitType.COUNT_PER_SECOND, response.iterator().next().unit());
-        Assertions.assertEquals(31.70518496683885D, response.iterator().next().limit());
-        Assertions.assertEquals(86.93412373008658D, response.iterator().next().currentValue());
-        Assertions.assertEquals("uzyt", response.iterator().next().offerScope());
-        Assertions.assertEquals("dhzbjecdsysxnk", response.iterator().next().deployments().get(0).deploymentId());
-        Assertions.assertEquals("v", response.iterator().next().deployments().get(0).projectId());
-        Assertions.assertEquals("lsevzc", response.iterator().next().deployments().get(0).modelId());
-        Assertions.assertEquals(8509675682036776108L,
+        Assertions.assertEquals(UnitType.SECONDS, response.iterator().next().unit());
+        Assertions.assertEquals(85.34156626588205D, response.iterator().next().limit());
+        Assertions.assertEquals(0.13765073225912028D, response.iterator().next().currentValue());
+        Assertions.assertEquals("edudk", response.iterator().next().offerScope());
+        Assertions.assertEquals("dv", response.iterator().next().scopeId());
+        Assertions.assertEquals("vjvumimb", response.iterator().next().deployments().get(0).deploymentId());
+        Assertions.assertEquals("lhycluounvr", response.iterator().next().deployments().get(0).projectId());
+        Assertions.assertEquals("xnoazarivczezee", response.iterator().next().deployments().get(0).modelId());
+        Assertions.assertEquals(8407011062474989242L,
             response.iterator().next().deployments().get(0).acceleratorCount());
-        Assertions.assertEquals(1652790329, response.iterator().next().deployments().get(0).instanceCount());
+        Assertions.assertEquals(1038990887, response.iterator().next().deployments().get(0).instanceCount());
     }
 }

@@ -7,18 +7,29 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.test.utils.TestConfigurationSource;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
+import com.azure.core.util.ConfigurationSource;
+import com.azure.identity.AzurePipelinesCredential;
+import com.azure.identity.DefaultAzureCredential;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import reactor.core.publisher.Mono;
 
 import java.text.ParseException;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -120,12 +131,15 @@ public class WebPubSubChatServiceClientBuilderTests {
             () -> new WebPubSubChatServiceClientBuilder().connectionString("AccessKey=" + FIRST_KEY));
     }
 
-    @Test
-    public void reverseProxyPreservesJavaServiceBehavior() throws ParseException {
+    @ParameterizedTest
+    @EnumSource(WebPubSubChatServiceVersion.class)
+    public void reverseProxyPreservesJavaServiceBehavior(WebPubSubChatServiceVersion serviceVersion)
+        throws ParseException {
         AtomicReference<HttpRequest> sentRequest = new AtomicReference<>();
         WebPubSubChatServiceClient client = new WebPubSubChatServiceClientBuilder().endpoint(ENDPOINT)
             .hub("chat")
             .credential(new AzureKeyCredential(FIRST_KEY))
+            .serviceVersion(serviceVersion)
             .reverseProxyEndpoint("https://proxy.example/gateway")
             .httpClient(request -> Mono.defer(() -> {
                 sentRequest.set(request);
@@ -137,10 +151,10 @@ public class WebPubSubChatServiceClientBuilderTests {
 
         assertEquals("proxy.example", sentRequest.get().getUrl().getHost());
         assertTrue(sentRequest.get().getUrl().getPath().startsWith("/gateway/api/hubs/chat/chat/roles/"));
-        assertEquals("api-version=2026-02-01-preview", sentRequest.get().getUrl().getQuery());
+        assertEquals("api-version=" + serviceVersion.getVersion(), sentRequest.get().getUrl().getQuery());
         String authorization = sentRequest.get().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
         JWTClaimsSet claims = SignedJWT.parse(authorization.substring("Bearer ".length())).getJWTClaimsSet();
-        assertEquals(ENDPOINT + "/api/hubs/chat/chat/roles/room.reader?api-version=2026-02-01-preview",
+        assertEquals(ENDPOINT + "/api/hubs/chat/chat/roles/room.reader?api-version=" + serviceVersion.getVersion(),
             claims.getAudience().get(0));
     }
 
@@ -155,6 +169,43 @@ public class WebPubSubChatServiceClientBuilderTests {
                 .buildClient());
         assertThrows(IllegalStateException.class,
             () -> new WebPubSubChatServiceClientBuilder().endpoint(ENDPOINT).hub("chat").buildClient());
+    }
+
+    @Test
+    public void liveTestCredentialUsesPipelineIdentityWhenAvailable() {
+        Configuration config = testConfiguration().put("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID", "connection")
+            .put("AZURESUBSCRIPTION_CLIENT_ID", "client")
+            .put("AZURESUBSCRIPTION_TENANT_ID", "tenant")
+            .put("SYSTEM_ACCESSTOKEN", "token")
+            .put("SYSTEM_OIDCREQUESTURI", "https://example.invalid/oidc");
+
+        assertInstanceOf(AzurePipelinesCredential.class,
+            ChatServiceClientTestBase.getIdentityTestCredential(TestMode.LIVE, config));
+        assertInstanceOf(AzurePipelinesCredential.class,
+            ChatServiceClientTestBase.getIdentityTestCredential(TestMode.RECORD, config));
+        assertInstanceOf(MockTokenCredential.class,
+            ChatServiceClientTestBase.getIdentityTestCredential(TestMode.PLAYBACK, config));
+
+        config.remove("AZURESUBSCRIPTION_CLIENT_ID");
+        assertThrows(IllegalArgumentException.class,
+            () -> ChatServiceClientTestBase.getIdentityTestCredential(TestMode.LIVE, config));
+    }
+
+    @Test
+    public void liveTestCredentialUsesDefaultCredentialWithoutServiceConnection() {
+        assertInstanceOf(DefaultAzureCredential.class,
+            ChatServiceClientTestBase.getIdentityTestCredential(TestMode.LIVE, testConfiguration()));
+    }
+
+    private static Configuration testConfiguration() {
+        ConfigurationSource empty = path -> Collections.emptyMap();
+        TestConfigurationSource source
+            = new TestConfigurationSource().put("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID", null)
+                .put("AZURESUBSCRIPTION_CLIENT_ID", null)
+                .put("AZURESUBSCRIPTION_TENANT_ID", null)
+                .put("SYSTEM_ACCESSTOKEN", null)
+                .put("SYSTEM_OIDCREQUESTURI", null);
+        return new ConfigurationBuilder(empty, source, source).build();
     }
 
     private static WebPubSubChatServiceClient createClient(AzureKeyCredential credential,

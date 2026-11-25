@@ -44,8 +44,7 @@ public final class NodesImpl implements Nodes {
     }
 
     public PagedIterable<Node> list(String resourceGroupName, String clusterName, String poolName) {
-        PagedIterable<NodeInner> inner = this.serviceClient().list(resourceGroupName, clusterName, poolName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NodeImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
     public PagedIterable<Node> list(String resourceGroupName, String clusterName, String poolName, Context context) {

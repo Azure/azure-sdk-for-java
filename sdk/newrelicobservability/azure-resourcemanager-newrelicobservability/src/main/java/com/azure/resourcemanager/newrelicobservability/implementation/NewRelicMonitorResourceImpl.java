@@ -167,10 +167,7 @@ public final class NewRelicMonitorResourceImpl
     }
 
     public NewRelicMonitorResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMonitors()
-            .createOrUpdate(resourceGroupName, monitorName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NewRelicMonitorResource create(Context context) {
@@ -193,10 +190,7 @@ public final class NewRelicMonitorResourceImpl
     }
 
     public NewRelicMonitorResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMonitors()
-            .update(resourceGroupName, monitorName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NewRelicMonitorResource apply(Context context) {
@@ -219,11 +213,7 @@ public final class NewRelicMonitorResourceImpl
     }
 
     public NewRelicMonitorResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMonitors()
-            .getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NewRelicMonitorResource refresh(Context context) {

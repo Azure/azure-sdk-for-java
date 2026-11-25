@@ -59,40 +59,16 @@ public final class InformationProtectionPoliciesImpl implements InformationProte
     }
 
     public InformationProtectionPolicy getById(String id) {
-        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
-            "scope");
-        if (scope == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String informationProtectionPolicyNameLocal = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
-            "informationProtectionPolicyName");
-        if (informationProtectionPolicyNameLocal == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'informationProtectionPolicies'.", id)));
-        }
-        InformationProtectionPolicyName informationProtectionPolicyName
-            = InformationProtectionPolicyName.fromString(informationProtectionPolicyNameLocal);
-        return this.getWithResponse(scope, informationProtectionPolicyName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<InformationProtectionPolicy> getByIdWithResponse(String id, Context context) {
-        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
-            "scope");
-        if (scope == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String informationProtectionPolicyNameLocal = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "scope", "scope", LOGGER);
+        String informationProtectionPolicyNameLocal = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
-            "informationProtectionPolicyName");
-        if (informationProtectionPolicyNameLocal == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'informationProtectionPolicies'.", id)));
-        }
+            "informationProtectionPolicyName", "informationProtectionPolicies", LOGGER);
         InformationProtectionPolicyName informationProtectionPolicyName
             = InformationProtectionPolicyName.fromString(informationProtectionPolicyNameLocal);
         return this.getWithResponse(scope, informationProtectionPolicyName, context);

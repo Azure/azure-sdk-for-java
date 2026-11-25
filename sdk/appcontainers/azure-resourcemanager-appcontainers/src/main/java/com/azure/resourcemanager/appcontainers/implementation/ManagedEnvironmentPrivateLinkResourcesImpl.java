@@ -28,8 +28,7 @@ public final class ManagedEnvironmentPrivateLinkResourcesImpl implements Managed
     }
 
     public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String environmentName) {
-        PagedIterable<PrivateLinkResourceInner> inner = this.serviceClient().list(resourceGroupName, environmentName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, environmentName, Context.NONE);
     }
 
     public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String environmentName, Context context) {

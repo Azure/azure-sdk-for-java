@@ -64,11 +64,7 @@ public final class ConnectionPropertiesV2BasicResourceImpl implements Connection
     }
 
     public ConnectionPropertiesV2BasicResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccountConnections()
-            .createWithResponse(resourceGroupName, accountName, connectionName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ConnectionPropertiesV2BasicResource create(Context context) {
@@ -92,11 +88,7 @@ public final class ConnectionPropertiesV2BasicResourceImpl implements Connection
     }
 
     public ConnectionPropertiesV2BasicResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccountConnections()
-            .updateWithResponse(resourceGroupName, accountName, connectionName, updateConnection, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ConnectionPropertiesV2BasicResource apply(Context context) {
@@ -138,11 +130,7 @@ public final class ConnectionPropertiesV2BasicResourceImpl implements Connection
     }
 
     public ConnectionPropertiesV2BasicResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccountConnections()
-            .getWithResponse(resourceGroupName, accountName, connectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ConnectionPropertiesV2BasicResource refresh(Context context) {

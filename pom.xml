@@ -185,6 +185,7 @@
     <module>sdk/network</module>
     <module>sdk/networkcloud</module>
     <module>sdk/networkfunction</module>
+    <module>sdk/networksecurity</module>
     <module>sdk/newrelicobservability</module>
     <module>sdk/nginx</module>
     <module>sdk/notificationhubs</module>
@@ -208,7 +209,6 @@
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
     <module>sdk/privatedns</module>
-    <module>sdk/privatetrafficmanager</module>
     <module>sdk/programenrollment</module>
     <module>sdk/programmableconnectivity</module>
     <module>sdk/providerhub</module>
@@ -252,6 +252,7 @@
     <module>sdk/servicenetworking</module>
     <module>sdk/signalr</module>
     <module>sdk/sitemanager</module>
+    <module>sdk/sovereign</module>
     <module>sdk/sphere</module>
     <module>sdk/spring</module>
     <module>sdk/spring-experimental</module>

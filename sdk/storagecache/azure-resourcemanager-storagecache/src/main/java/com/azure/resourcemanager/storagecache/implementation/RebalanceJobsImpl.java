@@ -47,13 +47,7 @@ public final class RebalanceJobsImpl implements RebalanceJobs {
 
     public RebalanceJob update(String resourceGroupName, String amlFilesystemName, String rebalanceJobName,
         RebalanceJobUpdate properties) {
-        RebalanceJobInner inner
-            = this.serviceClient().update(resourceGroupName, amlFilesystemName, rebalanceJobName, properties);
-        if (inner != null) {
-            return new RebalanceJobImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, amlFilesystemName, rebalanceJobName, properties, Context.NONE);
     }
 
     public RebalanceJob update(String resourceGroupName, String amlFilesystemName, String rebalanceJobName,
@@ -68,7 +62,7 @@ public final class RebalanceJobsImpl implements RebalanceJobs {
     }
 
     public void delete(String resourceGroupName, String amlFilesystemName, String rebalanceJobName) {
-        this.serviceClient().delete(resourceGroupName, amlFilesystemName, rebalanceJobName);
+        this.delete(resourceGroupName, amlFilesystemName, rebalanceJobName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String amlFilesystemName, String rebalanceJobName, Context context) {
@@ -76,9 +70,7 @@ public final class RebalanceJobsImpl implements RebalanceJobs {
     }
 
     public PagedIterable<RebalanceJob> listByAmlFilesystem(String resourceGroupName, String amlFilesystemName) {
-        PagedIterable<RebalanceJobInner> inner
-            = this.serviceClient().listByAmlFilesystem(resourceGroupName, amlFilesystemName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RebalanceJobImpl(inner1, this.manager()));
+        return this.listByAmlFilesystem(resourceGroupName, amlFilesystemName, Context.NONE);
     }
 
     public PagedIterable<RebalanceJob> listByAmlFilesystem(String resourceGroupName, String amlFilesystemName,

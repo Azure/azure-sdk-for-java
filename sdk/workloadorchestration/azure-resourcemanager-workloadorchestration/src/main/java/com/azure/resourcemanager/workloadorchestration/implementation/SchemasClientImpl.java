@@ -288,17 +288,7 @@ public final class SchemasClientImpl implements SchemasClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Schema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Schema Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaInner> getByResourceGroupWithResponse(String resourceGroupName, String schemaName,
         Context context) {
@@ -307,16 +297,7 @@ public final class SchemasClientImpl implements SchemasClient {
             this.client.getSubscriptionId(), resourceGroupName, schemaName, accept, context);
     }
 
-    /**
-     * Get a Schema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Schema Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaInner getByResourceGroup(String resourceGroupName, String schemaName) {
         return getByResourceGroupWithResponse(resourceGroupName, schemaName, Context.NONE).getValue();
@@ -358,11 +339,7 @@ public final class SchemasClientImpl implements SchemasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String schemaName,
         SchemaInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schemaName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, schemaName, resource, Context.NONE);
     }
 
     /**
@@ -406,37 +383,14 @@ public final class SchemasClientImpl implements SchemasClient {
             SchemaInner.class, SchemaInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a Schema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of schema Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SchemaInner>, SchemaInner> beginCreateOrUpdate(String resourceGroupName,
         String schemaName, SchemaInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, schemaName, resource);
-        return this.client.<SchemaInner, SchemaInner>getLroResult(response, SchemaInner.class, SchemaInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, schemaName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Schema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of schema Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SchemaInner>, SchemaInner> beginCreateOrUpdate(String resourceGroupName,
         String schemaName, SchemaInner resource, Context context) {
@@ -462,38 +416,18 @@ public final class SchemasClientImpl implements SchemasClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Schema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaInner createOrUpdate(String resourceGroupName, String schemaName, SchemaInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, schemaName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, schemaName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Schema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaInner createOrUpdate(String resourceGroupName, String schemaName, SchemaInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, schemaName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, schemaName, resource, context));
     }
 
     /**
@@ -534,18 +468,7 @@ public final class SchemasClientImpl implements SchemasClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * update a Schema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaInner> updateWithResponse(String resourceGroupName, String schemaName,
         SchemaUpdate properties, Context context) {
@@ -555,17 +478,7 @@ public final class SchemasClientImpl implements SchemasClient {
             this.client.getSubscriptionId(), resourceGroupName, schemaName, contentType, accept, properties, context);
     }
 
-    /**
-     * update a Schema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaInner update(String resourceGroupName, String schemaName, SchemaUpdate properties) {
         return updateWithResponse(resourceGroupName, schemaName, properties, Context.NONE).getValue();
@@ -601,8 +514,7 @@ public final class SchemasClientImpl implements SchemasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String schemaName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schemaName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, schemaName, Context.NONE);
     }
 
     /**
@@ -639,33 +551,13 @@ public final class SchemasClientImpl implements SchemasClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Schema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schemaName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, schemaName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, schemaName, Context.NONE);
     }
 
-    /**
-     * Delete a Schema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schemaName,
         Context context) {
@@ -688,33 +580,16 @@ public final class SchemasClientImpl implements SchemasClient {
         return beginDeleteAsync(resourceGroupName, schemaName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Schema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schemaName) {
-        beginDelete(resourceGroupName, schemaName).getFinalResult();
+        delete(resourceGroupName, schemaName, Context.NONE);
     }
 
-    /**
-     * Delete a Schema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schemaName, Context context) {
-        beginDelete(resourceGroupName, schemaName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, schemaName, context));
     }
 
     /**
@@ -753,10 +628,7 @@ public final class SchemasClientImpl implements SchemasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createVersionWithResponse(String resourceGroupName, String schemaName,
         SchemaVersionWithUpdateTypeInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createVersionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schemaName, contentType, accept, body, Context.NONE);
+        return createVersionWithResponse(resourceGroupName, schemaName, body, Context.NONE);
     }
 
     /**
@@ -799,37 +671,14 @@ public final class SchemasClientImpl implements SchemasClient {
             SchemaVersionInner.class, SchemaVersionInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of schema Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SchemaVersionInner>, SchemaVersionInner> beginCreateVersion(String resourceGroupName,
         String schemaName, SchemaVersionWithUpdateTypeInner body) {
-        Response<BinaryData> response = createVersionWithResponse(resourceGroupName, schemaName, body);
-        return this.client.<SchemaVersionInner, SchemaVersionInner>getLroResult(response, SchemaVersionInner.class,
-            SchemaVersionInner.class, Context.NONE);
+        return beginCreateVersion(resourceGroupName, schemaName, body, Context.NONE);
     }
 
-    /**
-     * Create a Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of schema Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SchemaVersionInner>, SchemaVersionInner> beginCreateVersion(String resourceGroupName,
         String schemaName, SchemaVersionWithUpdateTypeInner body, Context context) {
@@ -856,39 +705,18 @@ public final class SchemasClientImpl implements SchemasClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaVersionInner createVersion(String resourceGroupName, String schemaName,
         SchemaVersionWithUpdateTypeInner body) {
-        return beginCreateVersion(resourceGroupName, schemaName, body).getFinalResult();
+        return createVersion(resourceGroupName, schemaName, body, Context.NONE);
     }
 
-    /**
-     * Create a Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaVersionInner createVersion(String resourceGroupName, String schemaName,
         SchemaVersionWithUpdateTypeInner body, Context context) {
-        return beginCreateVersion(resourceGroupName, schemaName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateVersion(resourceGroupName, schemaName, body, context));
     }
 
     /**
@@ -931,18 +759,7 @@ public final class SchemasClientImpl implements SchemasClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Remove Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remove Version response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RemoveVersionResponseInner> removeVersionWithResponse(String resourceGroupName, String schemaName,
         VersionParameter body, Context context) {
@@ -952,17 +769,7 @@ public final class SchemasClientImpl implements SchemasClient {
             this.client.getSubscriptionId(), resourceGroupName, schemaName, contentType, accept, body, context);
     }
 
-    /**
-     * Remove Schema Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remove Version response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemoveVersionResponseInner removeVersion(String resourceGroupName, String schemaName,
         VersionParameter body) {
@@ -1016,11 +823,7 @@ public final class SchemasClientImpl implements SchemasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<SchemaListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1042,31 +845,13 @@ public final class SchemasClientImpl implements SchemasClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Schema list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchemaInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List by specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Schema list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchemaInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1114,11 +899,7 @@ public final class SchemasClientImpl implements SchemasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<SchemaListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1139,27 +920,13 @@ public final class SchemasClientImpl implements SchemasClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Schema list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchemaInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List by subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Schema list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchemaInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1198,11 +965,7 @@ public final class SchemasClientImpl implements SchemasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SchemaListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1256,11 +1019,7 @@ public final class SchemasClientImpl implements SchemasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SchemaListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

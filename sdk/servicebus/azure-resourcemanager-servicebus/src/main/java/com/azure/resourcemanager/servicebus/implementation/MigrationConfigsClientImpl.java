@@ -137,18 +137,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves Migration Config.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MigrationConfigPropertiesInner>> getWithResponseAsync(String resourceGroupName,
         String namespaceName, MigrationConfigurationName configName) {
@@ -217,17 +206,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             resourceGroupName, namespaceName, configName, accept, context);
     }
 
-    /**
-     * Retrieves Migration Config.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrationConfigPropertiesInner> getAsync(String resourceGroupName, String namespaceName,
         MigrationConfigurationName configName) {
@@ -235,54 +214,21 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves Migration Config.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MigrationConfigPropertiesInner> getWithResponse(String resourceGroupName, String namespaceName,
         MigrationConfigurationName configName, Context context) {
         return getWithResponseAsync(resourceGroupName, namespaceName, configName, context).block();
     }
 
-    /**
-     * Retrieves Migration Config.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationConfigPropertiesInner get(String resourceGroupName, String namespaceName,
         MigrationConfigurationName configName) {
         return getWithResponse(resourceGroupName, namespaceName, configName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @param parameters Parameters required to create Migration Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createAndStartMigrationWithResponseAsync(String resourceGroupName,
         String namespaceName, MigrationConfigurationName configName, MigrationConfigPropertiesInner parameters) {
@@ -367,18 +313,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             parameters, context);
     }
 
-    /**
-     * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @param parameters Parameters required to create Migration Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of single item in List or Get Migration Config operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MigrationConfigPropertiesInner>, MigrationConfigPropertiesInner>
         beginCreateAndStartMigrationAsync(String resourceGroupName, String namespaceName,
@@ -415,18 +350,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             context);
     }
 
-    /**
-     * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @param parameters Parameters required to create Migration Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of single item in List or Get Migration Config operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationConfigPropertiesInner>, MigrationConfigPropertiesInner>
         beginCreateAndStartMigration(String resourceGroupName, String namespaceName,
@@ -435,19 +359,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             .getSyncPoller();
     }
 
-    /**
-     * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @param parameters Parameters required to create Migration Configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of single item in List or Get Migration Config operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationConfigPropertiesInner>, MigrationConfigPropertiesInner>
         beginCreateAndStartMigration(String resourceGroupName, String namespaceName,
@@ -456,18 +368,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             .getSyncPoller();
     }
 
-    /**
-     * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @param parameters Parameters required to create Migration Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrationConfigPropertiesInner> createAndStartMigrationAsync(String resourceGroupName,
         String namespaceName, MigrationConfigurationName configName, MigrationConfigPropertiesInner parameters) {
@@ -497,54 +398,21 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @param parameters Parameters required to create Migration Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationConfigPropertiesInner createAndStartMigration(String resourceGroupName, String namespaceName,
         MigrationConfigurationName configName, MigrationConfigPropertiesInner parameters) {
         return createAndStartMigrationAsync(resourceGroupName, namespaceName, configName, parameters).block();
     }
 
-    /**
-     * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @param parameters Parameters required to create Migration Configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationConfigPropertiesInner createAndStartMigration(String resourceGroupName, String namespaceName,
         MigrationConfigurationName configName, MigrationConfigPropertiesInner parameters, Context context) {
         return createAndStartMigrationAsync(resourceGroupName, namespaceName, configName, parameters, context).block();
     }
 
-    /**
-     * Deletes a MigrationConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
         MigrationConfigurationName configName) {
@@ -610,51 +478,21 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             resourceGroupName, namespaceName, configName, context);
     }
 
-    /**
-     * Deletes a MigrationConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String namespaceName,
         MigrationConfigurationName configName) {
         return deleteWithResponseAsync(resourceGroupName, namespaceName, configName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a MigrationConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String namespaceName,
         MigrationConfigurationName configName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, namespaceName, configName, context).block();
     }
 
-    /**
-     * Deletes a MigrationConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
         deleteWithResponse(resourceGroupName, namespaceName, configName, Context.NONE);
@@ -735,16 +573,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all migrationConfigurations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all migrationConfigurations as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MigrationConfigPropertiesInner> listAsync(String resourceGroupName, String namespaceName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, namespaceName),
@@ -769,51 +598,20 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all migrationConfigurations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all migrationConfigurations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MigrationConfigPropertiesInner> list(String resourceGroupName, String namespaceName) {
         return new PagedIterable<>(listAsync(resourceGroupName, namespaceName));
     }
 
-    /**
-     * Gets all migrationConfigurations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all migrationConfigurations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MigrationConfigPropertiesInner> list(String resourceGroupName, String namespaceName,
         Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, namespaceName, context));
     }
 
-    /**
-     * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any
-     * entities created after the operation will be under Premium Namespace. CompleteMigration operation will fail when
-     * entity migration is in-progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> completeMigrationWithResponseAsync(String resourceGroupName, String namespaceName,
         MigrationConfigurationName configName) {
@@ -881,19 +679,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             this.client.getSubscriptionId(), resourceGroupName, namespaceName, configName, context);
     }
 
-    /**
-     * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any
-     * entities created after the operation will be under Premium Namespace. CompleteMigration operation will fail when
-     * entity migration is in-progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> completeMigrationAsync(String resourceGroupName, String namespaceName,
         MigrationConfigurationName configName) {
@@ -901,55 +687,21 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any
-     * entities created after the operation will be under Premium Namespace. CompleteMigration operation will fail when
-     * entity migration is in-progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> completeMigrationWithResponse(String resourceGroupName, String namespaceName,
         MigrationConfigurationName configName, Context context) {
         return completeMigrationWithResponseAsync(resourceGroupName, namespaceName, configName, context).block();
     }
 
-    /**
-     * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any
-     * entities created after the operation will be under Premium Namespace. CompleteMigration operation will fail when
-     * entity migration is in-progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void completeMigration(String resourceGroupName, String namespaceName,
         MigrationConfigurationName configName) {
         completeMigrationWithResponse(resourceGroupName, namespaceName, configName, Context.NONE);
     }
 
-    /**
-     * This operation reverts Migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> revertWithResponseAsync(String resourceGroupName, String namespaceName,
         MigrationConfigurationName configName) {
@@ -1015,51 +767,21 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             resourceGroupName, namespaceName, configName, context);
     }
 
-    /**
-     * This operation reverts Migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revertAsync(String resourceGroupName, String namespaceName,
         MigrationConfigurationName configName) {
         return revertWithResponseAsync(resourceGroupName, namespaceName, configName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * This operation reverts Migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revertWithResponse(String resourceGroupName, String namespaceName,
         MigrationConfigurationName configName, Context context) {
         return revertWithResponseAsync(resourceGroupName, namespaceName, configName, context).block();
     }
 
-    /**
-     * This operation reverts Migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be $default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revert(String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
         revertWithResponse(resourceGroupName, namespaceName, configName, Context.NONE);

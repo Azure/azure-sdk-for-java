@@ -200,18 +200,7 @@ public final class MachineRunCommandsClientImpl implements MachineRunCommandsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to get a run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Run Command along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MachineRunCommandInner> getWithResponse(String resourceGroupName, String machineName,
         String runCommandName, Context context) {
@@ -220,17 +209,7 @@ public final class MachineRunCommandsClientImpl implements MachineRunCommandsCli
             resourceGroupName, machineName, runCommandName, accept, context);
     }
 
-    /**
-     * The operation to get a run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Run Command.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineRunCommandInner get(String resourceGroupName, String machineName, String runCommandName) {
         return getWithResponse(resourceGroupName, machineName, runCommandName, Context.NONE).getValue();
@@ -275,11 +254,8 @@ public final class MachineRunCommandsClientImpl implements MachineRunCommandsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String machineName,
         String runCommandName, MachineRunCommandInner runCommandProperties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, machineName, runCommandName, contentType, accept,
-            runCommandProperties, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, machineName, runCommandName, runCommandProperties,
+            Context.NONE);
     }
 
     /**
@@ -328,41 +304,15 @@ public final class MachineRunCommandsClientImpl implements MachineRunCommandsCli
             this.client.getContext());
     }
 
-    /**
-     * The operation to create or update a run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Run Command.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MachineRunCommandInner>, MachineRunCommandInner> beginCreateOrUpdate(
         String resourceGroupName, String machineName, String runCommandName,
         MachineRunCommandInner runCommandProperties) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, machineName, runCommandName, runCommandProperties);
-        return this.client.<MachineRunCommandInner, MachineRunCommandInner>getLroResult(response,
-            MachineRunCommandInner.class, MachineRunCommandInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, machineName, runCommandName, runCommandProperties, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Run Command.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MachineRunCommandInner>, MachineRunCommandInner> beginCreateOrUpdate(
         String resourceGroupName, String machineName, String runCommandName,
@@ -392,43 +342,19 @@ public final class MachineRunCommandsClientImpl implements MachineRunCommandsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Run Command.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineRunCommandInner createOrUpdate(String resourceGroupName, String machineName, String runCommandName,
         MachineRunCommandInner runCommandProperties) {
-        return beginCreateOrUpdate(resourceGroupName, machineName, runCommandName, runCommandProperties)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, machineName, runCommandName, runCommandProperties, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Run Command.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MachineRunCommandInner createOrUpdate(String resourceGroupName, String machineName, String runCommandName,
         MachineRunCommandInner runCommandProperties, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, machineName, runCommandName, runCommandProperties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, machineName, runCommandName, runCommandProperties, context));
     }
 
     /**
@@ -465,8 +391,7 @@ public final class MachineRunCommandsClientImpl implements MachineRunCommandsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String machineName,
         String runCommandName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, machineName, runCommandName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, machineName, runCommandName, Context.NONE);
     }
 
     /**
@@ -507,36 +432,14 @@ public final class MachineRunCommandsClientImpl implements MachineRunCommandsCli
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String machineName,
         String runCommandName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, machineName, runCommandName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, machineName, runCommandName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String machineName,
         String runCommandName, Context context) {
@@ -561,35 +464,16 @@ public final class MachineRunCommandsClientImpl implements MachineRunCommandsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String machineName, String runCommandName) {
-        beginDelete(resourceGroupName, machineName, runCommandName).getFinalResult();
+        delete(resourceGroupName, machineName, runCommandName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String machineName, String runCommandName, Context context) {
-        beginDelete(resourceGroupName, machineName, runCommandName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, machineName, runCommandName, context));
     }
 
     /**
@@ -664,12 +548,7 @@ public final class MachineRunCommandsClientImpl implements MachineRunCommandsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MachineRunCommandInner> listSinglePage(String resourceGroupName, String machineName,
         String expand) {
-        final String accept = "application/json";
-        Response<MachineRunCommandsListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, machineName, expand, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, machineName, expand, Context.NONE);
     }
 
     /**
@@ -695,35 +574,14 @@ public final class MachineRunCommandsClientImpl implements MachineRunCommandsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * The operation to get all the run commands of a non-Azure machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of MachineRunCommand items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MachineRunCommandInner> list(String resourceGroupName, String machineName) {
         final String expand = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, machineName, expand),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, machineName, expand, Context.NONE);
     }
 
-    /**
-     * The operation to get all the run commands of a non-Azure machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param expand The expand expression to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of MachineRunCommand items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MachineRunCommandInner> list(String resourceGroupName, String machineName, String expand,
         Context context) {
@@ -761,11 +619,7 @@ public final class MachineRunCommandsClientImpl implements MachineRunCommandsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MachineRunCommandInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MachineRunCommandsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

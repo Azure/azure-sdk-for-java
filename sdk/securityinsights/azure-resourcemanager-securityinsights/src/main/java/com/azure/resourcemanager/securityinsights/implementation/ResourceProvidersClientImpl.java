@@ -145,19 +145,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get geodata for a single IP address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param enrichmentType Enrichment type.
-     * @param ipAddressBody IP address (v4 or v6) to be enriched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return geodata for a single IP address along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EnrichmentIpGeodataInner> listGeodataByIpWithResponse(String resourceGroupName,
         String workspaceName, EnrichmentType enrichmentType, EnrichmentIpAddressBody ipAddressBody, Context context) {
@@ -168,18 +156,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             ipAddressBody, context);
     }
 
-    /**
-     * Get geodata for a single IP address.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param enrichmentType Enrichment type.
-     * @param ipAddressBody IP address (v4 or v6) to be enriched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return geodata for a single IP address.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnrichmentIpGeodataInner listGeodataByIp(String resourceGroupName, String workspaceName,
         EnrichmentType enrichmentType, EnrichmentIpAddressBody ipAddressBody) {
@@ -231,19 +208,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get whois information for a single domain name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param enrichmentType Enrichment type.
-     * @param domainBody Domain name to be enriched. Only domain name is accepted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whois information for a single domain name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EnrichmentDomainWhoisInner> listWhoisByDomainWithResponse(String resourceGroupName,
         String workspaceName, EnrichmentType enrichmentType, EnrichmentDomainBody domainBody, Context context) {
@@ -254,18 +219,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             domainBody, context);
     }
 
-    /**
-     * Get whois information for a single domain name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param enrichmentType Enrichment type.
-     * @param domainBody Domain name to be enriched. Only domain name is accepted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whois information for a single domain name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnrichmentDomainWhoisInner listWhoisByDomain(String resourceGroupName, String workspaceName,
         EnrichmentType enrichmentType, EnrichmentDomainBody domainBody) {

@@ -177,17 +177,7 @@ public final class SlisClientImpl implements SlisClient {
         return getWithResponseAsync(serviceGroupName, sliName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an SLI resource.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param sliName Name of the SLI that is given by the user.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an SLI resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SliInner> getWithResponse(String serviceGroupName, String sliName, Context context) {
         final String accept = "application/json";
@@ -195,16 +185,7 @@ public final class SlisClientImpl implements SlisClient {
             accept, context);
     }
 
-    /**
-     * Gets an SLI resource.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param sliName Name of the SLI that is given by the user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an SLI resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SliInner get(String serviceGroupName, String sliName) {
         return getWithResponse(serviceGroupName, sliName, Context.NONE).getValue();
@@ -250,18 +231,7 @@ public final class SlisClientImpl implements SlisClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates an SLI resource.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param sliName Name of the SLI that is given by the user.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an SLI resource within the ProviderHub along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SliInner> createOrUpdateWithResponse(String serviceGroupName, String sliName, SliInner resource,
         Context context) {
@@ -271,17 +241,7 @@ public final class SlisClientImpl implements SlisClient {
             sliName, contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or updates an SLI resource.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param sliName Name of the SLI that is given by the user.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an SLI resource within the ProviderHub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SliInner createOrUpdate(String serviceGroupName, String sliName, SliInner resource) {
         return createOrUpdateWithResponse(serviceGroupName, sliName, resource, Context.NONE).getValue();
@@ -320,32 +280,14 @@ public final class SlisClientImpl implements SlisClient {
         return deleteWithResponseAsync(serviceGroupName, sliName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes an SLI resource.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param sliName Name of the SLI that is given by the user.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String serviceGroupName, String sliName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(), sliName,
             context);
     }
 
-    /**
-     * Deletes an SLI resource.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param sliName Name of the SLI that is given by the user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String serviceGroupName, String sliName) {
         deleteWithResponse(serviceGroupName, sliName, Context.NONE);
@@ -398,11 +340,7 @@ public final class SlisClientImpl implements SlisClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SliInner> listByParentSinglePage(String serviceGroupName) {
-        final String accept = "application/json";
-        Response<SliListResult> res = service.listByParentSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(serviceGroupName, Context.NONE);
     }
 
     /**
@@ -424,31 +362,13 @@ public final class SlisClientImpl implements SlisClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all SLI resources under a parent resource.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Sli list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SliInner> listByParent(String serviceGroupName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(serviceGroupName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(serviceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all SLI resources under a parent resource.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Sli list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SliInner> listByParent(String serviceGroupName, Context context) {
         return new PagedIterable<>(() -> listByParentSinglePage(serviceGroupName, context),
@@ -486,11 +406,7 @@ public final class SlisClientImpl implements SlisClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SliInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SliListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

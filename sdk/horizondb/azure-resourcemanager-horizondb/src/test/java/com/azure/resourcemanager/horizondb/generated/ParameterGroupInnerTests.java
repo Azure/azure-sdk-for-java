@@ -18,31 +18,32 @@ public final class ParameterGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParameterGroupInner model = BinaryData.fromString(
-            "{\"properties\":{\"parameters\":[{\"name\":\"krbm\",\"description\":\"kgriwflzlfbx\",\"value\":\"uzycispnqza\",\"defaultValue\":\"gkbrpyyd\",\"valueSource\":\"UserOverride\",\"dataType\":\"uqqkpik\",\"allowedValues\":\"rgvtqag\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"ijggmebfsiar\",\"unit\":\"trcvpnazzmh\"},{\"name\":\"unmpxttd\",\"description\":\"rbnlankxmyskp\",\"value\":\"enbtkcxywny\",\"defaultValue\":\"rsyn\",\"valueSource\":\"UserOverride\",\"dataType\":\"ybyxc\",\"allowedValues\":\"clha\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"p\",\"unit\":\"wrqlfktsthsuco\"}],\"description\":\"nyyazttbtwwrqpue\",\"postgreSqlVersion\":\"18\",\"provisioningState\":\"Succeeded\"},\"location\":\"wbiexzfey\",\"tags\":{\"zyoxaepdkzjan\":\"xibxujwbhqwalm\",\"hdwbavxbniwdjs\":\"ux\"},\"id\":\"zt\",\"name\":\"dbpgnxytxhp\",\"type\":\"xbzpfzab\"}")
+            "{\"properties\":{\"parameters\":[{\"name\":\"kzywbiex\",\"description\":\"eyueaxibxujwb\",\"value\":\"walm\",\"defaultValue\":\"yoxa\",\"valueSource\":\"UserOverride\",\"dataType\":\"zjancuxr\",\"allowedValues\":\"wbavxbniwdj\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"bpg\",\"unit\":\"ytxhp\"},{\"name\":\"bzpfzab\",\"description\":\"cuh\",\"value\":\"tcty\",\"defaultValue\":\"klbb\",\"valueSource\":\"UserOverride\",\"dataType\":\"wzbhvgyugu\",\"allowedValues\":\"vmkfssxqu\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"mg\",\"unit\":\"nkjzkdeslpvlop\"},{\"name\":\"yighxpk\",\"description\":\"zb\",\"value\":\"uebbaumnyqup\",\"defaultValue\":\"eojnabc\",\"valueSource\":\"UserOverride\",\"dataType\":\"txp\",\"allowedValues\":\"ebtfhvpesap\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"hjjdhtldwkyzxuut\",\"unit\":\"cwscwsvlx\"}],\"description\":\"ogtwrupqsxvnmi\",\"postgreSqlVersion\":\"18\",\"provisioningState\":\"Canceled\"},\"location\":\"eoveilovnotyf\",\"tags\":{\"wpn\":\"njbkcnxdhbttkph\",\"mclfplphoxuscr\":\"jtoqne\",\"psbjta\":\"abgy\"},\"id\":\"qugxywpmueefjzwf\",\"name\":\"kqujidsuyono\",\"type\":\"glaocq\"}")
             .toObject(ParameterGroupInner.class);
-        Assertions.assertEquals("wbiexzfey", model.location());
-        Assertions.assertEquals("xibxujwbhqwalm", model.tags().get("zyoxaepdkzjan"));
-        Assertions.assertEquals("krbm", model.properties().parameters().get(0).name());
-        Assertions.assertEquals("uzycispnqza", model.properties().parameters().get(0).value());
-        Assertions.assertEquals("nyyazttbtwwrqpue", model.properties().description());
+        Assertions.assertEquals("eoveilovnotyf", model.location());
+        Assertions.assertEquals("njbkcnxdhbttkph", model.tags().get("wpn"));
+        Assertions.assertEquals("kzywbiex", model.properties().parameters().get(0).name());
+        Assertions.assertEquals("walm", model.properties().parameters().get(0).value());
+        Assertions.assertEquals("ogtwrupqsxvnmi", model.properties().description());
         Assertions.assertEquals(PostgreSqlVersion.V18, model.properties().postgreSqlVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParameterGroupInner model = new ParameterGroupInner().withLocation("wbiexzfey")
-            .withTags(mapOf("zyoxaepdkzjan", "xibxujwbhqwalm", "hdwbavxbniwdjs", "ux"))
+        ParameterGroupInner model = new ParameterGroupInner().withLocation("eoveilovnotyf")
+            .withTags(mapOf("wpn", "njbkcnxdhbttkph", "mclfplphoxuscr", "jtoqne", "psbjta", "abgy"))
             .withProperties(new ParameterGroupProperties()
-                .withParameters(Arrays.asList(new ParameterProperties().withName("krbm").withValue("uzycispnqza"),
-                    new ParameterProperties().withName("unmpxttd").withValue("enbtkcxywny")))
-                .withDescription("nyyazttbtwwrqpue")
+                .withParameters(Arrays.asList(new ParameterProperties().withName("kzywbiex").withValue("walm"),
+                    new ParameterProperties().withName("bzpfzab").withValue("tcty"),
+                    new ParameterProperties().withName("yighxpk").withValue("uebbaumnyqup")))
+                .withDescription("ogtwrupqsxvnmi")
                 .withPostgreSqlVersion(PostgreSqlVersion.V18));
         model = BinaryData.fromObject(model).toObject(ParameterGroupInner.class);
-        Assertions.assertEquals("wbiexzfey", model.location());
-        Assertions.assertEquals("xibxujwbhqwalm", model.tags().get("zyoxaepdkzjan"));
-        Assertions.assertEquals("krbm", model.properties().parameters().get(0).name());
-        Assertions.assertEquals("uzycispnqza", model.properties().parameters().get(0).value());
-        Assertions.assertEquals("nyyazttbtwwrqpue", model.properties().description());
+        Assertions.assertEquals("eoveilovnotyf", model.location());
+        Assertions.assertEquals("njbkcnxdhbttkph", model.tags().get("wpn"));
+        Assertions.assertEquals("kzywbiex", model.properties().parameters().get(0).name());
+        Assertions.assertEquals("walm", model.properties().parameters().get(0).value());
+        Assertions.assertEquals("ogtwrupqsxvnmi", model.properties().description());
         Assertions.assertEquals(PostgreSqlVersion.V18, model.properties().postgreSqlVersion());
     }
 

@@ -3,51 +3,138 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.HttpConstants;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
-import org.testng.annotations.Ignore;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.cosmos.implementation.Utils.getUTF8BytesOrNull;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class JsonNodeStorePayloadTests {
-    @Test(groups = {"unit"})
-    @Ignore("fallbackCharsetDecoder will only be initialized during the first time when JsonNodeStorePayload loaded," +
-        " need to figure out a way to reload the class")
-    public void parsingBytesWithInvalidUT8Bytes() {
-        // the hex string represents an json with invalid UTF-8 characters
-        // json_obj = {
-        //    "id": "example_id",
-        //    "content": "\xff\n\t\x07"  # Invalid UTF-8 byte, newline, tab, and BEL
-        //}
-        String invalidHexString = "7b226964223a20226578616d706c655f6964222c2022636f6e74656e74223a2022ff0a0907227d";
-        System.setProperty("COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT", "REPLACE");
-        System.setProperty("COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER", "REPLACE");
+    @DataProvider(name = "fallbackActions")
+    public Object[][] fallbackActions() {
+        return new Object[][] {{"REPLACE", "\ufffd"}, {"IGNORE", ""}, {"", null}, {"REPORT", null}};
+    }
 
-        try {
-            byte[] bytes = hexStringToByteArray(invalidHexString);
-            ByteBuf byteBuf = Unpooled.wrappedBuffer(bytes);
-            JsonNodeStorePayload jsonNodeStorePayload = new JsonNodeStorePayload(new ByteBufInputStream(byteBuf), bytes.length, new HashMap<>());
-            jsonNodeStorePayload.getPayload().toString();
-        } finally {
-            System.clearProperty("COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT");
-            System.clearProperty("COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER");
+    @Test(groups = {"unit"}, dataProvider = "fallbackActions")
+    public void parsingBytesWithInvalidUTF8Bytes(String action, String replacement) throws Exception {
+        withFallbackAction(action, () -> {
+            byte[] bytes = invalidUtf8Payload();
+            if (replacement == null) {
+                assertThatThrownBy(() -> parsePayload(bytes, false))
+                    .isInstanceOfSatisfying(CosmosException.class, exception -> {
+                        assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
+                        assertThat(exception.getSubStatusCode())
+                            .isEqualTo(HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE);
+                    });
+            } else {
+                String expected = replacement + new String(bytes, 7, bytes.length - 9, StandardCharsets.UTF_8);
+                assertThat(parsePayload(bytes, false)).isEqualTo(expected);
+                assertThat(parsePayload(bytes, true)).isEqualTo(expected);
+            }
+        });
+    }
+
+    @Test(groups = {"unit"}, timeOut = 30000)
+    public void concurrentFallbackDecoding() throws Exception {
+        withFallbackAction("REPLACE", () -> {
+            byte[] bytes = invalidUtf8Payload();
+            String expected = "\ufffd" + new String(bytes, 7, bytes.length - 9, StandardCharsets.UTF_8);
+            int workers = 8;
+            ExecutorService executor = Executors.newFixedThreadPool(workers);
+            CountDownLatch ready = new CountDownLatch(workers);
+            CountDownLatch start = new CountDownLatch(1);
+            try {
+                List<Future<?>> futures = new ArrayList<>();
+                for (int worker = 0; worker < workers; worker++) {
+                    futures.add(executor.submit(() -> {
+                        ready.countDown();
+                        assertThat(start.await(10, TimeUnit.SECONDS)).isTrue();
+                        for (int iteration = 0; iteration < 100; iteration++) {
+                            assertThat(parsePayload(bytes, iteration % 2 == 0)).isEqualTo(expected);
+                        }
+                        return null;
+                    }));
+                }
+                assertThat(ready.await(10, TimeUnit.SECONDS)).isTrue();
+                start.countDown();
+                for (Future<?> future : futures) {
+                    future.get(20, TimeUnit.SECONDS);
+                }
+            } finally {
+                start.countDown();
+                executor.shutdownNow();
+                assertThat(executor.awaitTermination(10, TimeUnit.SECONDS)).isTrue();
+            }
+        });
+    }
+
+    private static byte[] invalidUtf8Payload() {
+        byte[] bytes = new byte[32768];
+        Arrays.fill(bytes, (byte) 'x');
+        byte[] prefix = "{\"v\":\"".getBytes(StandardCharsets.UTF_8);
+        System.arraycopy(prefix, 0, bytes, 0, prefix.length);
+        bytes[prefix.length] = (byte) 0x8c;
+        bytes[bytes.length - 2] = '"';
+        bytes[bytes.length - 1] = '}';
+        return bytes;
+    }
+
+    private static String parsePayload(byte[] bytes, boolean arrayHeaders) throws IOException {
+        ByteBuf buffer = Unpooled.wrappedBuffer(bytes);
+        try (ByteBufInputStream stream = new ByteBufInputStream(buffer, true)) {
+            JsonNodeStorePayload payload = arrayHeaders
+                ? new JsonNodeStorePayload(stream, bytes.length, new String[0], new String[0])
+                : new JsonNodeStorePayload(stream, bytes.length, Collections.emptyMap());
+            return payload.getPayload().get("v").asText();
         }
     }
 
-    private static byte[] hexStringToByteArray(String hex) {
-        int len = hex.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
-                + Character.digit(hex.charAt(i+1), 16));
+    private static void withFallbackAction(String action, FallbackTest test) throws Exception {
+        String malformedProperty = Configs.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT;
+        String unmappedProperty = Configs.CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER;
+        String originalMalformed = System.getProperty(malformedProperty);
+        String originalUnmapped = System.getProperty(unmappedProperty);
+        try {
+            System.setProperty(malformedProperty, action);
+            System.setProperty(unmappedProperty, action);
+            test.run();
+        } finally {
+            restoreProperty(malformedProperty, originalMalformed);
+            restoreProperty(unmappedProperty, originalUnmapped);
         }
+    }
 
-        return data;
+    private static void restoreProperty(String name, String value) {
+        if (value == null) {
+            System.clearProperty(name);
+        } else {
+            System.setProperty(name, value);
+        }
+    }
+
+    @FunctionalInterface
+    private interface FallbackTest {
+        void run() throws Exception;
     }
 
     @Test(groups = {"unit"})

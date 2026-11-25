@@ -20,9 +20,10 @@ import java.io.IOException;
 @Fluent
 public final class PoolParameterGroupReference implements JsonSerializable<PoolParameterGroupReference> {
     /*
-     * The Azure resource ID of the associated parameter group. Initial pool creation in this API version requires the
-     * corresponding Microsoft.HorizonDb/locations/parameterGroups resource. For an existing pool, PUT can specify
-     * either the corresponding default group or a customer-created Microsoft.HorizonDb/parameterGroups resource.
+     * The Azure resource ID of the associated parameter group. When the parameter group is supplied during initial pool
+     * creation in this API version, the ID must identify the corresponding
+     * Microsoft.HorizonDb/locations/parameterGroups resource. For an existing pool, PUT can specify either the
+     * corresponding default group or a customer-created Microsoft.HorizonDb/parameterGroups resource.
      */
     private String parameterGroupResourceId;
 
@@ -46,10 +47,10 @@ public final class PoolParameterGroupReference implements JsonSerializable<PoolP
     }
 
     /**
-     * Get the parameterGroupResourceId property: The Azure resource ID of the associated parameter group. Initial pool
-     * creation in this API version requires the corresponding Microsoft.HorizonDb/locations/parameterGroups resource.
-     * For an existing pool, PUT can specify either the corresponding default group or a customer-created
-     * Microsoft.HorizonDb/parameterGroups resource.
+     * Get the parameterGroupResourceId property: The Azure resource ID of the associated parameter group. When the
+     * parameter group is supplied during initial pool creation in this API version, the ID must identify the
+     * corresponding Microsoft.HorizonDb/locations/parameterGroups resource. For an existing pool, PUT can specify
+     * either the corresponding default group or a customer-created Microsoft.HorizonDb/parameterGroups resource.
      * 
      * @return the parameterGroupResourceId value.
      */
@@ -58,10 +59,10 @@ public final class PoolParameterGroupReference implements JsonSerializable<PoolP
     }
 
     /**
-     * Set the parameterGroupResourceId property: The Azure resource ID of the associated parameter group. Initial pool
-     * creation in this API version requires the corresponding Microsoft.HorizonDb/locations/parameterGroups resource.
-     * For an existing pool, PUT can specify either the corresponding default group or a customer-created
-     * Microsoft.HorizonDb/parameterGroups resource.
+     * Set the parameterGroupResourceId property: The Azure resource ID of the associated parameter group. When the
+     * parameter group is supplied during initial pool creation in this API version, the ID must identify the
+     * corresponding Microsoft.HorizonDb/locations/parameterGroups resource. For an existing pool, PUT can specify
+     * either the corresponding default group or a customer-created Microsoft.HorizonDb/parameterGroups resource.
      * 
      * @param parameterGroupResourceId the parameterGroupResourceId value to set.
      * @return the PoolParameterGroupReference object itself.

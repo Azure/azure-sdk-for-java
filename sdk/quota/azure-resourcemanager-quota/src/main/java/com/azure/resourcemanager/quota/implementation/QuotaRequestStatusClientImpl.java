@@ -148,37 +148,14 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
         return getWithResponseAsync(id, scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the quota request details and status by quota request ID for the resources of the resource provider at a
-     * specific location. The quota request ID **id** is returned in the response of the PUT operation.
-     * 
-     * @param id Quota request ID.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota request details and status by quota request ID for the resources of the resource provider at a
-     * specific location along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QuotaRequestDetailsInner> getWithResponse(String id, String scope, Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, id, accept, context);
     }
 
-    /**
-     * Get the quota request details and status by quota request ID for the resources of the resource provider at a
-     * specific location. The quota request ID **id** is returned in the response of the PUT operation.
-     * 
-     * @param id Quota request ID.
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota request details and status by quota request ID for the resources of the resource provider at a
-     * specific location.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QuotaRequestDetailsInner get(String id, String scope) {
         return getWithResponse(id, scope, Context.NONE).getValue();
@@ -284,11 +261,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaRequestDetailsInner> listSinglePage(String scope, String filter, Integer top,
         String skiptoken) {
-        final String accept = "application/json";
-        Response<QuotaRequestDetailsList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            scope, filter, top, skiptoken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(scope, filter, top, skiptoken, Context.NONE);
     }
 
     /**
@@ -322,46 +295,16 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * For the specified scope, get the current quota requests for a one year period ending at the time is made. Use the
-     * **oData** filter to select quota requests.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota request information as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaRequestDetailsInner> list(String scope) {
         final String filter = null;
         final Integer top = null;
         final String skiptoken = null;
-        return new PagedIterable<>(() -> listSinglePage(scope, filter, top, skiptoken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(scope, filter, top, skiptoken, Context.NONE);
     }
 
-    /**
-     * For the specified scope, get the current quota requests for a one year period ending at the time is made. Use the
-     * **oData** filter to select quota requests.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param filter | Field | Supported operators
-     * |---------------------|------------------------
-     * 
-     * |requestSubmitTime | ge, le, eq, gt, lt
-     * |provisioningState eq {QuotaRequestState}
-     * |resourceName eq {resourceName}.
-     * @param top Number of records to return.
-     * @param skiptoken The **Skiptoken** parameter is used only if a previous operation returned a partial result. If a
-     * previous response contains a **nextLink** element, its value includes a **skiptoken** parameter that specifies a
-     * starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota request information as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaRequestDetailsInner> list(String scope, String filter, Integer top, String skiptoken,
         Context context) {
@@ -398,11 +341,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaRequestDetailsInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<QuotaRequestDetailsList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

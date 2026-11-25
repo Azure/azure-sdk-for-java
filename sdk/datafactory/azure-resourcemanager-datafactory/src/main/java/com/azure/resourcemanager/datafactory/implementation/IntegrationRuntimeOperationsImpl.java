@@ -27,14 +27,8 @@ public final class IntegrationRuntimeOperationsImpl implements IntegrationRuntim
 
     public IntegrationRuntimeResource enableInteractiveQuery(String resourceGroupName, String factoryName,
         String integrationRuntimeName, EnableInteractiveQueryRequest enableInteractiveQueryRequest) {
-        IntegrationRuntimeResourceInner inner = this.serviceClient()
-            .enableInteractiveQuery(resourceGroupName, factoryName, integrationRuntimeName,
-                enableInteractiveQueryRequest);
-        if (inner != null) {
-            return new IntegrationRuntimeResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.enableInteractiveQuery(resourceGroupName, factoryName, integrationRuntimeName,
+            enableInteractiveQueryRequest, Context.NONE);
     }
 
     public IntegrationRuntimeResource enableInteractiveQuery(String resourceGroupName, String factoryName,
@@ -51,13 +45,7 @@ public final class IntegrationRuntimeOperationsImpl implements IntegrationRuntim
 
     public IntegrationRuntimeResource disableInteractiveQuery(String resourceGroupName, String factoryName,
         String integrationRuntimeName) {
-        IntegrationRuntimeResourceInner inner
-            = this.serviceClient().disableInteractiveQuery(resourceGroupName, factoryName, integrationRuntimeName);
-        if (inner != null) {
-            return new IntegrationRuntimeResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.disableInteractiveQuery(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
     }
 
     public IntegrationRuntimeResource disableInteractiveQuery(String resourceGroupName, String factoryName,

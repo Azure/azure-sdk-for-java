@@ -223,18 +223,7 @@ public final class SiteReferencesClientImpl implements SiteReferencesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Site Reference Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param siteReferenceName The name of the SiteReference.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site Reference Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SiteReferenceInner> getWithResponse(String resourceGroupName, String contextName,
         String siteReferenceName, Context context) {
@@ -243,17 +232,7 @@ public final class SiteReferencesClientImpl implements SiteReferencesClient {
             resourceGroupName, contextName, siteReferenceName, accept, context);
     }
 
-    /**
-     * Get Site Reference Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param siteReferenceName The name of the SiteReference.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site Reference Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteReferenceInner get(String resourceGroupName, String contextName, String siteReferenceName) {
         return getWithResponse(resourceGroupName, contextName, siteReferenceName, Context.NONE).getValue();
@@ -298,11 +277,7 @@ public final class SiteReferencesClientImpl implements SiteReferencesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String contextName,
         String siteReferenceName, SiteReferenceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, contextName, siteReferenceName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, contextName, siteReferenceName, resource, Context.NONE);
     }
 
     /**
@@ -349,40 +324,14 @@ public final class SiteReferencesClientImpl implements SiteReferencesClient {
             SiteReferenceInner.class, SiteReferenceInner.class, this.client.getContext());
     }
 
-    /**
-     * Get Site Reference Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param siteReferenceName The name of the SiteReference.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of site Reference Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SiteReferenceInner>, SiteReferenceInner> beginCreateOrUpdate(String resourceGroupName,
         String contextName, String siteReferenceName, SiteReferenceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, contextName, siteReferenceName, resource);
-        return this.client.<SiteReferenceInner, SiteReferenceInner>getLroResult(response, SiteReferenceInner.class,
-            SiteReferenceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, contextName, siteReferenceName, resource, Context.NONE);
     }
 
-    /**
-     * Get Site Reference Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param siteReferenceName The name of the SiteReference.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of site Reference Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SiteReferenceInner>, SiteReferenceInner> beginCreateOrUpdate(String resourceGroupName,
         String contextName, String siteReferenceName, SiteReferenceInner resource, Context context) {
@@ -411,42 +360,19 @@ public final class SiteReferencesClientImpl implements SiteReferencesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Get Site Reference Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param siteReferenceName The name of the SiteReference.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site Reference Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteReferenceInner createOrUpdate(String resourceGroupName, String contextName, String siteReferenceName,
         SiteReferenceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, contextName, siteReferenceName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, contextName, siteReferenceName, resource, Context.NONE);
     }
 
-    /**
-     * Get Site Reference Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param siteReferenceName The name of the SiteReference.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site Reference Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteReferenceInner createOrUpdate(String resourceGroupName, String contextName, String siteReferenceName,
         SiteReferenceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, contextName, siteReferenceName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, contextName, siteReferenceName, resource, context));
     }
 
     /**
@@ -488,11 +414,7 @@ public final class SiteReferencesClientImpl implements SiteReferencesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String contextName,
         String siteReferenceName, SiteReferenceInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, contextName, siteReferenceName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, contextName, siteReferenceName, properties, Context.NONE);
     }
 
     /**
@@ -539,40 +461,14 @@ public final class SiteReferencesClientImpl implements SiteReferencesClient {
             SiteReferenceInner.class, SiteReferenceInner.class, this.client.getContext());
     }
 
-    /**
-     * Get Site Reference Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param siteReferenceName The name of the SiteReference.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of site Reference Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SiteReferenceInner>, SiteReferenceInner> beginUpdate(String resourceGroupName,
         String contextName, String siteReferenceName, SiteReferenceInner properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, contextName, siteReferenceName, properties);
-        return this.client.<SiteReferenceInner, SiteReferenceInner>getLroResult(response, SiteReferenceInner.class,
-            SiteReferenceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, contextName, siteReferenceName, properties, Context.NONE);
     }
 
-    /**
-     * Get Site Reference Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param siteReferenceName The name of the SiteReference.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of site Reference Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SiteReferenceInner>, SiteReferenceInner> beginUpdate(String resourceGroupName,
         String contextName, String siteReferenceName, SiteReferenceInner properties, Context context) {
@@ -601,41 +497,19 @@ public final class SiteReferencesClientImpl implements SiteReferencesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Get Site Reference Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param siteReferenceName The name of the SiteReference.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site Reference Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteReferenceInner update(String resourceGroupName, String contextName, String siteReferenceName,
         SiteReferenceInner properties) {
-        return beginUpdate(resourceGroupName, contextName, siteReferenceName, properties).getFinalResult();
+        return update(resourceGroupName, contextName, siteReferenceName, properties, Context.NONE);
     }
 
-    /**
-     * Get Site Reference Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param siteReferenceName The name of the SiteReference.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site Reference Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteReferenceInner update(String resourceGroupName, String contextName, String siteReferenceName,
         SiteReferenceInner properties, Context context) {
-        return beginUpdate(resourceGroupName, contextName, siteReferenceName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, contextName, siteReferenceName, properties, context));
     }
 
     /**
@@ -672,8 +546,7 @@ public final class SiteReferencesClientImpl implements SiteReferencesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String contextName,
         String siteReferenceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, contextName, siteReferenceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, contextName, siteReferenceName, Context.NONE);
     }
 
     /**
@@ -715,36 +588,14 @@ public final class SiteReferencesClientImpl implements SiteReferencesClient {
             this.client.getContext());
     }
 
-    /**
-     * Get Site Reference Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param siteReferenceName The name of the SiteReference.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of site Reference Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String contextName,
         String siteReferenceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, contextName, siteReferenceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, contextName, siteReferenceName, Context.NONE);
     }
 
-    /**
-     * Get Site Reference Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param siteReferenceName The name of the SiteReference.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of site Reference Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String contextName,
         String siteReferenceName, Context context) {
@@ -769,35 +620,16 @@ public final class SiteReferencesClientImpl implements SiteReferencesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Get Site Reference Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param siteReferenceName The name of the SiteReference.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String contextName, String siteReferenceName) {
-        beginDelete(resourceGroupName, contextName, siteReferenceName).getFinalResult();
+        delete(resourceGroupName, contextName, siteReferenceName, Context.NONE);
     }
 
-    /**
-     * Get Site Reference Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param siteReferenceName The name of the SiteReference.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String contextName, String siteReferenceName, Context context) {
-        beginDelete(resourceGroupName, contextName, siteReferenceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, contextName, siteReferenceName, context));
     }
 
     /**
@@ -851,12 +683,7 @@ public final class SiteReferencesClientImpl implements SiteReferencesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SiteReferenceInner> listByContextSinglePage(String resourceGroupName, String contextName) {
-        final String accept = "application/json";
-        Response<SiteReferenceListResult> res
-            = service.listByContextSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, contextName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByContextSinglePage(resourceGroupName, contextName, Context.NONE);
     }
 
     /**
@@ -881,33 +708,13 @@ public final class SiteReferencesClientImpl implements SiteReferencesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Site Reference Resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SiteReference list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SiteReferenceInner> listByContext(String resourceGroupName, String contextName) {
-        return new PagedIterable<>(() -> listByContextSinglePage(resourceGroupName, contextName),
-            nextLink -> listByContextNextSinglePage(nextLink));
+        return listByContext(resourceGroupName, contextName, Context.NONE);
     }
 
-    /**
-     * List Site Reference Resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SiteReference list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SiteReferenceInner> listByContext(String resourceGroupName, String contextName,
         Context context) {
@@ -946,11 +753,7 @@ public final class SiteReferencesClientImpl implements SiteReferencesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SiteReferenceInner> listByContextNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SiteReferenceListResult> res
-            = service.listByContextNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByContextNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

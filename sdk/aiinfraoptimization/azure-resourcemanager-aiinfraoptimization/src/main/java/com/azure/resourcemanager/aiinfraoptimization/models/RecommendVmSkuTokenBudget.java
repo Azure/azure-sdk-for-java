@@ -18,13 +18,14 @@ import java.io.IOException;
 public final class RecommendVmSkuTokenBudget implements JsonSerializable<RecommendVmSkuTokenBudget> {
     /*
      * The number of prompt, or input, tokens per inference request. Must be supplied together with `maxOutputTokens`,
-     * and the two must total from 1 through 131072.
+     * and the two must total from 1 through 2147483647 without exceeding the model's maximum context length.
      */
     private Integer promptTokens;
 
     /*
      * The maximum number of generated output tokens per inference request. Must be supplied together with
-     * `promptTokens`, and the two must total from 1 through 131072.
+     * `promptTokens`, and the two must total from 1 through 2147483647 without exceeding the model's maximum context
+     * length.
      */
     private Integer maxOutputTokens;
 
@@ -36,7 +37,8 @@ public final class RecommendVmSkuTokenBudget implements JsonSerializable<Recomme
 
     /**
      * Get the promptTokens property: The number of prompt, or input, tokens per inference request. Must be supplied
-     * together with `maxOutputTokens`, and the two must total from 1 through 131072.
+     * together with `maxOutputTokens`, and the two must total from 1 through 2147483647 without exceeding the model's
+     * maximum context length.
      * 
      * @return the promptTokens value.
      */
@@ -46,7 +48,8 @@ public final class RecommendVmSkuTokenBudget implements JsonSerializable<Recomme
 
     /**
      * Set the promptTokens property: The number of prompt, or input, tokens per inference request. Must be supplied
-     * together with `maxOutputTokens`, and the two must total from 1 through 131072.
+     * together with `maxOutputTokens`, and the two must total from 1 through 2147483647 without exceeding the model's
+     * maximum context length.
      * 
      * @param promptTokens the promptTokens value to set.
      * @return the RecommendVmSkuTokenBudget object itself.
@@ -58,7 +61,8 @@ public final class RecommendVmSkuTokenBudget implements JsonSerializable<Recomme
 
     /**
      * Get the maxOutputTokens property: The maximum number of generated output tokens per inference request. Must be
-     * supplied together with `promptTokens`, and the two must total from 1 through 131072.
+     * supplied together with `promptTokens`, and the two must total from 1 through 2147483647 without exceeding the
+     * model's maximum context length.
      * 
      * @return the maxOutputTokens value.
      */
@@ -68,7 +72,8 @@ public final class RecommendVmSkuTokenBudget implements JsonSerializable<Recomme
 
     /**
      * Set the maxOutputTokens property: The maximum number of generated output tokens per inference request. Must be
-     * supplied together with `promptTokens`, and the two must total from 1 through 131072.
+     * supplied together with `promptTokens`, and the two must total from 1 through 2147483647 without exceeding the
+     * model's maximum context length.
      * 
      * @param maxOutputTokens the maxOutputTokens value to set.
      * @return the RecommendVmSkuTokenBudget object itself.

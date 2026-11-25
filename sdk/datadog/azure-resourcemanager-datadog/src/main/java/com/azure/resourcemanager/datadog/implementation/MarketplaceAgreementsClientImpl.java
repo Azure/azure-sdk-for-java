@@ -154,11 +154,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatadogAgreementResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<DatadogAgreementResourceListResponse> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -179,27 +175,13 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Datadog marketplace agreements in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogAgreementResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List Datadog marketplace agreements in the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogAgreementResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -237,16 +219,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         return createOrUpdateWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create Datadog marketplace agreement in the subscription.
-     * 
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatadogAgreementResourceInner> createOrUpdateWithResponse(DatadogAgreementResourceInner body,
         Context context) {
@@ -255,13 +228,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
             this.client.getSubscriptionId(), accept, body, context);
     }
 
-    /**
-     * Create Datadog marketplace agreement in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogAgreementResourceInner createOrUpdate() {
         final DatadogAgreementResourceInner body = null;
@@ -301,11 +268,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatadogAgreementResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DatadogAgreementResourceListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -12,12 +12,16 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The request used to update a cost control.
+ * A partial budget update. Omitting properties preserves all existing budget properties.
+ * Setting properties to null or an empty object ({}) clears all existing budget properties.
+ * A non-empty properties object updates the supplied fields according to their merge semantics; omitted fields retain
+ * their existing values.
  */
 @Fluent
 public final class CostControlPatch implements JsonSerializable<CostControlPatch> {
     /*
-     * The cost control properties to update.
+     * The budget properties to update. Omission preserves existing properties.
+     * Null or an empty object ({}) clears all existing properties.
      */
     private CostControlPatchProperties properties;
 
@@ -28,7 +32,8 @@ public final class CostControlPatch implements JsonSerializable<CostControlPatch
     }
 
     /**
-     * Get the properties property: The cost control properties to update.
+     * Get the properties property: The budget properties to update. Omission preserves existing properties.
+     * Null or an empty object ({}) clears all existing properties.
      * 
      * @return the properties value.
      */
@@ -37,7 +42,8 @@ public final class CostControlPatch implements JsonSerializable<CostControlPatch
     }
 
     /**
-     * Set the properties property: The cost control properties to update.
+     * Set the properties property: The budget properties to update. Omission preserves existing properties.
+     * Null or an empty object ({}) clears all existing properties.
      * 
      * @param properties the properties value to set.
      * @return the CostControlPatch object itself.
