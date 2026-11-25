@@ -36,32 +36,34 @@ Prior workflow comment: <comment|none>
 ## Required response
 
 Copy the block below exactly without code fences or this heading. Change only
-each `<verdict>` and the summary counts. Keep `--` for `PASS`; replace `--`
-with one exact reason code for `DOWNGRADE` or `FAIL`. The first output line
-must remain `## Data-Plane Review Critique`.
+each `<verdict>`, downgrade target, reason, and the summary counts. Keep target
+and reason as `--` for `PASS`. For `DOWNGRADE`, use an exact lower target and
+`over-escalated`. For `FAIL`, keep target as `--` and use one exact reason
+code. The first output line must remain `## Data-Plane Review Critique`.
 
 ## Data-Plane Review Critique
 
 **Session SHA:** <sha>
 **Findings evaluated:** <n>
 
-| # | Finding | Verdict | Reason |
-| --- | --- | --- | --- |
-| 1 | [<actual-rule-id>] `<actual-path:line>` | <verdict> | -- |
+| # | Finding | State | Verdict | Target | Reason |
+| --- | --- | --- | --- | --- | --- |
+| 1 | [<actual-rule-id>] `<actual-path:line>` | <new|carried-forward> | <verdict> | -- | -- |
 
 **Summary:** <n> PASS, <n> DOWNGRADE, <n> FAIL
 ```
 
 The reviewer adds one pre-populated row per candidate. The critic must not
-change row numbers, rule IDs, citations, headings, metadata, or columns.
+change row numbers, rule IDs, citations, states, headings, metadata, or
+columns.
 
 ## Verdicts
 
 | Verdict | Meaning | Reviewer action |
 | --- | --- | --- |
-| `PASS` | Independently verified | Keep |
-| `DOWNGRADE` | Real but overstated | Apply the critic's lower severity or question form |
-| `FAIL` | Unverified, duplicate, out of scope, or incorrect | Drop |
+| `PASS` | Independently verified | Keep; target and reason remain `--` |
+| `DOWNGRADE` | Real but overstated | Apply the explicit lower target |
+| `FAIL` | Unverified, duplicate, out of scope, or incorrect | Drop; target remains `--` |
 
 ## Reason codes
 
@@ -70,8 +72,9 @@ change row numbers, rule IDs, citations, headings, metadata, or columns.
 `duplicate`, `over-escalated`, `weak-evidence`, `no-correct-form`,
 `harmful-fix`, and `out-of-scope`.
 
-`PASS` uses `--`. `DOWNGRADE` and `FAIL` use exactly one reason code from this
-list. Free-text reasons are invalid.
+`PASS` uses target and reason `--`. `DOWNGRADE` uses target `Warning`,
+`Suggestion`, or `Question` and reason `over-escalated`. `FAIL` uses target
+`--` and exactly one reason code from this list. Free-text reasons are invalid.
 
 ## Severity ceilings
 
@@ -87,7 +90,7 @@ on a `YOU SHOULD` or `YOU SHOULD NOT` statement cannot be Blocking.
 ## Failure handling
 
 The output is malformed unless it has the exact heading and metadata fields,
-one row per supplied finding, the declared columns, a valid reason code, and a
-verdict spelled exactly `PASS`, `DOWNGRADE`, or `FAIL`. Synonyms such as
-`Confirmed` are invalid. If dispatch fails or the critique is malformed, the
-reviewer uses `noop`.
+one row per supplied finding, the declared columns, unchanged candidate states,
+a valid target and reason combination, and a verdict spelled exactly `PASS`,
+`DOWNGRADE`, or `FAIL`. Synonyms such as `Confirmed` are invalid. If dispatch
+fails or the critique is malformed, the reviewer uses `noop`.

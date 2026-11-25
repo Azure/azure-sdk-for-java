@@ -53,13 +53,16 @@ scope, orchestration, verification, and output only.
    bundle is available, retain the source-based inventory.
 4. Load the applicable rule references from the table above.
 5. Produce candidates only for changed evidence. Do not report legacy issues.
+   Revalidated findings carried from the prior workflow report are exempt from
+   the current pushed-range restriction and remain until resolved.
 6. Do not duplicate the exact output of a deterministic check. A distinct
    design issue or repository-prescribed remediation may still be useful.
 7. Self-verify every candidate, then dispatch the Data-Plane Review Critic
    using
    [`../../agents/protocols/data-plane-review-critic.protocol.md`](../../agents/protocols/data-plane-review-critic.protocol.md).
 8. Apply `PASS`, `DOWNGRADE`, and `FAIL` verdicts without override.
-9. Emit one report or the no-findings form. Do not post it.
+9. Emit one complete current-state report or the no-findings form. Use `noop`
+   only when that complete state is unchanged. Do not post it.
 
 ## Severity and finding form
 

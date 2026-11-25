@@ -49,8 +49,8 @@ workflow.
 
 ## Read-only boundary
 
-- Do not execute PR code. The trusted workflow may build an eligible
-  same-repository generated AutoPR before inference and expose only its
+- Do not execute PR code. The trusted workflow may package committed Java
+  sources from an eligible same-repository review and expose only its
   uncommitted API review bundle.
 - Do not modify, approve, merge, or comment on the PR.
 - Pin the head SHA and use it for every PR-content read.
@@ -63,8 +63,10 @@ workflow.
 2. **Pin and classify.** Record the head SHA, package, package version, API
    versions, release type, and whether this is a new module.
 3. **Prior state.** Read the latest workflow comment. Stop if it already covers
-   the same head SHA. Classify prior concerns as carried forward, resolved, or
-   no longer applicable.
+   the same head SHA. Revalidate each prior finding and question. Classify it
+   as carried forward, resolved, or no longer applicable. A replacement report
+   must contain the complete still-valid state, not only newly introduced
+   items.
 4. **API snapshot.** Run `cat "$DATA_PLANE_REVIEW_MANIFEST"` rather than
    searching for it. When it lists bundles for the pinned head, run `cat` on
    every exact `api.md` and `api.metadata.yml` path before reviewing the
@@ -86,15 +88,16 @@ workflow.
    [`protocols/data-plane-review-critic.protocol.md`](protocols/data-plane-review-critic.protocol.md).
    End the dispatch with a complete `## Required response` skeleton populated
    with the actual session SHA, finding count, and one rule-and-citation row per
-   candidate. Prepopulate every reason cell with `--`. Instruct the critic to
-   copy it, change each verdict and the summary counts, and replace `--` only
-   for `DOWNGRADE` or `FAIL` with one exact protocol reason code. Accept only
-   the protocol's exact heading, metadata, row count, columns, reason codes, and
-   `PASS|DOWNGRADE|FAIL` verdicts. Do not normalize synonyms such as
-   `Confirmed`. `FAIL` drops a finding and `DOWNGRADE` lowers it as directed. A
+   candidate. Set its state to `new` or `carried-forward` and prepopulate target
+   and reason cells with `--`. Instruct the critic to copy it, change verdicts,
+   downgrade targets, reasons, and summary counts only. Accept only the
+   protocol's exact heading, metadata, row count, columns, states, targets,
+   reason codes, and `PASS|DOWNGRADE|FAIL` verdicts. Do not normalize synonyms.
+   `FAIL` drops a finding and `DOWNGRADE` applies its explicit target. A
    malformed critique produces `noop`; there is no unattended override.
-11. **Report.** Emit one complete report or the no-findings form from the
-    skill. Do not post it.
+11. **Report.** Emit the complete current-state report or the no-findings form
+    from the skill. If the complete visible state matches the prior comment,
+    use `noop`; otherwise emit the replacement report. Do not post it.
 
 ## Failure behavior
 

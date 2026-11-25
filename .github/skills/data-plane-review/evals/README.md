@@ -1,3 +1,5 @@
+<!-- cspell:ignore Vally -->
+
 # Data-Plane Reviewer Evaluations
 
 Vally evaluations for source-backed Java data-plane review rules.

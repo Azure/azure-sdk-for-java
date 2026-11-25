@@ -1,3 +1,5 @@
+# cspell:ignore vally
+
 param(
     [ValidateSet("all", "findings")]
     [string] $Suite = "findings",
