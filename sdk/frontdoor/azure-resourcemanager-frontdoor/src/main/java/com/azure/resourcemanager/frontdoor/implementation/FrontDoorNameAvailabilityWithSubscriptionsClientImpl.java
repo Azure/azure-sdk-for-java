@@ -116,16 +116,7 @@ public final class FrontDoorNameAvailabilityWithSubscriptionsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Check the availability of a Front Door subdomain.
-     * 
-     * @param checkFrontDoorNameAvailabilityInput The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityOutputInner>
         checkWithResponse(CheckNameAvailabilityInput checkFrontDoorNameAvailabilityInput, Context context) {
@@ -135,15 +126,7 @@ public final class FrontDoorNameAvailabilityWithSubscriptionsClientImpl
             this.client.getSubscriptionId(), contentType, accept, checkFrontDoorNameAvailabilityInput, context);
     }
 
-    /**
-     * Check the availability of a Front Door subdomain.
-     * 
-     * @param checkFrontDoorNameAvailabilityInput The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityOutputInner check(CheckNameAvailabilityInput checkFrontDoorNameAvailabilityInput) {
         return checkWithResponse(checkFrontDoorNameAvailabilityInput, Context.NONE).getValue();

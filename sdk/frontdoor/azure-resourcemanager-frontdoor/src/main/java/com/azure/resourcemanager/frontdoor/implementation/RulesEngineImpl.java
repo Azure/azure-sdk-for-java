@@ -67,10 +67,7 @@ public final class RulesEngineImpl implements RulesEngine, RulesEngine.Definitio
     }
 
     public RulesEngine create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRulesEngines()
-            .createOrUpdate(resourceGroupName, frontDoorName, rulesEngineName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RulesEngine create(Context context) {
@@ -91,10 +88,7 @@ public final class RulesEngineImpl implements RulesEngine, RulesEngine.Definitio
     }
 
     public RulesEngine apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRulesEngines()
-            .createOrUpdate(resourceGroupName, frontDoorName, rulesEngineName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RulesEngine apply(Context context) {
@@ -119,11 +113,7 @@ public final class RulesEngineImpl implements RulesEngine, RulesEngine.Definitio
     }
 
     public RulesEngine refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRulesEngines()
-            .getWithResponse(resourceGroupName, frontDoorName, rulesEngineName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RulesEngine refresh(Context context) {

@@ -147,12 +147,7 @@ public final class PreconfiguredEndpointsClientImpl implements PreconfiguredEndp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PreconfiguredEndpointInner> listSinglePage(String resourceGroupName, String profileName) {
-        final String accept = "application/json";
-        Response<PreconfiguredEndpointList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, profileName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, profileName, Context.NONE);
     }
 
     /**
@@ -177,33 +172,13 @@ public final class PreconfiguredEndpointsClientImpl implements PreconfiguredEndp
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of Preconfigured Endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Preconfigured Endpoints as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PreconfiguredEndpointInner> list(String resourceGroupName, String profileName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, profileName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, profileName, Context.NONE);
     }
 
-    /**
-     * Gets a list of Preconfigured Endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Preconfigured Endpoints as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PreconfiguredEndpointInner> list(String resourceGroupName, String profileName,
         Context context) {
@@ -245,11 +220,7 @@ public final class PreconfiguredEndpointsClientImpl implements PreconfiguredEndp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PreconfiguredEndpointInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PreconfiguredEndpointList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

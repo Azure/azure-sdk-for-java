@@ -181,10 +181,7 @@ public final class FrontDoorImpl implements FrontDoor, FrontDoor.Definition, Fro
     }
 
     public FrontDoor create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFrontDoors()
-            .createOrUpdate(resourceGroupName, frontDoorName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FrontDoor create(Context context) {
@@ -205,10 +202,7 @@ public final class FrontDoorImpl implements FrontDoor, FrontDoor.Definition, Fro
     }
 
     public FrontDoor apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFrontDoors()
-            .createOrUpdate(resourceGroupName, frontDoorName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FrontDoor apply(Context context) {
@@ -230,11 +224,7 @@ public final class FrontDoorImpl implements FrontDoor, FrontDoor.Definition, Fro
     }
 
     public FrontDoor refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFrontDoors()
-            .getByResourceGroupWithResponse(resourceGroupName, frontDoorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FrontDoor refresh(Context context) {

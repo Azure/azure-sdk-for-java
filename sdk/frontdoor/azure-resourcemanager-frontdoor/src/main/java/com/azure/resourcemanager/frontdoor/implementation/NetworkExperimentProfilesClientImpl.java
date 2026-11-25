@@ -247,17 +247,7 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an NetworkExperiment Profile by ProfileName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an NetworkExperiment Profile by ProfileName along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProfileInner> getByResourceGroupWithResponse(String resourceGroupName, String profileName,
         Context context) {
@@ -266,16 +256,7 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
             this.client.getSubscriptionId(), resourceGroupName, profileName, accept, context);
     }
 
-    /**
-     * Gets an NetworkExperiment Profile by ProfileName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an NetworkExperiment Profile by ProfileName.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProfileInner getByResourceGroup(String resourceGroupName, String profileName) {
         return getByResourceGroupWithResponse(resourceGroupName, profileName, Context.NONE).getValue();
@@ -319,11 +300,7 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String profileName,
         ProfileInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, profileName, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, profileName, parameters, Context.NONE);
     }
 
     /**
@@ -367,37 +344,14 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
             ProfileInner.class, ProfileInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates an NetworkExperiment Profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @param parameters An Network Experiment Profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines an Network Experiment Profile and lists of Experiments.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginCreateOrUpdate(String resourceGroupName,
         String profileName, ProfileInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, profileName, parameters);
-        return this.client.<ProfileInner, ProfileInner>getLroResult(response, ProfileInner.class, ProfileInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, profileName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates an NetworkExperiment Profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @param parameters An Network Experiment Profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines an Network Experiment Profile and lists of Experiments.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginCreateOrUpdate(String resourceGroupName,
         String profileName, ProfileInner parameters, Context context) {
@@ -424,38 +378,18 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates an NetworkExperiment Profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @param parameters An Network Experiment Profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines an Network Experiment Profile and lists of Experiments.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProfileInner createOrUpdate(String resourceGroupName, String profileName, ProfileInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, profileName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, profileName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates an NetworkExperiment Profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @param parameters An Network Experiment Profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines an Network Experiment Profile and lists of Experiments.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProfileInner createOrUpdate(String resourceGroupName, String profileName, ProfileInner parameters,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, profileName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, profileName, parameters, context));
     }
 
     /**
@@ -498,11 +432,7 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String profileName,
         ProfileUpdateModel parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, profileName, contentType, accept, parameters,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, profileName, parameters, Context.NONE);
     }
 
     /**
@@ -549,41 +479,14 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
             ProfileInner.class, ProfileInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
-     * 
-     * Updates an NetworkExperimentProfiles.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @param parameters The Profile Update Model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines an Network Experiment Profile and lists of Experiments.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpdate(String resourceGroupName, String profileName,
         ProfileUpdateModel parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, profileName, parameters);
-        return this.client.<ProfileInner, ProfileInner>getLroResult(response, ProfileInner.class, ProfileInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, profileName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
-     * 
-     * Updates an NetworkExperimentProfiles.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @param parameters The Profile Update Model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines an Network Experiment Profile and lists of Experiments.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpdate(String resourceGroupName, String profileName,
         ProfileUpdateModel parameters, Context context) {
@@ -612,42 +515,17 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
-     * 
-     * Updates an NetworkExperimentProfiles.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @param parameters The Profile Update Model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines an Network Experiment Profile and lists of Experiments.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProfileInner update(String resourceGroupName, String profileName, ProfileUpdateModel parameters) {
-        return beginUpdate(resourceGroupName, profileName, parameters).getFinalResult();
+        return update(resourceGroupName, profileName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
-     * 
-     * Updates an NetworkExperimentProfiles.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @param parameters The Profile Update Model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines an Network Experiment Profile and lists of Experiments.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProfileInner update(String resourceGroupName, String profileName, ProfileUpdateModel parameters,
         Context context) {
-        return beginUpdate(resourceGroupName, profileName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, profileName, parameters, context));
     }
 
     /**
@@ -680,8 +558,7 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String profileName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, profileName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, profileName, Context.NONE);
     }
 
     /**
@@ -718,33 +595,13 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
             this.client.getContext());
     }
 
-    /**
-     * Deletes an NetworkExperiment Profile by ProfileName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, profileName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, profileName, Context.NONE);
     }
 
-    /**
-     * Deletes an NetworkExperiment Profile by ProfileName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
         Context context) {
@@ -767,33 +624,16 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
         return beginDeleteAsync(resourceGroupName, profileName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an NetworkExperiment Profile by ProfileName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String profileName) {
-        beginDelete(resourceGroupName, profileName).getFinalResult();
+        delete(resourceGroupName, profileName, Context.NONE);
     }
 
-    /**
-     * Deletes an NetworkExperiment Profile by ProfileName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String profileName, Context context) {
-        beginDelete(resourceGroupName, profileName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, profileName, context));
     }
 
     /**
@@ -845,11 +685,7 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProfileInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ProfileList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -872,33 +708,13 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of Network Experiment Profiles within a resource group under a subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Experiment Profiles within a resource group under a subscription as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets a list of Network Experiment Profiles within a resource group under a subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Experiment Profiles within a resource group under a subscription as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -945,11 +761,7 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProfileInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ProfileList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -970,29 +782,13 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of Network Experiment Profiles under a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Experiment Profiles under a subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets a list of Network Experiment Profiles under a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Experiment Profiles under a subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -1035,11 +831,7 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProfileInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProfileList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1098,10 +890,7 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProfileInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProfileList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

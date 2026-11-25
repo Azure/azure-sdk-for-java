@@ -46,9 +46,7 @@ public final class FrontendEndpointsImpl implements FrontendEndpoints {
     }
 
     public PagedIterable<FrontendEndpoint> listByFrontDoor(String resourceGroupName, String frontDoorName) {
-        PagedIterable<FrontendEndpointInner> inner
-            = this.serviceClient().listByFrontDoor(resourceGroupName, frontDoorName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FrontendEndpointImpl(inner1, this.manager()));
+        return this.listByFrontDoor(resourceGroupName, frontDoorName, Context.NONE);
     }
 
     public PagedIterable<FrontendEndpoint> listByFrontDoor(String resourceGroupName, String frontDoorName,
@@ -60,8 +58,8 @@ public final class FrontendEndpointsImpl implements FrontendEndpoints {
 
     public void enableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName,
         CustomHttpsConfiguration customHttpsConfiguration) {
-        this.serviceClient()
-            .enableHttps(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration);
+        this.enableHttps(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration,
+            Context.NONE);
     }
 
     public void enableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName,
@@ -71,7 +69,7 @@ public final class FrontendEndpointsImpl implements FrontendEndpoints {
     }
 
     public void disableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName) {
-        this.serviceClient().disableHttps(resourceGroupName, frontDoorName, frontendEndpointName);
+        this.disableHttps(resourceGroupName, frontDoorName, frontendEndpointName, Context.NONE);
     }
 
     public void disableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName,

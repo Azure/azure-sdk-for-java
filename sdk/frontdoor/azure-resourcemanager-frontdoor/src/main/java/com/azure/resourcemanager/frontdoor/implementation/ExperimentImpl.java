@@ -108,10 +108,7 @@ public final class ExperimentImpl implements Experiment, Experiment.Definition, 
     }
 
     public Experiment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExperiments()
-            .createOrUpdate(resourceGroupName, profileName, experimentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Experiment create(Context context) {
@@ -133,10 +130,7 @@ public final class ExperimentImpl implements Experiment, Experiment.Definition, 
     }
 
     public Experiment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExperiments()
-            .update(resourceGroupName, profileName, experimentName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Experiment apply(Context context) {
@@ -161,11 +155,7 @@ public final class ExperimentImpl implements Experiment, Experiment.Definition, 
     }
 
     public Experiment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExperiments()
-            .getWithResponse(resourceGroupName, profileName, experimentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Experiment refresh(Context context) {

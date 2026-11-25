@@ -136,11 +136,7 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedRuleSetDefinitionInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ManagedRuleSetDefinitionList> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -161,29 +157,13 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all available managed rule sets.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed rule set definitions available for use in a policy as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedRuleSetDefinitionInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all available managed rule sets.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed rule set definitions available for use in a policy as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedRuleSetDefinitionInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -219,11 +199,7 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedRuleSetDefinitionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ManagedRuleSetDefinitionList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

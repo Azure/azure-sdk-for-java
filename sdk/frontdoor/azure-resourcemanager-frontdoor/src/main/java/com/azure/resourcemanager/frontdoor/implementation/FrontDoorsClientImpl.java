@@ -249,18 +249,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Front Door with the specified Front Door name under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Front Door with the specified Front Door name under the specified subscription and resource group along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FrontDoorInner> getByResourceGroupWithResponse(String resourceGroupName, String frontDoorName,
         Context context) {
@@ -269,16 +258,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
             this.client.getSubscriptionId(), resourceGroupName, frontDoorName, accept, context);
     }
 
-    /**
-     * Gets a Front Door with the specified Front Door name under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Front Door with the specified Front Door name under the specified subscription and resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FrontDoorInner getByResourceGroup(String resourceGroupName, String frontDoorName) {
         return getByResourceGroupWithResponse(resourceGroupName, frontDoorName, Context.NONE).getValue();
@@ -323,11 +303,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String frontDoorName,
         FrontDoorInner frontDoorParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, frontDoorName, contentType, accept, frontDoorParameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, frontDoorName, frontDoorParameters, Context.NONE);
     }
 
     /**
@@ -374,40 +350,14 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
             FrontDoorInner.class, FrontDoorInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a new Front Door with a Front Door name under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontDoorParameters Front Door properties needed to create a new Front Door.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of front Door represents a collection of backend endpoints to route
-     * traffic to along with rules that specify how traffic is sent there.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FrontDoorInner>, FrontDoorInner> beginCreateOrUpdate(String resourceGroupName,
         String frontDoorName, FrontDoorInner frontDoorParameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, frontDoorName, frontDoorParameters);
-        return this.client.<FrontDoorInner, FrontDoorInner>getLroResult(response, FrontDoorInner.class,
-            FrontDoorInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, frontDoorName, frontDoorParameters, Context.NONE);
     }
 
-    /**
-     * Creates a new Front Door with a Front Door name under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontDoorParameters Front Door properties needed to create a new Front Door.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of front Door represents a collection of backend endpoints to route
-     * traffic to along with rules that specify how traffic is sent there.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FrontDoorInner>, FrontDoorInner> beginCreateOrUpdate(String resourceGroupName,
         String frontDoorName, FrontDoorInner frontDoorParameters, Context context) {
@@ -436,41 +386,19 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new Front Door with a Front Door name under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontDoorParameters Front Door properties needed to create a new Front Door.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return front Door represents a collection of backend endpoints to route traffic to along with rules that specify
-     * how traffic is sent there.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FrontDoorInner createOrUpdate(String resourceGroupName, String frontDoorName,
         FrontDoorInner frontDoorParameters) {
-        return beginCreateOrUpdate(resourceGroupName, frontDoorName, frontDoorParameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, frontDoorName, frontDoorParameters, Context.NONE);
     }
 
-    /**
-     * Creates a new Front Door with a Front Door name under the specified subscription and resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontDoorParameters Front Door properties needed to create a new Front Door.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return front Door represents a collection of backend endpoints to route traffic to along with rules that specify
-     * how traffic is sent there.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FrontDoorInner createOrUpdate(String resourceGroupName, String frontDoorName,
         FrontDoorInner frontDoorParameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, frontDoorName, frontDoorParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, frontDoorName, frontDoorParameters, context));
     }
 
     /**
@@ -503,8 +431,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String frontDoorName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, frontDoorName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, frontDoorName, Context.NONE);
     }
 
     /**
@@ -541,33 +468,13 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes an existing Front Door with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String frontDoorName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, frontDoorName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, frontDoorName, Context.NONE);
     }
 
-    /**
-     * Deletes an existing Front Door with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String frontDoorName,
         Context context) {
@@ -590,33 +497,16 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
         return beginDeleteAsync(resourceGroupName, frontDoorName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing Front Door with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String frontDoorName) {
-        beginDelete(resourceGroupName, frontDoorName).getFinalResult();
+        delete(resourceGroupName, frontDoorName, Context.NONE);
     }
 
-    /**
-     * Deletes an existing Front Door with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String frontDoorName, Context context) {
-        beginDelete(resourceGroupName, frontDoorName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, frontDoorName, context));
     }
 
     /**
@@ -666,11 +556,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FrontDoorInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<FrontDoorListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -692,31 +578,13 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the Front Doors within a resource group under a subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of FrontDoor items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FrontDoorInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all of the Front Doors within a resource group under a subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of FrontDoor items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FrontDoorInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -763,11 +631,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FrontDoorInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<FrontDoorListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -788,27 +652,13 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the Front Doors within an Azure subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of FrontDoor items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FrontDoorInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all of the Front Doors within an Azure subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of FrontDoor items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FrontDoorInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -855,18 +705,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Validates the custom domain mapping to ensure it maps to the correct Front Door endpoint in DNS.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param customDomainProperties Custom domain to be validated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidateCustomDomainOutputInner> validateCustomDomainWithResponse(String resourceGroupName,
         String frontDoorName, ValidateCustomDomainInput customDomainProperties, Context context) {
@@ -877,17 +716,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
             customDomainProperties, context);
     }
 
-    /**
-     * Validates the custom domain mapping to ensure it maps to the correct Front Door endpoint in DNS.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param customDomainProperties Custom domain to be validated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateCustomDomainOutputInner validateCustomDomain(String resourceGroupName, String frontDoorName,
         ValidateCustomDomainInput customDomainProperties) {
@@ -927,11 +756,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FrontDoorInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FrontDoorListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -983,11 +808,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FrontDoorInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FrontDoorListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

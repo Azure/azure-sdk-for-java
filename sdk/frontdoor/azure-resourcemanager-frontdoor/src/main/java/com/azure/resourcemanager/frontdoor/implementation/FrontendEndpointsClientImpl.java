@@ -206,18 +206,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Frontend endpoint with the specified name within the specified Front Door.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Frontend endpoint with the specified name within the specified Front Door along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FrontendEndpointInner> getWithResponse(String resourceGroupName, String frontDoorName,
         String frontendEndpointName, Context context) {
@@ -226,17 +215,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
             resourceGroupName, frontDoorName, frontendEndpointName, accept, context);
     }
 
-    /**
-     * Gets a Frontend endpoint with the specified name within the specified Front Door.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Frontend endpoint with the specified name within the specified Front Door.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FrontendEndpointInner get(String resourceGroupName, String frontDoorName, String frontendEndpointName) {
         return getWithResponse(resourceGroupName, frontDoorName, frontendEndpointName, Context.NONE).getValue();
@@ -294,12 +273,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FrontendEndpointInner> listByFrontDoorSinglePage(String resourceGroupName,
         String frontDoorName) {
-        final String accept = "application/json";
-        Response<FrontendEndpointsListResult> res
-            = service.listByFrontDoorSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, frontDoorName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFrontDoorSinglePage(resourceGroupName, frontDoorName, Context.NONE);
     }
 
     /**
@@ -324,33 +298,13 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the frontend endpoints within a Front Door.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of FrontendEndpoint items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FrontendEndpointInner> listByFrontDoor(String resourceGroupName, String frontDoorName) {
-        return new PagedIterable<>(() -> listByFrontDoorSinglePage(resourceGroupName, frontDoorName),
-            nextLink -> listByFrontDoorNextSinglePage(nextLink));
+        return listByFrontDoor(resourceGroupName, frontDoorName, Context.NONE);
     }
 
-    /**
-     * Lists all of the frontend endpoints within a Front Door.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of FrontendEndpoint items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FrontendEndpointInner> listByFrontDoor(String resourceGroupName, String frontDoorName,
         Context context) {
@@ -396,10 +350,8 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> enableHttpsWithResponse(String resourceGroupName, String frontDoorName,
         String frontendEndpointName, CustomHttpsConfiguration customHttpsConfiguration) {
-        final String contentType = "application/json";
-        return service.enableHttpsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, frontDoorName, frontendEndpointName, contentType,
-            customHttpsConfiguration, Context.NONE);
+        return enableHttpsWithResponse(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration,
+            Context.NONE);
     }
 
     /**
@@ -445,39 +397,15 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
             this.client.getContext());
     }
 
-    /**
-     * Enables a frontendEndpoint for HTTPS traffic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
-     * @param customHttpsConfiguration The configuration specifying how to enable HTTPS.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableHttps(String resourceGroupName, String frontDoorName,
         String frontendEndpointName, CustomHttpsConfiguration customHttpsConfiguration) {
-        Response<BinaryData> response
-            = enableHttpsWithResponse(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginEnableHttps(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration,
+            Context.NONE);
     }
 
-    /**
-     * Enables a frontendEndpoint for HTTPS traffic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
-     * @param customHttpsConfiguration The configuration specifying how to enable HTTPS.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableHttps(String resourceGroupName, String frontDoorName,
         String frontendEndpointName, CustomHttpsConfiguration customHttpsConfiguration, Context context) {
@@ -506,41 +434,19 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enables a frontendEndpoint for HTTPS traffic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
-     * @param customHttpsConfiguration The configuration specifying how to enable HTTPS.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName,
         CustomHttpsConfiguration customHttpsConfiguration) {
-        beginEnableHttps(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration)
-            .getFinalResult();
+        enableHttps(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration, Context.NONE);
     }
 
-    /**
-     * Enables a frontendEndpoint for HTTPS traffic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
-     * @param customHttpsConfiguration The configuration specifying how to enable HTTPS.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName,
         CustomHttpsConfiguration customHttpsConfiguration, Context context) {
-        beginEnableHttps(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(beginEnableHttps(resourceGroupName, frontDoorName, frontendEndpointName,
+            customHttpsConfiguration, context));
     }
 
     /**
@@ -577,8 +483,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> disableHttpsWithResponse(String resourceGroupName, String frontDoorName,
         String frontendEndpointName) {
-        return service.disableHttpsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, frontDoorName, frontendEndpointName, Context.NONE);
+        return disableHttpsWithResponse(resourceGroupName, frontDoorName, frontendEndpointName, Context.NONE);
     }
 
     /**
@@ -620,37 +525,14 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
             this.client.getContext());
     }
 
-    /**
-     * Disables a frontendEndpoint for HTTPS traffic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableHttps(String resourceGroupName, String frontDoorName,
         String frontendEndpointName) {
-        Response<BinaryData> response
-            = disableHttpsWithResponse(resourceGroupName, frontDoorName, frontendEndpointName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDisableHttps(resourceGroupName, frontDoorName, frontendEndpointName, Context.NONE);
     }
 
-    /**
-     * Disables a frontendEndpoint for HTTPS traffic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableHttps(String resourceGroupName, String frontDoorName,
         String frontendEndpointName, Context context) {
@@ -676,36 +558,18 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Disables a frontendEndpoint for HTTPS traffic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName) {
-        beginDisableHttps(resourceGroupName, frontDoorName, frontendEndpointName).getFinalResult();
+        disableHttps(resourceGroupName, frontDoorName, frontendEndpointName, Context.NONE);
     }
 
-    /**
-     * Disables a frontendEndpoint for HTTPS traffic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName,
         Context context) {
-        beginDisableHttps(resourceGroupName, frontDoorName, frontendEndpointName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDisableHttps(resourceGroupName, frontDoorName, frontendEndpointName, context));
     }
 
     /**
@@ -739,11 +603,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FrontendEndpointInner> listByFrontDoorNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FrontendEndpointsListResult> res
-            = service.listByFrontDoorNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFrontDoorNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

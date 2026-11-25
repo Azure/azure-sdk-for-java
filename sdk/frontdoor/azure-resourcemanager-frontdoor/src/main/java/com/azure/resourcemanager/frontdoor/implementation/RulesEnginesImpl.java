@@ -45,7 +45,7 @@ public final class RulesEnginesImpl implements RulesEngines {
     }
 
     public void delete(String resourceGroupName, String frontDoorName, String rulesEngineName) {
-        this.serviceClient().delete(resourceGroupName, frontDoorName, rulesEngineName);
+        this.delete(resourceGroupName, frontDoorName, rulesEngineName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String frontDoorName, String rulesEngineName, Context context) {
@@ -53,8 +53,7 @@ public final class RulesEnginesImpl implements RulesEngines {
     }
 
     public PagedIterable<RulesEngine> listByFrontDoor(String resourceGroupName, String frontDoorName) {
-        PagedIterable<RulesEngineInner> inner = this.serviceClient().listByFrontDoor(resourceGroupName, frontDoorName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RulesEngineImpl(inner1, this.manager()));
+        return this.listByFrontDoor(resourceGroupName, frontDoorName, Context.NONE);
     }
 
     public PagedIterable<RulesEngine> listByFrontDoor(String resourceGroupName, String frontDoorName, Context context) {
@@ -64,102 +63,36 @@ public final class RulesEnginesImpl implements RulesEngines {
     }
 
     public RulesEngine getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String frontDoorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}",
-            "frontDoorName");
-        if (frontDoorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'frontDoors'.", id)));
-        }
-        String rulesEngineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}",
-            "rulesEngineName");
-        if (rulesEngineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'rulesEngines'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, frontDoorName, rulesEngineName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<RulesEngine> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String frontDoorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String frontDoorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}",
-            "frontDoorName");
-        if (frontDoorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'frontDoors'.", id)));
-        }
-        String rulesEngineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "frontDoorName", "frontDoors", LOGGER);
+        String rulesEngineName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}",
-            "rulesEngineName");
-        if (rulesEngineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'rulesEngines'.", id)));
-        }
+            "rulesEngineName", "rulesEngines", LOGGER);
         return this.getWithResponse(resourceGroupName, frontDoorName, rulesEngineName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String frontDoorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}",
-            "frontDoorName");
-        if (frontDoorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'frontDoors'.", id)));
-        }
-        String rulesEngineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}",
-            "rulesEngineName");
-        if (rulesEngineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'rulesEngines'.", id)));
-        }
-        this.delete(resourceGroupName, frontDoorName, rulesEngineName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String frontDoorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String frontDoorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}",
-            "frontDoorName");
-        if (frontDoorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'frontDoors'.", id)));
-        }
-        String rulesEngineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "frontDoorName", "frontDoors", LOGGER);
+        String rulesEngineName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}",
-            "rulesEngineName");
-        if (rulesEngineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'rulesEngines'.", id)));
-        }
+            "rulesEngineName", "rulesEngines", LOGGER);
         this.delete(resourceGroupName, frontDoorName, rulesEngineName, context);
     }
 

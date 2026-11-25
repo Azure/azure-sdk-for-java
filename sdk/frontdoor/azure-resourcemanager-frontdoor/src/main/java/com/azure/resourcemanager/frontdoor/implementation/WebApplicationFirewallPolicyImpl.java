@@ -139,10 +139,7 @@ public final class WebApplicationFirewallPolicyImpl implements WebApplicationFir
     }
 
     public WebApplicationFirewallPolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicies()
-            .createOrUpdate(resourceGroupName, policyName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WebApplicationFirewallPolicy create(Context context) {
@@ -164,10 +161,7 @@ public final class WebApplicationFirewallPolicyImpl implements WebApplicationFir
     }
 
     public WebApplicationFirewallPolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicies()
-            .update(resourceGroupName, policyName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WebApplicationFirewallPolicy apply(Context context) {
@@ -190,11 +184,7 @@ public final class WebApplicationFirewallPolicyImpl implements WebApplicationFir
     }
 
     public WebApplicationFirewallPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicies()
-            .getByResourceGroupWithResponse(resourceGroupName, policyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WebApplicationFirewallPolicy refresh(Context context) {

@@ -24,7 +24,7 @@ public final class EndpointsImpl implements Endpoints {
     }
 
     public void purgeContent(String resourceGroupName, String frontDoorName, PurgeParameters contentFilePaths) {
-        this.serviceClient().purgeContent(resourceGroupName, frontDoorName, contentFilePaths);
+        this.purgeContent(resourceGroupName, frontDoorName, contentFilePaths, Context.NONE);
     }
 
     public void purgeContent(String resourceGroupName, String frontDoorName, PurgeParameters contentFilePaths,

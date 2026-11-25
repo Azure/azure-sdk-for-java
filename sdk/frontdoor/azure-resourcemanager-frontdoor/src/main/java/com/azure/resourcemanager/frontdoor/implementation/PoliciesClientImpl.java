@@ -249,17 +249,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieve protection policy with specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the Web Application Firewall Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WebApplicationFirewallPolicyInner> getByResourceGroupWithResponse(String resourceGroupName,
         String policyName, Context context) {
@@ -268,16 +258,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
             this.client.getSubscriptionId(), resourceGroupName, policyName, accept, context);
     }
 
-    /**
-     * Retrieve protection policy with specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the Web Application Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebApplicationFirewallPolicyInner getByResourceGroup(String resourceGroupName, String policyName) {
         return getByResourceGroupWithResponse(resourceGroupName, policyName, Context.NONE).getValue();
@@ -321,11 +302,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String policyName,
         WebApplicationFirewallPolicyInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, policyName, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, policyName, parameters, Context.NONE);
     }
 
     /**
@@ -371,37 +348,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
             WebApplicationFirewallPolicyInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update policy with specified rule set name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the Web Application Firewall Policy.
-     * @param parameters Policy to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines web application firewall policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner>
         beginCreateOrUpdate(String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, policyName, parameters);
-        return this.client.<WebApplicationFirewallPolicyInner, WebApplicationFirewallPolicyInner>getLroResult(response,
-            WebApplicationFirewallPolicyInner.class, WebApplicationFirewallPolicyInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, policyName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update policy with specified rule set name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the Web Application Firewall Policy.
-     * @param parameters Policy to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines web application firewall policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner>
         beginCreateOrUpdate(String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters,
@@ -429,39 +383,19 @@ public final class PoliciesClientImpl implements PoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update policy with specified rule set name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the Web Application Firewall Policy.
-     * @param parameters Policy to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebApplicationFirewallPolicyInner createOrUpdate(String resourceGroupName, String policyName,
         WebApplicationFirewallPolicyInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, policyName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, policyName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update policy with specified rule set name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the Web Application Firewall Policy.
-     * @param parameters Policy to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebApplicationFirewallPolicyInner createOrUpdate(String resourceGroupName, String policyName,
         WebApplicationFirewallPolicyInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, policyName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, policyName, parameters, context));
     }
 
     /**
@@ -502,11 +436,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String policyName,
         TagsObject parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, policyName, contentType, accept, parameters,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, policyName, parameters, Context.NONE);
     }
 
     /**
@@ -552,39 +482,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
             WebApplicationFirewallPolicyInner.class, this.client.getContext());
     }
 
-    /**
-     * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
-     * resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the Web Application Firewall Policy.
-     * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines web application firewall policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner>
         beginUpdate(String resourceGroupName, String policyName, TagsObject parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, policyName, parameters);
-        return this.client.<WebApplicationFirewallPolicyInner, WebApplicationFirewallPolicyInner>getLroResult(response,
-            WebApplicationFirewallPolicyInner.class, WebApplicationFirewallPolicyInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, policyName, parameters, Context.NONE);
     }
 
-    /**
-     * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
-     * resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the Web Application Firewall Policy.
-     * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines web application firewall policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner>
         beginUpdate(String resourceGroupName, String policyName, TagsObject parameters, Context context) {
@@ -612,41 +517,18 @@ public final class PoliciesClientImpl implements PoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
-     * resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the Web Application Firewall Policy.
-     * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebApplicationFirewallPolicyInner update(String resourceGroupName, String policyName,
         TagsObject parameters) {
-        return beginUpdate(resourceGroupName, policyName, parameters).getFinalResult();
+        return update(resourceGroupName, policyName, parameters, Context.NONE);
     }
 
-    /**
-     * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
-     * resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the Web Application Firewall Policy.
-     * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebApplicationFirewallPolicyInner update(String resourceGroupName, String policyName, TagsObject parameters,
         Context context) {
-        return beginUpdate(resourceGroupName, policyName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, policyName, parameters, context));
     }
 
     /**
@@ -679,8 +561,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String policyName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, policyName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, policyName, Context.NONE);
     }
 
     /**
@@ -717,33 +598,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the Web Application Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String policyName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, policyName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, policyName, Context.NONE);
     }
 
-    /**
-     * Deletes Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the Web Application Firewall Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String policyName,
         Context context) {
@@ -766,33 +627,16 @@ public final class PoliciesClientImpl implements PoliciesClient {
         return beginDeleteAsync(resourceGroupName, policyName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the Web Application Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String policyName) {
-        beginDelete(resourceGroupName, policyName).getFinalResult();
+        delete(resourceGroupName, policyName, Context.NONE);
     }
 
-    /**
-     * Deletes Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the Web Application Firewall Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String policyName, Context context) {
-        beginDelete(resourceGroupName, policyName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, policyName, context));
     }
 
     /**
@@ -843,11 +687,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WebApplicationFirewallPolicyInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<WebApplicationFirewallPolicyList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -870,31 +710,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the protection policies within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a list of WebApplicationFirewallPolicies as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebApplicationFirewallPolicyInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all of the protection policies within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a list of WebApplicationFirewallPolicies as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebApplicationFirewallPolicyInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -943,11 +765,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WebApplicationFirewallPolicyInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<WebApplicationFirewallPolicyList> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -968,27 +786,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the protection policies within a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a list of WebApplicationFirewallPolicies as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebApplicationFirewallPolicyInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all of the protection policies within a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a list of WebApplicationFirewallPolicies as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebApplicationFirewallPolicyInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1025,11 +829,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WebApplicationFirewallPolicyInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WebApplicationFirewallPolicyList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1084,11 +884,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WebApplicationFirewallPolicyInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WebApplicationFirewallPolicyList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

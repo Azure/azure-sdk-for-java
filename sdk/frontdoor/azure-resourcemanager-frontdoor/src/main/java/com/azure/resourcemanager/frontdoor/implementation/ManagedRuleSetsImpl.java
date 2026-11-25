@@ -26,8 +26,7 @@ public final class ManagedRuleSetsImpl implements ManagedRuleSets {
     }
 
     public PagedIterable<ManagedRuleSetDefinition> list() {
-        PagedIterable<ManagedRuleSetDefinitionInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedRuleSetDefinitionImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ManagedRuleSetDefinition> list(Context context) {

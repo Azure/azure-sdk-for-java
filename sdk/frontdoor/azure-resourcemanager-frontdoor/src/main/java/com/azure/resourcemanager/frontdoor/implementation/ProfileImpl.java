@@ -88,10 +88,7 @@ public final class ProfileImpl implements Profile, Profile.Definition, Profile.U
     }
 
     public Profile create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkExperimentProfiles()
-            .createOrUpdate(resourceGroupName, profileName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Profile create(Context context) {
@@ -113,10 +110,7 @@ public final class ProfileImpl implements Profile, Profile.Definition, Profile.U
     }
 
     public Profile apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkExperimentProfiles()
-            .update(resourceGroupName, profileName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Profile apply(Context context) {
@@ -138,11 +132,7 @@ public final class ProfileImpl implements Profile, Profile.Definition, Profile.U
     }
 
     public Profile refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkExperimentProfiles()
-            .getByResourceGroupWithResponse(resourceGroupName, profileName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Profile refresh(Context context) {

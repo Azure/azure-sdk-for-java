@@ -26,8 +26,7 @@ public final class PreconfiguredEndpointsImpl implements PreconfiguredEndpoints 
     }
 
     public PagedIterable<PreconfiguredEndpoint> list(String resourceGroupName, String profileName) {
-        PagedIterable<PreconfiguredEndpointInner> inner = this.serviceClient().list(resourceGroupName, profileName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PreconfiguredEndpointImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, profileName, Context.NONE);
     }
 
     public PagedIterable<PreconfiguredEndpoint> list(String resourceGroupName, String profileName, Context context) {

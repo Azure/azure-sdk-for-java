@@ -125,10 +125,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> purgeContentWithResponse(String resourceGroupName, String frontDoorName,
         PurgeParameters contentFilePaths) {
-        final String contentType = "application/json";
-        return service.purgeContentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, frontDoorName, contentType, contentFilePaths,
-            Context.NONE);
+        return purgeContentWithResponse(resourceGroupName, frontDoorName, contentFilePaths, Context.NONE);
     }
 
     /**
@@ -175,40 +172,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
             this.client.getContext());
     }
 
-    /**
-     * Removes a content from Front Door.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param contentFilePaths The path to the content to be purged. Path can be a full URL, e.g. '/pictures/city.png'
-     * which removes a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and
-     * files in the directory.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurgeContent(String resourceGroupName, String frontDoorName,
         PurgeParameters contentFilePaths) {
-        Response<BinaryData> response = purgeContentWithResponse(resourceGroupName, frontDoorName, contentFilePaths);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginPurgeContent(resourceGroupName, frontDoorName, contentFilePaths, Context.NONE);
     }
 
-    /**
-     * Removes a content from Front Door.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param contentFilePaths The path to the content to be purged. Path can be a full URL, e.g. '/pictures/city.png'
-     * which removes a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and
-     * files in the directory.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurgeContent(String resourceGroupName, String frontDoorName,
         PurgeParameters contentFilePaths, Context context) {
@@ -237,39 +208,17 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Removes a content from Front Door.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param contentFilePaths The path to the content to be purged. Path can be a full URL, e.g. '/pictures/city.png'
-     * which removes a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and
-     * files in the directory.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeContent(String resourceGroupName, String frontDoorName, PurgeParameters contentFilePaths) {
-        beginPurgeContent(resourceGroupName, frontDoorName, contentFilePaths).getFinalResult();
+        purgeContent(resourceGroupName, frontDoorName, contentFilePaths, Context.NONE);
     }
 
-    /**
-     * Removes a content from Front Door.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param contentFilePaths The path to the content to be purged. Path can be a full URL, e.g. '/pictures/city.png'
-     * which removes a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and
-     * files in the directory.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeContent(String resourceGroupName, String frontDoorName, PurgeParameters contentFilePaths,
         Context context) {
-        beginPurgeContent(resourceGroupName, frontDoorName, contentFilePaths, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginPurgeContent(resourceGroupName, frontDoorName, contentFilePaths, context));
     }
 }

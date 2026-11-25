@@ -204,19 +204,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Rules Engine Configuration with the specified name within the specified Front Door.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Rules Engine Configuration with the specified name within the specified Front Door along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RulesEngineInner> getWithResponse(String resourceGroupName, String frontDoorName,
         String rulesEngineName, Context context) {
@@ -225,17 +213,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
             resourceGroupName, frontDoorName, rulesEngineName, accept, context);
     }
 
-    /**
-     * Gets a Rules Engine Configuration with the specified name within the specified Front Door.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Rules Engine Configuration with the specified name within the specified Front Door.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RulesEngineInner get(String resourceGroupName, String frontDoorName, String rulesEngineName) {
         return getWithResponse(resourceGroupName, frontDoorName, rulesEngineName, Context.NONE).getValue();
@@ -284,11 +262,8 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String frontDoorName,
         String rulesEngineName, RulesEngineInner rulesEngineParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, frontDoorName, rulesEngineName, contentType, accept,
-            rulesEngineParameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters,
+            Context.NONE);
     }
 
     /**
@@ -340,44 +315,15 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
             RulesEngineInner.class, RulesEngineInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
-     * @param rulesEngineParameters Rules Engine Configuration properties needed to create a new Rules Engine
-     * Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a rules engine configuration containing a list of rules that will
-     * run to modify the runtime behavior of the request and response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RulesEngineInner>, RulesEngineInner> beginCreateOrUpdate(String resourceGroupName,
         String frontDoorName, String rulesEngineName, RulesEngineInner rulesEngineParameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters);
-        return this.client.<RulesEngineInner, RulesEngineInner>getLroResult(response, RulesEngineInner.class,
-            RulesEngineInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters,
+            Context.NONE);
     }
 
-    /**
-     * Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
-     * @param rulesEngineParameters Rules Engine Configuration properties needed to create a new Rules Engine
-     * Configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a rules engine configuration containing a list of rules that will
-     * run to modify the runtime behavior of the request and response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RulesEngineInner>, RulesEngineInner> beginCreateOrUpdate(String resourceGroupName,
         String frontDoorName, String rulesEngineName, RulesEngineInner rulesEngineParameters, Context context) {
@@ -408,47 +354,19 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
-     * @param rulesEngineParameters Rules Engine Configuration properties needed to create a new Rules Engine
-     * Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a rules engine configuration containing a list of rules that will run to modify the runtime behavior of
-     * the request and response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RulesEngineInner createOrUpdate(String resourceGroupName, String frontDoorName, String rulesEngineName,
         RulesEngineInner rulesEngineParameters) {
-        return beginCreateOrUpdate(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters, Context.NONE);
     }
 
-    /**
-     * Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
-     * @param rulesEngineParameters Rules Engine Configuration properties needed to create a new Rules Engine
-     * Configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a rules engine configuration containing a list of rules that will run to modify the runtime behavior of
-     * the request and response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RulesEngineInner createOrUpdate(String resourceGroupName, String frontDoorName, String rulesEngineName,
         RulesEngineInner rulesEngineParameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters, context));
     }
 
     /**
@@ -485,8 +403,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String frontDoorName,
         String rulesEngineName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, frontDoorName, rulesEngineName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, frontDoorName, rulesEngineName, Context.NONE);
     }
 
     /**
@@ -528,36 +445,14 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes an existing Rules Engine Configuration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String frontDoorName,
         String rulesEngineName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, frontDoorName, rulesEngineName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, frontDoorName, rulesEngineName, Context.NONE);
     }
 
-    /**
-     * Deletes an existing Rules Engine Configuration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String frontDoorName,
         String rulesEngineName, Context context) {
@@ -582,35 +477,16 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing Rules Engine Configuration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String frontDoorName, String rulesEngineName) {
-        beginDelete(resourceGroupName, frontDoorName, rulesEngineName).getFinalResult();
+        delete(resourceGroupName, frontDoorName, rulesEngineName, Context.NONE);
     }
 
-    /**
-     * Deletes an existing Rules Engine Configuration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String frontDoorName, String rulesEngineName, Context context) {
-        beginDelete(resourceGroupName, frontDoorName, rulesEngineName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, frontDoorName, rulesEngineName, context));
     }
 
     /**
@@ -664,12 +540,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RulesEngineInner> listByFrontDoorSinglePage(String resourceGroupName, String frontDoorName) {
-        final String accept = "application/json";
-        Response<RulesEngineListResult> res
-            = service.listByFrontDoorSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, frontDoorName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFrontDoorSinglePage(resourceGroupName, frontDoorName, Context.NONE);
     }
 
     /**
@@ -694,33 +565,13 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the Rules Engine Configurations within a Front Door.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of RulesEngine items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RulesEngineInner> listByFrontDoor(String resourceGroupName, String frontDoorName) {
-        return new PagedIterable<>(() -> listByFrontDoorSinglePage(resourceGroupName, frontDoorName),
-            nextLink -> listByFrontDoorNextSinglePage(nextLink));
+        return listByFrontDoor(resourceGroupName, frontDoorName, Context.NONE);
     }
 
-    /**
-     * Lists all of the Rules Engine Configurations within a Front Door.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of RulesEngine items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RulesEngineInner> listByFrontDoor(String resourceGroupName, String frontDoorName,
         Context context) {
@@ -759,11 +610,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RulesEngineInner> listByFrontDoorNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RulesEngineListResult> res
-            = service.listByFrontDoorNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFrontDoorNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
