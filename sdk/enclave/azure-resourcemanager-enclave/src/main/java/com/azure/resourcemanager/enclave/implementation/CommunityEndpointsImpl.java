@@ -113,13 +113,7 @@ public final class CommunityEndpointsImpl implements CommunityEndpoints {
 
     public CommunityEndpointResource sync(String resourceGroupName, String communityName,
         String communityEndpointName) {
-        CommunityEndpointResourceInner inner
-            = this.serviceClient().sync(resourceGroupName, communityName, communityEndpointName);
-        if (inner != null) {
-            return new CommunityEndpointResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.sync(resourceGroupName, communityName, communityEndpointName, Context.NONE);
     }
 
     public CommunityEndpointResource sync(String resourceGroupName, String communityName, String communityEndpointName,

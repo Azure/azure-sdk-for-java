@@ -1240,9 +1240,7 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> syncWithResponse(String resourceGroupName, String communityName,
         String communityEndpointName) {
-        final String accept = "application/json";
-        return service.syncSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, communityName, communityEndpointName, accept, Context.NONE);
+        return syncWithResponse(resourceGroupName, communityName, communityEndpointName, Context.NONE);
     }
 
     /**
@@ -1286,37 +1284,14 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             this.client.getContext());
     }
 
-    /**
-     * Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of communityEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommunityEndpointResourceInner>, CommunityEndpointResourceInner>
         beginSync(String resourceGroupName, String communityName, String communityEndpointName) {
-        Response<BinaryData> response = syncWithResponse(resourceGroupName, communityName, communityEndpointName);
-        return this.client.<CommunityEndpointResourceInner, CommunityEndpointResourceInner>getLroResult(response,
-            CommunityEndpointResourceInner.class, CommunityEndpointResourceInner.class, Context.NONE);
+        return beginSync(resourceGroupName, communityName, communityEndpointName, Context.NONE);
     }
 
-    /**
-     * Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of communityEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommunityEndpointResourceInner>, CommunityEndpointResourceInner>
         beginSync(String resourceGroupName, String communityName, String communityEndpointName, Context context) {
@@ -1344,39 +1319,19 @@ public final class CommunityEndpointsClientImpl implements CommunityEndpointsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return communityEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunityEndpointResourceInner sync(String resourceGroupName, String communityName,
         String communityEndpointName) {
-        return beginSync(resourceGroupName, communityName, communityEndpointName).getFinalResult();
+        return sync(resourceGroupName, communityName, communityEndpointName, Context.NONE);
     }
 
-    /**
-     * Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param communityEndpointName The name of the Community Endpoint Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return communityEndpoint Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunityEndpointResourceInner sync(String resourceGroupName, String communityName,
         String communityEndpointName, Context context) {
-        return beginSync(resourceGroupName, communityName, communityEndpointName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginSync(resourceGroupName, communityName, communityEndpointName, context));
     }
 
     /**
