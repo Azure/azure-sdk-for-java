@@ -23,6 +23,18 @@ public final class ConfigDataImpl implements ConfigData, ConfigData.Definition {
     ConfigDataImpl(ConfigDataInner innerObject, com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        String configurationNameLocal = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Advisor/configurations/{configurationName}",
+            "configurationName");
+        if (configurationNameLocal == null) {
+            configurationNameLocal = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/configurations/{configurationName}",
+                "configurationName");
+        }
+        this.configurationName = ConfigurationName.fromString(configurationNameLocal);
+        this.resourceGroup = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Advisor/configurations/{configurationName}",
+            "resourceGroup");
     }
 
     public String id() {
@@ -80,11 +92,7 @@ public final class ConfigDataImpl implements ConfigData, ConfigData.Definition {
     }
 
     public ConfigData create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurations()
-            .createInResourceGroupWithResponse(configurationName, resourceGroup, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ConfigData create(Context context) {

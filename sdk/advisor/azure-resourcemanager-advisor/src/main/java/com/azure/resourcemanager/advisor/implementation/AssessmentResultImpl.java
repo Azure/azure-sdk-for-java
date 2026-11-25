@@ -82,11 +82,7 @@ public final class AssessmentResultImpl
     private String assessmentName;
 
     public AssessmentResult create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssessments()
-            .putWithResponse(assessmentName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AssessmentResult create(Context context) {
@@ -108,11 +104,7 @@ public final class AssessmentResultImpl
     }
 
     public AssessmentResult apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssessments()
-            .putWithResponse(assessmentName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AssessmentResult apply(Context context) {
@@ -133,9 +125,7 @@ public final class AssessmentResultImpl
     }
 
     public AssessmentResult refresh() {
-        this.innerObject
-            = serviceManager.serviceClient().getAssessments().getWithResponse(assessmentName, Context.NONE).getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AssessmentResult refresh(Context context) {

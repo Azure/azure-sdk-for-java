@@ -146,33 +146,14 @@ public final class RecommendationMetadatasClientImpl implements RecommendationMe
         return getWithResponseAsync(name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the metadata entity.
-     * 
-     * @param name Name of metadata entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata entity along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetadataEntityInner> getWithResponse(String name, Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), name, accept, context);
     }
 
-    /**
-     * Gets the metadata entity.
-     * 
-     * @param name Name of metadata entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 404.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata entity.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetadataEntityInner get(String name) {
         return getWithResponse(name, Context.NONE).getValue();
@@ -274,11 +255,7 @@ public final class RecommendationMetadatasClientImpl implements RecommendationMe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MetadataEntityInner> listSinglePage(String filter) {
-        final String accept = "application/json";
-        Response<MetadataEntityListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, Context.NONE);
     }
 
     /**
@@ -313,42 +290,14 @@ public final class RecommendationMetadatasClientImpl implements RecommendationMe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of metadata entities.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of metadata entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetadataEntityInner> list() {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(filter), nextLink -> listNextSinglePage(nextLink));
+        return list(filter, Context.NONE);
     }
 
-    /**
-     * Gets the list of metadata entities.
-     * 
-     * @param filter The filter to apply to the recommendation metadata.&lt;br&gt;Filter can be applied to properties
-     * ['[recommendationCategory](#category)', '[recommendationSubCategory](#recommendationSubCategory)',
-     * 'RetirementDate'] with operators ['eq', 'and', 'le', 'ge']&lt;br&gt;The filter can also be applied to property
-     * ['[TrackingIds]']&lt;br&gt;&lt;br&gt;⚠ **Note:** `recommendationControl` is a legacy filter property and will be
-     * deprecated in the future. Please use `recommendationSubCategory` for filtering recommendation
-     * subcategory.&lt;br&gt;&lt;br&gt;Valid options for recommendationSubCategory: ['BusinessContinuity',
-     * 'DisasterRecovery', 'HighAvailability', 'MonitoringAndAlerting', 'Other', 'Personalized',
-     * 'PrioritizedRecommendations', 'Scalability', 'ServiceUpgradeAndRetirement',
-     * 'Validation']&lt;br&gt;&lt;br&gt;Example:&lt;br&gt;- $filter=recommendationCategory eq 'HighAvailability' and
-     * recommendationSubCategory eq 'ServiceUpgradeAndRetirement' and retirementDate ge '2024-01-01' and retirementDate
-     * le '2028-01-01'. Filter can be applied on trackingIds as well.&lt;br&gt;- $filter=trackingIds/any(t: t eq
-     * 'some-guid')&lt;br&gt;&lt;br&gt;⚠ **Note:** `trackingIDs` filter can be used for filtering one value at a time.
-     * The support to filter multiple values is not currently available. Also the support to add other filters along
-     * with `trackingIDs` is not available.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of metadata entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetadataEntityInner> list(String filter, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, context),
@@ -384,11 +333,7 @@ public final class RecommendationMetadatasClientImpl implements RecommendationMe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MetadataEntityInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MetadataEntityListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

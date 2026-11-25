@@ -146,11 +146,7 @@ public final class AssessmentTypesClientImpl implements AssessmentTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssessmentTypeResultInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<AssessmentTypeListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -175,35 +171,13 @@ public final class AssessmentTypesClientImpl implements AssessmentTypesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get assessment types list.
-     * 
-     * Get list of Azure Advisor assessment types.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return assessment types list.
-     * 
-     * Get list of Azure Advisor assessment types as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssessmentTypeResultInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Get assessment types list.
-     * 
-     * Get list of Azure Advisor assessment types.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return assessment types list.
-     * 
-     * Get list of Azure Advisor assessment types as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssessmentTypeResultInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -247,11 +221,7 @@ public final class AssessmentTypesClientImpl implements AssessmentTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssessmentTypeResultInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AssessmentTypeListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

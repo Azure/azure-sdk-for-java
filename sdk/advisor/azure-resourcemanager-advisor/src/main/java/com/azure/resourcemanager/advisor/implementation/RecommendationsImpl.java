@@ -150,7 +150,7 @@ public final class RecommendationsImpl implements Recommendations {
     }
 
     public void generate() {
-        this.serviceClient().generate();
+        this.generateWithResponse(Context.NONE);
     }
 
     public RecommendationsGetGenerateStatusResponse getGenerateStatusWithResponse(String operationId, Context context) {
@@ -158,7 +158,7 @@ public final class RecommendationsImpl implements Recommendations {
     }
 
     public void getGenerateStatus(String operationId) {
-        this.serviceClient().getGenerateStatus(operationId);
+        this.getGenerateStatusWithResponse(operationId, Context.NONE);
     }
 
     private RecommendationsClient serviceClient() {

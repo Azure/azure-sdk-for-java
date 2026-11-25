@@ -127,16 +127,7 @@ public final class AdvisorScoresClientImpl implements AdvisorScoresClient {
         return getWithResponseAsync(name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the advisor score.
-     * 
-     * @param name The scope of Advisor score entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the advisor score along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdvisorScoreEntityInner> getWithResponse(String name, Context context) {
         final String accept = "application/json";
@@ -144,15 +135,7 @@ public final class AdvisorScoresClientImpl implements AdvisorScoresClient {
             name, accept, context);
     }
 
-    /**
-     * Gets the advisor score.
-     * 
-     * @param name The scope of Advisor score entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the advisor score.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdvisorScoreEntityInner get(String name) {
         return getWithResponse(name, Context.NONE).getValue();
@@ -197,11 +180,7 @@ public final class AdvisorScoresClientImpl implements AdvisorScoresClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AdvisorScoreEntityInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<AdvisorScoreResponse> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            null, null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -222,27 +201,13 @@ public final class AdvisorScoresClientImpl implements AdvisorScoresClient {
             null, null);
     }
 
-    /**
-     * Gets the list of advisor scores.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of advisor scores as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AdvisorScoreEntityInner> list() {
-        return new PagedIterable<>(() -> listSinglePage());
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets the list of advisor scores.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of advisor scores as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AdvisorScoreEntityInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context));

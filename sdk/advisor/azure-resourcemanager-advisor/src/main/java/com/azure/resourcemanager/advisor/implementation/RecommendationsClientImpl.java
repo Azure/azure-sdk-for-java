@@ -319,17 +319,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         return getWithResponseAsync(resourceUri, recommendationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Obtains details of a cached recommendation.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param recommendationId The recommendation ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return advisor Recommendation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceRecommendationBaseInner> getWithResponse(String resourceUri, String recommendationId,
         Context context) {
@@ -338,16 +328,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             accept, context);
     }
 
-    /**
-     * Obtains details of a cached recommendation.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param recommendationId The recommendation ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return advisor Recommendation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceRecommendationBaseInner get(String resourceUri, String recommendationId) {
         return getWithResponse(resourceUri, recommendationId, Context.NONE).getValue();
@@ -390,17 +371,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         return updateWithResponseAsync(recommendationId, properties).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update the state of a Recommendation.
-     * 
-     * @param recommendationId The recommendation ID.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return advisor Recommendation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceRecommendationBaseInner> updateWithResponse(String recommendationId,
         RecommendationPatchPayload properties, Context context) {
@@ -410,16 +381,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             this.client.getSubscriptionId(), recommendationId, contentType, accept, properties, context);
     }
 
-    /**
-     * Update the state of a Recommendation.
-     * 
-     * @param recommendationId The recommendation ID.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return advisor Recommendation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceRecommendationBaseInner update(String recommendationId, RecommendationPatchPayload properties) {
         return updateWithResponse(recommendationId, properties, Context.NONE).getValue();
@@ -543,12 +505,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceRecommendationBaseInner> listSinglePage(String filter, RecommendationListMode mode,
         Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<ResourceRecommendationBaseListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                filter, mode, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, mode, top, skipToken, Context.NONE);
     }
 
     /**
@@ -589,52 +546,17 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Obtains recommendations for a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceRecommendationBase list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceRecommendationBaseInner> list() {
         final String filter = null;
         final RecommendationListMode mode = null;
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(filter, mode, top, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(filter, mode, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Obtains recommendations for a subscription.
-     * 
-     * @param filter The filter to apply to the recommendations.&lt;br&gt;Filter can be applied to properties
-     * ['ResourceId', 'ResourceGroup', 'RecommendationTypeGuid', '[Category](#category)', 'SubCategory',
-     * 'RetirementDate', '[RecommendationStatus](#recommendationStatus)', 'Criticality'] with operators ['eq', 'and',
-     * 'or', 'lt', 'gt', 'le', 'ge']&lt;br&gt;.
-     * &lt;br&gt;**Note:** `Control` is a legacy filter property and will be deprecated in the future. Please use
-     * `SubCategory` for filtering recommendation subcategory.&lt;br&gt;
-     * &lt;br&gt;**Note:** `RecommendationStatus` filter is available from API Version 2026-02-01-preview and
-     * onwards.&lt;br&gt;
-     * &lt;br&gt;**Note:** `Criticality` filter is available from API Version 2026-08-01-preview and onwards.&lt;br&gt;
-     * &lt;br&gt;Valid options for SubCategory:&lt;br&gt;['BusinessContinuity', 'DisasterRecovery', 'HighAvailability',
-     * 'MonitoringAndAlerting', 'Other', 'Personalized', 'PrioritizedRecommendations', 'Scalability',
-     * 'ServiceUpgradeAndRetirement', 'Validation']&lt;br&gt;
-     * &lt;br&gt;Example:&lt;br&gt;- $filter=Category eq 'Cost' and ResourceGroup eq
-     * 'MyResourceGroup'&lt;br&gt;-$filter=SubCategory eq 'ServiceUpgradeAndRetirement' and RetirementDate le
-     * '2028-01-01' and RetirementDate ge '2024-01-01'&lt;br&gt;-$filter=Criticality eq 'Critical'.
-     * @param mode The recommendation retrieval mode.
-     * @param top The number of recommendations per page if a paged version of this API is being used.
-     * @param skipToken The page-continuation token to use with a paged version of this API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceRecommendationBase list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceRecommendationBaseInner> list(String filter, RecommendationListMode mode, Integer top,
         String skipToken, Context context) {
@@ -729,11 +651,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceRecommendationBaseInner> listByTenantSinglePage(String resourceUri, String filter,
         Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<ResourceRecommendationBaseListResult> res = service.listByTenantSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, filter, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTenantSinglePage(resourceUri, filter, top, skipToken, Context.NONE);
     }
 
     /**
@@ -762,43 +680,16 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Obtains cached recommendations for a subscription. The recommendations are generated or computed by invoking
-     * generateRecommendations.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceRecommendationBase list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceRecommendationBaseInner> listByTenant(String resourceUri) {
         final String filter = null;
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByTenantSinglePage(resourceUri, filter, top, skipToken),
-            nextLink -> listByTenantNextSinglePage(nextLink));
+        return listByTenant(resourceUri, filter, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Obtains cached recommendations for a subscription. The recommendations are generated or computed by invoking
-     * generateRecommendations.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param filter The filter to apply to the recommendations.&lt;br&gt;Filter can be applied to properties
-     * ['ResourceId', 'ResourceGroup', 'RecommendationTypeGuid', '[Category](#category)'] with operators ['eq', 'and',
-     * 'or'].&lt;br&gt;Example:&lt;br&gt;- $filter=Category eq 'Cost' and ResourceGroup eq 'MyResourceGroup'.
-     * @param top The number of recommendations per page if a paged version of this API is being used.
-     * @param skipToken The page-continuation token to use with a paged version of this API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceRecommendationBase list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceRecommendationBaseInner> listByTenant(String resourceUri, String filter, Integer top,
         String skipToken, Context context) {
@@ -929,11 +820,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceRecommendationBaseInner> listByServiceGroupSinglePage(String serviceGroupName,
         String filter, RecommendationListMode mode, Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<ResourceRecommendationBaseListResult> res = service.listByServiceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), serviceGroupName, filter, mode, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServiceGroupSinglePage(serviceGroupName, filter, mode, top, skipToken, Context.NONE);
     }
 
     /**
@@ -974,55 +861,17 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Obtains recommendations for a service group.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceRecommendationBase list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceRecommendationBaseInner> listByServiceGroup(String serviceGroupName) {
         final String filter = null;
         final RecommendationListMode mode = null;
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByServiceGroupSinglePage(serviceGroupName, filter, mode, top, skipToken),
-            nextLink -> listByServiceGroupNextSinglePage(nextLink));
+        return listByServiceGroup(serviceGroupName, filter, mode, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Obtains recommendations for a service group.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param filter The filter to apply to the recommendations.&lt;br&gt;Filter can be applied to properties
-     * ['ResourceId', 'ResourceGroup', 'RecommendationTypeGuid', '[Category](#category)', 'SubCategory',
-     * 'RetirementDate', '[RecommendationStatus](#recommendationStatus)', 'Criticality'] with operators ['eq', 'and',
-     * 'or', 'lt', 'gt', 'le', 'ge']&lt;br&gt;.
-     * &lt;br&gt;**Note:** `Control` is a legacy filter property and will be deprecated in the future. Please use
-     * `SubCategory` for filtering recommendation subcategory.&lt;br&gt;
-     * &lt;br&gt;**Note:** `RecommendationStatus` filter is available from API Version 2026-02-01-preview and
-     * onwards.&lt;br&gt;
-     * &lt;br&gt;**Note:** `Criticality` filter is available from API Version 2026-08-01-preview and onwards.&lt;br&gt;
-     * &lt;br&gt;Valid options for SubCategory:&lt;br&gt;['BusinessContinuity', 'DisasterRecovery', 'HighAvailability',
-     * 'MonitoringAndAlerting', 'Other', 'Personalized', 'PrioritizedRecommendations', 'Scalability',
-     * 'ServiceUpgradeAndRetirement', 'Validation']&lt;br&gt;
-     * &lt;br&gt;Example:&lt;br&gt;- $filter=Category eq 'Cost' and ResourceGroup eq
-     * 'MyResourceGroup'&lt;br&gt;-$filter=SubCategory eq 'ServiceUpgradeAndRetirement' and RetirementDate le
-     * '2028-01-01' and RetirementDate ge '2024-01-01'&lt;br&gt;-$filter=Criticality eq 'High'.
-     * @param mode The recommendation retrieval mode.
-     * @param top The number of recommendations per page.
-     * @param skipToken The page-continuation token for the next page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceRecommendationBase list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceRecommendationBaseInner> listByServiceGroup(String serviceGroupName, String filter,
         RecommendationListMode mode, Integer top, String skipToken, Context context) {
@@ -1068,17 +917,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Obtains details of a recommendation for a service group.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recommendationId The recommendation ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return advisor Recommendation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceRecommendationBaseInner> getByServiceGroupWithResponse(String serviceGroupName,
         String recommendationId, Context context) {
@@ -1087,16 +926,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             recommendationId, accept, context);
     }
 
-    /**
-     * Obtains details of a recommendation for a service group.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recommendationId The recommendation ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return advisor Recommendation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceRecommendationBaseInner getByServiceGroup(String serviceGroupName, String recommendationId) {
         return getByServiceGroupWithResponse(serviceGroupName, recommendationId, Context.NONE).getValue();
@@ -1142,18 +972,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates the state of a recommendation for a service group.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recommendationId The recommendation ID.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return advisor Recommendation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceRecommendationBaseInner> updateByServiceGroupWithResponse(String serviceGroupName,
         String recommendationId, RecommendationPatchPayload properties, Context context) {
@@ -1163,17 +982,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             serviceGroupName, recommendationId, contentType, accept, properties, context);
     }
 
-    /**
-     * Updates the state of a recommendation for a service group.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recommendationId The recommendation ID.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return advisor Recommendation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceRecommendationBaseInner updateByServiceGroup(String serviceGroupName, String recommendationId,
         RecommendationPatchPayload properties) {
@@ -1210,29 +1019,14 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         return generateWithResponseAsync().flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Initiates the recommendation generation or computation process for a subscription. This operation is
-     * asynchronous. The generated recommendations are stored in a cache in the Advisor service.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecommendationsGenerateResponse generateWithResponse(Context context) {
         return service.generateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), context);
     }
 
-    /**
-     * Initiates the recommendation generation or computation process for a subscription. This operation is
-     * asynchronous. The generated recommendations are stored in a cache in the Advisor service.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void generate() {
         generateWithResponse(Context.NONE);
@@ -1273,34 +1067,14 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         return getGenerateStatusWithResponseAsync(operationId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Retrieves the status of the recommendation computation or generation process. Invoke this API after calling the
-     * generation recommendation. The URI of this API is returned in the Location field of the response header.
-     * 
-     * @param operationId The operation ID, which can be found from the Location field in the generate recommendation
-     * response header.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecommendationsGetGenerateStatusResponse getGenerateStatusWithResponse(String operationId, Context context) {
         return service.getGenerateStatusSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), operationId, context);
     }
 
-    /**
-     * Retrieves the status of the recommendation computation or generation process. Invoke this API after calling the
-     * generation recommendation. The URI of this API is returned in the Location field of the response header.
-     * 
-     * @param operationId The operation ID, which can be found from the Location field in the generate recommendation
-     * response header.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getGenerateStatus(String operationId) {
         getGenerateStatusWithResponse(operationId, Context.NONE);
@@ -1336,11 +1110,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceRecommendationBaseInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ResourceRecommendationBaseListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1393,11 +1163,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceRecommendationBaseInner> listByTenantNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ResourceRecommendationBaseListResult> res
-            = service.listByTenantNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTenantNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1453,11 +1219,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceRecommendationBaseInner> listByServiceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ResourceRecommendationBaseListResult> res
-            = service.listByServiceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServiceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

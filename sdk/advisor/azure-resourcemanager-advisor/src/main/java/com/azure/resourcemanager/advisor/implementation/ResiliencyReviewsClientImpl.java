@@ -154,20 +154,7 @@ public final class ResiliencyReviewsClientImpl implements ResiliencyReviewsClien
         return getWithResponseAsync(reviewId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get existing resiliency review.
-     * 
-     * Get existing Azure Advisor resiliency review by id.
-     * 
-     * @param reviewId Existing review id. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return existing resiliency review.
-     * 
-     * Get existing Azure Advisor resiliency review by id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResiliencyReviewInner> getWithResponse(String reviewId, Context context) {
         final String accept = "application/json";
@@ -175,19 +162,7 @@ public final class ResiliencyReviewsClientImpl implements ResiliencyReviewsClien
             reviewId, accept, context);
     }
 
-    /**
-     * Get existing resiliency review.
-     * 
-     * Get existing Azure Advisor resiliency review by id.
-     * 
-     * @param reviewId Existing review id. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return existing resiliency review.
-     * 
-     * Get existing Azure Advisor resiliency review by id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResiliencyReviewInner get(String reviewId) {
         return getWithResponse(reviewId, Context.NONE).getValue();
@@ -281,11 +256,7 @@ public final class ResiliencyReviewsClientImpl implements ResiliencyReviewsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResiliencyReviewInner> listSinglePage(Integer top, Integer skip, String filter) {
-        final String accept = "application/json";
-        Response<ResiliencyReviewCollection> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), top, skip, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(top, skip, filter, Context.NONE);
     }
 
     /**
@@ -315,42 +286,16 @@ public final class ResiliencyReviewsClientImpl implements ResiliencyReviewsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get list of resiliency reviews.
-     * 
-     * Get list of Azure Advisor resiliency reviews.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resiliency reviews.
-     * 
-     * Get list of Azure Advisor resiliency reviews as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResiliencyReviewInner> list() {
         final Integer top = null;
         final Integer skip = null;
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(top, skip, filter), nextLink -> listNextSinglePage(nextLink));
+        return list(top, skip, filter, Context.NONE);
     }
 
-    /**
-     * Get list of resiliency reviews.
-     * 
-     * Get list of Azure Advisor resiliency reviews.
-     * 
-     * @param top The number of items to be included in the result.
-     * @param skip The number of items to skip before starting to collect the result set.
-     * @param filter The filter to apply.&lt;br&gt;Filter can be applied to properties ['reviewStatus', 'reviewId'] with
-     * operators ['eq', 'and', 'or'].&lt;br&gt;Example:&lt;br&gt;- $filter=reviewStatus eq 'New'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resiliency reviews.
-     * 
-     * Get list of Azure Advisor resiliency reviews as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResiliencyReviewInner> list(Integer top, Integer skip, String filter, Context context) {
         return new PagedIterable<>(() -> listSinglePage(top, skip, filter, context),
@@ -395,11 +340,7 @@ public final class ResiliencyReviewsClientImpl implements ResiliencyReviewsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResiliencyReviewInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ResiliencyReviewCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

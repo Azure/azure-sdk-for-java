@@ -181,16 +181,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
         return getWithResponseAsync(assessmentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an existing Azure Advisor assessment.
-     * 
-     * @param assessmentName Advisor assessment name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing Azure Advisor assessment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AssessmentResultInner> getWithResponse(String assessmentName, Context context) {
         final String accept = "application/json";
@@ -198,15 +189,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
             assessmentName, accept, context);
     }
 
-    /**
-     * Get an existing Azure Advisor assessment.
-     * 
-     * @param assessmentName Advisor assessment name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing Azure Advisor assessment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssessmentResultInner get(String assessmentName) {
         return getWithResponse(assessmentName, Context.NONE).getValue();
@@ -250,17 +233,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or Overwrite Azure Advisor assessment.
-     * 
-     * @param assessmentName Advisor assessment name.
-     * @param assessmentContract The Azure Advisor assessment data structure.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advisor assessment result data structure along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AssessmentResultInner> putWithResponse(String assessmentName,
         AssessmentResultInner assessmentContract, Context context) {
@@ -270,16 +243,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
             assessmentName, contentType, accept, assessmentContract, context);
     }
 
-    /**
-     * Create or Overwrite Azure Advisor assessment.
-     * 
-     * @param assessmentName Advisor assessment name.
-     * @param assessmentContract The Azure Advisor assessment data structure.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advisor assessment result data structure.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssessmentResultInner put(String assessmentName, AssessmentResultInner assessmentContract) {
         return putWithResponse(assessmentName, assessmentContract, Context.NONE).getValue();
@@ -316,30 +280,14 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
         return deleteWithResponseAsync(assessmentName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete an existing Azure Advisor assessment.
-     * 
-     * @param assessmentName Advisor assessment name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String assessmentName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), assessmentName, context);
     }
 
-    /**
-     * Delete an existing Azure Advisor assessment.
-     * 
-     * @param assessmentName Advisor assessment name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String assessmentName) {
         deleteWithResponse(assessmentName, Context.NONE);
@@ -410,11 +358,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssessmentResultInner> listSinglePage(String top, String skiptoken) {
-        final String accept = "application/json";
-        Response<AssessmentListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), top, skiptoken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(top, skiptoken, Context.NONE);
     }
 
     /**
@@ -437,31 +381,15 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get list of Azure Advisor assessments.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Azure Advisor assessments as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssessmentResultInner> list() {
         final String top = null;
         final String skiptoken = null;
-        return new PagedIterable<>(() -> listSinglePage(top, skiptoken), nextLink -> listNextSinglePage(nextLink));
+        return list(top, skiptoken, Context.NONE);
     }
 
-    /**
-     * Get list of Azure Advisor assessments.
-     * 
-     * @param top Limit the result to the specified number of rows.
-     * @param skiptoken The page-continuation token to use with a paged version of this API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Azure Advisor assessments as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssessmentResultInner> list(String top, String skiptoken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(top, skiptoken, context),
@@ -498,11 +426,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AssessmentResultInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AssessmentListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

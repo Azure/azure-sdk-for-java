@@ -215,11 +215,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigDataInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ConfigurationListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -242,31 +238,13 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Retrieve Azure Advisor configurations.
-     * 
-     * Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ConfigData items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigDataInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Retrieve Azure Advisor configurations.
-     * 
-     * Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ConfigData items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigDataInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -316,19 +294,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create/Overwrite Azure Advisor configuration.
-     * 
-     * Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
-     * 
-     * @param configurationName Advisor configuration name. Value must be 'default'.
-     * @param configContract The Azure Advisor configuration data structure.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advisor configuration data structure along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigDataInner> createInSubscriptionWithResponse(ConfigurationName configurationName,
         ConfigDataInner configContract, Context context) {
@@ -338,18 +304,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             this.client.getSubscriptionId(), configurationName, contentType, accept, configContract, context);
     }
 
-    /**
-     * Create/Overwrite Azure Advisor configuration.
-     * 
-     * Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
-     * 
-     * @param configurationName Advisor configuration name. Value must be 'default'.
-     * @param configContract The Azure Advisor configuration data structure.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advisor configuration data structure.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigDataInner createInSubscription(ConfigurationName configurationName, ConfigDataInner configContract) {
         return createInSubscriptionWithResponse(configurationName, configContract, Context.NONE).getValue();
@@ -402,11 +357,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigDataInner> listByResourceGroupSinglePage(String resourceGroup) {
-        final String accept = "application/json";
-        Response<ConfigurationListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroup, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroup, Context.NONE);
     }
 
     /**
@@ -428,31 +379,13 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Retrieve Azure Advisor configurations.
-     * 
-     * @param resourceGroup The name of the Azure resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ConfigData items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigDataInner> listByResourceGroup(String resourceGroup) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroup),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroup, Context.NONE);
     }
 
-    /**
-     * Retrieve Azure Advisor configurations.
-     * 
-     * @param resourceGroup The name of the Azure resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ConfigData items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigDataInner> listByResourceGroup(String resourceGroup, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroup, context),
@@ -501,18 +434,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create/Overwrite Azure Advisor configuration.
-     * 
-     * @param configurationName Advisor configuration name. Value must be 'default'.
-     * @param resourceGroup The name of the Azure resource group.
-     * @param configContract The Azure Advisor configuration data structure.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advisor configuration data structure along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigDataInner> createInResourceGroupWithResponse(ConfigurationName configurationName,
         String resourceGroup, ConfigDataInner configContract, Context context) {
@@ -523,17 +445,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             context);
     }
 
-    /**
-     * Create/Overwrite Azure Advisor configuration.
-     * 
-     * @param configurationName Advisor configuration name. Value must be 'default'.
-     * @param resourceGroup The name of the Azure resource group.
-     * @param configContract The Azure Advisor configuration data structure.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advisor configuration data structure.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigDataInner createInResourceGroup(ConfigurationName configurationName, String resourceGroup,
         ConfigDataInner configContract) {
@@ -577,11 +489,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigDataInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConfigurationListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -641,11 +549,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigDataInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConfigurationListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

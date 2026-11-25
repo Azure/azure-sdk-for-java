@@ -26,8 +26,7 @@ public final class AssessmentTypesImpl implements AssessmentTypes {
     }
 
     public PagedIterable<AssessmentTypeResult> list() {
-        PagedIterable<AssessmentTypeResultInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AssessmentTypeResultImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<AssessmentTypeResult> list(Context context) {

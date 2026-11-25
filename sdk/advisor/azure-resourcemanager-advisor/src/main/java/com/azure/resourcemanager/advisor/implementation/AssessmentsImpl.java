@@ -47,7 +47,7 @@ public final class AssessmentsImpl implements Assessments {
     }
 
     public void delete(String assessmentName) {
-        this.serviceClient().delete(assessmentName);
+        this.deleteWithResponse(assessmentName, Context.NONE);
     }
 
     public PagedIterable<AssessmentResult> list() {
@@ -61,46 +61,24 @@ public final class AssessmentsImpl implements Assessments {
     }
 
     public AssessmentResult getById(String id) {
-        String assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/assessments/{assessmentName}",
-            "assessmentName");
-        if (assessmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
-        }
-        return this.getWithResponse(assessmentName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AssessmentResult> getByIdWithResponse(String id, Context context) {
-        String assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String assessmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/assessments/{assessmentName}",
-            "assessmentName");
-        if (assessmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
-        }
+            "assessmentName", "assessments", LOGGER);
         return this.getWithResponse(assessmentName, context);
     }
 
     public void deleteById(String id) {
-        String assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/assessments/{assessmentName}",
-            "assessmentName");
-        if (assessmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
-        }
-        this.deleteWithResponse(assessmentName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String assessmentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/assessments/{assessmentName}",
-            "assessmentName");
-        if (assessmentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
-        }
+            "assessmentName", "assessments", LOGGER);
         return this.deleteWithResponse(assessmentName, context);
     }
 

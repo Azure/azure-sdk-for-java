@@ -19,6 +19,15 @@ public final class SuppressionContractImpl implements SuppressionContract, Suppr
         com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
+            "resourceUri");
+        this.recommendationId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
+            "recommendationId");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
+            "name");
     }
 
     public String id() {
@@ -70,11 +79,7 @@ public final class SuppressionContractImpl implements SuppressionContract, Suppr
     }
 
     public SuppressionContract create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSuppressions()
-            .createWithResponse(resourceUri, recommendationId, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SuppressionContract create(Context context) {
@@ -92,11 +97,7 @@ public final class SuppressionContractImpl implements SuppressionContract, Suppr
     }
 
     public SuppressionContract refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSuppressions()
-            .getWithResponse(resourceUri, recommendationId, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SuppressionContract refresh(Context context) {

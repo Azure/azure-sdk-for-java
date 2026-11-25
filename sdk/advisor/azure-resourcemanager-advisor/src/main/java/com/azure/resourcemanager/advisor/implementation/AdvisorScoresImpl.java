@@ -43,8 +43,7 @@ public final class AdvisorScoresImpl implements AdvisorScores {
     }
 
     public PagedIterable<AdvisorScoreEntity> list() {
-        PagedIterable<AdvisorScoreEntityInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AdvisorScoreEntityImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<AdvisorScoreEntity> list(Context context) {

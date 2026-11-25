@@ -25,8 +25,7 @@ public final class WorkloadsImpl implements Workloads {
     }
 
     public PagedIterable<WorkloadResult> list() {
-        PagedIterable<WorkloadResultInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadResultImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<WorkloadResult> list(Context context) {

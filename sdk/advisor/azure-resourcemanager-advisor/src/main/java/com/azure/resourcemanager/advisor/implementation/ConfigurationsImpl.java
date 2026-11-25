@@ -29,8 +29,7 @@ public final class ConfigurationsImpl implements Configurations {
     }
 
     public PagedIterable<ConfigData> list() {
-        PagedIterable<ConfigDataInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigDataImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ConfigData> list(Context context) {
@@ -56,8 +55,7 @@ public final class ConfigurationsImpl implements Configurations {
     }
 
     public PagedIterable<ConfigData> listByResourceGroup(String resourceGroup) {
-        PagedIterable<ConfigDataInner> inner = this.serviceClient().listByResourceGroup(resourceGroup);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigDataImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroup, Context.NONE);
     }
 
     public PagedIterable<ConfigData> listByResourceGroup(String resourceGroup, Context context) {

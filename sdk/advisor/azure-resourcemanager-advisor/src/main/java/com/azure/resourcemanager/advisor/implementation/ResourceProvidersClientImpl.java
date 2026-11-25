@@ -108,16 +108,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         return predictWithResponseAsync(predictionRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Predicts a recommendation.
-     * 
-     * @param predictionRequest The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response used by predictions along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PredictionResponseInner> predictWithResponse(PredictionRequest predictionRequest, Context context) {
         final String contentType = "application/json";
@@ -126,15 +117,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             this.client.getSubscriptionId(), contentType, accept, predictionRequest, context);
     }
 
-    /**
-     * Predicts a recommendation.
-     * 
-     * @param predictionRequest The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response used by predictions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PredictionResponseInner predict(PredictionRequest predictionRequest) {
         return predictWithResponse(predictionRequest, Context.NONE).getValue();
