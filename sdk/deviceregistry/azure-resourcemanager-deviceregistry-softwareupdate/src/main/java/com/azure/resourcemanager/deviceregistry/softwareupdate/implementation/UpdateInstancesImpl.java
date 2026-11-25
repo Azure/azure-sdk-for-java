@@ -48,7 +48,7 @@ public final class UpdateInstancesImpl implements UpdateInstances {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String updateInstanceName) {
-        this.serviceClient().delete(resourceGroupName, updateInstanceName);
+        this.delete(resourceGroupName, updateInstanceName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String updateInstanceName, Context context) {
@@ -56,8 +56,7 @@ public final class UpdateInstancesImpl implements UpdateInstances {
     }
 
     public PagedIterable<UpdateInstance> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<UpdateInstanceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new UpdateInstanceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<UpdateInstance> listByResourceGroup(String resourceGroupName, Context context) {
@@ -66,8 +65,7 @@ public final class UpdateInstancesImpl implements UpdateInstances {
     }
 
     public PagedIterable<UpdateInstance> list() {
-        PagedIterable<UpdateInstanceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new UpdateInstanceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<UpdateInstance> list(Context context) {
@@ -93,74 +91,30 @@ public final class UpdateInstancesImpl implements UpdateInstances {
     }
 
     public UpdateInstance getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String updateInstanceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}",
-            "updateInstanceName");
-        if (updateInstanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'updateInstances'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, updateInstanceName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<UpdateInstance> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String updateInstanceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String updateInstanceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}",
-            "updateInstanceName");
-        if (updateInstanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'updateInstances'.", id)));
-        }
+            "updateInstanceName", "updateInstances", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, updateInstanceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String updateInstanceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}",
-            "updateInstanceName");
-        if (updateInstanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'updateInstances'.", id)));
-        }
-        this.delete(resourceGroupName, updateInstanceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String updateInstanceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String updateInstanceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}",
-            "updateInstanceName");
-        if (updateInstanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'updateInstances'.", id)));
-        }
+            "updateInstanceName", "updateInstances", LOGGER);
         this.delete(resourceGroupName, updateInstanceName, context);
     }
 

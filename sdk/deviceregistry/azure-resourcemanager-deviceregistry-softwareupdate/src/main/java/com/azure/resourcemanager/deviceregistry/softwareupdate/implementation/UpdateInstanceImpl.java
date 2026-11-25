@@ -95,10 +95,7 @@ public final class UpdateInstanceImpl implements UpdateInstance, UpdateInstance.
     }
 
     public UpdateInstance create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdateInstances()
-            .create(resourceGroupName, updateInstanceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public UpdateInstance create(Context context) {
@@ -121,10 +118,7 @@ public final class UpdateInstanceImpl implements UpdateInstance, UpdateInstance.
     }
 
     public UpdateInstance apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdateInstances()
-            .update(resourceGroupName, updateInstanceName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public UpdateInstance apply(Context context) {
@@ -147,11 +141,7 @@ public final class UpdateInstanceImpl implements UpdateInstance, UpdateInstance.
     }
 
     public UpdateInstance refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdateInstances()
-            .getByResourceGroupWithResponse(resourceGroupName, updateInstanceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public UpdateInstance refresh(Context context) {

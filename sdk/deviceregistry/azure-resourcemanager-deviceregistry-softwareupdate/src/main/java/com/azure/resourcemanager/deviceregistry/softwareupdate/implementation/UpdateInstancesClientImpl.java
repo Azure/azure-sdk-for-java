@@ -362,19 +362,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns update instance details for the given update instance name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param updateInstanceName The user-chosen Update Instance name. Must be unique within the subscription and is
-     * used in the resource URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not
-     * leading/trailing); length 3-36.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return device Update instance details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpdateInstanceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String updateInstanceName, Context context) {
@@ -383,18 +371,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
             this.client.getSubscriptionId(), resourceGroupName, updateInstanceName, accept, context);
     }
 
-    /**
-     * Returns update instance details for the given update instance name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param updateInstanceName The user-chosen Update Instance name. Must be unique within the subscription and is
-     * used in the resource URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not
-     * leading/trailing); length 3-36.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return device Update instance details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateInstanceInner getByResourceGroup(String resourceGroupName, String updateInstanceName) {
         return getByResourceGroupWithResponse(resourceGroupName, updateInstanceName, Context.NONE).getValue();
@@ -441,11 +418,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String updateInstanceName,
         UpdateInstanceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, updateInstanceName, contentType, accept, resource,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, updateInstanceName, resource, Context.NONE);
     }
 
     /**
@@ -494,41 +467,14 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
             UpdateInstanceInner.class, UpdateInstanceInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates an Update Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param updateInstanceName The user-chosen Update Instance name. Must be unique within the subscription and is
-     * used in the resource URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not
-     * leading/trailing); length 3-36.
-     * @param resource Update Instance details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of device Update instance details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateInstanceInner>, UpdateInstanceInner> beginCreate(String resourceGroupName,
         String updateInstanceName, UpdateInstanceInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, updateInstanceName, resource);
-        return this.client.<UpdateInstanceInner, UpdateInstanceInner>getLroResult(response, UpdateInstanceInner.class,
-            UpdateInstanceInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, updateInstanceName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates an Update Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param updateInstanceName The user-chosen Update Instance name. Must be unique within the subscription and is
-     * used in the resource URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not
-     * leading/trailing); length 3-36.
-     * @param resource Update Instance details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of device Update instance details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateInstanceInner>, UpdateInstanceInner> beginCreate(String resourceGroupName,
         String updateInstanceName, UpdateInstanceInner resource, Context context) {
@@ -557,43 +503,19 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an Update Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param updateInstanceName The user-chosen Update Instance name. Must be unique within the subscription and is
-     * used in the resource URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not
-     * leading/trailing); length 3-36.
-     * @param resource Update Instance details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return device Update instance details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateInstanceInner create(String resourceGroupName, String updateInstanceName,
         UpdateInstanceInner resource) {
-        return beginCreate(resourceGroupName, updateInstanceName, resource).getFinalResult();
+        return create(resourceGroupName, updateInstanceName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates an Update Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param updateInstanceName The user-chosen Update Instance name. Must be unique within the subscription and is
-     * used in the resource URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not
-     * leading/trailing); length 3-36.
-     * @param resource Update Instance details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return device Update instance details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateInstanceInner create(String resourceGroupName, String updateInstanceName, UpdateInstanceInner resource,
         Context context) {
-        return beginCreate(resourceGroupName, updateInstanceName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, updateInstanceName, resource, context));
     }
 
     /**
@@ -637,11 +559,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String updateInstanceName,
         UpdateInstanceUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, updateInstanceName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, updateInstanceName, properties, Context.NONE);
     }
 
     /**
@@ -690,41 +608,14 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
             UpdateInstanceInner.class, UpdateInstanceInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates update instance's patchable properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param updateInstanceName The user-chosen Update Instance name. Must be unique within the subscription and is
-     * used in the resource URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not
-     * leading/trailing); length 3-36.
-     * @param properties Updated Update Instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of device Update instance details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateInstanceInner>, UpdateInstanceInner> beginUpdate(String resourceGroupName,
         String updateInstanceName, UpdateInstanceUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, updateInstanceName, properties);
-        return this.client.<UpdateInstanceInner, UpdateInstanceInner>getLroResult(response, UpdateInstanceInner.class,
-            UpdateInstanceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, updateInstanceName, properties, Context.NONE);
     }
 
-    /**
-     * Updates update instance's patchable properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param updateInstanceName The user-chosen Update Instance name. Must be unique within the subscription and is
-     * used in the resource URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not
-     * leading/trailing); length 3-36.
-     * @param properties Updated Update Instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of device Update instance details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateInstanceInner>, UpdateInstanceInner> beginUpdate(String resourceGroupName,
         String updateInstanceName, UpdateInstanceUpdate properties, Context context) {
@@ -753,43 +644,19 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates update instance's patchable properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param updateInstanceName The user-chosen Update Instance name. Must be unique within the subscription and is
-     * used in the resource URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not
-     * leading/trailing); length 3-36.
-     * @param properties Updated Update Instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return device Update instance details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateInstanceInner update(String resourceGroupName, String updateInstanceName,
         UpdateInstanceUpdate properties) {
-        return beginUpdate(resourceGroupName, updateInstanceName, properties).getFinalResult();
+        return update(resourceGroupName, updateInstanceName, properties, Context.NONE);
     }
 
-    /**
-     * Updates update instance's patchable properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param updateInstanceName The user-chosen Update Instance name. Must be unique within the subscription and is
-     * used in the resource URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not
-     * leading/trailing); length 3-36.
-     * @param properties Updated Update Instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return device Update instance details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateInstanceInner update(String resourceGroupName, String updateInstanceName,
         UpdateInstanceUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, updateInstanceName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, updateInstanceName, properties, context));
     }
 
     /**
@@ -827,8 +694,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String updateInstanceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, updateInstanceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, updateInstanceName, Context.NONE);
     }
 
     /**
@@ -870,37 +736,13 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes an update instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param updateInstanceName The user-chosen Update Instance name. Must be unique within the subscription and is
-     * used in the resource URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not
-     * leading/trailing); length 3-36.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String updateInstanceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, updateInstanceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, updateInstanceName, Context.NONE);
     }
 
-    /**
-     * Deletes an update instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param updateInstanceName The user-chosen Update Instance name. Must be unique within the subscription and is
-     * used in the resource URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not
-     * leading/trailing); length 3-36.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String updateInstanceName,
         Context context) {
@@ -926,37 +768,16 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an update instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param updateInstanceName The user-chosen Update Instance name. Must be unique within the subscription and is
-     * used in the resource URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not
-     * leading/trailing); length 3-36.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String updateInstanceName) {
-        beginDelete(resourceGroupName, updateInstanceName).getFinalResult();
+        delete(resourceGroupName, updateInstanceName, Context.NONE);
     }
 
-    /**
-     * Deletes an update instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param updateInstanceName The user-chosen Update Instance name. Must be unique within the subscription and is
-     * used in the resource URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not
-     * leading/trailing); length 3-36.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String updateInstanceName, Context context) {
-        beginDelete(resourceGroupName, updateInstanceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, updateInstanceName, context));
     }
 
     /**
@@ -1006,11 +827,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UpdateInstanceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<UpdateInstanceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1033,31 +850,13 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns list of Update Instances.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UpdateInstance list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateInstanceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Returns list of Update Instances.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UpdateInstance list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateInstanceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1105,11 +904,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UpdateInstanceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<UpdateInstanceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1130,27 +925,13 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns list of Update Instances.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UpdateInstance list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateInstanceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Returns list of Update Instances.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UpdateInstance list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateInstanceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1191,16 +972,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
         return checkNameAvailabilityWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Check if the Update Instance name is available.
-     * 
-     * @param body The CheckAvailability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResultInner>
         checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest body, Context context) {
@@ -1210,15 +982,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
             this.client.getSubscriptionId(), contentType, accept, body, context);
     }
 
-    /**
-     * Check if the Update Instance name is available.
-     * 
-     * @param body The CheckAvailability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResultInner checkNameAvailability(CheckNameAvailabilityRequest body) {
         return checkNameAvailabilityWithResponse(body, Context.NONE).getValue();
@@ -1352,11 +1116,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> linkInitiateWithResponse(String resourceGroupName, String updateInstanceName,
         LinkInitiateRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.linkInitiateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, updateInstanceName, contentType, accept, body,
-            Context.NONE);
+        return linkInitiateWithResponse(resourceGroupName, updateInstanceName, body, Context.NONE);
     }
 
     /**
@@ -1420,8 +1180,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginLinkInitiate(String resourceGroupName, String updateInstanceName,
         LinkInitiateRequest body) {
-        Response<BinaryData> response = linkInitiateWithResponse(resourceGroupName, updateInstanceName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginLinkInitiate(resourceGroupName, updateInstanceName, body, Context.NONE);
     }
 
     /**
@@ -1479,7 +1238,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void linkInitiate(String resourceGroupName, String updateInstanceName, LinkInitiateRequest body) {
-        beginLinkInitiate(resourceGroupName, updateInstanceName, body).getFinalResult();
+        linkInitiate(resourceGroupName, updateInstanceName, body, Context.NONE);
     }
 
     /**
@@ -1497,7 +1256,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void linkInitiate(String resourceGroupName, String updateInstanceName, LinkInitiateRequest body, Context context) {
-        beginLinkInitiate(resourceGroupName, updateInstanceName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginLinkInitiate(resourceGroupName, updateInstanceName, body, context));
     }
 
     /**
@@ -1541,11 +1300,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> linkNotifyWithResponse(String resourceGroupName, String updateInstanceName,
         LinkNotifyRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.linkNotifySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, updateInstanceName, contentType, accept, body,
-            Context.NONE);
+        return linkNotifyWithResponse(resourceGroupName, updateInstanceName, body, Context.NONE);
     }
 
     /**
@@ -1609,8 +1364,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginLinkNotify(String resourceGroupName, String updateInstanceName,
         LinkNotifyRequest body) {
-        Response<BinaryData> response = linkNotifyWithResponse(resourceGroupName, updateInstanceName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginLinkNotify(resourceGroupName, updateInstanceName, body, Context.NONE);
     }
 
     /**
@@ -1667,7 +1421,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void linkNotify(String resourceGroupName, String updateInstanceName, LinkNotifyRequest body) {
-        beginLinkNotify(resourceGroupName, updateInstanceName, body).getFinalResult();
+        linkNotify(resourceGroupName, updateInstanceName, body, Context.NONE);
     }
 
     /**
@@ -1685,7 +1439,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void linkNotify(String resourceGroupName, String updateInstanceName, LinkNotifyRequest body, Context context) {
-        beginLinkNotify(resourceGroupName, updateInstanceName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginLinkNotify(resourceGroupName, updateInstanceName, body, context));
     }
 
     /**
@@ -1729,11 +1483,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> linkUpdateWithResponse(String resourceGroupName, String updateInstanceName,
         LinkUpdateRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.linkUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, updateInstanceName, contentType, accept, body,
-            Context.NONE);
+        return linkUpdateWithResponse(resourceGroupName, updateInstanceName, body, Context.NONE);
     }
 
     /**
@@ -1797,8 +1547,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginLinkUpdate(String resourceGroupName, String updateInstanceName,
         LinkUpdateRequest body) {
-        Response<BinaryData> response = linkUpdateWithResponse(resourceGroupName, updateInstanceName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginLinkUpdate(resourceGroupName, updateInstanceName, body, Context.NONE);
     }
 
     /**
@@ -1855,7 +1604,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void linkUpdate(String resourceGroupName, String updateInstanceName, LinkUpdateRequest body) {
-        beginLinkUpdate(resourceGroupName, updateInstanceName, body).getFinalResult();
+        linkUpdate(resourceGroupName, updateInstanceName, body, Context.NONE);
     }
 
     /**
@@ -1873,7 +1622,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void linkUpdate(String resourceGroupName, String updateInstanceName, LinkUpdateRequest body, Context context) {
-        beginLinkUpdate(resourceGroupName, updateInstanceName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginLinkUpdate(resourceGroupName, updateInstanceName, body, context));
     }
 
     /**
@@ -1908,11 +1657,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UpdateInstanceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<UpdateInstanceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1966,11 +1711,7 @@ public final class UpdateInstancesClientImpl implements UpdateInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UpdateInstanceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<UpdateInstanceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
