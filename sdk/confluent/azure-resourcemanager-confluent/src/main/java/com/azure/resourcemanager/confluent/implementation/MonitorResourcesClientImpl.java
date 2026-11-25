@@ -229,18 +229,7 @@ public final class MonitorResourcesClientImpl implements MonitorResourcesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a monitor and its configured Confluent log destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a monitor and its configured Confluent log destination along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MonitorResourceInner> getWithResponse(String resourceGroupName, String organizationName,
         String monitorName, Context context) {
@@ -249,17 +238,7 @@ public final class MonitorResourcesClientImpl implements MonitorResourcesClient 
             resourceGroupName, organizationName, monitorName, accept, context);
     }
 
-    /**
-     * Gets a monitor and its configured Confluent log destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a monitor and its configured Confluent log destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitorResourceInner get(String resourceGroupName, String organizationName, String monitorName) {
         return getWithResponse(resourceGroupName, organizationName, monitorName, Context.NONE).getValue();
@@ -308,11 +287,7 @@ public final class MonitorResourcesClientImpl implements MonitorResourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
         String monitorName, MonitorResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, monitorName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, organizationName, monitorName, resource, Context.NONE);
     }
 
     /**
@@ -364,46 +339,14 @@ public final class MonitorResourcesClientImpl implements MonitorResourcesClient 
             MonitorResourceInner.class, MonitorResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or replaces a monitor with the Confluent environment, cluster, and
-     * topic to which selected Azure logs are sent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a monitor that defines the Confluent environment, cluster, and
-     * topic to which
-     * selected Azure logs are sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitorResourceInner>, MonitorResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String organizationName, String monitorName, MonitorResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, organizationName, monitorName, resource);
-        return this.client.<MonitorResourceInner, MonitorResourceInner>getLroResult(response,
-            MonitorResourceInner.class, MonitorResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, organizationName, monitorName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a monitor with the Confluent environment, cluster, and
-     * topic to which selected Azure logs are sent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a monitor that defines the Confluent environment, cluster, and
-     * topic to which
-     * selected Azure logs are sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitorResourceInner>, MonitorResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String organizationName, String monitorName, MonitorResourceInner resource,
@@ -435,46 +378,19 @@ public final class MonitorResourcesClientImpl implements MonitorResourcesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces a monitor with the Confluent environment, cluster, and
-     * topic to which selected Azure logs are sent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a monitor that defines the Confluent environment, cluster, and topic to which
-     * selected Azure logs are sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitorResourceInner createOrUpdate(String resourceGroupName, String organizationName, String monitorName,
         MonitorResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, organizationName, monitorName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, organizationName, monitorName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a monitor with the Confluent environment, cluster, and
-     * topic to which selected Azure logs are sent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a monitor that defines the Confluent environment, cluster, and topic to which
-     * selected Azure logs are sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitorResourceInner createOrUpdate(String resourceGroupName, String organizationName, String monitorName,
         MonitorResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, organizationName, monitorName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, organizationName, monitorName, resource, context));
     }
 
     /**
@@ -518,11 +434,7 @@ public final class MonitorResourcesClientImpl implements MonitorResourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String organizationName,
         String monitorName, MonitorResourceUpdateParameters properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, monitorName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, organizationName, monitorName, properties, Context.NONE);
     }
 
     /**
@@ -573,44 +485,14 @@ public final class MonitorResourcesClientImpl implements MonitorResourcesClient 
             MonitorResourceInner.class, MonitorResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates the Azure resource tags assigned to a monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a monitor that defines the Confluent environment, cluster, and
-     * topic to which
-     * selected Azure logs are sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitorResourceInner>, MonitorResourceInner> beginUpdate(String resourceGroupName,
         String organizationName, String monitorName, MonitorResourceUpdateParameters properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, organizationName, monitorName, properties);
-        return this.client.<MonitorResourceInner, MonitorResourceInner>getLroResult(response,
-            MonitorResourceInner.class, MonitorResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, organizationName, monitorName, properties, Context.NONE);
     }
 
-    /**
-     * Updates the Azure resource tags assigned to a monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a monitor that defines the Confluent environment, cluster, and
-     * topic to which
-     * selected Azure logs are sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitorResourceInner>, MonitorResourceInner> beginUpdate(String resourceGroupName,
         String organizationName, String monitorName, MonitorResourceUpdateParameters properties, Context context) {
@@ -640,43 +522,19 @@ public final class MonitorResourcesClientImpl implements MonitorResourcesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the Azure resource tags assigned to a monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a monitor that defines the Confluent environment, cluster, and topic to which
-     * selected Azure logs are sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitorResourceInner update(String resourceGroupName, String organizationName, String monitorName,
         MonitorResourceUpdateParameters properties) {
-        return beginUpdate(resourceGroupName, organizationName, monitorName, properties).getFinalResult();
+        return update(resourceGroupName, organizationName, monitorName, properties, Context.NONE);
     }
 
-    /**
-     * Updates the Azure resource tags assigned to a monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a monitor that defines the Confluent environment, cluster, and topic to which
-     * selected Azure logs are sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitorResourceInner update(String resourceGroupName, String organizationName, String monitorName,
         MonitorResourceUpdateParameters properties, Context context) {
-        return beginUpdate(resourceGroupName, organizationName, monitorName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, organizationName, monitorName, properties, context));
     }
 
     /**
@@ -715,8 +573,7 @@ public final class MonitorResourcesClientImpl implements MonitorResourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String organizationName,
         String monitorName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, monitorName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, organizationName, monitorName, Context.NONE);
     }
 
     /**
@@ -760,38 +617,14 @@ public final class MonitorResourcesClientImpl implements MonitorResourcesClient 
             this.client.getContext());
     }
 
-    /**
-     * Deletes a monitor and stops sending Azure logs to its configured Confluent
-     * topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String monitorName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, organizationName, monitorName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, organizationName, monitorName, Context.NONE);
     }
 
-    /**
-     * Deletes a monitor and stops sending Azure logs to its configured Confluent
-     * topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String monitorName, Context context) {
@@ -817,37 +650,16 @@ public final class MonitorResourcesClientImpl implements MonitorResourcesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a monitor and stops sending Azure logs to its configured Confluent
-     * topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String monitorName) {
-        beginDelete(resourceGroupName, organizationName, monitorName).getFinalResult();
+        delete(resourceGroupName, organizationName, monitorName, Context.NONE);
     }
 
-    /**
-     * Deletes a monitor and stops sending Azure logs to its configured Confluent
-     * topic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String monitorName, Context context) {
-        beginDelete(resourceGroupName, organizationName, monitorName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, organizationName, monitorName, context));
     }
 
     /**
@@ -902,12 +714,7 @@ public final class MonitorResourcesClientImpl implements MonitorResourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MonitorResourceInner> listByOrganizationSinglePage(String resourceGroupName,
         String organizationName) {
-        final String accept = "application/json";
-        Response<MonitorResourceListResult> res
-            = service.listByOrganizationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, organizationName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByOrganizationSinglePage(resourceGroupName, organizationName, Context.NONE);
     }
 
     /**
@@ -932,33 +739,13 @@ public final class MonitorResourcesClientImpl implements MonitorResourcesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the monitors configured under a Confluent organization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MonitorResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitorResourceInner> listByOrganization(String resourceGroupName, String organizationName) {
-        return new PagedIterable<>(() -> listByOrganizationSinglePage(resourceGroupName, organizationName),
-            nextLink -> listByOrganizationNextSinglePage(nextLink));
+        return listByOrganization(resourceGroupName, organizationName, Context.NONE);
     }
 
-    /**
-     * Lists the monitors configured under a Confluent organization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MonitorResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitorResourceInner> listByOrganization(String resourceGroupName, String organizationName,
         Context context) {
@@ -998,11 +785,7 @@ public final class MonitorResourcesClientImpl implements MonitorResourcesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MonitorResourceInner> listByOrganizationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MonitorResourceListResult> res
-            = service.listByOrganizationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByOrganizationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

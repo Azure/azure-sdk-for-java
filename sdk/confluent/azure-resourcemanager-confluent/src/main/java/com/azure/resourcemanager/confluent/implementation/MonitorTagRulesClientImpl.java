@@ -207,19 +207,7 @@ public final class MonitorTagRulesClientImpl implements MonitorTagRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a named rule set for a Confluent monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Name of the rule set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a named rule set for a Confluent monitor along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MonitorTagRuleInner> getWithResponse(String resourceGroupName, String organizationName,
         String monitorName, String ruleSetName, Context context) {
@@ -228,18 +216,7 @@ public final class MonitorTagRulesClientImpl implements MonitorTagRulesClient {
             resourceGroupName, organizationName, monitorName, ruleSetName, accept, context);
     }
 
-    /**
-     * Gets a named rule set for a Confluent monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Name of the rule set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a named rule set for a Confluent monitor.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitorTagRuleInner get(String resourceGroupName, String organizationName, String monitorName,
         String ruleSetName) {
@@ -295,22 +272,7 @@ public final class MonitorTagRulesClientImpl implements MonitorTagRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or fully replaces a named rule set that specifies which Azure logs
-     * are sent through a Confluent monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Name of the rule set.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a rule set that specifies which Azure logs are sent to a monitor's configured
-     * Confluent topic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MonitorTagRuleInner> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
         String monitorName, String ruleSetName, MonitorTagRuleInner resource, Context context) {
@@ -321,21 +283,7 @@ public final class MonitorTagRulesClientImpl implements MonitorTagRulesClient {
             accept, resource, context);
     }
 
-    /**
-     * Creates or fully replaces a named rule set that specifies which Azure logs
-     * are sent through a Confluent monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Name of the rule set.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a rule set that specifies which Azure logs are sent to a monitor's configured
-     * Confluent topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitorTagRuleInner createOrUpdate(String resourceGroupName, String organizationName, String monitorName,
         String ruleSetName, MonitorTagRuleInner resource) {
@@ -382,19 +330,7 @@ public final class MonitorTagRulesClientImpl implements MonitorTagRulesClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a named rule set from a Confluent monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Name of the rule set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String organizationName, String monitorName,
         String ruleSetName, Context context) {
@@ -402,17 +338,7 @@ public final class MonitorTagRulesClientImpl implements MonitorTagRulesClient {
             this.client.getSubscriptionId(), resourceGroupName, organizationName, monitorName, ruleSetName, context);
     }
 
-    /**
-     * Deletes a named rule set from a Confluent monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Name of the rule set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String monitorName, String ruleSetName) {
         deleteWithResponse(resourceGroupName, organizationName, monitorName, ruleSetName, Context.NONE);
@@ -474,12 +400,7 @@ public final class MonitorTagRulesClientImpl implements MonitorTagRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MonitorTagRuleInner> listByMonitorSinglePage(String resourceGroupName,
         String organizationName, String monitorName) {
-        final String accept = "application/json";
-        Response<MonitorTagRuleListResult> res = service.listByMonitorSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, organizationName,
-            monitorName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByMonitorSinglePage(resourceGroupName, organizationName, monitorName, Context.NONE);
     }
 
     /**
@@ -505,36 +426,14 @@ public final class MonitorTagRulesClientImpl implements MonitorTagRulesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the rule sets configured for a Confluent monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MonitorTagRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitorTagRuleInner> listByMonitor(String resourceGroupName, String organizationName,
         String monitorName) {
-        return new PagedIterable<>(() -> listByMonitorSinglePage(resourceGroupName, organizationName, monitorName),
-            nextLink -> listByMonitorNextSinglePage(nextLink));
+        return listByMonitor(resourceGroupName, organizationName, monitorName, Context.NONE);
     }
 
-    /**
-     * Lists the rule sets configured for a Confluent monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MonitorTagRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitorTagRuleInner> listByMonitor(String resourceGroupName, String organizationName,
         String monitorName, Context context) {
@@ -574,11 +473,7 @@ public final class MonitorTagRulesClientImpl implements MonitorTagRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MonitorTagRuleInner> listByMonitorNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MonitorTagRuleListResult> res
-            = service.listByMonitorNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByMonitorNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

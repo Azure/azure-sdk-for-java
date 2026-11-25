@@ -87,10 +87,7 @@ public final class MonitorResourceImpl implements MonitorResource, MonitorResour
     }
 
     public MonitorResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMonitorResources()
-            .createOrUpdate(resourceGroupName, organizationName, monitorName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MonitorResource create(Context context) {
@@ -112,10 +109,7 @@ public final class MonitorResourceImpl implements MonitorResource, MonitorResour
     }
 
     public MonitorResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMonitorResources()
-            .update(resourceGroupName, organizationName, monitorName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MonitorResource apply(Context context) {
@@ -141,11 +135,7 @@ public final class MonitorResourceImpl implements MonitorResource, MonitorResour
     }
 
     public MonitorResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMonitorResources()
-            .getWithResponse(resourceGroupName, organizationName, monitorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MonitorResource refresh(Context context) {
