@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
@@ -38,6 +39,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * End-to-end test for {@link ExternalEvaluationPolicy} that exercises the full external evaluation ("Invoke") flow
@@ -79,7 +81,7 @@ public class ExternalEvaluationPolicyE2ETests {
     public void endToEndAcquireAndRetry() throws Exception {
         // The manager's Configurable pipeline adds a BearerTokenAuthenticationPolicy, which requires HTTPS, so the
         // mock service is served over TLS and the clients trust its self-signed certificate.
-        WireMockServer server = new WireMockServer(wireMockConfig().dynamicHttpsPort());
+        WireMockServer server = new WireMockServer(wireMockConfig().dynamicPort().dynamicHttpsPort());
         server.start();
         try {
             String endpoint = "https://localhost:" + server.httpsPort();
@@ -116,12 +118,14 @@ public class ExternalEvaluationPolicyE2ETests {
             endpoints.put(AzureEnvironment.Endpoint.ACTIVE_DIRECTORY.identifier(), endpoint);
             AzureProfile profile = new AzureProfile("tenant", SUBSCRIPTION_ID, new AzureEnvironment(endpoints));
 
-            // The generated manager builds and installs the external evaluation policy and its acquisition pipeline.
-            // A dummy credential is enough because the mock service does not assert on the Authorization header.
+            // External evaluation is explicitly enabled on the generated manager. A dummy credential is enough
+            // because the mock service does not assert on the Authorization header.
             TokenCredential credential
                 = request -> Mono.just(new AccessToken("dummy-token", OffsetDateTime.now().plusHours(1)));
-            StorageManager storageManager
-                = StorageManager.configure().withHttpClient(httpClient).authenticate(credential, profile);
+            StorageManager storageManager = StorageManager.configure()
+                .withHttpClient(httpClient)
+                .withExternalEvaluation()
+                .authenticate(credential, profile);
 
             StorageAccountInner result = storageManager.serviceClient()
                 .getResourceProviders()
@@ -145,6 +149,41 @@ public class ExternalEvaluationPolicyE2ETests {
             server.verify(1,
                 postRequestedFor(urlPathEqualTo(ACQUIRE_PATH)).withQueryParam("api-version", equalTo("2026-07-01"))
                     .withRequestBody(equalTo(expectedAcquireBody)));
+        } finally {
+            server.stop();
+        }
+    }
+
+    @Test
+    public void externalEvaluationIsDisabledByDefault() throws Exception {
+        WireMockServer server = new WireMockServer(wireMockConfig().dynamicPort().dynamicHttpsPort());
+        server.start();
+        try {
+            String endpoint = "https://localhost:" + server.httpsPort();
+            server.stubFor(put(urlPathEqualTo(STORAGE_PATH)).withHeader(EE_HEADER, absent())
+                .willReturn(
+                    aResponse().withStatus(403).withHeader("Content-Type", "application/json").withBody(DENY_BODY)));
+
+            Map<String, String> endpoints = new HashMap<>();
+            endpoints.put(AzureEnvironment.Endpoint.MANAGEMENT.identifier(), endpoint);
+            endpoints.put(AzureEnvironment.Endpoint.RESOURCE_MANAGER.identifier(), endpoint);
+            endpoints.put(AzureEnvironment.Endpoint.ACTIVE_DIRECTORY.identifier(), endpoint);
+            AzureProfile profile = new AzureProfile("tenant", SUBSCRIPTION_ID, new AzureEnvironment(endpoints));
+            TokenCredential credential
+                = request -> Mono.just(new AccessToken("dummy-token", OffsetDateTime.now().plusHours(1)));
+            StorageManager storageManager
+                = StorageManager.configure().withHttpClient(trustAllHttpClient()).authenticate(credential, profile);
+
+            assertThrows(ManagementException.class,
+                () -> storageManager.serviceClient()
+                    .getResourceProviders()
+                    .create(RESOURCE_GROUP, ACCOUNT_NAME,
+                        new StorageAccountCreateParameters().withSku(new Sku().withName(SkuName.STANDARD_LRS))
+                            .withKind(Kind.STORAGE_V2)
+                            .withLocation("eastus")));
+
+            server.verify(1, putRequestedFor(urlPathEqualTo(STORAGE_PATH)).withHeader(EE_HEADER, absent()));
+            server.verify(0, postRequestedFor(urlPathEqualTo(ACQUIRE_PATH)));
         } finally {
             server.stop();
         }
