@@ -316,17 +316,7 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the MessagingTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MessagingTransferFlow resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MessagingTransferFlowInner> getByResourceGroupWithResponse(String resourceGroupName,
         String messagingTransferFlowName, Context context) {
@@ -335,16 +325,7 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
             this.client.getSubscriptionId(), resourceGroupName, messagingTransferFlowName, accept, context);
     }
 
-    /**
-     * Gets the MessagingTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MessagingTransferFlow resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MessagingTransferFlowInner getByResourceGroup(String resourceGroupName, String messagingTransferFlowName) {
         return getByResourceGroupWithResponse(resourceGroupName, messagingTransferFlowName, Context.NONE).getValue();
@@ -388,11 +369,8 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String messagingTransferFlowName,
         MessagingTransferFlowInner messagingTransferFlow) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, messagingTransferFlowName, contentType, accept,
-            messagingTransferFlow, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, messagingTransferFlowName, messagingTransferFlow,
+            Context.NONE);
     }
 
     /**
@@ -438,38 +416,14 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates the MessagingTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param messagingTransferFlow MessagingTransferFlow body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MessagingTransferFlowInner>, MessagingTransferFlowInner> beginCreateOrUpdate(
         String resourceGroupName, String messagingTransferFlowName, MessagingTransferFlowInner messagingTransferFlow) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, messagingTransferFlowName, messagingTransferFlow);
-        return this.client.<MessagingTransferFlowInner, MessagingTransferFlowInner>getLroResult(response,
-            MessagingTransferFlowInner.class, MessagingTransferFlowInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, messagingTransferFlowName, messagingTransferFlow, Context.NONE);
     }
 
-    /**
-     * Creates or updates the MessagingTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param messagingTransferFlow MessagingTransferFlow body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MessagingTransferFlowInner>, MessagingTransferFlowInner> beginCreateOrUpdate(
         String resourceGroupName, String messagingTransferFlowName, MessagingTransferFlowInner messagingTransferFlow,
@@ -498,41 +452,19 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates the MessagingTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param messagingTransferFlow MessagingTransferFlow body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MessagingTransferFlowInner createOrUpdate(String resourceGroupName, String messagingTransferFlowName,
         MessagingTransferFlowInner messagingTransferFlow) {
-        return beginCreateOrUpdate(resourceGroupName, messagingTransferFlowName, messagingTransferFlow)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, messagingTransferFlowName, messagingTransferFlow, Context.NONE);
     }
 
-    /**
-     * Creates or updates the MessagingTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param messagingTransferFlow MessagingTransferFlow body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MessagingTransferFlowInner createOrUpdate(String resourceGroupName, String messagingTransferFlowName,
         MessagingTransferFlowInner messagingTransferFlow, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, messagingTransferFlowName, messagingTransferFlow, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, messagingTransferFlowName, messagingTransferFlow, context));
     }
 
     /**
@@ -573,11 +505,7 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String messagingTransferFlowName,
         MessagingTransferFlowsPatch messagingTransferFlow) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, messagingTransferFlowName, contentType, accept,
-            messagingTransferFlow, Context.NONE);
+        return updateWithResponse(resourceGroupName, messagingTransferFlowName, messagingTransferFlow, Context.NONE);
     }
 
     /**
@@ -623,38 +551,14 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
             this.client.getContext());
     }
 
-    /**
-     * Updates the MessagingTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param messagingTransferFlow MessagingTransferFlow body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MessagingTransferFlowInner>, MessagingTransferFlowInner> beginUpdate(
         String resourceGroupName, String messagingTransferFlowName, MessagingTransferFlowsPatch messagingTransferFlow) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, messagingTransferFlowName, messagingTransferFlow);
-        return this.client.<MessagingTransferFlowInner, MessagingTransferFlowInner>getLroResult(response,
-            MessagingTransferFlowInner.class, MessagingTransferFlowInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, messagingTransferFlowName, messagingTransferFlow, Context.NONE);
     }
 
-    /**
-     * Updates the MessagingTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param messagingTransferFlow MessagingTransferFlow body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MessagingTransferFlowInner>, MessagingTransferFlowInner> beginUpdate(
         String resourceGroupName, String messagingTransferFlowName, MessagingTransferFlowsPatch messagingTransferFlow,
@@ -683,40 +587,19 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the MessagingTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param messagingTransferFlow MessagingTransferFlow body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MessagingTransferFlowInner update(String resourceGroupName, String messagingTransferFlowName,
         MessagingTransferFlowsPatch messagingTransferFlow) {
-        return beginUpdate(resourceGroupName, messagingTransferFlowName, messagingTransferFlow).getFinalResult();
+        return update(resourceGroupName, messagingTransferFlowName, messagingTransferFlow, Context.NONE);
     }
 
-    /**
-     * Updates the MessagingTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param messagingTransferFlow MessagingTransferFlow body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MessagingTransferFlowInner update(String resourceGroupName, String messagingTransferFlowName,
         MessagingTransferFlowsPatch messagingTransferFlow, Context context) {
-        return beginUpdate(resourceGroupName, messagingTransferFlowName, messagingTransferFlow, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, messagingTransferFlowName, messagingTransferFlow, context));
     }
 
     /**
@@ -767,11 +650,7 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MessagingTransferFlowInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<MessagingTransferFlowListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -794,31 +673,13 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets messaging transfer flows in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return messaging transfer flows in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MessagingTransferFlowInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets messaging transfer flows in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return messaging transfer flows in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MessagingTransferFlowInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -866,11 +727,7 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MessagingTransferFlowInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<MessagingTransferFlowListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -891,27 +748,13 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets messaging transfer flows in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return messaging transfer flows in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MessagingTransferFlowInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets messaging transfer flows in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return messaging transfer flows in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MessagingTransferFlowInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -949,8 +792,7 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String messagingTransferFlowName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, messagingTransferFlowName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, messagingTransferFlowName, Context.NONE);
     }
 
     /**
@@ -989,33 +831,13 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
             this.client.getContext());
     }
 
-    /**
-     * Deletes the MessagingTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String messagingTransferFlowName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, messagingTransferFlowName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, messagingTransferFlowName, Context.NONE);
     }
 
-    /**
-     * Deletes the MessagingTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String messagingTransferFlowName,
         Context context) {
@@ -1039,33 +861,16 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the MessagingTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String messagingTransferFlowName) {
-        beginDelete(resourceGroupName, messagingTransferFlowName).getFinalResult();
+        delete(resourceGroupName, messagingTransferFlowName, Context.NONE);
     }
 
-    /**
-     * Deletes the MessagingTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String messagingTransferFlowName, Context context) {
-        beginDelete(resourceGroupName, messagingTransferFlowName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, messagingTransferFlowName, context));
     }
 
     /**
@@ -1102,9 +907,7 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> disableTransferWithResponse(String resourceGroupName,
         String messagingTransferFlowName) {
-        final String accept = "application/json";
-        return service.disableTransferSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, messagingTransferFlowName, accept, Context.NONE);
+        return disableTransferWithResponse(resourceGroupName, messagingTransferFlowName, Context.NONE);
     }
 
     /**
@@ -1146,35 +949,14 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
             this.client.getContext());
     }
 
-    /**
-     * Stops data transfer through the specified messaging transfer flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MessagingTransferFlowInner>, MessagingTransferFlowInner>
         beginDisableTransfer(String resourceGroupName, String messagingTransferFlowName) {
-        Response<BinaryData> response = disableTransferWithResponse(resourceGroupName, messagingTransferFlowName);
-        return this.client.<MessagingTransferFlowInner, MessagingTransferFlowInner>getLroResult(response,
-            MessagingTransferFlowInner.class, MessagingTransferFlowInner.class, Context.NONE);
+        return beginDisableTransfer(resourceGroupName, messagingTransferFlowName, Context.NONE);
     }
 
-    /**
-     * Stops data transfer through the specified messaging transfer flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MessagingTransferFlowInner>, MessagingTransferFlowInner>
         beginDisableTransfer(String resourceGroupName, String messagingTransferFlowName, Context context) {
@@ -1201,36 +983,18 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stops data transfer through the specified messaging transfer flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MessagingTransferFlowInner disableTransfer(String resourceGroupName, String messagingTransferFlowName) {
-        return beginDisableTransfer(resourceGroupName, messagingTransferFlowName).getFinalResult();
+        return disableTransfer(resourceGroupName, messagingTransferFlowName, Context.NONE);
     }
 
-    /**
-     * Stops data transfer through the specified messaging transfer flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MessagingTransferFlowInner disableTransfer(String resourceGroupName, String messagingTransferFlowName,
         Context context) {
-        return beginDisableTransfer(resourceGroupName, messagingTransferFlowName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginDisableTransfer(resourceGroupName, messagingTransferFlowName, context));
     }
 
     /**
@@ -1269,9 +1033,7 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> enableTransferWithResponse(String resourceGroupName,
         String messagingTransferFlowName) {
-        final String accept = "application/json";
-        return service.enableTransferSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, messagingTransferFlowName, accept, Context.NONE);
+        return enableTransferWithResponse(resourceGroupName, messagingTransferFlowName, Context.NONE);
     }
 
     /**
@@ -1315,37 +1077,14 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
             this.client.getContext());
     }
 
-    /**
-     * Starts (or resumes) data transfer through the specified messaging transfer flow. The transfer flow must be
-     * approved and linked.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MessagingTransferFlowInner>, MessagingTransferFlowInner>
         beginEnableTransfer(String resourceGroupName, String messagingTransferFlowName) {
-        Response<BinaryData> response = enableTransferWithResponse(resourceGroupName, messagingTransferFlowName);
-        return this.client.<MessagingTransferFlowInner, MessagingTransferFlowInner>getLroResult(response,
-            MessagingTransferFlowInner.class, MessagingTransferFlowInner.class, Context.NONE);
+        return beginEnableTransfer(resourceGroupName, messagingTransferFlowName, Context.NONE);
     }
 
-    /**
-     * Starts (or resumes) data transfer through the specified messaging transfer flow. The transfer flow must be
-     * approved and linked.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MessagingTransferFlowInner>, MessagingTransferFlowInner>
         beginEnableTransfer(String resourceGroupName, String messagingTransferFlowName, Context context) {
@@ -1373,38 +1112,18 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts (or resumes) data transfer through the specified messaging transfer flow. The transfer flow must be
-     * approved and linked.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MessagingTransferFlowInner enableTransfer(String resourceGroupName, String messagingTransferFlowName) {
-        return beginEnableTransfer(resourceGroupName, messagingTransferFlowName).getFinalResult();
+        return enableTransfer(resourceGroupName, messagingTransferFlowName, Context.NONE);
     }
 
-    /**
-     * Starts (or resumes) data transfer through the specified messaging transfer flow. The transfer flow must be
-     * approved and linked.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MessagingTransferFlowInner enableTransfer(String resourceGroupName, String messagingTransferFlowName,
         Context context) {
-        return beginEnableTransfer(resourceGroupName, messagingTransferFlowName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginEnableTransfer(resourceGroupName, messagingTransferFlowName, context));
     }
 
     /**
@@ -1445,9 +1164,7 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> linkRemoteFlowWithResponse(String resourceGroupName,
         String messagingTransferFlowName) {
-        final String accept = "application/json";
-        return service.linkRemoteFlowSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, messagingTransferFlowName, accept, Context.NONE);
+        return linkRemoteFlowWithResponse(resourceGroupName, messagingTransferFlowName, Context.NONE);
     }
 
     /**
@@ -1493,39 +1210,14 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
             this.client.getContext());
     }
 
-    /**
-     * Pairs this messaging transfer flow with the messaging transfer flow identified by its
-     * remoteTransferFlowResourceId on the other side of the pipeline. Once both sides are linked and approved, data can
-     * be transferred between them.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MessagingTransferFlowInner>, MessagingTransferFlowInner>
         beginLinkRemoteFlow(String resourceGroupName, String messagingTransferFlowName) {
-        Response<BinaryData> response = linkRemoteFlowWithResponse(resourceGroupName, messagingTransferFlowName);
-        return this.client.<MessagingTransferFlowInner, MessagingTransferFlowInner>getLroResult(response,
-            MessagingTransferFlowInner.class, MessagingTransferFlowInner.class, Context.NONE);
+        return beginLinkRemoteFlow(resourceGroupName, messagingTransferFlowName, Context.NONE);
     }
 
-    /**
-     * Pairs this messaging transfer flow with the messaging transfer flow identified by its
-     * remoteTransferFlowResourceId on the other side of the pipeline. Once both sides are linked and approved, data can
-     * be transferred between them.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MessagingTransferFlowInner>, MessagingTransferFlowInner>
         beginLinkRemoteFlow(String resourceGroupName, String messagingTransferFlowName, Context context) {
@@ -1554,40 +1246,18 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Pairs this messaging transfer flow with the messaging transfer flow identified by its
-     * remoteTransferFlowResourceId on the other side of the pipeline. Once both sides are linked and approved, data can
-     * be transferred between them.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MessagingTransferFlowInner linkRemoteFlow(String resourceGroupName, String messagingTransferFlowName) {
-        return beginLinkRemoteFlow(resourceGroupName, messagingTransferFlowName).getFinalResult();
+        return linkRemoteFlow(resourceGroupName, messagingTransferFlowName, Context.NONE);
     }
 
-    /**
-     * Pairs this messaging transfer flow with the messaging transfer flow identified by its
-     * remoteTransferFlowResourceId on the other side of the pipeline. Once both sides are linked and approved, data can
-     * be transferred between them.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param messagingTransferFlowName The name for the MessagingTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the messaging transfer flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MessagingTransferFlowInner linkRemoteFlow(String resourceGroupName, String messagingTransferFlowName,
         Context context) {
-        return beginLinkRemoteFlow(resourceGroupName, messagingTransferFlowName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginLinkRemoteFlow(resourceGroupName, messagingTransferFlowName, context));
     }
 
     /**
@@ -1622,11 +1292,7 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MessagingTransferFlowInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MessagingTransferFlowListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1681,11 +1347,7 @@ public final class MessagingTransferFlowsClientImpl implements MessagingTransfer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MessagingTransferFlowInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MessagingTransferFlowListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

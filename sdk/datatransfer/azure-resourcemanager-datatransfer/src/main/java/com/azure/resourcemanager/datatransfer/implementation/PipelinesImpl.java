@@ -112,13 +112,7 @@ public final class PipelinesImpl implements Pipelines {
 
     public TransferFlowResponseBody approveTransferFlow(String resourceGroupName, String pipelineName,
         TransferFlowRequestBody body) {
-        TransferFlowResponseBodyInner inner
-            = this.serviceClient().approveTransferFlow(resourceGroupName, pipelineName, body);
-        if (inner != null) {
-            return new TransferFlowResponseBodyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.approveTransferFlow(resourceGroupName, pipelineName, body, Context.NONE);
     }
 
     public TransferFlowResponseBody approveTransferFlow(String resourceGroupName, String pipelineName,
@@ -209,13 +203,7 @@ public final class PipelinesImpl implements Pipelines {
 
     public TransferFlowResponseBody rejectTransferFlow(String resourceGroupName, String pipelineName,
         TransferFlowRequestBody body) {
-        TransferFlowResponseBodyInner inner
-            = this.serviceClient().rejectTransferFlow(resourceGroupName, pipelineName, body);
-        if (inner != null) {
-            return new TransferFlowResponseBodyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.rejectTransferFlow(resourceGroupName, pipelineName, body, Context.NONE);
     }
 
     public TransferFlowResponseBody rejectTransferFlow(String resourceGroupName, String pipelineName,

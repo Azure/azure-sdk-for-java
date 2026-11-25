@@ -90,10 +90,7 @@ public final class MessagingTransferFlowImpl
     }
 
     public MessagingTransferFlow create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMessagingTransferFlows()
-            .createOrUpdate(resourceGroupName, messagingTransferFlowName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MessagingTransferFlow create(Context context) {
@@ -115,10 +112,7 @@ public final class MessagingTransferFlowImpl
     }
 
     public MessagingTransferFlow apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMessagingTransferFlows()
-            .update(resourceGroupName, messagingTransferFlowName, updateMessagingTransferFlow, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MessagingTransferFlow apply(Context context) {
@@ -141,11 +135,7 @@ public final class MessagingTransferFlowImpl
     }
 
     public MessagingTransferFlow refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMessagingTransferFlows()
-            .getByResourceGroupWithResponse(resourceGroupName, messagingTransferFlowName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MessagingTransferFlow refresh(Context context) {

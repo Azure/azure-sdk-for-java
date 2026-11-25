@@ -90,10 +90,7 @@ public final class StorageTransferFlowImpl
     }
 
     public StorageTransferFlow create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageTransferFlows()
-            .createOrUpdate(resourceGroupName, storageTransferFlowName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StorageTransferFlow create(Context context) {
@@ -115,10 +112,7 @@ public final class StorageTransferFlowImpl
     }
 
     public StorageTransferFlow apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageTransferFlows()
-            .update(resourceGroupName, storageTransferFlowName, updateStorageTransferFlow, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StorageTransferFlow apply(Context context) {
@@ -141,11 +135,7 @@ public final class StorageTransferFlowImpl
     }
 
     public StorageTransferFlow refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageTransferFlows()
-            .getByResourceGroupWithResponse(resourceGroupName, storageTransferFlowName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StorageTransferFlow refresh(Context context) {

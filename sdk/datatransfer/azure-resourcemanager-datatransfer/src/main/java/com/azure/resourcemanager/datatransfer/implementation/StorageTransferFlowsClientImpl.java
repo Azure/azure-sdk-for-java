@@ -316,17 +316,7 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets StorageTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageTransferFlow resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageTransferFlowInner> getByResourceGroupWithResponse(String resourceGroupName,
         String storageTransferFlowName, Context context) {
@@ -335,16 +325,7 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
             this.client.getSubscriptionId(), resourceGroupName, storageTransferFlowName, accept, context);
     }
 
-    /**
-     * Gets StorageTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageTransferFlow resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTransferFlowInner getByResourceGroup(String resourceGroupName, String storageTransferFlowName) {
         return getByResourceGroupWithResponse(resourceGroupName, storageTransferFlowName, Context.NONE).getValue();
@@ -388,11 +369,8 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String storageTransferFlowName,
         StorageTransferFlowInner storageTransferFlow) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageTransferFlowName, contentType, accept,
-            storageTransferFlow, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, storageTransferFlowName, storageTransferFlow,
+            Context.NONE);
     }
 
     /**
@@ -438,38 +416,14 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates the StorageTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param storageTransferFlow StorageTransferFlow body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageTransferFlowInner>, StorageTransferFlowInner> beginCreateOrUpdate(
         String resourceGroupName, String storageTransferFlowName, StorageTransferFlowInner storageTransferFlow) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, storageTransferFlowName, storageTransferFlow);
-        return this.client.<StorageTransferFlowInner, StorageTransferFlowInner>getLroResult(response,
-            StorageTransferFlowInner.class, StorageTransferFlowInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, storageTransferFlowName, storageTransferFlow, Context.NONE);
     }
 
-    /**
-     * Creates or updates the StorageTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param storageTransferFlow StorageTransferFlow body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageTransferFlowInner>, StorageTransferFlowInner> beginCreateOrUpdate(
         String resourceGroupName, String storageTransferFlowName, StorageTransferFlowInner storageTransferFlow,
@@ -498,40 +452,19 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates the StorageTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param storageTransferFlow StorageTransferFlow body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTransferFlowInner createOrUpdate(String resourceGroupName, String storageTransferFlowName,
         StorageTransferFlowInner storageTransferFlow) {
-        return beginCreateOrUpdate(resourceGroupName, storageTransferFlowName, storageTransferFlow).getFinalResult();
+        return createOrUpdate(resourceGroupName, storageTransferFlowName, storageTransferFlow, Context.NONE);
     }
 
-    /**
-     * Creates or updates the StorageTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param storageTransferFlow StorageTransferFlow body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTransferFlowInner createOrUpdate(String resourceGroupName, String storageTransferFlowName,
         StorageTransferFlowInner storageTransferFlow, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, storageTransferFlowName, storageTransferFlow, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, storageTransferFlowName, storageTransferFlow, context));
     }
 
     /**
@@ -572,11 +505,7 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String storageTransferFlowName,
         StorageTransferFlowsPatch storageTransferFlow) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageTransferFlowName, contentType, accept,
-            storageTransferFlow, Context.NONE);
+        return updateWithResponse(resourceGroupName, storageTransferFlowName, storageTransferFlow, Context.NONE);
     }
 
     /**
@@ -622,38 +551,14 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
             this.client.getContext());
     }
 
-    /**
-     * Updates the StorageTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param storageTransferFlow StorageTransferFlow body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageTransferFlowInner>, StorageTransferFlowInner> beginUpdate(
         String resourceGroupName, String storageTransferFlowName, StorageTransferFlowsPatch storageTransferFlow) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, storageTransferFlowName, storageTransferFlow);
-        return this.client.<StorageTransferFlowInner, StorageTransferFlowInner>getLroResult(response,
-            StorageTransferFlowInner.class, StorageTransferFlowInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, storageTransferFlowName, storageTransferFlow, Context.NONE);
     }
 
-    /**
-     * Updates the StorageTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param storageTransferFlow StorageTransferFlow body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageTransferFlowInner>, StorageTransferFlowInner> beginUpdate(
         String resourceGroupName, String storageTransferFlowName, StorageTransferFlowsPatch storageTransferFlow,
@@ -682,39 +587,19 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the StorageTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param storageTransferFlow StorageTransferFlow body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTransferFlowInner update(String resourceGroupName, String storageTransferFlowName,
         StorageTransferFlowsPatch storageTransferFlow) {
-        return beginUpdate(resourceGroupName, storageTransferFlowName, storageTransferFlow).getFinalResult();
+        return update(resourceGroupName, storageTransferFlowName, storageTransferFlow, Context.NONE);
     }
 
-    /**
-     * Updates the StorageTransferFlow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param storageTransferFlow StorageTransferFlow body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTransferFlowInner update(String resourceGroupName, String storageTransferFlowName,
         StorageTransferFlowsPatch storageTransferFlow, Context context) {
-        return beginUpdate(resourceGroupName, storageTransferFlowName, storageTransferFlow, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, storageTransferFlowName, storageTransferFlow, context));
     }
 
     /**
@@ -764,11 +649,7 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageTransferFlowInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<StorageTransferFlowListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -791,31 +672,13 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets storage transfer flows in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage transfer flows in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTransferFlowInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets storage transfer flows in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage transfer flows in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTransferFlowInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -863,11 +726,7 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageTransferFlowInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<StorageTransferFlowListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -888,27 +747,13 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets storage transfer flows in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage transfer flows in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTransferFlowInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets storage transfer flows in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage transfer flows in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTransferFlowInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -946,8 +791,7 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageTransferFlowName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageTransferFlowName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, storageTransferFlowName, Context.NONE);
     }
 
     /**
@@ -986,33 +830,13 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
             this.client.getContext());
     }
 
-    /**
-     * Deletes the storage transfer flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageTransferFlowName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, storageTransferFlowName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storageTransferFlowName, Context.NONE);
     }
 
-    /**
-     * Deletes the storage transfer flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageTransferFlowName,
         Context context) {
@@ -1036,33 +860,16 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the storage transfer flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageTransferFlowName) {
-        beginDelete(resourceGroupName, storageTransferFlowName).getFinalResult();
+        delete(resourceGroupName, storageTransferFlowName, Context.NONE);
     }
 
-    /**
-     * Deletes the storage transfer flow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageTransferFlowName, Context context) {
-        beginDelete(resourceGroupName, storageTransferFlowName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, storageTransferFlowName, context));
     }
 
     /**
@@ -1098,9 +905,7 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> disableTransferWithResponse(String resourceGroupName, String storageTransferFlowName) {
-        final String accept = "application/json";
-        return service.disableTransferSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageTransferFlowName, accept, Context.NONE);
+        return disableTransferWithResponse(resourceGroupName, storageTransferFlowName, Context.NONE);
     }
 
     /**
@@ -1142,35 +947,14 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
             this.client.getContext());
     }
 
-    /**
-     * Stops data transfer through the specified storage transfer flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageTransferFlowInner>, StorageTransferFlowInner>
         beginDisableTransfer(String resourceGroupName, String storageTransferFlowName) {
-        Response<BinaryData> response = disableTransferWithResponse(resourceGroupName, storageTransferFlowName);
-        return this.client.<StorageTransferFlowInner, StorageTransferFlowInner>getLroResult(response,
-            StorageTransferFlowInner.class, StorageTransferFlowInner.class, Context.NONE);
+        return beginDisableTransfer(resourceGroupName, storageTransferFlowName, Context.NONE);
     }
 
-    /**
-     * Stops data transfer through the specified storage transfer flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageTransferFlowInner>, StorageTransferFlowInner>
         beginDisableTransfer(String resourceGroupName, String storageTransferFlowName, Context context) {
@@ -1197,36 +981,18 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stops data transfer through the specified storage transfer flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTransferFlowInner disableTransfer(String resourceGroupName, String storageTransferFlowName) {
-        return beginDisableTransfer(resourceGroupName, storageTransferFlowName).getFinalResult();
+        return disableTransfer(resourceGroupName, storageTransferFlowName, Context.NONE);
     }
 
-    /**
-     * Stops data transfer through the specified storage transfer flow.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTransferFlowInner disableTransfer(String resourceGroupName, String storageTransferFlowName,
         Context context) {
-        return beginDisableTransfer(resourceGroupName, storageTransferFlowName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginDisableTransfer(resourceGroupName, storageTransferFlowName, context));
     }
 
     /**
@@ -1264,9 +1030,7 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> enableTransferWithResponse(String resourceGroupName, String storageTransferFlowName) {
-        final String accept = "application/json";
-        return service.enableTransferSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageTransferFlowName, accept, Context.NONE);
+        return enableTransferWithResponse(resourceGroupName, storageTransferFlowName, Context.NONE);
     }
 
     /**
@@ -1310,37 +1074,14 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
             this.client.getContext());
     }
 
-    /**
-     * Starts (or resumes) data transfer through the specified storage transfer flow. The transfer flow must be approved
-     * and linked.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageTransferFlowInner>, StorageTransferFlowInner>
         beginEnableTransfer(String resourceGroupName, String storageTransferFlowName) {
-        Response<BinaryData> response = enableTransferWithResponse(resourceGroupName, storageTransferFlowName);
-        return this.client.<StorageTransferFlowInner, StorageTransferFlowInner>getLroResult(response,
-            StorageTransferFlowInner.class, StorageTransferFlowInner.class, Context.NONE);
+        return beginEnableTransfer(resourceGroupName, storageTransferFlowName, Context.NONE);
     }
 
-    /**
-     * Starts (or resumes) data transfer through the specified storage transfer flow. The transfer flow must be approved
-     * and linked.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageTransferFlowInner>, StorageTransferFlowInner>
         beginEnableTransfer(String resourceGroupName, String storageTransferFlowName, Context context) {
@@ -1367,38 +1108,18 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts (or resumes) data transfer through the specified storage transfer flow. The transfer flow must be approved
-     * and linked.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTransferFlowInner enableTransfer(String resourceGroupName, String storageTransferFlowName) {
-        return beginEnableTransfer(resourceGroupName, storageTransferFlowName).getFinalResult();
+        return enableTransfer(resourceGroupName, storageTransferFlowName, Context.NONE);
     }
 
-    /**
-     * Starts (or resumes) data transfer through the specified storage transfer flow. The transfer flow must be approved
-     * and linked.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTransferFlowInner enableTransfer(String resourceGroupName, String storageTransferFlowName,
         Context context) {
-        return beginEnableTransfer(resourceGroupName, storageTransferFlowName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginEnableTransfer(resourceGroupName, storageTransferFlowName, context));
     }
 
     /**
@@ -1436,9 +1157,7 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> linkRemoteFlowWithResponse(String resourceGroupName, String storageTransferFlowName) {
-        final String accept = "application/json";
-        return service.linkRemoteFlowSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageTransferFlowName, accept, Context.NONE);
+        return linkRemoteFlowWithResponse(resourceGroupName, storageTransferFlowName, Context.NONE);
     }
 
     /**
@@ -1482,37 +1201,14 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
             this.client.getContext());
     }
 
-    /**
-     * Pairs this storage transfer flow with the storage transfer flow identified by its remoteTransferFlowResourceId on
-     * the other side of the pipeline. Once both sides are linked and approved, data can be transferred between them.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageTransferFlowInner>, StorageTransferFlowInner>
         beginLinkRemoteFlow(String resourceGroupName, String storageTransferFlowName) {
-        Response<BinaryData> response = linkRemoteFlowWithResponse(resourceGroupName, storageTransferFlowName);
-        return this.client.<StorageTransferFlowInner, StorageTransferFlowInner>getLroResult(response,
-            StorageTransferFlowInner.class, StorageTransferFlowInner.class, Context.NONE);
+        return beginLinkRemoteFlow(resourceGroupName, storageTransferFlowName, Context.NONE);
     }
 
-    /**
-     * Pairs this storage transfer flow with the storage transfer flow identified by its remoteTransferFlowResourceId on
-     * the other side of the pipeline. Once both sides are linked and approved, data can be transferred between them.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageTransferFlowInner>, StorageTransferFlowInner>
         beginLinkRemoteFlow(String resourceGroupName, String storageTransferFlowName, Context context) {
@@ -1539,38 +1235,18 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Pairs this storage transfer flow with the storage transfer flow identified by its remoteTransferFlowResourceId on
-     * the other side of the pipeline. Once both sides are linked and approved, data can be transferred between them.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTransferFlowInner linkRemoteFlow(String resourceGroupName, String storageTransferFlowName) {
-        return beginLinkRemoteFlow(resourceGroupName, storageTransferFlowName).getFinalResult();
+        return linkRemoteFlow(resourceGroupName, storageTransferFlowName, Context.NONE);
     }
 
-    /**
-     * Pairs this storage transfer flow with the storage transfer flow identified by its remoteTransferFlowResourceId on
-     * the other side of the pipeline. Once both sides are linked and approved, data can be transferred between them.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTransferFlowName The name for the StorageTransferFlow to perform the operation on.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage flow resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageTransferFlowInner linkRemoteFlow(String resourceGroupName, String storageTransferFlowName,
         Context context) {
-        return beginLinkRemoteFlow(resourceGroupName, storageTransferFlowName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginLinkRemoteFlow(resourceGroupName, storageTransferFlowName, context));
     }
 
     /**
@@ -1605,11 +1281,7 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageTransferFlowInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageTransferFlowListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1664,11 +1336,7 @@ public final class StorageTransferFlowsClientImpl implements StorageTransferFlow
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageTransferFlowInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageTransferFlowListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

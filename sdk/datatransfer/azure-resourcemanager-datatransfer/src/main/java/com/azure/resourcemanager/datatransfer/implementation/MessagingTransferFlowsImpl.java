@@ -46,8 +46,7 @@ public final class MessagingTransferFlowsImpl implements MessagingTransferFlows 
     }
 
     public PagedIterable<MessagingTransferFlow> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<MessagingTransferFlowInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MessagingTransferFlowImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<MessagingTransferFlow> listByResourceGroup(String resourceGroupName, Context context) {
@@ -57,8 +56,7 @@ public final class MessagingTransferFlowsImpl implements MessagingTransferFlows 
     }
 
     public PagedIterable<MessagingTransferFlow> list() {
-        PagedIterable<MessagingTransferFlowInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MessagingTransferFlowImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<MessagingTransferFlow> list(Context context) {
@@ -67,7 +65,7 @@ public final class MessagingTransferFlowsImpl implements MessagingTransferFlows 
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String messagingTransferFlowName) {
-        this.serviceClient().delete(resourceGroupName, messagingTransferFlowName);
+        this.delete(resourceGroupName, messagingTransferFlowName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String messagingTransferFlowName, Context context) {
@@ -75,13 +73,7 @@ public final class MessagingTransferFlowsImpl implements MessagingTransferFlows 
     }
 
     public MessagingTransferFlow disableTransfer(String resourceGroupName, String messagingTransferFlowName) {
-        MessagingTransferFlowInner inner
-            = this.serviceClient().disableTransfer(resourceGroupName, messagingTransferFlowName);
-        if (inner != null) {
-            return new MessagingTransferFlowImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.disableTransfer(resourceGroupName, messagingTransferFlowName, Context.NONE);
     }
 
     public MessagingTransferFlow disableTransfer(String resourceGroupName, String messagingTransferFlowName,
@@ -96,13 +88,7 @@ public final class MessagingTransferFlowsImpl implements MessagingTransferFlows 
     }
 
     public MessagingTransferFlow enableTransfer(String resourceGroupName, String messagingTransferFlowName) {
-        MessagingTransferFlowInner inner
-            = this.serviceClient().enableTransfer(resourceGroupName, messagingTransferFlowName);
-        if (inner != null) {
-            return new MessagingTransferFlowImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.enableTransfer(resourceGroupName, messagingTransferFlowName, Context.NONE);
     }
 
     public MessagingTransferFlow enableTransfer(String resourceGroupName, String messagingTransferFlowName,
@@ -117,13 +103,7 @@ public final class MessagingTransferFlowsImpl implements MessagingTransferFlows 
     }
 
     public MessagingTransferFlow linkRemoteFlow(String resourceGroupName, String messagingTransferFlowName) {
-        MessagingTransferFlowInner inner
-            = this.serviceClient().linkRemoteFlow(resourceGroupName, messagingTransferFlowName);
-        if (inner != null) {
-            return new MessagingTransferFlowImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.linkRemoteFlow(resourceGroupName, messagingTransferFlowName, Context.NONE);
     }
 
     public MessagingTransferFlow linkRemoteFlow(String resourceGroupName, String messagingTransferFlowName,
@@ -138,75 +118,30 @@ public final class MessagingTransferFlowsImpl implements MessagingTransferFlows 
     }
 
     public MessagingTransferFlow getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/messagingTransferFlows/{messagingTransferFlowName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String messagingTransferFlowName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/messagingTransferFlows/{messagingTransferFlowName}",
-            "messagingTransferFlowName");
-        if (messagingTransferFlowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'messagingTransferFlows'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, messagingTransferFlowName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<MessagingTransferFlow> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/messagingTransferFlows/{messagingTransferFlowName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String messagingTransferFlowName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String messagingTransferFlowName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/messagingTransferFlows/{messagingTransferFlowName}",
-            "messagingTransferFlowName");
-        if (messagingTransferFlowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'messagingTransferFlows'.", id)));
-        }
+            "messagingTransferFlowName", "messagingTransferFlows", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, messagingTransferFlowName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/messagingTransferFlows/{messagingTransferFlowName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String messagingTransferFlowName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/messagingTransferFlows/{messagingTransferFlowName}",
-            "messagingTransferFlowName");
-        if (messagingTransferFlowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'messagingTransferFlows'.", id)));
-        }
-        this.delete(resourceGroupName, messagingTransferFlowName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/messagingTransferFlows/{messagingTransferFlowName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String messagingTransferFlowName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String messagingTransferFlowName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/messagingTransferFlows/{messagingTransferFlowName}",
-            "messagingTransferFlowName");
-        if (messagingTransferFlowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'messagingTransferFlows'.", id)));
-        }
+            "messagingTransferFlowName", "messagingTransferFlows", LOGGER);
         this.delete(resourceGroupName, messagingTransferFlowName, context);
     }
 
