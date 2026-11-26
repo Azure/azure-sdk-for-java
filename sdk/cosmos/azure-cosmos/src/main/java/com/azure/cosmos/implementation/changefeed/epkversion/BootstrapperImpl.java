@@ -82,6 +82,7 @@ class BootstrapperImpl implements Bootstrapper {
             .flatMap(value -> this.leaseStore.isInitialized())
             .flatMap(initialized -> {
                 this.isInitialized = initialized;
+                this.isLockAcquired = false;
                 Mono<Void> previousOperation = Mono.empty();
                 if (initialized) {
                     if (!this.changeFeedProcessorOptions.isLeaseVerificationEnabledOnRestart()) {
@@ -98,18 +99,20 @@ class BootstrapperImpl implements Bootstrapper {
                         this.isLockAcquired = lockAcquired;
 
                         if (!this.isLockAcquired) {
+                            this.isInitialized = false;
                             logger.info("Another instance is initializing the store");
                             return Mono.just(isLockAcquired).delayElement(this.sleepTime, CosmosSchedulers.COSMOS_PARALLEL);
                         } else {
                             return this.synchronizer.createMissingLeases()
-                                .then(!isInitialized
-                                    ? this.leaseStore.markInitialized().flatMap((initSucceeded) -> Mono.just(lockAcquired))
-                                    : Mono.just(lockAcquired));
+                                .then(Mono.defer(() -> initialized
+                                    ? Mono.just(lockAcquired)
+                                    : this.leaseStore.markInitialized().thenReturn(lockAcquired)));
                         }
                     })
                     .onErrorResume(throwable -> {
-                        logger.warn("Unexpected exception caught while initializing the lock", throwable);
-                        return Mono.just(this.isLockAcquired);
+                        return this.isLockAcquired
+                            ? releaseLockAfterFailure(this.leaseStore, throwable).then(Mono.error(throwable))
+                            : Mono.error(throwable);
                     })
                     .flatMap(lockAcquired -> {
                         if (this.isLockAcquired) {
@@ -121,6 +124,16 @@ class BootstrapperImpl implements Bootstrapper {
             })
             .repeat(() -> !this.isInitialized)
             .then();
+    }
+
+    static Mono<Boolean> releaseLockAfterFailure(LeaseStore store, Throwable initializationFailure) {
+        return Mono.defer(store::releaseInitializationLock)
+            .onErrorResume(releaseFailure -> {
+                if (releaseFailure != initializationFailure) {
+                    initializationFailure.addSuppressed(releaseFailure);
+                }
+                return Mono.empty();
+            });
     }
 
     private Mono<Void> validateLeaseCFModeInteroperabilityForEpkRangeBasedLease() {
