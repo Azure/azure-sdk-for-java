@@ -1,0 +1,103 @@
+trigger: none
+pr: none
+
+parameters:
+  - name: TestEnvironment
+    type: string
+    default: stage
+    values:
+      - stage
+      - live
+
+extends:
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  parameters:
+    stages:
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
+          TestName: 'Cosmos_ServiceRegression_${{ parameters.TestEnvironment }}'
+          CloudConfig:
+            Public: {}
+          UseFederatedAuth: false
+          DisableAzureResourceCreation: true
+          MatrixConfigs:
+            - Name: Cosmos_service_regression
+              Path: sdk/cosmos/service-regression-matrix.json
+              Selection: all
+              GenerateVMJobs: true
+          ServiceDirectory: cosmos
+          Artifacts:
+            - name: azure-cosmos
+              groupId: com.azure
+              safeName: azurecosmos
+          AdditionalModules:
+            - name: azure-cosmos-test
+              groupId: com.azure
+            - name: azure-cosmos-tests
+              groupId: com.azure
+          AdditionalVariables:
+            - name: JavaBuildVersion
+              value: '1.21'
+            - name: RegressionAccountHost
+              value: $(service-regression-${{ parameters.TestEnvironment }}-account-host)
+            - name: RegressionAccountKey
+              value: $(service-regression-${{ parameters.TestEnvironment }}-account-key)
+          EnvVars:
+            ACCOUNT_HOST: $(RegressionAccountHost)
+            ACCOUNT_KEY: $(RegressionAccountKey)
+          PreTestRunSteps:
+            - pwsh: |
+                if ($env:TEST_ENVIRONMENT -eq 'live' -and $env:BUILD_REASON -ne 'Manual') {
+                  throw 'Live service regressions must be explicitly queued on demand.'
+                }
+                foreach ($name in @('ACCOUNT_HOST', 'ACCOUNT_KEY')) {
+                  $value = [Environment]::GetEnvironmentVariable($name)
+                  if ([string]::IsNullOrWhiteSpace($value) -or $value.Contains('$(')) {
+                    throw "Configure the service-regression-$env:TEST_ENVIRONMENT account variables: $name is missing."
+                  }
+                }
+                $endpoint = [Uri]$env:ACCOUNT_HOST
+                if (-not $endpoint.IsAbsoluteUri -or $endpoint.Scheme -ne 'https' -or
+                    [string]::IsNullOrWhiteSpace($endpoint.Host)) {
+                  throw 'The service-regression account endpoint must be an absolute HTTPS URI.'
+                }
+                foreach ($file in @('sdk/cosmos/cosmos-v4.properties', "$HOME/cosmos-v4.properties")) {
+                  if (Test-Path -LiteralPath $file) {
+                    throw "Remove the local account override before running service regressions: $file"
+                  }
+                }
+                # Never accept a report left by an earlier execution on a reused agent.
+                $reports = 'sdk/cosmos/azure-cosmos-tests/target/failsafe-reports'
+                if (Test-Path -LiteralPath $reports) {
+                  Remove-Item -LiteralPath $reports -Recurse -Force
+                }
+              displayName: 'Validate service-regression target'
+              env:
+                TEST_ENVIRONMENT: ${{ parameters.TestEnvironment }}
+                BUILD_REASON: $(Build.Reason)
+                ACCOUNT_HOST: $(RegressionAccountHost)
+                ACCOUNT_KEY: $(RegressionAccountKey)
+          TestGoals: 'verify'
+          TestOptions: >-
+            -Pservice-regression
+            -DCOSMOS.HTTP2_ENABLED=$(Http2Enabled)
+            -DCOSMOS.THINCLIENT_ENABLED=$(ThinClientEnabled)
+            -DCOSMOS.THINCLIENT_QUERY_PLAN_ENABLED=true
+            -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false
+          TestResultsFiles: '**/junitreports/TEST-*.xml'
+          TimeoutInMinutes: 45
+          MaxParallel: 3
+          PostSteps:
+            - task: PowerShell@2
+              displayName: 'Require successful service-regression coverage'
+              condition: always()
+              inputs:
+                pwsh: true
+                filePath: sdk/cosmos/pipeline/Assert-ServiceRegressionResults.ps1
+                arguments: >-
+                  -ReportsDirectory sdk/cosmos/azure-cosmos-tests/target/failsafe-reports
+                  -ConnectionMode $(ConnectionMode)
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(RegressionAccountHost)
+                AccountKey: $(RegressionAccountKey)
