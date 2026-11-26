@@ -11,6 +11,8 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -25,6 +27,11 @@ public final class TestUtils {
      * Private constructor so this class cannot be instantiated.
      */
     private TestUtils() {
+    }
+
+    static CertificatePolicy setupCancellationPolicy() {
+        // Manual issuance remains pending until a certificate is merged, unlike self-signing.
+        return new CertificatePolicy(WellKnownIssuerNames.UNKNOWN, "CN=Cancellation");
     }
 
     static class PerCallPolicy implements HttpPipelinePolicy {
