@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import io.netty.buffer.ByteBuf;
@@ -119,8 +120,28 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     @Override
     public URI getRootUri(RxDocumentServiceRequest request) {
-        // need to have thin client endpoint here
-        return this.globalEndpointManager.resolveServiceEndpoint(request).getThinclientRegionalEndpoint();
+        RegionalRoutingContext regionalRoutingContext = this.globalEndpointManager.resolveServiceEndpoint(request);
+        URI thinClientEndpoint = regionalRoutingContext.getThinclientRegionalEndpoint();
+        if (thinClientEndpoint == null) {
+            // A null thin-client endpoint means routing fell back to the default (global) routing context,
+            // which is never populated from the account's thin-client locations. Rather than returning null
+            // and letting the caller fail with an opaque NullPointerException, surface the actual cause:
+            // the configured preferred regions do not match any region advertised by the account.
+            List<String> preferredRegions = this.globalEndpointManager.getConnectionPolicy() == null
+                ? null
+                : this.globalEndpointManager.getConnectionPolicy().getPreferredRegions();
+
+            throw new IllegalArgumentException(
+                "Cannot route the request through the thin-client gateway: the resolved routing context has "
+                    + "no thin-client endpoint. This happens when the configured preferred regions do not "
+                    + "match any region of the database account. Configured preferred regions: "
+                    + (preferredRegions == null || preferredRegions.isEmpty()
+                        ? "<none>" : preferredRegions.toString())
+                    + ". Please update the preferred regions so that at least one of them matches a region "
+                    + "of the database account.");
+        }
+
+        return thinClientEndpoint;
     }
 
     @Override
