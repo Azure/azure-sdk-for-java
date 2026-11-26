@@ -114,7 +114,7 @@ See our [troubleshooting guide for multi-tenant authentication issues][identity_
 
 If an exception is thrown with a message similar to:
 
-> The challenge resource '<my-key-vault>.vault.azure.net' does not match the requested domain. If you wish to disable this check for your client, pass 'true' to the SecretClientBuilder.disableChallengeResourceVerification() method when building it. See https://aka.ms/azsdk/blog/vault-uri for more information.
+> The challenge resource '<my-key-vault>.vault.azure.net' does not match the requested domain. If you wish to disable this check for your client, call the client builder's disableChallengeResourceVerification() method when building it. See https://aka.ms/azsdk/blog/vault-uri for more information.
 
 Check that the resource is expected - that you're not receiving an authentication challenge from an unknown host which may indicate an incorrect request URI. If the resource is correct but you're using a mock service or non-transparent proxy, use the `disableChallengeResourceVerification()` when creating your clients with a client builder, for example:
 
