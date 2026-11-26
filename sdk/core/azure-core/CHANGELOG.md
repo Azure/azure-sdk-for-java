@@ -12,6 +12,8 @@
 
 ### Bugs Fixed
 
+- Prevented `BearerTokenAuthenticationPolicy` from reapplying bearer tokens or handling authentication challenges
+  for cross-origin HTTP redirects.
 - Fixed `RetryPolicy` synchronous retry backoff not restoring the thread's interrupt status after catching
   `InterruptedException`, which caused callers to silently lose the interruption signal.
 - Fixed `FluxUtil.toFluxByteBuffer` emitting each partial read backed by an array of the full chunk size, which caused
