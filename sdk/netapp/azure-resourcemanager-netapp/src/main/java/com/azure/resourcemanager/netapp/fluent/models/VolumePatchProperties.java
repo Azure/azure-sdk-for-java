@@ -9,12 +9,14 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.netapp.models.AsyncDirectoryDelete;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
 import com.azure.resourcemanager.netapp.models.SmbOplocks;
+import com.azure.resourcemanager.netapp.models.VolumePatchNamespaceProperties;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesExportPolicy;
 import java.io.IOException;
@@ -32,8 +34,10 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
 
     /*
      * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. For
-     * regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes, valid values are in the range
-     * 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples
+     * regular volumes, valid values are in the range 50GiB to 100TiB.
+     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
+     * to 2400TiB.
+     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
      * of 1 GiB.
      */
     private Long usageThreshold;
@@ -65,6 +69,11 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
      * Specifies if default quota is enabled for the volume.
      */
     private Boolean isDefaultQuotaEnabled;
+
+    /*
+     * Async Directory Delete configuration for the volume.
+     */
+    private AsyncDirectoryDelete asyncDirectoryDelete;
 
     /*
      * Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies .
@@ -134,6 +143,11 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
      */
     private SmbOplocks smbOplocks;
 
+    /*
+     * Geographic namespace properties for this volume.
+     */
+    private VolumePatchNamespaceProperties geoNamespaceProperties;
+
     /**
      * Creates an instance of VolumePatchProperties class.
      */
@@ -162,9 +176,11 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
 
     /**
      * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
-     * expressed in bytes as multiples of 1 GiB.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
+     * to 2400TiB.
+     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
+     * of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
@@ -174,9 +190,11 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
 
     /**
      * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
-     * expressed in bytes as multiples of 1 GiB.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
+     * to 2400TiB.
+     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
+     * of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumePatchProperties object itself.
@@ -291,6 +309,26 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
      */
     public VolumePatchProperties withIsDefaultQuotaEnabled(Boolean isDefaultQuotaEnabled) {
         this.isDefaultQuotaEnabled = isDefaultQuotaEnabled;
+        return this;
+    }
+
+    /**
+     * Get the asyncDirectoryDelete property: Async Directory Delete configuration for the volume.
+     * 
+     * @return the asyncDirectoryDelete value.
+     */
+    public AsyncDirectoryDelete asyncDirectoryDelete() {
+        return this.asyncDirectoryDelete;
+    }
+
+    /**
+     * Set the asyncDirectoryDelete property: Async Directory Delete configuration for the volume.
+     * 
+     * @param asyncDirectoryDelete the asyncDirectoryDelete value to set.
+     * @return the VolumePatchProperties object itself.
+     */
+    public VolumePatchProperties withAsyncDirectoryDelete(AsyncDirectoryDelete asyncDirectoryDelete) {
+        this.asyncDirectoryDelete = asyncDirectoryDelete;
         return this;
     }
 
@@ -555,6 +593,26 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
     }
 
     /**
+     * Get the geoNamespaceProperties property: Geographic namespace properties for this volume.
+     * 
+     * @return the geoNamespaceProperties value.
+     */
+    public VolumePatchNamespaceProperties geoNamespaceProperties() {
+        return this.geoNamespaceProperties;
+    }
+
+    /**
+     * Set the geoNamespaceProperties property: Geographic namespace properties for this volume.
+     * 
+     * @param geoNamespaceProperties the geoNamespaceProperties value to set.
+     * @return the VolumePatchProperties object itself.
+     */
+    public VolumePatchProperties withGeoNamespaceProperties(VolumePatchNamespaceProperties geoNamespaceProperties) {
+        this.geoNamespaceProperties = geoNamespaceProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -565,6 +623,12 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
         }
         if (dataProtection() != null) {
             dataProtection().validate();
+        }
+        if (asyncDirectoryDelete() != null) {
+            asyncDirectoryDelete().validate();
+        }
+        if (geoNamespaceProperties() != null) {
+            geoNamespaceProperties().validate();
         }
     }
 
@@ -582,6 +646,7 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
         jsonWriter.writeNumberField("throughputMibps", this.throughputMibps);
         jsonWriter.writeJsonField("dataProtection", this.dataProtection);
         jsonWriter.writeBooleanField("isDefaultQuotaEnabled", this.isDefaultQuotaEnabled);
+        jsonWriter.writeJsonField("asyncDirectoryDelete", this.asyncDirectoryDelete);
         jsonWriter.writeNumberField("defaultUserQuotaInKiBs", this.defaultUserQuotaInKiBs);
         jsonWriter.writeNumberField("defaultGroupQuotaInKiBs", this.defaultGroupQuotaInKiBs);
         jsonWriter.writeStringField("unixPermissions", this.unixPermissions);
@@ -597,6 +662,7 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
         jsonWriter.writeStringField("smbNonBrowsable",
             this.smbNonBrowsable == null ? null : this.smbNonBrowsable.toString());
         jsonWriter.writeStringField("smbOplocks", this.smbOplocks == null ? null : this.smbOplocks.toString());
+        jsonWriter.writeJsonField("geoNamespaceProperties", this.geoNamespaceProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -632,6 +698,8 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
                 } else if ("isDefaultQuotaEnabled".equals(fieldName)) {
                     deserializedVolumePatchProperties.isDefaultQuotaEnabled
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("asyncDirectoryDelete".equals(fieldName)) {
+                    deserializedVolumePatchProperties.asyncDirectoryDelete = AsyncDirectoryDelete.fromJson(reader);
                 } else if ("defaultUserQuotaInKiBs".equals(fieldName)) {
                     deserializedVolumePatchProperties.defaultUserQuotaInKiBs = reader.getNullable(JsonReader::getLong);
                 } else if ("defaultGroupQuotaInKiBs".equals(fieldName)) {
@@ -658,6 +726,9 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
                     deserializedVolumePatchProperties.smbNonBrowsable = SmbNonBrowsable.fromString(reader.getString());
                 } else if ("smbOplocks".equals(fieldName)) {
                     deserializedVolumePatchProperties.smbOplocks = SmbOplocks.fromString(reader.getString());
+                } else if ("geoNamespaceProperties".equals(fieldName)) {
+                    deserializedVolumePatchProperties.geoNamespaceProperties
+                        = VolumePatchNamespaceProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

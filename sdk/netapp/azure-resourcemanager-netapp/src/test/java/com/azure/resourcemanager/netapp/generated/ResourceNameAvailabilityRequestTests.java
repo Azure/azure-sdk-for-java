@@ -13,23 +13,23 @@ public final class ResourceNameAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceNameAvailabilityRequest model = BinaryData.fromString(
-            "{\"name\":\"refdee\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes\",\"resourceGroup\":\"ecuijpxtxs\"}")
+            "{\"name\":\"wxh\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes\",\"resourceGroup\":\"ejtlk\"}")
             .toObject(ResourceNameAvailabilityRequest.class);
-        Assertions.assertEquals("refdee", model.name());
+        Assertions.assertEquals("wxh", model.name());
         Assertions.assertEquals(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES,
             model.type());
-        Assertions.assertEquals("ecuijpxtxs", model.resourceGroup());
+        Assertions.assertEquals("ejtlk", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceNameAvailabilityRequest model = new ResourceNameAvailabilityRequest().withName("refdee")
+        ResourceNameAvailabilityRequest model = new ResourceNameAvailabilityRequest().withName("wxh")
             .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES)
-            .withResourceGroup("ecuijpxtxs");
+            .withResourceGroup("ejtlk");
         model = BinaryData.fromObject(model).toObject(ResourceNameAvailabilityRequest.class);
-        Assertions.assertEquals("refdee", model.name());
+        Assertions.assertEquals("wxh", model.name());
         Assertions.assertEquals(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES,
             model.type());
-        Assertions.assertEquals("ecuijpxtxs", model.resourceGroup());
+        Assertions.assertEquals("ejtlk", model.resourceGroup());
     }
 }

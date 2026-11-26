@@ -14,12 +14,12 @@ public final class ListReplicationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListReplications model = BinaryData.fromString(
-            "{\"value\":[{\"replicationId\":\"bncblylpstdbhhx\",\"endpointType\":\"dst\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"cers\",\"remoteVolumeRegion\":\"ntnev\",\"mirrorState\":\"Uninitialized\",\"replicationCreationTime\":\"2021-02-26T00:24:19Z\",\"replicationDeletionTime\":\"2021-01-16T04:39:20Z\"}],\"nextLink\":\"dsslswt\"}")
+            "{\"value\":[{\"replicationId\":\"pxodlqiyntorzih\",\"endpointType\":\"src\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"w\",\"remoteVolumeRegion\":\"mslyzrpzbchckqqz\",\"mirrorState\":\"Uninitialized\",\"replicationCreationTime\":\"2021-05-24T05:08:39Z\",\"replicationDeletionTime\":\"2021-11-07T11:18:56Z\"},{\"replicationId\":\"iizynkedyatrwyh\",\"endpointType\":\"dst\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"hwit\",\"remoteVolumeRegion\":\"ypyynpcdpumnzg\",\"mirrorState\":\"Uninitialized\",\"replicationCreationTime\":\"2021-05-04T13:21:35Z\",\"replicationDeletionTime\":\"2021-06-04T15:48:38Z\"},{\"replicationId\":\"knso\",\"endpointType\":\"src\",\"replicationSchedule\":\"daily\",\"remoteVolumeResourceId\":\"ldtlwwr\",\"remoteVolumeRegion\":\"dmtnc\",\"mirrorState\":\"Broken\",\"replicationCreationTime\":\"2021-03-23T08:43:52Z\",\"replicationDeletionTime\":\"2021-01-05T02:30:07Z\"},{\"replicationId\":\"d\",\"endpointType\":\"src\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"cogjltdtbn\",\"remoteVolumeRegion\":\"adoocrkvc\",\"mirrorState\":\"Mirrored\",\"replicationCreationTime\":\"2021-09-16T23:17:11Z\",\"replicationDeletionTime\":\"2021-10-11T09:13:27Z\"}],\"nextLink\":\"qgxqquezikyw\"}")
             .toObject(ListReplications.class);
-        Assertions.assertEquals(EndpointType.DST, model.value().get(0).endpointType());
-        Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, model.value().get(0).replicationSchedule());
-        Assertions.assertEquals("cers", model.value().get(0).remoteVolumeResourceId());
-        Assertions.assertEquals("ntnev", model.value().get(0).remoteVolumeRegion());
-        Assertions.assertEquals("dsslswt", model.nextLink());
+        Assertions.assertEquals(EndpointType.SRC, model.value().get(0).endpointType());
+        Assertions.assertEquals(ReplicationSchedule.HOURLY, model.value().get(0).replicationSchedule());
+        Assertions.assertEquals("w", model.value().get(0).remoteVolumeResourceId());
+        Assertions.assertEquals("mslyzrpzbchckqqz", model.value().get(0).remoteVolumeRegion());
+        Assertions.assertEquals("qgxqquezikyw", model.nextLink());
     }
 }

@@ -11,7 +11,7 @@ public final class QuotaItemPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaItemProperties model
-            = BinaryData.fromString("{\"current\":1146215181,\"default\":1348050771,\"usage\":587661863}")
+            = BinaryData.fromString("{\"current\":2007054909,\"default\":846419016,\"usage\":1701243846}")
                 .toObject(QuotaItemProperties.class);
     }
 }

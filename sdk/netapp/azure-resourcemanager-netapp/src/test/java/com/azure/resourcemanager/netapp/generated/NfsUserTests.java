@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class NfsUserTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NfsUser model = BinaryData.fromString("{\"userId\":3048231352847216987,\"groupId\":7098733089051666960}")
+        NfsUser model = BinaryData.fromString("{\"userId\":928202540530969399,\"groupId\":4258159930427537161}")
             .toObject(NfsUser.class);
-        Assertions.assertEquals(3048231352847216987L, model.userId());
-        Assertions.assertEquals(7098733089051666960L, model.groupId());
+        Assertions.assertEquals(928202540530969399L, model.userId());
+        Assertions.assertEquals(4258159930427537161L, model.groupId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NfsUser model = new NfsUser().withUserId(3048231352847216987L).withGroupId(7098733089051666960L);
+        NfsUser model = new NfsUser().withUserId(928202540530969399L).withGroupId(4258159930427537161L);
         model = BinaryData.fromObject(model).toObject(NfsUser.class);
-        Assertions.assertEquals(3048231352847216987L, model.userId());
-        Assertions.assertEquals(7098733089051666960L, model.groupId());
+        Assertions.assertEquals(928202540530969399L, model.userId());
+        Assertions.assertEquals(4258159930427537161L, model.groupId());
     }
 }

@@ -12,24 +12,24 @@ public final class BackupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupInner model = BinaryData.fromString(
-            "{\"properties\":{\"backupId\":\"wzbhvgyugu\",\"creationDate\":\"2021-08-08T10:54:54Z\",\"snapshotCreationDate\":\"2021-10-31T02:07:56Z\",\"completionDate\":\"2021-02-10T21:25:55Z\",\"provisioningState\":\"xquk\",\"size\":319753834170561939,\"label\":\"mg\",\"backupType\":\"Scheduled\",\"failureReason\":\"jzkdeslpvlopwi\",\"volumeResourceId\":\"ighxpk\",\"useExistingSnapshot\":false,\"snapshotName\":\"aiuebbaumnyqu\",\"backupPolicyResourceId\":\"deoj\",\"isLargeVolume\":true},\"id\":\"khsmtxpsiebt\",\"name\":\"hvpesapskrdqm\",\"type\":\"jjdhtld\"}")
+            "{\"properties\":{\"backupId\":\"sflhhca\",\"creationDate\":\"2021-02-06T03:40:59Z\",\"snapshotCreationDate\":\"2021-11-04T03:44:31Z\",\"completionDate\":\"2021-11-13T16:49:46Z\",\"provisioningState\":\"yaw\",\"size\":6057026935755922237,\"label\":\"cslyjpk\",\"backupType\":\"Scheduled\",\"failureReason\":\"yexz\",\"volumeResourceId\":\"eli\",\"useExistingSnapshot\":false,\"snapshotName\":\"ztfolhbnxk\",\"backupPolicyResourceId\":\"laulppg\",\"isLargeVolume\":true},\"id\":\"napnyiropuhpigv\",\"name\":\"gylgqgitxmedjvcs\",\"type\":\"ynqwwncwzzhxgk\"}")
             .toObject(BackupInner.class);
-        Assertions.assertEquals("mg", model.label());
-        Assertions.assertEquals("ighxpk", model.volumeResourceId());
+        Assertions.assertEquals("cslyjpk", model.label());
+        Assertions.assertEquals("eli", model.volumeResourceId());
         Assertions.assertFalse(model.useExistingSnapshot());
-        Assertions.assertEquals("aiuebbaumnyqu", model.snapshotName());
+        Assertions.assertEquals("ztfolhbnxk", model.snapshotName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupInner model = new BackupInner().withLabel("mg")
-            .withVolumeResourceId("ighxpk")
+        BackupInner model = new BackupInner().withLabel("cslyjpk")
+            .withVolumeResourceId("eli")
             .withUseExistingSnapshot(false)
-            .withSnapshotName("aiuebbaumnyqu");
+            .withSnapshotName("ztfolhbnxk");
         model = BinaryData.fromObject(model).toObject(BackupInner.class);
-        Assertions.assertEquals("mg", model.label());
-        Assertions.assertEquals("ighxpk", model.volumeResourceId());
+        Assertions.assertEquals("cslyjpk", model.label());
+        Assertions.assertEquals("eli", model.volumeResourceId());
         Assertions.assertFalse(model.useExistingSnapshot());
-        Assertions.assertEquals("aiuebbaumnyqu", model.snapshotName());
+        Assertions.assertEquals("ztfolhbnxk", model.snapshotName());
     }
 }

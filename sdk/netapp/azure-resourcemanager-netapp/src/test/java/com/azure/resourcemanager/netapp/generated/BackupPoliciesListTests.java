@@ -12,14 +12,14 @@ public final class BackupPoliciesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupPoliciesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"backupPolicyId\":\"grauwjuetaebur\",\"provisioningState\":\"dmovsm\",\"dailyBackupsToKeep\":1969431903,\"weeklyBackupsToKeep\":452446013,\"monthlyBackupsToKeep\":1825254682,\"volumesAssigned\":1200703069,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"rvtp\",\"volumeResourceId\":\"ujmqlgkfbtndoa\",\"backupsCount\":1440714343,\"policyEnabled\":false},{\"volumeName\":\"ntuji\",\"volumeResourceId\":\"jed\",\"backupsCount\":659482239,\"policyEnabled\":false}]},\"etag\":\"zkoj\",\"location\":\"c\",\"tags\":{\"oxciqopidoamcio\":\"oqouicybxarzgszu\",\"zxkhnzbonlwnto\":\"hkh\",\"zcmrvexztvb\":\"gokdwbwhks\"},\"id\":\"qgsfraoyzkoow\",\"name\":\"lmnguxaw\",\"type\":\"aldsy\"}],\"nextLink\":\"ximerqfobwyznk\"}")
+            "{\"value\":[{\"properties\":{\"backupPolicyId\":\"ukndxdigrjgu\",\"provisioningState\":\"zdmsyqtfi\",\"dailyBackupsToKeep\":1852140441,\"weeklyBackupsToKeep\":970693674,\"monthlyBackupsToKeep\":110136090,\"volumesAssigned\":562718876,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"phoszqz\",\"volumeResourceId\":\"phqamvdkfwynwcvt\",\"backupsCount\":840054115,\"policyEnabled\":true},{\"volumeName\":\"mtnvyq\",\"volumeResourceId\":\"tkzwpcnpwzc\",\"backupsCount\":647378344,\"policyEnabled\":false}]},\"etag\":\"v\",\"location\":\"cyajguqf\",\"tags\":{\"emdwzrmuhapfc\":\"gzlvdnkfxu\"},\"id\":\"dpsqx\",\"name\":\"vpsvuoymgcce\",\"type\":\"vezrypqlmfeo\"}],\"nextLink\":\"rqwky\"}")
             .toObject(BackupPoliciesList.class);
-        Assertions.assertEquals("c", model.value().get(0).location());
-        Assertions.assertEquals("oqouicybxarzgszu", model.value().get(0).tags().get("oxciqopidoamcio"));
-        Assertions.assertEquals(1969431903, model.value().get(0).dailyBackupsToKeep());
-        Assertions.assertEquals(452446013, model.value().get(0).weeklyBackupsToKeep());
-        Assertions.assertEquals(1825254682, model.value().get(0).monthlyBackupsToKeep());
-        Assertions.assertFalse(model.value().get(0).enabled());
-        Assertions.assertEquals("ximerqfobwyznk", model.nextLink());
+        Assertions.assertEquals("cyajguqf", model.value().get(0).location());
+        Assertions.assertEquals("gzlvdnkfxu", model.value().get(0).tags().get("emdwzrmuhapfc"));
+        Assertions.assertEquals(1852140441, model.value().get(0).dailyBackupsToKeep());
+        Assertions.assertEquals(970693674, model.value().get(0).weeklyBackupsToKeep());
+        Assertions.assertEquals(110136090, model.value().get(0).monthlyBackupsToKeep());
+        Assertions.assertTrue(model.value().get(0).enabled());
+        Assertions.assertEquals("rqwky", model.nextLink());
     }
 }

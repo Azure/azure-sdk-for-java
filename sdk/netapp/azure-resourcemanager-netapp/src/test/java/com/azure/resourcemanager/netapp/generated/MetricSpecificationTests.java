@@ -13,24 +13,24 @@ public final class MetricSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricSpecification model = BinaryData.fromString(
-            "{\"name\":\"otkftutqxlngx\",\"displayName\":\"fgugnxkrxdqmid\",\"displayDescription\":\"hzrvqd\",\"unit\":\"bhj\",\"supportedAggregationTypes\":[\"Average\",\"Average\"],\"supportedTimeGrainTypes\":[\"qfbow\",\"kanyktzlcuiywg\",\"ywgndrv\"],\"internalMetricName\":\"hzgpphrcgyncocpe\",\"enableRegionalMdmAccount\":false,\"sourceMdmAccount\":\"mcoo\",\"sourceMdmNamespace\":\"xlzevgbmqjqabcy\",\"dimensions\":[{\"name\":\"kwlzuvccfwnfn\",\"displayName\":\"cfionl\"},{\"name\":\"x\",\"displayName\":\"qgtz\"},{\"name\":\"pnqbqqwxrjfe\",\"displayName\":\"lnwsubisn\"},{\"name\":\"mpmngnzscxaqwoo\",\"displayName\":\"cbonqvpk\"}],\"aggregationType\":\"rxnjeaseipheofl\",\"fillGapWithZero\":false,\"category\":\"y\",\"resourceIdDimensionNameOverride\":\"nj\",\"isInternal\":true}")
+            "{\"name\":\"stkiiuxhqyud\",\"displayName\":\"rrqnbpoczvyifqrv\",\"displayDescription\":\"vjsllrmvvdfw\",\"unit\":\"kpnpulexxbczwtr\",\"supportedAggregationTypes\":[\"Average\",\"Average\"],\"supportedTimeGrainTypes\":[\"j\",\"sovmyokacspkwl\",\"zdobpxjmflbvvnch\",\"kcciwwzjuqkhr\"],\"internalMetricName\":\"jiwkuofoskghsau\",\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"mvxi\",\"sourceMdmNamespace\":\"uugidyjrrfby\",\"dimensions\":[{\"name\":\"e\",\"displayName\":\"sonpclhocohs\"},{\"name\":\"ev\",\"displayName\":\"ggzfbu\"},{\"name\":\"mvfaxkffeiith\",\"displayName\":\"m\"},{\"name\":\"yvshxmz\",\"displayName\":\"bzoggigrx\"}],\"aggregationType\":\"ur\",\"fillGapWithZero\":true,\"category\":\"jnspydp\",\"resourceIdDimensionNameOverride\":\"oenkouknvudwti\",\"isInternal\":true}")
             .toObject(MetricSpecification.class);
-        Assertions.assertEquals("otkftutqxlngx", model.name());
-        Assertions.assertEquals("fgugnxkrxdqmid", model.displayName());
-        Assertions.assertEquals("hzrvqd", model.displayDescription());
-        Assertions.assertEquals("bhj", model.unit());
+        Assertions.assertEquals("stkiiuxhqyud", model.name());
+        Assertions.assertEquals("rrqnbpoczvyifqrv", model.displayName());
+        Assertions.assertEquals("vjsllrmvvdfw", model.displayDescription());
+        Assertions.assertEquals("kpnpulexxbczwtr", model.unit());
         Assertions.assertEquals(MetricAggregationType.AVERAGE, model.supportedAggregationTypes().get(0));
-        Assertions.assertEquals("qfbow", model.supportedTimeGrainTypes().get(0));
-        Assertions.assertEquals("hzgpphrcgyncocpe", model.internalMetricName());
-        Assertions.assertFalse(model.enableRegionalMdmAccount());
-        Assertions.assertEquals("mcoo", model.sourceMdmAccount());
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.sourceMdmNamespace());
-        Assertions.assertEquals("kwlzuvccfwnfn", model.dimensions().get(0).name());
-        Assertions.assertEquals("cfionl", model.dimensions().get(0).displayName());
-        Assertions.assertEquals("rxnjeaseipheofl", model.aggregationType());
-        Assertions.assertFalse(model.fillGapWithZero());
-        Assertions.assertEquals("y", model.category());
-        Assertions.assertEquals("nj", model.resourceIdDimensionNameOverride());
+        Assertions.assertEquals("j", model.supportedTimeGrainTypes().get(0));
+        Assertions.assertEquals("jiwkuofoskghsau", model.internalMetricName());
+        Assertions.assertTrue(model.enableRegionalMdmAccount());
+        Assertions.assertEquals("mvxi", model.sourceMdmAccount());
+        Assertions.assertEquals("uugidyjrrfby", model.sourceMdmNamespace());
+        Assertions.assertEquals("e", model.dimensions().get(0).name());
+        Assertions.assertEquals("sonpclhocohs", model.dimensions().get(0).displayName());
+        Assertions.assertEquals("ur", model.aggregationType());
+        Assertions.assertTrue(model.fillGapWithZero());
+        Assertions.assertEquals("jnspydp", model.category());
+        Assertions.assertEquals("oenkouknvudwti", model.resourceIdDimensionNameOverride());
         Assertions.assertTrue(model.isInternal());
     }
 }

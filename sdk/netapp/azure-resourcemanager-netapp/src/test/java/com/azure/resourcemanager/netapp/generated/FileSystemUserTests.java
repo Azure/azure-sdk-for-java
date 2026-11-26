@@ -14,21 +14,21 @@ public final class FileSystemUserTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileSystemUser model = BinaryData.fromString(
-            "{\"nfsUser\":{\"userId\":7973708904011670408,\"groupId\":3934291710122169990},\"cifsUser\":{\"username\":\"b\"}}")
+            "{\"nfsUser\":{\"userId\":2303455502372916888,\"groupId\":3754579921352518306},\"cifsUser\":{\"username\":\"okwbqplh\"}}")
             .toObject(FileSystemUser.class);
-        Assertions.assertEquals(7973708904011670408L, model.nfsUser().userId());
-        Assertions.assertEquals(3934291710122169990L, model.nfsUser().groupId());
-        Assertions.assertEquals("b", model.cifsUser().username());
+        Assertions.assertEquals(2303455502372916888L, model.nfsUser().userId());
+        Assertions.assertEquals(3754579921352518306L, model.nfsUser().groupId());
+        Assertions.assertEquals("okwbqplh", model.cifsUser().username());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FileSystemUser model = new FileSystemUser()
-            .withNfsUser(new NfsUser().withUserId(7973708904011670408L).withGroupId(3934291710122169990L))
-            .withCifsUser(new CifsUser().withUsername("b"));
+            .withNfsUser(new NfsUser().withUserId(2303455502372916888L).withGroupId(3754579921352518306L))
+            .withCifsUser(new CifsUser().withUsername("okwbqplh"));
         model = BinaryData.fromObject(model).toObject(FileSystemUser.class);
-        Assertions.assertEquals(7973708904011670408L, model.nfsUser().userId());
-        Assertions.assertEquals(3934291710122169990L, model.nfsUser().groupId());
-        Assertions.assertEquals("b", model.cifsUser().username());
+        Assertions.assertEquals(2303455502372916888L, model.nfsUser().userId());
+        Assertions.assertEquals(3754579921352518306L, model.nfsUser().groupId());
+        Assertions.assertEquals("okwbqplh", model.cifsUser().username());
     }
 }

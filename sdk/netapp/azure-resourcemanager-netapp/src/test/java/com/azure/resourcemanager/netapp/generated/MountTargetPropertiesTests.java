@@ -12,9 +12,9 @@ public final class MountTargetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MountTargetProperties model = BinaryData.fromString(
-            "{\"mountTargetId\":\"ffeii\",\"fileSystemId\":\"hl\",\"ipAddress\":\"ez\",\"smbServerFqdn\":\"shxmzsbbzoggigrx\"}")
+            "{\"mountTargetId\":\"lpvlopw\",\"fileSystemId\":\"yighxpk\",\"ipAddress\":\"zb\",\"smbServerFqdn\":\"uebbaumnyqup\"}")
             .toObject(MountTargetProperties.class);
-        Assertions.assertEquals("hl", model.fileSystemId());
-        Assertions.assertEquals("shxmzsbbzoggigrx", model.smbServerFqdn());
+        Assertions.assertEquals("yighxpk", model.fileSystemId());
+        Assertions.assertEquals("uebbaumnyqup", model.smbServerFqdn());
     }
 }

@@ -12,22 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaReportFilterRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaReportFilterRequest model = BinaryData.fromString(
-            "{\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"dxbx\",\"usageThresholdPercentage\":1137353961}")
+        QuotaReportFilterRequest model = BinaryData
+            .fromString(
+                "{\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"c\",\"usageThresholdPercentage\":1974208739}")
             .toObject(QuotaReportFilterRequest.class);
-        Assertions.assertEquals(QuotaType.DEFAULT_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("dxbx", model.quotaTarget());
-        Assertions.assertEquals(1137353961, model.usageThresholdPercentage());
+        Assertions.assertEquals(QuotaType.INDIVIDUAL_USER_QUOTA, model.quotaType());
+        Assertions.assertEquals("c", model.quotaTarget());
+        Assertions.assertEquals(1974208739, model.usageThresholdPercentage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaReportFilterRequest model = new QuotaReportFilterRequest().withQuotaType(QuotaType.DEFAULT_GROUP_QUOTA)
-            .withQuotaTarget("dxbx")
-            .withUsageThresholdPercentage(1137353961);
+        QuotaReportFilterRequest model = new QuotaReportFilterRequest().withQuotaType(QuotaType.INDIVIDUAL_USER_QUOTA)
+            .withQuotaTarget("c")
+            .withUsageThresholdPercentage(1974208739);
         model = BinaryData.fromObject(model).toObject(QuotaReportFilterRequest.class);
-        Assertions.assertEquals(QuotaType.DEFAULT_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("dxbx", model.quotaTarget());
-        Assertions.assertEquals(1137353961, model.usageThresholdPercentage());
+        Assertions.assertEquals(QuotaType.INDIVIDUAL_USER_QUOTA, model.quotaType());
+        Assertions.assertEquals("c", model.quotaTarget());
+        Assertions.assertEquals(1974208739, model.usageThresholdPercentage());
     }
 }
