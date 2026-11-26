@@ -13,7 +13,6 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.ChangeFeedMetaData;
 import com.azure.cosmos.models.ChangeFeedOperationType;
-import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.CosmosChangeFeedPreviousImageRetentionMode;
@@ -61,7 +60,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * change feed, and the container previous-image retention capability enabled. These tests do not
  * configure account capabilities, and are not intended for the emulator. The credential must allow
  * database/container creation and deletion; each container uses 400 RU/s of provisioned throughput.
- * Tests use one gateway/session client and delete their dedicated database after the class.</p>
+ * Tests use one gateway/session client and delete their dedicated database after the class.
+ * Change-feed retention is inherited from continuous backup; no container-level retention duration is set.</p>
  *
  * <p>Run only the {@code manual-previous-image-retention} TestNG group and this class. For example, from the
  * repository root, without an emulator/fast test profile:</p>
@@ -113,6 +113,7 @@ public class PreviousImageRetentionTest {
         client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
+            .contentResponseOnWriteEnabled(true)
             .consistencyLevel(ConsistencyLevel.SESSION)
             .gatewayMode()
             .buildAsyncClient();
@@ -357,8 +358,7 @@ public class PreviousImageRetentionTest {
             .setDefaultTimeToLiveInSeconds(-1)
             .setIndexingPolicy(new IndexingPolicy()
                 .setIncludedPaths(Collections.singletonList(new IncludedPath("/*")))
-                .setExcludedPaths(Collections.singletonList(new ExcludedPath("/excluded/*"))))
-            .setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofHours(1)));
+                .setExcludedPaths(Collections.singletonList(new ExcludedPath("/excluded/*"))));
     }
 
     private CosmosAsyncContainer createFeedContainer(

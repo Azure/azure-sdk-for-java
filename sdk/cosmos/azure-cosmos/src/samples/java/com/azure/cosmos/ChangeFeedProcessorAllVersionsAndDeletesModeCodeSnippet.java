@@ -3,14 +3,11 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.CosmosChangeFeedPreviousImageRetentionMode;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import reactor.core.publisher.Mono;
-
-import java.time.Duration;
 
 /**
  * Code snippets for AllVersionsAndDeletesChangeFeedProcessor
@@ -20,7 +17,6 @@ public class ChangeFeedProcessorAllVersionsAndDeletesModeCodeSnippet {
     public Mono<CosmosContainerResponse> createContainerWithPreviousImages(CosmosAsyncDatabase database) {
         // BEGIN: readme-sample-createContainerWithPreviousImages
         CosmosContainerProperties properties = new CosmosContainerProperties("feedContainer", "/pk")
-            .setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)))
             .setChangeFeedPreviousImageRetentionMode(
                 CosmosChangeFeedPreviousImageRetentionMode.ENABLED_FOR_ALL_OPERATIONS);
         Mono<CosmosContainerResponse> createResponse = database.createContainer(properties);

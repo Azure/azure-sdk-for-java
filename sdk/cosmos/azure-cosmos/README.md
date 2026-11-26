@@ -208,11 +208,11 @@ cosmosAsyncClient.createDatabaseIfNotExists("<YOUR DATABASE NAME>")
 On accounts that support container-level previous image retention and the all versions and deletes change feed,
 configure which operations capture previous item images when creating or replacing a container. This preview setting
 does not provision continuous backup or enable the account-level prerequisites for all versions and deletes mode.
-With no existing path selection, the service captures the full previous item.
+With no existing path selection, the service captures the full previous item. On continuous-backup accounts,
+change-feed retention follows the backup retention period; do not set a container-level change-feed retention duration.
 
 ```java readme-sample-createContainerWithPreviousImages
 CosmosContainerProperties properties = new CosmosContainerProperties("feedContainer", "/pk")
-    .setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)))
     .setChangeFeedPreviousImageRetentionMode(
         CosmosChangeFeedPreviousImageRetentionMode.ENABLED_FOR_ALL_OPERATIONS);
 Mono<CosmosContainerResponse> createResponse = database.createContainer(properties);
@@ -259,6 +259,7 @@ ChangeFeedProcessor processor = new ChangeFeedProcessorBuilder()
     .buildChangeFeedProcessor();
 ```
 
+Build the lease container's client with `contentResponseOnWriteEnabled(true)`.
 Start the processor by subscribing to `processor.start()` and stop it with `processor.stop()` when finished.
 `getPrevious()` can be absent, including on deletes, if an image was not captured. Enabling capture is not retroactive.
 Consume changes within the change feed retention window. Previous image capture can increase write and storage costs.
