@@ -357,10 +357,10 @@ public class ConnectionHandler extends Handler {
         final ErrorCondition error = connection.getRemoteCondition();
 
         logErrorCondition("onConnectionRemoteClose", connection, error);
-        if (error == null) {
+        if (error == null || error.getCondition() == null) {
             onNext(connection.getRemoteState());
         } else {
-            notifyErrorContext(connection, error);
+            onError(toException(error));
         }
     }
 
@@ -392,15 +392,24 @@ public class ConnectionHandler extends Handler {
         }
 
         if (condition == null) {
-            throw logger
-                .logExceptionAsError(new IllegalStateException("notifyErrorContext does not have an ErrorCondition."));
+            onError(logger
+                .logExceptionAsError(new IllegalStateException("notifyErrorContext does not have an ErrorCondition.")));
+            return;
         }
 
-        // if the remote-peer abruptly closes the connection without issuing close frame issue one
-        final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(),
-            condition.getDescription(), getErrorContext());
+        if (condition.getCondition() == null) {
+            onError(logger.logExceptionAsError(
+                new IllegalStateException("notifyErrorContext ErrorCondition does not have a condition symbol.")));
+            return;
+        }
 
-        onError(exception);
+        // If the remote peer closes with an error condition, propagate it to subscribers.
+        onError(toException(condition));
+    }
+
+    private Throwable toException(ErrorCondition condition) {
+        return ExceptionUtil.toException(condition.getCondition().toString(), condition.getDescription(),
+            getErrorContext());
     }
 
     private void logErrorCondition(String eventName, Connection connection, ErrorCondition error) {
