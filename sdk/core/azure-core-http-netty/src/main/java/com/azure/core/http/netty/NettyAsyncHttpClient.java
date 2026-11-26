@@ -22,6 +22,7 @@ import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
@@ -31,12 +32,12 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.proxy.ProxyConnectException;
 import io.netty.handler.stream.ChunkedNioFile;
-import io.netty.handler.stream.ChunkedStream;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import org.reactivestreams.Publisher;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
 import reactor.netty.NettyPipeline;
@@ -46,6 +47,7 @@ import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import javax.net.ssl.SSLException;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.channels.FileChannel;
@@ -301,15 +303,14 @@ class NettyAsyncHttpClient implements HttpClient {
     }
 
     private static NettyOutbound sendInputStream(NettyOutbound reactorNettyOutbound, InputStreamContent bodyContent) {
-        return reactorNettyOutbound.sendUsing(bodyContent::toStream, (c, stream) -> {
-            if (c.channel().pipeline().get(ChunkedWriteHandler.class) == null) {
-                c.addHandlerLast(NettyPipeline.ChunkedWriter, new ChunkedWriteHandler());
-            }
-
-            return new ChunkedStream(stream);
-        }, (stream) -> {
-            // NO-OP. We don't close streams passed to our APIs.
-        });
+        // Defer stream access so that resets and reads run off the event loop, including on retries.
+        return reactorNettyOutbound.send(Flux.defer(() -> {
+            // Use the generic stream reader, which leaves caller-owned streams open. In particular, avoid
+            // FluxUtil's FileInputStream optimization, which closes the underlying channel at EOF.
+            FilterInputStream stream = new FilterInputStream(bodyContent.toStream()) {
+            };
+            return FluxUtil.toFluxByteBuffer(stream, BinaryDataContent.STREAM_READ_SIZE);
+        }).subscribeOn(Schedulers.boundedElastic()).map(Unpooled::wrappedBuffer));
     }
 
     /**
