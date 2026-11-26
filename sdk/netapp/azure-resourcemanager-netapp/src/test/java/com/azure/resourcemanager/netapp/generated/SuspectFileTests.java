@@ -10,8 +10,8 @@ import com.azure.resourcemanager.netapp.models.SuspectFile;
 public final class SuspectFileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SuspectFile model
-            = BinaryData.fromString("{\"suspectFileName\":\"tfih\",\"fileTimestamp\":\"2021-09-15T16:26:55Z\"}")
-                .toObject(SuspectFile.class);
+        SuspectFile model = BinaryData
+            .fromString("{\"suspectFileName\":\"xnbkfezzxscyhwzd\",\"fileTimestamp\":\"2021-07-12T09:15:36Z\"}")
+            .toObject(SuspectFile.class);
     }
 }

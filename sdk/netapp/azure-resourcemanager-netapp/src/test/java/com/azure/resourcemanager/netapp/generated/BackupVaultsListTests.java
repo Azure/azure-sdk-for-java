@@ -12,10 +12,10 @@ public final class BackupVaultsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupVaultsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"rvqqaatj\"},\"location\":\"rv\",\"tags\":{\"bfggjioolvr\":\"pmfi\",\"v\":\"x\",\"wjygvjayvblmhvk\":\"kkgll\"},\"id\":\"uhbxvvy\",\"name\":\"gsopbyrqufegxu\",\"type\":\"wz\"},{\"properties\":{\"provisioningState\":\"hlmctlpdngitvgb\"},\"location\":\"rixkwmyijejve\",\"tags\":{\"xhcexdrrvqahq\":\"bpnaixexccbdre\",\"jnhyjsvf\":\"ghtpw\",\"mtg\":\"cxzbfvoowvr\",\"y\":\"qp\"},\"id\":\"s\",\"name\":\"ronzmyhgfip\",\"type\":\"sxkm\"},{\"properties\":{\"provisioningState\":\"ekrrjr\"},\"location\":\"fxtsgum\",\"tags\":{\"xwslolbqpv\":\"lik\",\"crpw\":\"zlmvfelfktgp\",\"brnjwmw\":\"xeznoi\"},\"id\":\"pn\",\"name\":\"saz\",\"type\":\"jjoqkagf\"}],\"nextLink\":\"xttaugzxnfaaz\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"vkhbejdznx\"},\"location\":\"dsrhnjiv\",\"tags\":{\"ltducea\":\"tnovqfzgemjdftul\"},\"id\":\"tmczuomejwcwwqi\",\"name\":\"knssxmojm\",\"type\":\"vpkjpr\"},{\"properties\":{\"provisioningState\":\"cfzq\"},\"location\":\"yxgtczh\",\"tags\":{\"ripltf\":\"bsdshmkxmaehvbbx\",\"kgxywr\":\"htba\"},\"id\":\"kpyklyhp\",\"name\":\"uodpv\",\"type\":\"uudl\"},{\"properties\":{\"provisioningState\":\"bth\"},\"location\":\"tgk\",\"tags\":{\"zedqbcvhzlhplo\":\"vdxec\",\"qfbumlkxtrqjf\":\"qkdlw\",\"coezbrhubskh\":\"mlmbtxhwgfwsrta\"},\"id\":\"dyg\",\"name\":\"ookk\",\"type\":\"fqjbvleo\"}],\"nextLink\":\"ml\"}")
             .toObject(BackupVaultsList.class);
-        Assertions.assertEquals("rv", model.value().get(0).location());
-        Assertions.assertEquals("pmfi", model.value().get(0).tags().get("bfggjioolvr"));
-        Assertions.assertEquals("xttaugzxnfaaz", model.nextLink());
+        Assertions.assertEquals("dsrhnjiv", model.value().get(0).location());
+        Assertions.assertEquals("tnovqfzgemjdftul", model.value().get(0).tags().get("ltducea"));
+        Assertions.assertEquals("ml", model.nextLink());
     }
 }

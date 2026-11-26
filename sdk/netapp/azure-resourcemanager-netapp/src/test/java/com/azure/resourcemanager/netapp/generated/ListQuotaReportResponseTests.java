@@ -13,13 +13,13 @@ public final class ListQuotaReportResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListQuotaReportResponse model = BinaryData.fromString(
-            "{\"quotaReportRecords\":[{\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"um\",\"quotaLimitUsedInKiBs\":411911013999749991,\"quotaLimitTotalInKiBs\":6658700841087644517,\"percentageUsed\":39.649616,\"isDerivedQuota\":true},{\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"jpglkfgohdne\",\"quotaLimitUsedInKiBs\":7022736295865930419,\"quotaLimitTotalInKiBs\":2456249512258979423,\"percentageUsed\":81.52012,\"isDerivedQuota\":false},{\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"ikdowwquuvx\",\"quotaLimitUsedInKiBs\":5666801951543654616,\"quotaLimitTotalInKiBs\":9091677111595049669,\"percentageUsed\":87.05152,\"isDerivedQuota\":false}]}")
+            "{\"quotaReportRecords\":[{\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"jwosytxitcskfck\",\"quotaLimitUsedInKiBs\":1200427764088838332,\"quotaLimitTotalInKiBs\":6739857826926542232,\"percentageUsed\":8.023405,\"isDerivedQuota\":false},{\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"ly\",\"quotaLimitUsedInKiBs\":8347972535078571246,\"quotaLimitTotalInKiBs\":3480662233344581257,\"percentageUsed\":41.77513,\"isDerivedQuota\":false},{\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"g\",\"quotaLimitUsedInKiBs\":8680360082455485724,\"quotaLimitTotalInKiBs\":8623333094540637378,\"percentageUsed\":28.715796,\"isDerivedQuota\":false},{\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"rxcyjmoad\",\"quotaLimitUsedInKiBs\":254698639474854306,\"quotaLimitTotalInKiBs\":736715695912207853,\"percentageUsed\":39.09912,\"isDerivedQuota\":true}]}")
             .toObject(ListQuotaReportResponse.class);
-        Assertions.assertEquals(QuotaType.DEFAULT_USER_QUOTA, model.quotaReportRecords().get(0).quotaType());
-        Assertions.assertEquals("um", model.quotaReportRecords().get(0).quotaTarget());
-        Assertions.assertEquals(411911013999749991L, model.quotaReportRecords().get(0).quotaLimitUsedInKiBs());
-        Assertions.assertEquals(6658700841087644517L, model.quotaReportRecords().get(0).quotaLimitTotalInKiBs());
-        Assertions.assertEquals(39.649616F, model.quotaReportRecords().get(0).percentageUsed());
-        Assertions.assertTrue(model.quotaReportRecords().get(0).isDerivedQuota());
+        Assertions.assertEquals(QuotaType.DEFAULT_GROUP_QUOTA, model.quotaReportRecords().get(0).quotaType());
+        Assertions.assertEquals("jwosytxitcskfck", model.quotaReportRecords().get(0).quotaTarget());
+        Assertions.assertEquals(1200427764088838332L, model.quotaReportRecords().get(0).quotaLimitUsedInKiBs());
+        Assertions.assertEquals(6739857826926542232L, model.quotaReportRecords().get(0).quotaLimitTotalInKiBs());
+        Assertions.assertEquals(8.023405F, model.quotaReportRecords().get(0).percentageUsed());
+        Assertions.assertFalse(model.quotaReportRecords().get(0).isDerivedQuota());
     }
 }
