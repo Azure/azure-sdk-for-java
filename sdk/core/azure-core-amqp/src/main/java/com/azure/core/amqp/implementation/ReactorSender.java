@@ -546,15 +546,19 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     @Override
     public Mono<DeliveryState> send(byte[] bytes, int arrayOffset, int messageFormat, DeliveryState deliveryState) {
         return onEndpointActive().then(Mono.create(sink -> {
-            sendWork(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, retryOptions.getTryTimeout(),
-                deliveryState, metricsProvider));
+            final RetriableWorkItem workItem = new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink,
+                retryOptions.getTryTimeout(), deliveryState, metricsProvider);
+            sink.onCancel(() -> cancelSend(workItem));
+            sendWork(workItem);
         }));
     }
 
     Mono<DeliveryState> send(ReadableBuffer buffer, int messageFormat, DeliveryState deliveryState) {
         return onEndpointActive().then(Mono.create(sink -> {
-            sendWork(new RetriableWorkItem(buffer, messageFormat, sink, retryOptions.getTryTimeout(), deliveryState,
-                metricsProvider));
+            final RetriableWorkItem workItem = new RetriableWorkItem(buffer, messageFormat, sink,
+                retryOptions.getTryTimeout(), deliveryState, metricsProvider);
+            sink.onCancel(() -> cancelSend(workItem));
+            sendWork(workItem);
         }));
     }
 
@@ -572,11 +576,30 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         final String deliveryTag = UUID.randomUUID().toString().replace("-", "");
 
         synchronized (pendingSendLock) {
+            if (workItem.isCancelled()) {
+                return;
+            }
+            // Terminal cleanup uses this lock too, so work cannot be queued after it has finished.
+            if (isDisposed.get()) {
+                workItem.error(new AmqpException(true,
+                    String.format("Could not complete sends because link '%s' for '%s' is closed.", getLinkName(),
+                        entityPath),
+                    handler.getErrorContext(sender)), null);
+                return;
+            }
             this.pendingSendsMap.put(deliveryTag, workItem);
             this.pendingSendsQueue.offer(new WeightedDeliveryTag(deliveryTag, workItem.hasBeenRetried() ? 1 : 0));
         }
 
         this.scheduleWorkOnDispatcher();
+    }
+
+    private void cancelSend(RetriableWorkItem workItem) {
+        synchronized (pendingSendLock) {
+            workItem.cancel();
+            pendingSendsQueue.removeIf(tag -> pendingSendsMap.get(tag.getDeliveryTag()) == workItem);
+            pendingSendsMap.values().removeIf(value -> value == workItem);
+        }
     }
 
     /**

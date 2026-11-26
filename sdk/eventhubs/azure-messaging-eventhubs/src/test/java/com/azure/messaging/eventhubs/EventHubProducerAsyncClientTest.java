@@ -80,6 +80,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
@@ -557,6 +558,25 @@ class EventHubProducerAsyncClientTest {
         verify(tracer1, never()).extractContext(any());
         verify(tracer1, never()).injectContext(any(), any());
         verifyNoMoreInteractions(onClientClosed);
+    }
+
+    @Test
+    void sendRetriesClosedLinkWithReplacement() {
+        final AtomicBoolean linkClosed = new AtomicBoolean();
+        retryOptions.setMaxRetries(1);
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
+            .thenReturn(Mono.defer(() -> Mono.just(linkClosed.get() ? sendLink2 : sendLink)));
+        when(sendLink.send(any(Message.class))).thenAnswer(invocation -> {
+            linkClosed.set(true);
+            return Mono.error(new AmqpException(true, "Could not complete sends because link is closed.",
+                new AmqpErrorContext(HOSTNAME)));
+        });
+        when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
+
+        StepVerifier.create(producer.send(new EventData("test"))).expectComplete().verify(DEFAULT_TIMEOUT);
+
+        verify(sendLink).send(any(Message.class));
+        verify(sendLink2).send(any(Message.class));
     }
 
     /**

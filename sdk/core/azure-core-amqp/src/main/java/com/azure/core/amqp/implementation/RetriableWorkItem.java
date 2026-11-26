@@ -25,6 +25,7 @@ class RetriableWorkItem {
     private final int encodedMessageSize;
     private final DeliveryState deliveryState;
     private boolean waitingForAck;
+    private volatile boolean cancelled;
     private Exception lastKnownException;
 
     private final AmqpMetricsProvider metricsProvider;
@@ -114,6 +115,14 @@ class RetriableWorkItem {
         return this.waitingForAck;
     }
 
+    void cancel() {
+        cancelled = true;
+    }
+
+    boolean isCancelled() {
+        return cancelled;
+    }
+
     void send(Sender sender) {
         final int sentMsgSize;
         if (encodedBytes != null) {
@@ -126,7 +135,8 @@ class RetriableWorkItem {
     }
 
     private void reportMetrics(DeliveryState deliveryState) {
-        if (metricsProvider.isSendDeliveryEnabled()) {
+        // A send rejected before its first attempt has no delivery duration to report.
+        if (tryStartTime != 0 && metricsProvider.isSendDeliveryEnabled()) {
             metricsProvider.recordSend(tryStartTime, deliveryState == null ? null : deliveryState.getType());
         }
     }
