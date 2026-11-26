@@ -14,19 +14,19 @@ public final class RansomwareSuspectsClearRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RansomwareSuspectsClearRequest model
-            = BinaryData.fromString("{\"resolution\":\"PotentialThreat\",\"extensions\":[\"uoymgccelvezry\"]}")
+            = BinaryData.fromString("{\"resolution\":\"FalsePositive\",\"extensions\":[\"uh\"]}")
                 .toObject(RansomwareSuspectsClearRequest.class);
-        Assertions.assertEquals(RansomwareSuspectResolution.POTENTIAL_THREAT, model.resolution());
-        Assertions.assertEquals("uoymgccelvezry", model.extensions().get(0));
+        Assertions.assertEquals(RansomwareSuspectResolution.FALSE_POSITIVE, model.resolution());
+        Assertions.assertEquals("uh", model.extensions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RansomwareSuspectsClearRequest model
-            = new RansomwareSuspectsClearRequest().withResolution(RansomwareSuspectResolution.POTENTIAL_THREAT)
-                .withExtensions(Arrays.asList("uoymgccelvezry"));
+            = new RansomwareSuspectsClearRequest().withResolution(RansomwareSuspectResolution.FALSE_POSITIVE)
+                .withExtensions(Arrays.asList("uh"));
         model = BinaryData.fromObject(model).toObject(RansomwareSuspectsClearRequest.class);
-        Assertions.assertEquals(RansomwareSuspectResolution.POTENTIAL_THREAT, model.resolution());
-        Assertions.assertEquals("uoymgccelvezry", model.extensions().get(0));
+        Assertions.assertEquals(RansomwareSuspectResolution.FALSE_POSITIVE, model.resolution());
+        Assertions.assertEquals("uh", model.extensions().get(0));
     }
 }

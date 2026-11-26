@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
 import com.azure.resourcemanager.netapp.models.AcceptGrowCapacityPoolForShortTermCloneSplit;
+import com.azure.resourcemanager.netapp.models.AsyncDirectoryDelete;
 import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
@@ -22,6 +23,7 @@ import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
+import com.azure.resourcemanager.netapp.models.LargeVolumeType;
 import com.azure.resourcemanager.netapp.models.LdapServerType;
 import com.azure.resourcemanager.netapp.models.ListQuotaReportResult;
 import com.azure.resourcemanager.netapp.models.ListReplicationsRequest;
@@ -41,13 +43,17 @@ import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
 import com.azure.resourcemanager.netapp.models.SmbOplocks;
 import com.azure.resourcemanager.netapp.models.SvmPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.Volume;
+import com.azure.resourcemanager.netapp.models.VolumeLanguage;
+import com.azure.resourcemanager.netapp.models.VolumeNamespaceProperties;
 import com.azure.resourcemanager.netapp.models.VolumePatch;
+import com.azure.resourcemanager.netapp.models.VolumePatchNamespaceProperties;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeRevert;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
+import com.azure.resourcemanager.netapp.models.WorkloadApplicationType;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -294,6 +300,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().isDefaultQuotaEnabled();
     }
 
+    public AsyncDirectoryDelete asyncDirectoryDelete() {
+        return this.innerModel().asyncDirectoryDelete();
+    }
+
     public Long defaultUserQuotaInKiBs() {
         return this.innerModel().defaultUserQuotaInKiBs();
     }
@@ -347,6 +357,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().isLargeVolume();
     }
 
+    public LargeVolumeType largeVolumeType() {
+        return this.innerModel().largeVolumeType();
+    }
+
     public String originatingResourceId() {
         return this.innerModel().originatingResourceId();
     }
@@ -355,8 +369,20 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().inheritedSizeInBytes();
     }
 
+    public VolumeLanguage language() {
+        return this.innerModel().language();
+    }
+
     public BreakthroughMode breakthroughMode() {
         return this.innerModel().breakthroughMode();
+    }
+
+    public VolumeNamespaceProperties geoNamespaceProperties() {
+        return this.innerModel().geoNamespaceProperties();
+    }
+
+    public WorkloadApplicationType workloadApplicationType() {
+        return this.innerModel().workloadApplicationType();
     }
 
     public Region region() {
@@ -905,6 +931,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         }
     }
 
+    public VolumeImpl withAsyncDirectoryDelete(AsyncDirectoryDelete asyncDirectoryDelete) {
+        if (isInCreateMode()) {
+            this.innerModel().withAsyncDirectoryDelete(asyncDirectoryDelete);
+            return this;
+        } else {
+            this.updateBody.withAsyncDirectoryDelete(asyncDirectoryDelete);
+            return this;
+        }
+    }
+
     public VolumeImpl withDefaultUserQuotaInKiBs(Long defaultUserQuotaInKiBs) {
         if (isInCreateMode()) {
             this.innerModel().withDefaultUserQuotaInKiBs(defaultUserQuotaInKiBs);
@@ -950,8 +986,28 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
+    public VolumeImpl withLargeVolumeType(LargeVolumeType largeVolumeType) {
+        this.innerModel().withLargeVolumeType(largeVolumeType);
+        return this;
+    }
+
+    public VolumeImpl withLanguage(VolumeLanguage language) {
+        this.innerModel().withLanguage(language);
+        return this;
+    }
+
     public VolumeImpl withBreakthroughMode(BreakthroughMode breakthroughMode) {
         this.innerModel().withBreakthroughMode(breakthroughMode);
+        return this;
+    }
+
+    public VolumeImpl withGeoNamespaceProperties(VolumeNamespaceProperties geoNamespaceProperties) {
+        this.innerModel().withGeoNamespaceProperties(geoNamespaceProperties);
+        return this;
+    }
+
+    public VolumeImpl withWorkloadApplicationType(WorkloadApplicationType workloadApplicationType) {
+        this.innerModel().withWorkloadApplicationType(workloadApplicationType);
         return this;
     }
 
@@ -967,6 +1023,11 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumeImpl withDataProtection(VolumePatchPropertiesDataProtection dataProtection) {
         this.updateBody.withDataProtection(dataProtection);
+        return this;
+    }
+
+    public VolumeImpl withGeoNamespaceProperties(VolumePatchNamespaceProperties geoNamespaceProperties) {
+        this.updateBody.withGeoNamespaceProperties(geoNamespaceProperties);
         return this;
     }
 

@@ -11,7 +11,7 @@ public final class RansomwareReportInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RansomwareReportInner model = BinaryData.fromString(
-            "{\"properties\":{\"eventTime\":\"2021-05-22T21:00:43Z\",\"state\":\"Resolved\",\"severity\":\"Low\",\"clearedCount\":1090974611,\"reportedCount\":1597116231,\"suspects\":[{\"extension\":\"fgbvfvpdbo\",\"resolution\":\"FalsePositive\",\"fileCount\":1592823352,\"suspectFiles\":[{\"suspectFileName\":\"lhkrribdeibqipqk\",\"fileTimestamp\":\"2021-01-11T11:05:07Z\"}]}],\"provisioningState\":\"ndzwmkrefa\"},\"id\":\"jorwkqnyhgbij\",\"name\":\"jivfxzsjabib\",\"type\":\"ystawfsdjpvkvp\"}")
+            "{\"properties\":{\"eventTime\":\"2021-05-13T05:35:52Z\",\"state\":\"Resolved\",\"severity\":\"None\",\"clearedCount\":235273121,\"reportedCount\":803649154,\"suspects\":[{\"extension\":\"k\",\"resolution\":\"FalsePositive\",\"fileCount\":621511915,\"suspectFiles\":[{\"suspectFileName\":\"ratiz\",\"fileTimestamp\":\"2021-06-27T16:40:41Z\"},{\"suspectFileName\":\"asxifto\",\"fileTimestamp\":\"2021-02-17T18:59:40Z\"}]},{\"extension\":\"hftwesgog\",\"resolution\":\"FalsePositive\",\"fileCount\":815588881,\"suspectFiles\":[{\"suspectFileName\":\"rlgnyhmos\",\"fileTimestamp\":\"2021-05-26T08:22:23Z\"}]}],\"provisioningState\":\"gthrrghxjbdhq\"},\"id\":\"cx\",\"name\":\"frpdsofbshrns\",\"type\":\"buswdvzyy\"}")
             .toObject(RansomwareReportInner.class);
     }
 }

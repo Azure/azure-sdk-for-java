@@ -13,21 +13,21 @@ public final class VolumeQuotaRulesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeQuotaRulesProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Deleting\",\"quotaSizeInKiBs\":5817084203386777544,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"rmaequ\"}")
+            "{\"provisioningState\":\"Updating\",\"quotaSizeInKiBs\":4492012952865829049,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"dkow\"}")
             .toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(5817084203386777544L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(4492012952865829049L, model.quotaSizeInKiBs());
         Assertions.assertEquals(QuotaType.DEFAULT_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("rmaequ", model.quotaTarget());
+        Assertions.assertEquals("dkow", model.quotaTarget());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(5817084203386777544L)
+        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(4492012952865829049L)
             .withQuotaType(QuotaType.DEFAULT_USER_QUOTA)
-            .withQuotaTarget("rmaequ");
+            .withQuotaTarget("dkow");
         model = BinaryData.fromObject(model).toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(5817084203386777544L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(4492012952865829049L, model.quotaSizeInKiBs());
         Assertions.assertEquals(QuotaType.DEFAULT_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("rmaequ", model.quotaTarget());
+        Assertions.assertEquals("dkow", model.quotaTarget());
     }
 }

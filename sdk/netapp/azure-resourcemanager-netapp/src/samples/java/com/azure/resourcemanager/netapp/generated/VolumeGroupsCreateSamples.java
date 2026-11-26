@@ -13,6 +13,7 @@ import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
 import com.azure.resourcemanager.netapp.models.VolumeGroupMetadata;
 import com.azure.resourcemanager.netapp.models.VolumeGroupVolumeProperties;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
+import com.azure.resourcemanager.netapp.models.WorkloadApplicationType;
 import java.util.Arrays;
 
 /**
@@ -20,7 +21,7 @@ import java.util.Arrays;
  */
 public final class VolumeGroupsCreateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/VolumeGroups_Create_SapHana.json
+     * x-ms-original-file: 2026-09-15-preview/VolumeGroups_Create_SapHana.json
      */
     /**
      * Sample code: VolumeGroups_Create_SapHana.
@@ -180,7 +181,7 @@ public final class VolumeGroupsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/VolumeGroups_Create_Oracle.json
+     * x-ms-original-file: 2026-09-15-preview/VolumeGroups_Create_Oracle.json
      */
     /**
      * Sample code: VolumeGroups_Create_Oracle.
@@ -524,7 +525,7 @@ public final class VolumeGroupsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/VolumeGroups_Create_Custom.json
+     * x-ms-original-file: 2026-09-15-preview/VolumeGroups_Create_Custom.json
      */
     /**
      * Sample code: VolumeGroups_Create_Custom.
@@ -537,7 +538,7 @@ public final class VolumeGroupsCreateSamples {
             .withExistingNetAppAccount("myRG", "account1")
             .withRegion("westus")
             .withGroupMetadata(new VolumeGroupMetadata().withGroupDescription("Volume group")
-                .withApplicationType(ApplicationType.fromString("CUSTOM"))
+                .withApplicationType(ApplicationType.CUSTOM)
                 .withApplicationIdentifier("CU2"))
             .withVolumes(Arrays.asList(
                 new VolumeGroupVolumeProperties().withName("test-cus-data1")
@@ -566,7 +567,8 @@ public final class VolumeGroupsCreateSamples {
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data1"),
+                    .withVolumeSpecName("data1")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data2")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -593,7 +595,8 @@ public final class VolumeGroupsCreateSamples {
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data2"),
+                    .withVolumeSpecName("data2")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data3")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -620,7 +623,8 @@ public final class VolumeGroupsCreateSamples {
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data3"),
+                    .withVolumeSpecName("data3")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data4")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -647,7 +651,8 @@ public final class VolumeGroupsCreateSamples {
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data4"),
+                    .withVolumeSpecName("data4")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data5")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -674,7 +679,8 @@ public final class VolumeGroupsCreateSamples {
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data5"),
+                    .withVolumeSpecName("data5")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data6")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -701,7 +707,8 @@ public final class VolumeGroupsCreateSamples {
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data6"),
+                    .withVolumeSpecName("data6")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data7")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -728,7 +735,8 @@ public final class VolumeGroupsCreateSamples {
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data7"),
+                    .withVolumeSpecName("data7")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data8")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -755,7 +763,8 @@ public final class VolumeGroupsCreateSamples {
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data8"),
+                    .withVolumeSpecName("data8")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data9")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -782,7 +791,8 @@ public final class VolumeGroupsCreateSamples {
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data9"),
+                    .withVolumeSpecName("data9")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data10")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -809,7 +819,8 @@ public final class VolumeGroupsCreateSamples {
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data10"),
+                    .withVolumeSpecName("data10")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data11")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -836,7 +847,8 @@ public final class VolumeGroupsCreateSamples {
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data11"),
+                    .withVolumeSpecName("data11")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data12")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -863,12 +875,13 @@ public final class VolumeGroupsCreateSamples {
                     .withThroughputMibps(10.0F)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data12")))
+                    .withVolumeSpecName("data12")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX)))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/VolumeGroups_Create_Custom_SMB.json
+     * x-ms-original-file: 2026-09-15-preview/VolumeGroups_Create_Custom_SMB.json
      */
     /**
      * Sample code: VolumeGroups_Create_Custom_SMB.
@@ -881,7 +894,7 @@ public final class VolumeGroupsCreateSamples {
             .withExistingNetAppAccount("myRG", "account1")
             .withRegion("westus")
             .withGroupMetadata(new VolumeGroupMetadata().withGroupDescription("Volume group")
-                .withApplicationType(ApplicationType.fromString("CUSTOM"))
+                .withApplicationType(ApplicationType.CUSTOM)
                 .withApplicationIdentifier("CU2"))
             .withVolumes(Arrays.asList(new VolumeGroupVolumeProperties().withName("test-cus-data1")
                 .withZones(Arrays.asList("1"))
@@ -899,7 +912,8 @@ public final class VolumeGroupsCreateSamples {
                 .withAvsDataStore(AvsDataStore.DISABLED)
                 .withCapacityPoolResourceId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                .withVolumeSpecName("cus-data1"),
+                .withVolumeSpecName("data1")
+                .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data2")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -916,7 +930,8 @@ public final class VolumeGroupsCreateSamples {
                     .withAvsDataStore(AvsDataStore.DISABLED)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data2"),
+                    .withVolumeSpecName("data2")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data3")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -933,7 +948,8 @@ public final class VolumeGroupsCreateSamples {
                     .withAvsDataStore(AvsDataStore.DISABLED)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data3"),
+                    .withVolumeSpecName("data3")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data4")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -950,7 +966,8 @@ public final class VolumeGroupsCreateSamples {
                     .withAvsDataStore(AvsDataStore.DISABLED)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data4"),
+                    .withVolumeSpecName("data4")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data5")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -967,7 +984,8 @@ public final class VolumeGroupsCreateSamples {
                     .withAvsDataStore(AvsDataStore.DISABLED)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data5"),
+                    .withVolumeSpecName("data5")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data6")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -984,7 +1002,8 @@ public final class VolumeGroupsCreateSamples {
                     .withAvsDataStore(AvsDataStore.DISABLED)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data6"),
+                    .withVolumeSpecName("data6")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data7")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -1001,7 +1020,8 @@ public final class VolumeGroupsCreateSamples {
                     .withAvsDataStore(AvsDataStore.DISABLED)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data7"),
+                    .withVolumeSpecName("data7")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data8")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -1018,7 +1038,8 @@ public final class VolumeGroupsCreateSamples {
                     .withAvsDataStore(AvsDataStore.DISABLED)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data8"),
+                    .withVolumeSpecName("data8")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data9")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -1035,7 +1056,8 @@ public final class VolumeGroupsCreateSamples {
                     .withAvsDataStore(AvsDataStore.DISABLED)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data9"),
+                    .withVolumeSpecName("data9")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data10")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -1052,7 +1074,8 @@ public final class VolumeGroupsCreateSamples {
                     .withAvsDataStore(AvsDataStore.DISABLED)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data10"),
+                    .withVolumeSpecName("data10")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data11")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -1069,7 +1092,8 @@ public final class VolumeGroupsCreateSamples {
                     .withAvsDataStore(AvsDataStore.DISABLED)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data11"),
+                    .withVolumeSpecName("data11")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX),
                 new VolumeGroupVolumeProperties().withName("test-cus-data12")
                     .withZones(Arrays.asList("1"))
                     .withCreationToken("fakeTokenPlaceholder")
@@ -1086,7 +1110,8 @@ public final class VolumeGroupsCreateSamples {
                     .withAvsDataStore(AvsDataStore.DISABLED)
                     .withCapacityPoolResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
-                    .withVolumeSpecName("cus-data12")))
+                    .withVolumeSpecName("data12")
+                    .withWorkloadApplicationType(WorkloadApplicationType.AVDFSLOGIX)))
             .create();
     }
 }

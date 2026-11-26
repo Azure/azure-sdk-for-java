@@ -12,8 +12,8 @@ public final class QuotaItemListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaItemList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"current\":1636345438,\"default\":1735591195,\"usage\":632380018},\"id\":\"ppusuesnzwdejba\",\"name\":\"orxzdmohctbqvud\",\"type\":\"xdn\"}],\"nextLink\":\"vo\"}")
+            "{\"value\":[{\"properties\":{\"current\":1558612469,\"default\":1037618415,\"usage\":1015141024},\"id\":\"bishcbkhajdeyea\",\"name\":\"dphagalpbuxwgip\",\"type\":\"honowkgshwank\"},{\"properties\":{\"current\":775419838,\"default\":828238885,\"usage\":1868038426},\"id\":\"uttmrywnuzoqft\",\"name\":\"yqzrnkcqvyxlw\",\"type\":\"zlsico\"},{\"properties\":{\"current\":1969001145,\"default\":774520942,\"usage\":1146711687},\"id\":\"yav\",\"name\":\"hheunmmqhgyx\",\"type\":\"konocu\"},{\"properties\":{\"current\":1396417640,\"default\":2007375757,\"usage\":1079433286},\"id\":\"onuq\",\"name\":\"zf\",\"type\":\"beypewrmjmw\"}],\"nextLink\":\"jektcxsenh\"}")
             .toObject(QuotaItemList.class);
-        Assertions.assertEquals("vo", model.nextLink());
+        Assertions.assertEquals("jektcxsenh", model.nextLink());
     }
 }
