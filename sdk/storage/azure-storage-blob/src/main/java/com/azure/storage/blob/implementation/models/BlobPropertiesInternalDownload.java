@@ -158,17 +158,17 @@ public final class BlobPropertiesInternalDownload implements BlobPropertiesInter
 
     @Override
     public AccessTier getAccessTier() {
-        return null;
+        return headers.getAccessTier();
     }
 
     @Override
     public Boolean isAccessTierInferred() {
-        return null;
+        return headers.isAccessTierInferred();
     }
 
     @Override
     public AccessTier getSmartAccessTier() {
-        return null;
+        return headers.getSmartAccessTier();
     }
 
     @Override
@@ -188,7 +188,7 @@ public final class BlobPropertiesInternalDownload implements BlobPropertiesInter
 
     @Override
     public OffsetDateTime getAccessTierChangeTime() {
-        return null;
+        return headers.getAccessTierChangeTime();
     }
 
     @Override
