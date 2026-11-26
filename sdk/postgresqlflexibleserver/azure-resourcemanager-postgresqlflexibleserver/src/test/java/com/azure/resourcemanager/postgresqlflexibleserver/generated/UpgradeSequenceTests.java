@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UpgradeSequenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpgradeSequence model
-            = BinaryData.fromString("{\"sourceVersion\":\"yowqkdwytisibir\",\"targetVersion\":\"pikpz\"}")
-                .toObject(UpgradeSequence.class);
-        Assertions.assertEquals("yowqkdwytisibir", model.sourceVersion());
-        Assertions.assertEquals("pikpz", model.targetVersion());
+        UpgradeSequence model = BinaryData.fromString("{\"sourceVersion\":\"ofel\",\"targetVersion\":\"grqmqhldvrii\"}")
+            .toObject(UpgradeSequence.class);
+        Assertions.assertEquals("ofel", model.sourceVersion());
+        Assertions.assertEquals("grqmqhldvrii", model.targetVersion());
     }
 }

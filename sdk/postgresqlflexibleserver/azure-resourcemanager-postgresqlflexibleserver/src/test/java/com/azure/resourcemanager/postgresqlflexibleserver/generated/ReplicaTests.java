@@ -15,21 +15,21 @@ public final class ReplicaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Replica model = BinaryData.fromString(
-            "{\"role\":\"AsyncReplica\",\"capacity\":977455104,\"replicationState\":\"Updating\",\"promoteMode\":\"Standalone\",\"promoteOption\":\"Planned\"}")
+            "{\"role\":\"Primary\",\"capacity\":1519275761,\"replicationState\":\"Provisioning\",\"promoteMode\":\"Standalone\",\"promoteOption\":\"Forced\"}")
             .toObject(Replica.class);
-        Assertions.assertEquals(ReplicationRole.ASYNC_REPLICA, model.role());
+        Assertions.assertEquals(ReplicationRole.PRIMARY, model.role());
         Assertions.assertEquals(ReadReplicaPromoteMode.STANDALONE, model.promoteMode());
-        Assertions.assertEquals(ReadReplicaPromoteOption.PLANNED, model.promoteOption());
+        Assertions.assertEquals(ReadReplicaPromoteOption.FORCED, model.promoteOption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Replica model = new Replica().withRole(ReplicationRole.ASYNC_REPLICA)
+        Replica model = new Replica().withRole(ReplicationRole.PRIMARY)
             .withPromoteMode(ReadReplicaPromoteMode.STANDALONE)
-            .withPromoteOption(ReadReplicaPromoteOption.PLANNED);
+            .withPromoteOption(ReadReplicaPromoteOption.FORCED);
         model = BinaryData.fromObject(model).toObject(Replica.class);
-        Assertions.assertEquals(ReplicationRole.ASYNC_REPLICA, model.role());
+        Assertions.assertEquals(ReplicationRole.PRIMARY, model.role());
         Assertions.assertEquals(ReadReplicaPromoteMode.STANDALONE, model.promoteMode());
-        Assertions.assertEquals(ReadReplicaPromoteOption.PLANNED, model.promoteOption());
+        Assertions.assertEquals(ReadReplicaPromoteOption.FORCED, model.promoteOption());
     }
 }

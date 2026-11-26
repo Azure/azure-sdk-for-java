@@ -12,10 +12,10 @@ public final class DatabaseListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabaseList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"charset\":\"vmkcx\",\"collation\":\"apvhelxprgly\"},\"id\":\"dd\",\"name\":\"kcbcue\",\"type\":\"rjxgciqib\"},{\"properties\":{\"charset\":\"sxsdqrhzoymibm\",\"collation\":\"yiba\"},\"id\":\"fluszdtm\",\"name\":\"rkwofyyvoqa\",\"type\":\"piexpbtgiw\"}],\"nextLink\":\"oenwashr\"}")
+            "{\"value\":[{\"properties\":{\"charset\":\"vqtmnub\",\"collation\":\"kpzksmondjmq\"},\"id\":\"vypomgkopkwho\",\"name\":\"v\",\"type\":\"ajqgxy\"},{\"properties\":{\"charset\":\"cmbqfqvmk\",\"collation\":\"oz\"},\"id\":\"vhelxprglyatdd\",\"name\":\"kcbcue\",\"type\":\"rjxgciqib\"},{\"properties\":{\"charset\":\"sxsdqrhzoymibm\",\"collation\":\"yiba\"},\"id\":\"fluszdtm\",\"name\":\"rkwofyyvoqa\",\"type\":\"piexpbtgiw\"}],\"nextLink\":\"oenwashr\"}")
             .toObject(DatabaseList.class);
-        Assertions.assertEquals("vmkcx", model.value().get(0).charset());
-        Assertions.assertEquals("apvhelxprgly", model.value().get(0).collation());
+        Assertions.assertEquals("vqtmnub", model.value().get(0).charset());
+        Assertions.assertEquals("kpzksmondjmq", model.value().get(0).collation());
         Assertions.assertEquals("oenwashr", model.nextLink());
     }
 }

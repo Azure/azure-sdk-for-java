@@ -15,47 +15,47 @@ public final class MigrationSubstateDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrationSubstateDetails model = BinaryData.fromString(
-            "{\"currentSubState\":\"CancelingRequestedDBMigrations\",\"dbDetails\":{\"shwankixzbinje\":{\"databaseName\":\"icwifsjtt\",\"migrationState\":\"Canceling\",\"migrationOperation\":\"ishc\",\"startedOn\":\"2021-06-08T10:00:04Z\",\"endedOn\":\"2021-12-04T14:15:14Z\",\"fullLoadQueuedTables\":1192393079,\"fullLoadErroredTables\":1232407744,\"fullLoadLoadingTables\":504162153,\"fullLoadCompletedTables\":128550194,\"cdcUpdateCounter\":1995660983,\"cdcDeleteCounter\":1536073800,\"cdcInsertCounter\":1017701046,\"appliedChanges\":73243902,\"incomingChanges\":88453426,\"latency\":44381208,\"message\":\"whonowk\"},\"yaxuconuqszfkb\":{\"databaseName\":\"ttmrywnuzoqf\",\"migrationState\":\"Succeeded\",\"migrationOperation\":\"zrnkcqvyxlwh\",\"startedOn\":\"2021-02-13T20:02:37Z\",\"endedOn\":\"2021-07-17T17:56:48Z\",\"fullLoadQueuedTables\":5421057,\"fullLoadErroredTables\":774640076,\"fullLoadLoadingTables\":2046808928,\"fullLoadCompletedTables\":1797950253,\"cdcUpdateCounter\":1444459691,\"cdcDeleteCounter\":137418501,\"cdcInsertCounter\":240696862,\"appliedChanges\":989865410,\"incomingChanges\":1111271416,\"latency\":1685715671,\"message\":\"qhgyxzkonocukok\"},\"qhjfbebr\":{\"databaseName\":\"pewr\",\"migrationState\":\"WaitingForCutoverTrigger\",\"migrationOperation\":\"vvjektcxsenhwlrs\",\"startedOn\":\"2021-09-23T18:10:03Z\",\"endedOn\":\"2021-03-02T08:14:37Z\",\"fullLoadQueuedTables\":88674605,\"fullLoadErroredTables\":1497747183,\"fullLoadLoadingTables\":29207263,\"fullLoadCompletedTables\":760641013,\"cdcUpdateCounter\":883803381,\"cdcDeleteCounter\":1317137821,\"cdcInsertCounter\":579974713,\"appliedChanges\":1111696037,\"incomingChanges\":1408996613,\"latency\":509105588,\"message\":\"vfcivfsnkymuc\"}},\"validationDetails\":{\"status\":\"Succeeded\",\"validationStartTimeInUtc\":\"2021-06-15T06:59:13Z\",\"validationEndTimeInUtc\":\"2021-03-04T14:54:10Z\",\"serverLevelValidationDetails\":[{\"type\":\"txfvjrbirph\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Failed\",\"message\":\"fnljky\"}]},{\"type\":\"j\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Warning\",\"message\":\"ok\"},{\"state\":\"Succeeded\",\"message\":\"yoxgvcltbgsnc\"},{\"state\":\"Failed\",\"message\":\"esz\"}]},{\"type\":\"bijhtxfvgxbf\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Failed\",\"message\":\"vecxgodebfqkk\"}]}],\"dbLevelValidationDetails\":[{\"databaseName\":\"ukgri\",\"startedOn\":\"2021-03-19T11:37:29Z\",\"endedOn\":\"2021-11-24T09:56:45Z\",\"summary\":[{\"type\":\"zpuzycisp\",\"state\":\"Warning\",\"messages\":[{},{},{}]},{\"type\":\"gkbrpyyd\",\"state\":\"Warning\",\"messages\":[{},{}]},{\"type\":\"qkpikadrgvtqagnb\",\"state\":\"Warning\",\"messages\":[{},{},{}]}]},{\"databaseName\":\"gg\",\"startedOn\":\"2021-04-23T17:49:38Z\",\"endedOn\":\"2021-11-02T05:09:13Z\",\"summary\":[{\"type\":\"butr\",\"state\":\"Failed\",\"messages\":[{},{},{},{}]}]}]}}")
+            "{\"currentSubState\":\"WaitingForDBsToMigrateSpecification\",\"dbDetails\":{\"uzoqft\":{\"databaseName\":\"jttgzf\",\"migrationState\":\"InProgress\",\"migrationOperation\":\"cbkhajdeyeamdph\",\"startedOn\":\"2021-10-28T21:12:04Z\",\"endedOn\":\"2021-05-30T00:59:07Z\",\"fullLoadQueuedTables\":73243902,\"fullLoadErroredTables\":88453426,\"fullLoadLoadingTables\":44381208,\"fullLoadCompletedTables\":1688907354,\"cdcUpdateCounter\":1148741426,\"cdcDeleteCounter\":390798331,\"cdcInsertCounter\":1456647445,\"appliedChanges\":1568542705,\"incomingChanges\":69341003,\"latency\":248274393,\"message\":\"ixzbinjeputtmryw\"}},\"validationDetails\":{\"status\":\"Warning\",\"validationStartTimeInUtc\":\"2021-02-01T05:00:07Z\",\"validationEndTimeInUtc\":\"2021-03-23T19:50:56Z\",\"serverLevelValidationDetails\":[{\"type\":\"xlwhzlsicoh\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Succeeded\",\"message\":\"yav\"}]},{\"type\":\"heun\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Warning\",\"message\":\"konocu\"},{\"state\":\"Warning\",\"message\":\"yaxuconuqszfkb\"}]},{\"type\":\"pewr\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Failed\",\"message\":\"kt\"},{\"state\":\"Succeeded\",\"message\":\"nhwlrsffrzpwvl\"},{\"state\":\"Failed\",\"message\":\"biqylihkaet\"},{\"state\":\"Succeeded\",\"message\":\"fcivfsnkym\"}]},{\"type\":\"tqhjfbebrjcx\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Warning\",\"message\":\"txfvjrbirph\"},{\"state\":\"Succeeded\",\"message\":\"yva\"},{\"state\":\"Failed\",\"message\":\"jky\"}]}],\"dbLevelValidationDetails\":[{\"databaseName\":\"uujqgidokgjljyo\",\"startedOn\":\"2021-06-04T13:43:24Z\",\"endedOn\":\"2021-08-12T05:25:24Z\",\"summary\":[{\"type\":\"sncghkjeszz\",\"state\":\"Succeeded\",\"messages\":[{},{},{},{}]},{\"type\":\"xfvgxbfsmxne\",\"state\":\"Succeeded\",\"messages\":[{}]},{\"type\":\"xgodebfqkkrbmp\",\"state\":\"Warning\",\"messages\":[{}]},{\"type\":\"flz\",\"state\":\"Warning\",\"messages\":[{},{},{}]}]}]}}")
             .toObject(MigrationSubstateDetails.class);
-        Assertions.assertEquals("icwifsjtt", model.dbDetails().get("shwankixzbinje").databaseName());
-        Assertions.assertEquals(MigrationDatabaseState.CANCELING,
-            model.dbDetails().get("shwankixzbinje").migrationState());
-        Assertions.assertEquals("ishc", model.dbDetails().get("shwankixzbinje").migrationOperation());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T10:00:04Z"),
-            model.dbDetails().get("shwankixzbinje").startedOn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-04T14:15:14Z"),
-            model.dbDetails().get("shwankixzbinje").endedOn());
-        Assertions.assertEquals(1192393079, model.dbDetails().get("shwankixzbinje").fullLoadQueuedTables());
-        Assertions.assertEquals(1232407744, model.dbDetails().get("shwankixzbinje").fullLoadErroredTables());
-        Assertions.assertEquals(504162153, model.dbDetails().get("shwankixzbinje").fullLoadLoadingTables());
-        Assertions.assertEquals(128550194, model.dbDetails().get("shwankixzbinje").fullLoadCompletedTables());
-        Assertions.assertEquals(1995660983, model.dbDetails().get("shwankixzbinje").cdcUpdateCounter());
-        Assertions.assertEquals(1536073800, model.dbDetails().get("shwankixzbinje").cdcDeleteCounter());
-        Assertions.assertEquals(1017701046, model.dbDetails().get("shwankixzbinje").cdcInsertCounter());
-        Assertions.assertEquals(73243902, model.dbDetails().get("shwankixzbinje").appliedChanges());
-        Assertions.assertEquals(88453426, model.dbDetails().get("shwankixzbinje").incomingChanges());
-        Assertions.assertEquals(44381208, model.dbDetails().get("shwankixzbinje").latency());
-        Assertions.assertEquals("whonowk", model.dbDetails().get("shwankixzbinje").message());
-        Assertions.assertEquals(ValidationState.SUCCEEDED, model.validationDetails().status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-15T06:59:13Z"),
+        Assertions.assertEquals("jttgzf", model.dbDetails().get("uzoqft").databaseName());
+        Assertions.assertEquals(MigrationDatabaseState.IN_PROGRESS, model.dbDetails().get("uzoqft").migrationState());
+        Assertions.assertEquals("cbkhajdeyeamdph", model.dbDetails().get("uzoqft").migrationOperation());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-28T21:12:04Z"),
+            model.dbDetails().get("uzoqft").startedOn());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-30T00:59:07Z"),
+            model.dbDetails().get("uzoqft").endedOn());
+        Assertions.assertEquals(73243902, model.dbDetails().get("uzoqft").fullLoadQueuedTables());
+        Assertions.assertEquals(88453426, model.dbDetails().get("uzoqft").fullLoadErroredTables());
+        Assertions.assertEquals(44381208, model.dbDetails().get("uzoqft").fullLoadLoadingTables());
+        Assertions.assertEquals(1688907354, model.dbDetails().get("uzoqft").fullLoadCompletedTables());
+        Assertions.assertEquals(1148741426, model.dbDetails().get("uzoqft").cdcUpdateCounter());
+        Assertions.assertEquals(390798331, model.dbDetails().get("uzoqft").cdcDeleteCounter());
+        Assertions.assertEquals(1456647445, model.dbDetails().get("uzoqft").cdcInsertCounter());
+        Assertions.assertEquals(1568542705, model.dbDetails().get("uzoqft").appliedChanges());
+        Assertions.assertEquals(69341003, model.dbDetails().get("uzoqft").incomingChanges());
+        Assertions.assertEquals(248274393, model.dbDetails().get("uzoqft").latency());
+        Assertions.assertEquals("ixzbinjeputtmryw", model.dbDetails().get("uzoqft").message());
+        Assertions.assertEquals(ValidationState.WARNING, model.validationDetails().status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-01T05:00:07Z"),
             model.validationDetails().validationStartTimeInUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-04T14:54:10Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-23T19:50:56Z"),
             model.validationDetails().validationEndTimeInUtc());
-        Assertions.assertEquals("txfvjrbirph", model.validationDetails().serverLevelValidationDetails().get(0).type());
+        Assertions.assertEquals("xlwhzlsicoh", model.validationDetails().serverLevelValidationDetails().get(0).type());
         Assertions.assertEquals(ValidationState.SUCCEEDED,
             model.validationDetails().serverLevelValidationDetails().get(0).state());
-        Assertions.assertEquals(ValidationState.FAILED,
+        Assertions.assertEquals(ValidationState.SUCCEEDED,
             model.validationDetails().serverLevelValidationDetails().get(0).messages().get(0).state());
-        Assertions.assertEquals("fnljky",
+        Assertions.assertEquals("yav",
             model.validationDetails().serverLevelValidationDetails().get(0).messages().get(0).message());
-        Assertions.assertEquals("ukgri", model.validationDetails().dbLevelValidationDetails().get(0).databaseName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-19T11:37:29Z"),
+        Assertions.assertEquals("uujqgidokgjljyo",
+            model.validationDetails().dbLevelValidationDetails().get(0).databaseName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-04T13:43:24Z"),
             model.validationDetails().dbLevelValidationDetails().get(0).startedOn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-24T09:56:45Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-12T05:25:24Z"),
             model.validationDetails().dbLevelValidationDetails().get(0).endedOn());
-        Assertions.assertEquals("zpuzycisp",
+        Assertions.assertEquals("sncghkjeszz",
             model.validationDetails().dbLevelValidationDetails().get(0).summary().get(0).type());
-        Assertions.assertEquals(ValidationState.WARNING,
+        Assertions.assertEquals(ValidationState.SUCCEEDED,
             model.validationDetails().dbLevelValidationDetails().get(0).summary().get(0).state());
     }
 }

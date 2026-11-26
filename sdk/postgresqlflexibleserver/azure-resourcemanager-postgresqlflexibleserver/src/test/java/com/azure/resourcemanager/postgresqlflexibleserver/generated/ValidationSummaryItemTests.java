@@ -13,11 +13,11 @@ public final class ValidationSummaryItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationSummaryItem model = BinaryData.fromString(
-            "{\"type\":\"gnxytxhpzxbz\",\"state\":\"Failed\",\"messages\":[{\"state\":\"Warning\",\"message\":\"uhxwtctyqiklbbov\"}]}")
+            "{\"type\":\"pgn\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Succeeded\",\"message\":\"bzpfzab\"},{\"state\":\"Succeeded\",\"message\":\"hxw\"},{\"state\":\"Failed\",\"message\":\"qik\"}]}")
             .toObject(ValidationSummaryItem.class);
-        Assertions.assertEquals("gnxytxhpzxbz", model.type());
-        Assertions.assertEquals(ValidationState.FAILED, model.state());
-        Assertions.assertEquals(ValidationState.WARNING, model.messages().get(0).state());
-        Assertions.assertEquals("uhxwtctyqiklbbov", model.messages().get(0).message());
+        Assertions.assertEquals("pgn", model.type());
+        Assertions.assertEquals(ValidationState.SUCCEEDED, model.state());
+        Assertions.assertEquals(ValidationState.SUCCEEDED, model.messages().get(0).state());
+        Assertions.assertEquals("bzpfzab", model.messages().get(0).message());
     }
 }

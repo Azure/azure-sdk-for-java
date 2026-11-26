@@ -22,7 +22,7 @@ public final class FirewallRulesListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"startIpAddress\":\"gx\",\"endIpAddress\":\"fcsserxhtvsox\"},\"id\":\"wntsjgqrsxy\",\"name\":\"ruuuybnch\",\"type\":\"szizoyuelyetndnb\"}]}";
+            = "{\"value\":[{\"properties\":{\"startIpAddress\":\"dwqslsrhmpqvw\",\"endIpAddress\":\"skondcbrwimu\"},\"id\":\"ej\",\"name\":\"so\",\"type\":\"yrrleaesinuqt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class FirewallRulesListByServerMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<FirewallRule> response
-            = manager.firewallRules().listByServer("un", "qikczvvita", com.azure.core.util.Context.NONE);
+            = manager.firewallRules().listByServer("dgycxnmskwhqjjy", "lurlpshhkvp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gx", response.iterator().next().startIpAddress());
-        Assertions.assertEquals("fcsserxhtvsox", response.iterator().next().endIpAddress());
+        Assertions.assertEquals("dwqslsrhmpqvw", response.iterator().next().startIpAddress());
+        Assertions.assertEquals("skondcbrwimu", response.iterator().next().endIpAddress());
     }
 }

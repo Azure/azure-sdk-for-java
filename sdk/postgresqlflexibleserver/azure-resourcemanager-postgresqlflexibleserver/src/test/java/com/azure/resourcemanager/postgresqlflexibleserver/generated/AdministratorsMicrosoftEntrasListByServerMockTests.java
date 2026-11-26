@@ -23,7 +23,7 @@ public final class AdministratorsMicrosoftEntrasListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"principalType\":\"ServicePrincipal\",\"principalName\":\"lajv\",\"objectId\":\"jchcsrlzknmzla\",\"tenantId\":\"updwv\"},\"id\":\"hcnzqt\",\"name\":\"jhmqrhvthla\",\"type\":\"wdcxsmlzzhz\"}]}";
+            = "{\"value\":[{\"properties\":{\"principalType\":\"Group\",\"principalName\":\"oyxqvapcohhou\",\"objectId\":\"pqojxcx\",\"tenantId\":\"zdcgdzbenr\"},\"id\":\"cawetzqddt\",\"name\":\"wflj\",\"type\":\"zn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class AdministratorsMicrosoftEntrasListByServerMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<AdministratorMicrosoftEntra> response = manager.administratorsMicrosoftEntras()
-            .listByServer("pafolp", "mwamxqzragpgdph", com.azure.core.util.Context.NONE);
+        PagedIterable<AdministratorMicrosoftEntra> response
+            = manager.administratorsMicrosoftEntras().listByServer("jp", "lsvjgpliu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, response.iterator().next().principalType());
-        Assertions.assertEquals("lajv", response.iterator().next().principalName());
-        Assertions.assertEquals("jchcsrlzknmzla", response.iterator().next().objectId());
-        Assertions.assertEquals("updwv", response.iterator().next().tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, response.iterator().next().principalType());
+        Assertions.assertEquals("oyxqvapcohhou", response.iterator().next().principalName());
+        Assertions.assertEquals("pqojxcx", response.iterator().next().objectId());
+        Assertions.assertEquals("zdcgdzbenr", response.iterator().next().tenantId());
     }
 }

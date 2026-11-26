@@ -23,7 +23,7 @@ public final class AdvancedThreatProtectionSettingsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-07-27T10:39:49Z\"},\"id\":\"wwexymzvlazipbh\",\"name\":\"wvqsgny\",\"type\":\"uuzivensrpmeyyvp\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-02-26T12:57:44Z\"},\"id\":\"pinbmhwbjijkgqxn\",\"name\":\"mbk\",\"type\":\"znj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,8 +33,8 @@ public final class AdvancedThreatProtectionSettingsListByServerMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AdvancedThreatProtectionSettingsModel> response = manager.advancedThreatProtectionSettings()
-            .listByServer("tbstvjeaqnrmv", "fkoxmlghktuidvr", com.azure.core.util.Context.NONE);
+            .listByServer("ibjgsjjxxahm", "nadzyq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ThreatProtectionState.ENABLED, response.iterator().next().state());
+        Assertions.assertEquals(ThreatProtectionState.DISABLED, response.iterator().next().state());
     }
 }

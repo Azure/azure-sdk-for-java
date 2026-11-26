@@ -13,22 +13,23 @@ public final class AdministratorMicrosoftEntraPropertiesForAddTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdministratorMicrosoftEntraPropertiesForAdd model = BinaryData
-            .fromString("{\"principalType\":\"Group\",\"principalName\":\"vyqia\",\"tenantId\":\"zwpcnpwzcjaesg\"}")
+            .fromString(
+                "{\"principalType\":\"ServicePrincipal\",\"principalName\":\"wzrmuh\",\"tenantId\":\"fcqdpsq\"}")
             .toObject(AdministratorMicrosoftEntraPropertiesForAdd.class);
-        Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
-        Assertions.assertEquals("vyqia", model.principalName());
-        Assertions.assertEquals("zwpcnpwzcjaesg", model.tenantId());
+        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principalType());
+        Assertions.assertEquals("wzrmuh", model.principalName());
+        Assertions.assertEquals("fcqdpsq", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdministratorMicrosoftEntraPropertiesForAdd model
-            = new AdministratorMicrosoftEntraPropertiesForAdd().withPrincipalType(PrincipalType.GROUP)
-                .withPrincipalName("vyqia")
-                .withTenantId("zwpcnpwzcjaesg");
+            = new AdministratorMicrosoftEntraPropertiesForAdd().withPrincipalType(PrincipalType.SERVICE_PRINCIPAL)
+                .withPrincipalName("wzrmuh")
+                .withTenantId("fcqdpsq");
         model = BinaryData.fromObject(model).toObject(AdministratorMicrosoftEntraPropertiesForAdd.class);
-        Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
-        Assertions.assertEquals("vyqia", model.principalName());
-        Assertions.assertEquals("zwpcnpwzcjaesg", model.tenantId());
+        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principalType());
+        Assertions.assertEquals("wzrmuh", model.principalName());
+        Assertions.assertEquals("fcqdpsq", model.tenantId());
     }
 }

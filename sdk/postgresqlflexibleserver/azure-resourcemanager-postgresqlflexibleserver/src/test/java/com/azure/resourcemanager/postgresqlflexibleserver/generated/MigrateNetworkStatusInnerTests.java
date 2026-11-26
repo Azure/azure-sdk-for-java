@@ -12,10 +12,10 @@ public final class MigrateNetworkStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateNetworkStatusInner model = BinaryData.fromString(
-            "{\"subscriptionId\":\"rzdzucerscdnt\",\"resourceGroupName\":\"vfiwjmygtdss\",\"serverName\":\"wtmwerio\",\"state\":\"Failed\"}")
+            "{\"subscriptionId\":\"bjf\",\"resourceGroupName\":\"w\",\"serverName\":\"otftpvjzbexilz\",\"state\":\"Failed\"}")
             .toObject(MigrateNetworkStatusInner.class);
-        Assertions.assertEquals("rzdzucerscdnt", model.subscriptionId());
-        Assertions.assertEquals("vfiwjmygtdss", model.resourceGroupName());
-        Assertions.assertEquals("wtmwerio", model.serverName());
+        Assertions.assertEquals("bjf", model.subscriptionId());
+        Assertions.assertEquals("w", model.resourceGroupName());
+        Assertions.assertEquals("otftpvjzbexilz", model.serverName());
     }
 }

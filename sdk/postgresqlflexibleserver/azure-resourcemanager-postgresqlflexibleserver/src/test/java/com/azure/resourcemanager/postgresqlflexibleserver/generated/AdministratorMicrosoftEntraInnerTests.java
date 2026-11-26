@@ -13,11 +13,11 @@ public final class AdministratorMicrosoftEntraInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdministratorMicrosoftEntraInner model = BinaryData.fromString(
-            "{\"properties\":{\"principalType\":\"ServicePrincipal\",\"principalName\":\"vriiio\",\"objectId\":\"al\",\"tenantId\":\"fk\"},\"id\":\"vsexsowuelu\",\"name\":\"hhahhxvrhmzkwpjg\",\"type\":\"wspughftqsxhqx\"}")
+            "{\"properties\":{\"principalType\":\"User\",\"principalName\":\"tnvyqiatkzwp\",\"objectId\":\"p\",\"tenantId\":\"cjaesgvvs\"},\"id\":\"yajguqfhwygzlv\",\"name\":\"nk\",\"type\":\"xu\"}")
             .toObject(AdministratorMicrosoftEntraInner.class);
-        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principalType());
-        Assertions.assertEquals("vriiio", model.principalName());
-        Assertions.assertEquals("al", model.objectId());
-        Assertions.assertEquals("fk", model.tenantId());
+        Assertions.assertEquals(PrincipalType.USER, model.principalType());
+        Assertions.assertEquals("tnvyqiatkzwp", model.principalName());
+        Assertions.assertEquals("p", model.objectId());
+        Assertions.assertEquals("cjaesgvvs", model.tenantId());
     }
 }

@@ -15,19 +15,19 @@ public final class BackupsLongTermRetentionRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupsLongTermRetentionRequest model = BinaryData.fromString(
-            "{\"targetDetails\":{\"sasUriList\":[\"slynsqyrpfoo\"]},\"backupSettings\":{\"backupName\":\"rlttymsjnygqdnfw\"}}")
+            "{\"targetDetails\":{\"sasUriList\":[\"zsrzpgepq\",\"yb\"]},\"backupSettings\":{\"backupName\":\"wwpgdakchzyvlixq\"}}")
             .toObject(BackupsLongTermRetentionRequest.class);
-        Assertions.assertEquals("rlttymsjnygqdnfw", model.backupSettings().backupName());
-        Assertions.assertEquals("slynsqyrpfoo", model.targetDetails().sasUriList().get(0));
+        Assertions.assertEquals("wwpgdakchzyvlixq", model.backupSettings().backupName());
+        Assertions.assertEquals("zsrzpgepq", model.targetDetails().sasUriList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupsLongTermRetentionRequest model = new BackupsLongTermRetentionRequest()
-            .withBackupSettings(new BackupSettings().withBackupName("rlttymsjnygqdnfw"))
-            .withTargetDetails(new BackupStoreDetails().withSasUriList(Arrays.asList("slynsqyrpfoo")));
+            .withBackupSettings(new BackupSettings().withBackupName("wwpgdakchzyvlixq"))
+            .withTargetDetails(new BackupStoreDetails().withSasUriList(Arrays.asList("zsrzpgepq", "yb")));
         model = BinaryData.fromObject(model).toObject(BackupsLongTermRetentionRequest.class);
-        Assertions.assertEquals("rlttymsjnygqdnfw", model.backupSettings().backupName());
-        Assertions.assertEquals("slynsqyrpfoo", model.targetDetails().sasUriList().get(0));
+        Assertions.assertEquals("wwpgdakchzyvlixq", model.backupSettings().backupName());
+        Assertions.assertEquals("zsrzpgepq", model.targetDetails().sasUriList().get(0));
     }
 }

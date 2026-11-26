@@ -13,18 +13,18 @@ public final class RestartParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestartParameter model
-            = BinaryData.fromString("{\"restartWithFailover\":false,\"failoverMode\":\"PlannedFailover\"}")
+            = BinaryData.fromString("{\"restartWithFailover\":false,\"failoverMode\":\"ForcedFailover\"}")
                 .toObject(RestartParameter.class);
         Assertions.assertFalse(model.restartWithFailover());
-        Assertions.assertEquals(FailoverMode.PLANNED_FAILOVER, model.failoverMode());
+        Assertions.assertEquals(FailoverMode.FORCED_FAILOVER, model.failoverMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RestartParameter model
-            = new RestartParameter().withRestartWithFailover(false).withFailoverMode(FailoverMode.PLANNED_FAILOVER);
+            = new RestartParameter().withRestartWithFailover(false).withFailoverMode(FailoverMode.FORCED_FAILOVER);
         model = BinaryData.fromObject(model).toObject(RestartParameter.class);
         Assertions.assertFalse(model.restartWithFailover());
-        Assertions.assertEquals(FailoverMode.PLANNED_FAILOVER, model.failoverMode());
+        Assertions.assertEquals(FailoverMode.FORCED_FAILOVER, model.failoverMode());
     }
 }

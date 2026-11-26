@@ -13,18 +13,18 @@ public final class BackupForPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupForPatch model = BinaryData.fromString(
-            "{\"backupRetentionDays\":1712324120,\"geoRedundantBackup\":\"Enabled\",\"immutableBackup\":\"Enabled\",\"earliestRestoreDate\":\"2021-05-30T14:02:28Z\"}")
+            "{\"backupRetentionDays\":92665469,\"geoRedundantBackup\":\"Enabled\",\"immutableBackup\":\"Enabled\",\"earliestRestoreDate\":\"2021-06-11T01:29:44Z\"}")
             .toObject(BackupForPatch.class);
-        Assertions.assertEquals(1712324120, model.backupRetentionDays());
+        Assertions.assertEquals(92665469, model.backupRetentionDays());
         Assertions.assertEquals(ImmutableBackup.ENABLED, model.immutableBackup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupForPatch model
-            = new BackupForPatch().withBackupRetentionDays(1712324120).withImmutableBackup(ImmutableBackup.ENABLED);
+            = new BackupForPatch().withBackupRetentionDays(92665469).withImmutableBackup(ImmutableBackup.ENABLED);
         model = BinaryData.fromObject(model).toObject(BackupForPatch.class);
-        Assertions.assertEquals(1712324120, model.backupRetentionDays());
+        Assertions.assertEquals(92665469, model.backupRetentionDays());
         Assertions.assertEquals(ImmutableBackup.ENABLED, model.immutableBackup());
     }
 }

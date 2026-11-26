@@ -13,16 +13,16 @@ public final class MaintenanceEventRescheduleRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceEventRescheduleRequest model
-            = BinaryData.fromString("{\"postponeToDateTime\":\"2021-08-10T16:45:38Z\"}")
+            = BinaryData.fromString("{\"postponeToDateTime\":\"2021-12-06T20:15:09Z\"}")
                 .toObject(MaintenanceEventRescheduleRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-10T16:45:38Z"), model.postponeToDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-06T20:15:09Z"), model.postponeToDateTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenanceEventRescheduleRequest model = new MaintenanceEventRescheduleRequest()
-            .withPostponeToDateTime(OffsetDateTime.parse("2021-08-10T16:45:38Z"));
+            .withPostponeToDateTime(OffsetDateTime.parse("2021-12-06T20:15:09Z"));
         model = BinaryData.fromObject(model).toObject(MaintenanceEventRescheduleRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-10T16:45:38Z"), model.postponeToDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-06T20:15:09Z"), model.postponeToDateTime());
     }
 }

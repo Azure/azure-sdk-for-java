@@ -12,18 +12,18 @@ public final class MigrationNameAvailabilityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrationNameAvailabilityInner model = BinaryData.fromString(
-            "{\"name\":\"tjrip\",\"type\":\"rbpbewtghfgblcg\",\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"qhjk\"}")
+            "{\"name\":\"iotwmcdytdxwit\",\"type\":\"nrjawgqwg\",\"nameAvailable\":false,\"reason\":\"Invalid\",\"message\":\"x\"}")
             .toObject(MigrationNameAvailabilityInner.class);
-        Assertions.assertEquals("tjrip", model.name());
-        Assertions.assertEquals("rbpbewtghfgblcg", model.type());
+        Assertions.assertEquals("iotwmcdytdxwit", model.name());
+        Assertions.assertEquals("nrjawgqwg", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MigrationNameAvailabilityInner model
-            = new MigrationNameAvailabilityInner().withName("tjrip").withType("rbpbewtghfgblcg");
+            = new MigrationNameAvailabilityInner().withName("iotwmcdytdxwit").withType("nrjawgqwg");
         model = BinaryData.fromObject(model).toObject(MigrationNameAvailabilityInner.class);
-        Assertions.assertEquals("tjrip", model.name());
-        Assertions.assertEquals("rbpbewtghfgblcg", model.type());
+        Assertions.assertEquals("iotwmcdytdxwit", model.name());
+        Assertions.assertEquals("nrjawgqwg", model.type());
     }
 }

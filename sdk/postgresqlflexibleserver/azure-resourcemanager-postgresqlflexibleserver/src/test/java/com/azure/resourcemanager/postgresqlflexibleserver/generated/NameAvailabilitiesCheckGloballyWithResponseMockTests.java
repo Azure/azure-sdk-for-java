@@ -23,7 +23,7 @@ public final class NameAvailabilitiesCheckGloballyWithResponseMockTests {
     @Test
     public void testCheckGloballyWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"gsyeipqdsmjtg\",\"type\":\"gdgkki\",\"nameAvailable\":false,\"reason\":\"Invalid\",\"message\":\"smk\"}";
+            = "{\"name\":\"lnuwiguy\",\"type\":\"ykwphvxzcwxhmpe\",\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"aonwivkcqhrxh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,12 @@ public final class NameAvailabilitiesCheckGloballyWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NameAvailabilityModel response = manager.nameAvailabilities()
-            .checkGloballyWithResponse(
-                new CheckNameAvailabilityRequest().withName("mipskdyzatv").withType("zkaftjvvrux"),
+            .checkGloballyWithResponse(new CheckNameAvailabilityRequest().withName("noakiz").withType("aikn"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertFalse(response.nameAvailable());
-        Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, response.reason());
-        Assertions.assertEquals("smk", response.message());
+        Assertions.assertTrue(response.nameAvailable());
+        Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, response.reason());
+        Assertions.assertEquals("aonwivkcqhrxh", response.message());
     }
 }

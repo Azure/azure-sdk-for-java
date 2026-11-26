@@ -14,14 +14,14 @@ public final class DbLevelValidationStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbLevelValidationStatus model = BinaryData.fromString(
-            "{\"databaseName\":\"uosvmkfssxqukk\",\"startedOn\":\"2021-05-28T02:43:21Z\",\"endedOn\":\"2021-01-12T13:21:08Z\",\"summary\":[{\"type\":\"nkjzkdeslpvlop\",\"state\":\"Warning\",\"messages\":[{\"state\":\"Failed\",\"message\":\"kdwzbaiuebbaumny\"},{\"state\":\"Succeeded\",\"message\":\"deoj\"}]},{\"type\":\"bckhsmtxpsi\",\"state\":\"Warning\",\"messages\":[{\"state\":\"Warning\",\"message\":\"sapskr\"},{\"state\":\"Succeeded\",\"message\":\"jjdhtld\"},{\"state\":\"Failed\",\"message\":\"xuutkncwscwsv\"},{\"state\":\"Warning\",\"message\":\"ogtwrupqsxvnmi\"}]},{\"type\":\"kvceoveilovnotyf\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Succeeded\",\"message\":\"nxdhbt\"},{\"state\":\"Warning\",\"message\":\"ywpnvjt\"},{\"state\":\"Succeeded\",\"message\":\"rmclfplphoxu\"},{\"state\":\"Warning\",\"message\":\"abgy\"}]},{\"type\":\"sbj\",\"state\":\"Warning\",\"messages\":[{\"state\":\"Succeeded\",\"message\":\"wpmueefj\"},{\"state\":\"Failed\",\"message\":\"kqujidsuyono\"},{\"state\":\"Failed\",\"message\":\"ocqxtccmg\"}]}]}")
+            "{\"databaseName\":\"u\",\"startedOn\":\"2021-06-21T04:05:46Z\",\"endedOn\":\"2021-08-08T10:54:54Z\",\"summary\":[{\"type\":\"ss\",\"state\":\"Failed\",\"messages\":[{\"state\":\"Failed\",\"message\":\"gmgsxnkjzkde\"},{\"state\":\"Succeeded\",\"message\":\"lopwiyig\"},{\"state\":\"Warning\",\"message\":\"dwzbaiue\"}]},{\"type\":\"a\",\"state\":\"Warning\",\"messages\":[{\"state\":\"Succeeded\",\"message\":\"deoj\"},{\"state\":\"Succeeded\",\"message\":\"khsmtxpsiebt\"},{\"state\":\"Failed\",\"message\":\"esap\"}]},{\"type\":\"rdqmhjjdhtldwkyz\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Failed\",\"message\":\"scwsv\"}]}]}")
             .toObject(DbLevelValidationStatus.class);
-        Assertions.assertEquals("uosvmkfssxqukk", model.databaseName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-28T02:43:21Z"), model.startedOn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-12T13:21:08Z"), model.endedOn());
-        Assertions.assertEquals("nkjzkdeslpvlop", model.summary().get(0).type());
-        Assertions.assertEquals(ValidationState.WARNING, model.summary().get(0).state());
+        Assertions.assertEquals("u", model.databaseName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T04:05:46Z"), model.startedOn());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-08T10:54:54Z"), model.endedOn());
+        Assertions.assertEquals("ss", model.summary().get(0).type());
+        Assertions.assertEquals(ValidationState.FAILED, model.summary().get(0).state());
         Assertions.assertEquals(ValidationState.FAILED, model.summary().get(0).messages().get(0).state());
-        Assertions.assertEquals("kdwzbaiuebbaumny", model.summary().get(0).messages().get(0).message());
+        Assertions.assertEquals("gmgsxnkjzkde", model.summary().get(0).messages().get(0).message());
     }
 }
