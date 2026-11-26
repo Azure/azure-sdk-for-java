@@ -455,6 +455,16 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
             TestObject createdItem = TestObject.create();
             cosmosAsyncContainer.createItem(createdItem).block();
 
+            CosmosItemResponse<TestObject> warmup = cosmosAsyncContainer
+                .readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestObject.class)
+                .block();
+            JsonNode warmupStatistics = Utils.getSimpleObjectMapper()
+                .readTree(warmup.getDiagnostics().toString()).get("gatewayStatisticsList");
+            JsonNode successfulAttempt = warmupStatistics.get(warmupStatistics.size() - 1);
+            assertThat(successfulAttempt.get("statusCode").asInt()).isEqualTo(200);
+            String expectedRangeId = successfulAttempt.get("partitionKeyRangeId").asText();
+            assertThat(expectedRangeId).isNotBlank().isNotEqualTo("NONE");
+
             CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
 
             CosmosDiagnostics cosmosDiagnostics = null;
@@ -491,6 +501,15 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
                 ruleId,
                 canRetry
             );
+
+            JsonNode injectedAttempt = Utils.getSimpleObjectMapper()
+                .readTree(cosmosDiagnostics.toString()).get("gatewayStatisticsList").get(0);
+            String injectedRangeId = injectedAttempt.path("partitionKeyRangeId").asText();
+            assertThat(injectedRangeId)
+                .as("Partition range on the injected %s/%s failure", errorStatusCode, errorSubStatusCode)
+                .isEqualTo(expectedRangeId);
+            logger.info("Gateway fault injection returned status {}/{} with partitionKeyRangeId={}",
+                errorStatusCode, errorSubStatusCode, injectedRangeId);
 
         } finally {
             serverErrorRule.disable();

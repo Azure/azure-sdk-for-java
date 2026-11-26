@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.ConsecutiveExceptionBasedCircuitBreaker;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationHealthStatus;
@@ -60,6 +61,8 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import io.micrometer.core.instrument.Meter;
+import io.micrometer.core.instrument.Tags;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -6279,9 +6282,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
 
         CosmosAsyncClient asyncClient = null;
+        FailoverMetricsTestHelper metrics = new FailoverMetricsTestHelper();
 
         try {
-            asyncClient = clientBuilder.buildAsyncClient();
+            asyncClient = clientBuilder.clientTelemetryConfig(metrics.createTelemetryConfig()).buildAsyncClient();
 
             CosmosAsyncContainer container = asyncClient
                 .getDatabase(this.sharedAsyncDatabaseId)
@@ -6289,7 +6293,15 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
             // Bootstrap: create a test item
             TestObject testObject = TestObject.create();
-            container.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
+            CosmosItemResponse<TestObject> created = container
+                .createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
+            String partitionKeyRangeId = created.getDiagnostics().getClientSideRequestStatistics().stream()
+                .flatMap(statistics -> statistics.getResponseStatisticsList().stream())
+                .map(statistics -> statistics.getStoreResult().getStoreResponseDiagnostics().getPartitionKeyRangeId())
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Created item must have partition range diagnostics"));
+            assertThat(partitionKeyRangeId).isNotBlank().isNotEqualTo("NONE");
+            Map<Meter.Id, Double> baseline = metrics.snapshotRequestCounts();
 
             // Step 1: Inject 503 (ServiceUnavailable) into the first preferred region for READ_ITEM
             FaultInjectionCondition faultCondition = new FaultInjectionConditionBuilder()
@@ -6340,11 +6352,23 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     secondRegionCanonicalLower, nonCanonicalRegions)
                 .isTrue();
 
+            Tags partitionTags = Tags.of(TagName.PartitionKeyRangeId.toString(), partitionKeyRangeId,
+                TagName.RequestOperationType.toString(), "Document/Read");
+            metrics.assertRequestCountIncreased(ConnectionMode.DIRECT,
+                partitionTags.and(TagName.RegionName.toString(), firstRegionCanonicalLower)
+                    .and(TagName.RequestStatusCode.toString(), "503/" + HttpConstants.SubStatusCodes.SERVER_GENERATED_503),
+                baseline);
+            metrics.assertRequestCountIncreased(ConnectionMode.DIRECT,
+                partitionTags.and(TagName.RegionName.toString(), secondRegionCanonicalLower)
+                    .and(TagName.RequestStatusCode.toString(), "200/0"),
+                baseline);
+
         } finally {
             System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
             if (asyncClient != null) {
                 asyncClient.close();
             }
+            metrics.close();
         }
     }
 }
