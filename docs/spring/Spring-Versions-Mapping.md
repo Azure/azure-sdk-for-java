@@ -8,13 +8,13 @@ Table 1: The support status of **Spring Cloud Azure** with the given **Spring Bo
 | ------------------- | -------------------- | -------------------------- | --------------------------------- | ------------------------ | ----------------- |
 | 4.1.x               | 2025.1.x (2025.1.2+) | 7.4.0+                     | In Support                        | 7.0.x                    | JDK 17-25         |
 | 4.0.x               | 2025.1.x             | 7.x.x                      | In Support                        | 7.0.x                    | JDK 17-25         |
-| 3.5.x               | 2025.0.x             | 6.x.x or 5.x.x             | In Support                        | 6.2.x                    | JDK 17-24         |
-| 3.4.x               | 2024.0.x             | 5.x.x                      | In Support                        | 6.2.x                    | JDK 17-23         |
-| 3.3.x               | 2023.0.x             | 5.x.x                      | In Support                        | 6.1.x                    | JDK 17-23         |
-| 3.2.x               | 2023.0.x             | 5.x.x                      | In Support                        | 6.1.x                    | JDK 17-23         |
-| 3.1.x               | 2022.0.x             | 5.x.x                      | In Support                        | 6.0.x                    | JDK 17-21         |
-| 3.0.x               | 2022.0.x             | 5.x.x                      | In Support                        | 6.0.x                    | JDK 17-21         |
-| 2.7.x               | 2021.0 (Jubilee)     | 4.x.x                      | In Support                        | 5.3.x                    | JDK 8-21          |
+| 3.5.x               | 2025.0.x             | 6.x.x                      | End of Life                       | 6.2.x                    | JDK 17-24         |
+| 3.4.x               | 2024.0.x             | 5.x.x                      | End of Life                       | 6.2.x                    | JDK 17-23         |
+| 3.3.x               | 2023.0.x             | 5.x.x                      | End of Life                       | 6.1.x                    | JDK 17-23         |
+| 3.2.x               | 2023.0.x             | 5.x.x                      | End of Life                       | 6.1.x                    | JDK 17-23         |
+| 3.1.x               | 2022.0.x             | 5.x.x                      | End of Life                       | 6.0.x                    | JDK 17-21         |
+| 3.0.x               | 2022.0.x             | 5.x.x                      | End of Life                       | 6.0.x                    | JDK 17-21         |
+| 2.7.x               | 2021.0 (Jubilee)     | 4.x.x                      | End of Life                       | 5.3.x                    | JDK 8-21          |
 | 2.6.x               | 2021.0 (Jubilee)     | 4.x.x                      | End of Life                       | 5.3.x                    | JDK 8-21          |
 | 2.5.x               | 2020.0 (ilford)      | 4.x.x                      | End of Life                       | 5.3.x                    | JDK 8-21          |
 | 2.4.x               | 2020.0 (ilford)      | 3.x.x                      | End of Life                       | 5.3.x                    | JDK 8-21          | 
@@ -67,7 +67,7 @@ Now that you know which version to use, you can add the **spring-cloud-azure-dep
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-dependencies</artifactId>
-      <version>7.2.0</version>
+      <version>7.5.0</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>
