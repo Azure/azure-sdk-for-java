@@ -111,6 +111,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      */
     public static final String RETRY_COUNT_CONTEXT = "requestRetryCount";
 
+    /**
+     * Key for {@link Context} to disable request and response body logging for an HTTP pipeline call.
+     * <p>
+     * The body is not logged when this context value is {@code true}. Custom request and response loggers should also
+     * honor this value when handling sensitive bodies.
+     */
+    public static final String BODY_LOGGING_DISABLED_CONTEXT = "azure-http-body-logging-disabled";
+
     private static final String REQUEST_LOG_MESSAGE = "HTTP request";
     private static final String RESPONSE_LOG_MESSAGE = "HTTP response";
 
@@ -270,7 +278,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
             String contentType = request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
 
-            if (httpLogDetailLevel.shouldLogBody() && shouldBodyBeLogged(contentType, contentLength)) {
+            if (httpLogDetailLevel.shouldLogBody()
+                && !isBodyLoggingDisabled(loggingOptions.getContext())
+                && shouldBodyBeLogged(contentType, contentLength)) {
                 // shouldBodyBeLogged ensures contentLength is not null and within limits.
                 int contentLengthInt = contentLength.intValue();
 
@@ -336,7 +346,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             Long contentLength = getAndLogContentLength(response.getHeaders(), logBuilder, logger);
             Mono<HttpResponse> responseMono = Mono.just(response);
 
-            if (httpLogDetailLevel.shouldLogBody()) {
+            if (httpLogDetailLevel.shouldLogBody() && !isBodyLoggingDisabled(loggingOptions.getContext())) {
                 String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
 
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
@@ -387,7 +397,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
             Long contentLength = getAndLogContentLength(response.getHeaders(), logBuilder, logger);
 
-            if (httpLogDetailLevel.shouldLogBody()) {
+            if (httpLogDetailLevel.shouldLogBody() && !isBodyLoggingDisabled(loggingOptions.getContext())) {
                 String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
 
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
@@ -522,6 +532,10 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             && !HttpUtils.isTextEventStreamContentType(contentTypeHeader)
             && contentLength != 0
             && contentLength < MAX_BODY_LOG_SIZE;
+    }
+
+    private static boolean isBodyLoggingDisabled(Context context) {
+        return Boolean.TRUE.equals(context.getData(BODY_LOGGING_DISABLED_CONTEXT).orElse(false));
     }
 
     /*
