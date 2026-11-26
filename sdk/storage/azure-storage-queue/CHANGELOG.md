@@ -7,6 +7,10 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug where `deleteMessage` and `updateMessage` (and their `WithResponse` and async variants) sent a message ID
+  of `".."` or `"."` unescaped in the request path, so the request could target the queue instead of a single message.
+  For example, `deleteMessage("..", popReceipt)` deleted the entire queue. Null, empty, `"."` and `".."` message IDs
+  are now rejected before a request is sent.
 
 ### Other Changes
 

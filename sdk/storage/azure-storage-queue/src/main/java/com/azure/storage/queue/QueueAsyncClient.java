@@ -1264,6 +1264,8 @@ public final class QueueAsyncClient {
      * additionally contains the updated metadata about the message.
      * @throws QueueStorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds
+     * @throws NullPointerException If {@code messageId} is null.
+     * @throws IllegalArgumentException If {@code messageId} is empty, {@code "."} or {@code ".."}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UpdateMessageResult> updateMessage(String messageId, String popReceipt, String messageText,
@@ -1311,10 +1313,17 @@ public final class QueueAsyncClient {
      * additionally contains the updated metadata about the message.
      * @throws QueueStorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds
+     * @throws NullPointerException If {@code messageId} is null.
+     * @throws IllegalArgumentException If {@code messageId} is empty, {@code "."} or {@code ".."}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UpdateMessageResult>> updateMessageWithResponse(String messageId, String popReceipt,
         String messageText, Duration visibilityTimeout) {
+        try {
+            ModelHelper.validateMessageId(messageId);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
         QueueMessage message;
         if (messageText != null) {
             String finalMessage = ModelHelper.encodeMessage(BinaryData.fromString(messageText), messageEncoding);
@@ -1367,6 +1376,8 @@ public final class QueueAsyncClient {
      * @return An empty response
      * @throws QueueStorageException If the queue or messageId don't exist or the popReceipt doesn't match on the
      * message.
+     * @throws NullPointerException If {@code messageId} is null.
+     * @throws IllegalArgumentException If {@code messageId} is empty, {@code "."} or {@code ".."}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteMessage(String messageId, String popReceipt) {
@@ -1406,10 +1417,13 @@ public final class QueueAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws QueueStorageException If the queue or messageId don't exist or the popReceipt doesn't match on the
      * message.
+     * @throws NullPointerException If {@code messageId} is null.
+     * @throws IllegalArgumentException If {@code messageId} is empty, {@code "."} or {@code ".."}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt) {
         try {
+            ModelHelper.validateMessageId(messageId);
             return withContext(context -> client.getMessageIds()
                 .deleteNoCustomHeadersWithResponseAsync(queueName, messageId, popReceipt, null, null, context));
         } catch (RuntimeException ex) {
