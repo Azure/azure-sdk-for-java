@@ -1,0 +1,11 @@
+paths:
+  skills: "../../../skills/"
+  evals: ./
+
+suites:
+  all:
+    description: "Data-plane reviewer rule-detection suite"
+    evals: ["findings.eval.yaml"]
+  findings:
+    description: "Known data-plane violations"
+    evals: ["findings.eval.yaml"]

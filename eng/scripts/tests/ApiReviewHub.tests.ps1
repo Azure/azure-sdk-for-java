@@ -102,6 +102,17 @@ Describe 'Java API review hub tooling' {
         }
     }
 
+    It 'uses the exact package path when artifact IDs are duplicated' {
+        $duplicate = Join-Path $root 'sdk' 'test-v2' 'azure-example'
+        New-Item -ItemType Directory -Path $duplicate -Force | Out-Null
+        Copy-Item -LiteralPath (Join-Path $package 'pom.xml') -Destination $duplicate
+
+        {
+            & $script:GenerateScript -RepositoryRoot $root -PackagePath 'sdk/test/azure-example' `
+                -PackageName azure-example -ToolJar $tool -OutputDirectory $script:Output -WhatIf
+        } | Should -Not -Throw
+    }
+
     It 'preserves an existing bundle when the source version is stale' {
         New-Item -ItemType Directory -Path $script:Output -Force | Out-Null
         Set-Content -LiteralPath (Join-Path $script:Output 'api.md') -Value 'previous API'

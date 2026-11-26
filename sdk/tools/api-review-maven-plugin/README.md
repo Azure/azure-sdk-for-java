@@ -20,7 +20,7 @@ To build the tool and generate locally with prebuilt sources, run from the repos
 
 ```powershell
 pwsh eng\scripts\Stage-ApiReviewTools.ps1 -BinOutputDirectory artifacts\api-review-tools
-pwsh eng\scripts\Generate-ApiReviewArtifact.ps1 -RepositoryRoot . -PackageName azure-json -ToolJar artifacts\api-review-tools\api-review-maven-plugin.jar -SourcesJar sdk\serialization\azure-json\target\azure-json-1.6.0-beta.1-sources.jar -OutputDirectory artifacts\api-review
+pwsh eng\scripts\Generate-ApiReviewArtifact.ps1 -RepositoryRoot . -PackagePath sdk/serialization/azure-json -PackageName azure-json -ToolJar artifacts\api-review-tools\api-review-maven-plugin.jar -SourcesJar sdk\serialization\azure-json\target\azure-json-1.6.0-beta.1-sources.jar -OutputDirectory artifacts\api-review
 ```
 
 ## Maven execution

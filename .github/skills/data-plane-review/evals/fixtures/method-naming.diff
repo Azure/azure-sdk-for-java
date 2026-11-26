@@ -1,0 +1,9 @@
+diff --git a/sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetAsyncClient.java b/sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetAsyncClient.java
+index 1111111..2222222 100644
+--- a/sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetAsyncClient.java
++++ b/sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetAsyncClient.java
+@@ -35,6 +35,9 @@ public final class WidgetAsyncClient {
++    public Mono<Widget> createWidgetAsync(String widgetName) {
++        return service.createWidget(widgetName);
++    }
+ }
