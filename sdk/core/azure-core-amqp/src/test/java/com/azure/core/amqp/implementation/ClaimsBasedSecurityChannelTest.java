@@ -14,6 +14,7 @@ import com.azure.core.credential.TokenCredential;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
+import org.apache.qpid.proton.reactor.Reactor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,20 +24,32 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.nio.ByteBuffer;
+import java.nio.channels.Pipe;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel.PUT_TOKEN_AUDIENCE;
 import static com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel.PUT_TOKEN_EXPIRY;
 import static com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel.PUT_TOKEN_TYPE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -92,6 +105,89 @@ class ClaimsBasedSecurityChannelTest {
 
         if (mocksCloseable != null) {
             mocksCloseable.close();
+        }
+    }
+
+    /**
+     * Closing a manager must not interrupt CBS dispatch initiated by an asynchronously emitted credential token.
+     */
+    @Test
+    void managerCloseDuringAsynchronousCredentialDispatchPreservesPipe() throws Exception {
+        CountDownLatch entered = new CountDownLatch(1);
+        CountDownLatch release = new CountDownLatch(1);
+        CountDownLatch finished = new CountDownLatch(1);
+        AtomicInteger tokens = new AtomicInteger();
+        AtomicInteger requests = new AtomicInteger();
+        AtomicBoolean interrupted = new AtomicBoolean();
+        AtomicReference<Throwable> dispatchError = new AtomicReference<>();
+        AtomicReference<Throwable> shutdown = new AtomicReference<>();
+        Scheduler credentialScheduler = Schedulers.newBoundedElastic(1, 10, "test-credential");
+        Reactor reactor = Proton.reactor();
+        Pipe pipe = Pipe.open();
+        ReactorDispatcher dispatcher = new ReactorDispatcher("async-credential", reactor, pipe);
+        Disposable shutdownSubscription = dispatcher.getShutdownSignal().subscribe(signal -> {
+        }, shutdown::set);
+        when(tokenCredential.getToken(any())).thenAnswer(invocation -> Mono.fromCallable(() -> {
+            Duration lifetime = tokens.incrementAndGet() == 1 ? Duration.ofSeconds(3) : Duration.ofHours(1);
+            return new AccessToken("test-token", OffsetDateTime.now(ZoneOffset.UTC).plus(lifetime));
+        }).subscribeOn(credentialScheduler));
+        when(requestResponseChannel.sendWithAck(any())).thenAnswer(invocation -> {
+            if (requests.incrementAndGet() == 1) {
+                return Mono.just(acceptedResponse);
+            }
+            return Mono.create(sink -> {
+                entered.countDown();
+                boolean wasInterrupted = false;
+                long deadline = System.nanoTime() + VERIFY_TIMEOUT.toNanos();
+                try {
+                    while (release.getCount() != 0 && System.nanoTime() < deadline) {
+                        try {
+                            release.await(1, TimeUnit.SECONDS);
+                        } catch (InterruptedException e) {
+                            wasInterrupted = true;
+                        }
+                    }
+                    if (wasInterrupted) {
+                        Thread.currentThread().interrupt();
+                    }
+                    interrupted.set(Thread.currentThread().isInterrupted());
+                    dispatcher.invoke(() -> {
+                    });
+                } catch (Exception e) {
+                    dispatchError.set(e);
+                } finally {
+                    Thread.interrupted();
+                    finished.countDown();
+                }
+            });
+        });
+        ClaimsBasedSecurityChannel channel = new ClaimsBasedSecurityChannel(Mono.just(requestResponseChannel),
+            tokenCredential, CbsAuthorizationType.JSON_WEB_TOKEN, options);
+        ActiveClientTokenManager manager = new ActiveClientTokenManager(Mono.just(channel), tokenAudience, scopes);
+        try {
+            manager.authorize().block(VERIFY_TIMEOUT);
+            assertTrue(entered.await(VERIFY_TIMEOUT.getSeconds(), TimeUnit.SECONDS));
+            manager.close();
+            release.countDown();
+            assertTrue(finished.await(VERIFY_TIMEOUT.getSeconds(), TimeUnit.SECONDS));
+            assertFalse(interrupted.get());
+            assertNull(dispatchError.get());
+            assertNull(shutdown.get());
+            assertTrue(pipe.sink().isOpen());
+            dispatcher.invoke(() -> {
+            });
+            assertEquals(2, pipe.source().read(ByteBuffer.allocate(2)));
+            assertEquals(2, tokens.get());
+            assertEquals(2, requests.get());
+        } finally {
+            release.countDown();
+            manager.close();
+            finished.await(VERIFY_TIMEOUT.getSeconds(), TimeUnit.SECONDS);
+            shutdownSubscription.dispose();
+            credentialScheduler.dispose();
+            pipe.sink().close();
+            pipe.source().close();
+            reactor.free();
         }
     }
 

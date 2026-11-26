@@ -62,8 +62,10 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
 
     @Override
     public Mono<OffsetDateTime> authorize(String tokenAudience, String scopes) {
-        return cbsChannelMono.flatMap(
-            channel -> credential.getToken(new TokenRequestContext().addScopes(scopes)).flatMap(accessToken -> {
+        return cbsChannelMono.flatMap(channel -> credential.getToken(new TokenRequestContext().addScopes(scopes))
+            // Credentials can emit on an interruptible worker. Do not dispatch CBS work on that worker.
+            .publishOn(AuthorizationScheduler.INSTANCE)
+            .flatMap(accessToken -> {
                 final Message request = Proton.message();
                 final Map<String, Object> properties = new HashMap<>();
                 properties.put(PUT_TOKEN_OPERATION, PUT_TOKEN_OPERATION_VALUE);
