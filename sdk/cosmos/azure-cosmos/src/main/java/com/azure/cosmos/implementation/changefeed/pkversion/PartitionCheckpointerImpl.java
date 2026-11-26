@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.pkversion;
 
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
+import com.azure.cosmos.implementation.changefeed.CancellationTokenSource;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseCheckpointer;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
@@ -31,6 +32,16 @@ class PartitionCheckpointerImpl implements PartitionCheckpointer {
 
     @Override
     public Mono<Lease> checkpointPartition(ChangeFeedState continuationState) {
+        return this.checkpointPartition(continuationState, this.cancellationToken);
+    }
+
+    @Override
+    public Mono<Lease> checkpointPartitionOnShutdown(ChangeFeedState continuationState) {
+        // Processing has stopped, but lease ownership and optimistic concurrency checks still apply.
+        return this.checkpointPartition(continuationState, new CancellationTokenSource().getToken());
+    }
+
+    private Mono<Lease> checkpointPartition(ChangeFeedState continuationState, CancellationToken cancellationToken) {
         checkNotNull(continuationState, "Argument 'continuationState' must not be null.");
         checkArgument(
             continuationState.getContinuation().getContinuationTokenCount() == 1,

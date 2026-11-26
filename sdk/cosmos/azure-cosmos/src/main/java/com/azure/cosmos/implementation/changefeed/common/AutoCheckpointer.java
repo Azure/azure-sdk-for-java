@@ -10,10 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Auto check-pointer implementation for {@link ChangeFeedObserver}.
@@ -21,11 +22,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
     private final Logger logger = LoggerFactory.getLogger(AutoCheckpointer.class);
     private final CheckpointFrequency checkpointFrequency;
+    private final Clock clock;
     private final ChangeFeedObserver<T> observer;
-    private final AtomicInteger processedDocCount;
+    private final AtomicLong processedDocCount;
     private volatile Instant lastCheckpointTime;
+    private ChangeFeedObserverContext<T> pendingContext;
 
     public AutoCheckpointer(CheckpointFrequency checkpointFrequency, ChangeFeedObserver<T> observer) {
+        this(checkpointFrequency, observer, Clock.systemUTC());
+    }
+
+    AutoCheckpointer(CheckpointFrequency checkpointFrequency, ChangeFeedObserver<T> observer, Clock clock) {
         if (checkpointFrequency == null) {
             throw new IllegalArgumentException("checkpointFrequency");
         }
@@ -35,9 +42,10 @@ public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
         }
 
         this.checkpointFrequency = checkpointFrequency;
+        this.clock = clock;
         this.observer = observer;
-        this.lastCheckpointTime = Instant.now();
-        this.processedDocCount = new AtomicInteger();
+        this.lastCheckpointTime = this.clock.instant();
+        this.processedDocCount = new AtomicLong();
     }
 
     @Override
@@ -51,42 +59,63 @@ public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
     }
 
     @Override
-    public Mono<Void> processChanges(ChangeFeedObserverContext<T> context, List<T> docs) {
-        return this.observer.processChanges(context, docs)
-            .doOnError(throwable -> {
-                logger.warn("Unexpected exception from thread: " + Thread.currentThread().getId(), throwable);
-            })
-            .then(this.afterProcessChanges(context));
+    public Mono<Void> closeAsync(ChangeFeedObserverContext<T> context, ChangeFeedObserverCloseReason reason) {
+        return Mono.defer(() -> {
+            Mono<Void> checkpoint = reason == ChangeFeedObserverCloseReason.SHUTDOWN && this.pendingContext != null
+                ? this.checkpoint(this.pendingContext, true) : Mono.empty();
+            return checkpoint.doOnTerminate(() -> this.observer.close(context, reason));
+        });
     }
 
-    private Mono<Void> afterProcessChanges(ChangeFeedObserverContext<T> context) {
-        this.processedDocCount.incrementAndGet();
-
-        if (this.isCheckpointNeeded()) {
-            return context.checkpoint()
+    @Override
+    public Mono<Void> processChanges(ChangeFeedObserverContext<T> context, List<T> docs) {
+        return Mono.defer(() -> {
+            int deliveredItemCount = docs.size();
+            return this.observer.processChanges(context, docs)
                 .doOnError(throwable -> {
-                    logger.warn("Checkpoint failed; this worker will be killed", throwable);
+                    logger.warn("Unexpected exception from thread: " + Thread.currentThread().getId(), throwable);
                 })
-                .doOnSuccess((Void) -> {
-                    this.processedDocCount.set(0);
-                    this.lastCheckpointTime = Instant.now();
-                })
-                .then();
-        }
-        return Mono.empty();
+                .then(Mono.defer(() -> this.afterProcessChanges(context, deliveredItemCount)));
+        });
+    }
+
+    @Override
+    public Mono<Void> processEmptyBatch(ChangeFeedObserverContext<T> context) {
+        return Mono.defer(() -> this.afterProcessChanges(context, 0));
+    }
+
+    private Mono<Void> afterProcessChanges(ChangeFeedObserverContext<T> context, int documentCount) {
+        this.processedDocCount.addAndGet(documentCount);
+        this.pendingContext = context;
+        // A new lease needs a durable resume position before subsequent checkpoints can be deferred.
+        return context.isInitialCheckpointRequired() || this.isCheckpointNeeded()
+            ? this.checkpoint(context, false) : Mono.empty();
+    }
+
+    private Mono<Void> checkpoint(ChangeFeedObserverContext<T> context, boolean shutdown) {
+        return Mono.defer(() -> shutdown ? context.checkpointOnShutdown() : context.checkpoint())
+            .doOnError(throwable -> {
+                logger.warn("Checkpoint failed; this worker will be killed", throwable);
+            })
+            .doOnSuccess(lease -> {
+                this.processedDocCount.set(0);
+                this.lastCheckpointTime = this.clock.instant();
+                this.pendingContext = null;
+            })
+            .then();
     }
 
     private boolean isCheckpointNeeded() {
-        if (this.checkpointFrequency.getProcessedDocumentCount() == 0 && this.checkpointFrequency.getTimeInterval() == null) {
+        int documentCount = this.checkpointFrequency.getProcessedDocumentCount();
+        Duration interval = this.checkpointFrequency.getTimeInterval();
+        if (documentCount == 0 && interval == null) {
             return true;
         }
 
-        if (this.processedDocCount.get() >= this.checkpointFrequency.getProcessedDocumentCount()) {
+        if (documentCount > 0 && this.processedDocCount.get() >= documentCount) {
             return true;
         }
 
-        Duration delta = Duration.between(this.lastCheckpointTime, Instant.now());
-
-        return delta.compareTo(this.checkpointFrequency.getTimeInterval()) >= 0;
+        return interval != null && Duration.between(this.lastCheckpointTime, this.clock.instant()).compareTo(interval) >= 0;
     }
 }

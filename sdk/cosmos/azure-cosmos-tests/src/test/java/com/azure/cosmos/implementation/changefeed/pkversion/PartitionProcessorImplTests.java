@@ -11,22 +11,29 @@ import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.changefeed.CancellationTokenSource;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
+import com.azure.cosmos.implementation.changefeed.CheckpointFrequency;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseCheckpointer;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
 import com.azure.cosmos.implementation.changefeed.ProcessorSettings;
+import com.azure.cosmos.implementation.changefeed.common.AutoCheckpointer;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.changefeed.epkversion.ServiceItemLeaseV1;
 import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneException;
+import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -38,6 +45,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.HashMap;
 import java.util.UUID;
@@ -50,11 +58,13 @@ public class PartitionProcessorImplTests {
     @DataProvider(name = "changeFeed304ResponseContinuationArgProvider")
     public static Object[][] changeFeed304ResponseContinuationArgProvider() {
         return new Object[][]{
-            // hasMoreResult, hasContinuationTokenChange, shouldDoCheckpoint
-            { true, true, true },
-            { true, false, true },
-            { false, true, true },
-            { false, false, false}
+            // hasMoreResult, hasContinuationTokenChange, shouldDoCheckpoint, delayCheckpoint
+            { true, true, true, false },
+            { true, false, true, false },
+            { false, true, true, false },
+            { false, false, false, false },
+            { true, true, false, true },
+            { false, true, false, true }
         };
     }
 
@@ -62,8 +72,10 @@ public class PartitionProcessorImplTests {
     public void shouldCheckpointFor304WhenContinuationTokenChanges(
         boolean hasMoreResult,
         boolean hasContinuationTokenChange,
-        boolean shouldDoCheckpoint) {
+        boolean shouldDoCheckpoint,
+        boolean delayCheckpoint) {
         ChangeFeedObserver<JsonNode> observerMock = Mockito.mock(ChangeFeedObserver.class);
+        Mockito.when(observerMock.processEmptyBatch(Mockito.any())).thenCallRealMethod();
         ChangeFeedContextClient changeFeedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
 
         // Setup initial state with continuation token
@@ -104,7 +116,8 @@ public class PartitionProcessorImplTests {
 
         // Create processor
         PartitionProcessorImpl partitionProcessor = new PartitionProcessorImpl(
-            observerMock,
+            delayCheckpoint ? new AutoCheckpointer<>(
+                new CheckpointFrequency().withProcessedDocumentCount(10), observerMock) : observerMock,
             changeFeedContextClientMock,
             processorSettings,
             partitionCheckpointer,
@@ -224,6 +237,87 @@ public class PartitionProcessorImplTests {
         CosmosException cosmosException = (CosmosException) runtimeException.getCause();
         assertThat(cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
         assertThat(cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE);
+    }
+
+    @DataProvider(name = "initialCheckpointTakeover")
+    public Object[][] initialCheckpointTakeover() {
+        return new Object[][] {
+            {false, false, ChangeFeedMode.INCREMENTAL},
+            {false, true, ChangeFeedMode.INCREMENTAL},
+            {true, false, ChangeFeedMode.INCREMENTAL},
+            {true, true, ChangeFeedMode.INCREMENTAL}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "initialCheckpointTakeover")
+    @SuppressWarnings("unchecked")
+    public void takeoverResumesFromInitialCheckpoint(boolean emptyFirstResponse, boolean intervalOnly,
+                                                    ChangeFeedMode mode) {
+        ChangeFeedState initial = this.getChangeFeedStateWithContinuationTokens(1);
+        ChangeFeedState first = new ChangeFeedStateV1(initial.getContainerRid(), initial.getFeedRange(), mode,
+            initial.getStartFromSettings(), initial.getContinuation());
+        ChangeFeedState later = ChangeFeedState.fromString(first.toString());
+        later.getContinuation().replaceContinuation("later-continuation", true);
+        ServiceItemLease lease = new ServiceItemLease().withLeaseToken(
+            ((FeedRangePartitionKeyRangeImpl) first.getFeedRange()).getPartitionKeyRangeId());
+        CosmosAsyncContainer container = Mockito.mock(CosmosAsyncContainer.class);
+        Mockito.when(BridgeInternal.extractContainerSelfLink(container)).thenReturn("dbs/db/colls/feed");
+        ChangeFeedContextClient client = Mockito.mock(ChangeFeedContextClient.class);
+        ChangeFeedProcessorOptions options = new ChangeFeedProcessorOptions().setFeedPollDelay(Duration.ZERO);
+        if (intervalOnly) {
+            options.setCheckpointInterval(Duration.ofHours(1));
+        } else {
+            options.setCheckpointProcessedItemCount(100);
+        }
+        LeaseCheckpointer leaseCheckpointer = Mockito.mock(LeaseCheckpointer.class);
+        Mockito.when(leaseCheckpointer.checkpoint(Mockito.eq(lease), Mockito.anyString(), Mockito.any()))
+            .thenAnswer(invocation -> Mono.fromSupplier(() -> {
+                lease.setContinuationToken(invocation.getArgument(1));
+                return lease;
+            }));
+        ChangeFeedObserver<JsonNode> handler = Mockito.mock(ChangeFeedObserver.class);
+        Mockito.when(handler.processChanges(Mockito.any(), Mockito.anyList())).thenReturn(Mono.empty());
+        FeedResponse<JsonNode> firstResponse = Mockito.mock(FeedResponse.class);
+        Mockito.when(firstResponse.getContinuationToken()).thenReturn(first.toString());
+        Mockito.when(firstResponse.getResults()).thenReturn(emptyFirstResponse ? Collections.emptyList()
+            : Collections.singletonList(Mockito.mock(JsonNode.class)));
+        ReflectionUtils.setNoChanges(firstResponse, emptyFirstResponse);
+        FeedResponse<JsonNode> laterResponse = Mockito.mock(FeedResponse.class);
+        Mockito.when(laterResponse.getContinuationToken()).thenReturn(later.toString());
+        Mockito.when(laterResponse.getResults())
+            .thenReturn(Collections.singletonList(Mockito.mock(JsonNode.class)));
+        ReflectionUtils.setNoChanges(laterResponse, false);
+        Mockito.when(client.createDocumentChangeFeedQuery(
+            Mockito.any(), Mockito.any(), Mockito.eq(JsonNode.class)))
+            .thenReturn(Flux.just(firstResponse, laterResponse))
+            .thenReturn(Flux.error(new LeaseLostException("takeover")));
+        PartitionProcessorFactoryImpl factory = new PartitionProcessorFactoryImpl(client, options, leaseCheckpointer,
+            container, first.getContainerRid(), null);
+        PartitionProcessor processor = factory.create(lease, new AutoCheckpointer<>(new CheckpointFrequency()
+            .withTimeInterval(options.getCheckpointInterval())
+            .withProcessedDocumentCount(options.getCheckpointProcessedItemCount()), handler));
+        processor.run(new CancellationTokenSource().getToken()).block(Duration.ofSeconds(5));
+
+        // Simulate abrupt ownership loss without closing the observer or flushing its pending continuation.
+        Mockito.verify(leaseCheckpointer, Mockito.times(1))
+            .checkpoint(Mockito.eq(lease), Mockito.anyString(), Mockito.any());
+        assertThat(lease.getContinuationToken()).isEqualTo(first.getContinuation().getCurrentContinuationToken().getToken());
+        Mockito.verify(handler, Mockito.times(emptyFirstResponse ? 1 : 2))
+            .processChanges(Mockito.any(), Mockito.anyList());
+        ServiceItemLease acquiredLease = new ServiceItemLease(lease);
+        Mockito.clearInvocations(client);
+        Mockito.when(client.createDocumentChangeFeedQuery(
+            Mockito.any(), Mockito.any(), Mockito.eq(JsonNode.class)))
+            .thenReturn(Flux.error(new LeaseLostException("end resumed query")));
+        PartitionProcessor resumedProcessor = factory.create(acquiredLease, handler);
+        resumedProcessor.run(new CancellationTokenSource().getToken()).block(Duration.ofSeconds(5));
+
+        ArgumentCaptor<CosmosChangeFeedRequestOptions> request =
+            ArgumentCaptor.forClass(CosmosChangeFeedRequestOptions.class);
+        Mockito.verify(client).createDocumentChangeFeedQuery(Mockito.any(), request.capture(), Mockito.any());
+        ChangeFeedState resumed = ModelBridgeInternal.getChangeFeedContinuationState(request.getValue());
+        assertThat(resumed.getStartFromSettings()).isEqualTo(ChangeFeedStartFromInternal.createFromETagAndFeedRange(
+            first.getContinuation().getCurrentContinuationToken().getToken(), acquiredLease.getFeedRange()));
     }
 
     private ChangeFeedStateV1 getChangeFeedStateWithContinuationTokens(int tokenCount) {

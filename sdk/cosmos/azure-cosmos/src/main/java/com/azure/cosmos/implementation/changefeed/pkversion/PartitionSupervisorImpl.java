@@ -45,6 +45,7 @@ class PartitionSupervisorImpl implements PartitionSupervisor {
     private volatile RuntimeException resultException;
 
     private final Scheduler scheduler;
+    private Mono<Void> processingTask;
 
     public PartitionSupervisorImpl(Lease lease, ChangeFeedObserver<JsonNode> observer, PartitionProcessor processor,
                                    LeaseRenewer renewer, Scheduler scheduler) {
@@ -64,8 +65,13 @@ class PartitionSupervisorImpl implements PartitionSupervisor {
 
         this.observer.open(context);
 
-        this.scheduler.schedule(() -> this.processor.run(this.childShutdownCts.getToken())
-            .subscribe());
+        this.processingTask = Mono.defer(() -> this.processor.run(this.childShutdownCts.getToken()))
+            .onErrorResume(error -> {
+                this.resultException = error instanceof RuntimeException ? (RuntimeException) error : new RuntimeException(error);
+                return Mono.empty();
+            })
+            .cache();
+        this.scheduler.schedule(() -> this.processingTask.subscribe());
 
         this.scheduler.schedule(() -> this.renewer.run(this.childShutdownCts.getToken())
             .subscribe());
@@ -85,21 +91,29 @@ class PartitionSupervisorImpl implements PartitionSupervisor {
             logger.info("Lease with token {}: skipping renew as no batches processed.", this.lease.getLeaseToken());
             return false;
         }
-        return !shutdownToken.isCancellationRequested() && this.processor.getResultException() == null && this.renewer.getResultException() == null;
+        return !shutdownToken.isCancellationRequested() && !this.childShutdownCts.isCancellationRequested()
+            && this.resultException == null && this.processor.getResultException() == null && this.renewer.getResultException() == null;
     }
 
     private Mono<Void> afterRun(ChangeFeedObserverContext<JsonNode> context, CancellationToken shutdownToken) {
+        this.childShutdownCts.cancel();
+        // Do not close the observer or release its lease while a handler is still running.
+        return this.processingTask.then(Mono.defer(() -> this.closeObserver(context, shutdownToken)));
+    }
+
+    private Mono<Void> closeObserver(ChangeFeedObserverContext<JsonNode> context, CancellationToken shutdownToken) {
         ChangeFeedObserverCloseReason closeReason = ChangeFeedObserverCloseReason.UNKNOWN;
 
         try {
-
-            this.childShutdownCts.cancel();
 
             closeReason = shutdownToken.isCancellationRequested() ?
                 ChangeFeedObserverCloseReason.SHUTDOWN :
                 ChangeFeedObserverCloseReason.UNKNOWN;
 
             RuntimeException workerException = this.processor.getResultException();
+            if (workerException == null) {
+                workerException = this.resultException;
+            }
 
             // Priority must be given to any exception from the processor worker unless it is a task being cancelled.
             if (workerException == null || workerException instanceof TaskCancelledException) {
@@ -125,15 +139,10 @@ class PartitionSupervisorImpl implements PartitionSupervisor {
             this.resultException = oex;
         } catch (Exception ex) {
             closeReason = ChangeFeedObserverCloseReason.UNKNOWN;
-        } finally {
-            this.observer.close(context, closeReason);
         }
 
-        if (this.resultException != null) {
-            return Mono.error(this.resultException);
-        } else {
-            return Mono.empty();
-        }
+        return this.observer.closeAsync(context, closeReason)
+            .then(Mono.defer(() -> this.resultException == null ? Mono.empty() : Mono.error(this.resultException)));
     }
 
     @Override
