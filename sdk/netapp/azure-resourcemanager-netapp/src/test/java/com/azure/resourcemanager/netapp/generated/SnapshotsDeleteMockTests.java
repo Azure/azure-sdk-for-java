@@ -28,7 +28,7 @@ public final class SnapshotsDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.snapshots()
-            .delete("glnkvxlxpagl", "ivbgkcv", "hpzvuqdflvoniyp", "pubcpzgpxtivhjk", "idibgqjxgpn",
+            .delete("xaurs", "ftibtyibuyvpirfq", "pnqn", "owsbedenrexkxbh", "vucnulgmnh",
                 com.azure.core.util.Context.NONE);
 
     }

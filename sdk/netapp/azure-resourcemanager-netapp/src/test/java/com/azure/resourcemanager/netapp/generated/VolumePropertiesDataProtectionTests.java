@@ -20,52 +20,51 @@ public final class VolumePropertiesDataProtectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumePropertiesDataProtection model = BinaryData.fromString(
-            "{\"backup\":{\"backupPolicyId\":\"rvjx\",\"policyEnforced\":true,\"backupVaultId\":\"pydptko\"},\"replication\":{\"replicationId\":\"ou\",\"endpointType\":\"dst\",\"replicationSchedule\":\"daily\",\"remoteVolumeResourceId\":\"tiukbldngkpoci\",\"remotePath\":{\"externalHostName\":\"z\",\"serverName\":\"xoegukgjnpiucgy\",\"volumeName\":\"evqzntypmrbp\"},\"remoteVolumeRegion\":\"c\",\"destinationReplications\":[{\"resourceId\":\"sdpydnfyhxdeoejz\",\"replicationType\":\"CrossRegionReplication\",\"region\":\"fsj\",\"zone\":\"gzfbishcbk\"},{\"resourceId\":\"jdeyeamdpha\",\"replicationType\":\"CrossZoneReplication\",\"region\":\"buxwgip\",\"zone\":\"onowk\"},{\"resourceId\":\"hwankixzbinjepu\",\"replicationType\":\"CrossRegionReplication\",\"region\":\"ywnuzoq\",\"zone\":\"iyqzrnk\"},{\"resourceId\":\"vyxlwhzlsicohoqq\",\"replicationType\":\"CrossZoneReplication\",\"region\":\"ryavwhheunmmqh\",\"zone\":\"xzko\"}],\"externalReplicationSetupStatus\":\"VServerPeerRequired\",\"externalReplicationSetupInfo\":\"koklya\",\"mirrorState\":\"Broken\",\"relationshipStatus\":\"Transferring\"},\"snapshot\":{\"snapshotPolicyId\":\"szfkbe\"},\"volumeRelocation\":{\"relocationRequested\":true,\"readyToBeFinalized\":true},\"ransomwareProtection\":{\"desiredRansomwareProtectionState\":\"Disabled\",\"actualRansomwareProtectionState\":\"Learning\"}}")
+            "{\"backup\":{\"backupPolicyId\":\"ojnabckhsmtxpsie\",\"policyEnforced\":true,\"backupVaultId\":\"vpesapskrdqmhjjd\"},\"replication\":{\"replicationId\":\"dwkyzxuu\",\"endpointType\":\"dst\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"cwsvlxotog\",\"remotePath\":{\"externalHostName\":\"rupqsxvnmicy\",\"serverName\":\"vce\",\"volumeName\":\"vei\"},\"remoteVolumeRegion\":\"vnotyfjfcnj\",\"destinationReplications\":[{\"resourceId\":\"x\",\"replicationType\":\"CrossRegionReplication\",\"region\":\"tkphywpnvjtoqn\",\"zone\":\"mclfplphoxuscr\"}],\"externalReplicationSetupStatus\":\"NoActionRequired\",\"externalReplicationSetupInfo\":\"ye\",\"mirrorState\":\"Broken\",\"relationshipStatus\":\"Transferring\"},\"snapshot\":{\"snapshotPolicyId\":\"qugxywpmueefjzwf\"},\"volumeRelocation\":{\"relocationRequested\":true,\"readyToBeFinalized\":false},\"ransomwareProtection\":{\"desiredRansomwareProtectionState\":\"Enabled\",\"actualRansomwareProtectionState\":\"Learning\"}}")
             .toObject(VolumePropertiesDataProtection.class);
-        Assertions.assertEquals("rvjx", model.backup().backupPolicyId());
+        Assertions.assertEquals("ojnabckhsmtxpsie", model.backup().backupPolicyId());
         Assertions.assertTrue(model.backup().policyEnforced());
-        Assertions.assertEquals("pydptko", model.backup().backupVaultId());
-        Assertions.assertEquals(ReplicationSchedule.DAILY, model.replication().replicationSchedule());
-        Assertions.assertEquals("tiukbldngkpoci", model.replication().remoteVolumeResourceId());
-        Assertions.assertEquals("z", model.replication().remotePath().externalHostname());
-        Assertions.assertEquals("xoegukgjnpiucgy", model.replication().remotePath().serverName());
-        Assertions.assertEquals("evqzntypmrbp", model.replication().remotePath().volumeName());
-        Assertions.assertEquals("c", model.replication().remoteVolumeRegion());
-        Assertions.assertEquals("szfkbe", model.snapshot().snapshotPolicyId());
+        Assertions.assertEquals("vpesapskrdqmhjjd", model.backup().backupVaultId());
+        Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, model.replication().replicationSchedule());
+        Assertions.assertEquals("cwsvlxotog", model.replication().remoteVolumeResourceId());
+        Assertions.assertEquals("rupqsxvnmicy", model.replication().remotePath().externalHostname());
+        Assertions.assertEquals("vce", model.replication().remotePath().serverName());
+        Assertions.assertEquals("vei", model.replication().remotePath().volumeName());
+        Assertions.assertEquals("vnotyfjfcnj", model.replication().remoteVolumeRegion());
+        Assertions.assertEquals("qugxywpmueefjzwf", model.snapshot().snapshotPolicyId());
         Assertions.assertTrue(model.volumeRelocation().relocationRequested());
-        Assertions.assertEquals(DesiredRansomwareProtectionState.DISABLED,
+        Assertions.assertEquals(DesiredRansomwareProtectionState.ENABLED,
             model.ransomwareProtection().desiredRansomwareProtectionState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VolumePropertiesDataProtection model = new VolumePropertiesDataProtection()
-            .withBackup(new VolumeBackupProperties().withBackupPolicyId("rvjx")
+            .withBackup(new VolumeBackupProperties().withBackupPolicyId("ojnabckhsmtxpsie")
                 .withPolicyEnforced(true)
-                .withBackupVaultId("pydptko"))
-            .withReplication(new ReplicationObject().withReplicationSchedule(ReplicationSchedule.DAILY)
-                .withRemoteVolumeResourceId("tiukbldngkpoci")
-                .withRemotePath(new RemotePath().withExternalHostname("z")
-                    .withServerName("xoegukgjnpiucgy")
-                    .withVolumeName("evqzntypmrbp"))
-                .withRemoteVolumeRegion("c"))
-            .withSnapshot(new VolumeSnapshotProperties().withSnapshotPolicyId("szfkbe"))
+                .withBackupVaultId("vpesapskrdqmhjjd"))
+            .withReplication(new ReplicationObject().withReplicationSchedule(ReplicationSchedule.ONE_ZEROMINUTELY)
+                .withRemoteVolumeResourceId("cwsvlxotog")
+                .withRemotePath(
+                    new RemotePath().withExternalHostname("rupqsxvnmicy").withServerName("vce").withVolumeName("vei"))
+                .withRemoteVolumeRegion("vnotyfjfcnj"))
+            .withSnapshot(new VolumeSnapshotProperties().withSnapshotPolicyId("qugxywpmueefjzwf"))
             .withVolumeRelocation(new VolumeRelocationProperties().withRelocationRequested(true))
             .withRansomwareProtection(new RansomwareProtectionSettings()
-                .withDesiredRansomwareProtectionState(DesiredRansomwareProtectionState.DISABLED));
+                .withDesiredRansomwareProtectionState(DesiredRansomwareProtectionState.ENABLED));
         model = BinaryData.fromObject(model).toObject(VolumePropertiesDataProtection.class);
-        Assertions.assertEquals("rvjx", model.backup().backupPolicyId());
+        Assertions.assertEquals("ojnabckhsmtxpsie", model.backup().backupPolicyId());
         Assertions.assertTrue(model.backup().policyEnforced());
-        Assertions.assertEquals("pydptko", model.backup().backupVaultId());
-        Assertions.assertEquals(ReplicationSchedule.DAILY, model.replication().replicationSchedule());
-        Assertions.assertEquals("tiukbldngkpoci", model.replication().remoteVolumeResourceId());
-        Assertions.assertEquals("z", model.replication().remotePath().externalHostname());
-        Assertions.assertEquals("xoegukgjnpiucgy", model.replication().remotePath().serverName());
-        Assertions.assertEquals("evqzntypmrbp", model.replication().remotePath().volumeName());
-        Assertions.assertEquals("c", model.replication().remoteVolumeRegion());
-        Assertions.assertEquals("szfkbe", model.snapshot().snapshotPolicyId());
+        Assertions.assertEquals("vpesapskrdqmhjjd", model.backup().backupVaultId());
+        Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, model.replication().replicationSchedule());
+        Assertions.assertEquals("cwsvlxotog", model.replication().remoteVolumeResourceId());
+        Assertions.assertEquals("rupqsxvnmicy", model.replication().remotePath().externalHostname());
+        Assertions.assertEquals("vce", model.replication().remotePath().serverName());
+        Assertions.assertEquals("vei", model.replication().remotePath().volumeName());
+        Assertions.assertEquals("vnotyfjfcnj", model.replication().remoteVolumeRegion());
+        Assertions.assertEquals("qugxywpmueefjzwf", model.snapshot().snapshotPolicyId());
         Assertions.assertTrue(model.volumeRelocation().relocationRequested());
-        Assertions.assertEquals(DesiredRansomwareProtectionState.DISABLED,
+        Assertions.assertEquals(DesiredRansomwareProtectionState.ENABLED,
             model.ransomwareProtection().desiredRansomwareProtectionState());
     }
 }

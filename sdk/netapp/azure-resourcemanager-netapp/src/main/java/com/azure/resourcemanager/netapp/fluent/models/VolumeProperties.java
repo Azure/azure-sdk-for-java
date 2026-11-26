@@ -11,12 +11,14 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.AcceptGrowCapacityPoolForShortTermCloneSplit;
+import com.azure.resourcemanager.netapp.models.AsyncDirectoryDelete;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakthroughMode;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
+import com.azure.resourcemanager.netapp.models.LargeVolumeType;
 import com.azure.resourcemanager.netapp.models.LdapServerType;
 import com.azure.resourcemanager.netapp.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
@@ -26,9 +28,12 @@ import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
 import com.azure.resourcemanager.netapp.models.SmbOplocks;
+import com.azure.resourcemanager.netapp.models.VolumeLanguage;
+import com.azure.resourcemanager.netapp.models.VolumeNamespaceProperties;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
+import com.azure.resourcemanager.netapp.models.WorkloadApplicationType;
 import java.io.IOException;
 import java.util.List;
 
@@ -54,8 +59,10 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
 
     /*
      * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. For
-     * regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes, valid values are in the range
-     * 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples
+     * regular volumes, valid values are in the range 50GiB to 100TiB.
+     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
+     * to 2400TiB.
+     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
      * of 1 GiB.
      */
     private long usageThreshold;
@@ -292,6 +299,11 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private Boolean isDefaultQuotaEnabled;
 
     /*
+     * Async Directory Delete configuration for the volume.
+     */
+    private AsyncDirectoryDelete asyncDirectoryDelete;
+
+    /*
      * Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies .
      */
     private Long defaultUserQuotaInKiBs;
@@ -355,6 +367,15 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private Boolean isLargeVolume;
 
     /*
+     * Specifies the type of the Large Volume. When set to 'LargeVolume', the large volume is created with standard
+     * configuration.
+     * If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit 7.2PiB
+     * with cool access enabled,
+     * delivering higher capacity limit with lower costs.
+     */
+    private LargeVolumeType largeVolumeType;
+
+    /*
      * Id of the snapshot or backup that the volume is restored from.
      */
     private String originatingResourceId;
@@ -365,9 +386,24 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private Long inheritedSizeInBytes;
 
     /*
+     * Language supported for volume.
+     */
+    private VolumeLanguage language;
+
+    /*
      * Specifies whether the volume operates in Breakthrough Mode.
      */
     private BreakthroughMode breakthroughMode;
+
+    /*
+     * Geographic namespace properties for this volume.
+     */
+    private VolumeNamespaceProperties geoNamespaceProperties;
+
+    /*
+     * Specifies the workload application type.
+     */
+    private WorkloadApplicationType workloadApplicationType;
 
     /**
      * Creates an instance of VolumeProperties class.
@@ -426,9 +462,11 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
 
     /**
      * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
-     * expressed in bytes as multiples of 1 GiB.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
+     * to 2400TiB.
+     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
+     * of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
@@ -438,9 +476,11 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
 
     /**
      * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
-     * expressed in bytes as multiples of 1 GiB.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
+     * to 2400TiB.
+     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
+     * of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumeProperties object itself.
@@ -1232,6 +1272,26 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
+     * Get the asyncDirectoryDelete property: Async Directory Delete configuration for the volume.
+     * 
+     * @return the asyncDirectoryDelete value.
+     */
+    public AsyncDirectoryDelete asyncDirectoryDelete() {
+        return this.asyncDirectoryDelete;
+    }
+
+    /**
+     * Set the asyncDirectoryDelete property: Async Directory Delete configuration for the volume.
+     * 
+     * @param asyncDirectoryDelete the asyncDirectoryDelete value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withAsyncDirectoryDelete(AsyncDirectoryDelete asyncDirectoryDelete) {
+        this.asyncDirectoryDelete = asyncDirectoryDelete;
+        return this;
+    }
+
+    /**
      * Get the defaultUserQuotaInKiBs property: Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set,
      * the minimum value of 4 KiBs applies .
      * 
@@ -1426,6 +1486,34 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
+     * Get the largeVolumeType property: Specifies the type of the Large Volume. When set to 'LargeVolume', the large
+     * volume is created with standard configuration.
+     * If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit 7.2PiB
+     * with cool access enabled,
+     * delivering higher capacity limit with lower costs.
+     * 
+     * @return the largeVolumeType value.
+     */
+    public LargeVolumeType largeVolumeType() {
+        return this.largeVolumeType;
+    }
+
+    /**
+     * Set the largeVolumeType property: Specifies the type of the Large Volume. When set to 'LargeVolume', the large
+     * volume is created with standard configuration.
+     * If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit 7.2PiB
+     * with cool access enabled,
+     * delivering higher capacity limit with lower costs.
+     * 
+     * @param largeVolumeType the largeVolumeType value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withLargeVolumeType(LargeVolumeType largeVolumeType) {
+        this.largeVolumeType = largeVolumeType;
+        return this;
+    }
+
+    /**
      * Get the originatingResourceId property: Id of the snapshot or backup that the volume is restored from.
      * 
      * @return the originatingResourceId value.
@@ -1441,6 +1529,26 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      */
     public Long inheritedSizeInBytes() {
         return this.inheritedSizeInBytes;
+    }
+
+    /**
+     * Get the language property: Language supported for volume.
+     * 
+     * @return the language value.
+     */
+    public VolumeLanguage language() {
+        return this.language;
+    }
+
+    /**
+     * Set the language property: Language supported for volume.
+     * 
+     * @param language the language value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withLanguage(VolumeLanguage language) {
+        this.language = language;
+        return this;
     }
 
     /**
@@ -1460,6 +1568,46 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      */
     public VolumeProperties withBreakthroughMode(BreakthroughMode breakthroughMode) {
         this.breakthroughMode = breakthroughMode;
+        return this;
+    }
+
+    /**
+     * Get the geoNamespaceProperties property: Geographic namespace properties for this volume.
+     * 
+     * @return the geoNamespaceProperties value.
+     */
+    public VolumeNamespaceProperties geoNamespaceProperties() {
+        return this.geoNamespaceProperties;
+    }
+
+    /**
+     * Set the geoNamespaceProperties property: Geographic namespace properties for this volume.
+     * 
+     * @param geoNamespaceProperties the geoNamespaceProperties value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withGeoNamespaceProperties(VolumeNamespaceProperties geoNamespaceProperties) {
+        this.geoNamespaceProperties = geoNamespaceProperties;
+        return this;
+    }
+
+    /**
+     * Get the workloadApplicationType property: Specifies the workload application type.
+     * 
+     * @return the workloadApplicationType value.
+     */
+    public WorkloadApplicationType workloadApplicationType() {
+        return this.workloadApplicationType;
+    }
+
+    /**
+     * Set the workloadApplicationType property: Specifies the workload application type.
+     * 
+     * @param workloadApplicationType the workloadApplicationType value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withWorkloadApplicationType(WorkloadApplicationType workloadApplicationType) {
+        this.workloadApplicationType = workloadApplicationType;
         return this;
     }
 
@@ -1486,8 +1634,14 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         if (dataProtection() != null) {
             dataProtection().validate();
         }
+        if (asyncDirectoryDelete() != null) {
+            asyncDirectoryDelete().validate();
+        }
         if (placementRules() != null) {
             placementRules().forEach(e -> e.validate());
+        }
+        if (geoNamespaceProperties() != null) {
+            geoNamespaceProperties().validate();
         }
     }
 
@@ -1543,6 +1697,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         jsonWriter.writeStringField("unixPermissions", this.unixPermissions);
         jsonWriter.writeStringField("avsDataStore", this.avsDataStore == null ? null : this.avsDataStore.toString());
         jsonWriter.writeBooleanField("isDefaultQuotaEnabled", this.isDefaultQuotaEnabled);
+        jsonWriter.writeJsonField("asyncDirectoryDelete", this.asyncDirectoryDelete);
         jsonWriter.writeNumberField("defaultUserQuotaInKiBs", this.defaultUserQuotaInKiBs);
         jsonWriter.writeNumberField("defaultGroupQuotaInKiBs", this.defaultGroupQuotaInKiBs);
         jsonWriter.writeStringField("capacityPoolResourceId", this.capacityPoolResourceId);
@@ -1551,8 +1706,14 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         jsonWriter.writeArrayField("placementRules", this.placementRules,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("isLargeVolume", this.isLargeVolume);
+        jsonWriter.writeStringField("largeVolumeType",
+            this.largeVolumeType == null ? null : this.largeVolumeType.toString());
+        jsonWriter.writeStringField("language", this.language == null ? null : this.language.toString());
         jsonWriter.writeStringField("breakthroughMode",
             this.breakthroughMode == null ? null : this.breakthroughMode.toString());
+        jsonWriter.writeJsonField("geoNamespaceProperties", this.geoNamespaceProperties);
+        jsonWriter.writeStringField("workloadApplicationType",
+            this.workloadApplicationType == null ? null : this.workloadApplicationType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -1673,6 +1834,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.dataStoreResourceId = dataStoreResourceId;
                 } else if ("isDefaultQuotaEnabled".equals(fieldName)) {
                     deserializedVolumeProperties.isDefaultQuotaEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("asyncDirectoryDelete".equals(fieldName)) {
+                    deserializedVolumeProperties.asyncDirectoryDelete = AsyncDirectoryDelete.fromJson(reader);
                 } else if ("defaultUserQuotaInKiBs".equals(fieldName)) {
                     deserializedVolumeProperties.defaultUserQuotaInKiBs = reader.getNullable(JsonReader::getLong);
                 } else if ("defaultGroupQuotaInKiBs".equals(fieldName)) {
@@ -1699,12 +1862,21 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.provisionedAvailabilityZone = reader.getString();
                 } else if ("isLargeVolume".equals(fieldName)) {
                     deserializedVolumeProperties.isLargeVolume = reader.getNullable(JsonReader::getBoolean);
+                } else if ("largeVolumeType".equals(fieldName)) {
+                    deserializedVolumeProperties.largeVolumeType = LargeVolumeType.fromString(reader.getString());
                 } else if ("originatingResourceId".equals(fieldName)) {
                     deserializedVolumeProperties.originatingResourceId = reader.getString();
                 } else if ("inheritedSizeInBytes".equals(fieldName)) {
                     deserializedVolumeProperties.inheritedSizeInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("language".equals(fieldName)) {
+                    deserializedVolumeProperties.language = VolumeLanguage.fromString(reader.getString());
                 } else if ("breakthroughMode".equals(fieldName)) {
                     deserializedVolumeProperties.breakthroughMode = BreakthroughMode.fromString(reader.getString());
+                } else if ("geoNamespaceProperties".equals(fieldName)) {
+                    deserializedVolumeProperties.geoNamespaceProperties = VolumeNamespaceProperties.fromJson(reader);
+                } else if ("workloadApplicationType".equals(fieldName)) {
+                    deserializedVolumeProperties.workloadApplicationType
+                        = WorkloadApplicationType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

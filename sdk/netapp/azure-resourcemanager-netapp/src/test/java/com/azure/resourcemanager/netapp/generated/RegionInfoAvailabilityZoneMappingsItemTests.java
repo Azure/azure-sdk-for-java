@@ -12,9 +12,9 @@ public final class RegionInfoAvailabilityZoneMappingsItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionInfoAvailabilityZoneMappingsItem model
-            = BinaryData.fromString("{\"availabilityZone\":\"er\",\"isAvailable\":true}")
+            = BinaryData.fromString("{\"availabilityZone\":\"rdixt\",\"isAvailable\":false}")
                 .toObject(RegionInfoAvailabilityZoneMappingsItem.class);
-        Assertions.assertEquals("er", model.availabilityZone());
-        Assertions.assertTrue(model.isAvailable());
+        Assertions.assertEquals("rdixt", model.availabilityZone());
+        Assertions.assertFalse(model.isAvailable());
     }
 }

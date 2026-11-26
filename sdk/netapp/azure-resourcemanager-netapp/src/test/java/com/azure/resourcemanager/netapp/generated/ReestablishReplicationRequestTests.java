@@ -12,14 +12,14 @@ public final class ReestablishReplicationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReestablishReplicationRequest model
-            = BinaryData.fromString("{\"sourceVolumeId\":\"fmmdnbbg\"}").toObject(ReestablishReplicationRequest.class);
-        Assertions.assertEquals("fmmdnbbg", model.sourceVolumeId());
+            = BinaryData.fromString("{\"sourceVolumeId\":\"vpuvks\"}").toObject(ReestablishReplicationRequest.class);
+        Assertions.assertEquals("vpuvks", model.sourceVolumeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReestablishReplicationRequest model = new ReestablishReplicationRequest().withSourceVolumeId("fmmdnbbg");
+        ReestablishReplicationRequest model = new ReestablishReplicationRequest().withSourceVolumeId("vpuvks");
         model = BinaryData.fromObject(model).toObject(ReestablishReplicationRequest.class);
-        Assertions.assertEquals("fmmdnbbg", model.sourceVolumeId());
+        Assertions.assertEquals("vpuvks", model.sourceVolumeId());
     }
 }

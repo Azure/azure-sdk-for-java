@@ -12,28 +12,28 @@ public final class SnapshotPoliciesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotPoliciesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"hourlySchedule\":{\"snapshotsToKeep\":1621174416,\"minute\":925534814,\"usedBytes\":192607375683001787},\"dailySchedule\":{\"snapshotsToKeep\":2008770544,\"hour\":1161349380,\"minute\":1150957892,\"usedBytes\":2753799918909834418},\"weeklySchedule\":{\"snapshotsToKeep\":1487566659,\"day\":\"nnhad\",\"hour\":519437261,\"minute\":948301726,\"usedBytes\":6607949081134989897},\"monthlySchedule\":{\"snapshotsToKeep\":1515797519,\"daysOfMonth\":\"p\",\"hour\":924007604,\"minute\":210666313,\"usedBytes\":7776859938318021776},\"enabled\":false,\"provisioningState\":\"kywggxkallatmel\"},\"etag\":\"ipicc\",\"location\":\"kzivgvvcnayrh\",\"tags\":{\"rdvstkwqqtch\":\"xxmueedn\",\"mtdaa\":\"alm\",\"vgpiohgwxrt\":\"gdv\",\"vmnpkukghimdblx\":\"udxepxgyqagv\"},\"id\":\"wi\",\"name\":\"fnjhfjxwmszkkfo\",\"type\":\"rey\"}],\"nextLink\":\"zi\"}")
+            "{\"value\":[{\"properties\":{\"hourlySchedule\":{\"snapshotsToKeep\":1275486297,\"minute\":1506529335,\"usedBytes\":8800148813353893737},\"dailySchedule\":{\"snapshotsToKeep\":1074129183,\"hour\":888912465,\"minute\":1784889478,\"usedBytes\":8769953465229116721},\"weeklySchedule\":{\"snapshotsToKeep\":2077702872,\"day\":\"kby\",\"hour\":189482477,\"minute\":2069495604,\"usedBytes\":5278865850444538799},\"monthlySchedule\":{\"snapshotsToKeep\":145025413,\"daysOfMonth\":\"r\",\"hour\":1595958724,\"minute\":803916344,\"usedBytes\":5556617074832466147},\"enabled\":true,\"provisioningState\":\"kgtdlmkkze\"},\"etag\":\"l\",\"location\":\"wpusdsttwvogv\",\"tags\":{\"akufgmjz\":\"jdcngqqm\",\"grtwae\":\"wr\",\"zkopb\":\"u\",\"hziuiefozbhdms\":\"inrfdwoyu\"},\"id\":\"l\",\"name\":\"zqhof\",\"type\":\"rmaequ\"}],\"nextLink\":\"hxicslfaoqz\"}")
             .toObject(SnapshotPoliciesList.class);
-        Assertions.assertEquals("kzivgvvcnayrh", model.value().get(0).location());
-        Assertions.assertEquals("xxmueedn", model.value().get(0).tags().get("rdvstkwqqtch"));
-        Assertions.assertEquals(1621174416, model.value().get(0).hourlySchedule().snapshotsToKeep());
-        Assertions.assertEquals(925534814, model.value().get(0).hourlySchedule().minute());
-        Assertions.assertEquals(192607375683001787L, model.value().get(0).hourlySchedule().usedBytes());
-        Assertions.assertEquals(2008770544, model.value().get(0).dailySchedule().snapshotsToKeep());
-        Assertions.assertEquals(1161349380, model.value().get(0).dailySchedule().hour());
-        Assertions.assertEquals(1150957892, model.value().get(0).dailySchedule().minute());
-        Assertions.assertEquals(2753799918909834418L, model.value().get(0).dailySchedule().usedBytes());
-        Assertions.assertEquals(1487566659, model.value().get(0).weeklySchedule().snapshotsToKeep());
-        Assertions.assertEquals("nnhad", model.value().get(0).weeklySchedule().day());
-        Assertions.assertEquals(519437261, model.value().get(0).weeklySchedule().hour());
-        Assertions.assertEquals(948301726, model.value().get(0).weeklySchedule().minute());
-        Assertions.assertEquals(6607949081134989897L, model.value().get(0).weeklySchedule().usedBytes());
-        Assertions.assertEquals(1515797519, model.value().get(0).monthlySchedule().snapshotsToKeep());
-        Assertions.assertEquals("p", model.value().get(0).monthlySchedule().daysOfMonth());
-        Assertions.assertEquals(924007604, model.value().get(0).monthlySchedule().hour());
-        Assertions.assertEquals(210666313, model.value().get(0).monthlySchedule().minute());
-        Assertions.assertEquals(7776859938318021776L, model.value().get(0).monthlySchedule().usedBytes());
-        Assertions.assertFalse(model.value().get(0).enabled());
-        Assertions.assertEquals("zi", model.nextLink());
+        Assertions.assertEquals("wpusdsttwvogv", model.value().get(0).location());
+        Assertions.assertEquals("jdcngqqm", model.value().get(0).tags().get("akufgmjz"));
+        Assertions.assertEquals(1275486297, model.value().get(0).hourlySchedule().snapshotsToKeep());
+        Assertions.assertEquals(1506529335, model.value().get(0).hourlySchedule().minute());
+        Assertions.assertEquals(8800148813353893737L, model.value().get(0).hourlySchedule().usedBytes());
+        Assertions.assertEquals(1074129183, model.value().get(0).dailySchedule().snapshotsToKeep());
+        Assertions.assertEquals(888912465, model.value().get(0).dailySchedule().hour());
+        Assertions.assertEquals(1784889478, model.value().get(0).dailySchedule().minute());
+        Assertions.assertEquals(8769953465229116721L, model.value().get(0).dailySchedule().usedBytes());
+        Assertions.assertEquals(2077702872, model.value().get(0).weeklySchedule().snapshotsToKeep());
+        Assertions.assertEquals("kby", model.value().get(0).weeklySchedule().day());
+        Assertions.assertEquals(189482477, model.value().get(0).weeklySchedule().hour());
+        Assertions.assertEquals(2069495604, model.value().get(0).weeklySchedule().minute());
+        Assertions.assertEquals(5278865850444538799L, model.value().get(0).weeklySchedule().usedBytes());
+        Assertions.assertEquals(145025413, model.value().get(0).monthlySchedule().snapshotsToKeep());
+        Assertions.assertEquals("r", model.value().get(0).monthlySchedule().daysOfMonth());
+        Assertions.assertEquals(1595958724, model.value().get(0).monthlySchedule().hour());
+        Assertions.assertEquals(803916344, model.value().get(0).monthlySchedule().minute());
+        Assertions.assertEquals(5556617074832466147L, model.value().get(0).monthlySchedule().usedBytes());
+        Assertions.assertTrue(model.value().get(0).enabled());
+        Assertions.assertEquals("hxicslfaoqz", model.nextLink());
     }
 }

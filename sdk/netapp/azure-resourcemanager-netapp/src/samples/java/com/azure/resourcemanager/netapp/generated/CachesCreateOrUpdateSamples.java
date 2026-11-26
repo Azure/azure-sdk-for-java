@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public final class CachesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Caches_CreateOrUpdate_SMB.json
+     * x-ms-original-file: 2026-09-15-preview/Caches_CreateOrUpdate_SMB.json
      */
     /**
      * Sample code: Caches_CreateOrUpdate_SMB.
@@ -52,7 +52,7 @@ public final class CachesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Caches_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-15-preview/Caches_CreateOrUpdate.json
      */
     /**
      * Sample code: Caches_CreateOrUpdate.

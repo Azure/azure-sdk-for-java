@@ -13,11 +13,11 @@ public final class DestinationReplicationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DestinationReplication model = BinaryData.fromString(
-            "{\"resourceId\":\"bxzpuzycisp\",\"replicationType\":\"CrossZoneReplication\",\"region\":\"hmgkbrpyy\",\"zone\":\"ibnuqqkpik\"}")
+            "{\"resourceId\":\"euojgjrwju\",\"replicationType\":\"CrossRegionReplication\",\"region\":\"wmcdytdxwi\",\"zone\":\"nrjawgqwg\"}")
             .toObject(DestinationReplication.class);
-        Assertions.assertEquals("bxzpuzycisp", model.resourceId());
-        Assertions.assertEquals(ReplicationType.CROSS_ZONE_REPLICATION, model.replicationType());
-        Assertions.assertEquals("hmgkbrpyy", model.region());
-        Assertions.assertEquals("ibnuqqkpik", model.zone());
+        Assertions.assertEquals("euojgjrwju", model.resourceId());
+        Assertions.assertEquals(ReplicationType.CROSS_REGION_REPLICATION, model.replicationType());
+        Assertions.assertEquals("wmcdytdxwi", model.region());
+        Assertions.assertEquals("nrjawgqwg", model.zone());
     }
 }

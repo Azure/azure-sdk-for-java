@@ -4,6 +4,8 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
+import com.azure.resourcemanager.netapp.models.AsyncDirectoryDelete;
+import com.azure.resourcemanager.netapp.models.AsyncDirectoryDeleteStatus;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
@@ -15,7 +17,7 @@ import java.util.Arrays;
  */
 public final class VolumesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Volumes_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-15-preview/Volumes_CreateOrUpdate.json
      */
     /**
      * Sample code: Volumes_CreateOrUpdate.
@@ -32,11 +34,13 @@ public final class VolumesCreateOrUpdateSamples {
             .withSubnetId(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
             .withServiceLevel(ServiceLevel.PREMIUM)
+            .withAsyncDirectoryDelete(
+                new AsyncDirectoryDelete().withStatus(AsyncDirectoryDeleteStatus.ENABLED).withTrashBinName("trash"))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Volumes_CreateOrUpdate_SMB.json
+     * x-ms-original-file: 2026-09-15-preview/Volumes_CreateOrUpdate_SMB.json
      */
     /**
      * Sample code: Volumes_CreateOrUpdate_SMB.

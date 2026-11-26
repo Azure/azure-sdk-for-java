@@ -11,12 +11,13 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationDisplay model = BinaryData.fromString(
-            "{\"provider\":\"nyejhkryhtnap\",\"resource\":\"wlokjyem\",\"operation\":\"vnipjox\",\"description\":\"nchgej\"}")
+        OperationDisplay model = BinaryData
+            .fromString(
+                "{\"provider\":\"khixuigdtopbo\",\"resource\":\"og\",\"operation\":\"e\",\"description\":\"a\"}")
             .toObject(OperationDisplay.class);
-        Assertions.assertEquals("nyejhkryhtnap", model.provider());
-        Assertions.assertEquals("wlokjyem", model.resource());
-        Assertions.assertEquals("vnipjox", model.operation());
-        Assertions.assertEquals("nchgej", model.description());
+        Assertions.assertEquals("khixuigdtopbo", model.provider());
+        Assertions.assertEquals("og", model.resource());
+        Assertions.assertEquals("e", model.operation());
+        Assertions.assertEquals("a", model.description());
     }
 }

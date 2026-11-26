@@ -12,8 +12,8 @@ public final class LogSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogSpecification model
-            = BinaryData.fromString("{\"name\":\"yegu\",\"displayName\":\"hb\"}").toObject(LogSpecification.class);
-        Assertions.assertEquals("yegu", model.name());
-        Assertions.assertEquals("hb", model.displayName());
+            = BinaryData.fromString("{\"name\":\"g\",\"displayName\":\"piu\"}").toObject(LogSpecification.class);
+        Assertions.assertEquals("g", model.name());
+        Assertions.assertEquals("piu", model.displayName());
     }
 }
