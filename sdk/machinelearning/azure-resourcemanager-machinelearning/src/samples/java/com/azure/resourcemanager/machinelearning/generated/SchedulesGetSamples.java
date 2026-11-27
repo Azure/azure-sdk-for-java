@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class SchedulesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Schedule/get.json
+     * x-ms-original-file: 2026-09-01/Schedule/get.json
      */
     /**
      * Sample code: Get Schedule.

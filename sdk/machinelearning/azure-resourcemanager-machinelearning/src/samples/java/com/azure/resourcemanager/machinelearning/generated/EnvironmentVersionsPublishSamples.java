@@ -11,7 +11,7 @@ import com.azure.resourcemanager.machinelearning.models.DestinationAsset;
  */
 public final class EnvironmentVersionsPublishSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/EnvironmentVersion/publish.json
+     * x-ms-original-file: 2026-09-01/Workspace/EnvironmentVersion/publish.json
      */
     /**
      * Sample code: Publish Workspace Environment Version.

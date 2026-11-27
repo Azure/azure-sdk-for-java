@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class MarketplaceSubscriptionsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/MarketplaceSubscription/list.json
+     * x-ms-original-file: 2026-09-01/Workspace/MarketplaceSubscription/list.json
      */
     /**
      * Sample code: List Workspace Marketplace Subscription.

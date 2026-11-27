@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class RegistriesListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Registries/listBySubscription.json
+     * x-ms-original-file: 2026-09-01/Registries/listBySubscription.json
      */
     /**
      * Sample code: List registries by subscription.

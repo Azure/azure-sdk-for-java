@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class FeaturestoreEntityContainersGetEntitySamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/FeaturestoreEntityContainer/getEntity.json
+     * x-ms-original-file: 2026-09-01/Workspace/FeaturestoreEntityContainer/getEntity.json
      */
     /**
      * Sample code: GetEntity Workspace Featurestore Entity Container.

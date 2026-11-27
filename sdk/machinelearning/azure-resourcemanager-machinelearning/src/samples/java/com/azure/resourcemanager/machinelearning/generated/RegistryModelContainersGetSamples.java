@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class RegistryModelContainersGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Registry/ModelContainer/get.json
+     * x-ms-original-file: 2026-09-01/Registry/ModelContainer/get.json
      */
     /**
      * Sample code: Get Registry Model Container.

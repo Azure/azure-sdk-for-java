@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class OnlineEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/OnlineEndpoint/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Workspace/OnlineEndpoint/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Online Endpoint.

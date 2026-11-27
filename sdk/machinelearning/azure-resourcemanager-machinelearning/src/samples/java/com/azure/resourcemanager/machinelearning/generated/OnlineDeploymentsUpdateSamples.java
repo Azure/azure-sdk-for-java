@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class OnlineDeploymentsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/OnlineDeployment/ManagedOnlineDeployment/update.json
+     * x-ms-original-file: 2026-09-01/OnlineDeployment/ManagedOnlineDeployment/update.json
      */
     /**
      * Sample code: Update Managed Online Deployment.
@@ -39,7 +39,7 @@ public final class OnlineDeploymentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/OnlineDeployment/KubernetesOnlineDeployment/update.json
+     * x-ms-original-file: 2026-09-01/OnlineDeployment/KubernetesOnlineDeployment/update.json
      */
     /**
      * Sample code: Update Kubernetes Online Deployment.

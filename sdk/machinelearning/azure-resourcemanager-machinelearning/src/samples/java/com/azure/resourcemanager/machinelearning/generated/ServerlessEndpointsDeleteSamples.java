@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class ServerlessEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/ServerlessEndpoint/delete.json
+     * x-ms-original-file: 2026-09-01/Workspace/ServerlessEndpoint/delete.json
      */
     /**
      * Sample code: Delete Workspace Serverless Endpoint.

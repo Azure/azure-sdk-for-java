@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class ServerlessEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/ServerlessEndpoint/update.json
+     * x-ms-original-file: 2026-09-01/Workspace/ServerlessEndpoint/update.json
      */
     /**
      * Sample code: Update Workspace Serverless Endpoint.

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.machinelearning.models.PendingUploadType;
  */
 public final class CodeVersionsCreateOrGetStartPendingUploadSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/CodeVersion/createOrGetStartPendingUpload.json
+     * x-ms-original-file: 2026-09-01/Workspace/CodeVersion/createOrGetStartPendingUpload.json
      */
     /**
      * Sample code: CreateOrGetStartPendingUpload Workspace Code Version.

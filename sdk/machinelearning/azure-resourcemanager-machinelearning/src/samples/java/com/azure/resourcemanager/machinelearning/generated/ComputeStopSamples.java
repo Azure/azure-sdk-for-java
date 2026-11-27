@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class ComputeStopSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Compute/stop.json
+     * x-ms-original-file: 2026-09-01/Compute/stop.json
      */
     /**
      * Sample code: Stop ComputeInstance Compute.

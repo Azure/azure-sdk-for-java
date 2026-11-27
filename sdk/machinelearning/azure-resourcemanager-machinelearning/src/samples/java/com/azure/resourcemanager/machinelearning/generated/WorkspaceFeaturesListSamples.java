@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class WorkspaceFeaturesListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/WorkspaceFeature/list.json
+     * x-ms-original-file: 2026-09-01/WorkspaceFeature/list.json
      */
     /**
      * Sample code: List Workspace features.

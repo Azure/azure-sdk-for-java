@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class RegistryDataVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Registry/DataVersionBase/get.json
+     * x-ms-original-file: 2026-09-01/Registry/DataVersionBase/get.json
      */
     /**
      * Sample code: Get Registry Data Version Base.

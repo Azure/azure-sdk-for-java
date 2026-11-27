@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class RegistryModelVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Registry/ModelVersion/list.json
+     * x-ms-original-file: 2026-09-01/Registry/ModelVersion/list.json
      */
     /**
      * Sample code: List Registry Model Version.

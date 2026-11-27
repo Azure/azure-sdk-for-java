@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public final class RegistriesRemoveRegionsSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Registries/removeRegions.json
+     * x-ms-original-file: 2026-09-01/Registries/removeRegions.json
      */
     /**
      * Sample code: Remove regions from registry.

@@ -41,7 +41,7 @@ import java.util.Map;
  */
 public final class JobsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Job/AutoMLJob/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Job/AutoMLJob/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate AutoML Job.
@@ -88,7 +88,7 @@ public final class JobsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/Job/SweepJob/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Job/SweepJob/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Sweep Job.
@@ -134,7 +134,7 @@ public final class JobsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/Job/PipelineJob/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Job/PipelineJob/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Pipeline Job.
@@ -168,7 +168,7 @@ public final class JobsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/Job/CommandJob/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Job/CommandJob/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Command Job.

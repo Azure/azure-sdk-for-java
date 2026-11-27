@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class QuotasUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Quota/update.json
+     * x-ms-original-file: 2026-09-01/Quota/update.json
      */
     /**
      * Sample code: update quotas.

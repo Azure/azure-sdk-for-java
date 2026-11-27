@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class JobsCancelSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Job/cancel.json
+     * x-ms-original-file: 2026-09-01/Job/cancel.json
      */
     /**
      * Sample code: Cancel Job.

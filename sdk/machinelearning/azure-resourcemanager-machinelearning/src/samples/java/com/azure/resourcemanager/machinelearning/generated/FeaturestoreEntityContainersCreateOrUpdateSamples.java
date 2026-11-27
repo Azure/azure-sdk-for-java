@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class FeaturestoreEntityContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/FeaturestoreEntityContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Workspace/FeaturestoreEntityContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Featurestore Entity Container.

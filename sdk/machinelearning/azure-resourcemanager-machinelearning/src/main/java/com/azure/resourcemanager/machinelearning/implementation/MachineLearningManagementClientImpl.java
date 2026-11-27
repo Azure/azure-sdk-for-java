@@ -878,7 +878,7 @@ public final class MachineLearningManagementClientImpl implements MachineLearnin
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-07-01";
+        this.apiVersion = "2026-09-01";
         this.operations = new OperationsClientImpl(this);
         this.workspaces = new WorkspacesClientImpl(this);
         this.codeContainers = new CodeContainersClientImpl(this);

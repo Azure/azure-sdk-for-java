@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ComponentContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/ComponentContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Workspace/ComponentContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Component Container.

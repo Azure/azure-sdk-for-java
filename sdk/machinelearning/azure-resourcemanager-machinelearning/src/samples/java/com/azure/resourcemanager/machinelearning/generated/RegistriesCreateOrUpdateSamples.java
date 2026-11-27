@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public final class RegistriesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Registries/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Registries/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Registry with system created accounts.

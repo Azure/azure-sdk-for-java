@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class ServerlessEndpointsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/ServerlessEndpoint/list.json
+     * x-ms-original-file: 2026-09-01/Workspace/ServerlessEndpoint/list.json
      */
     /**
      * Sample code: List Workspace Serverless Endpoint.

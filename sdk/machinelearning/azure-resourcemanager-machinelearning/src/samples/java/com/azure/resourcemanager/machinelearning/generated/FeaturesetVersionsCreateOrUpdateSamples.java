@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public final class FeaturesetVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/FeaturesetVersion/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Workspace/FeaturesetVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Featureset Version.
