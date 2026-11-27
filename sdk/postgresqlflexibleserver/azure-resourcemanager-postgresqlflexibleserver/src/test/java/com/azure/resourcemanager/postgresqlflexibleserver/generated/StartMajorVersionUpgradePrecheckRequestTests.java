@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class StartMajorVersionUpgradePrecheckRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StartMajorVersionUpgradePrecheckRequest model = BinaryData.fromString("{\"targetVersion\":\"yqsemwa\"}")
+        StartMajorVersionUpgradePrecheckRequest model = BinaryData.fromString("{\"targetVersion\":\"qqnvwpmq\"}")
             .toObject(StartMajorVersionUpgradePrecheckRequest.class);
-        Assertions.assertEquals("yqsemwa", model.targetVersion());
+        Assertions.assertEquals("qqnvwpmq", model.targetVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StartMajorVersionUpgradePrecheckRequest model
-            = new StartMajorVersionUpgradePrecheckRequest().withTargetVersion("yqsemwa");
+            = new StartMajorVersionUpgradePrecheckRequest().withTargetVersion("qqnvwpmq");
         model = BinaryData.fromObject(model).toObject(StartMajorVersionUpgradePrecheckRequest.class);
-        Assertions.assertEquals("yqsemwa", model.targetVersion());
+        Assertions.assertEquals("qqnvwpmq", model.targetVersion());
     }
 }

@@ -14,23 +14,22 @@ public final class ValidationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationDetails model = BinaryData.fromString(
-            "{\"status\":\"Failed\",\"validationStartTimeInUtc\":\"2021-03-29T15:40:05Z\",\"validationEndTimeInUtc\":\"2021-06-30T12:37:43Z\",\"serverLevelValidationDetails\":[{\"type\":\"fclhaaxdbabphlwr\",\"state\":\"Failed\",\"messages\":[{\"state\":\"Succeeded\",\"message\":\"sucocmnyyazttbtw\"},{\"state\":\"Warning\",\"message\":\"uedck\"},{\"state\":\"Succeeded\",\"message\":\"iexzfeyue\"}]}],\"dbLevelValidationDetails\":[{\"databaseName\":\"xujwbhqwalmuzyo\",\"startedOn\":\"2021-07-26T23:02:26Z\",\"endedOn\":\"2021-11-26T06:24:43Z\",\"summary\":[{\"type\":\"ancuxrhd\",\"state\":\"Warning\",\"messages\":[{},{}]},{\"type\":\"niwdjsw\",\"state\":\"Failed\",\"messages\":[{}]}]}]}")
+            "{\"status\":\"Warning\",\"validationStartTimeInUtc\":\"2021-11-02T05:09:13Z\",\"validationEndTimeInUtc\":\"2021-09-24T19:25:12Z\",\"serverLevelValidationDetails\":[{\"type\":\"trcvpnazzmh\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Succeeded\",\"message\":\"tdbhrbnla\"},{\"state\":\"Failed\",\"message\":\"yskpbhen\"},{\"state\":\"Failed\",\"message\":\"xywnytnrsynlqidy\"},{\"state\":\"Warning\",\"message\":\"zfcl\"}]}],\"dbLevelValidationDetails\":[{\"databaseName\":\"dbabp\",\"startedOn\":\"2021-10-01T07:26:45Z\",\"endedOn\":\"2021-02-16T08:29:45Z\",\"summary\":[{\"type\":\"tsthsucocm\",\"state\":\"Warning\",\"messages\":[{}]}]},{\"databaseName\":\"t\",\"startedOn\":\"2021-10-09T08:25:11Z\",\"endedOn\":\"2021-06-29T01:39:30Z\",\"summary\":[{\"type\":\"edckzywbiexzfey\",\"state\":\"Succeeded\",\"messages\":[{}]},{\"type\":\"xujwbhqwalmuzyo\",\"state\":\"Warning\",\"messages\":[{},{},{}]},{\"type\":\"zjancuxr\",\"state\":\"Succeeded\",\"messages\":[{},{},{},{}]},{\"type\":\"xbniwdjs\",\"state\":\"Warning\",\"messages\":[{},{},{}]}]}]}")
             .toObject(ValidationDetails.class);
-        Assertions.assertEquals(ValidationState.FAILED, model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-29T15:40:05Z"), model.validationStartTimeInUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-30T12:37:43Z"), model.validationEndTimeInUtc());
-        Assertions.assertEquals("fclhaaxdbabphlwr", model.serverLevelValidationDetails().get(0).type());
-        Assertions.assertEquals(ValidationState.FAILED, model.serverLevelValidationDetails().get(0).state());
+        Assertions.assertEquals(ValidationState.WARNING, model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-02T05:09:13Z"), model.validationStartTimeInUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-24T19:25:12Z"), model.validationEndTimeInUtc());
+        Assertions.assertEquals("trcvpnazzmh", model.serverLevelValidationDetails().get(0).type());
+        Assertions.assertEquals(ValidationState.SUCCEEDED, model.serverLevelValidationDetails().get(0).state());
         Assertions.assertEquals(ValidationState.SUCCEEDED,
             model.serverLevelValidationDetails().get(0).messages().get(0).state());
-        Assertions.assertEquals("sucocmnyyazttbtw",
-            model.serverLevelValidationDetails().get(0).messages().get(0).message());
-        Assertions.assertEquals("xujwbhqwalmuzyo", model.dbLevelValidationDetails().get(0).databaseName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T23:02:26Z"),
+        Assertions.assertEquals("tdbhrbnla", model.serverLevelValidationDetails().get(0).messages().get(0).message());
+        Assertions.assertEquals("dbabp", model.dbLevelValidationDetails().get(0).databaseName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-01T07:26:45Z"),
             model.dbLevelValidationDetails().get(0).startedOn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-26T06:24:43Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-16T08:29:45Z"),
             model.dbLevelValidationDetails().get(0).endedOn());
-        Assertions.assertEquals("ancuxrhd", model.dbLevelValidationDetails().get(0).summary().get(0).type());
+        Assertions.assertEquals("tsthsucocm", model.dbLevelValidationDetails().get(0).summary().get(0).type());
         Assertions.assertEquals(ValidationState.WARNING,
             model.dbLevelValidationDetails().get(0).summary().get(0).state());
     }

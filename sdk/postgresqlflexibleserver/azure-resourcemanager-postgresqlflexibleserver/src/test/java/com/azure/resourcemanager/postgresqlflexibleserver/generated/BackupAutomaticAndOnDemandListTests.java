@@ -14,11 +14,11 @@ public final class BackupAutomaticAndOnDemandListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupAutomaticAndOnDemandList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"backupType\":\"Full\",\"completedTime\":\"2021-06-11T14:39:10Z\",\"source\":\"ud\"},\"id\":\"m\",\"name\":\"es\",\"type\":\"kdlpa\"}],\"nextLink\":\"rcxfailcfxwmdb\"}")
+            "{\"value\":[{\"properties\":{\"backupType\":\"Customer On-Demand\",\"completedTime\":\"2021-09-14T21:14:21Z\",\"source\":\"hsdtmc\"},\"id\":\"sufco\",\"name\":\"dxbzlmcmuap\",\"type\":\"vhdbevwqqxey\"},{\"properties\":{\"backupType\":\"Full\",\"completedTime\":\"2020-12-31T09:10:56Z\",\"source\":\"nkfkbgbzb\"},\"id\":\"xeqoc\",\"name\":\"jmygvk\",\"type\":\"qkjjeokbz\"},{\"properties\":{\"backupType\":\"Customer On-Demand\",\"completedTime\":\"2021-10-27T04:21:19Z\",\"source\":\"czurtlei\"},\"id\":\"xbkwv\",\"name\":\"gnzvdfbzdixzm\",\"type\":\"pnodawopqhe\"},{\"properties\":{\"backupType\":\"Full\",\"completedTime\":\"2021-07-10T16:11Z\",\"source\":\"sbostzel\"},\"id\":\"la\",\"name\":\"utmzlbiojlvfhrbb\",\"type\":\"neqvcwwyyurmo\"}],\"nextLink\":\"ppr\"}")
             .toObject(BackupAutomaticAndOnDemandList.class);
-        Assertions.assertEquals(BackupType.FULL, model.value().get(0).backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-11T14:39:10Z"), model.value().get(0).completedTime());
-        Assertions.assertEquals("ud", model.value().get(0).source());
-        Assertions.assertEquals("rcxfailcfxwmdb", model.nextLink());
+        Assertions.assertEquals(BackupType.CUSTOMER_ON_DEMAND, model.value().get(0).backupType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T21:14:21Z"), model.value().get(0).completedTime());
+        Assertions.assertEquals("hsdtmc", model.value().get(0).source());
+        Assertions.assertEquals("ppr", model.nextLink());
     }
 }

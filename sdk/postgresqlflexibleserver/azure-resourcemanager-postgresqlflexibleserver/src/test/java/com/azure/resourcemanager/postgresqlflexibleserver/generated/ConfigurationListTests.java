@@ -12,10 +12,10 @@ public final class ConfigurationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"value\":\"zzewkfvhqcrai\",\"description\":\"pnppfuf\",\"defaultValue\":\"wdmhdlxyjrxs\",\"dataType\":\"Integer\",\"allowedValues\":\"cnihgwqapnedgfbc\",\"source\":\"cvqvpkeqdcv\",\"isDynamicConfig\":true,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"otbobzdopcj\",\"documentationLink\":\"nhdldwmgxcx\"},\"id\":\"lpmutwuoegrpkhj\",\"name\":\"niyqslui\",\"type\":\"pdggkzzlvm\"}],\"nextLink\":\"paxmodfvuefywsb\"}")
+            "{\"value\":[{\"properties\":{\"value\":\"ibqdxbxwakbogqx\",\"description\":\"lkzgxhuriplbp\",\"defaultValue\":\"xunkbebxmubyynt\",\"dataType\":\"Set\",\"allowedValues\":\"qtkoievs\",\"source\":\"tgqr\",\"isDynamicConfig\":true,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"uwz\",\"documentationLink\":\"xbmp\"},\"id\":\"jefuzmuvpbttdumo\",\"name\":\"p\",\"type\":\"xe\"},{\"properties\":{\"value\":\"zbtbhj\",\"description\":\"lkfg\",\"defaultValue\":\"dneu\",\"dataType\":\"Numeric\",\"allowedValues\":\"hsd\",\"source\":\"t\",\"isDynamicConfig\":true,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"wq\",\"documentationLink\":\"v\"},\"id\":\"xclvit\",\"name\":\"hqzonosggbhcoh\",\"type\":\"wdsjnkalju\"},{\"properties\":{\"value\":\"swacffgdkzz\",\"description\":\"kfvhqcrailvpn\",\"defaultValue\":\"fuflrwdmhdlx\",\"dataType\":\"Enumeration\",\"allowedValues\":\"sag\",\"source\":\"cnihgwqapnedgfbc\",\"isDynamicConfig\":true,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"eqdcv\",\"documentationLink\":\"hvoodsotbobzd\"},\"id\":\"cjwvn\",\"name\":\"dldwmgxc\",\"type\":\"rslpmutwuoeg\"}],\"nextLink\":\"khjwn\"}")
             .toObject(ConfigurationList.class);
-        Assertions.assertEquals("zzewkfvhqcrai", model.value().get(0).value());
-        Assertions.assertEquals("cvqvpkeqdcv", model.value().get(0).source());
-        Assertions.assertEquals("paxmodfvuefywsb", model.nextLink());
+        Assertions.assertEquals("ibqdxbxwakbogqx", model.value().get(0).value());
+        Assertions.assertEquals("tgqr", model.value().get(0).source());
+        Assertions.assertEquals("khjwn", model.nextLink());
     }
 }

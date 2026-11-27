@@ -13,16 +13,16 @@ public final class AdvancedThreatProtectionSettingsModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdvancedThreatProtectionSettingsModelInner model = BinaryData.fromString(
-            "{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2020-12-31T00:42:58Z\"},\"id\":\"ksyxkyxvxevblbje\",\"name\":\"nljlageuaulx\",\"type\":\"nsmjbnkppxynen\"}")
+            "{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-10-08T12:28:54Z\"},\"id\":\"gleohi\",\"name\":\"etnluankrrfx\",\"type\":\"eebtijvacvb\"}")
             .toObject(AdvancedThreatProtectionSettingsModelInner.class);
-        Assertions.assertEquals(ThreatProtectionState.ENABLED, model.state());
+        Assertions.assertEquals(ThreatProtectionState.DISABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdvancedThreatProtectionSettingsModelInner model
-            = new AdvancedThreatProtectionSettingsModelInner().withState(ThreatProtectionState.ENABLED);
+            = new AdvancedThreatProtectionSettingsModelInner().withState(ThreatProtectionState.DISABLED);
         model = BinaryData.fromObject(model).toObject(AdvancedThreatProtectionSettingsModelInner.class);
-        Assertions.assertEquals(ThreatProtectionState.ENABLED, model.state());
+        Assertions.assertEquals(ThreatProtectionState.DISABLED, model.state());
     }
 }

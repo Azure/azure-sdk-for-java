@@ -22,7 +22,7 @@ public final class CapturedLogsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-11-26T05:52:39Z\",\"lastModifiedTime\":\"2021-04-23T10:22:37Z\",\"sizeInKb\":7299338915878036740,\"type\":\"jopwbeonrlkwz\",\"url\":\"ybxc\"},\"id\":\"kxcpt\",\"name\":\"oqfyiaseqch\",\"type\":\"rttzrazisgykiu\"}]}";
+            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-10-14T13:52:07Z\",\"lastModifiedTime\":\"2021-01-29T13:01:32Z\",\"sizeInKb\":4925112778070458570,\"type\":\"stacsjvhrweftkwq\",\"url\":\"pmvssehaep\"},\"id\":\"mcxtczhu\",\"name\":\"euknijduyyes\",\"type\":\"ydjfb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class CapturedLogsListByServerMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CapturedLog> response
-            = manager.capturedLogs().listByServer("ubmdnafcbqwre", "jelaqacigele", com.azure.core.util.Context.NONE);
+            = manager.capturedLogs().listByServer("ecfehuwa", "a", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-26T05:52:39Z"), response.iterator().next().createdTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-23T10:22:37Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-14T13:52:07Z"), response.iterator().next().createdTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-29T13:01:32Z"),
             response.iterator().next().lastModifiedTime());
-        Assertions.assertEquals(7299338915878036740L, response.iterator().next().sizeInKb());
-        Assertions.assertEquals("jopwbeonrlkwz", response.iterator().next().typePropertiesType());
-        Assertions.assertEquals("ybxc", response.iterator().next().url());
+        Assertions.assertEquals(4925112778070458570L, response.iterator().next().sizeInKb());
+        Assertions.assertEquals("stacsjvhrweftkwq", response.iterator().next().typePropertiesType());
+        Assertions.assertEquals("pmvssehaep", response.iterator().next().url());
     }
 }

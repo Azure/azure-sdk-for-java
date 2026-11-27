@@ -12,18 +12,17 @@ public final class ConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationProperties model = BinaryData.fromString(
-            "{\"value\":\"xmubyyntwlrbq\",\"description\":\"oievseotgqrlltm\",\"defaultValue\":\"lauwzizxbmpgcjef\",\"dataType\":\"Enumeration\",\"allowedValues\":\"vpbttd\",\"source\":\"orppxebmnzbtb\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"ohdneuel\",\"documentationLink\":\"hsd\"}")
+            "{\"value\":\"tjrybnwjewgdr\",\"description\":\"rvnaenqpeh\",\"defaultValue\":\"doy\",\"dataType\":\"Boolean\",\"allowedValues\":\"thnzd\",\"source\":\"sl\",\"isDynamicConfig\":true,\"isReadOnly\":false,\"isConfigPendingRestart\":false,\"unit\":\"nduhavhqlkthum\",\"documentationLink\":\"olbgycduiertgccy\"}")
             .toObject(ConfigurationProperties.class);
-        Assertions.assertEquals("xmubyyntwlrbq", model.value());
-        Assertions.assertEquals("orppxebmnzbtb", model.source());
+        Assertions.assertEquals("tjrybnwjewgdr", model.value());
+        Assertions.assertEquals("sl", model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationProperties model
-            = new ConfigurationProperties().withValue("xmubyyntwlrbq").withSource("orppxebmnzbtb");
+        ConfigurationProperties model = new ConfigurationProperties().withValue("tjrybnwjewgdr").withSource("sl");
         model = BinaryData.fromObject(model).toObject(ConfigurationProperties.class);
-        Assertions.assertEquals("xmubyyntwlrbq", model.value());
-        Assertions.assertEquals("orppxebmnzbtb", model.source());
+        Assertions.assertEquals("tjrybnwjewgdr", model.value());
+        Assertions.assertEquals("sl", model.source());
     }
 }

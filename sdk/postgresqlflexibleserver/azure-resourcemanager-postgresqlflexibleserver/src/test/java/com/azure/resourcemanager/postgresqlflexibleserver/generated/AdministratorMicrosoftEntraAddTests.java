@@ -12,23 +12,24 @@ import org.junit.jupiter.api.Assertions;
 public final class AdministratorMicrosoftEntraAddTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdministratorMicrosoftEntraAdd model = BinaryData.fromString(
-            "{\"properties\":{\"principalType\":\"ServicePrincipal\",\"principalName\":\"dphqamv\",\"tenantId\":\"fwynwcvtbvkay\"}}")
+        AdministratorMicrosoftEntraAdd model = BinaryData
+            .fromString(
+                "{\"properties\":{\"principalType\":\"Group\",\"principalName\":\"vuoy\",\"tenantId\":\"ccelve\"}}")
             .toObject(AdministratorMicrosoftEntraAdd.class);
-        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principalType());
-        Assertions.assertEquals("dphqamv", model.principalName());
-        Assertions.assertEquals("fwynwcvtbvkay", model.tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
+        Assertions.assertEquals("vuoy", model.principalName());
+        Assertions.assertEquals("ccelve", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdministratorMicrosoftEntraAdd model
-            = new AdministratorMicrosoftEntraAdd().withPrincipalType(PrincipalType.SERVICE_PRINCIPAL)
-                .withPrincipalName("dphqamv")
-                .withTenantId("fwynwcvtbvkay");
+            = new AdministratorMicrosoftEntraAdd().withPrincipalType(PrincipalType.GROUP)
+                .withPrincipalName("vuoy")
+                .withTenantId("ccelve");
         model = BinaryData.fromObject(model).toObject(AdministratorMicrosoftEntraAdd.class);
-        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principalType());
-        Assertions.assertEquals("dphqamv", model.principalName());
-        Assertions.assertEquals("fwynwcvtbvkay", model.tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
+        Assertions.assertEquals("vuoy", model.principalName());
+        Assertions.assertEquals("ccelve", model.tenantId());
     }
 }

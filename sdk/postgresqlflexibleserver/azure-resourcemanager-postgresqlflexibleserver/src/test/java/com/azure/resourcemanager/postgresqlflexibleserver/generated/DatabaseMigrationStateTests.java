@@ -14,23 +14,23 @@ public final class DatabaseMigrationStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabaseMigrationState model = BinaryData.fromString(
-            "{\"databaseName\":\"zmhjrunmp\",\"migrationState\":\"Canceling\",\"migrationOperation\":\"bh\",\"startedOn\":\"2021-04-21T20:03:01Z\",\"endedOn\":\"2021-10-27T21:49:11Z\",\"fullLoadQueuedTables\":307935551,\"fullLoadErroredTables\":1850668583,\"fullLoadLoadingTables\":1795094625,\"fullLoadCompletedTables\":734884561,\"cdcUpdateCounter\":1438226066,\"cdcDeleteCounter\":1074926668,\"cdcInsertCounter\":1326044907,\"appliedChanges\":679470188,\"incomingChanges\":564037027,\"latency\":384582684,\"message\":\"tnrsyn\"}")
+            "{\"databaseName\":\"uzycispnqza\",\"migrationState\":\"Succeeded\",\"migrationOperation\":\"brpyydhi\",\"startedOn\":\"2021-06-21T11:41:57Z\",\"endedOn\":\"2021-02-01T08:13:12Z\",\"fullLoadQueuedTables\":1122159032,\"fullLoadErroredTables\":1850827957,\"fullLoadLoadingTables\":127392852,\"fullLoadCompletedTables\":1007022027,\"cdcUpdateCounter\":348182971,\"cdcDeleteCounter\":902769225,\"cdcInsertCounter\":122034029,\"appliedChanges\":1873718862,\"incomingChanges\":855671205,\"latency\":850338934,\"message\":\"gg\"}")
             .toObject(DatabaseMigrationState.class);
-        Assertions.assertEquals("zmhjrunmp", model.databaseName());
-        Assertions.assertEquals(MigrationDatabaseState.CANCELING, model.migrationState());
-        Assertions.assertEquals("bh", model.migrationOperation());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-21T20:03:01Z"), model.startedOn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-27T21:49:11Z"), model.endedOn());
-        Assertions.assertEquals(307935551, model.fullLoadQueuedTables());
-        Assertions.assertEquals(1850668583, model.fullLoadErroredTables());
-        Assertions.assertEquals(1795094625, model.fullLoadLoadingTables());
-        Assertions.assertEquals(734884561, model.fullLoadCompletedTables());
-        Assertions.assertEquals(1438226066, model.cdcUpdateCounter());
-        Assertions.assertEquals(1074926668, model.cdcDeleteCounter());
-        Assertions.assertEquals(1326044907, model.cdcInsertCounter());
-        Assertions.assertEquals(679470188, model.appliedChanges());
-        Assertions.assertEquals(564037027, model.incomingChanges());
-        Assertions.assertEquals(384582684, model.latency());
-        Assertions.assertEquals("tnrsyn", model.message());
+        Assertions.assertEquals("uzycispnqza", model.databaseName());
+        Assertions.assertEquals(MigrationDatabaseState.SUCCEEDED, model.migrationState());
+        Assertions.assertEquals("brpyydhi", model.migrationOperation());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T11:41:57Z"), model.startedOn());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-01T08:13:12Z"), model.endedOn());
+        Assertions.assertEquals(1122159032, model.fullLoadQueuedTables());
+        Assertions.assertEquals(1850827957, model.fullLoadErroredTables());
+        Assertions.assertEquals(127392852, model.fullLoadLoadingTables());
+        Assertions.assertEquals(1007022027, model.fullLoadCompletedTables());
+        Assertions.assertEquals(348182971, model.cdcUpdateCounter());
+        Assertions.assertEquals(902769225, model.cdcDeleteCounter());
+        Assertions.assertEquals(122034029, model.cdcInsertCounter());
+        Assertions.assertEquals(1873718862, model.appliedChanges());
+        Assertions.assertEquals(855671205, model.incomingChanges());
+        Assertions.assertEquals(850338934, model.latency());
+        Assertions.assertEquals("gg", model.message());
     }
 }

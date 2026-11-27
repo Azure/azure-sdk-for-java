@@ -12,14 +12,14 @@ public final class ObjectRecommendationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ObjectRecommendationDetails model = BinaryData.fromString(
-            "{\"databaseName\":\"jg\",\"schema\":\"exaoguya\",\"table\":\"ids\",\"indexType\":\"ultxijjumfq\",\"indexName\":\"z\",\"indexColumns\":[\"nm\",\"jng\",\"qdqx\"],\"includedColumns\":[\"wgnyfusfzsvtui\"]}")
+            "{\"databaseName\":\"nidibgqjxg\",\"schema\":\"r\",\"table\":\"ov\",\"indexType\":\"pikqmh\",\"indexName\":\"owjrmzvuporqz\",\"indexColumns\":[\"ydzvkf\",\"xcnqmxqpswokmvkh\"],\"includedColumns\":[\"dhbemzqkzszu\",\"iwtglxxhljfpg\"]}")
             .toObject(ObjectRecommendationDetails.class);
-        Assertions.assertEquals("jg", model.databaseName());
-        Assertions.assertEquals("exaoguya", model.schema());
-        Assertions.assertEquals("ids", model.table());
-        Assertions.assertEquals("ultxijjumfq", model.indexType());
-        Assertions.assertEquals("z", model.indexName());
-        Assertions.assertEquals("nm", model.indexColumns().get(0));
-        Assertions.assertEquals("wgnyfusfzsvtui", model.includedColumns().get(0));
+        Assertions.assertEquals("nidibgqjxg", model.databaseName());
+        Assertions.assertEquals("r", model.schema());
+        Assertions.assertEquals("ov", model.table());
+        Assertions.assertEquals("pikqmh", model.indexType());
+        Assertions.assertEquals("owjrmzvuporqz", model.indexName());
+        Assertions.assertEquals("ydzvkf", model.indexColumns().get(0));
+        Assertions.assertEquals("dhbemzqkzszu", model.includedColumns().get(0));
     }
 }

@@ -13,11 +13,11 @@ public final class DbServerMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbServerMetadata model = BinaryData.fromString(
-            "{\"location\":\"dxyt\",\"version\":\"oyrxvwfudwpzntxh\",\"storageMb\":328563559,\"sku\":{\"name\":\"qj\",\"tier\":\"MemoryOptimized\"}}")
+            "{\"location\":\"otogtwrupqs\",\"version\":\"nmic\",\"storageMb\":560100496,\"sku\":{\"name\":\"o\",\"tier\":\"GeneralPurpose\"}}")
             .toObject(DbServerMetadata.class);
-        Assertions.assertEquals("oyrxvwfudwpzntxh", model.version());
-        Assertions.assertEquals(328563559, model.storageMb());
-        Assertions.assertEquals("qj", model.sku().name());
-        Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, model.sku().tier());
+        Assertions.assertEquals("nmic", model.version());
+        Assertions.assertEquals(560100496, model.storageMb());
+        Assertions.assertEquals("o", model.sku().name());
+        Assertions.assertEquals(SkuTier.GENERAL_PURPOSE, model.sku().tier());
     }
 }

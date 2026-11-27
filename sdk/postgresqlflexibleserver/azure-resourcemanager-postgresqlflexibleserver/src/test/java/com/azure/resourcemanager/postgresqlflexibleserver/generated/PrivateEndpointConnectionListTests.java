@@ -12,8 +12,8 @@ public final class PrivateEndpointConnectionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupIds\":[\"hckqqzqioxiy\"],\"privateEndpoint\":{\"id\":\"i\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"edyatrwyhqmibzyh\",\"actionsRequired\":\"tsmypyynpcdp\"},\"provisioningState\":\"Deleting\"},\"id\":\"g\",\"name\":\"wznm\",\"type\":\"biknsorgjhxbld\"},{\"properties\":{\"groupIds\":[\"rlkdmtncvokotl\",\"xdy\"],\"privateEndpoint\":{\"id\":\"y\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"jlt\",\"actionsRequired\":\"bnnhadoocrkvcik\"},\"provisioningState\":\"Succeeded\"},\"id\":\"amqgxqquezikyw\",\"name\":\"gxk\",\"type\":\"lla\"}],\"nextLink\":\"elwuipi\"}")
+            "{\"value\":[{\"properties\":{\"groupIds\":[\"ysuiizynkedya\",\"rwyhqmibzyhwitsm\"],\"privateEndpoint\":{\"id\":\"ynpcdpumnzgmwznm\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"nsorgjhxbldt\",\"actionsRequired\":\"wrlkdmtn\"},\"provisioningState\":\"Succeeded\"},\"id\":\"otllxdyhgsyo\",\"name\":\"ogjltdtbnnhad\",\"type\":\"ocrkvcikh\"},{\"properties\":{\"groupIds\":[\"mqg\",\"qqu\",\"zikywgg\",\"kallatmel\"],\"privateEndpoint\":{\"id\":\"piccjzkzivgv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"y\",\"actionsRequired\":\"yrnxxmueedn\"},\"provisioningState\":\"Creating\"},\"id\":\"stkwqqtch\",\"name\":\"alm\",\"type\":\"mtdaa\"},{\"properties\":{\"groupIds\":[\"wvgpiohg\"],\"privateEndpoint\":{\"id\":\"tfudxepx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"gvr\",\"actionsRequired\":\"npkukghimdblx\"},\"provisioningState\":\"Deleting\"},\"id\":\"fnjhfjxwmszkkfo\",\"name\":\"rey\",\"type\":\"kzikfjawneaivxwc\"}],\"nextLink\":\"lpcirelsf\"}")
             .toObject(PrivateEndpointConnectionList.class);
-        Assertions.assertEquals("elwuipi", model.nextLink());
+        Assertions.assertEquals("lpcirelsf", model.nextLink());
     }
 }

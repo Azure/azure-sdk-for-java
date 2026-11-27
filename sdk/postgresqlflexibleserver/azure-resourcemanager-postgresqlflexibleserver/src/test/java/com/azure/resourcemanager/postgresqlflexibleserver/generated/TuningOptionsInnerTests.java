@@ -12,7 +12,7 @@ public final class TuningOptionsInnerTests {
     public void testDeserialize() throws Exception {
         TuningOptionsInner model = BinaryData
             .fromString(
-                "{\"properties\":{\"state\":\"fgsftufqob\"},\"id\":\"lnacgcc\",\"name\":\"knh\",\"type\":\"kizvytn\"}")
+                "{\"properties\":{\"state\":\"nmokayzejnhlbk\"},\"id\":\"z\",\"name\":\"cpilj\",\"type\":\"a\"}")
             .toObject(TuningOptionsInner.class);
     }
 }

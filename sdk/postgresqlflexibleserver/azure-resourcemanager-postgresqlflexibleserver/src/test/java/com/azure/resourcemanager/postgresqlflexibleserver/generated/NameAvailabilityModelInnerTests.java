@@ -13,10 +13,10 @@ public final class NameAvailabilityModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NameAvailabilityModelInner model = BinaryData.fromString(
-            "{\"name\":\"dpsovwxznptgo\",\"type\":\"ybbabpfhvfsl\",\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"rigjkskyrioov\"}")
+            "{\"name\":\"vriibakclacjfr\",\"type\":\"ousxauzlwvsgmw\",\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"zvuxm\"}")
             .toObject(NameAvailabilityModelInner.class);
         Assertions.assertFalse(model.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, model.reason());
-        Assertions.assertEquals("rigjkskyrioov", model.message());
+        Assertions.assertEquals("zvuxm", model.message());
     }
 }

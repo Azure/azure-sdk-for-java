@@ -1,14 +1,12 @@
 # Release History
 
-## 3.1.0-beta.1 (Unreleased)
+## 3.1.0 (2026-11-26)
 
-### Features Added
-
-### Breaking Changes
+- Azure Resource Manager PostgreSql client library for Java. This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Azure Database for PostgreSQL management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, network configuration, security alert policies, log files and configurations with new business model. Package api-version 2026-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Bugs Fixed
 
-### Other Changes
+- Fixed bug https://github.com/Azure/azure-sdk-for-java/issues/51378
 
 ## 3.0.0 (2026-10-13)
 

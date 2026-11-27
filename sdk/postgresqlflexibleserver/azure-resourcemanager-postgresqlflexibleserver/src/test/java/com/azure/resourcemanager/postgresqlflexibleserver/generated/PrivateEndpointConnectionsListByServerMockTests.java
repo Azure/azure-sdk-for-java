@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupIds\":[\"dulontacn\",\"qwtehtuevr\"],\"privateEndpoint\":{\"id\":\"jyoogwxh\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ugwbsreurfqkf\",\"actionsRequired\":\"renlvhhtklnvnafv\"},\"provisioningState\":\"Deleting\"},\"id\":\"edev\",\"name\":\"bo\",\"type\":\"lcqxypokk\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupIds\":[\"likytwvczcswka\",\"ve\"],\"privateEndpoint\":{\"id\":\"dvlvhbwrnfxtgdd\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ehnmnaoyankco\",\"actionsRequired\":\"swankltytmh\"},\"provisioningState\":\"Deleting\"},\"id\":\"nnhdrl\",\"name\":\"tgjcsgguxheml\",\"type\":\"ywaeeczgf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class PrivateEndpointConnectionsListByServerMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnection> response = manager.privateEndpointConnections()
-            .listByServer("xddbhfhpfpaz", "zoyw", com.azure.core.util.Context.NONE);
+            .listByServer("ikjcjcazt", "wsnsqowx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ugwbsreurfqkf",
+        Assertions.assertEquals("ehnmnaoyankco",
             response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("renlvhhtklnvnafv",
+        Assertions.assertEquals("swankltytmh",
             response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
     }
 }

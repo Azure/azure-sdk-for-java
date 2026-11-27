@@ -13,10 +13,10 @@ public final class VirtualEndpointsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualEndpointsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"saznqntoruds\",\"sahmky\",\"grauwjuetaebur\",\"vdmovsmzlxwabm\"],\"virtualEndpoints\":[\"fkifr\",\"tpuqujmq\"]},\"id\":\"kfbtndoaongbjc\",\"name\":\"tujitcjedft\",\"type\":\"waezkojvd\"},{\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"ouicybxarzgszu\",\"oxciqopidoamcio\",\"hkh\",\"zxkhnzbonlwnto\"],\"virtualEndpoints\":[\"kdwbwhkszz\",\"mrv\"]},\"id\":\"ztvbtqgsfr\",\"name\":\"oyzko\",\"type\":\"wtl\"},{\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"wqaldsyu\"],\"virtualEndpoints\":[\"merqfobwyznkb\",\"kutwpf\",\"pagmhrskdsnf\",\"sd\"]},\"id\":\"kgtdlmkkze\",\"name\":\"dlhewp\",\"type\":\"sdsttwvog\"}],\"nextLink\":\"bejdcn\"}")
+            "{\"value\":[{\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"tncormrlxqtvco\",\"udflvkgjubgdknn\"],\"virtualEndpoints\":[\"aznqntoru\",\"sgsahmkycgr\",\"uwjuetaeburuvdmo\"]},\"id\":\"mz\",\"name\":\"xwabmqoe\",\"type\":\"kif\"},{\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"ujmqlgkfbtndoa\",\"n\",\"bjcntujitc\"],\"virtualEndpoints\":[\"ftwwaezkojvdc\"]},\"id\":\"foqouicybx\",\"name\":\"rzgszufoxci\",\"type\":\"opidoamciodh\"},{\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"hnzbonl\",\"ntoe\",\"okdwb\"],\"virtualEndpoints\":[\"szzcmrvexztv\",\"t\",\"gsfraoyzkoow\",\"lmnguxaw\"]},\"id\":\"ldsyuuximerqfob\",\"name\":\"yznkby\",\"type\":\"utwpfhp\"},{\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"kdsnfdsdoakgtdl\",\"kkze\",\"dlhewp\",\"sdsttwvog\"],\"virtualEndpoints\":[\"ejdcngqqmoakuf\",\"m\"]},\"id\":\"rwr\",\"name\":\"grtwae\",\"type\":\"u\"}],\"nextLink\":\"kopbminrf\"}")
             .toObject(VirtualEndpointsList.class);
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, model.value().get(0).endpointType());
-        Assertions.assertEquals("saznqntoruds", model.value().get(0).members().get(0));
-        Assertions.assertEquals("bejdcn", model.nextLink());
+        Assertions.assertEquals("tncormrlxqtvco", model.value().get(0).members().get(0));
+        Assertions.assertEquals("kopbminrf", model.nextLink());
     }
 }

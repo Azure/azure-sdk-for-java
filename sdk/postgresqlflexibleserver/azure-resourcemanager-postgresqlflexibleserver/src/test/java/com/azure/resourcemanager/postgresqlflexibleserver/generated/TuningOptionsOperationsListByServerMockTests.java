@@ -21,7 +21,7 @@ public final class TuningOptionsOperationsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"lt\"},\"id\":\"juscvsfx\",\"name\":\"gctmgxuupbezq\",\"type\":\"cydrtceukdqkk\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"xj\"},\"id\":\"gcm\",\"name\":\"zqjhhhqxuwyvca\",\"type\":\"oyvivbsiz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class TuningOptionsOperationsListByServerMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TuningOptions> response
-            = manager.tuningOptionsOperations().listByServer("mghihp", "ecmslclbl", com.azure.core.util.Context.NONE);
+            = manager.tuningOptionsOperations().listByServer("jenkyh", "qzvs", com.azure.core.util.Context.NONE);
 
     }
 }

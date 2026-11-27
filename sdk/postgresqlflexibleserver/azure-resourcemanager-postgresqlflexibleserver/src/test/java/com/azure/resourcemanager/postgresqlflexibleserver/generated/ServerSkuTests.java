@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerSku model
-            = BinaryData.fromString("{\"name\":\"frlh\",\"tier\":\"GeneralPurpose\"}").toObject(ServerSku.class);
-        Assertions.assertEquals("frlh", model.name());
-        Assertions.assertEquals(SkuTier.GENERAL_PURPOSE, model.tier());
+        ServerSku model = BinaryData.fromString("{\"name\":\"ovnotyfjfcnjbkcn\",\"tier\":\"MemoryOptimized\"}")
+            .toObject(ServerSku.class);
+        Assertions.assertEquals("ovnotyfjfcnjbkcn", model.name());
+        Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, model.tier());
     }
 }

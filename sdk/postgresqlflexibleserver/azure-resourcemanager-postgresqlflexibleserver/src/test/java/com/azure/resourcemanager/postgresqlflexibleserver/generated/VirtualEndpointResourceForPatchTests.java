@@ -14,19 +14,19 @@ public final class VirtualEndpointResourceForPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualEndpointResourceForPatch model = BinaryData.fromString(
-            "{\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"lxqtvcofudfl\"],\"virtualEndpoints\":[\"jub\"]}}")
+            "{\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"mncwsobqwcsdb\",\"wdcfhucqdpfuv\"],\"virtualEndpoints\":[\"bjj\",\"anvx\"]}}")
             .toObject(VirtualEndpointResourceForPatch.class);
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, model.endpointType());
-        Assertions.assertEquals("lxqtvcofudfl", model.members().get(0));
+        Assertions.assertEquals("mncwsobqwcsdb", model.members().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualEndpointResourceForPatch model
             = new VirtualEndpointResourceForPatch().withEndpointType(VirtualEndpointType.READ_WRITE)
-                .withMembers(Arrays.asList("lxqtvcofudfl"));
+                .withMembers(Arrays.asList("mncwsobqwcsdb", "wdcfhucqdpfuv"));
         model = BinaryData.fromObject(model).toObject(VirtualEndpointResourceForPatch.class);
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, model.endpointType());
-        Assertions.assertEquals("lxqtvcofudfl", model.members().get(0));
+        Assertions.assertEquals("mncwsobqwcsdb", model.members().get(0));
     }
 }
