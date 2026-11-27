@@ -69,26 +69,26 @@ Licensed under the MIT License.
   </properties>
 
   <dependencies>
-    <!-- Keep the shaded SDK and Kafka 4's test runtime on the same Jackson minor line. -->
+    <!-- Prevent test dependencies from overriding the shared SDK Jackson version. -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.21</version> <!-- {x-version-update;cosmos-kafka_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+      <version>2.18.12</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.21.6</version> <!-- {x-version-update;cosmos-kafka_com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+      <version>2.18.12</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.21.6</version> <!-- {x-version-update;cosmos-kafka_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>2.18.12</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>2.21.6</version> <!-- {x-version-update;cosmos-kafka_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+      <version>2.18.12</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.kafka</groupId>
@@ -157,6 +157,25 @@ Licensed under the MIT License.
       <groupId>org.apache.kafka</groupId>
       <artifactId>connect-runtime</artifactId>
       <version>4.2.2</version> <!-- {x-version-update;cosmos_org.apache.kafka:connect-runtime;external_dependency} -->
+      <scope>test</scope>
+      <exclusions>
+        <!-- The REST server runs in the worker container, not the test JVM. -->
+        <exclusion>
+          <groupId>com.fasterxml.jackson.jakarta.rs</groupId>
+          <artifactId>jackson-jakarta-rs-json-provider</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-blackbird</artifactId>
+      <version>2.18.12</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-blackbird;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jdk8</artifactId>
+      <version>2.18.12</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -356,10 +375,12 @@ Licensed under the MIT License.
             <bannedDependencies>
               <includes>
                 <include>com.azure:*</include>
-                <include>com.fasterxml.jackson.core:jackson-annotations:[2.21]</include> <!-- {x-include-update;cosmos-kafka_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-core:[2.21.6]</include> <!-- {x-include-update;cosmos-kafka_com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.21.6]</include> <!-- {x-include-update;cosmos-kafka_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.21.6]</include> <!-- {x-include-update;cosmos-kafka_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.18.12]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[2.18.12]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.18.12]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.18.12]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-blackbird:[2.18.12]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-blackbird;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jdk8:[2.18.12]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
                 <include>org.apache.kafka:connect-api:[4.2.2]</include> <!-- {x-include-update;cosmos_org.apache.kafka:connect-api;external_dependency} -->
                 <include>com.jayway.jsonpath:json-path:[2.9.0]</include> <!-- {x-include-update;cosmos_com.jayway.jsonpath:json-path;external_dependency} -->
                 <include>org.sourcelab:kafka-connect-client:[4.0.4]</include> <!-- {x-include-update;cosmos_org.sourcelab:kafka-connect-client;external_dependency} -->

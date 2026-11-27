@@ -5,6 +5,7 @@ package com.azure.cosmos.kafka.connect;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpServer;
+import org.apache.kafka.connect.json.JsonConverter;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
 import org.testcontainers.utility.DockerImageName;
 import org.testng.annotations.Test;
@@ -22,6 +23,16 @@ public class KafkaCosmosConnectContainerTest {
     private static final String STATUS = "{\"name\":\"test connector\",\"type\":\"source\","
         + "\"connector\":{\"state\":\"RUNNING\",\"worker_id\":\"connect:8083\"},"
         + "\"tasks\":[{\"id\":0,\"state\":\"RUNNING\",\"worker_id\":\"connect:8083\"}]}";
+
+    @Test(groups = "unit")
+    public void jsonConverterUsesSharedJacksonModules() throws Exception {
+        try (JsonConverter converter = new JsonConverter()) {
+            converter.configure(Map.of("schemas.enable", false), false);
+            Map<String, String> value = Map.of("id", "example");
+            byte[] encoded = converter.fromConnectData("topic", null, value);
+            assertThat(converter.toConnectData("topic", encoded).value()).isEqualTo(value);
+        }
+    }
 
     @Test(groups = "unit")
     public void statusDeserializesSnakeCaseAndEncodesConnectorName() throws Exception {

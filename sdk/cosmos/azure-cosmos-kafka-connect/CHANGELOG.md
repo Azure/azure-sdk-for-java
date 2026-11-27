@@ -18,7 +18,7 @@
 #### Other Changes
 
 * Updated Kafka Connect API/runtime to 4.2.2 and test Log4j dependencies to 2.25.5.
-* Aligned shaded Jackson dependencies with the Kafka 4.2.2 runtime's 2.21 line to avoid incompatible serializers in connector tests.
+* Use the shared SDK Jackson 2.18.12 security patch, including matching modules in the test JVM, without connector-specific Jackson version exceptions.
 * Updated integration-test containers and the contributor Docker sample to Confluent Platform 8.2.5 with KRaft.
 
 ### 2.12.0 (2026-09-22)

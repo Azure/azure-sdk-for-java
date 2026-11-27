@@ -10,7 +10,7 @@
 
 ### Other Changes
 
-- Upgraded Jackson from `2.18.9` to `2.18.11`.
+- Upgraded Jackson from `2.18.9` to `2.18.12`.
 
 ## 11.2.0 (2024-09-10)
 
