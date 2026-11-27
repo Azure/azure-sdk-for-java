@@ -14,19 +14,19 @@ public final class RuntimeProtectionConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RuntimeProtectionConfiguration model
-            = BinaryData.fromString("{\"definitionUpdateMode\":\"None\",\"enforcementLevel\":\"OnDemand\"}")
+            = BinaryData.fromString("{\"definitionUpdateMode\":\"Automatic\",\"enforcementLevel\":\"RealTime\"}")
                 .toObject(RuntimeProtectionConfiguration.class);
-        Assertions.assertEquals(RuntimeProtectionDefinitionUpdateMode.NONE, model.definitionUpdateMode());
-        Assertions.assertEquals(RuntimeProtectionEnforcementLevel.ON_DEMAND, model.enforcementLevel());
+        Assertions.assertEquals(RuntimeProtectionDefinitionUpdateMode.AUTOMATIC, model.definitionUpdateMode());
+        Assertions.assertEquals(RuntimeProtectionEnforcementLevel.REAL_TIME, model.enforcementLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RuntimeProtectionConfiguration model
-            = new RuntimeProtectionConfiguration().withDefinitionUpdateMode(RuntimeProtectionDefinitionUpdateMode.NONE)
-                .withEnforcementLevel(RuntimeProtectionEnforcementLevel.ON_DEMAND);
+        RuntimeProtectionConfiguration model = new RuntimeProtectionConfiguration()
+            .withDefinitionUpdateMode(RuntimeProtectionDefinitionUpdateMode.AUTOMATIC)
+            .withEnforcementLevel(RuntimeProtectionEnforcementLevel.REAL_TIME);
         model = BinaryData.fromObject(model).toObject(RuntimeProtectionConfiguration.class);
-        Assertions.assertEquals(RuntimeProtectionDefinitionUpdateMode.NONE, model.definitionUpdateMode());
-        Assertions.assertEquals(RuntimeProtectionEnforcementLevel.ON_DEMAND, model.enforcementLevel());
+        Assertions.assertEquals(RuntimeProtectionDefinitionUpdateMode.AUTOMATIC, model.definitionUpdateMode());
+        Assertions.assertEquals(RuntimeProtectionEnforcementLevel.REAL_TIME, model.enforcementLevel());
     }
 }

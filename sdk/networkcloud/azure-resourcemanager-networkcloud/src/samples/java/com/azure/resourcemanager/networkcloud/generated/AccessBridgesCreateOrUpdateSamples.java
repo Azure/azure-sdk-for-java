@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class AccessBridgesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/AccessBridges_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/AccessBridges_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update access bridge.
@@ -28,6 +28,37 @@ public final class AccessBridgesCreateOrUpdateSamples {
     public static void createOrUpdateAccessBridge(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
         manager.accessBridges()
             .define(AccessBridgeAllowedName.BASTION)
+            .withRegion("location")
+            .withExistingResourceGroup("resourceGroupName")
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
+            .withNetworkId(
+                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName/internalNetworks/internalNetworkName")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+            .withIpv4ConnectedPrefix("198.51.100.0/24")
+            .withIpv6ConnectedPrefix("2001:db8::/64")
+            .withSecurityRules(
+                Arrays.asList(new AccessBridgeSecurityRule().withDescription("Allow management plane egress")
+                    .withDirection(SecurityRuleDirection.OUTBOUND)
+                    .withIpv4Addresses(Arrays.asList("10.10.20.10-10.10.20.20"))
+                    .withIpv6Addresses(Arrays.asList("2001:db8:abcd:12::1000-2001:db8:abcd:12::1fff"))
+                    .withPort("24562-24570")))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-08-01-preview/AccessBridges_CreateOrUpdate_EdgeManagement.json
+     */
+    /**
+     * Sample code: Create or update edge management access bridge.
+     * 
+     * @param manager Entry point to NetworkCloudManager.
+     */
+    public static void
+        createOrUpdateEdgeManagementAccessBridge(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+        manager.accessBridges()
+            .define(AccessBridgeAllowedName.EDGE_MANAGEMENT)
             .withRegion("location")
             .withExistingResourceGroup("resourceGroupName")
             .withExtendedLocation(new ExtendedLocation().withName(
