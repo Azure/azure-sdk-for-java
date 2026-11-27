@@ -91,6 +91,7 @@ import com.azure.resourcemanager.sql.fluent.ManagedInstanceAzureADOnlyAuthentica
 import com.azure.resourcemanager.sql.fluent.ManagedInstanceDtcsClient;
 import com.azure.resourcemanager.sql.fluent.ManagedInstanceEncryptionProtectorsClient;
 import com.azure.resourcemanager.sql.fluent.ManagedInstanceKeysClient;
+import com.azure.resourcemanager.sql.fluent.ManagedInstanceLongTermRetentionBackupsClient;
 import com.azure.resourcemanager.sql.fluent.ManagedInstanceLongTermRetentionPoliciesClient;
 import com.azure.resourcemanager.sql.fluent.ManagedInstanceOperationsClient;
 import com.azure.resourcemanager.sql.fluent.ManagedInstancePrivateEndpointConnectionsClient;
@@ -1088,6 +1089,20 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
      */
     public LongTermRetentionManagedInstanceBackupsClient getLongTermRetentionManagedInstanceBackups() {
         return this.longTermRetentionManagedInstanceBackups;
+    }
+
+    /**
+     * The ManagedInstanceLongTermRetentionBackupsClient object to access its operations.
+     */
+    private final ManagedInstanceLongTermRetentionBackupsClient managedInstanceLongTermRetentionBackups;
+
+    /**
+     * Gets the ManagedInstanceLongTermRetentionBackupsClient object to access its operations.
+     * 
+     * @return the ManagedInstanceLongTermRetentionBackupsClient object.
+     */
+    public ManagedInstanceLongTermRetentionBackupsClient getManagedInstanceLongTermRetentionBackups() {
+        return this.managedInstanceLongTermRetentionBackups;
     }
 
     /**
@@ -2409,6 +2424,7 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
         this.jobVersions = new JobVersionsClientImpl(this);
         this.longTermRetentionBackups = new LongTermRetentionBackupsClientImpl(this);
         this.longTermRetentionManagedInstanceBackups = new LongTermRetentionManagedInstanceBackupsClientImpl(this);
+        this.managedInstanceLongTermRetentionBackups = new ManagedInstanceLongTermRetentionBackupsClientImpl(this);
         this.longTermRetentionPolicies = new LongTermRetentionPoliciesClientImpl(this);
         this.managedBackupShortTermRetentionPolicies = new ManagedBackupShortTermRetentionPoliciesClientImpl(this);
         this.managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies
