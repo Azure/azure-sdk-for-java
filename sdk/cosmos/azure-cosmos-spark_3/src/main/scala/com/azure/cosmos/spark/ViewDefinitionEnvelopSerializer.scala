@@ -73,9 +73,10 @@ private[spark] object ViewDefinitionEnvelopeSerializer {
         case None =>
       }
 
-      if (viewDefinition.options.size > 0) {
+      val safeOptions = viewDefinition.options.filter { case (key, _) => CosmosConfigNames.isSafeToLog(key) }
+      if (safeOptions.nonEmpty) {
         val options = view.putArray(optionsPropertyName)
-        viewDefinition.options.foreach((kvp) => {
+        safeOptions.foreach((kvp) => {
           val option = objectMapper.createObjectNode()
           option.put(keyPropertyName, kvp._1)
           option.put(valuePropertyName, kvp._2)

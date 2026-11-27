@@ -8,6 +8,8 @@
 
 #### Bugs Fixed
 
+* Fixed Cosmos catalog-view metadata persistence to exclude credentials and unrecognized options from shared view repositories. - See [PR 12345](https://github.com/Azure/azure-sdk-for-java/pull/12345)
+
 #### Other Changes
 
 ### 4.50.0 (2026-09-22)
