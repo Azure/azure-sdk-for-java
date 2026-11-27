@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"vgqzcjrvxd\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"lxkvu\"},\"provisioningState\":\"Failed\"},\"location\":\"ovawjvzunlu\",\"id\":\"nnprn\",\"name\":\"i\",\"type\":\"eilpjzuaejxdu\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"cdui\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"cym\"},\"provisioningState\":\"Creating\"},\"location\":\"psslqlfmm\",\"id\":\"bbglzpswiydmc\",\"name\":\"yhz\",\"type\":\"xssadbzmnvdf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("jvkn", "e", "qsgzvahapj", com.azure.core.util.Context.NONE)
+            .getWithResponse("nayqi", "ynduha", "hqlkthumaqo", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vgqzcjrvxd", response.privateEndpoint().id());
-        Assertions.assertEquals(PrivateLinkConnectionStatus.APPROVED,
+        Assertions.assertEquals("cdui", response.privateEndpoint().id());
+        Assertions.assertEquals(PrivateLinkConnectionStatus.DISCONNECTED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("lxkvu", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals(EndPointProvisioningState.FAILED, response.provisioningState());
+        Assertions.assertEquals("cym", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals(EndPointProvisioningState.CREATING, response.provisioningState());
     }
 }

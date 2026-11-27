@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relay.generated;
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01/PrivateEndpointConnections/PrivateEndpointConnectionsGet.json
+     * x-ms-original-file: 2026-07-01-preview/PrivateEndpointConnections/PrivateEndpointConnectionsGet.json
      */
     /**
      * Sample code: NameSpacePrivateEndPointConnectionGet.

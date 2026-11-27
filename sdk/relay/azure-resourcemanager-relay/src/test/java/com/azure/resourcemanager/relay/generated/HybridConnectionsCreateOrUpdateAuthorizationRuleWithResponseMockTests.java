@@ -24,7 +24,7 @@ public final class HybridConnectionsCreateOrUpdateAuthorizationRuleWithResponseM
     @Test
     public void testCreateOrUpdateAuthorizationRuleWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"rights\":[\"Listen\",\"Listen\"]},\"location\":\"ijggmebfsiar\",\"id\":\"trcvpnazzmh\",\"name\":\"runmp\",\"type\":\"ttdbhrbnl\"}";
+            = "{\"properties\":{\"rights\":[\"Send\",\"Send\",\"Listen\"]},\"location\":\"vpycanuzbp\",\"id\":\"afkuwb\",\"name\":\"rnwb\",\"type\":\"ehhseyvjusrts\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,11 @@ public final class HybridConnectionsCreateOrUpdateAuthorizationRuleWithResponseM
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AuthorizationRule response = manager.hybridConnections()
-            .createOrUpdateAuthorizationRuleWithResponse("bijhtxfvgxbf", "mxnehmp", "ec", "godebfqkkrbmpu",
-                new AuthorizationRuleInner()
-                    .withRights(Arrays.asList(AccessRights.LISTEN, AccessRights.SEND, AccessRights.LISTEN)),
+            .createOrUpdateAuthorizationRuleWithResponse("rpabg", "epsbjtazqu", "xywpmueefjzwfqkq", "jidsuyonobglaoc",
+                new AuthorizationRuleInner().withRights(Arrays.asList(AccessRights.SEND)),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(AccessRights.LISTEN, response.rights().get(0));
+        Assertions.assertEquals(AccessRights.SEND, response.rights().get(0));
     }
 }

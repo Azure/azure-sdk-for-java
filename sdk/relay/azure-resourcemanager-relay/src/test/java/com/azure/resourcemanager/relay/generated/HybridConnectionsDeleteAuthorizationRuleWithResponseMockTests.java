@@ -28,7 +28,7 @@ public final class HybridConnectionsDeleteAuthorizationRuleWithResponseMockTests
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.hybridConnections()
-            .deleteAuthorizationRuleWithResponse("nkxmyskpbhenbtk", "xywnytnrsynlqidy", "yxczfclh", "axdbabph",
+            .deleteAuthorizationRuleWithResponse("hspkdeemao", "mx", "gkvtmelmqkrhah", "ljuahaquhcdh",
                 com.azure.core.util.Context.NONE);
 
     }

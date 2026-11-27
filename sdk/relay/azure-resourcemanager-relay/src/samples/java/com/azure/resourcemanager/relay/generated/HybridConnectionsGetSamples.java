@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relay.generated;
  */
 public final class HybridConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01/HybridConnection/RelayHybridConnectionGet.json
+     * x-ms-original-file: 2026-07-01-preview/HybridConnection/RelayHybridConnectionGet.json
      */
     /**
      * Sample code: RelayHybridConnectionGet.

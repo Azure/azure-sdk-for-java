@@ -23,7 +23,7 @@ public final class NamespacesCreateOrUpdateAuthorizationRuleWithResponseMockTest
     @Test
     public void testCreateOrUpdateAuthorizationRuleWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"rights\":[\"Manage\"]},\"location\":\"cubeddgssofw\",\"id\":\"zqalkrmnjijpx\",\"name\":\"cqqudf\",\"type\":\"byxbaaabjy\"}";
+            = "{\"properties\":{\"rights\":[\"Listen\",\"Send\",\"Send\",\"Listen\"]},\"location\":\"dkfw\",\"id\":\"wcvtbvkayhmtnvyq\",\"name\":\"atkzwpcnpw\",\"type\":\"cjaesgvvs\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class NamespacesCreateOrUpdateAuthorizationRuleWithResponseMockTest
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AuthorizationRule response = manager.namespaces()
-            .defineAuthorizationRule("lr")
-            .withExistingNamespace("dunyg", "eqidbqfatpx")
-            .withRights(Arrays.asList(AccessRights.LISTEN, AccessRights.MANAGE))
+            .defineAuthorizationRule("ughftqsx")
+            .withExistingNamespace("qhhahhxvrhmzkwpj", "wws")
+            .withRights(Arrays.asList(AccessRights.LISTEN, AccessRights.LISTEN))
             .create();
 
-        Assertions.assertEquals(AccessRights.MANAGE, response.rights().get(0));
+        Assertions.assertEquals(AccessRights.LISTEN, response.rights().get(0));
     }
 }

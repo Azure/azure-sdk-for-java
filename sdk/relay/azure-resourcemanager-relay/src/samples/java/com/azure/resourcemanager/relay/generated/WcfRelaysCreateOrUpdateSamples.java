@@ -11,7 +11,7 @@ import com.azure.resourcemanager.relay.models.Relaytype;
  */
 public final class WcfRelaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayCreate.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayCreate.json
      */
     /**
      * Sample code: RelayCreate.
