@@ -1,0 +1,30 @@
+parameters:
+  - name: ArtifactStagingDirectory
+    type: string
+    default: $(Build.ArtifactStagingDirectory)
+
+steps:
+  - task: PowerShell@2
+    displayName: Build Java API hash tooling
+    env:
+      JAVA_HOME: $(JAVA_HOME_17_X64)
+    inputs:
+      pwsh: true
+      targetType: filePath
+      filePath: $(Build.SourcesDirectory)/eng/scripts/Stage-ApiReviewTools.ps1
+      arguments: >-
+        -BinOutputDirectory "$(Build.BinariesDirectory)/api-review-tools"
+        -ExpandSparseCheckout
+
+  - task: PowerShell@2
+    displayName: Save API hashes from staged release sources
+    env:
+      JAVA_HOME: $(JAVA_HOME_17_X64)
+    inputs:
+      pwsh: true
+      targetType: filePath
+      filePath: $(Build.SourcesDirectory)/eng/scripts/Save-Package-ApiHash-Property.ps1
+      arguments: >-
+        -ArtifactStagingDirectory "${{ parameters.ArtifactStagingDirectory }}"
+        -ToolJar "$(Build.BinariesDirectory)/api-review-tools/api-review-maven-plugin.jar"
+        -JavaExecutable "$(JAVA_HOME_17_X64)/bin/java"
