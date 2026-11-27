@@ -13,6 +13,8 @@
 - Added `ServiceBusReceivedMessageAsyncContext` with reactive complete, abandon, defer, and dead-letter operations.
   Async processor shutdown stops receiving before draining accepted handlers, and processing spans track the handler's
   reactive lifetime.
+- Added `ServiceBusReceivedMessage.fromAmqpMessage(BinaryData, String)` to create a received message from raw AMQP 1.0
+  bytes and a lock token, for integrations such as Azure Functions bindings.
 
 ### Breaking Changes
 
