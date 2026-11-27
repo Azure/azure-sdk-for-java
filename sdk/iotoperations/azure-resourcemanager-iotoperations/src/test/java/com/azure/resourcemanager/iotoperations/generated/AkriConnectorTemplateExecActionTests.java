@@ -13,16 +13,16 @@ public final class AkriConnectorTemplateExecActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AkriConnectorTemplateExecAction model
-            = BinaryData.fromString("{\"command\":[\"fhsxttaugz\",\"nfaazpxdtnkdmkq\",\"jlwuenvrkp\",\"ou\"]}")
+            = BinaryData.fromString("{\"command\":[\"fvoow\",\"rvmtgjq\",\"pyostronzmyhgfi\"]}")
                 .toObject(AkriConnectorTemplateExecAction.class);
-        Assertions.assertEquals("fhsxttaugz", model.command().get(0));
+        Assertions.assertEquals("fvoow", model.command().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AkriConnectorTemplateExecAction model = new AkriConnectorTemplateExecAction()
-            .withCommand(Arrays.asList("fhsxttaugz", "nfaazpxdtnkdmkq", "jlwuenvrkp", "ou"));
+        AkriConnectorTemplateExecAction model
+            = new AkriConnectorTemplateExecAction().withCommand(Arrays.asList("fvoow", "rvmtgjq", "pyostronzmyhgfi"));
         model = BinaryData.fromObject(model).toObject(AkriConnectorTemplateExecAction.class);
-        Assertions.assertEquals("fhsxttaugz", model.command().get(0));
+        Assertions.assertEquals("fvoow", model.command().get(0));
     }
 }

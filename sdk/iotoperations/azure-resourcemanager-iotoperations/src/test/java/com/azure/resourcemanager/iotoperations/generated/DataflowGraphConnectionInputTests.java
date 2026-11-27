@@ -14,24 +14,24 @@ public final class DataflowGraphConnectionInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowGraphConnectionInput model = BinaryData
-            .fromString("{\"name\":\"vxb\",\"schema\":{\"serializationFormat\":\"Json\",\"schemaRef\":\"utncorm\"}}")
+            .fromString("{\"name\":\"btndo\",\"schema\":{\"serializationFormat\":\"Avro\",\"schemaRef\":\"jcntuj\"}}")
             .toObject(DataflowGraphConnectionInput.class);
-        Assertions.assertEquals("vxb", model.name());
-        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.JSON,
+        Assertions.assertEquals("btndo", model.name());
+        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.AVRO,
             model.schema().serializationFormat());
-        Assertions.assertEquals("utncorm", model.schema().schemaRef());
+        Assertions.assertEquals("jcntuj", model.schema().schemaRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowGraphConnectionInput model = new DataflowGraphConnectionInput().withName("vxb")
+        DataflowGraphConnectionInput model = new DataflowGraphConnectionInput().withName("btndo")
             .withSchema(new DataflowGraphConnectionSchemaSettings()
-                .withSerializationFormat(DataflowGraphConnectionSchemaSerializationFormat.JSON)
-                .withSchemaRef("utncorm"));
+                .withSerializationFormat(DataflowGraphConnectionSchemaSerializationFormat.AVRO)
+                .withSchemaRef("jcntuj"));
         model = BinaryData.fromObject(model).toObject(DataflowGraphConnectionInput.class);
-        Assertions.assertEquals("vxb", model.name());
-        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.JSON,
+        Assertions.assertEquals("btndo", model.name());
+        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.AVRO,
             model.schema().serializationFormat());
-        Assertions.assertEquals("utncorm", model.schema().schemaRef());
+        Assertions.assertEquals("jcntuj", model.schema().schemaRef());
     }
 }

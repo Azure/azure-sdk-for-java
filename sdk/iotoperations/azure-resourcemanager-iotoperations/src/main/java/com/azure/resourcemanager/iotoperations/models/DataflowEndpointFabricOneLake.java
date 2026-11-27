@@ -32,7 +32,9 @@ public final class DataflowEndpointFabricOneLake implements JsonSerializable<Dat
     private DataflowEndpointFabricPathType oneLakePathType;
 
     /*
-     * Host of the Microsoft Fabric in the form of https://<host>.fabric.microsoft.com.
+     * Host of the Microsoft Fabric in the form of https://<host>.fabric.microsoft.com (Azure Public) or
+     * https://<host>.fabric.microsoft.us (Azure US Government). This will be validated by the regex
+     * `.*\.fabric\.microsoft\.(com|us)`.
      */
     private String host;
 
@@ -111,7 +113,9 @@ public final class DataflowEndpointFabricOneLake implements JsonSerializable<Dat
     }
 
     /**
-     * Get the host property: Host of the Microsoft Fabric in the form of https://&lt;host&gt;.fabric.microsoft.com.
+     * Get the host property: Host of the Microsoft Fabric in the form of https://&lt;host&gt;.fabric.microsoft.com
+     * (Azure Public) or https://&lt;host&gt;.fabric.microsoft.us (Azure US Government). This will be validated by the
+     * regex `.*\.fabric\.microsoft\.(com|us)`.
      * 
      * @return the host value.
      */
@@ -120,7 +124,9 @@ public final class DataflowEndpointFabricOneLake implements JsonSerializable<Dat
     }
 
     /**
-     * Set the host property: Host of the Microsoft Fabric in the form of https://&lt;host&gt;.fabric.microsoft.com.
+     * Set the host property: Host of the Microsoft Fabric in the form of https://&lt;host&gt;.fabric.microsoft.com
+     * (Azure Public) or https://&lt;host&gt;.fabric.microsoft.us (Azure US Government). This will be validated by the
+     * regex `.*\.fabric\.microsoft\.(com|us)`.
      * 
      * @param host the host value to set.
      * @return the DataflowEndpointFabricOneLake object itself.

@@ -16,20 +16,20 @@ public final class BrokerSubscriberQueueCustomPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BrokerSubscriberQueueCustomPolicy model = BinaryData.fromString(
-            "{\"mode\":\"Custom\",\"subscriberQueueSettings\":{\"subscriberClientIds\":[\"wxdndnvowgujjug\",\"dkcglhsl\"],\"dynamic\":{\"mode\":\"Disabled\"}}}")
+            "{\"mode\":\"Custom\",\"subscriberQueueSettings\":{\"subscriberClientIds\":[\"jp\",\"umasxazjpq\",\"e\",\"ualhbxxhejj\"],\"dynamic\":{\"mode\":\"Enabled\"}}}")
             .toObject(BrokerSubscriberQueueCustomPolicy.class);
-        Assertions.assertEquals("wxdndnvowgujjug", model.subscriberQueueSettings().subscriberClientIds().get(0));
-        Assertions.assertEquals(OperationalMode.DISABLED, model.subscriberQueueSettings().dynamic().mode());
+        Assertions.assertEquals("jp", model.subscriberQueueSettings().subscriberClientIds().get(0));
+        Assertions.assertEquals(OperationalMode.ENABLED, model.subscriberQueueSettings().dynamic().mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BrokerSubscriberQueueCustomPolicy model = new BrokerSubscriberQueueCustomPolicy()
             .withSubscriberQueueSettings(new BrokerSubscriberQueueCustomPolicySettings()
-                .withSubscriberClientIds(Arrays.asList("wxdndnvowgujjug", "dkcglhsl"))
-                .withDynamic(new BrokerSubscriberQueueDynamic().withMode(OperationalMode.DISABLED)));
+                .withSubscriberClientIds(Arrays.asList("jp", "umasxazjpq", "e", "ualhbxxhejj"))
+                .withDynamic(new BrokerSubscriberQueueDynamic().withMode(OperationalMode.ENABLED)));
         model = BinaryData.fromObject(model).toObject(BrokerSubscriberQueueCustomPolicy.class);
-        Assertions.assertEquals("wxdndnvowgujjug", model.subscriberQueueSettings().subscriberClientIds().get(0));
-        Assertions.assertEquals(OperationalMode.DISABLED, model.subscriberQueueSettings().dynamic().mode());
+        Assertions.assertEquals("jp", model.subscriberQueueSettings().subscriberClientIds().get(0));
+        Assertions.assertEquals(OperationalMode.ENABLED, model.subscriberQueueSettings().dynamic().mode());
     }
 }
