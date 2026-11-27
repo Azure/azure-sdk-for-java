@@ -8,7 +8,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed point item operations to reject empty item IDs and IDs containing a slash or backslash before sending a request. - See [Issue 51422](https://github.com/Azure/azure-sdk-for-java/issues/51422)
+* Fixed point item operations to reject empty item IDs and IDs containing a slash or backslash before sending a request. - See [Issue 51422](https://github.com/Azure/azure-sdk-for-java/issues/51422) and [PR 51429](https://github.com/Azure/azure-sdk-for-java/pull/51429)
 * Fixed compound session token handling for requests routed to GatewayV2. - See [PR 51102](https://github.com/Azure/azure-sdk-for-java/pull/51102)
 * Fixed concurrent response parsing throwing decoder state exceptions when fallback UTF-8 decoding is enabled. - See [Issue 51084](https://github.com/Azure/azure-sdk-for-java/issues/51084) and [PR 51151](https://github.com/Azure/azure-sdk-for-java/pull/51151)
 * Fixed hybrid search reciprocal rank fusion (RRF) results being ranked incorrectly when component scores are tied. Each result now receives a unique ordinal rank, with deterministic tie-breaking based on the decoded document ID portion of `_rid`. - See [PR 50940](https://github.com/Azure/azure-sdk-for-java/pull/50940)
