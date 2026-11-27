@@ -10,12 +10,15 @@ import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.util.AsyncCloseable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
@@ -30,7 +33,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests for {@link AmqpChannelProcessor}.
@@ -353,8 +361,46 @@ class AmqpChannelProcessorTest {
         return createChannelProcessor(new FixedAmqpRetryPolicy(new AmqpRetryOptions()));
     }
 
+    @Test
+    void targetedClosePreservesReplacementChannel() {
+        final AmqpChannelProcessor<TestObject> processor = createChannelProcessor();
+        try {
+            processor.onNext(connection1);
+            processor.onNext(connection2);
+            processor.forceCloseChannel(connection1);
+            StepVerifier.create(processor).expectNext(connection2).verifyComplete();
+            processor.forceCloseChannel(connection2);
+            assertTrue(processor.isChannelClosed());
+        } finally {
+            processor.dispose();
+        }
+    }
+
     private static AmqpChannelProcessor<TestObject> createChannelProcessor(AmqpRetryPolicy retryPolicy) {
         return new AmqpChannelProcessor<>("namespace-test", TestObject::getStates, retryPolicy, new HashMap<>());
+    }
+
+    @Test
+    void closingOldChannelMustNotClearReplacement() {
+        final AsyncCloseable first = mock(AsyncCloseable.class);
+        final AsyncCloseable replacement = mock(AsyncCloseable.class);
+        final Sinks.Many<AmqpEndpointState> states = Sinks.many().replay().latestOrDefault(AmqpEndpointState.ACTIVE);
+        when(first.closeAsync()).thenAnswer(invocation -> {
+            states.tryEmitComplete();
+            return Mono.empty();
+        });
+        when(replacement.closeAsync()).thenReturn(Mono.empty());
+        final AmqpChannelProcessor<AsyncCloseable> processor
+            = new AmqpChannelProcessor<>("namespace-test", channel -> channel == first ? states.asFlux() : Flux.never(),
+                new FixedAmqpRetryPolicy(new AmqpRetryOptions()), new HashMap<>());
+        try {
+            processor.onNext(first);
+            processor.onNext(replacement);
+            assertFalse(processor.isChannelClosed());
+            verify(replacement, never()).closeAsync();
+        } finally {
+            processor.dispose();
+        }
     }
 
     static final class TestObject {

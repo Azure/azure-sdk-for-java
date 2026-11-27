@@ -7,6 +7,8 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.models.CbsAuthorizationType;
@@ -51,12 +53,14 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.messaging.servicebus.ReceiverOptions.createUnnamedSessionOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -170,6 +174,81 @@ class ServiceBusSessionManagerTest {
 
         // Act & Assert
         assertEquals(CLIENT_IDENTIFIER, sessionManager.getIdentifier());
+    }
+
+    @Test
+    void lockedNamedSessionIsTerminal() {
+        final String sessionId = "locked-session";
+        final AmqpException locked = new AmqpException(false, AmqpErrorCondition.SESSION_CANNOT_BE_LOCKED,
+            "The requested session is already locked.", null);
+        final ReceiverOptions options = ReceiverOptions.createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1,
+            MAX_LOCK_RENEWAL, false, sessionId);
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCacheWrapper,
+            messageSerializer, options, CLIENT_IDENTIFIER, NOOP_TRACER);
+        when(connection.createReceiveLink(eq(sessionId), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
+            eq(ENTITY_TYPE), eq(CLIENT_IDENTIFIER), eq(sessionId))).thenReturn(Mono.error(locked));
+
+        StepVerifier.create(sessionManager.getActiveLink())
+            .expectErrorSatisfies(error -> assertSame(locked, error))
+            .verify(Duration.ofSeconds(2));
+        verify(connection, times(1)).createReceiveLink(eq(sessionId), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class),
+            isNull(), eq(ENTITY_TYPE), eq(CLIENT_IDENTIFIER), eq(sessionId));
+    }
+
+    @Test
+    void unnamedSessionRetriesWithFreshLinkNameAfterTimeout() {
+        connectionCacheWrapper.getRetryOptions().setTryTimeout(Duration.ofMillis(100));
+        final ReceiverOptions options = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1,
+            MAX_LOCK_RENEWAL, false, 5, SESSION_IDLE_TIMEOUT);
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCacheWrapper,
+            messageSerializer, options, CLIENT_IDENTIFIER, NOOP_TRACER);
+        final ServiceBusReceiveLink hungLink = mock(ServiceBusReceiveLink.class);
+        when(hungLink.getEndpointStates()).thenReturn(Flux.never());
+        final AtomicBoolean abandonedLinkClosed = new AtomicBoolean();
+        final Sinks.Empty<Void> closeCompletion = Sinks.empty();
+        when(hungLink.closeAsync())
+            .thenReturn(closeCompletion.asMono().doOnSubscribe(ignored -> abandonedLinkClosed.set(true)));
+        final AtomicReference<String> firstLinkName = new AtomicReference<>();
+        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
+            eq(ENTITY_TYPE), eq(CLIENT_IDENTIFIER), isNull())).thenAnswer(invocation -> {
+                final String linkName = invocation.getArgument(0);
+                firstLinkName.compareAndSet(null, linkName);
+                return Mono.just(firstLinkName.get().equals(linkName) ? hungLink : amqpReceiveLink);
+            });
+
+        StepVerifier.create(sessionManager.getActiveLink())
+            .assertNext(link -> assertSame(amqpReceiveLink, link))
+            .expectComplete()
+            .verify(Duration.ofSeconds(2));
+        verify(connection, times(2)).createReceiveLink(linkNameCaptor.capture(), eq(ENTITY_PATH),
+            any(ServiceBusReceiveMode.class), isNull(), eq(ENTITY_TYPE), eq(CLIENT_IDENTIFIER), isNull());
+        assertEquals(2, linkNameCaptor.getAllValues().stream().distinct().count());
+        assertTrue(abandonedLinkClosed.get(), "the abandoned link must be closed independently of the retry");
+        verify(amqpReceiveLink, Mockito.never()).closeAsync();
+        closeCompletion.tryEmitEmpty();
+    }
+
+    @Test
+    void cancellingUnnamedSessionAcquisitionClosesOnlyThePendingLink() {
+        final ReceiverOptions options = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1,
+            MAX_LOCK_RENEWAL, false, 5, SESSION_IDLE_TIMEOUT);
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCacheWrapper,
+            messageSerializer, options, CLIENT_IDENTIFIER, NOOP_TRACER);
+        final ServiceBusReceiveLink pending = mock(ServiceBusReceiveLink.class);
+        when(pending.getEndpointStates()).thenReturn(Flux.never());
+        final AtomicBoolean closed = new AtomicBoolean();
+        final Sinks.Empty<Void> closeCompletion = Sinks.empty();
+        when(pending.closeAsync()).thenReturn(closeCompletion.asMono().doOnSubscribe(ignored -> closed.set(true)));
+        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
+            eq(ENTITY_TYPE), eq(CLIENT_IDENTIFIER), isNull())).thenReturn(Mono.just(pending));
+
+        StepVerifier.create(sessionManager.getActiveLink())
+            .thenAwait(Duration.ofMillis(10))
+            .thenCancel()
+            .verify(Duration.ofSeconds(2));
+        assertTrue(closed.get(), "cancellation must close the link before it can acquire an unconsumed session");
+        verify(pending).closeAsync();
+        closeCompletion.tryEmitEmpty();
     }
 
     @Test

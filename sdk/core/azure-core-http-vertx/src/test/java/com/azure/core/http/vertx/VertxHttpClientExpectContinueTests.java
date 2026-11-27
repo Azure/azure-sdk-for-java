@@ -17,6 +17,7 @@ import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpVersion;
 import io.vertx.core.http.RequestOptions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -60,6 +61,29 @@ public class VertxHttpClientExpectContinueTests {
     private static final Duration RESPONSE_TIMEOUT = Duration.ofSeconds(30);
     // Mirrors the client's wait for 100 Continue before sending the body anyway.
     private static final Duration EXPECT_CONTINUE_FALLBACK = Duration.ofSeconds(1);
+
+    @BeforeAll
+    public static void warmUpHttpClient() throws Exception {
+        // Netty 4.2 initializes its allocation JFR event on the first header write. Keep that cold-start work
+        // outside the HTTP timing assertions below.
+        Vertx vertx = Vertx.vertx();
+        try (ExpectContinueServer server = new ExpectContinueServer()) {
+            server.start();
+            HttpClient client = new VertxHttpClientBuilder().vertx(vertx)
+                .writeTimeout(Duration.ZERO)
+                .responseTimeout(RESPONSE_TIMEOUT)
+                .build();
+            HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
+            request.getHeaders().set(HttpHeaderName.EXPECT, "100-continue");
+            try (HttpResponse response = client.send(request).block(TEST_TIMEOUT)) {
+                assertNotNull(response);
+                assertEquals(201, response.getStatusCode());
+            }
+            assertTrue(server.awaitRequest(), "the warm-up request never reached the server");
+        } finally {
+            vertx.close().toCompletionStage().toCompletableFuture().get(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
+        }
+    }
 
     @ParameterizedTest
     @ValueSource(strings = { "100-continue", "100-Continue", " 100-continue ", "100-continue, foo" })

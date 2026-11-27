@@ -6,6 +6,8 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
@@ -604,7 +606,14 @@ class ServiceBusSenderAsyncClientTest {
             when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(),
                 eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink).publishOn(Schedulers.boundedElastic()));
             when(sendLink.getLinkSize()).thenReturn(Mono.just(1024 * 1024));
-            when(sendLink.getMaxBatchSize()).thenReturn(Mono.just(1024 * 1024));
+            final AtomicInteger batchSizeAttempts = new AtomicInteger();
+            when(sendLink.getMaxBatchSize()).thenReturn(Mono.defer(() -> {
+                if ("batch-retry".equals(sendKind) && batchSizeAttempts.incrementAndGet() == 1) {
+                    return Mono.error(new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR,
+                        "batch-size negotiation retry", null));
+                }
+                return Mono.just(1024 * 1024);
+            }));
             when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
             final ServiceBusReceivedMessage incoming = new ServiceBusReceivedMessage(BinaryData.fromString("input"));
@@ -653,6 +662,10 @@ class ServiceBusSenderAsyncClientTest {
                 processor.start().block(DEFAULT_TIMEOUT);
                 assertTrue(spanProcessor.processed.await(10, TimeUnit.SECONDS));
                 assertNull(handlerError.get());
+                if ("batch-retry".equals(sendKind)) {
+                    assertEquals(2, batchSizeAttempts.get(),
+                        "Batch-size negotiation must retry before tracing the batch");
+                }
                 assertNotNull(ambient.get());
                 assertFalse(ambient.get().isValid(), "SDK-only tracing must not leak a thread-local process scope");
                 final List<SpanData> process = spanProcessor.spans.stream()
@@ -686,7 +699,7 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     private static Stream<Arguments> forwardingCases() {
-        return Stream.of("single", "iterable", "batch")
+        return Stream.of("single", "iterable", "batch", "batch-retry")
             .flatMap(kind -> Stream.of(false, true)
                 .flatMap(hop -> selectStack().map(isV2 -> Arguments.of(kind, hop, isV2))));
     }
@@ -982,7 +995,8 @@ class ServiceBusSenderAsyncClientTest {
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink));
-        when(sendLink.send(any(Message.class))).thenThrow(new RuntimeException("foo"));
+        when(sendLink.send(any(Message.class)))
+            .thenReturn(Mono.error(new AmqpException(false, AmqpErrorCondition.NOT_FOUND, "entity not found", null)));
 
         // Act
         StepVerifier.create(sender.sendMessage(new ServiceBusMessage(TEST_CONTENTS)))

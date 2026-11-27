@@ -51,4 +51,18 @@ final class ConnectionCacheWrapper {
     boolean isChannelClosed() {
         return isV2 ? cache.isCurrentConnectionClosed() : processor.isChannelClosed();
     }
+
+    /**
+     * Invalidates the connection used by the failed operation without disturbing a replacement.
+     * On v2, marks that connection for eviction on the next get(). On v1, closes it immediately.
+     *
+     * @param connection The connection used by the failed operation.
+     */
+    void invalidateConnection(ServiceBusAmqpConnection connection) {
+        if (isV2) {
+            cache.invalidateConnection(connection.getId());
+        } else {
+            processor.forceCloseChannel(connection);
+        }
+    }
 }

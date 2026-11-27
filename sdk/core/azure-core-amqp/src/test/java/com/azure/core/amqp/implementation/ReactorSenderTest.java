@@ -42,6 +42,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -184,6 +185,21 @@ public class ReactorSenderTest {
         StepVerifier.create(reactorSender.getLinkSize()).expectNext(1000).expectComplete().verify(VERIFY_TIMEOUT);
 
         verify(sender).getRemoteMaxMessageSize();
+    }
+
+    @Test
+    public void linkSizeNegotiationPreservesDetachAsRetryExhaustionCause() {
+        options.setMaxRetries(0);
+        reactorSender = spy(new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider,
+            tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop()));
+        final AmqpException detach
+            = new AmqpException(true, AmqpErrorCondition.LINK_DETACH_FORCED, "detached during negotiation", null);
+        doReturn(Flux.error(detach).cache(1)).when(reactorSender).getEndpointStates();
+
+        StepVerifier.create(reactorSender.getLinkSize()).expectErrorSatisfies(error -> {
+            assertTrue(Exceptions.isRetryExhausted(error));
+            Assertions.assertSame(detach, error.getCause());
+        }).verify(VERIFY_TIMEOUT);
     }
 
     /**
