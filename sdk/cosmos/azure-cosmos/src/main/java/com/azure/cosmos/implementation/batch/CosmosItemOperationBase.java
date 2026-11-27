@@ -5,7 +5,10 @@ package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.patch.PatchUtil;
 import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.CosmosPatchOperations;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -41,5 +44,13 @@ public abstract class CosmosItemOperationBase implements CosmosItemOperation {
         JsonSerializable operationSerializable = this.getSerializedOperation(effectiveItemSerializer);
         String serializedValue = operationSerializable.toString();
         return serializedValue.codePointCount(0, serializedValue.length());
+    }
+
+    static JsonSerializable getSerializedPatchOperationBody(
+        CosmosPatchOperations patchOperations,
+        RequestOptions requestOptions,
+        CosmosItemSerializer effectiveItemSerializer) {
+
+        return PatchUtil.serializableBatchPatchOperation(patchOperations, requestOptions, effectiveItemSerializer);
     }
 }
