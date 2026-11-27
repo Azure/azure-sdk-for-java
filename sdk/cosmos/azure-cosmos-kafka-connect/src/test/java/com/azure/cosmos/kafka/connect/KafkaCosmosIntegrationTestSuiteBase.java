@@ -4,13 +4,16 @@
 package com.azure.cosmos.kafka.connect;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.Utils;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.kafka.ConfluentKafkaContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.lifecycle.Startables;
 import org.testcontainers.utility.DockerImageName;
+import org.testcontainers.utility.ComparableVersion;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
@@ -20,6 +23,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Locale;
@@ -34,7 +41,7 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
     private static final Duration DEFAULT_CONTAINER_START_UP_TIMEOUT = Duration.ofMinutes(5);
 
     protected static Network network;
-    protected static KafkaContainer kafkaContainer;
+    protected static ConfluentKafkaContainer kafkaContainer;
     protected static KafkaSchemaRegistryContainer schemaRegistryContainer;
     protected static KafkaCosmosConnectContainer kafkaCosmosConnectContainer;
 
@@ -44,6 +51,34 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
         logger.info("beforeIntegrationSuite Started");
         // initialize the kafka, kafka-connect containers
         setupDockerContainers();
+        verifyWorkerRuntime();
+    }
+
+    private static void verifyWorkerRuntime() throws IOException, InterruptedException {
+        HttpResponse<String> response = HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(30))
+            .build()
+            .send(HttpRequest.newBuilder(URI.create(kafkaCosmosConnectContainer.getTarget() + "/"))
+                .timeout(Duration.ofSeconds(30))
+                .GET()
+                .build(), HttpResponse.BodyHandlers.ofString());
+        assertThat(response.statusCode()).isEqualTo(200);
+        JsonNode workerInfo = Utils.getSimpleObjectMapper().readTree(response.body());
+        String kafkaVersion = workerInfo.path("version").asText();
+        assertThat(kafkaVersion).isNotEmpty();
+        if (kafkaVersion.endsWith("-ccs")) {
+            assertThat(kafkaVersion).isEqualTo(KafkaCosmosTestConfigurations.CONFLUENT_VERSION + "-ccs");
+        } else {
+            assertThat(new ComparableVersion(kafkaVersion.split("-")[0]).isLessThan("4.2.2"))
+                .as("Connect worker must contain the Kafka 4.2.2 security fixes: %s", kafkaVersion)
+                .isFalse();
+        }
+
+        org.testcontainers.containers.Container.ExecResult javaVersion =
+            kafkaCosmosConnectContainer.execInContainer("java", "-XshowSettings:properties", "-version");
+        assertThat(javaVersion.getExitCode()).isZero();
+        assertThat(javaVersion.getStderr()).containsPattern("java.specification.version = (17|21)\\s");
+        logger.info("Verified Connect worker reported version {} on Java 17/21", kafkaVersion);
     }
 
     @AfterSuite(groups = { "kafka-integration" }, timeOut = 10 * SUITE_SETUP_TIMEOUT)
@@ -69,10 +104,11 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
     private static void setupDockerContainersForLocal() {
         logger.info("Setting up local docker containers...");
         network = Network.newNetwork();
-        kafkaContainer = new KafkaContainer(getDockerImageName(KafkaCosmosTestConfigurations.ACR_NAME + "/cp-kafka:")
+        kafkaContainer = new ConfluentKafkaContainer(getDockerImageName(KafkaCosmosTestConfigurations.ACR_NAME + "/cp-kafka:")
             .asCompatibleSubstituteFor("confluentinc/cp-kafka:" + KafkaCosmosTestConfigurations.CONFLUENT_VERSION))
             .withNetwork(network)
             .withNetworkAliases("broker")
+            .withListener("broker:19092")
             .withStartupTimeout(DEFAULT_CONTAINER_START_UP_TIMEOUT)
             .withLogConsumer(new Slf4jLogConsumer(logger));
 

@@ -21,6 +21,8 @@
 
 ### Other Changes
 
+- Updated the shared Jackson dependencies to `2.18.12`, including security fixes for CVE-2026-54516 and CVE-2026-110879.
+
 - Added an internal `Context` key, `azure-stream-response-body`, that lets a client library opt in to the
   asynchronous `RestProxy` streaming a `BinaryData` response body as it's consumed instead of buffering it, matching
   the synchronous `RestProxy`. For such calls, the HTTP tracing span ends when the body has been consumed, fails, or

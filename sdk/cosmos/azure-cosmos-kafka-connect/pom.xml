@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure.cosmos.kafka</groupId>
   <artifactId>azure-cosmos-kafka-connect</artifactId>
-  <version>2.13.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.kafka:azure-cosmos-kafka-connect;current} -->
+  <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.kafka:azure-cosmos-kafka-connect;current} -->
   <name>Apache Kafka Connect connector for Azure Cosmos DB</name>
   <description>This Package contains an Apache Kafka Connect source and sink connector for Azure Cosmos DB</description>
   <packaging>jar</packaging>
@@ -69,10 +69,31 @@ Licensed under the MIT License.
   </properties>
 
   <dependencies>
+    <!-- Prevent test dependencies from overriding the shared SDK Jackson version. -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.18.12</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.18.12</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.18.12</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+      <version>2.18.12</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+    </dependency>
     <dependency>
       <groupId>org.apache.kafka</groupId>
       <artifactId>connect-api</artifactId>
-      <version>3.6.0</version> <!-- {x-version-update;cosmos_org.apache.kafka:connect-api;external_dependency} -->
+      <version>4.2.2</version> <!-- {x-version-update;cosmos_org.apache.kafka:connect-api;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -135,14 +156,27 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.apache.kafka</groupId>
       <artifactId>connect-runtime</artifactId>
-      <version>3.6.0</version> <!-- {x-version-update;cosmos_org.apache.kafka:connect-runtime;external_dependency} -->
+      <version>4.2.2</version> <!-- {x-version-update;cosmos_org.apache.kafka:connect-runtime;external_dependency} -->
       <scope>test</scope>
       <exclusions>
+        <!-- The REST server runs in the worker container, not the test JVM. -->
         <exclusion>
-          <artifactId>jackson-jaxrs-json-provider</artifactId>
-          <groupId>com.fasterxml.jackson.jaxrs</groupId>
+          <groupId>com.fasterxml.jackson.jakarta.rs</groupId>
+          <artifactId>jackson-jakarta-rs-json-provider</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-blackbird</artifactId>
+      <version>2.18.12</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-blackbird;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jdk8</artifactId>
+      <version>2.18.12</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -173,21 +207,21 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.25.3</version> <!-- {x-version-update;cosmos_org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
+      <version>2.25.5</version> <!-- {x-version-update;cosmos_org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.25.3</version> <!-- {x-version-update;cosmos_org.apache.logging.log4j:log4j-api;external_dependency} -->
+      <version>2.25.5</version> <!-- {x-version-update;cosmos_org.apache.logging.log4j:log4j-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.25.3</version> <!-- {x-version-update;cosmos_org.apache.logging.log4j:log4j-core;external_dependency} -->
+      <version>2.25.5</version> <!-- {x-version-update;cosmos_org.apache.logging.log4j:log4j-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -239,6 +273,55 @@ Licensed under the MIT License.
 
   <build>
     <plugins>
+      <!-- Kafka Connect 4 requires Java 17, including module-info and test compilation. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.15.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <configuration>
+              <release>17</release>
+            </configuration>
+          </execution>
+          <execution>
+            <id>base-modules-compile</id>
+            <configuration>
+              <release>17</release>
+            </configuration>
+          </execution>
+          <execution>
+            <id>base-compile</id>
+            <configuration combine.self="override">
+              <release>17</release>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-testCompile</id>
+            <configuration>
+              <release>17</release>
+              <testRelease>17</testRelease>
+            </configuration>
+          </execution>
+          <execution>
+            <id>base-testCompile</id>
+            <configuration>
+              <release>17</release>
+              <testRelease>17</testRelease>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- Connect workers load the shaded connector on the classpath, not the module path. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.5.6</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+        <configuration>
+          <useModulePath>false</useModulePath>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -285,16 +368,26 @@ Licensed under the MIT License.
         <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
+            <requireJavaVersion>
+              <version>[17,)</version>
+              <message>Azure Cosmos DB Kafka Connector 3.x requires Java 17 or newer.</message>
+            </requireJavaVersion>
             <bannedDependencies>
               <includes>
                 <include>com.azure:*</include>
-                <include>org.apache.kafka:connect-api:[3.6.0]</include> <!-- {x-include-update;cosmos_org.apache.kafka:connect-api;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.18.12]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[2.18.12]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.18.12]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.18.12]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-blackbird:[2.18.12]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-blackbird;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jdk8:[2.18.12]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
+                <include>org.apache.kafka:connect-api:[4.2.2]</include> <!-- {x-include-update;cosmos_org.apache.kafka:connect-api;external_dependency} -->
                 <include>com.jayway.jsonpath:json-path:[2.9.0]</include> <!-- {x-include-update;cosmos_com.jayway.jsonpath:json-path;external_dependency} -->
                 <include>org.sourcelab:kafka-connect-client:[4.0.4]</include> <!-- {x-include-update;cosmos_org.sourcelab:kafka-connect-client;external_dependency} -->
                 <include>org.apache.maven.plugins:maven-antrun-plugin:[3.2.0]</include> <!-- {x-include-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
-                <include>org.apache.logging.log4j:log4j-api:[2.25.3]</include> <!-- {x-include-update;cosmos_org.apache.logging.log4j:log4j-api;external_dependency} -->
-                <include>org.apache.logging.log4j:log4j-core:[2.25.3]</include> <!-- {x-include-update;cosmos_org.apache.logging.log4j:log4j-core;external_dependency} -->
-                <include>org.apache.logging.log4j:log4j-slf4j-impl:[2.25.3]</include> <!-- {x-include-update;cosmos_org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
+                <include>org.apache.logging.log4j:log4j-api:[2.25.5]</include> <!-- {x-include-update;cosmos_org.apache.logging.log4j:log4j-api;external_dependency} -->
+                <include>org.apache.logging.log4j:log4j-core:[2.25.5]</include> <!-- {x-include-update;cosmos_org.apache.logging.log4j:log4j-core;external_dependency} -->
+                <include>org.apache.logging.log4j:log4j-slf4j-impl:[2.25.5]</include> <!-- {x-include-update;cosmos_org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -303,6 +396,16 @@ Licensed under the MIT License.
     </plugins>
   </build>
   <profiles>
+    <!-- Shared SDK CI runs test-only goals on older JDKs; Kafka 4 tests require Java 17. -->
+    <profile>
+      <id>skip-kafka-tests-before-java17</id>
+      <activation>
+        <jdk>(,17)</jdk>
+      </activation>
+      <properties>
+        <maven.test.skip>true</maven.test.skip>
+      </properties>
+    </profile>
     <profile>
       <id>build-kafka</id>
       <activation>

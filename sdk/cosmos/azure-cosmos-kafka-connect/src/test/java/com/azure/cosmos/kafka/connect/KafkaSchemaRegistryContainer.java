@@ -6,7 +6,7 @@ package com.azure.cosmos.kafka.connect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.kafka.ConfluentKafkaContainer;
 import org.testcontainers.utility.DockerImageName;
 
 /**
@@ -28,10 +28,10 @@ public class KafkaSchemaRegistryContainer extends GenericContainer<KafkaSchemaRe
         withExposedPorts(KAFKA_SCHEMA_REGISTRY_PORT);
     }
 
-    public KafkaSchemaRegistryContainer withLocalKafkaContainer(final KafkaContainer kafkaContainer) {
+    public KafkaSchemaRegistryContainer withLocalKafkaContainer(final ConfluentKafkaContainer kafkaContainer) {
         withNetwork(kafkaContainer.getNetwork());
 
-        withEnv("SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS", "PLAINTEXT://" + kafkaContainer.getNetworkAliases().get(0) + ":9092");
+        withEnv("SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS", "PLAINTEXT://broker:19092");
         return self();
     }
 

@@ -11,17 +11,17 @@ The connector polls data from Kafka to write to container(s) in the database bas
 - [Single Message Transforms (SMTs)](#single-message-transforms)
 - [Troubleshooting common issues](#troubleshooting-common-issues)
 - [Limitations](#limitations)
+- [Migrating from 2.x](migration-2-to-3.md)
 
 ## Quickstart
 
 ### Prerequisites
 
-- It is recommended to start with the Confluent Platform (recommended to use this [setup](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/docs/Confluent_Platform_Setup.md) as this gives you a complete environment to work with. 
-  - If you do not wish to use Confluent Platform, then you need to install and configure Zookeper, Apache Kafka, Kafka Connect, yourself. You will also need to install and configure the  Cosmos DB connectors manually.
-- Cosmos DB Instance ([setup guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/docs/CosmosDB_Setup.md)
+- Start with the three-service [Confluent Platform 8.2.5 demo](Confluent_Platform_Setup.md), or install a compatible Kafka Connect 4.2.2 worker and configure its Kafka broker access and connector plugins yourself.
+- Cosmos DB instance ([setup guide](CosmosDB_Setup.md)).
 - Bash shell
   - Will not work in Cloud Shell or WSL1
-- Java 11+ ([download](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html))
+- Java 17+; Java 21 is recommended ([download](https://learn.microsoft.com/java/azure/jdk/)).
 - Maven ([download](https://maven.apache.org/download.cgi))
 
 ### Install sink connector
@@ -33,45 +33,30 @@ Otherwise, you can download the JAR file from the latest [Release](https://mvnre
 You can also package a new JAR file from the source code.
 
 ```bash
-# clone the azure-cosmos repo if you haven't done so already
+# clone the repository if you haven't done so already
 git clone https://github.com/Azure/azure-sdk-for-java.git
-cd sdk/cosmos
+cd azure-sdk-for-java
+mvn -f sdk/cosmos/azure-cosmos-kafka-connect/pom.xml -Pbuild-kafka clean package -DskipTests=true
 
-mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos,azure-cosmos-tests -am clean install
-mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos-kafka-connect clean install
-
-# include the following JAR file in Kafka Connect installation
-ls target/azure-cosmos-kafka-connect-*.jar
+# install only the shaded connector JAR, not sources, javadoc, or original-* JARs
+ls sdk/cosmos/azure-cosmos-kafka-connect/target/azure-cosmos-kafka-connect-3*.jar
 ```
 
 ### Create Kafka topic and write data
 
-If you are using the Confluent Platform, the easiest way to create a Kafka topic is by using the supplied Control Center UX. 
-Otherwise, you can create a Kafka topic manually using the following syntax:
+For this quickstart, create a Kafka topic named `hotels` for JSON data (without an embedded schema). Run from the demo's `src/docker` directory:
 
 ```bash
-./kafka-topics.sh --create --zookeeper <ZOOKEEPER_URL:PORT> --replication-factor <NO_OF_REPLICATIONS> --partitions <NO_OF_PARTITIONS> --topic <TOPIC_NAME>
+docker compose exec -T broker kafka-topics --bootstrap-server broker:29092 --create --if-not-exists --replication-factor 1 --partitions 1 --topic hotels
 ```
 
-For this quickstart, we will create a Kafka topic named `hotels` and will write JSON data (non-schema embedded) to the topic.
+Next, start the console producer and write a few records:
 
-To create a topic inside Control Center, see [here](https://docs.confluent.io/platform/current/quickstart/ce-docker-quickstart.html#step-2-create-ak-topics).
-
-Next, start the Kafka console producer to write a few records to the `hotels` topic.
-
-```powershell
-
-# Option 1: If using Codespaces, use the built-in CLI utility
-kafka-console-producer --broker-list localhost:9092 --topic hotels
-
-# Option 2: Using this repo's Confluent Platform setup, first exec into the broker container
-docker exec -it broker /bin/bash
-kafka-console-producer --broker-list localhost:9092 --topic hotels
-
-# Option 3: Using your Confluent Platform setup and CLI install
-<path-to-confluent>/bin/kafka-console-producer --broker-list <kafka broker hostname> --topic hotels
-
+```bash
+docker compose exec broker kafka-console-producer --bootstrap-server broker:29092 --topic hotels
 ```
+
+For another cluster, use its Kafka CLI with `--bootstrap-server` and the appropriate client authentication configuration.
 
 In the console producer, enter:
 
@@ -109,7 +94,7 @@ Refer to the [sink properties](#sink-configuration-properties) section for more 
     "key.converter.schemas.enable": "false",
     "azure.cosmos.account.endpoint":"{endpoint}",
     "azure.cosmos.account.key":"{masterKey}",
-    "azure.cosmos.applicationName": "{applicationName}",
+    "azure.cosmos.application.name": "{applicationName}",
     "azure.cosmos.sink.database.name":"{databaseName}",
     "azure.cosmos.sink.containers.topicMap":"{topic}#{container}"
   }
@@ -119,16 +104,6 @@ Refer to the [sink properties](#sink-configuration-properties) section for more 
 
 Once you have all the values filled out, save the JSON file somewhere locally. You can use this file to create the connector using the REST API.
 
-#### Create connector using Control Center
-
-An easy option to create the connector is by going through the Control Center webpage.
-
-Follow this [guide](https://docs.confluent.io/platform/current/quickstart/ce-docker-quickstart.html#step-3-install-a-ak-connector-and-generate-sample-data) to create a connector from Control Center but instead of using the `DatagenConnector` option, use the `CosmosSinkConnector` tile instead. When configuring the sink connector, fill out the values as you have filled in the JSON file.
-
-Alternatively, in the connectors page, you can upload the JSON file from earlier by using the `Upload connector config file` option.
-
-![Upload connector config](images/upload-connector-config.png "Upload connector config")
-
 #### Create connector using REST API
 
 Create the sink connector using the Connect REST API
@@ -136,9 +111,12 @@ Create the sink connector using the Connect REST API
 ```bash
 
 # Curl to Kafka connect service
-curl -H "Content-Type: application/json" -X POST -d @<path-to-JSON-config-file> http://localhost:8083/connectors
+curl --fail --silent --show-error -H "Content-Type: application/json" -X POST --data-binary @sink.json http://localhost:8083/connectors
+curl --fail --silent --show-error http://localhost:8083/connectors/cosmosdb-sink-connector-v2/status
 
 ```
+
+Save the completed JSON body above as `sink.json` (protect the account key). Confirm both the connector and its tasks are RUNNING. The `-v2` name is retained for continuity and does not select connector 2.x; for an existing deployment follow the [migration guide](migration-2-to-3.md) rather than creating another connector.
 
 ### Confirm data written to Cosmos DB
 
@@ -150,15 +128,11 @@ Navigate to your Cosmos DB instance on Azure portal You should see something lik
 
 ### Cleanup
 
-To delete the connector from the Control Center, navigate to the sink connector you created and click the `Delete` icon.
-
-![Delete connector](images/delete-connector.png "Delete connector")
-
-Alternatively, use the Connect REST API.
+Delete only the connector created for this quickstart using the Connect REST API. This is demo cleanup, not an upgrade step.
 
 ```bash
 # Curl to Kafka connect service
-curl -X DELETE http://localhost:8083/connectors/cosmosdb-sink-connector
+curl --fail --silent --show-error -X DELETE http://localhost:8083/connectors/cosmosdb-sink-connector-v2
 ```
 
 To delete the created Azure Cosmos DB service and its resource group using Azure CLI, refer to these [steps](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/docs/CosmosDB_Setup.md#cleanup).
@@ -213,21 +187,22 @@ Note: Using UUIDs as the message ID can be quick and easy but are [not an ideal 
 
 #### Install the SMT
 
-Before you can use the `InsertUUID` SMT, you will need to install this transform in your Confluent Platform setup. If you are using the Confluent Platform setup from this repo, the transform is already included in the installation and you can skip this step.
+Before you can use the `InsertUUID` SMT, you will need to install this transform in your Confluent Platform setup. The repo's [startup scripts](Confluent_Platform_Setup.md#startup) build and install a pinned revision against Connect 4.2.2. Task startup and an end-to-end record, not just connector discovery, verify the transform works.
 
 Alternatively, you can package the [InsertUUID source](https://github.com/confluentinc/kafka-connect-insert-uuid) to create a new JAR file. To install the connector manually using the JAR file, refer to these [instructions](https://docs.confluent.io/current/connect/managing/install.html#install-connector-manually).
 
 ```bash
 
 # clone the kafka-connect-insert-uuid repo
-https://github.com/confluentinc/kafka-connect-insert-uuid.git
+git clone https://github.com/confluentinc/kafka-connect-insert-uuid.git
 cd kafka-connect-insert-uuid
+git checkout --detach ea0986d8e3ae33f0889c5aafdb7e75cd224b1ecc
 
 # package the source code into a JAR file
-mvn clean package
+mvn clean package -Dkafkaconnect.version=4.2.2
 
 # include the following JAR file in Confluent Platform installation
-ls target/*.jar
+ls target/InsertUuid-*.jar
 
 ```
 

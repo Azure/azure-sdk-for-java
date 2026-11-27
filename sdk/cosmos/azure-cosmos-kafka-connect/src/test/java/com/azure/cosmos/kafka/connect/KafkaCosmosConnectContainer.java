@@ -10,19 +10,23 @@ import org.apache.kafka.common.errors.TopicExistsException;
 import org.apache.kafka.common.errors.UnknownTopicOrPartitionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sourcelab.kafka.connect.apiclient.Configuration;
-import org.sourcelab.kafka.connect.apiclient.KafkaConnectClient;
-import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
-import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
-import org.sourcelab.kafka.connect.apiclient.rest.exceptions.InvalidRequestException;
-import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ResourceNotFoundException;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.kafka.ConfluentKafkaContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
 import java.time.Duration;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
@@ -38,6 +42,12 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
     private static final Duration KAFKA_CONNECT_REST_OPERATION_TIMEOUT = Duration.ofMinutes(2);
     private static final Duration KAFKA_CONNECT_REST_RETRY_DELAY = Duration.ofMillis(500);
     private static final int KAFKA_ADMIN_OPERATION_TIMEOUT_IN_SECONDS = 30;
+    private static final ObjectMapper REST_MAPPER = new ObjectMapper()
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+    private final HttpClient restClient = HttpClient.newBuilder()
+        .connectTimeout(Duration.ofSeconds(30))
+        .build();
     private Properties producerProperties;
     private Properties consumerProperties;
     private AdminClient adminClient;
@@ -145,10 +155,10 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
         return self();
     }
 
-    public KafkaCosmosConnectContainer withLocalKafkaContainer(final KafkaContainer kafkaContainer) {
+    public KafkaCosmosConnectContainer withLocalKafkaContainer(final ConfluentKafkaContainer kafkaContainer) {
         withNetwork(kafkaContainer.getNetwork());
 
-        withEnv("CONNECT_BOOTSTRAP_SERVERS", kafkaContainer.getNetworkAliases().get(0) + ":9092");
+        withEnv("CONNECT_BOOTSTRAP_SERVERS", "broker:19092");
         this.consumerProperties.put("bootstrap.servers", kafkaContainer.getBootstrapServers());
         this.producerProperties.put("bootstrap.servers", kafkaContainer.getBootstrapServers());
 
@@ -170,63 +180,75 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
     }
 
     public void registerConnector(String name, Map<String, String> config) {
-        NewConnectorDefinition newConnectorDefinition = new NewConnectorDefinition(name, config);
-        KafkaConnectClient kafkaConnectClient = new KafkaConnectClient(new Configuration(getTarget()));
-
         logger.info("adding kafka connector {}", name);
-        ConnectorDefinition connectorDefinition = executeWithKafkaConnectRestRetry(
+        executeWithKafkaConnectRestRetry(
             "adding kafka connector " + name,
-            () -> kafkaConnectClient.addConnector(newConnectorDefinition));
-        logger.info("adding kafka connector completed with " + connectorDefinition);
+            () -> sendConnectRequest("POST", "/connectors", Map.of("name", name, "config", config)));
+        logger.info("adding kafka connector {} completed", name);
     }
 
     public void deleteConnector(String name) {
-        KafkaConnectClient kafkaConnectClient = new KafkaConnectClient(new Configuration(getTarget()));
         try {
-            kafkaConnectClient.deleteConnector(name);
+            sendConnectRequest("DELETE", connectorPath(name), null);
             logger.info("Deleting connector {} succeeded.", name);
-        } catch (Exception exception) {
-            if (exception instanceof ResourceNotFoundException) {
-                logger.info("Connector {} not found");
+        } catch (ConnectRestException exception) {
+            if (exception.statusCode == 404) {
+                logger.info("Connector {} not found", name);
+                return;
             }
-
-            logger.warn("Failed to delete connector {}", name);
+            throw exception;
         }
     }
 
     public void pauseConnector(String name) {
-        KafkaConnectClient kafkaConnectClient = new KafkaConnectClient(new Configuration(getTarget()));
-        try {
-            kafkaConnectClient.pauseConnector(name);
-            logger.info("Pause connector {} succeeded.", name);
-        } catch (Exception exception) {
-            if (exception instanceof ResourceNotFoundException) {
-                logger.info("Connector {} not found");
-            }
-
-            logger.warn("Failed to pause connector {}", name);
-        }
+        sendConnectRequest("PUT", connectorPath(name) + "/pause", null);
+        logger.info("Pause connector {} succeeded.", name);
     }
 
     public void resumeConnector(String name) {
-        KafkaConnectClient kafkaConnectClient = new KafkaConnectClient(new Configuration(getTarget()));
-        try {
-            kafkaConnectClient.resumeConnector(name);
-            logger.info("Resume connector {} succeeded.", name);
-        } catch (Exception exception) {
-            if (exception instanceof ResourceNotFoundException) {
-                logger.info("Connector {} not found");
-            }
-
-            logger.warn("Failed to Resume connector {}", name);
-        }
+        sendConnectRequest("PUT", connectorPath(name) + "/resume", null);
+        logger.info("Resume connector {} succeeded.", name);
     }
 
     public ConnectorStatus getConnectorStatus(String name) {
-        KafkaConnectClient kafkaConnectClient = new KafkaConnectClient(new Configuration(getTarget()));
         return executeWithKafkaConnectRestRetry(
             "getting kafka connector status " + name,
-            () -> kafkaConnectClient.getConnectorStatus(name));
+            () -> REST_MAPPER.readValue(
+                sendConnectRequest("GET", connectorPath(name) + "/status", null), ConnectorStatus.class));
+    }
+
+    private static String connectorPath(String name) {
+        return "/connectors/" + URLEncoder.encode(name, StandardCharsets.UTF_8).replace("+", "%20");
+    }
+
+    private String sendConnectRequest(String method, String path, Object body) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder(URI.create(getTarget() + path))
+                .timeout(Duration.ofSeconds(30))
+                .header("Content-Type", "application/json")
+                .method(method, body == null ? HttpRequest.BodyPublishers.noBody()
+                    : HttpRequest.BodyPublishers.ofString(REST_MAPPER.writeValueAsString(body)))
+                .build();
+            HttpResponse<String> response = restClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() < 200 || response.statusCode() >= 300) {
+                throw new ConnectRestException(method, path, response.statusCode());
+            }
+            return response.body();
+        } catch (InterruptedException exception) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted during Kafka Connect REST " + method + " " + path, exception);
+        } catch (IOException exception) {
+            throw new RuntimeException("Failed during Kafka Connect REST " + method + " " + path, exception);
+        }
+    }
+
+    private static final class ConnectRestException extends RuntimeException {
+        private final int statusCode;
+
+        private ConnectRestException(String method, String path, int statusCode) {
+            super("Kafka Connect REST " + method + " " + path + " returned HTTP " + statusCode);
+            this.statusCode = statusCode;
+        }
     }
 
     public String getTarget() {
@@ -291,14 +313,14 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
     private <T> T executeWithKafkaConnectRestRetry(String operationName, Callable<T> operation) {
         long deadlineNanos = System.nanoTime() + KAFKA_CONNECT_REST_OPERATION_TIMEOUT.toNanos();
         int attempts = 0;
-        InvalidRequestException lastException = null;
+        ConnectRestException lastException = null;
 
         while (System.nanoTime() < deadlineNanos) {
             attempts++;
             try {
                 return operation.call();
-            } catch (InvalidRequestException exception) {
-                if (!isTransientKafkaConnectRestNotFound(exception)) {
+            } catch (ConnectRestException exception) {
+                if (exception.statusCode != 404) {
                     throw exception;
                 }
 
@@ -319,10 +341,6 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
             "Timed out after " + KAFKA_CONNECT_REST_OPERATION_TIMEOUT.getSeconds()
                 + " seconds while " + operationName,
             lastException);
-    }
-
-    private static boolean isTransientKafkaConnectRestNotFound(InvalidRequestException exception) {
-        return exception.getErrorCode() == 404;
     }
 
     private static void sleepBeforeKafkaConnectRestRetry(String operationName) {

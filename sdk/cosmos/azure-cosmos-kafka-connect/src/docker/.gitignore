@@ -1,4 +1,5 @@
 connectors/
+insert-uuid-build/
 log.txt
 
 # Exclude all temporary files in resources
