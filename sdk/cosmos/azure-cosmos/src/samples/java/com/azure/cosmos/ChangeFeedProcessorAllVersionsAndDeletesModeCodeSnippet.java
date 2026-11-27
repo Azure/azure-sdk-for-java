@@ -4,11 +4,57 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
+import com.azure.cosmos.models.CosmosChangeFeedPreviousImageRetentionMode;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import reactor.core.publisher.Mono;
 
 /**
  * Code snippets for AllVersionsAndDeletesChangeFeedProcessor
  */
 public class ChangeFeedProcessorAllVersionsAndDeletesModeCodeSnippet {
+
+    public Mono<CosmosContainerResponse> createContainerWithPreviousImages(CosmosAsyncDatabase database) {
+        // BEGIN: readme-sample-createContainerWithPreviousImages
+        CosmosContainerProperties properties = new CosmosContainerProperties("feedContainer", "/pk")
+            .setChangeFeedPreviousImageRetentionMode(
+                CosmosChangeFeedPreviousImageRetentionMode.ENABLED_FOR_ALL_OPERATIONS);
+        Mono<CosmosContainerResponse> createResponse = database.createContainer(properties);
+        // END: readme-sample-createContainerWithPreviousImages
+        return createResponse;
+    }
+
+    public Mono<CosmosContainerResponse> updatePreviousImageRetention(CosmosAsyncContainer feedContainer) {
+        // BEGIN: readme-sample-updatePreviousImageRetention
+        Mono<CosmosContainerResponse> replaceResponse = feedContainer.read()
+            .flatMap(response -> {
+                CosmosContainerProperties properties = response.getProperties();
+                properties.setChangeFeedPreviousImageRetentionMode(
+                    CosmosChangeFeedPreviousImageRetentionMode.ENABLED_FOR_REPLACE_OPERATIONS);
+                return feedContainer.replace(properties);
+            });
+        // END: readme-sample-updatePreviousImageRetention
+        return replaceResponse;
+    }
+
+    public ChangeFeedProcessor processPreviousImages(CosmosAsyncContainer feedContainer, CosmosAsyncContainer leaseContainer) {
+        // BEGIN: readme-sample-processPreviousImages
+        ChangeFeedProcessor processor = new ChangeFeedProcessorBuilder()
+            .hostName("previous-images-host")
+            .feedContainer(feedContainer)
+            .leaseContainer(leaseContainer)
+            .handleAllVersionsAndDeletesChanges(items -> {
+                for (ChangeFeedProcessorItem item : items) {
+                    if (item.getPrevious() != null) {
+                        // Process the captured previous item alongside the operation metadata.
+                        System.out.println(item.getChangeFeedMetaData().getOperationType() + ": " + item.getPrevious());
+                    }
+                }
+            })
+            .buildChangeFeedProcessor();
+        // END: readme-sample-processPreviousImages
+        return processor;
+    }
 
     public void changeFeedProcessorBuilderCodeSnippet() {
         String hostName = "test-host-name";
@@ -114,4 +160,3 @@ public class ChangeFeedProcessorAllVersionsAndDeletesModeCodeSnippet {
             .buildChangeFeedProcessor();
     }
 }
-

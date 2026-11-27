@@ -176,6 +176,52 @@ public final class CosmosContainerProperties {
         return this;
     }
 
+    /**
+     * Gets the previous image retention mode configured for this container's all versions and deletes change feed.
+     * This is not the effective capture setting: other features or account-level configuration can also enable capture.
+     * Reading this property does not add a retention policy to the container.
+     *
+     * @return the configured mode, or {@code null} if this feature's mode is not specified.
+     * @throws IllegalStateException if the configured mode is not supported by this SDK version.
+     */
+    @Beta(value = Beta.SinceVersion.V4_84_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosChangeFeedPreviousImageRetentionMode getChangeFeedPreviousImageRetentionMode() {
+        Integer mode = this.documentCollection.getChangeFeedPreviousImageRetentionMode();
+        return mode == null ? null : CosmosChangeFeedPreviousImageRetentionMode.fromValue(mode);
+    }
+
+    /**
+     * Sets the previous image retention mode for this container's all versions and deletes change feed.
+     * The mode can be specified when creating a container or changed by replacing an existing container's properties.
+     * Other retention policy settings returned by the service are preserved.
+     * <p>
+     * Replace operations include patch operations and upserts that update an existing item. Creating an item has
+     * no previous image. When no path selection is already configured, the service retains the full previous item.
+     * Enabling capture can increase write and storage costs and does not retroactively capture earlier images.
+     * <p>
+     * This setting does not enable continuous backup or the all versions and deletes change feed. The account must
+     * already support that change feed mode and container-level previous image retention. Captured images are read
+     * using the existing change feed APIs, including {@link ChangeFeedProcessorItem#getPrevious()}.
+     * <p>
+     * {@link CosmosChangeFeedPreviousImageRetentionMode#DISABLED} withdraws this feature's request for capture; it
+     * does not disable capture enabled by other features or account-level configuration. Leaving the entire retention
+     * policy unspecified when replacing a container preserves the service's existing policy. To change this feature's
+     * contribution, specify a mode explicitly rather than omitting the policy.
+     *
+     * @param mode the previous image retention mode; must not be {@code null}.
+     * @return the CosmosContainerProperties.
+     * @throws IllegalArgumentException if {@code mode} is {@code null}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_84_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosContainerProperties setChangeFeedPreviousImageRetentionMode(
+        CosmosChangeFeedPreviousImageRetentionMode mode) {
+        if (mode == null) {
+            throw new IllegalArgumentException("changeFeedPreviousImageRetentionMode cannot be null.");
+        }
+        this.documentCollection.setChangeFeedPreviousImageRetentionMode(mode.getValue());
+        return this;
+    }
+
 
     /**
      * Gets the computedProperties for this container in the Azure Cosmos DB service.
