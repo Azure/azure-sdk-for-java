@@ -102,6 +102,7 @@
     <module>sdk/deviceupdate</module>
     <module>sdk/devopsinfrastructure</module>
     <module>sdk/devtestlabs</module>
+    <module>sdk/digitalassets</module>
     <module>sdk/digitaltwins</module>
     <module>sdk/disconnectedoperations</module>
     <module>sdk/discovery</module>
