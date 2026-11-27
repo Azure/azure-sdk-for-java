@@ -12,17 +12,17 @@ public final class SchemaRegistryClusterSpecEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryClusterSpecEntity model = BinaryData.fromString(
-            "{\"name\":\"pvgqzcjrvxdjzlm\",\"httpEndpoint\":\"xkvugfhzov\",\"package\":\"jvzunluthnnp\",\"region\":{\"id\":\"i\",\"related\":\"ilpjzuaejxdult\",\"resourceName\":\"zbbtdzumveek\"},\"environment\":{\"id\":\"ozuhkfp\",\"related\":\"jyofdxluusdtto\",\"resourceName\":\"aboekqv\"},\"cloud\":\"lns\"}")
+            "{\"name\":\"iexpbtgiwbwo\",\"httpEndpoint\":\"washr\",\"package\":\"tkcnqxwb\",\"region\":{\"id\":\"ulpiuj\",\"related\":\"asipqiio\",\"resourceName\":\"uqerpqlpqwc\"},\"environment\":{\"id\":\"qgbdbuta\",\"related\":\"fbtkuwhhmhyk\",\"resourceName\":\"oxafn\"},\"cloud\":\"lpichk\"}")
             .toObject(SchemaRegistryClusterSpecEntity.class);
-        Assertions.assertEquals("pvgqzcjrvxdjzlm", model.name());
-        Assertions.assertEquals("xkvugfhzov", model.httpEndpoint());
-        Assertions.assertEquals("jvzunluthnnp", model.packageProperty());
-        Assertions.assertEquals("i", model.region().id());
-        Assertions.assertEquals("ilpjzuaejxdult", model.region().related());
-        Assertions.assertEquals("zbbtdzumveek", model.region().resourceName());
-        Assertions.assertEquals("ozuhkfp", model.environment().id());
-        Assertions.assertEquals("jyofdxluusdtto", model.environment().related());
-        Assertions.assertEquals("aboekqv", model.environment().resourceName());
-        Assertions.assertEquals("lns", model.cloud());
+        Assertions.assertEquals("iexpbtgiwbwo", model.name());
+        Assertions.assertEquals("washr", model.httpEndpoint());
+        Assertions.assertEquals("tkcnqxwb", model.packageProperty());
+        Assertions.assertEquals("ulpiuj", model.region().id());
+        Assertions.assertEquals("asipqiio", model.region().related());
+        Assertions.assertEquals("uqerpqlpqwc", model.region().resourceName());
+        Assertions.assertEquals("qgbdbuta", model.environment().id());
+        Assertions.assertEquals("fbtkuwhhmhyk", model.environment().related());
+        Assertions.assertEquals("oxafn", model.environment().resourceName());
+        Assertions.assertEquals("lpichk", model.cloud());
     }
 }

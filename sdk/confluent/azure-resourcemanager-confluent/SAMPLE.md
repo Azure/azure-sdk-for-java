@@ -43,6 +43,21 @@
 - [Create](#marketplaceagreements_create)
 - [List](#marketplaceagreements_list)
 
+## MonitorResources
+
+- [CreateOrUpdate](#monitorresources_createorupdate)
+- [Delete](#monitorresources_delete)
+- [Get](#monitorresources_get)
+- [ListByOrganization](#monitorresources_listbyorganization)
+- [Update](#monitorresources_update)
+
+## MonitorTagRules
+
+- [CreateOrUpdate](#monitortagrules_createorupdate)
+- [Delete](#monitortagrules_delete)
+- [Get](#monitortagrules_get)
+- [ListByMonitor](#monitortagrules_listbymonitor)
+
 ## NetworkGatewayResources
 
 - [CreateOrReplace](#networkgatewayresources_createorreplace)
@@ -97,7 +112,7 @@ import com.azure.resourcemanager.confluent.models.AccessCreateRoleBindingRequest
  */
 public final class AccessCreateRoleBindingSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_CreateRoleBinding_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_CreateRoleBinding_MinimumSet_Gen.json
      */
     /**
      * Sample code: Access_CreateRoleBinding_MinimumSet.
@@ -111,7 +126,7 @@ public final class AccessCreateRoleBindingSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_CreateRoleBinding_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_CreateRoleBinding_MaximumSet_Gen.json
      */
     /**
      * Sample code: Access_CreateRoleBinding_MaximumSet.
@@ -137,7 +152,7 @@ public final class AccessCreateRoleBindingSamples {
  */
 public final class AccessDeleteRoleBindingSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_DeleteRoleBinding_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_DeleteRoleBinding_MaximumSet_Gen.json
      */
     /**
      * Sample code: Access_DeleteRoleBinding_MaximumSet.
@@ -151,7 +166,7 @@ public final class AccessDeleteRoleBindingSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_DeleteRoleBinding_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_DeleteRoleBinding_MinimumSet_Gen.json
      */
     /**
      * Sample code: Access_DeleteRoleBinding_MinimumSet.
@@ -177,7 +192,7 @@ import com.azure.resourcemanager.confluent.models.AccessInvitedUserDetails;
  */
 public final class AccessInviteUserSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_InviteUser_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_InviteUser_MinimumSet_Gen.json
      */
     /**
      * Sample code: Access_InviteUser_MinimumSet.
@@ -191,7 +206,7 @@ public final class AccessInviteUserSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_InviteUser_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_InviteUser_MaximumSet_Gen.json
      */
     /**
      * Sample code: Access_InviteUser_MaximumSet.
@@ -224,7 +239,7 @@ import java.util.Map;
  */
 public final class AccessListClustersSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_ListClusters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_ListClusters_MaximumSet_Gen.json
      */
     /**
      * Sample code: Access_ListClusters_MaximumSet.
@@ -239,7 +254,7 @@ public final class AccessListClustersSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_ListClusters_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_ListClusters_MinimumSet_Gen.json
      */
     /**
      * Sample code: Access_ListClusters_MinimumSet.
@@ -278,7 +293,7 @@ import java.util.Map;
  */
 public final class AccessListEnvironmentsSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_ListEnvironments_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_ListEnvironments_MaximumSet_Gen.json
      */
     /**
      * Sample code: Access_ListEnvironments_MaximumSet.
@@ -293,7 +308,7 @@ public final class AccessListEnvironmentsSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_ListEnvironments_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_ListEnvironments_MinimumSet_Gen.json
      */
     /**
      * Sample code: Access_ListEnvironments_MinimumSet.
@@ -332,7 +347,7 @@ import java.util.Map;
  */
 public final class AccessListInvitationsSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_ListInvitations_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_ListInvitations_MaximumSet_Gen.json
      */
     /**
      * Sample code: Access_ListInvitations_MaximumSet.
@@ -347,7 +362,7 @@ public final class AccessListInvitationsSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_ListInvitations_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_ListInvitations_MinimumSet_Gen.json
      */
     /**
      * Sample code: Access_ListInvitations_MinimumSet.
@@ -386,7 +401,7 @@ import java.util.Map;
  */
 public final class AccessListRoleBindingNameListSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_ListRoleBindingNameList_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_ListRoleBindingNameList_MinimumSet_Gen.json
      */
     /**
      * Sample code: Access_ListRoleBindingNameList_MinimumSet.
@@ -401,7 +416,7 @@ public final class AccessListRoleBindingNameListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_ListRoleBindingNameList_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_ListRoleBindingNameList_MaximumSet_Gen.json
      */
     /**
      * Sample code: Access_ListRoleBindingNameList_MaximumSet.
@@ -442,7 +457,7 @@ import java.util.Map;
  */
 public final class AccessListRoleBindingsSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_ListRoleBindings_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_ListRoleBindings_MinimumSet_Gen.json
      */
     /**
      * Sample code: Access_ListRoleBindings_MinimumSet.
@@ -456,7 +471,7 @@ public final class AccessListRoleBindingsSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_ListRoleBindings_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_ListRoleBindings_MaximumSet_Gen.json
      */
     /**
      * Sample code: Access_ListRoleBindings_MaximumSet.
@@ -496,7 +511,7 @@ import java.util.Map;
  */
 public final class AccessListServiceAccountsSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_ListServiceAccounts_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_ListServiceAccounts_MinimumSet_Gen.json
      */
     /**
      * Sample code: Access_ListServiceAccounts_MinimumSet.
@@ -511,7 +526,7 @@ public final class AccessListServiceAccountsSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_ListServiceAccounts_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_ListServiceAccounts_MaximumSet_Gen.json
      */
     /**
      * Sample code: Access_ListServiceAccounts_MaximumSet.
@@ -552,7 +567,7 @@ import java.util.Map;
  */
 public final class AccessListUsersSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_ListUsers_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_ListUsers_MaximumSet_Gen.json
      */
     /**
      * Sample code: Access_ListUsers_MaximumSet.
@@ -567,7 +582,7 @@ public final class AccessListUsersSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Access_ListUsers_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Access_ListUsers_MinimumSet_Gen.json
      */
     /**
      * Sample code: Access_ListUsers_MinimumSet.
@@ -607,7 +622,7 @@ import java.util.Arrays;
  */
 public final class AccessPointResourcesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/AccessPointResources_CreateOrReplace_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/AccessPointResources_CreateOrReplace_MaximumSet_Gen.json
      */
     /**
      * Sample code: AccessPointResources_CreateOrReplace_MaximumSet.
@@ -641,7 +656,7 @@ public final class AccessPointResourcesCreateOrReplaceSamples {
  */
 public final class AccessPointResourcesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/AccessPointResources_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/AccessPointResources_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: AccessPointResources_Delete_MaximumSet.
@@ -665,7 +680,7 @@ public final class AccessPointResourcesDeleteSamples {
  */
 public final class AccessPointResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/AccessPointResources_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/AccessPointResources_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AccessPointResources_Get_MaximumSet.
@@ -688,7 +703,7 @@ public final class AccessPointResourcesGetSamples {
  */
 public final class AccessPointResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/AccessPointResources_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/AccessPointResources_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: AccessPointResources_List_MaximumSet.
@@ -719,7 +734,7 @@ import com.azure.resourcemanager.confluent.models.SCMetadataEntity;
  */
 public final class ClusterCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Cluster_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Cluster_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Cluster_CreateOrUpdate_MaximumSet.
@@ -771,7 +786,7 @@ public final class ClusterCreateOrUpdateSamples {
  */
 public final class ClusterDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Cluster_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Cluster_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: Cluster_Delete_MinimumSet.
@@ -785,7 +800,7 @@ public final class ClusterDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Cluster_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Cluster_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Cluster_Delete_MaximumSet.
@@ -815,7 +830,7 @@ import com.azure.resourcemanager.confluent.models.PartnerInfoBase;
  */
 public final class ConnectorCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Connector_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Connector_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Connector_CreateOrUpdate_MaximumSet.
@@ -846,7 +861,7 @@ public final class ConnectorCreateOrUpdateSamples {
  */
 public final class ConnectorDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Connector_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Connector_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: Connector_Delete_MinimumSet.
@@ -860,7 +875,7 @@ public final class ConnectorDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Connector_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Connector_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Connector_Delete_MaximumSet.
@@ -883,7 +898,7 @@ public final class ConnectorDeleteSamples {
  */
 public final class ConnectorGetSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Connector_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Connector_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Connector_Get_MaximumSet.
@@ -906,7 +921,7 @@ public final class ConnectorGetSamples {
  */
 public final class ConnectorListSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Connector_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Connector_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Connector_List_MaximumSet.
@@ -933,7 +948,7 @@ import com.azure.resourcemanager.confluent.models.StreamGovernanceConfig;
  */
 public final class EnvironmentCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Environment_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Environment_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Environment_CreateOrUpdate_MaximumSet.
@@ -965,7 +980,7 @@ public final class EnvironmentCreateOrUpdateSamples {
  */
 public final class EnvironmentDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Environment_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Environment_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Environment_Delete_MaximumSet.
@@ -979,7 +994,7 @@ public final class EnvironmentDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Environment_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Environment_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: Environment_Delete_MinimumSet.
@@ -1005,7 +1020,7 @@ import java.time.OffsetDateTime;
  */
 public final class MarketplaceAgreementsCreateSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/MarketplaceAgreements_Create_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/MarketplaceAgreements_Create_MinimumSet_Gen.json
      */
     /**
      * Sample code: Create Confluent Marketplace agreement in the subscription. (MinimumSet).
@@ -1018,7 +1033,7 @@ public final class MarketplaceAgreementsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/MarketplaceAgreements_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/MarketplaceAgreements_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: Create Confluent Marketplace agreement in the subscription. (Maximumset).
@@ -1048,7 +1063,7 @@ public final class MarketplaceAgreementsCreateSamples {
  */
 public final class MarketplaceAgreementsListSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/MarketplaceAgreements_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/MarketplaceAgreements_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: List Confluent marketplace agreements in the subscription. (Minimumset).
@@ -1061,7 +1076,7 @@ public final class MarketplaceAgreementsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/MarketplaceAgreements_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/MarketplaceAgreements_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: List Confluent marketplace agreements in the subscription. (Maximumset).
@@ -1071,6 +1086,291 @@ public final class MarketplaceAgreementsListSamples {
     public static void listConfluentMarketplaceAgreementsInTheSubscriptionMaximumset(
         com.azure.resourcemanager.confluent.ConfluentManager manager) {
         manager.marketplaceAgreements().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitorResources_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.confluent.models.KeyValuePair;
+import com.azure.resourcemanager.confluent.models.MonitorProperties;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for MonitorResources CreateOrUpdate.
+ */
+public final class MonitorResourcesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-10-21-preview/MonitorResources_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: MonitorResources_CreateOrUpdate_MaximumSet.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void
+        monitorResourcesCreateOrUpdateMaximumSet(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.monitorResources()
+            .define("productionLogs")
+            .withRegion("eastus")
+            .withExistingOrganization("rgconfluent", "myOrganization")
+            .withProperties(new MonitorProperties().withOrganizationId("org-xyz789")
+                .withEnvironmentId("env-abc123")
+                .withEnvironmentName("Production")
+                .withClusterId("lkc-def456")
+                .withClusterName("Production Cluster")
+                .withTopicId("topic-ghi789")
+                .withTopicName("azure-logs")
+                .withDictionary(Arrays.asList(new KeyValuePair().withKey("fakeTokenPlaceholder").withValue("azure"))))
+            .withTags(mapOf("environment", "production"))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### MonitorResources_Delete
+
+```java
+/**
+ * Samples for MonitorResources Delete.
+ */
+public final class MonitorResourcesDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-10-21-preview/MonitorResources_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: MonitorResources_Delete_MaximumSet.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void monitorResourcesDeleteMaximumSet(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.monitorResources()
+            .delete("rgconfluent", "myOrganization", "productionLogs", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitorResources_Get
+
+```java
+/**
+ * Samples for MonitorResources Get.
+ */
+public final class MonitorResourcesGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-21-preview/MonitorResources_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: MonitorResources_Get_MaximumSet.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void monitorResourcesGetMaximumSet(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.monitorResources()
+            .getWithResponse("rgconfluent", "myOrganization", "productionLogs", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitorResources_ListByOrganization
+
+```java
+/**
+ * Samples for MonitorResources ListByOrganization.
+ */
+public final class MonitorResourcesListByOrganizationSamples {
+    /*
+     * x-ms-original-file: 2026-10-21-preview/MonitorResources_ListByOrganization_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: MonitorResources_ListByOrganization_MaximumSet.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void
+        monitorResourcesListByOrganizationMaximumSet(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.monitorResources()
+            .listByOrganization("rgconfluent", "myOrganization", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitorResources_Update
+
+```java
+import com.azure.resourcemanager.confluent.models.MonitorResource;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for MonitorResources Update.
+ */
+public final class MonitorResourcesUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-10-21-preview/MonitorResources_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: MonitorResources_Update_MaximumSet.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void monitorResourcesUpdateMaximumSet(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        MonitorResource resource = manager.monitorResources()
+            .getWithResponse("rgconfluent", "myOrganization", "productionLogs", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("environment", "staging")).apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### MonitorTagRules_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.confluent.models.FilteringTag;
+import com.azure.resourcemanager.confluent.models.LogRules;
+import com.azure.resourcemanager.confluent.models.MonitorTagRuleProperties;
+import com.azure.resourcemanager.confluent.models.TagAction;
+import java.util.Arrays;
+
+/**
+ * Samples for MonitorTagRules CreateOrUpdate.
+ */
+public final class MonitorTagRulesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-10-21-preview/MonitorTagRules_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: MonitorTagRules_CreateOrUpdate_MaximumSet.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void
+        monitorTagRulesCreateOrUpdateMaximumSet(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.monitorTagRules()
+            .define("logRules")
+            .withExistingMonitor("rgconfluent", "myOrganization", "productionLogs")
+            .withProperties(new MonitorTagRuleProperties().withLogRules(new LogRules().withSendAadLogs(true)
+                .withSendSubscriptionLogs(true)
+                .withSendActivityLogs(true)
+                .withFilteringTags(Arrays.asList(
+                    new FilteringTag().withName("environment").withValue("production").withAction(TagAction.INCLUDE),
+                    new FilteringTag().withName("dataClassification")
+                        .withValue("restricted")
+                        .withAction(TagAction.EXCLUDE)))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-21-preview/MonitorTagRules_CreateOrUpdate_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: MonitorTagRules_CreateOrUpdate_MinimumSet.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void
+        monitorTagRulesCreateOrUpdateMinimumSet(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.monitorTagRules()
+            .define("logRules")
+            .withExistingMonitor("rgconfluent", "myOrganization", "productionLogs")
+            .withProperties(new MonitorTagRuleProperties())
+            .create();
+    }
+}
+```
+
+### MonitorTagRules_Delete
+
+```java
+/**
+ * Samples for MonitorTagRules Delete.
+ */
+public final class MonitorTagRulesDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-10-21-preview/MonitorTagRules_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: MonitorTagRules_Delete_MaximumSet.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void monitorTagRulesDeleteMaximumSet(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.monitorTagRules()
+            .deleteWithResponse("rgconfluent", "myOrganization", "productionLogs", "logRules",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitorTagRules_Get
+
+```java
+/**
+ * Samples for MonitorTagRules Get.
+ */
+public final class MonitorTagRulesGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-21-preview/MonitorTagRules_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: MonitorTagRules_Get_MaximumSet.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void monitorTagRulesGetMaximumSet(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.monitorTagRules()
+            .getWithResponse("rgconfluent", "myOrganization", "productionLogs", "logRules",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitorTagRules_ListByMonitor
+
+```java
+/**
+ * Samples for MonitorTagRules ListByMonitor.
+ */
+public final class MonitorTagRulesListByMonitorSamples {
+    /*
+     * x-ms-original-file: 2026-10-21-preview/MonitorTagRules_ListByMonitor_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: MonitorTagRules_ListByMonitor_MaximumSet.
+     * 
+     * @param manager Entry point to ConfluentManager.
+     */
+    public static void
+        monitorTagRulesListByMonitorMaximumSet(com.azure.resourcemanager.confluent.ConfluentManager manager) {
+        manager.monitorTagRules()
+            .listByMonitor("rgconfluent", "myOrganization", "productionLogs", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1087,7 +1387,7 @@ import java.util.Arrays;
  */
 public final class NetworkGatewayResourcesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/NetworkGatewayResources_CreateOrReplace_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/NetworkGatewayResources_CreateOrReplace_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkGatewayResources_CreateOrReplace_MaximumSet.
@@ -1116,7 +1416,7 @@ public final class NetworkGatewayResourcesCreateOrReplaceSamples {
  */
 public final class NetworkGatewayResourcesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/NetworkGatewayResources_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/NetworkGatewayResources_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkGatewayResources_Delete_MaximumSet.
@@ -1139,7 +1439,7 @@ public final class NetworkGatewayResourcesDeleteSamples {
  */
 public final class NetworkGatewayResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/NetworkGatewayResources_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/NetworkGatewayResources_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkGatewayResources_Get_MaximumSet.
@@ -1163,7 +1463,7 @@ public final class NetworkGatewayResourcesGetSamples {
  */
 public final class NetworkGatewayResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/NetworkGatewayResources_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/NetworkGatewayResources_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkGatewayResources_List_MaximumSet.
@@ -1188,7 +1488,7 @@ import com.azure.resourcemanager.confluent.models.ActivateSaaSParameterRequest;
  */
 public final class OrganizationActivateResourceSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_ActivateResource_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_ActivateResource_MinimumSet_Gen.json
      */
     /**
      * Sample code: Organization_ActivateResource_MinimumSet - generated by [MinimumSet] rule.
@@ -1203,7 +1503,7 @@ public final class OrganizationActivateResourceSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_ActivateResource_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_ActivateResource_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_ActivateResource_MaximumSet - generated by [MaximumSet] rule.
@@ -1234,7 +1534,7 @@ import java.util.Map;
  */
 public final class OrganizationCreateSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_Create_MaximumSet.
@@ -1290,7 +1590,7 @@ import com.azure.resourcemanager.confluent.models.CreateApiKeyModel;
  */
 public final class OrganizationCreateApiKeySamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_CreateAPIKey_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_CreateAPIKey_MinimumSet_Gen.json
      */
     /**
      * Sample code: Organization_CreateAPIKey_MinimumSet.
@@ -1305,7 +1605,7 @@ public final class OrganizationCreateApiKeySamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_CreateAPIKey_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_CreateAPIKey_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_CreateAPIKey_MaximumSet.
@@ -1330,7 +1630,7 @@ public final class OrganizationCreateApiKeySamples {
  */
 public final class OrganizationDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: Organization_Delete_MinimumSet.
@@ -1342,7 +1642,7 @@ public final class OrganizationDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_Delete_MaximumSet.
@@ -1363,7 +1663,7 @@ public final class OrganizationDeleteSamples {
  */
 public final class OrganizationDeleteClusterApiKeySamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_DeleteClusterAPIKey_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_DeleteClusterAPIKey_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_DeleteClusterAPIKey_MaximumSet.
@@ -1378,7 +1678,7 @@ public final class OrganizationDeleteClusterApiKeySamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_DeleteClusterAPIKey_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_DeleteClusterAPIKey_MinimumSet_Gen.json
      */
     /**
      * Sample code: Organization_DeleteClusterAPIKey_MinimumSet.
@@ -1402,7 +1702,7 @@ public final class OrganizationDeleteClusterApiKeySamples {
  */
 public final class OrganizationGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_Get_MaximumSet.
@@ -1424,7 +1724,7 @@ public final class OrganizationGetByResourceGroupSamples {
  */
 public final class OrganizationGetClusterApiKeySamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_GetClusterAPIKey_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_GetClusterAPIKey_MinimumSet_Gen.json
      */
     /**
      * Sample code: Organization_GetClusterAPIKey_MinimumSet.
@@ -1439,7 +1739,7 @@ public final class OrganizationGetClusterApiKeySamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_GetClusterAPIKey_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_GetClusterAPIKey_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_GetClusterAPIKey_MaximumSet.
@@ -1463,7 +1763,7 @@ public final class OrganizationGetClusterApiKeySamples {
  */
 public final class OrganizationGetClusterByIdSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_GetClusterById_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_GetClusterById_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_GetClusterById_MaximumSet.
@@ -1487,7 +1787,7 @@ public final class OrganizationGetClusterByIdSamples {
  */
 public final class OrganizationGetEnvironmentByIdSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_GetEnvironmentById_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_GetEnvironmentById_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_GetEnvironmentById_MaximumSet.
@@ -1510,7 +1810,7 @@ public final class OrganizationGetEnvironmentByIdSamples {
  */
 public final class OrganizationGetSchemaRegistryClusterByIdSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_GetSchemaRegistryClusterById_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_GetSchemaRegistryClusterById_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_GetSchemaRegistryClusterById_MaximumSet.
@@ -1525,7 +1825,7 @@ public final class OrganizationGetSchemaRegistryClusterByIdSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_GetSchemaRegistryClusterById_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_GetSchemaRegistryClusterById_MinimumSet_Gen.json
      */
     /**
      * Sample code: Organization_GetSchemaRegistryClusterById_MinimumSet.
@@ -1549,7 +1849,7 @@ public final class OrganizationGetSchemaRegistryClusterByIdSamples {
  */
 public final class OrganizationLatestLinkedSaaSSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_LatestLinkedSaaS_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_LatestLinkedSaaS_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_LatestLinkedSaaS_MaximumSet - generated by [MaximumSet] rule.
@@ -1574,7 +1874,7 @@ import com.azure.resourcemanager.confluent.models.SaaSData;
  */
 public final class OrganizationLinkSaaSSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_LinkSaaS_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_LinkSaaS_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_LinkSaaS_MaximumSet - generated by [MaximumSet] rule.
@@ -1599,7 +1899,7 @@ public final class OrganizationLinkSaaSSamples {
  */
 public final class OrganizationListSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_ListBySubscription_MaximumSet.
@@ -1621,7 +1921,7 @@ public final class OrganizationListSamples {
  */
 public final class OrganizationListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_ListByResourceGroup_MaximumSet.
@@ -1643,7 +1943,7 @@ public final class OrganizationListByResourceGroupSamples {
  */
 public final class OrganizationListClustersSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_ListClusters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_ListClusters_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_ListClusters_MaximumSet.
@@ -1667,7 +1967,7 @@ public final class OrganizationListClustersSamples {
  */
 public final class OrganizationListEnvironmentsSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_ListEnvironments_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_ListEnvironments_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_ListEnvironments_MaximumSet.
@@ -1694,7 +1994,7 @@ import java.util.Map;
  */
 public final class OrganizationListRegionsSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_ListRegions_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_ListRegions_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_ListRegions_MaximumSet.
@@ -1709,7 +2009,7 @@ public final class OrganizationListRegionsSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_ListRegions_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_ListRegions_MinimumSet_Gen.json
      */
     /**
      * Sample code: Organization_ListRegions_MinimumSet.
@@ -1744,7 +2044,7 @@ public final class OrganizationListRegionsSamples {
  */
 public final class OrganizationListSchemaRegistryClustersSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_ListSchemaRegistryClusters_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_ListSchemaRegistryClusters_MinimumSet_Gen.json
      */
     /**
      * Sample code: Organization_ListSchemaRegistryClusters_MinimumSet.
@@ -1758,7 +2058,7 @@ public final class OrganizationListSchemaRegistryClustersSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_ListSchemaRegistryClusters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_ListSchemaRegistryClusters_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_ListSchemaRegistryClusters_MaximumSet.
@@ -1786,7 +2086,7 @@ import java.util.Map;
  */
 public final class OrganizationUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Organization_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Organization_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_Update_MaximumSet.
@@ -1822,7 +2122,7 @@ public final class OrganizationUpdateSamples {
  */
 public final class OrganizationOperationsListSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/OrganizationOperations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/OrganizationOperations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: OrganizationOperations_List_MaximumSet.
@@ -1835,7 +2135,7 @@ public final class OrganizationOperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/OrganizationOperations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/OrganizationOperations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: OrganizationOperations_List_MinimumSet.
@@ -1862,7 +2162,7 @@ import java.util.Arrays;
  */
 public final class TopicsCreateSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Topics_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Topics_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: Topics_Create_MaximumSet.
@@ -1895,7 +2195,7 @@ public final class TopicsCreateSamples {
  */
 public final class TopicsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Topics_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Topics_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Topics_Delete_MaximumSet.
@@ -1909,7 +2209,7 @@ public final class TopicsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/Topics_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Topics_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: Topics_Delete_MinimumSet.
@@ -1932,7 +2232,7 @@ public final class TopicsDeleteSamples {
  */
 public final class TopicsGetSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Topics_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Topics_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Topics_Get_MaximumSet.
@@ -1955,7 +2255,7 @@ public final class TopicsGetSamples {
  */
 public final class TopicsListSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Topics_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Topics_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Topics_List_MaximumSet.
@@ -1986,7 +2286,7 @@ import java.util.Map;
  */
 public final class ValidationsValidateOrganizationSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Validations_ValidateOrganization_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Validations_ValidateOrganization_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization Validate proxy resource.
@@ -2047,7 +2347,7 @@ import java.util.Map;
  */
 public final class ValidationsValidateOrganizationV2Samples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Validations_ValidateOrganizationV2_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Validations_ValidateOrganizationV2_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization Validate proxy resource.

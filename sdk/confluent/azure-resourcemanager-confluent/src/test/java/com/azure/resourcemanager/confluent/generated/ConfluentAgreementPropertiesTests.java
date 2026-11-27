@@ -13,36 +13,36 @@ public final class ConfluentAgreementPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfluentAgreementProperties model = BinaryData.fromString(
-            "{\"publisher\":\"cwkhihi\",\"product\":\"hzdsqtzbsrgnow\",\"plan\":\"hfgmvecactxm\",\"licenseTextLink\":\"teyowclu\",\"privacyPolicyLink\":\"vekqvgqo\",\"retrieveDatetime\":\"2021-10-12T22:41:28Z\",\"signature\":\"zmpjwyiv\",\"accepted\":true}")
+            "{\"publisher\":\"ayzejnhlbkpbz\",\"product\":\"piljhahzvech\",\"plan\":\"bnwieholew\",\"licenseTextLink\":\"iuubwefqsf\",\"privacyPolicyLink\":\"aqtferr\",\"retrieveDatetime\":\"2021-05-25T15:13:52Z\",\"signature\":\"jkmfxapjwo\",\"accepted\":false}")
             .toObject(ConfluentAgreementProperties.class);
-        Assertions.assertEquals("cwkhihi", model.publisher());
-        Assertions.assertEquals("hzdsqtzbsrgnow", model.product());
-        Assertions.assertEquals("hfgmvecactxm", model.plan());
-        Assertions.assertEquals("teyowclu", model.licenseTextLink());
-        Assertions.assertEquals("vekqvgqo", model.privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T22:41:28Z"), model.retrieveDatetime());
-        Assertions.assertEquals("zmpjwyiv", model.signature());
-        Assertions.assertTrue(model.accepted());
+        Assertions.assertEquals("ayzejnhlbkpbz", model.publisher());
+        Assertions.assertEquals("piljhahzvech", model.product());
+        Assertions.assertEquals("bnwieholew", model.plan());
+        Assertions.assertEquals("iuubwefqsf", model.licenseTextLink());
+        Assertions.assertEquals("aqtferr", model.privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T15:13:52Z"), model.retrieveDatetime());
+        Assertions.assertEquals("jkmfxapjwo", model.signature());
+        Assertions.assertFalse(model.accepted());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfluentAgreementProperties model = new ConfluentAgreementProperties().withPublisher("cwkhihi")
-            .withProduct("hzdsqtzbsrgnow")
-            .withPlan("hfgmvecactxm")
-            .withLicenseTextLink("teyowclu")
-            .withPrivacyPolicyLink("vekqvgqo")
-            .withRetrieveDatetime(OffsetDateTime.parse("2021-10-12T22:41:28Z"))
-            .withSignature("zmpjwyiv")
-            .withAccepted(true);
+        ConfluentAgreementProperties model = new ConfluentAgreementProperties().withPublisher("ayzejnhlbkpbz")
+            .withProduct("piljhahzvech")
+            .withPlan("bnwieholew")
+            .withLicenseTextLink("iuubwefqsf")
+            .withPrivacyPolicyLink("aqtferr")
+            .withRetrieveDatetime(OffsetDateTime.parse("2021-05-25T15:13:52Z"))
+            .withSignature("jkmfxapjwo")
+            .withAccepted(false);
         model = BinaryData.fromObject(model).toObject(ConfluentAgreementProperties.class);
-        Assertions.assertEquals("cwkhihi", model.publisher());
-        Assertions.assertEquals("hzdsqtzbsrgnow", model.product());
-        Assertions.assertEquals("hfgmvecactxm", model.plan());
-        Assertions.assertEquals("teyowclu", model.licenseTextLink());
-        Assertions.assertEquals("vekqvgqo", model.privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T22:41:28Z"), model.retrieveDatetime());
-        Assertions.assertEquals("zmpjwyiv", model.signature());
-        Assertions.assertTrue(model.accepted());
+        Assertions.assertEquals("ayzejnhlbkpbz", model.publisher());
+        Assertions.assertEquals("piljhahzvech", model.product());
+        Assertions.assertEquals("bnwieholew", model.plan());
+        Assertions.assertEquals("iuubwefqsf", model.licenseTextLink());
+        Assertions.assertEquals("aqtferr", model.privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T15:13:52Z"), model.retrieveDatetime());
+        Assertions.assertEquals("jkmfxapjwo", model.signature());
+        Assertions.assertFalse(model.accepted());
     }
 }

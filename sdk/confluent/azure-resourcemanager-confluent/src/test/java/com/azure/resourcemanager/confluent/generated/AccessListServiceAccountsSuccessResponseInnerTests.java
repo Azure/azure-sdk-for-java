@@ -12,22 +12,22 @@ public final class AccessListServiceAccountsSuccessResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessListServiceAccountsSuccessResponseInner model = BinaryData.fromString(
-            "{\"kind\":\"gdknnqv\",\"metadata\":{\"first\":\"nqntorudsgsahm\",\"last\":\"c\",\"prev\":\"auwjuetaebu\",\"next\":\"vdmovsmzlxwabm\",\"total_size\":1461761941},\"data\":[{\"kind\":\"frvtpuqu\",\"id\":\"qlgkfbtn\",\"metadata\":{\"self\":\"ongbjcnt\",\"resource_name\":\"i\",\"created_at\":\"jed\",\"updated_at\":\"wwa\",\"deleted_at\":\"kojvd\"},\"display_name\":\"zfoqouicybxar\",\"description\":\"szufoxciqopidoa\"}]}")
+            "{\"kind\":\"ovvtgseinqfiu\",\"metadata\":{\"first\":\"knpirgnepttwq\",\"last\":\"niffcdmqnroj\",\"prev\":\"ijnkrxfrdd\",\"next\":\"ratiz\",\"total_size\":99900434},\"data\":[{\"kind\":\"xi\",\"id\":\"ozqyzh\",\"metadata\":{\"self\":\"esgogc\",\"resource_name\":\"onnxkrlgnyhm\",\"created_at\":\"sxkkg\",\"updated_at\":\"rrghxjbdhqxvcxgf\",\"deleted_at\":\"dsofbshrns\"},\"display_name\":\"uswdv\",\"description\":\"ybycnunvj\"},{\"kind\":\"tkfa\",\"id\":\"opqgikyzirtxdyux\",\"metadata\":{\"self\":\"ntps\",\"resource_name\":\"gioilqu\",\"created_at\":\"ydxtqm\",\"updated_at\":\"ox\",\"deleted_at\":\"ggufhyaomtb\"},\"display_name\":\"havgrvk\",\"description\":\"ovjzhpjbibgjmfx\"}]}")
             .toObject(AccessListServiceAccountsSuccessResponseInner.class);
-        Assertions.assertEquals("gdknnqv", model.kind());
-        Assertions.assertEquals("nqntorudsgsahm", model.metadata().first());
-        Assertions.assertEquals("c", model.metadata().last());
-        Assertions.assertEquals("auwjuetaebu", model.metadata().prev());
-        Assertions.assertEquals("vdmovsmzlxwabm", model.metadata().next());
-        Assertions.assertEquals(1461761941, model.metadata().totalSize());
-        Assertions.assertEquals("frvtpuqu", model.data().get(0).kind());
-        Assertions.assertEquals("qlgkfbtn", model.data().get(0).id());
-        Assertions.assertEquals("ongbjcnt", model.data().get(0).metadata().self());
-        Assertions.assertEquals("i", model.data().get(0).metadata().resourceName());
-        Assertions.assertEquals("jed", model.data().get(0).metadata().createdAt());
-        Assertions.assertEquals("wwa", model.data().get(0).metadata().updatedAt());
-        Assertions.assertEquals("kojvd", model.data().get(0).metadata().deletedAt());
-        Assertions.assertEquals("zfoqouicybxar", model.data().get(0).displayName());
-        Assertions.assertEquals("szufoxciqopidoa", model.data().get(0).description());
+        Assertions.assertEquals("ovvtgseinqfiu", model.kind());
+        Assertions.assertEquals("knpirgnepttwq", model.metadata().first());
+        Assertions.assertEquals("niffcdmqnroj", model.metadata().last());
+        Assertions.assertEquals("ijnkrxfrdd", model.metadata().prev());
+        Assertions.assertEquals("ratiz", model.metadata().next());
+        Assertions.assertEquals(99900434, model.metadata().totalSize());
+        Assertions.assertEquals("xi", model.data().get(0).kind());
+        Assertions.assertEquals("ozqyzh", model.data().get(0).id());
+        Assertions.assertEquals("esgogc", model.data().get(0).metadata().self());
+        Assertions.assertEquals("onnxkrlgnyhm", model.data().get(0).metadata().resourceName());
+        Assertions.assertEquals("sxkkg", model.data().get(0).metadata().createdAt());
+        Assertions.assertEquals("rrghxjbdhqxvcxgf", model.data().get(0).metadata().updatedAt());
+        Assertions.assertEquals("dsofbshrns", model.data().get(0).metadata().deletedAt());
+        Assertions.assertEquals("uswdv", model.data().get(0).displayName());
+        Assertions.assertEquals("ybycnunvj", model.data().get(0).description());
     }
 }

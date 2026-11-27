@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterConfigEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterConfigEntity model
-            = BinaryData.fromString("{\"kind\":\"cffgdkzzewk\"}").toObject(ClusterConfigEntity.class);
-        Assertions.assertEquals("cffgdkzzewk", model.kind());
+        ClusterConfigEntity model = BinaryData.fromString("{\"kind\":\"tdooaoj\"}").toObject(ClusterConfigEntity.class);
+        Assertions.assertEquals("tdooaoj", model.kind());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterConfigEntity model = new ClusterConfigEntity().withKind("cffgdkzzewk");
+        ClusterConfigEntity model = new ClusterConfigEntity().withKind("tdooaoj");
         model = BinaryData.fromObject(model).toObject(ClusterConfigEntity.class);
-        Assertions.assertEquals("cffgdkzzewk", model.kind());
+        Assertions.assertEquals("tdooaoj", model.kind());
     }
 }

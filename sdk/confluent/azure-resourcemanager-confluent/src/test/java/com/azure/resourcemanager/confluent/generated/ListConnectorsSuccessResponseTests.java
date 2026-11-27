@@ -15,14 +15,15 @@ public final class ListConnectorsSuccessResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListConnectorsSuccessResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SOURCE\",\"connectorClass\":\"AZUREBLOBSINK\",\"connectorName\":\"pfgfbkjub\",\"connectorId\":\"hgkfmin\",\"connectorState\":\"PAUSED\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"ttsttktlahbqact\",\"name\":\"tgzukxitmmqt\",\"type\":\"qqqxhrnxrx\"}],\"nextLink\":\"juisavokqdzf\"}")
+            "{\"value\":[{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SOURCE\",\"connectorClass\":\"AZURECOSMOSV2SOURCE\",\"connectorName\":\"fqob\",\"connectorId\":\"lnacgcc\",\"connectorState\":\"PROVISIONING\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"izvy\",\"name\":\"nrzvuljraaer\",\"type\":\"nok\"},{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SOURCE\",\"connectorClass\":\"AZUREBLOBSOURCE\",\"connectorName\":\"nvbroylaxx\",\"connectorId\":\"cdisd\",\"connectorState\":\"PROVISIONING\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"svgjrwhryvy\",\"name\":\"ytdc\",\"type\":\"xgccknfnw\"},{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SOURCE\",\"connectorClass\":\"AZURECOSMOSV2SOURCE\",\"connectorName\":\"vjdhttzaefedxih\",\"connectorId\":\"rphkmcrjdqnsdfz\",\"connectorState\":\"PAUSED\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"ylkdghrje\",\"name\":\"utlwxezwzhok\",\"type\":\"bwnhhtql\"},{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SINK\",\"connectorClass\":\"AZUREBLOBSINK\",\"connectorName\":\"pifhpfeoajvgcxtx\",\"connectorId\":\"sheafid\",\"connectorState\":\"FAILED\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"esmkssjhoiftxfkf\",\"name\":\"egprhptil\",\"type\":\"ucb\"}],\"nextLink\":\"tgdqohmcwsldriz\"}")
             .toObject(ListConnectorsSuccessResponse.class);
         Assertions.assertEquals(ConnectorType.SOURCE, model.value().get(0).connectorBasicInfo().connectorType());
-        Assertions.assertEquals(ConnectorClass.AZUREBLOBSINK,
+        Assertions.assertEquals(ConnectorClass.AZURECOSMOSV2SOURCE,
             model.value().get(0).connectorBasicInfo().connectorClass());
-        Assertions.assertEquals("pfgfbkjub", model.value().get(0).connectorBasicInfo().connectorName());
-        Assertions.assertEquals("hgkfmin", model.value().get(0).connectorBasicInfo().connectorId());
-        Assertions.assertEquals(ConnectorStatus.PAUSED, model.value().get(0).connectorBasicInfo().connectorState());
-        Assertions.assertEquals("juisavokqdzf", model.nextLink());
+        Assertions.assertEquals("fqob", model.value().get(0).connectorBasicInfo().connectorName());
+        Assertions.assertEquals("lnacgcc", model.value().get(0).connectorBasicInfo().connectorId());
+        Assertions.assertEquals(ConnectorStatus.PROVISIONING,
+            model.value().get(0).connectorBasicInfo().connectorState());
+        Assertions.assertEquals("tgdqohmcwsldriz", model.nextLink());
     }
 }

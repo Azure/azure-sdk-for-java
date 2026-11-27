@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class TopicsInputConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TopicsInputConfig model
-            = BinaryData.fromString("{\"name\":\"vfcibyfmowux\",\"value\":\"jpvd\"}").toObject(TopicsInputConfig.class);
-        Assertions.assertEquals("vfcibyfmowux", model.name());
-        Assertions.assertEquals("jpvd", model.value());
+        TopicsInputConfig model = BinaryData.fromString("{\"name\":\"eszabbelawumuas\",\"value\":\"kwrrwo\"}")
+            .toObject(TopicsInputConfig.class);
+        Assertions.assertEquals("eszabbelawumuas", model.name());
+        Assertions.assertEquals("kwrrwo", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TopicsInputConfig model = new TopicsInputConfig().withName("vfcibyfmowux").withValue("jpvd");
+        TopicsInputConfig model = new TopicsInputConfig().withName("eszabbelawumuas").withValue("kwrrwo");
         model = BinaryData.fromObject(model).toObject(TopicsInputConfig.class);
-        Assertions.assertEquals("vfcibyfmowux", model.name());
-        Assertions.assertEquals("jpvd", model.value());
+        Assertions.assertEquals("eszabbelawumuas", model.name());
+        Assertions.assertEquals("kwrrwo", model.value());
     }
 }

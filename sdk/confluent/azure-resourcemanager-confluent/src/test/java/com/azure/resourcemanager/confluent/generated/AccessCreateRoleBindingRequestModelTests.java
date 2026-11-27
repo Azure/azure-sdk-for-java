@@ -11,22 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessCreateRoleBindingRequestModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessCreateRoleBindingRequestModel model
-            = BinaryData.fromString("{\"principal\":\"f\",\"role_name\":\"mrqemvvhmx\",\"crn_pattern\":\"rjfut\"}")
-                .toObject(AccessCreateRoleBindingRequestModel.class);
-        Assertions.assertEquals("f", model.principal());
-        Assertions.assertEquals("mrqemvvhmx", model.roleName());
-        Assertions.assertEquals("rjfut", model.crnPattern());
+        AccessCreateRoleBindingRequestModel model = BinaryData
+            .fromString("{\"principal\":\"iv\",\"role_name\":\"oyzunbixxr\",\"crn_pattern\":\"kvcpwpgclr\"}")
+            .toObject(AccessCreateRoleBindingRequestModel.class);
+        Assertions.assertEquals("iv", model.principal());
+        Assertions.assertEquals("oyzunbixxr", model.roleName());
+        Assertions.assertEquals("kvcpwpgclr", model.crnPattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessCreateRoleBindingRequestModel model = new AccessCreateRoleBindingRequestModel().withPrincipal("f")
-            .withRoleName("mrqemvvhmx")
-            .withCrnPattern("rjfut");
+        AccessCreateRoleBindingRequestModel model = new AccessCreateRoleBindingRequestModel().withPrincipal("iv")
+            .withRoleName("oyzunbixxr")
+            .withCrnPattern("kvcpwpgclr");
         model = BinaryData.fromObject(model).toObject(AccessCreateRoleBindingRequestModel.class);
-        Assertions.assertEquals("f", model.principal());
-        Assertions.assertEquals("mrqemvvhmx", model.roleName());
-        Assertions.assertEquals("rjfut", model.crnPattern());
+        Assertions.assertEquals("iv", model.principal());
+        Assertions.assertEquals("oyzunbixxr", model.roleName());
+        Assertions.assertEquals("kvcpwpgclr", model.crnPattern());
     }
 }

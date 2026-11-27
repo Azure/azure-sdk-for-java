@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterStatusEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterStatusEntity model = BinaryData.fromString("{\"phase\":\"bobzdopcjwvnhd\",\"cku\":3568430}")
-            .toObject(ClusterStatusEntity.class);
-        Assertions.assertEquals("bobzdopcjwvnhd", model.phase());
-        Assertions.assertEquals(3568430, model.cku());
+        ClusterStatusEntity model
+            = BinaryData.fromString("{\"phase\":\"sz\",\"cku\":993241324}").toObject(ClusterStatusEntity.class);
+        Assertions.assertEquals("sz", model.phase());
+        Assertions.assertEquals(993241324, model.cku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterStatusEntity model = new ClusterStatusEntity().withPhase("bobzdopcjwvnhd").withCku(3568430);
+        ClusterStatusEntity model = new ClusterStatusEntity().withPhase("sz").withCku(993241324);
         model = BinaryData.fromObject(model).toObject(ClusterStatusEntity.class);
-        Assertions.assertEquals("bobzdopcjwvnhd", model.phase());
-        Assertions.assertEquals(3568430, model.cku());
+        Assertions.assertEquals("sz", model.phase());
+        Assertions.assertEquals(993241324, model.cku());
     }
 }

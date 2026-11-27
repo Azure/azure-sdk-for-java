@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class ValidationsValidateOrganizationSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/Validations_ValidateOrganization_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-21-preview/Validations_ValidateOrganization_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization Validate proxy resource.

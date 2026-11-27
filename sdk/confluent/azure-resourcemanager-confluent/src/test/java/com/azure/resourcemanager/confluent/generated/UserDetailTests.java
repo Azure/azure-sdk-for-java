@@ -12,27 +12,27 @@ public final class UserDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserDetail model = BinaryData.fromString(
-            "{\"firstName\":\"qeojnxqbzvddntw\",\"lastName\":\"eic\",\"emailAddress\":\"twnpzaoqvuhrhcf\",\"userPrincipalName\":\"yd\",\"aadEmail\":\"lmjthjq\"}")
+            "{\"firstName\":\"e\",\"lastName\":\"sonpclhocohs\",\"emailAddress\":\"kevle\",\"userPrincipalName\":\"zfbuhf\",\"aadEmail\":\"faxkffeii\"}")
             .toObject(UserDetail.class);
-        Assertions.assertEquals("qeojnxqbzvddntw", model.firstName());
-        Assertions.assertEquals("eic", model.lastName());
-        Assertions.assertEquals("twnpzaoqvuhrhcf", model.emailAddress());
-        Assertions.assertEquals("yd", model.userPrincipalName());
-        Assertions.assertEquals("lmjthjq", model.aadEmail());
+        Assertions.assertEquals("e", model.firstName());
+        Assertions.assertEquals("sonpclhocohs", model.lastName());
+        Assertions.assertEquals("kevle", model.emailAddress());
+        Assertions.assertEquals("zfbuhf", model.userPrincipalName());
+        Assertions.assertEquals("faxkffeii", model.aadEmail());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserDetail model = new UserDetail().withFirstName("qeojnxqbzvddntw")
-            .withLastName("eic")
-            .withEmailAddress("twnpzaoqvuhrhcf")
-            .withUserPrincipalName("yd")
-            .withAadEmail("lmjthjq");
+        UserDetail model = new UserDetail().withFirstName("e")
+            .withLastName("sonpclhocohs")
+            .withEmailAddress("kevle")
+            .withUserPrincipalName("zfbuhf")
+            .withAadEmail("faxkffeii");
         model = BinaryData.fromObject(model).toObject(UserDetail.class);
-        Assertions.assertEquals("qeojnxqbzvddntw", model.firstName());
-        Assertions.assertEquals("eic", model.lastName());
-        Assertions.assertEquals("twnpzaoqvuhrhcf", model.emailAddress());
-        Assertions.assertEquals("yd", model.userPrincipalName());
-        Assertions.assertEquals("lmjthjq", model.aadEmail());
+        Assertions.assertEquals("e", model.firstName());
+        Assertions.assertEquals("sonpclhocohs", model.lastName());
+        Assertions.assertEquals("kevle", model.emailAddress());
+        Assertions.assertEquals("zfbuhf", model.userPrincipalName());
+        Assertions.assertEquals("faxkffeii", model.aadEmail());
     }
 }

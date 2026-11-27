@@ -12,17 +12,17 @@ public final class RoleBindingRecordInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoleBindingRecordInner model = BinaryData.fromString(
-            "{\"kind\":\"hud\",\"id\":\"oookkqfq\",\"metadata\":{\"self\":\"leorfmluiqtqz\",\"resource_name\":\"vyvnqqyb\",\"created_at\":\"yeua\",\"updated_at\":\"kq\",\"deleted_at\":\"qgzsles\"},\"principal\":\"bhernntiew\",\"role_name\":\"cv\",\"crn_pattern\":\"uwrbehwagoh\"}")
+            "{\"kind\":\"twzhhzjhfjmhv\",\"id\":\"uvgp\",\"metadata\":{\"self\":\"eqsx\",\"resource_name\":\"hfbuzjyihsasbhud\",\"created_at\":\"ohyuemslynsq\",\"updated_at\":\"pfoobr\",\"deleted_at\":\"tyms\"},\"principal\":\"ygqdnfwqzdz\",\"role_name\":\"ilaxhn\",\"crn_pattern\":\"qlyvijo\"}")
             .toObject(RoleBindingRecordInner.class);
-        Assertions.assertEquals("hud", model.kind());
-        Assertions.assertEquals("oookkqfq", model.id());
-        Assertions.assertEquals("leorfmluiqtqz", model.metadata().self());
-        Assertions.assertEquals("vyvnqqyb", model.metadata().resourceName());
-        Assertions.assertEquals("yeua", model.metadata().createdAt());
-        Assertions.assertEquals("kq", model.metadata().updatedAt());
-        Assertions.assertEquals("qgzsles", model.metadata().deletedAt());
-        Assertions.assertEquals("bhernntiew", model.principal());
-        Assertions.assertEquals("cv", model.roleName());
-        Assertions.assertEquals("uwrbehwagoh", model.crnPattern());
+        Assertions.assertEquals("twzhhzjhfjmhv", model.kind());
+        Assertions.assertEquals("uvgp", model.id());
+        Assertions.assertEquals("eqsx", model.metadata().self());
+        Assertions.assertEquals("hfbuzjyihsasbhud", model.metadata().resourceName());
+        Assertions.assertEquals("ohyuemslynsq", model.metadata().createdAt());
+        Assertions.assertEquals("pfoobr", model.metadata().updatedAt());
+        Assertions.assertEquals("tyms", model.metadata().deletedAt());
+        Assertions.assertEquals("ygqdnfwqzdz", model.principal());
+        Assertions.assertEquals("ilaxhn", model.roleName());
+        Assertions.assertEquals("qlyvijo", model.crnPattern());
     }
 }

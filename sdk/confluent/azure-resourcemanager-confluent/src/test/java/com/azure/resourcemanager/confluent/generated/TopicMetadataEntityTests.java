@@ -12,18 +12,17 @@ public final class TopicMetadataEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TopicMetadataEntity model
-            = BinaryData.fromString("{\"self\":\"onbzoggculapzwy\",\"resourceName\":\"gogtqxepnylbf\"}")
+            = BinaryData.fromString("{\"self\":\"hxgsrboldfor\",\"resourceName\":\"wjlvizbfhfov\"}")
                 .toObject(TopicMetadataEntity.class);
-        Assertions.assertEquals("onbzoggculapzwy", model.self());
-        Assertions.assertEquals("gogtqxepnylbf", model.resourceName());
+        Assertions.assertEquals("hxgsrboldfor", model.self());
+        Assertions.assertEquals("wjlvizbfhfov", model.resourceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TopicMetadataEntity model
-            = new TopicMetadataEntity().withSelf("onbzoggculapzwy").withResourceName("gogtqxepnylbf");
+        TopicMetadataEntity model = new TopicMetadataEntity().withSelf("hxgsrboldfor").withResourceName("wjlvizbfhfov");
         model = BinaryData.fromObject(model).toObject(TopicMetadataEntity.class);
-        Assertions.assertEquals("onbzoggculapzwy", model.self());
-        Assertions.assertEquals("gogtqxepnylbf", model.resourceName());
+        Assertions.assertEquals("hxgsrboldfor", model.self());
+        Assertions.assertEquals("wjlvizbfhfov", model.resourceName());
     }
 }

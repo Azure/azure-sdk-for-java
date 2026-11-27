@@ -34,6 +34,8 @@ import com.azure.resourcemanager.confluent.fluent.ConfluentManagementClient;
 import com.azure.resourcemanager.confluent.fluent.ConnectorsClient;
 import com.azure.resourcemanager.confluent.fluent.EnvironmentsClient;
 import com.azure.resourcemanager.confluent.fluent.MarketplaceAgreementsClient;
+import com.azure.resourcemanager.confluent.fluent.MonitorResourcesClient;
+import com.azure.resourcemanager.confluent.fluent.MonitorTagRulesClient;
 import com.azure.resourcemanager.confluent.fluent.NetworkGatewayResourcesClient;
 import com.azure.resourcemanager.confluent.fluent.OrganizationOperationsClient;
 import com.azure.resourcemanager.confluent.fluent.OrganizationsClient;
@@ -135,6 +137,34 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
+    }
+
+    /**
+     * The MonitorResourcesClient object to access its operations.
+     */
+    private final MonitorResourcesClient monitorResources;
+
+    /**
+     * Gets the MonitorResourcesClient object to access its operations.
+     * 
+     * @return the MonitorResourcesClient object.
+     */
+    public MonitorResourcesClient getMonitorResources() {
+        return this.monitorResources;
+    }
+
+    /**
+     * The MonitorTagRulesClient object to access its operations.
+     */
+    private final MonitorTagRulesClient monitorTagRules;
+
+    /**
+     * Gets the MonitorTagRulesClient object to access its operations.
+     * 
+     * @return the MonitorTagRulesClient object.
+     */
+    public MonitorTagRulesClient getMonitorTagRules() {
+        return this.monitorTagRules;
     }
 
     /**
@@ -308,7 +338,9 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-06-02-preview";
+        this.apiVersion = "2026-10-21-preview";
+        this.monitorResources = new MonitorResourcesClientImpl(this);
+        this.monitorTagRules = new MonitorTagRulesClientImpl(this);
         this.networkGatewayResources = new NetworkGatewayResourcesClientImpl(this);
         this.accessPointResources = new AccessPointResourcesClientImpl(this);
         this.organizationOperations = new OrganizationOperationsClientImpl(this);

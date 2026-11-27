@@ -11,19 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ActivateSaaSParameterRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ActivateSaaSParameterRequest model
-            = BinaryData.fromString("{\"saasGuid\":\"zdobpxjmflbvvnch\",\"publisherId\":\"cciw\"}")
-                .toObject(ActivateSaaSParameterRequest.class);
-        Assertions.assertEquals("zdobpxjmflbvvnch", model.saasGuid());
-        Assertions.assertEquals("cciw", model.publisherId());
+        ActivateSaaSParameterRequest model = BinaryData.fromString("{\"saasGuid\":\"mx\",\"publisherId\":\"kv\"}")
+            .toObject(ActivateSaaSParameterRequest.class);
+        Assertions.assertEquals("mx", model.saasGuid());
+        Assertions.assertEquals("kv", model.publisherId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ActivateSaaSParameterRequest model
-            = new ActivateSaaSParameterRequest().withSaasGuid("zdobpxjmflbvvnch").withPublisherId("cciw");
+            = new ActivateSaaSParameterRequest().withSaasGuid("mx").withPublisherId("kv");
         model = BinaryData.fromObject(model).toObject(ActivateSaaSParameterRequest.class);
-        Assertions.assertEquals("zdobpxjmflbvvnch", model.saasGuid());
-        Assertions.assertEquals("cciw", model.publisherId());
+        Assertions.assertEquals("mx", model.saasGuid());
+        Assertions.assertEquals("kv", model.publisherId());
     }
 }

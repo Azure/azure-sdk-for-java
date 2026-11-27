@@ -13,16 +13,16 @@ public final class ConfluentAgreementResourceListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfluentAgreementResourceListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"bbc\",\"name\":\"qagt\",\"type\":\"dhlfkqojpykvgt\",\"properties\":{\"publisher\":\"ifmzzsd\",\"product\":\"brn\",\"plan\":\"u\",\"licenseTextLink\":\"prafwgckhoc\",\"privacyPolicyLink\":\"d\",\"retrieveDatetime\":\"2021-05-28T04:28:25Z\",\"signature\":\"afqr\",\"accepted\":true}},{\"id\":\"spave\",\"name\":\"r\",\"type\":\"bunzozudh\",\"properties\":{\"publisher\":\"moy\",\"product\":\"dyuib\",\"plan\":\"fdn\",\"licenseTextLink\":\"ydvfvfcjnae\",\"privacyPolicyLink\":\"srvhmgorffuki\",\"retrieveDatetime\":\"2021-01-16T11:03:16Z\",\"signature\":\"mzhwplefaxvxi\",\"accepted\":false}}],\"nextLink\":\"gnhnzeyq\"}")
+            "{\"value\":[{\"id\":\"yibcy\",\"name\":\"hsgqc\",\"type\":\"hohsd\",\"properties\":{\"publisher\":\"zsu\",\"product\":\"ohdxbzlmcmu\",\"plan\":\"cvhd\",\"licenseTextLink\":\"v\",\"privacyPolicyLink\":\"qxeysko\",\"retrieveDatetime\":\"2020-12-31T09:10:56Z\",\"signature\":\"nkfkbgbzb\",\"accepted\":false}}],\"nextLink\":\"qocl\"}")
             .toObject(ConfluentAgreementResourceListResponse.class);
-        Assertions.assertEquals("ifmzzsd", model.value().get(0).publisher());
-        Assertions.assertEquals("brn", model.value().get(0).product());
-        Assertions.assertEquals("u", model.value().get(0).plan());
-        Assertions.assertEquals("prafwgckhoc", model.value().get(0).licenseTextLink());
-        Assertions.assertEquals("d", model.value().get(0).privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-28T04:28:25Z"), model.value().get(0).retrieveDatetime());
-        Assertions.assertEquals("afqr", model.value().get(0).signature());
-        Assertions.assertTrue(model.value().get(0).accepted());
-        Assertions.assertEquals("gnhnzeyq", model.nextLink());
+        Assertions.assertEquals("zsu", model.value().get(0).publisher());
+        Assertions.assertEquals("ohdxbzlmcmu", model.value().get(0).product());
+        Assertions.assertEquals("cvhd", model.value().get(0).plan());
+        Assertions.assertEquals("v", model.value().get(0).licenseTextLink());
+        Assertions.assertEquals("qxeysko", model.value().get(0).privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-31T09:10:56Z"), model.value().get(0).retrieveDatetime());
+        Assertions.assertEquals("nkfkbgbzb", model.value().get(0).signature());
+        Assertions.assertFalse(model.value().get(0).accepted());
+        Assertions.assertEquals("qocl", model.nextLink());
     }
 }

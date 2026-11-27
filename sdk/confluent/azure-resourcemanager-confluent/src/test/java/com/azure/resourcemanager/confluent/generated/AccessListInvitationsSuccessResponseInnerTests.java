@@ -12,25 +12,25 @@ public final class AccessListInvitationsSuccessResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessListInvitationsSuccessResponseInner model = BinaryData.fromString(
-            "{\"kind\":\"a\",\"metadata\":{\"first\":\"r\",\"last\":\"dsnfdsdoakgtdl\",\"prev\":\"kzevdlhewpusds\",\"next\":\"wvogvbbejdc\",\"total_size\":1648983089},\"data\":[{\"kind\":\"akufgmjz\",\"id\":\"rdgrtw\",\"metadata\":{\"self\":\"u\",\"resource_name\":\"kopbminrf\",\"created_at\":\"oyuhhziui\",\"updated_at\":\"ozbhdmsmlmzq\",\"deleted_at\":\"ft\"},\"email\":\"ae\",\"auth_type\":\"iahxicsl\",\"status\":\"oqzpiyylha\",\"accepted_at\":\"swhccsphk\",\"expires_at\":\"vwitqscyw\"}]}")
+            "{\"kind\":\"ymoxoftpipiwyczu\",\"metadata\":{\"first\":\"cpqjlihhyu\",\"last\":\"skasdvlmfwdgzxu\",\"prev\":\"cvpa\",\"next\":\"sreuzvxurisjnh\",\"total_size\":1488634157},\"data\":[{\"kind\":\"qjzgxmrhublw\",\"id\":\"esutrgjupauutpw\",\"metadata\":{\"self\":\"ih\",\"resource_name\":\"qg\",\"created_at\":\"pnfqntcyp\",\"updated_at\":\"jv\",\"deleted_at\":\"imwkslircizj\"},\"email\":\"ydfce\",\"auth_type\":\"vlhv\",\"status\":\"dyftumrtwna\",\"accepted_at\":\"slbi\",\"expires_at\":\"ojgcyzt\"},{\"kind\":\"mznbaeqphch\",\"id\":\"rn\",\"metadata\":{\"self\":\"ehuwrykqgaifmvik\",\"resource_name\":\"ydv\",\"created_at\":\"bejdznxcv\",\"updated_at\":\"rhnj\",\"deleted_at\":\"olvtnovqfzge\"},\"email\":\"dftuljltduce\",\"auth_type\":\"tmczuomejwcwwqi\",\"status\":\"nssxmojmsvpk\",\"accepted_at\":\"rvkwc\",\"expires_at\":\"ql\"}]}")
             .toObject(AccessListInvitationsSuccessResponseInner.class);
-        Assertions.assertEquals("a", model.kind());
-        Assertions.assertEquals("r", model.metadata().first());
-        Assertions.assertEquals("dsnfdsdoakgtdl", model.metadata().last());
-        Assertions.assertEquals("kzevdlhewpusds", model.metadata().prev());
-        Assertions.assertEquals("wvogvbbejdc", model.metadata().next());
-        Assertions.assertEquals(1648983089, model.metadata().totalSize());
-        Assertions.assertEquals("akufgmjz", model.data().get(0).kind());
-        Assertions.assertEquals("rdgrtw", model.data().get(0).id());
-        Assertions.assertEquals("u", model.data().get(0).metadata().self());
-        Assertions.assertEquals("kopbminrf", model.data().get(0).metadata().resourceName());
-        Assertions.assertEquals("oyuhhziui", model.data().get(0).metadata().createdAt());
-        Assertions.assertEquals("ozbhdmsmlmzq", model.data().get(0).metadata().updatedAt());
-        Assertions.assertEquals("ft", model.data().get(0).metadata().deletedAt());
-        Assertions.assertEquals("ae", model.data().get(0).email());
-        Assertions.assertEquals("iahxicsl", model.data().get(0).authType());
-        Assertions.assertEquals("oqzpiyylha", model.data().get(0).status());
-        Assertions.assertEquals("swhccsphk", model.data().get(0).acceptedAt());
-        Assertions.assertEquals("vwitqscyw", model.data().get(0).expiresAt());
+        Assertions.assertEquals("ymoxoftpipiwyczu", model.kind());
+        Assertions.assertEquals("cpqjlihhyu", model.metadata().first());
+        Assertions.assertEquals("skasdvlmfwdgzxu", model.metadata().last());
+        Assertions.assertEquals("cvpa", model.metadata().prev());
+        Assertions.assertEquals("sreuzvxurisjnh", model.metadata().next());
+        Assertions.assertEquals(1488634157, model.metadata().totalSize());
+        Assertions.assertEquals("qjzgxmrhublw", model.data().get(0).kind());
+        Assertions.assertEquals("esutrgjupauutpw", model.data().get(0).id());
+        Assertions.assertEquals("ih", model.data().get(0).metadata().self());
+        Assertions.assertEquals("qg", model.data().get(0).metadata().resourceName());
+        Assertions.assertEquals("pnfqntcyp", model.data().get(0).metadata().createdAt());
+        Assertions.assertEquals("jv", model.data().get(0).metadata().updatedAt());
+        Assertions.assertEquals("imwkslircizj", model.data().get(0).metadata().deletedAt());
+        Assertions.assertEquals("ydfce", model.data().get(0).email());
+        Assertions.assertEquals("vlhv", model.data().get(0).authType());
+        Assertions.assertEquals("dyftumrtwna", model.data().get(0).status());
+        Assertions.assertEquals("slbi", model.data().get(0).acceptedAt());
+        Assertions.assertEquals("ojgcyzt", model.data().get(0).expiresAt());
     }
 }

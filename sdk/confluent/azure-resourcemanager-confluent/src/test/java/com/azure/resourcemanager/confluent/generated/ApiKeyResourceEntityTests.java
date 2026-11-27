@@ -12,12 +12,12 @@ public final class ApiKeyResourceEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiKeyResourceEntity model = BinaryData.fromString(
-            "{\"id\":\"s\",\"environment\":\"gbquxigj\",\"related\":\"gzjaoyfhrtxilne\",\"resourceName\":\"ujysvle\",\"kind\":\"vfqawrlyxwjkcpr\"}")
+            "{\"id\":\"lokeyy\",\"environment\":\"nj\",\"related\":\"lwtgrhpdj\",\"resourceName\":\"umasxazjpq\",\"kind\":\"gual\"}")
             .toObject(ApiKeyResourceEntity.class);
-        Assertions.assertEquals("s", model.id());
-        Assertions.assertEquals("gbquxigj", model.environment());
-        Assertions.assertEquals("gzjaoyfhrtxilne", model.related());
-        Assertions.assertEquals("ujysvle", model.resourceName());
-        Assertions.assertEquals("vfqawrlyxwjkcpr", model.kind());
+        Assertions.assertEquals("lokeyy", model.id());
+        Assertions.assertEquals("nj", model.environment());
+        Assertions.assertEquals("lwtgrhpdj", model.related());
+        Assertions.assertEquals("umasxazjpq", model.resourceName());
+        Assertions.assertEquals("gual", model.kind());
     }
 }
