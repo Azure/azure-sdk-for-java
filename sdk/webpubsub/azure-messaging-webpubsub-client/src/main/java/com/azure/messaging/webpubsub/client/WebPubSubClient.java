@@ -13,6 +13,9 @@ import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
 import com.azure.messaging.webpubsub.client.models.RejoinGroupFailedEvent;
+import com.azure.messaging.webpubsub.client.models.InvocationException;
+import com.azure.messaging.webpubsub.client.models.InvokeEventOptions;
+import com.azure.messaging.webpubsub.client.models.InvokeEventResult;
 import com.azure.messaging.webpubsub.client.models.SendEventOptions;
 import com.azure.messaging.webpubsub.client.models.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
@@ -445,6 +448,40 @@ public final class WebPubSubClient implements Closeable {
     public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat,
         SendEventOptions options) {
         return asyncClient.sendEvent(eventName, content, dataFormat, options).block();
+    }
+
+    /**
+     * Invokes an upstream event and waits for the correlated response.
+     * <p>
+     * {@link #start()} the client, before invoke event.
+     *
+     * @param eventName the event name.
+     * @param content the data.
+     * @param dataFormat the data format.
+     * @return the result.
+     * @throws InvocationException thrown if the invocation fails.
+     * @throws SendMessageFailedException thrown if client not connected, or send message failed.
+     */
+    public InvokeEventResult invokeEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat) {
+        return asyncClient.invokeEvent(eventName, content, dataFormat).block();
+    }
+
+    /**
+     * Invokes an upstream event and waits for the correlated response.
+     * <p>
+     * {@link #start()} the client, before invoke event.
+     *
+     * @param eventName the event name.
+     * @param content the data.
+     * @param dataFormat the data format.
+     * @param options the options.
+     * @return the result.
+     * @throws InvocationException thrown if the invocation fails.
+     * @throws SendMessageFailedException thrown if client not connected, or send message failed.
+     */
+    public InvokeEventResult invokeEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat,
+        InvokeEventOptions options) {
+        return asyncClient.invokeEvent(eventName, content, dataFormat, options).block();
     }
 
     // following API is for testing
