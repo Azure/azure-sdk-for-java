@@ -117,6 +117,27 @@ public interface WebSiteManagementClient {
     KubeEnvironmentsClient getKubeEnvironments();
 
     /**
+     * Gets the SitesClient object to access its operations.
+     * 
+     * @return the SitesClient object.
+     */
+    SitesClient getSites();
+
+    /**
+     * Gets the StaticSitesAsyncOperationsClient object to access its operations.
+     * 
+     * @return the StaticSitesAsyncOperationsClient object.
+     */
+    StaticSitesAsyncOperationsClient getStaticSitesAsyncOperations();
+
+    /**
+     * Gets the AiGatewaysClient object to access its operations.
+     * 
+     * @return the AiGatewaysClient object.
+     */
+    AiGatewaysClient getAiGateways();
+
+    /**
      * Gets the WorkflowRunsClient object to access its operations.
      * 
      * @return the WorkflowRunsClient object.
@@ -157,6 +178,41 @@ public interface WebSiteManagementClient {
      * @return the WorkflowVersionsClient object.
      */
     WorkflowVersionsClient getWorkflowVersions();
+
+    /**
+     * Gets the SiteSiloResourcesClient object to access its operations.
+     * 
+     * @return the SiteSiloResourcesClient object.
+     */
+    SiteSiloResourcesClient getSiteSiloResources();
+
+    /**
+     * Gets the SiteSiloVirtualNetworkConnectionsClient object to access its operations.
+     * 
+     * @return the SiteSiloVirtualNetworkConnectionsClient object.
+     */
+    SiteSiloVirtualNetworkConnectionsClient getSiteSiloVirtualNetworkConnections();
+
+    /**
+     * Gets the ServerFarmSiloResourcesClient object to access its operations.
+     * 
+     * @return the ServerFarmSiloResourcesClient object.
+     */
+    ServerFarmSiloResourcesClient getServerFarmSiloResources();
+
+    /**
+     * Gets the ManagedTrafficConfigResourcesClient object to access its operations.
+     * 
+     * @return the ManagedTrafficConfigResourcesClient object.
+     */
+    ManagedTrafficConfigResourcesClient getManagedTrafficConfigResources();
+
+    /**
+     * Gets the LastKnownGoodResourcesClient object to access its operations.
+     * 
+     * @return the LastKnownGoodResourcesClient object.
+     */
+    LastKnownGoodResourcesClient getLastKnownGoodResources();
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.

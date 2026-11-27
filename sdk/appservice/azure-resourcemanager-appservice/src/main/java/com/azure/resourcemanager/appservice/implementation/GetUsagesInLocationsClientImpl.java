@@ -83,7 +83,7 @@ public final class GetUsagesInLocationsClientImpl implements GetUsagesInLocation
      * 
      * List usages in cores for all skus used by a subscription in a given location, for a specific quota type.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -117,7 +117,7 @@ public final class GetUsagesInLocationsClientImpl implements GetUsagesInLocation
      * 
      * List usages in cores for all skus used by a subscription in a given location, for a specific quota type.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -158,7 +158,7 @@ public final class GetUsagesInLocationsClientImpl implements GetUsagesInLocation
      * 
      * List usages in cores for all skus used by a subscription in a given location, for a specific quota type.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

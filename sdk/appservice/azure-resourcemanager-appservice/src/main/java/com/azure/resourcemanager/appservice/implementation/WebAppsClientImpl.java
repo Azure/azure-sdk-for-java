@@ -34,6 +34,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.resourcemanager.appservice.fluent.WebAppsClient;
 import com.azure.resourcemanager.appservice.fluent.models.ApiKVReferenceInner;
 import com.azure.resourcemanager.appservice.fluent.models.AzureStoragePropertyDictionaryResourceInner;
@@ -485,7 +486,7 @@ public final class WebAppsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("slot") String slot, Context context);
 
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/sites/{name}/slots/{slot}/host/default/{keyType}/{keyName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/{keyType}/{keyName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<KeyInfoInner>> createOrUpdateHostSecretSlot(@HostParam("endpoint") String endpoint,
@@ -496,7 +497,7 @@ public final class WebAppsClientImpl
             @BodyParam("application/json") KeyInfoInner key, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/sites/{name}/slots/{slot}/host/default/{keyType}/{keyName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/{keyType}/{keyName}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ManagementException.class, code = { 404 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -553,7 +554,7 @@ public final class WebAppsClientImpl
             @PathParam("slot") String slot, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/sites/{name}/slots/{slot}/networkTrace/operationresults/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/operationresults/{operationId}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<NetworkTraceInner>>> getNetworkTraceOperationSlot(@HostParam("endpoint") String endpoint,
@@ -594,7 +595,7 @@ public final class WebAppsClientImpl
             @PathParam("slot") String slot, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/sites/{name}/slots/{slot}/networkTrace/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/{operationId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<NetworkTraceInner>>> getNetworkTracesSlot(@HostParam("endpoint") String endpoint,
@@ -604,7 +605,7 @@ public final class WebAppsClientImpl
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/sites/{name}/slots/{slot}/networkTraces/current/operationresults/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTraces/current/operationresults/{operationId}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<NetworkTraceInner>>> getNetworkTraceOperationSlotV2(@HostParam("endpoint") String endpoint,
@@ -614,7 +615,7 @@ public final class WebAppsClientImpl
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/sites/{name}/slots/{slot}/networkTraces/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTraces/{operationId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<NetworkTraceInner>>> getNetworkTracesSlotV2(@HostParam("endpoint") String endpoint,
@@ -1486,7 +1487,7 @@ public final class WebAppsClientImpl
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name, Context context);
 
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/sites/{name}/host/default/{keyType}/{keyName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/{keyType}/{keyName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<KeyInfoInner>> createOrUpdateHostSecret(@HostParam("endpoint") String endpoint,
@@ -1497,7 +1498,7 @@ public final class WebAppsClientImpl
             @BodyParam("application/json") KeyInfoInner key, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/sites/{name}/host/default/{keyType}/{keyName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/{keyType}/{keyName}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ManagementException.class, code = { 404 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -1581,7 +1582,7 @@ public final class WebAppsClientImpl
             @BodyParam("application/json") MigrateMySqlRequest migrationRequestEnvelope, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/sites/{name}/networkTrace/operationresults/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/operationresults/{operationId}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<NetworkTraceInner>>> getNetworkTraceOperation(@HostParam("endpoint") String endpoint,
@@ -1620,7 +1621,7 @@ public final class WebAppsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/sites/{name}/networkTrace/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/{operationId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<NetworkTraceInner>>> getNetworkTraces(@HostParam("endpoint") String endpoint,
@@ -1629,7 +1630,7 @@ public final class WebAppsClientImpl
             @PathParam("operationId") String operationId, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/sites/{name}/networkTraces/current/operationresults/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTraces/current/operationresults/{operationId}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<NetworkTraceInner>>> getNetworkTraceOperationV2(@HostParam("endpoint") String endpoint,
@@ -1638,7 +1639,7 @@ public final class WebAppsClientImpl
             @PathParam("operationId") String operationId, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/sites/{name}/networkTraces/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTraces/{operationId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<NetworkTraceInner>>> getNetworkTracesV2(@HostParam("endpoint") String endpoint,
@@ -2883,7 +2884,7 @@ public final class WebAppsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<KeyInfoInner>> createOrUpdateFunctionSecret(@HostParam("endpoint") String endpoint,
@@ -2894,7 +2895,7 @@ public final class WebAppsClientImpl
             @BodyParam("application/json") KeyInfoInner key, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ManagementException.class, code = { 404 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -9164,25 +9165,30 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName,
-        String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+    public PollerFlux<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>>
+        beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot,
+            Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWebSiteNetworkTraceOperationSlotWithResponseAsync(
             resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<List<NetworkTraceInner>, List<NetworkTraceInner>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), this.client.getContext());
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName,
-        String name, String slot) {
+    public PollerFlux<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>>
+        beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot) {
         final Integer durationInSeconds = null;
         final Integer maxFrameLength = null;
         final String sasUrl = null;
         Mono<Response<Flux<ByteBuffer>>> mono = startWebSiteNetworkTraceOperationSlotWithResponseAsync(
             resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<List<NetworkTraceInner>, List<NetworkTraceInner>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), this.client.getContext());
     }
 
     /**
@@ -9203,19 +9209,22 @@ public final class WebAppsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName,
-        String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
+    private PollerFlux<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>>
+        beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot,
+            Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = startWebSiteNetworkTraceOperationSlotWithResponseAsync(
             resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<List<NetworkTraceInner>, List<NetworkTraceInner>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), context);
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartWebSiteNetworkTraceOperationSlot(String resourceGroupName,
-        String name, String slot) {
+    public SyncPoller<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>>
+        beginStartWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name, String slot) {
         final Integer durationInSeconds = null;
         final Integer maxFrameLength = null;
         final String sasUrl = null;
@@ -9227,8 +9236,9 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartWebSiteNetworkTraceOperationSlot(String resourceGroupName,
-        String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
+    public SyncPoller<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>>
+        beginStartWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name, String slot,
+            Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
         return this
             .beginStartWebSiteNetworkTraceOperationSlotAsync(resourceGroupName, name, slot, durationInSeconds,
                 maxFrameLength, sasUrl, context)
@@ -9237,15 +9247,16 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot,
-        Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+    public Mono<List<NetworkTraceInner>> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName,
+        String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
         return beginStartWebSiteNetworkTraceOperationSlotAsync(resourceGroupName, name, slot, durationInSeconds,
             maxFrameLength, sasUrl).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot) {
+    public Mono<List<NetworkTraceInner>> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName,
+        String name, String slot) {
         final Integer durationInSeconds = null;
         final Integer maxFrameLength = null;
         final String sasUrl = null;
@@ -9268,31 +9279,32 @@ public final class WebAppsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot,
-        Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
+    private Mono<List<NetworkTraceInner>> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName,
+        String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
         return beginStartWebSiteNetworkTraceOperationSlotAsync(resourceGroupName, name, slot, durationInSeconds,
             maxFrameLength, sasUrl, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name, String slot) {
+    public List<NetworkTraceInner> startWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name,
+        String slot) {
         final Integer durationInSeconds = null;
         final Integer maxFrameLength = null;
         final String sasUrl = null;
-        startWebSiteNetworkTraceOperationSlotAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength,
-            sasUrl).block();
+        return startWebSiteNetworkTraceOperationSlotAsync(resourceGroupName, name, slot, durationInSeconds,
+            maxFrameLength, sasUrl).block();
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name, String slot,
-        Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
-        startWebSiteNetworkTraceOperationSlotAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength,
-            sasUrl, context).block();
+    public List<NetworkTraceInner> startWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name,
+        String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
+        return startWebSiteNetworkTraceOperationSlotAsync(resourceGroupName, name, slot, durationInSeconds,
+            maxFrameLength, sasUrl, context).block();
     }
 
     @Override
@@ -11764,25 +11776,30 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginStartNetworkTraceSlotAsync(String resourceGroupName, String name,
-        String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+    public PollerFlux<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>> beginStartNetworkTraceSlotAsync(
+        String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength,
+        String sasUrl) {
         Mono<Response<Flux<ByteBuffer>>> mono = startNetworkTraceSlotWithResponseAsync(resourceGroupName, name, slot,
             durationInSeconds, maxFrameLength, sasUrl);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<List<NetworkTraceInner>, List<NetworkTraceInner>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), this.client.getContext());
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginStartNetworkTraceSlotAsync(String resourceGroupName, String name,
-        String slot) {
+    public PollerFlux<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>>
+        beginStartNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
         final Integer durationInSeconds = null;
         final Integer maxFrameLength = null;
         final String sasUrl = null;
         Mono<Response<Flux<ByteBuffer>>> mono = startNetworkTraceSlotWithResponseAsync(resourceGroupName, name, slot,
             durationInSeconds, maxFrameLength, sasUrl);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<List<NetworkTraceInner>, List<NetworkTraceInner>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), this.client.getContext());
     }
 
     /**
@@ -11803,19 +11820,22 @@ public final class WebAppsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartNetworkTraceSlotAsync(String resourceGroupName, String name,
-        String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
+    private PollerFlux<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>> beginStartNetworkTraceSlotAsync(
+        String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength,
+        String sasUrl, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = startNetworkTraceSlotWithResponseAsync(resourceGroupName, name, slot,
             durationInSeconds, maxFrameLength, sasUrl, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<List<NetworkTraceInner>, List<NetworkTraceInner>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), context);
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartNetworkTraceSlot(String resourceGroupName, String name,
-        String slot) {
+    public SyncPoller<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>>
+        beginStartNetworkTraceSlot(String resourceGroupName, String name, String slot) {
         final Integer durationInSeconds = null;
         final Integer maxFrameLength = null;
         final String sasUrl = null;
@@ -11826,8 +11846,9 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartNetworkTraceSlot(String resourceGroupName, String name,
-        String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
+    public SyncPoller<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>> beginStartNetworkTraceSlot(
+        String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength,
+        String sasUrl, Context context) {
         return this
             .beginStartNetworkTraceSlotAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl,
                 context)
@@ -11836,7 +11857,7 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startNetworkTraceSlotAsync(String resourceGroupName, String name, String slot,
+    public Mono<List<NetworkTraceInner>> startNetworkTraceSlotAsync(String resourceGroupName, String name, String slot,
         Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
         return beginStartNetworkTraceSlotAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl)
             .last()
@@ -11845,7 +11866,8 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
+    public Mono<List<NetworkTraceInner>> startNetworkTraceSlotAsync(String resourceGroupName, String name,
+        String slot) {
         final Integer durationInSeconds = null;
         final Integer maxFrameLength = null;
         final String sasUrl = null;
@@ -11869,10 +11891,10 @@ public final class WebAppsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startNetworkTraceSlotAsync(String resourceGroupName, String name, String slot,
+    private Mono<List<NetworkTraceInner>> startNetworkTraceSlotAsync(String resourceGroupName, String name, String slot,
         Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
         return beginStartNetworkTraceSlotAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl,
             context).last().flatMap(this.client::getLroFinalResultOrError);
@@ -11880,19 +11902,20 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startNetworkTraceSlot(String resourceGroupName, String name, String slot) {
+    public List<NetworkTraceInner> startNetworkTraceSlot(String resourceGroupName, String name, String slot) {
         final Integer durationInSeconds = null;
         final Integer maxFrameLength = null;
         final String sasUrl = null;
-        startNetworkTraceSlotAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl).block();
+        return startNetworkTraceSlotAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl)
+            .block();
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startNetworkTraceSlot(String resourceGroupName, String name, String slot, Integer durationInSeconds,
-        Integer maxFrameLength, String sasUrl, Context context) {
-        startNetworkTraceSlotAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl, context)
-            .block();
+    public List<NetworkTraceInner> startNetworkTraceSlot(String resourceGroupName, String name, String slot,
+        Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
+        return startNetworkTraceSlotAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl,
+            context).block();
     }
 
     @Override
@@ -20898,25 +20921,30 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName,
-        String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+    public PollerFlux<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>>
+        beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, Integer durationInSeconds,
+            Integer maxFrameLength, String sasUrl) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWebSiteNetworkTraceOperationWithResponseAsync(resourceGroupName,
             name, durationInSeconds, maxFrameLength, sasUrl);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<List<NetworkTraceInner>, List<NetworkTraceInner>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), this.client.getContext());
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName,
-        String name) {
+    public PollerFlux<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>>
+        beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name) {
         final Integer durationInSeconds = null;
         final Integer maxFrameLength = null;
         final String sasUrl = null;
         Mono<Response<Flux<ByteBuffer>>> mono = startWebSiteNetworkTraceOperationWithResponseAsync(resourceGroupName,
             name, durationInSeconds, maxFrameLength, sasUrl);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<List<NetworkTraceInner>, List<NetworkTraceInner>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), this.client.getContext());
     }
 
     /**
@@ -20936,19 +20964,22 @@ public final class WebAppsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName,
-        String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
+    private PollerFlux<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>>
+        beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, Integer durationInSeconds,
+            Integer maxFrameLength, String sasUrl, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = startWebSiteNetworkTraceOperationWithResponseAsync(resourceGroupName,
             name, durationInSeconds, maxFrameLength, sasUrl, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<List<NetworkTraceInner>, List<NetworkTraceInner>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), context);
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartWebSiteNetworkTraceOperation(String resourceGroupName,
-        String name) {
+    public SyncPoller<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>>
+        beginStartWebSiteNetworkTraceOperation(String resourceGroupName, String name) {
         final Integer durationInSeconds = null;
         final Integer maxFrameLength = null;
         final String sasUrl = null;
@@ -20960,8 +20991,9 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartWebSiteNetworkTraceOperation(String resourceGroupName,
-        String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
+    public SyncPoller<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>>
+        beginStartWebSiteNetworkTraceOperation(String resourceGroupName, String name, Integer durationInSeconds,
+            Integer maxFrameLength, String sasUrl, Context context) {
         return this
             .beginStartWebSiteNetworkTraceOperationAsync(resourceGroupName, name, durationInSeconds, maxFrameLength,
                 sasUrl, context)
@@ -20970,7 +21002,7 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name,
+    public Mono<List<NetworkTraceInner>> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name,
         Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
         return beginStartWebSiteNetworkTraceOperationAsync(resourceGroupName, name, durationInSeconds, maxFrameLength,
             sasUrl).last().flatMap(this.client::getLroFinalResultOrError);
@@ -20978,7 +21010,7 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name) {
+    public Mono<List<NetworkTraceInner>> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name) {
         final Integer durationInSeconds = null;
         final Integer maxFrameLength = null;
         final String sasUrl = null;
@@ -21000,10 +21032,10 @@ public final class WebAppsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name,
+    private Mono<List<NetworkTraceInner>> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name,
         Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
         return beginStartWebSiteNetworkTraceOperationAsync(resourceGroupName, name, durationInSeconds, maxFrameLength,
             sasUrl, context).last().flatMap(this.client::getLroFinalResultOrError);
@@ -21011,20 +21043,20 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startWebSiteNetworkTraceOperation(String resourceGroupName, String name) {
+    public List<NetworkTraceInner> startWebSiteNetworkTraceOperation(String resourceGroupName, String name) {
         final Integer durationInSeconds = null;
         final Integer maxFrameLength = null;
         final String sasUrl = null;
-        startWebSiteNetworkTraceOperationAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl)
-            .block();
+        return startWebSiteNetworkTraceOperationAsync(resourceGroupName, name, durationInSeconds, maxFrameLength,
+            sasUrl).block();
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startWebSiteNetworkTraceOperation(String resourceGroupName, String name, Integer durationInSeconds,
-        Integer maxFrameLength, String sasUrl, Context context) {
-        startWebSiteNetworkTraceOperationAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl,
-            context).block();
+    public List<NetworkTraceInner> startWebSiteNetworkTraceOperation(String resourceGroupName, String name,
+        Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
+        return startWebSiteNetworkTraceOperationAsync(resourceGroupName, name, durationInSeconds, maxFrameLength,
+            sasUrl, context).block();
     }
 
     @Override
@@ -23345,24 +23377,29 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginStartNetworkTraceAsync(String resourceGroupName, String name,
-        Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+    public PollerFlux<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>> beginStartNetworkTraceAsync(
+        String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = startNetworkTraceWithResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<List<NetworkTraceInner>, List<NetworkTraceInner>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), this.client.getContext());
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginStartNetworkTraceAsync(String resourceGroupName, String name) {
+    public PollerFlux<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>>
+        beginStartNetworkTraceAsync(String resourceGroupName, String name) {
         final Integer durationInSeconds = null;
         final Integer maxFrameLength = null;
         final String sasUrl = null;
         Mono<Response<Flux<ByteBuffer>>> mono
             = startNetworkTraceWithResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<List<NetworkTraceInner>, List<NetworkTraceInner>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), this.client.getContext());
     }
 
     /**
@@ -23382,18 +23419,22 @@ public final class WebAppsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartNetworkTraceAsync(String resourceGroupName, String name,
-        Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
+    private PollerFlux<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>> beginStartNetworkTraceAsync(
+        String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = startNetworkTraceWithResponseAsync(resourceGroupName, name,
             durationInSeconds, maxFrameLength, sasUrl, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<List<NetworkTraceInner>, List<NetworkTraceInner>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), new TypeReference<List<NetworkTraceInner>>() {
+            }.getJavaType(), context);
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartNetworkTrace(String resourceGroupName, String name) {
+    public SyncPoller<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>>
+        beginStartNetworkTrace(String resourceGroupName, String name) {
         final Integer durationInSeconds = null;
         final Integer maxFrameLength = null;
         final String sasUrl = null;
@@ -23403,8 +23444,9 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartNetworkTrace(String resourceGroupName, String name,
-        Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
+    public SyncPoller<PollResult<List<NetworkTraceInner>>, List<NetworkTraceInner>> beginStartNetworkTrace(
+        String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl,
+        Context context) {
         return this
             .beginStartNetworkTraceAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl, context)
             .getSyncPoller();
@@ -23412,15 +23454,15 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startNetworkTraceAsync(String resourceGroupName, String name, Integer durationInSeconds,
-        Integer maxFrameLength, String sasUrl) {
+    public Mono<List<NetworkTraceInner>> startNetworkTraceAsync(String resourceGroupName, String name,
+        Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
         return beginStartNetworkTraceAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startNetworkTraceAsync(String resourceGroupName, String name) {
+    public Mono<List<NetworkTraceInner>> startNetworkTraceAsync(String resourceGroupName, String name) {
         final Integer durationInSeconds = null;
         final Integer maxFrameLength = null;
         final String sasUrl = null;
@@ -23442,11 +23484,11 @@ public final class WebAppsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startNetworkTraceAsync(String resourceGroupName, String name, Integer durationInSeconds,
-        Integer maxFrameLength, String sasUrl, Context context) {
+    private Mono<List<NetworkTraceInner>> startNetworkTraceAsync(String resourceGroupName, String name,
+        Integer durationInSeconds, Integer maxFrameLength, String sasUrl, Context context) {
         return beginStartNetworkTraceAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -23454,18 +23496,19 @@ public final class WebAppsClientImpl
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startNetworkTrace(String resourceGroupName, String name) {
+    public List<NetworkTraceInner> startNetworkTrace(String resourceGroupName, String name) {
         final Integer durationInSeconds = null;
         final Integer maxFrameLength = null;
         final String sasUrl = null;
-        startNetworkTraceAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl).block();
+        return startNetworkTraceAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl).block();
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startNetworkTrace(String resourceGroupName, String name, Integer durationInSeconds,
+    public List<NetworkTraceInner> startNetworkTrace(String resourceGroupName, String name, Integer durationInSeconds,
         Integer maxFrameLength, String sasUrl, Context context) {
-        startNetworkTraceAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl, context).block();
+        return startNetworkTraceAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl, context)
+            .block();
     }
 
     @Override
@@ -54453,4 +54496,8 @@ public final class WebAppsClientImpl
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
+
+    private static final TypeReference<List<NetworkTraceInner>> TYPE_REFERENCE_LIST_NETWORK_TRACE_INNER
+        = new TypeReference<List<NetworkTraceInner>>() {
+        };
 }

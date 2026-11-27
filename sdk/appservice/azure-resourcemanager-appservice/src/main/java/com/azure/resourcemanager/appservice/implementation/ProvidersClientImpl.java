@@ -501,7 +501,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Function app frameworks and their versions for location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -535,7 +535,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Function app frameworks and their versions for location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -586,7 +586,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Function app frameworks and their versions for location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -623,7 +623,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Web app frameworks and their versions for location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -657,7 +657,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Web app frameworks and their versions for location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -708,7 +708,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * 
      * Description for Get available Web app frameworks and their versions for location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

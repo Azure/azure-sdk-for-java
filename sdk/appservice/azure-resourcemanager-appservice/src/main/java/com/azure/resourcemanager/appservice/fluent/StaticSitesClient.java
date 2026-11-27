@@ -6384,7 +6384,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * 
      * Description for Generates a preview workflow file for the static site.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param staticSitesWorkflowPreviewRequest The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -6402,7 +6402,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * 
      * Description for Generates a preview workflow file for the static site.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param staticSitesWorkflowPreviewRequest The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -6419,7 +6419,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * 
      * Description for Generates a preview workflow file for the static site.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param staticSitesWorkflowPreviewRequest The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6437,7 +6437,7 @@ public interface StaticSitesClient extends InnerSupportsGet<StaticSiteArmResourc
      * 
      * Description for Generates a preview workflow file for the static site.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param staticSitesWorkflowPreviewRequest The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is

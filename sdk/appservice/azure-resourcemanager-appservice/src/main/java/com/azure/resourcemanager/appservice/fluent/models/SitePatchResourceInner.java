@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.appservice.models.AiIntegration;
 import com.azure.resourcemanager.appservice.models.ClientCertMode;
 import com.azure.resourcemanager.appservice.models.CloningInfo;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
@@ -186,6 +187,31 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
             this.innerProperties = new SitePatchResourcePropertiesInner();
         }
         this.innerProperties().withEnabled(enabled);
+        return this;
+    }
+
+    /**
+     * Get the siteScopedCertificatesEnabled property: &lt;code&gt;true&lt;/code&gt; if site scoped certificates are
+     * enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * 
+     * @return the siteScopedCertificatesEnabled value.
+     */
+    public Boolean siteScopedCertificatesEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().siteScopedCertificatesEnabled();
+    }
+
+    /**
+     * Set the siteScopedCertificatesEnabled property: &lt;code&gt;true&lt;/code&gt; if site scoped certificates are
+     * enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * 
+     * @param siteScopedCertificatesEnabled the siteScopedCertificatesEnabled value to set.
+     * @return the SitePatchResourceInner object itself.
+     */
+    public SitePatchResourceInner withSiteScopedCertificatesEnabled(Boolean siteScopedCertificatesEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePatchResourcePropertiesInner();
+        }
+        this.innerProperties().withSiteScopedCertificatesEnabled(siteScopedCertificatesEnabled);
         return this;
     }
 
@@ -378,6 +404,29 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
             this.innerProperties = new SitePatchResourcePropertiesInner();
         }
         this.innerProperties().withSiteConfig(siteConfig);
+        return this;
+    }
+
+    /**
+     * Get the aiIntegration property: AI integration configuration for the app.
+     * 
+     * @return the aiIntegration value.
+     */
+    public AiIntegration aiIntegration() {
+        return this.innerProperties() == null ? null : this.innerProperties().aiIntegration();
+    }
+
+    /**
+     * Set the aiIntegration property: AI integration configuration for the app.
+     * 
+     * @param aiIntegration the aiIntegration value to set.
+     * @return the SitePatchResourceInner object itself.
+     */
+    public SitePatchResourceInner withAiIntegration(AiIntegration aiIntegration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePatchResourcePropertiesInner();
+        }
+        this.innerProperties().withAiIntegration(aiIntegration);
         return this;
     }
 

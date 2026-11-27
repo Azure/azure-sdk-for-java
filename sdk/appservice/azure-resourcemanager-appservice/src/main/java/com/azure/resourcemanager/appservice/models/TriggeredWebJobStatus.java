@@ -21,7 +21,17 @@ public enum TriggeredWebJobStatus {
     /**
      * Enum value Error.
      */
-    ERROR("Error");
+    ERROR("Error"),
+
+    /**
+     * Enum value Aborted.
+     */
+    ABORTED("Aborted"),
+
+    /**
+     * Enum value Running.
+     */
+    RUNNING("Running");
 
     /**
      * The actual serialized value for a TriggeredWebJobStatus instance.

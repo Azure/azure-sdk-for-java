@@ -42,6 +42,11 @@ public final class OutboundVnetRouting implements JsonSerializable<OutboundVnetR
      */
     private Boolean backupRestoreTraffic;
 
+    /*
+     * Enables Managed Identity operations over virtual network.
+     */
+    private Boolean managedIdentityTraffic;
+
     /**
      * Creates an instance of OutboundVnetRouting class.
      */
@@ -159,6 +164,26 @@ public final class OutboundVnetRouting implements JsonSerializable<OutboundVnetR
     }
 
     /**
+     * Get the managedIdentityTraffic property: Enables Managed Identity operations over virtual network.
+     * 
+     * @return the managedIdentityTraffic value.
+     */
+    public Boolean managedIdentityTraffic() {
+        return this.managedIdentityTraffic;
+    }
+
+    /**
+     * Set the managedIdentityTraffic property: Enables Managed Identity operations over virtual network.
+     * 
+     * @param managedIdentityTraffic the managedIdentityTraffic value to set.
+     * @return the OutboundVnetRouting object itself.
+     */
+    public OutboundVnetRouting withManagedIdentityTraffic(Boolean managedIdentityTraffic) {
+        this.managedIdentityTraffic = managedIdentityTraffic;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -177,6 +202,7 @@ public final class OutboundVnetRouting implements JsonSerializable<OutboundVnetR
         jsonWriter.writeBooleanField("contentShareTraffic", this.contentShareTraffic);
         jsonWriter.writeBooleanField("imagePullTraffic", this.imagePullTraffic);
         jsonWriter.writeBooleanField("backupRestoreTraffic", this.backupRestoreTraffic);
+        jsonWriter.writeBooleanField("managedIdentityTraffic", this.managedIdentityTraffic);
         return jsonWriter.writeEndObject();
     }
 
@@ -205,6 +231,8 @@ public final class OutboundVnetRouting implements JsonSerializable<OutboundVnetR
                     deserializedOutboundVnetRouting.imagePullTraffic = reader.getNullable(JsonReader::getBoolean);
                 } else if ("backupRestoreTraffic".equals(fieldName)) {
                     deserializedOutboundVnetRouting.backupRestoreTraffic = reader.getNullable(JsonReader::getBoolean);
+                } else if ("managedIdentityTraffic".equals(fieldName)) {
+                    deserializedOutboundVnetRouting.managedIdentityTraffic = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
