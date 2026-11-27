@@ -13,20 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class RequestHeaderOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RequestHeaderOptions model = BinaryData
-            .fromString("{\"optInHeaders\":\"ManagementGroupAncestorsEncoded\",\"optOutHeaders\":\"NotSpecified\"}")
-            .toObject(RequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.MANAGEMENT_GROUP_ANCESTORS_ENCODED, model.optInHeaders());
+        RequestHeaderOptions model
+            = BinaryData.fromString("{\"optInHeaders\":\"AuxiliaryUserContext\",\"optOutHeaders\":\"NotSpecified\"}")
+                .toObject(RequestHeaderOptions.class);
+        Assertions.assertEquals(OptInHeaderType.AUXILIARY_USER_CONTEXT, model.optInHeaders());
         Assertions.assertEquals(OptOutHeaderType.NOT_SPECIFIED, model.optOutHeaders());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RequestHeaderOptions model
-            = new RequestHeaderOptions().withOptInHeaders(OptInHeaderType.MANAGEMENT_GROUP_ANCESTORS_ENCODED)
-                .withOptOutHeaders(OptOutHeaderType.NOT_SPECIFIED);
+        RequestHeaderOptions model = new RequestHeaderOptions().withOptInHeaders(OptInHeaderType.AUXILIARY_USER_CONTEXT)
+            .withOptOutHeaders(OptOutHeaderType.NOT_SPECIFIED);
         model = BinaryData.fromObject(model).toObject(RequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.MANAGEMENT_GROUP_ANCESTORS_ENCODED, model.optInHeaders());
+        Assertions.assertEquals(OptInHeaderType.AUXILIARY_USER_CONTEXT, model.optInHeaders());
         Assertions.assertEquals(OptOutHeaderType.NOT_SPECIFIED, model.optOutHeaders());
     }
 }

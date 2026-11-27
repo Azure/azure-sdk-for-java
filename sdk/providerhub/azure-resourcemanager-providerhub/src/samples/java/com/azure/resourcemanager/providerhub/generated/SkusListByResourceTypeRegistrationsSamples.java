@@ -9,7 +9,7 @@ package com.azure.resourcemanager.providerhub.generated;
  */
 public final class SkusListByResourceTypeRegistrationsSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_ListByResourceTypeRegistrations.json
+     * x-ms-original-file: 2026-10-01/Skus_ListByResourceTypeRegistrations.json
      */
     /**
      * Sample code: Skus_ListByResourceTypeRegistrations.
@@ -19,6 +19,6 @@ public final class SkusListByResourceTypeRegistrationsSamples {
     public static void
         skusListByResourceTypeRegistrations(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
         manager.skus()
-            .listByResourceTypeRegistrations("Microsoft.Contoso", "testResourceType", com.azure.core.util.Context.NONE);
+            .listByResourceTypeRegistrations("Microsoft.Contoso", "employees", com.azure.core.util.Context.NONE);
     }
 }

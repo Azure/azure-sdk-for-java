@@ -12,25 +12,25 @@ public final class DefaultRolloutStatusManifestCheckinStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefaultRolloutStatusManifestCheckinStatus model = BinaryData.fromString(
-            "{\"isCheckedIn\":false,\"statusMessage\":\"obgop\",\"pullRequest\":\"hsln\",\"commitId\":\"xieixynllxec\"}")
+            "{\"isCheckedIn\":false,\"statusMessage\":\"rlpshhkv\",\"pullRequest\":\"dwqslsrhmpqvw\",\"commitId\":\"kondcb\"}")
             .toObject(DefaultRolloutStatusManifestCheckinStatus.class);
         Assertions.assertFalse(model.isCheckedIn());
-        Assertions.assertEquals("obgop", model.statusMessage());
-        Assertions.assertEquals("hsln", model.pullRequest());
-        Assertions.assertEquals("xieixynllxec", model.commitId());
+        Assertions.assertEquals("rlpshhkv", model.statusMessage());
+        Assertions.assertEquals("dwqslsrhmpqvw", model.pullRequest());
+        Assertions.assertEquals("kondcb", model.commitId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefaultRolloutStatusManifestCheckinStatus model
             = new DefaultRolloutStatusManifestCheckinStatus().withIsCheckedIn(false)
-                .withStatusMessage("obgop")
-                .withPullRequest("hsln")
-                .withCommitId("xieixynllxec");
+                .withStatusMessage("rlpshhkv")
+                .withPullRequest("dwqslsrhmpqvw")
+                .withCommitId("kondcb");
         model = BinaryData.fromObject(model).toObject(DefaultRolloutStatusManifestCheckinStatus.class);
         Assertions.assertFalse(model.isCheckedIn());
-        Assertions.assertEquals("obgop", model.statusMessage());
-        Assertions.assertEquals("hsln", model.pullRequest());
-        Assertions.assertEquals("xieixynllxec", model.commitId());
+        Assertions.assertEquals("rlpshhkv", model.statusMessage());
+        Assertions.assertEquals("dwqslsrhmpqvw", model.pullRequest());
+        Assertions.assertEquals("kondcb", model.commitId());
     }
 }

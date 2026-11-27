@@ -13,24 +13,24 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceTypeExtensionOptionsResourceCreationBeginTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceTypeExtensionOptionsResourceCreationBegin model = BinaryData.fromString(
-            "{\"request\":[\"DoNotMergeExistingReadOnlyAndSecretProperties\"],\"response\":[\"IncludeInternalMetadata\",\"DoNotMergeExistingReadOnlyAndSecretProperties\"]}")
+        ResourceTypeExtensionOptionsResourceCreationBegin model = BinaryData
+            .fromString(
+                "{\"request\":[\"NotSpecified\"],\"response\":[\"DoNotMergeExistingReadOnlyAndSecretProperties\"]}")
             .toObject(ResourceTypeExtensionOptionsResourceCreationBegin.class);
+        Assertions.assertEquals(ExtensionOptionType.NOT_SPECIFIED, model.request().get(0));
         Assertions.assertEquals(ExtensionOptionType.DO_NOT_MERGE_EXISTING_READ_ONLY_AND_SECRET_PROPERTIES,
-            model.request().get(0));
-        Assertions.assertEquals(ExtensionOptionType.INCLUDE_INTERNAL_METADATA, model.response().get(0));
+            model.response().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeExtensionOptionsResourceCreationBegin model
             = new ResourceTypeExtensionOptionsResourceCreationBegin()
-                .withRequest(Arrays.asList(ExtensionOptionType.DO_NOT_MERGE_EXISTING_READ_ONLY_AND_SECRET_PROPERTIES))
-                .withResponse(Arrays.asList(ExtensionOptionType.INCLUDE_INTERNAL_METADATA,
-                    ExtensionOptionType.DO_NOT_MERGE_EXISTING_READ_ONLY_AND_SECRET_PROPERTIES));
+                .withRequest(Arrays.asList(ExtensionOptionType.NOT_SPECIFIED))
+                .withResponse(Arrays.asList(ExtensionOptionType.DO_NOT_MERGE_EXISTING_READ_ONLY_AND_SECRET_PROPERTIES));
         model = BinaryData.fromObject(model).toObject(ResourceTypeExtensionOptionsResourceCreationBegin.class);
+        Assertions.assertEquals(ExtensionOptionType.NOT_SPECIFIED, model.request().get(0));
         Assertions.assertEquals(ExtensionOptionType.DO_NOT_MERGE_EXISTING_READ_ONLY_AND_SECRET_PROPERTIES,
-            model.request().get(0));
-        Assertions.assertEquals(ExtensionOptionType.INCLUDE_INTERNAL_METADATA, model.response().get(0));
+            model.response().get(0));
     }
 }

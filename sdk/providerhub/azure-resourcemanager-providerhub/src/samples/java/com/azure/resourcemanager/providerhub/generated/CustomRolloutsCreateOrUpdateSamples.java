@@ -11,6 +11,7 @@ import com.azure.resourcemanager.providerhub.models.CustomRolloutSpecificationAu
 import com.azure.resourcemanager.providerhub.models.CustomRolloutSpecificationCanary;
 import com.azure.resourcemanager.providerhub.models.ManifestCheckinOption;
 import com.azure.resourcemanager.providerhub.models.ManifestCheckinSpecification;
+import com.azure.resourcemanager.providerhub.models.RolloutOrchestrationMetadata;
 import java.util.Arrays;
 
 /**
@@ -18,7 +19,7 @@ import java.util.Arrays;
  */
 public final class CustomRolloutsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CustomRollouts_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/CustomRollouts_CreateOrUpdate.json
      */
     /**
      * Sample code: CustomRollouts_CreateOrUpdate.
@@ -34,11 +35,17 @@ public final class CustomRolloutsCreateOrUpdateSamples {
                     new CustomRolloutSpecificationAutoProvisionConfig().withStorage(true).withResourceGraph(true))
                 .withCanary(new CustomRolloutSpecificationCanary().withRegions(Arrays.asList("brazilus")))
                 .withRefreshSubscriptionRegistration(true)
-                .withRolloutId("Ev2RolloutIdGuid")
+                .withRolloutId("rollout-0001")
+                .withRolloutOrchestrationMetadata(new RolloutOrchestrationMetadata().withIsForManifestBuildout(true)
+                    .withDeploymentType("RegionAgnosticRollout")
+                    .withTrafficRing("Canary")
+                    .withServiceGroup("Microsoft.Contoso.ManifestRollout")
+                    .withServiceIdentifier("00000000-0000-0000-0000-000000000000"))
                 .withManifestCheckinSpecification(new ManifestCheckinSpecification()
                     .withManifestCheckinOption(ManifestCheckinOption.ATTEMPT_AUTOMATIC_MANIFEST_CHECKIN)
                     .withManifestCheckinParams(new CheckinManifestParams().withEnvironment("Prod")
-                        .withBaselineArmManifestLocation("EastUS2EUAP")))))
+                        .withBaselineArmManifestLocation("EastUS2EUAP")
+                        .withSwaggerUri("https://github.com/Azure/azure-rest-api-specs/pull/123456")))))
             .create();
     }
 }

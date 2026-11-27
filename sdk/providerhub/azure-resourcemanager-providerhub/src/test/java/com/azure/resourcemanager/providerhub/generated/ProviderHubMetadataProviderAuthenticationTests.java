@@ -13,16 +13,16 @@ public final class ProviderHubMetadataProviderAuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProviderHubMetadataProviderAuthentication model
-            = BinaryData.fromString("{\"allowedAudiences\":[\"acegfnmntf\",\"mvmemfnczd\",\"vvbalx\"]}")
+            = BinaryData.fromString("{\"allowedAudiences\":[\"hcmavmqfo\",\"dorhcgyyp\",\"otwypundmb\",\"hu\"]}")
                 .toObject(ProviderHubMetadataProviderAuthentication.class);
-        Assertions.assertEquals("acegfnmntf", model.allowedAudiences().get(0));
+        Assertions.assertEquals("hcmavmqfo", model.allowedAudiences().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProviderHubMetadataProviderAuthentication model = new ProviderHubMetadataProviderAuthentication()
-            .withAllowedAudiences(Arrays.asList("acegfnmntf", "mvmemfnczd", "vvbalx"));
+            .withAllowedAudiences(Arrays.asList("hcmavmqfo", "dorhcgyyp", "otwypundmb", "hu"));
         model = BinaryData.fromObject(model).toObject(ProviderHubMetadataProviderAuthentication.class);
-        Assertions.assertEquals("acegfnmntf", model.allowedAudiences().get(0));
+        Assertions.assertEquals("hcmavmqfo", model.allowedAudiences().get(0));
     }
 }

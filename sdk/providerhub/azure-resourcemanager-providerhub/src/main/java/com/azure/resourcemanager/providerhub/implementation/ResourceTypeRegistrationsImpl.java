@@ -63,6 +63,54 @@ public final class ResourceTypeRegistrationsImpl implements ResourceTypeRegistra
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceTypeRegistrationImpl(inner1, this.manager()));
     }
 
+    public Response<ResourceTypeRegistration> getNestedResourceTypeFirstWithResponse(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, Context context) {
+        Response<ResourceTypeRegistrationInner> inner = this.serviceClient()
+            .getNestedResourceTypeFirstWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ResourceTypeRegistrationImpl(inner.getValue(), this.manager()));
+    }
+
+    public ResourceTypeRegistration getNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst) {
+        ResourceTypeRegistrationInner inner
+            = this.serviceClient().getNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst);
+        if (inner != null) {
+            return new ResourceTypeRegistrationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ResourceTypeRegistration createOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, ResourceTypeRegistrationInner properties) {
+        return this.createOrUpdateNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst,
+            properties, Context.NONE);
+    }
+
+    public ResourceTypeRegistration createOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, ResourceTypeRegistrationInner properties, Context context) {
+        ResourceTypeRegistrationInner inner = this.serviceClient()
+            .createOrUpdateNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst, properties,
+                context);
+        if (inner != null) {
+            return new ResourceTypeRegistrationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst) {
+        this.deleteNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst, Context.NONE);
+    }
+
+    public void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, Context context) {
+        this.serviceClient()
+            .deleteNestedResourceTypeFirst(providerNamespace, resourceType, nestedResourceTypeFirst, context);
+    }
+
     public ResourceTypeRegistration getById(String id) {
         return this.getByIdWithResponse(id, Context.NONE).getValue();
     }

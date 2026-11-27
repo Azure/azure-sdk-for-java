@@ -28,7 +28,7 @@ public final class ProviderMonitorSettingsDeleteByResourceGroupWithResponseMockT
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.providerMonitorSettings()
-            .deleteByResourceGroupWithResponse("gxq", "queu", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("sv", "bv", com.azure.core.util.Context.NONE);
 
     }
 }

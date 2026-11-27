@@ -74,6 +74,16 @@ public final class OptInHeaderType extends ExpandableStringEnum<OptInHeaderType>
     public static final OptInHeaderType MSIRESOURCE_ID_ENCODED = fromString("MSIResourceIdEncoded");
 
     /**
+     * Includes user context information from the incoming token.
+     */
+    public static final OptInHeaderType USER_CONTEXT = fromString("UserContext");
+
+    /**
+     * Includes user context information from incoming auxiliary tokens.
+     */
+    public static final OptInHeaderType AUXILIARY_USER_CONTEXT = fromString("AuxiliaryUserContext");
+
+    /**
      * Creates a new instance of OptInHeaderType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

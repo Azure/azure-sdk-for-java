@@ -16,46 +16,41 @@ public final class SkuLocationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuLocationInfo model = BinaryData.fromString(
-            "{\"location\":\"fulopmjnlexwhcb\",\"zones\":[\"bke\",\"hu\"],\"zoneDetails\":[{\"name\":[\"t\",\"toyint\",\"pbrlcyrduczkgofx\",\"fsrucv\"],\"capabilities\":[{\"name\":\"pcjttbstvjeaqn\",\"value\":\"mvvfko\"},{\"name\":\"mlghktuidvrmazlp\",\"value\":\"wwexymzvlazipbh\"},{\"name\":\"wvqsgny\",\"value\":\"uuzivensrpmeyyvp\"},{\"name\":\"patlbijp\",\"value\":\"gsksrfhf\"}]},{\"name\":[\"mknbnxwcdommpv\",\"qa\",\"zfgbrttuiaclkie\"],\"capabilities\":[{\"name\":\"jlfnthiq\",\"value\":\"yuttdiygbpvnwswm\"},{\"name\":\"xkyctwwgzwx\",\"value\":\"l\"},{\"name\":\"ecvo\",\"value\":\"ygzyvneezaifght\"}]},{\"name\":[\"qtlffhzbk\",\"kjj\",\"avfqnvhnqoewdogi\",\"etesypvidbztjhqt\"],\"capabilities\":[{\"name\":\"vnynkb\",\"value\":\"etnjuhpsprkz\"},{\"name\":\"aupia\",\"value\":\"cxnafbwqrooh\"},{\"name\":\"uovmaonurjt\",\"value\":\"mghihp\"},{\"name\":\"ecmslclbl\",\"value\":\"jxl\"}]}],\"extendedLocations\":[\"juscvsfx\",\"gctmgxuupbezq\",\"cydrtceukdqkk\",\"ihztgeqmgqzgwldo\"],\"type\":\"CustomLocation\"}")
+            "{\"location\":\"tpq\",\"zones\":[\"ymmpujivy\"],\"zoneDetails\":[{\"name\":[\"vsmb\",\"slzoyov\"],\"capabilities\":[{\"name\":\"bpqvybefg\",\"value\":\"mx\"},{\"name\":\"okcvtlubses\",\"value\":\"vcuartrhun\"},{\"name\":\"pirykycndzfqiv\",\"value\":\"reuykbbmnwagl\"}]},{\"name\":[\"oeeonqlnfwm\"],\"capabilities\":[{\"name\":\"vqdbpbhfck\",\"value\":\"vezcrcssbzhdd\"},{\"name\":\"b\",\"value\":\"nqfblhkalehpava\"},{\"name\":\"ugiqjtiogqg\",\"value\":\"minict\"},{\"name\":\"eajohiyg\",\"value\":\"pnbonhpcz\"}]}],\"extendedLocations\":[\"ktpv\"],\"type\":\"NotSpecified\"}")
             .toObject(SkuLocationInfo.class);
-        Assertions.assertEquals("fulopmjnlexwhcb", model.location());
-        Assertions.assertEquals("bke", model.zones().get(0));
-        Assertions.assertEquals("t", model.zoneDetails().get(0).name().get(0));
-        Assertions.assertEquals("pcjttbstvjeaqn", model.zoneDetails().get(0).capabilities().get(0).name());
-        Assertions.assertEquals("mvvfko", model.zoneDetails().get(0).capabilities().get(0).value());
-        Assertions.assertEquals("juscvsfx", model.extendedLocations().get(0));
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.type());
+        Assertions.assertEquals("tpq", model.location());
+        Assertions.assertEquals("ymmpujivy", model.zones().get(0));
+        Assertions.assertEquals("vsmb", model.zoneDetails().get(0).name().get(0));
+        Assertions.assertEquals("bpqvybefg", model.zoneDetails().get(0).capabilities().get(0).name());
+        Assertions.assertEquals("mx", model.zoneDetails().get(0).capabilities().get(0).value());
+        Assertions.assertEquals("ktpv", model.extendedLocations().get(0));
+        Assertions.assertEquals(ExtendedLocationType.NOT_SPECIFIED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuLocationInfo model = new SkuLocationInfo().withLocation("fulopmjnlexwhcb")
-            .withZones(Arrays.asList("bke", "hu"))
+        SkuLocationInfo model = new SkuLocationInfo().withLocation("tpq")
+            .withZones(Arrays.asList("ymmpujivy"))
             .withZoneDetails(Arrays.asList(
-                new SkuZoneDetail().withName(Arrays.asList("t", "toyint", "pbrlcyrduczkgofx", "fsrucv"))
-                    .withCapabilities(Arrays.asList(new SkuCapability().withName("pcjttbstvjeaqn").withValue("mvvfko"),
-                        new SkuCapability().withName("mlghktuidvrmazlp").withValue("wwexymzvlazipbh"),
-                        new SkuCapability().withName("wvqsgny").withValue("uuzivensrpmeyyvp"),
-                        new SkuCapability().withName("patlbijp").withValue("gsksrfhf"))),
-                new SkuZoneDetail().withName(Arrays.asList("mknbnxwcdommpv", "qa", "zfgbrttuiaclkie"))
+                new SkuZoneDetail().withName(Arrays.asList("vsmb", "slzoyov"))
+                    .withCapabilities(Arrays.asList(new SkuCapability().withName("bpqvybefg").withValue("mx"),
+                        new SkuCapability().withName("okcvtlubses").withValue("vcuartrhun"),
+                        new SkuCapability().withName("pirykycndzfqiv").withValue("reuykbbmnwagl"))),
+                new SkuZoneDetail().withName(Arrays.asList("oeeonqlnfwm"))
                     .withCapabilities(
-                        Arrays.asList(new SkuCapability().withName("jlfnthiq").withValue("yuttdiygbpvnwswm"),
-                            new SkuCapability().withName("xkyctwwgzwx").withValue("l"),
-                            new SkuCapability().withName("ecvo").withValue("ygzyvneezaifght"))),
-                new SkuZoneDetail().withName(Arrays.asList("qtlffhzbk", "kjj", "avfqnvhnqoewdogi", "etesypvidbztjhqt"))
-                    .withCapabilities(Arrays.asList(new SkuCapability().withName("vnynkb").withValue("etnjuhpsprkz"),
-                        new SkuCapability().withName("aupia").withValue("cxnafbwqrooh"),
-                        new SkuCapability().withName("uovmaonurjt").withValue("mghihp"),
-                        new SkuCapability().withName("ecmslclbl").withValue("jxl")))))
-            .withExtendedLocations(Arrays.asList("juscvsfx", "gctmgxuupbezq", "cydrtceukdqkk", "ihztgeqmgqzgwldo"))
-            .withType(ExtendedLocationType.CUSTOM_LOCATION);
+                        Arrays.asList(new SkuCapability().withName("vqdbpbhfck").withValue("vezcrcssbzhdd"),
+                            new SkuCapability().withName("b").withValue("nqfblhkalehpava"),
+                            new SkuCapability().withName("ugiqjtiogqg").withValue("minict"),
+                            new SkuCapability().withName("eajohiyg").withValue("pnbonhpcz")))))
+            .withExtendedLocations(Arrays.asList("ktpv"))
+            .withType(ExtendedLocationType.NOT_SPECIFIED);
         model = BinaryData.fromObject(model).toObject(SkuLocationInfo.class);
-        Assertions.assertEquals("fulopmjnlexwhcb", model.location());
-        Assertions.assertEquals("bke", model.zones().get(0));
-        Assertions.assertEquals("t", model.zoneDetails().get(0).name().get(0));
-        Assertions.assertEquals("pcjttbstvjeaqn", model.zoneDetails().get(0).capabilities().get(0).name());
-        Assertions.assertEquals("mvvfko", model.zoneDetails().get(0).capabilities().get(0).value());
-        Assertions.assertEquals("juscvsfx", model.extendedLocations().get(0));
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.type());
+        Assertions.assertEquals("tpq", model.location());
+        Assertions.assertEquals("ymmpujivy", model.zones().get(0));
+        Assertions.assertEquals("vsmb", model.zoneDetails().get(0).name().get(0));
+        Assertions.assertEquals("bpqvybefg", model.zoneDetails().get(0).capabilities().get(0).name());
+        Assertions.assertEquals("mx", model.zoneDetails().get(0).capabilities().get(0).value());
+        Assertions.assertEquals("ktpv", model.extendedLocations().get(0));
+        Assertions.assertEquals(ExtendedLocationType.NOT_SPECIFIED, model.type());
     }
 }

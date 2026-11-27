@@ -24,6 +24,25 @@
 - [ListByProviderRegistration](#defaultrollouts_listbyproviderregistration)
 - [Stop](#defaultrollouts_stop)
 
+## EndpointRegistrations
+
+- [CreateOrUpdate](#endpointregistrations_createorupdate)
+- [CreateOrUpdateNestedResourceTypeFirst](#endpointregistrations_createorupdatenestedresourcetypefirst)
+- [CreateOrUpdateNestedResourceTypeSecond](#endpointregistrations_createorupdatenestedresourcetypesecond)
+- [CreateOrUpdateNestedResourceTypeThird](#endpointregistrations_createorupdatenestedresourcetypethird)
+- [Delete](#endpointregistrations_delete)
+- [DeleteNestedResourceTypeFirst](#endpointregistrations_deletenestedresourcetypefirst)
+- [DeleteNestedResourceTypeSecond](#endpointregistrations_deletenestedresourcetypesecond)
+- [DeleteNestedResourceTypeThird](#endpointregistrations_deletenestedresourcetypethird)
+- [Get](#endpointregistrations_get)
+- [GetNestedResourceTypeFirst](#endpointregistrations_getnestedresourcetypefirst)
+- [GetNestedResourceTypeSecond](#endpointregistrations_getnestedresourcetypesecond)
+- [GetNestedResourceTypeThird](#endpointregistrations_getnestedresourcetypethird)
+- [ListByResourceTypeRegistration](#endpointregistrations_listbyresourcetyperegistration)
+- [ListByResourceTypeRegistrationNestedResourceTypeFirst](#endpointregistrations_listbyresourcetyperegistrationnestedresourcetypefirst)
+- [ListByResourceTypeRegistrationNestedResourceTypeSecond](#endpointregistrations_listbyresourcetyperegistrationnestedresourcetypesecond)
+- [ListByResourceTypeRegistrationNestedResourceTypeThird](#endpointregistrations_listbyresourcetyperegistrationnestedresourcetypethird)
+
 ## Manifests
 
 - [CreateOrUpdate](#manifests_createorupdate)
@@ -72,8 +91,11 @@
 ## ResourceTypeRegistrations
 
 - [CreateOrUpdate](#resourcetyperegistrations_createorupdate)
+- [CreateOrUpdateNestedResourceTypeFirst](#resourcetyperegistrations_createorupdatenestedresourcetypefirst)
 - [Delete](#resourcetyperegistrations_delete)
+- [DeleteNestedResourceTypeFirst](#resourcetyperegistrations_deletenestedresourcetypefirst)
 - [Get](#resourcetyperegistrations_get)
+- [GetNestedResourceTypeFirst](#resourcetyperegistrations_getnestedresourcetypefirst)
 - [ListByProviderRegistration](#resourcetyperegistrations_listbyproviderregistration)
 
 ## Skus
@@ -109,7 +131,7 @@ import java.util.UUID;
  */
 public final class AuthorizedApplicationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/AuthorizedApplications_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/AuthorizedApplications_CreateOrUpdate.json
      */
     /**
      * Sample code: AuthorizedApplications_CreateOrUpdate.
@@ -142,7 +164,7 @@ import java.util.UUID;
  */
 public final class AuthorizedApplicationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/AuthorizedApplications_Delete.json
+     * x-ms-original-file: 2026-10-01/AuthorizedApplications_Delete.json
      */
     /**
      * Sample code: AuthorizedApplications_Delete.
@@ -167,7 +189,7 @@ import java.util.UUID;
  */
 public final class AuthorizedApplicationsGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/AuthorizedApplications_Get.json
+     * x-ms-original-file: 2026-10-01/AuthorizedApplications_Get.json
      */
     /**
      * Sample code: AuthorizedApplications_Get.
@@ -190,7 +212,7 @@ public final class AuthorizedApplicationsGetSamples {
  */
 public final class AuthorizedApplicationsListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/AuthorizedApplications_List.json
+     * x-ms-original-file: 2026-10-01/AuthorizedApplications_List.json
      */
     /**
      * Sample code: AuthorizedApplications_List.
@@ -213,6 +235,7 @@ import com.azure.resourcemanager.providerhub.models.CustomRolloutSpecificationAu
 import com.azure.resourcemanager.providerhub.models.CustomRolloutSpecificationCanary;
 import com.azure.resourcemanager.providerhub.models.ManifestCheckinOption;
 import com.azure.resourcemanager.providerhub.models.ManifestCheckinSpecification;
+import com.azure.resourcemanager.providerhub.models.RolloutOrchestrationMetadata;
 import java.util.Arrays;
 
 /**
@@ -220,7 +243,7 @@ import java.util.Arrays;
  */
 public final class CustomRolloutsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CustomRollouts_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/CustomRollouts_CreateOrUpdate.json
      */
     /**
      * Sample code: CustomRollouts_CreateOrUpdate.
@@ -236,11 +259,17 @@ public final class CustomRolloutsCreateOrUpdateSamples {
                     new CustomRolloutSpecificationAutoProvisionConfig().withStorage(true).withResourceGraph(true))
                 .withCanary(new CustomRolloutSpecificationCanary().withRegions(Arrays.asList("brazilus")))
                 .withRefreshSubscriptionRegistration(true)
-                .withRolloutId("Ev2RolloutIdGuid")
+                .withRolloutId("rollout-0001")
+                .withRolloutOrchestrationMetadata(new RolloutOrchestrationMetadata().withIsForManifestBuildout(true)
+                    .withDeploymentType("RegionAgnosticRollout")
+                    .withTrafficRing("Canary")
+                    .withServiceGroup("Microsoft.Contoso.ManifestRollout")
+                    .withServiceIdentifier("00000000-0000-0000-0000-000000000000"))
                 .withManifestCheckinSpecification(new ManifestCheckinSpecification()
                     .withManifestCheckinOption(ManifestCheckinOption.ATTEMPT_AUTOMATIC_MANIFEST_CHECKIN)
                     .withManifestCheckinParams(new CheckinManifestParams().withEnvironment("Prod")
-                        .withBaselineArmManifestLocation("EastUS2EUAP")))))
+                        .withBaselineArmManifestLocation("EastUS2EUAP")
+                        .withSwaggerUri("https://github.com/Azure/azure-rest-api-specs/pull/123456")))))
             .create();
     }
 }
@@ -254,7 +283,7 @@ public final class CustomRolloutsCreateOrUpdateSamples {
  */
 public final class CustomRolloutsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CustomRollouts_Delete.json
+     * x-ms-original-file: 2026-10-01/CustomRollouts_Delete.json
      */
     /**
      * Sample code: providerReleases_Delete.
@@ -276,7 +305,7 @@ public final class CustomRolloutsDeleteSamples {
  */
 public final class CustomRolloutsGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CustomRollouts_Get.json
+     * x-ms-original-file: 2026-10-01/CustomRollouts_Get.json
      */
     /**
      * Sample code: CustomRollouts_Get.
@@ -298,7 +327,7 @@ public final class CustomRolloutsGetSamples {
  */
 public final class CustomRolloutsListByProviderRegistrationSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CustomRollouts_ListByProviderRegistration.json
+     * x-ms-original-file: 2026-10-01/CustomRollouts_ListByProviderRegistration.json
      */
     /**
      * Sample code: CustomRollouts_ListByProviderRegistration.
@@ -320,7 +349,7 @@ public final class CustomRolloutsListByProviderRegistrationSamples {
  */
 public final class CustomRolloutsStopSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CustomRollouts_Stop.json
+     * x-ms-original-file: 2026-10-01/CustomRollouts_Stop.json
      */
     /**
      * Sample code: CustomRollouts_Stop.
@@ -352,7 +381,7 @@ import java.util.Arrays;
  */
 public final class DefaultRolloutsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DefaultRollouts_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/DefaultRollouts_CreateOrUpdate.json
      */
     /**
      * Sample code: DefaultRollouts_CreateOrUpdate.
@@ -385,7 +414,7 @@ public final class DefaultRolloutsCreateOrUpdateSamples {
  */
 public final class DefaultRolloutsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DefaultRollouts_Delete.json
+     * x-ms-original-file: 2026-10-01/DefaultRollouts_Delete.json
      */
     /**
      * Sample code: DefaultRollouts_Delete.
@@ -407,7 +436,7 @@ public final class DefaultRolloutsDeleteSamples {
  */
 public final class DefaultRolloutsGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DefaultRollouts_Get.json
+     * x-ms-original-file: 2026-10-01/DefaultRollouts_Get.json
      */
     /**
      * Sample code: DefaultRollouts_Get.
@@ -428,7 +457,7 @@ public final class DefaultRolloutsGetSamples {
  */
 public final class DefaultRolloutsListByProviderRegistrationSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DefaultRollouts_ListByProviderRegistration.json
+     * x-ms-original-file: 2026-10-01/DefaultRollouts_ListByProviderRegistration.json
      */
     /**
      * Sample code: DefaultRollouts_ListByProviderRegistration.
@@ -450,7 +479,7 @@ public final class DefaultRolloutsListByProviderRegistrationSamples {
  */
 public final class DefaultRolloutsStopSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DefaultRollouts_Stop.json
+     * x-ms-original-file: 2026-10-01/DefaultRollouts_Stop.json
      */
     /**
      * Sample code: DefaultRollouts_Stop.
@@ -459,6 +488,426 @@ public final class DefaultRolloutsStopSamples {
      */
     public static void defaultRolloutsStop(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
         manager.defaultRollouts().stopWithResponse("Microsoft.Contoso", "2020week10", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EndpointRegistrations_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.providerhub.models.EndpointRegistrationProperties;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeEndpointKind;
+import java.util.Arrays;
+
+/**
+ * Samples for EndpointRegistrations CreateOrUpdate.
+ */
+public final class EndpointRegistrationsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EndpointRegistrations_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: EndpointRegistrations_CreateOrUpdate.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void
+        endpointRegistrationsCreateOrUpdate(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.endpointRegistrations()
+            .define("primary")
+            .withExistingResourcetypeRegistration("Microsoft.Contoso", "employees")
+            .withProperties(new EndpointRegistrationProperties().withApiVersions(Arrays.asList("2026-01-01"))
+                .withLocations(Arrays.asList("eastus"))
+                .withEndpointUri("https://api.contoso.com/"))
+            .withKind(ResourceTypeEndpointKind.MANAGED)
+            .create();
+    }
+}
+```
+
+### EndpointRegistrations_CreateOrUpdateNestedResourceTypeFirst
+
+```java
+import com.azure.resourcemanager.providerhub.fluent.models.EndpointRegistrationInner;
+import com.azure.resourcemanager.providerhub.models.EndpointRegistrationProperties;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeEndpointKind;
+import java.util.Arrays;
+
+/**
+ * Samples for EndpointRegistrations CreateOrUpdateNestedResourceTypeFirst.
+ */
+public final class EndpointRegistrationsCreateOrUpdateNestedResourceTypeFirstSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EndpointRegistrations_CreateOrUpdateNestedResourceTypeFirst.json
+     */
+    /**
+     * Sample code: EndpointRegistrations_CreateOrUpdateNestedResourceTypeFirst.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void endpointRegistrationsCreateOrUpdateNestedResourceTypeFirst(
+        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.endpointRegistrations()
+            .createOrUpdateNestedResourceTypeFirstWithResponse("Microsoft.Contoso", "employees", "profiles", "primary",
+                new EndpointRegistrationInner()
+                    .withProperties(new EndpointRegistrationProperties().withApiVersions(Arrays.asList("2026-01-01"))
+                        .withLocations(Arrays.asList("eastus"))
+                        .withEndpointUri("https://api.contoso.com/"))
+                    .withKind(ResourceTypeEndpointKind.MANAGED),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EndpointRegistrations_CreateOrUpdateNestedResourceTypeSecond
+
+```java
+import com.azure.resourcemanager.providerhub.fluent.models.EndpointRegistrationInner;
+import com.azure.resourcemanager.providerhub.models.EndpointRegistrationProperties;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeEndpointKind;
+import java.util.Arrays;
+
+/**
+ * Samples for EndpointRegistrations CreateOrUpdateNestedResourceTypeSecond.
+ */
+public final class EndpointRegistrationsCreateOrUpdateNestedResourceTypeSecondSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EndpointRegistrations_CreateOrUpdateNestedResourceTypeSecond.json
+     */
+    /**
+     * Sample code: EndpointRegistrations_CreateOrUpdateNestedResourceTypeSecond.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void endpointRegistrationsCreateOrUpdateNestedResourceTypeSecond(
+        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.endpointRegistrations()
+            .createOrUpdateNestedResourceTypeSecondWithResponse("Microsoft.Contoso", "employees", "profiles",
+                "preferences", "primary",
+                new EndpointRegistrationInner()
+                    .withProperties(new EndpointRegistrationProperties().withApiVersions(Arrays.asList("2026-01-01"))
+                        .withLocations(Arrays.asList("eastus"))
+                        .withEndpointUri("https://api.contoso.com/"))
+                    .withKind(ResourceTypeEndpointKind.MANAGED),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EndpointRegistrations_CreateOrUpdateNestedResourceTypeThird
+
+```java
+import com.azure.resourcemanager.providerhub.fluent.models.EndpointRegistrationInner;
+import com.azure.resourcemanager.providerhub.models.EndpointRegistrationProperties;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeEndpointKind;
+import java.util.Arrays;
+
+/**
+ * Samples for EndpointRegistrations CreateOrUpdateNestedResourceTypeThird.
+ */
+public final class EndpointRegistrationsCreateOrUpdateNestedResourceTypeThirdSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EndpointRegistrations_CreateOrUpdateNestedResourceTypeThird.json
+     */
+    /**
+     * Sample code: EndpointRegistrations_CreateOrUpdateNestedResourceTypeThird.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void endpointRegistrationsCreateOrUpdateNestedResourceTypeThird(
+        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.endpointRegistrations()
+            .createOrUpdateNestedResourceTypeThirdWithResponse("Microsoft.Contoso", "employees", "profiles",
+                "preferences", "notifications", "primary",
+                new EndpointRegistrationInner()
+                    .withProperties(new EndpointRegistrationProperties().withApiVersions(Arrays.asList("2026-01-01"))
+                        .withLocations(Arrays.asList("eastus"))
+                        .withEndpointUri("https://api.contoso.com/"))
+                    .withKind(ResourceTypeEndpointKind.MANAGED),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EndpointRegistrations_Delete
+
+```java
+/**
+ * Samples for EndpointRegistrations Delete.
+ */
+public final class EndpointRegistrationsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EndpointRegistrations_Delete.json
+     */
+    /**
+     * Sample code: EndpointRegistrations_Delete.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void endpointRegistrationsDelete(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.endpointRegistrations()
+            .deleteWithResponse("Microsoft.Contoso", "employees", "primary", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EndpointRegistrations_DeleteNestedResourceTypeFirst
+
+```java
+/**
+ * Samples for EndpointRegistrations DeleteNestedResourceTypeFirst.
+ */
+public final class EndpointRegistrationsDeleteNestedResourceTypeFirstSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EndpointRegistrations_DeleteNestedResourceTypeFirst.json
+     */
+    /**
+     * Sample code: EndpointRegistrations_DeleteNestedResourceTypeFirst.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void endpointRegistrationsDeleteNestedResourceTypeFirst(
+        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.endpointRegistrations()
+            .deleteNestedResourceTypeFirstWithResponse("Microsoft.Contoso", "employees", "profiles", "primary",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EndpointRegistrations_DeleteNestedResourceTypeSecond
+
+```java
+/**
+ * Samples for EndpointRegistrations DeleteNestedResourceTypeSecond.
+ */
+public final class EndpointRegistrationsDeleteNestedResourceTypeSecondSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EndpointRegistrations_DeleteNestedResourceTypeSecond.json
+     */
+    /**
+     * Sample code: EndpointRegistrations_DeleteNestedResourceTypeSecond.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void endpointRegistrationsDeleteNestedResourceTypeSecond(
+        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.endpointRegistrations()
+            .deleteNestedResourceTypeSecondWithResponse("Microsoft.Contoso", "employees", "profiles", "preferences",
+                "primary", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EndpointRegistrations_DeleteNestedResourceTypeThird
+
+```java
+/**
+ * Samples for EndpointRegistrations DeleteNestedResourceTypeThird.
+ */
+public final class EndpointRegistrationsDeleteNestedResourceTypeThirdSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EndpointRegistrations_DeleteNestedResourceTypeThird.json
+     */
+    /**
+     * Sample code: EndpointRegistrations_DeleteNestedResourceTypeThird.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void endpointRegistrationsDeleteNestedResourceTypeThird(
+        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.endpointRegistrations()
+            .deleteNestedResourceTypeThirdWithResponse("Microsoft.Contoso", "employees", "profiles", "preferences",
+                "notifications", "primary", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EndpointRegistrations_Get
+
+```java
+/**
+ * Samples for EndpointRegistrations Get.
+ */
+public final class EndpointRegistrationsGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EndpointRegistrations_Get.json
+     */
+    /**
+     * Sample code: EndpointRegistrations_Get.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void endpointRegistrationsGet(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.endpointRegistrations()
+            .getWithResponse("Microsoft.Contoso", "employees", "primary", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EndpointRegistrations_GetNestedResourceTypeFirst
+
+```java
+/**
+ * Samples for EndpointRegistrations GetNestedResourceTypeFirst.
+ */
+public final class EndpointRegistrationsGetNestedResourceTypeFirstSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EndpointRegistrations_GetNestedResourceTypeFirst.json
+     */
+    /**
+     * Sample code: EndpointRegistrations_GetNestedResourceTypeFirst.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void endpointRegistrationsGetNestedResourceTypeFirst(
+        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.endpointRegistrations()
+            .getNestedResourceTypeFirstWithResponse("Microsoft.Contoso", "employees", "profiles", "primary",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EndpointRegistrations_GetNestedResourceTypeSecond
+
+```java
+/**
+ * Samples for EndpointRegistrations GetNestedResourceTypeSecond.
+ */
+public final class EndpointRegistrationsGetNestedResourceTypeSecondSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EndpointRegistrations_GetNestedResourceTypeSecond.json
+     */
+    /**
+     * Sample code: EndpointRegistrations_GetNestedResourceTypeSecond.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void endpointRegistrationsGetNestedResourceTypeSecond(
+        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.endpointRegistrations()
+            .getNestedResourceTypeSecondWithResponse("Microsoft.Contoso", "employees", "profiles", "preferences",
+                "primary", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EndpointRegistrations_GetNestedResourceTypeThird
+
+```java
+/**
+ * Samples for EndpointRegistrations GetNestedResourceTypeThird.
+ */
+public final class EndpointRegistrationsGetNestedResourceTypeThirdSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EndpointRegistrations_GetNestedResourceTypeThird.json
+     */
+    /**
+     * Sample code: EndpointRegistrations_GetNestedResourceTypeThird.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void endpointRegistrationsGetNestedResourceTypeThird(
+        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.endpointRegistrations()
+            .getNestedResourceTypeThirdWithResponse("Microsoft.Contoso", "employees", "profiles", "preferences",
+                "notifications", "primary", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EndpointRegistrations_ListByResourceTypeRegistration
+
+```java
+/**
+ * Samples for EndpointRegistrations ListByResourceTypeRegistration.
+ */
+public final class EndpointRegistrationsListByResourceTypeRegistrationSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EndpointRegistrations_ListByResourceTypeRegistration.json
+     */
+    /**
+     * Sample code: EndpointRegistrations_ListByResourceTypeRegistration.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void endpointRegistrationsListByResourceTypeRegistration(
+        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.endpointRegistrations()
+            .listByResourceTypeRegistration("Microsoft.Contoso", "employees", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EndpointRegistrations_ListByResourceTypeRegistrationNestedResourceTypeFirst
+
+```java
+/**
+ * Samples for EndpointRegistrations ListByResourceTypeRegistrationNestedResourceTypeFirst.
+ */
+public final class EndpointRegistrationsListByResourceTypeRegistrationNestedResourceTypeFirstSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EndpointRegistrations_ListByResourceTypeRegistrationNestedResourceTypeFirst.json
+     */
+    /**
+     * Sample code: EndpointRegistrations_ListByResourceTypeRegistrationNestedResourceTypeFirst.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void endpointRegistrationsListByResourceTypeRegistrationNestedResourceTypeFirst(
+        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.endpointRegistrations()
+            .listByResourceTypeRegistrationNestedResourceTypeFirst("Microsoft.Contoso", "employees", "profiles",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EndpointRegistrations_ListByResourceTypeRegistrationNestedResourceTypeSecond
+
+```java
+/**
+ * Samples for EndpointRegistrations ListByResourceTypeRegistrationNestedResourceTypeSecond.
+ */
+public final class EndpointRegistrationsListByResourceTypeRegistrationNestedResourceTypeSecondSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EndpointRegistrations_ListByResourceTypeRegistrationNestedResourceTypeSecond.json
+     */
+    /**
+     * Sample code: EndpointRegistrations_ListByResourceTypeRegistrationNestedResourceTypeSecond.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void endpointRegistrationsListByResourceTypeRegistrationNestedResourceTypeSecond(
+        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.endpointRegistrations()
+            .listByResourceTypeRegistrationNestedResourceTypeSecond("Microsoft.Contoso", "employees", "profiles",
+                "preferences", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EndpointRegistrations_ListByResourceTypeRegistrationNestedResourceTypeThird
+
+```java
+/**
+ * Samples for EndpointRegistrations ListByResourceTypeRegistrationNestedResourceTypeThird.
+ */
+public final class EndpointRegistrationsListByResourceTypeRegistrationNestedResourceTypeThirdSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EndpointRegistrations_ListByResourceTypeRegistrationNestedResourceTypeThird.json
+     */
+    /**
+     * Sample code: EndpointRegistrations_ListByResourceTypeRegistrationNestedResourceTypeThird.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void endpointRegistrationsListByResourceTypeRegistrationNestedResourceTypeThird(
+        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.endpointRegistrations()
+            .listByResourceTypeRegistrationNestedResourceTypeThird("Microsoft.Contoso", "employees", "profiles",
+                "preferences", "notifications", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -473,7 +922,7 @@ import com.azure.resourcemanager.providerhub.models.ManifestInfoProperties;
  */
 public final class ManifestsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Manifests_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/Manifests_CreateOrUpdate.json
      */
     /**
      * Sample code: Manifests_CreateOrUpdate.
@@ -484,7 +933,8 @@ public final class ManifestsCreateOrUpdateSamples {
         manager.manifests()
             .define("prod")
             .withExistingProviderRegistration("Microsoft.Contoso")
-            .withProperties(new ManifestInfoProperties().withManifest("<<Core RP manifest>>"))
+            .withProperties(new ManifestInfoProperties()
+                .withManifestUri("https://contoso.example/manifests/provider-manifest.json"))
             .create();
     }
 }
@@ -498,7 +948,7 @@ public final class ManifestsCreateOrUpdateSamples {
  */
 public final class ManifestsGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Manifests_Get.json
+     * x-ms-original-file: 2026-10-01/Manifests_Get.json
      */
     /**
      * Sample code: Manifests_Get.
@@ -525,7 +975,7 @@ import java.util.Arrays;
  */
 public final class NotificationRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/NotificationRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/NotificationRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: NotificationRegistrations_CreateOrUpdate.
@@ -559,7 +1009,7 @@ public final class NotificationRegistrationsCreateOrUpdateSamples {
  */
 public final class NotificationRegistrationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/NotificationRegistrations_Delete.json
+     * x-ms-original-file: 2026-10-01/NotificationRegistrations_Delete.json
      */
     /**
      * Sample code: NotificationRegistrations_Delete.
@@ -583,7 +1033,7 @@ public final class NotificationRegistrationsDeleteSamples {
  */
 public final class NotificationRegistrationsGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/NotificationRegistrations_Get.json
+     * x-ms-original-file: 2026-10-01/NotificationRegistrations_Get.json
      */
     /**
      * Sample code: NotificationRegistrations_Get.
@@ -605,7 +1055,7 @@ public final class NotificationRegistrationsGetSamples {
  */
 public final class NotificationRegistrationsListByProviderRegistrationSamples {
     /*
-     * x-ms-original-file: 2025-10-01/NotificationRegistrations_ListByProviderRegistration.json
+     * x-ms-original-file: 2026-10-01/NotificationRegistrations_ListByProviderRegistration.json
      */
     /**
      * Sample code: NotificationRegistrations_ListByProviderRegistration.
@@ -638,7 +1088,7 @@ import java.util.Arrays;
  */
 public final class OperationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Operations_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/Operations_CreateOrUpdate.json
      */
     /**
      * Sample code: Operations_CreateOrUpdate.
@@ -685,7 +1135,7 @@ public final class OperationsCreateOrUpdateSamples {
  */
 public final class OperationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Operations_Delete.json
+     * x-ms-original-file: 2026-10-01/Operations_Delete.json
      */
     /**
      * Sample code: Operations_Delete.
@@ -706,7 +1156,7 @@ public final class OperationsDeleteSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Operations_List.json
+     * x-ms-original-file: 2026-10-01/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -727,7 +1177,7 @@ public final class OperationsListSamples {
  */
 public final class OperationsListByProviderRegistrationSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Operations_ListByProviderRegistration.json
+     * x-ms-original-file: 2026-10-01/Operations_ListByProviderRegistration.json
      */
     /**
      * Sample code: Operations_ListByProviderRegistration.
@@ -750,7 +1200,7 @@ public final class OperationsListByProviderRegistrationSamples {
  */
 public final class ProviderMonitorSettingsCreateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ProviderMonitorSettings_Create.json
+     * x-ms-original-file: 2026-10-01/ProviderMonitorSettings_Create.json
      */
     /**
      * Sample code: ProviderMonitorSettings_Create.
@@ -775,7 +1225,7 @@ public final class ProviderMonitorSettingsCreateSamples {
  */
 public final class ProviderMonitorSettingsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ProviderMonitorSettings_Delete.json
+     * x-ms-original-file: 2026-10-01/ProviderMonitorSettings_Delete.json
      */
     /**
      * Sample code: ProviderMonitorSettings_Delete.
@@ -797,7 +1247,7 @@ public final class ProviderMonitorSettingsDeleteSamples {
  */
 public final class ProviderMonitorSettingsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ProviderMonitorSettings_Get.json
+     * x-ms-original-file: 2026-10-01/ProviderMonitorSettings_Get.json
      */
     /**
      * Sample code: ProviderMonitorSettings_Get.
@@ -819,7 +1269,7 @@ public final class ProviderMonitorSettingsGetByResourceGroupSamples {
  */
 public final class ProviderMonitorSettingsListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ProviderMonitorSettings_ListBySubscription.json
+     * x-ms-original-file: 2026-10-01/ProviderMonitorSettings_ListBySubscription.json
      */
     /**
      * Sample code: ProviderMonitorSettings_ListBySubscription.
@@ -841,7 +1291,7 @@ public final class ProviderMonitorSettingsListSamples {
  */
 public final class ProviderMonitorSettingsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ProviderMonitorSettings_ListByResourceGroup.json
+     * x-ms-original-file: 2026-10-01/ProviderMonitorSettings_ListByResourceGroup.json
      */
     /**
      * Sample code: ProviderMonitorSettings_ListByResourceGroup.
@@ -863,7 +1313,7 @@ public final class ProviderMonitorSettingsListByResourceGroupSamples {
  */
 public final class ProviderMonitorSettingsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ProviderMonitorSettings_Update.json
+     * x-ms-original-file: 2026-10-01/ProviderMonitorSettings_Update.json
      */
     /**
      * Sample code: ProviderMonitorSettings_Update.
@@ -886,14 +1336,18 @@ import com.azure.resourcemanager.providerhub.models.CrossTenantTokenValidation;
 import com.azure.resourcemanager.providerhub.models.EndpointInformation;
 import com.azure.resourcemanager.providerhub.models.ExpeditedRolloutIntent;
 import com.azure.resourcemanager.providerhub.models.FilterRule;
+import com.azure.resourcemanager.providerhub.models.IsolationType;
+import com.azure.resourcemanager.providerhub.models.LifecycleStage;
 import com.azure.resourcemanager.providerhub.models.NotificationEndpointType;
 import com.azure.resourcemanager.providerhub.models.NotificationOptions;
+import com.azure.resourcemanager.providerhub.models.PartnerCategory;
 import com.azure.resourcemanager.providerhub.models.ProviderRegistrationKind;
 import com.azure.resourcemanager.providerhub.models.ProviderRegistrationProperties;
 import com.azure.resourcemanager.providerhub.models.ResourceHydrationAccount;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderCapabilities;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderCapabilitiesEffect;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderEndpoint;
+import com.azure.resourcemanager.providerhub.models.ResourceProviderLifecycleInfo;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManagementErrorResponseMessageOptions;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManagementExpeditedRolloutMetadata;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestPropertiesManagement;
@@ -913,7 +1367,7 @@ import java.util.Arrays;
  */
 public final class ProviderRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DirectProviderRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/DirectProviderRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: DirectProviderRegistrations_CreateOrUpdate.
@@ -971,7 +1425,7 @@ public final class ProviderRegistrationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/ProviderRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/ProviderRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: ProviderRegistrations_CreateOrUpdate.
@@ -1006,7 +1460,11 @@ public final class ProviderRegistrationsCreateOrUpdateSamples {
                             .withEffect(ResourceProviderCapabilitiesEffect.ALLOW),
                         new ResourceProviderCapabilities().withQuotaId("CSP_MG_2017-12-01")
                             .withEffect(ResourceProviderCapabilitiesEffect.ALLOW)))
-                    .withCrossTenantTokenValidation(CrossTenantTokenValidation.ENSURE_SECURE_VALIDATION)),
+                    .withCrossTenantTokenValidation(CrossTenantTokenValidation.ENSURE_SECURE_VALIDATION)
+                    .withLifecycleInfo(new ResourceProviderLifecycleInfo().withIsolationType(IsolationType.PUBLIC)
+                        .withPartnerCategory(PartnerCategory.FIRST_PARTY)
+                        .withLifecycleStage(LifecycleStage.IN_DEVELOPMENT)
+                        .withAllowedSubscriptions(Arrays.asList("00000000-0000-0000-0000-000000000000")))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1020,7 +1478,7 @@ public final class ProviderRegistrationsCreateOrUpdateSamples {
  */
 public final class ProviderRegistrationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ProviderRegistrations_Delete.json
+     * x-ms-original-file: 2026-10-01/ProviderRegistrations_Delete.json
      */
     /**
      * Sample code: ProviderRegistrations_Delete.
@@ -1041,7 +1499,7 @@ public final class ProviderRegistrationsDeleteSamples {
  */
 public final class ProviderRegistrationsGenerateOperationsSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ProviderRegistrations_GenerateOperations.json
+     * x-ms-original-file: 2026-10-01/ProviderRegistrations_GenerateOperations.json
      */
     /**
      * Sample code: ProviderRegistrations_GenerateOperations.
@@ -1064,7 +1522,7 @@ public final class ProviderRegistrationsGenerateOperationsSamples {
  */
 public final class ProviderRegistrationsGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ProviderRegistrations_Get.json
+     * x-ms-original-file: 2026-10-01/ProviderRegistrations_Get.json
      */
     /**
      * Sample code: ProviderRegistrations_Get.
@@ -1085,7 +1543,7 @@ public final class ProviderRegistrationsGetSamples {
  */
 public final class ProviderRegistrationsListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ProviderRegistrations_List.json
+     * x-ms-original-file: 2026-10-01/ProviderRegistrations_List.json
      */
     /**
      * Sample code: ProviderRegistrations_List.
@@ -1110,7 +1568,7 @@ import java.util.Arrays;
  */
 public final class ResourceActionsDeleteResourcesSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ResourceActions_DeleteResources.json
+     * x-ms-original-file: 2026-10-01/ResourceActions_DeleteResources.json
      */
     /**
      * Sample code: ResourceActions_DeleteResources.
@@ -1141,7 +1599,7 @@ import com.azure.resourcemanager.providerhub.models.CheckinManifestParams;
  */
 public final class ResourceProviderCheckinManifestSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CheckinManifest.json
+     * x-ms-original-file: 2026-10-01/CheckinManifest.json
      */
     /**
      * Sample code: CheckinManifest.
@@ -1151,7 +1609,10 @@ public final class ResourceProviderCheckinManifestSamples {
     public static void checkinManifest(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
         manager.resourceProviders()
             .checkinManifestWithResponse("Microsoft.Contoso",
-                new CheckinManifestParams().withEnvironment("Prod").withBaselineArmManifestLocation("EastUS2EUAP"),
+                new CheckinManifestParams().withEnvironment("Prod")
+                    .withBaselineArmManifestLocation("EastUS2EUAP")
+                    .withSwaggerUri("https://github.com/Azure/azure-rest-api-specs/pull/123456")
+                    .withCheckinComment("Add endpoint registration support"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1165,7 +1626,7 @@ public final class ResourceProviderCheckinManifestSamples {
  */
 public final class ResourceProviderGenerateManifestSamples {
     /*
-     * x-ms-original-file: 2025-10-01/GenerateManifest.json
+     * x-ms-original-file: 2026-10-01/GenerateManifest.json
      */
     /**
      * Sample code: GenerateManifest.
@@ -1195,6 +1656,7 @@ import com.azure.resourcemanager.providerhub.models.FilterOption;
 import com.azure.resourcemanager.providerhub.models.GroupConnectivityInformation;
 import com.azure.resourcemanager.providerhub.models.LegacyDisallowedCondition;
 import com.azure.resourcemanager.providerhub.models.LegacyOperation;
+import com.azure.resourcemanager.providerhub.models.LifecycleStage;
 import com.azure.resourcemanager.providerhub.models.LinkedAction;
 import com.azure.resourcemanager.providerhub.models.LinkedOperation;
 import com.azure.resourcemanager.providerhub.models.LinkedOperationRule;
@@ -1211,6 +1673,7 @@ import com.azure.resourcemanager.providerhub.models.Regionality;
 import com.azure.resourcemanager.providerhub.models.ResourceAccessPolicy;
 import com.azure.resourcemanager.providerhub.models.ResourceConcurrencyControlOption;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeEndpoint;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeLifecycleInfo;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationProperties;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesAvailabilityZoneRule;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesCapacityRule;
@@ -1230,6 +1693,7 @@ import com.azure.resourcemanager.providerhub.models.RoutingType;
 import com.azure.resourcemanager.providerhub.models.SkipNotifications;
 import com.azure.resourcemanager.providerhub.models.SupportedOperations;
 import com.azure.resourcemanager.providerhub.models.SwaggerSpecification;
+import com.azure.resourcemanager.providerhub.models.SwaggerSpecificationLifecycleInfo;
 import com.azure.resourcemanager.providerhub.models.TemplateDeploymentCapabilities;
 import com.azure.resourcemanager.providerhub.models.TemplateDeploymentPreflightNotifications;
 import com.azure.resourcemanager.providerhub.models.TemplateDeploymentPreflightOptions;
@@ -1247,7 +1711,7 @@ import java.util.Map;
  */
 public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ResourceTypeRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/ResourceTypeRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: ResourceTypeRegistrations_CreateOrUpdate.
@@ -1270,7 +1734,9 @@ public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
                 .withSwaggerSpecifications(Arrays.asList(new SwaggerSpecification()
                     .withApiVersions(Arrays.asList("2020-06-01-preview"))
                     .withSwaggerSpecFolderUri(
-                        "https://github.com/Azure/azure-rest-api-specs/blob/feature/azure/contoso/specification/contoso/resource-manager/Microsoft.SampleRP/")))
+                        "https://github.com/Azure/azure-rest-api-specs/blob/feature/azure/contoso/specification/contoso/resource-manager/Microsoft.SampleRP/")
+                    .withLifecycleInfo(
+                        new SwaggerSpecificationLifecycleInfo().withLifecycleStage(LifecycleStage.IN_DEVELOPMENT))))
                 .withThrottlingRules(Arrays.asList(new ThrottlingRule()
                     .withAction("Microsoft.Foo/checkNameAvailability/write")
                     .withMetrics(Arrays.asList(new ThrottlingMetric().withType(ThrottlingMetricType.NUMBER_OF_REQUESTS)
@@ -1285,6 +1751,7 @@ public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
                             .withRequiredZoneNames(Arrays.asList("Zone"))
                             .withRedirectMapId("test"))))
                 .withWriteLock(new WriteLockConfiguration().withState(WriteLockState.ENABLED))
+                .withLifecycleInfo(new ResourceTypeLifecycleInfo().withLifecycleStage(LifecycleStage.IN_DEVELOPMENT))
                 .withResourceConcurrencyControlOptions(
                     mapOf("put", new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION),
                         "patch", new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION),
@@ -1321,7 +1788,7 @@ public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/DirectResourceTypeRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/DirectResourceTypeRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: DirectResourceTypeRegistrations_CreateOrUpdate.json.
@@ -1445,6 +1912,148 @@ public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
 }
 ```
 
+### ResourceTypeRegistrations_CreateOrUpdateNestedResourceTypeFirst
+
+```java
+import com.azure.resourcemanager.providerhub.fluent.models.ResourceTypeRegistrationInner;
+import com.azure.resourcemanager.providerhub.models.ActionConfiguration;
+import com.azure.resourcemanager.providerhub.models.CrossTenantTokenValidation;
+import com.azure.resourcemanager.providerhub.models.GroupConnectivityInformation;
+import com.azure.resourcemanager.providerhub.models.LifecycleStage;
+import com.azure.resourcemanager.providerhub.models.MarketplaceType;
+import com.azure.resourcemanager.providerhub.models.Notification;
+import com.azure.resourcemanager.providerhub.models.NotificationType;
+import com.azure.resourcemanager.providerhub.models.OpenApiConfiguration;
+import com.azure.resourcemanager.providerhub.models.OpenApiValidation;
+import com.azure.resourcemanager.providerhub.models.OptOutHeaderType;
+import com.azure.resourcemanager.providerhub.models.Policy;
+import com.azure.resourcemanager.providerhub.models.PrivateEndpointConfiguration;
+import com.azure.resourcemanager.providerhub.models.Regionality;
+import com.azure.resourcemanager.providerhub.models.ResourceAccessPolicy;
+import com.azure.resourcemanager.providerhub.models.ResourceConcurrencyControlOption;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeEndpoint;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeLifecycleInfo;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationProperties;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesManagement;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesRequestHeaderOptions;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesResourceGraphConfiguration;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesResourceManagementOptions;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport;
+import com.azure.resourcemanager.providerhub.models.RoutingType;
+import com.azure.resourcemanager.providerhub.models.SkipNotifications;
+import com.azure.resourcemanager.providerhub.models.SupportedOperations;
+import com.azure.resourcemanager.providerhub.models.SwaggerSpecification;
+import com.azure.resourcemanager.providerhub.models.SwaggerSpecificationLifecycleInfo;
+import com.azure.resourcemanager.providerhub.models.ThrottlingMetric;
+import com.azure.resourcemanager.providerhub.models.ThrottlingMetricType;
+import com.azure.resourcemanager.providerhub.models.ThrottlingRule;
+import com.azure.resourcemanager.providerhub.models.WriteLockConfiguration;
+import com.azure.resourcemanager.providerhub.models.WriteLockState;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for ResourceTypeRegistrations CreateOrUpdateNestedResourceTypeFirst.
+ */
+public final class ResourceTypeRegistrationsCreateOrUpdateNestedResourceTypeFirstSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/ResourceTypeRegistrations_CreateOrUpdateNestedResourceTypeFirst.json
+     */
+    /**
+     * Sample code: ResourceTypeRegistrations_CreateOrUpdateNestedResourceTypeFirst.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void resourceTypeRegistrationsCreateOrUpdateNestedResourceTypeFirst(
+        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.resourceTypeRegistrations()
+            .createOrUpdateNestedResourceTypeFirst("Microsoft.Contoso", "employees", "skills",
+                new ResourceTypeRegistrationInner()
+                    .withProperties(
+                        new ResourceTypeRegistrationProperties().withRoutingType(RoutingType.DEFAULT)
+                            .withCrossTenantTokenValidation(CrossTenantTokenValidation.ENSURE_SECURE_VALIDATION)
+                            .withRegionality(Regionality.REGIONAL)
+                            .withEndpoints(Arrays.asList(new ResourceTypeEndpoint()
+                                .withApiVersions(Arrays.asList("2020-06-01-preview"))
+                                .withLocations(Arrays.asList("West US", "East US", "North Europe"))
+                                .withRequiredFeatures(Arrays.asList("<feature flag>"))))
+                            .withMarketplaceType(MarketplaceType.PROVIDER_HUB)
+                            .withSwaggerSpecifications(Arrays.asList(new SwaggerSpecification()
+                                .withApiVersions(Arrays.asList("2020-06-01-preview"))
+                                .withSwaggerSpecFolderUri(
+                                    "https://github.com/Azure/azure-rest-api-specs/blob/feature/azure/contoso/specification/contoso/resource-manager/Microsoft.SampleRP/")
+                                .withLifecycleInfo(new SwaggerSpecificationLifecycleInfo()
+                                    .withLifecycleStage(LifecycleStage.IN_DEVELOPMENT))))
+                            .withThrottlingRules(Arrays
+                                .asList(new ThrottlingRule().withAction("Microsoft.Foo/checkNameAvailability/write")
+                                    .withMetrics(Arrays
+                                        .asList(new ThrottlingMetric().withType(ThrottlingMetricType.NUMBER_OF_REQUESTS)
+                                            .withLimit(1L)
+                                            .withBucketSize("XLarge")))))
+                            .withRequestHeaderOptions(new ResourceTypeRegistrationPropertiesRequestHeaderOptions()
+                                .withOptOutHeaders(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY))
+                            .withPrivateEndpointConfiguration(
+                                new PrivateEndpointConfiguration().withMinApiVersion("2022-10-01")
+                                    .withGroupConnectivityInformation(
+                                        Arrays.asList(new GroupConnectivityInformation().withGroupId("Sql")
+                                            .withRequiredMembers(Arrays.asList("Sql_Member"))
+                                            .withRequiredZoneNames(Arrays.asList("Zone"))
+                                            .withRedirectMapId("test"))))
+                            .withWriteLock(new WriteLockConfiguration().withState(WriteLockState.ENABLED))
+                            .withLifecycleInfo(
+                                new ResourceTypeLifecycleInfo().withLifecycleStage(LifecycleStage.IN_DEVELOPMENT))
+                            .withResourceConcurrencyControlOptions(mapOf("put",
+                                new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION),
+                                "patch",
+                                new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION),
+                                "post",
+                                new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION)))
+                            .withResourceGraphConfiguration(
+                                new ResourceTypeRegistrationPropertiesResourceGraphConfiguration().withEnabled(true)
+                                    .withApiVersion("2019-01-01"))
+                            .withManagement(new ResourceTypeRegistrationPropertiesManagement()
+                                .withManifestOwners(Arrays.asList("Contoso-PlatformServiceAdministrator"))
+                                .withAuthorizationOwners(Arrays.asList("RPAAS-PlatformServiceAdministrator"))
+                                .withIncidentRoutingService("")
+                                .withIncidentRoutingTeam("")
+                                .withIncidentContactEmail("helpme@contoso.com")
+                                .withResourceAccessPolicy(ResourceAccessPolicy.NOT_SPECIFIED))
+                            .withOpenApiConfiguration(new OpenApiConfiguration()
+                                .withValidation(new OpenApiValidation().withAllowNoncompliantCollectionResponse(true)))
+                            .withMetadata(mapOf())
+                            .withNotifications(Arrays.asList(new Notification()
+                                .withNotificationType(NotificationType.SUBSCRIPTION_NOTIFICATION)
+                                .withSkipNotifications(SkipNotifications.DISABLED)))
+                            .withResourceManagementOptions(
+                                new ResourceTypeRegistrationPropertiesResourceManagementOptions()
+                                    .withBatchProvisioningSupport(
+                                        new ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport()
+                                            .withSupportedOperations(SupportedOperations.GET)
+                                            .withMaxBatchSize(10L)
+                                            .withBatchContractVersion("2020-06-01-preview")
+                                            .withMaxNestedBatchSize(5L)
+                                            .withRequiredFeatures(Arrays.asList("Microsoft.Contoso/feature1"))
+                                            .withActionConfigurations(Arrays.asList(new ActionConfiguration()
+                                                .withAuthorizationAction("fakeTokenPlaceholder")
+                                                .withMaxBatchSize(5L)))))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
 ### ResourceTypeRegistrations_Delete
 
 ```java
@@ -1453,7 +2062,7 @@ public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
  */
 public final class ResourceTypeRegistrationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ResourceTypeRegistrations_Delete.json
+     * x-ms-original-file: 2026-10-01/ResourceTypeRegistrations_Delete.json
      */
     /**
      * Sample code: ResourceTypeRegistrations_Delete.
@@ -1468,6 +2077,30 @@ public final class ResourceTypeRegistrationsDeleteSamples {
 }
 ```
 
+### ResourceTypeRegistrations_DeleteNestedResourceTypeFirst
+
+```java
+/**
+ * Samples for ResourceTypeRegistrations DeleteNestedResourceTypeFirst.
+ */
+public final class ResourceTypeRegistrationsDeleteNestedResourceTypeFirstSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/ResourceTypeRegistrations_DeleteNestedResourceTypeFirst.json
+     */
+    /**
+     * Sample code: ResourceTypeRegistrations_DeleteNestedResourceTypeFirst.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void resourceTypeRegistrationsDeleteNestedResourceTypeFirst(
+        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.resourceTypeRegistrations()
+            .deleteNestedResourceTypeFirst("Microsoft.Contoso", "testResourceType", "skills",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### ResourceTypeRegistrations_Get
 
 ```java
@@ -1476,7 +2109,7 @@ public final class ResourceTypeRegistrationsDeleteSamples {
  */
 public final class ResourceTypeRegistrationsGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ResourceTypeRegistrations_Get.json
+     * x-ms-original-file: 2026-10-01/ResourceTypeRegistrations_Get.json
      */
     /**
      * Sample code: ResourceTypeRegistrations_Get.
@@ -1490,6 +2123,30 @@ public final class ResourceTypeRegistrationsGetSamples {
 }
 ```
 
+### ResourceTypeRegistrations_GetNestedResourceTypeFirst
+
+```java
+/**
+ * Samples for ResourceTypeRegistrations GetNestedResourceTypeFirst.
+ */
+public final class ResourceTypeRegistrationsGetNestedResourceTypeFirstSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/ResourceTypeRegistrations_GetNestedResourceTypeFirst.json
+     */
+    /**
+     * Sample code: ResourceTypeRegistrations_GetNestedResourceTypeFirst.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void resourceTypeRegistrationsGetNestedResourceTypeFirst(
+        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.resourceTypeRegistrations()
+            .getNestedResourceTypeFirstWithResponse("Microsoft.Contoso", "employees", "skills",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### ResourceTypeRegistrations_ListByProviderRegistration
 
 ```java
@@ -1498,7 +2155,7 @@ public final class ResourceTypeRegistrationsGetSamples {
  */
 public final class ResourceTypeRegistrationsListByProviderRegistrationSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ResourceTypeRegistrations_ListByProviderRegistration.json
+     * x-ms-original-file: 2026-10-01/ResourceTypeRegistrations_ListByProviderRegistration.json
      */
     /**
      * Sample code: ResourceTypeRegistrations_ListByProviderRegistration.
@@ -1526,7 +2183,7 @@ import java.util.Arrays;
  */
 public final class SkusCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01/Skus_CreateOrUpdate.json
      */
     /**
      * Sample code: Skus_CreateOrUpdate.
@@ -1562,7 +2219,7 @@ import java.util.Arrays;
  */
 public final class SkusCreateOrUpdateNestedResourceTypeFirstSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_CreateOrUpdateNestedResourceTypeFirst.json
+     * x-ms-original-file: 2026-10-01/Skus_CreateOrUpdateNestedResourceTypeFirst.json
      */
     /**
      * Sample code: Skus_CreateOrUpdateNestedResourceTypeFirst.
@@ -1599,7 +2256,7 @@ import java.util.Arrays;
  */
 public final class SkusCreateOrUpdateNestedResourceTypeSecondSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_CreateOrUpdateNestedResourceTypeSecond.json
+     * x-ms-original-file: 2026-10-01/Skus_CreateOrUpdateNestedResourceTypeSecond.json
      */
     /**
      * Sample code: Skus_CreateOrUpdateNestedResourceTypeSecond.
@@ -1636,7 +2293,7 @@ import java.util.Arrays;
  */
 public final class SkusCreateOrUpdateNestedResourceTypeThirdSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_CreateOrUpdateNestedResourceTypeThird.json
+     * x-ms-original-file: 2026-10-01/Skus_CreateOrUpdateNestedResourceTypeThird.json
      */
     /**
      * Sample code: Skus_CreateOrUpdateNestedResourceTypeThird.
@@ -1667,7 +2324,7 @@ public final class SkusCreateOrUpdateNestedResourceTypeThirdSamples {
  */
 public final class SkusDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_Delete.json
+     * x-ms-original-file: 2026-10-01/Skus_Delete.json
      */
     /**
      * Sample code: Skus_Delete.
@@ -1689,7 +2346,7 @@ public final class SkusDeleteSamples {
  */
 public final class SkusDeleteNestedResourceTypeFirstSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_DeleteNestedResourceTypeFirst.json
+     * x-ms-original-file: 2026-10-01/Skus_DeleteNestedResourceTypeFirst.json
      */
     /**
      * Sample code: Skus_DeleteNestedResourceTypeFirst.
@@ -1713,7 +2370,7 @@ public final class SkusDeleteNestedResourceTypeFirstSamples {
  */
 public final class SkusDeleteNestedResourceTypeSecondSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_DeleteNestedResourceTypeSecond.json
+     * x-ms-original-file: 2026-10-01/Skus_DeleteNestedResourceTypeSecond.json
      */
     /**
      * Sample code: Skus_DeleteNestedResourceTypeSecond.
@@ -1737,7 +2394,7 @@ public final class SkusDeleteNestedResourceTypeSecondSamples {
  */
 public final class SkusDeleteNestedResourceTypeThirdSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_DeleteNestedResourceTypeThird.json
+     * x-ms-original-file: 2026-10-01/Skus_DeleteNestedResourceTypeThird.json
      */
     /**
      * Sample code: Skus_DeleteNestedResourceTypeThird.
@@ -1762,7 +2419,7 @@ public final class SkusDeleteNestedResourceTypeThirdSamples {
  */
 public final class SkusGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_Get.json
+     * x-ms-original-file: 2026-10-01/Skus_Get.json
      */
     /**
      * Sample code: Skus_Get.
@@ -1784,7 +2441,7 @@ public final class SkusGetSamples {
  */
 public final class SkusGetNestedResourceTypeFirstSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_GetNestedResourceTypeFirst.json
+     * x-ms-original-file: 2026-10-01/Skus_GetNestedResourceTypeFirst.json
      */
     /**
      * Sample code: Skus_GetNestedResourceTypeFirst.
@@ -1808,7 +2465,7 @@ public final class SkusGetNestedResourceTypeFirstSamples {
  */
 public final class SkusGetNestedResourceTypeSecondSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_GetNestedResourceTypeSecond.json
+     * x-ms-original-file: 2026-10-01/Skus_GetNestedResourceTypeSecond.json
      */
     /**
      * Sample code: Skus_GetNestedResourceTypeSecond.
@@ -1832,7 +2489,7 @@ public final class SkusGetNestedResourceTypeSecondSamples {
  */
 public final class SkusGetNestedResourceTypeThirdSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_GetNestedResourceTypeThird.json
+     * x-ms-original-file: 2026-10-01/Skus_GetNestedResourceTypeThird.json
      */
     /**
      * Sample code: Skus_GetNestedResourceTypeThird.
@@ -1856,7 +2513,7 @@ public final class SkusGetNestedResourceTypeThirdSamples {
  */
 public final class SkusListByResourceTypeRegistrationsSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_ListByResourceTypeRegistrations.json
+     * x-ms-original-file: 2026-10-01/Skus_ListByResourceTypeRegistrations.json
      */
     /**
      * Sample code: Skus_ListByResourceTypeRegistrations.
@@ -1866,7 +2523,7 @@ public final class SkusListByResourceTypeRegistrationsSamples {
     public static void
         skusListByResourceTypeRegistrations(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
         manager.skus()
-            .listByResourceTypeRegistrations("Microsoft.Contoso", "testResourceType", com.azure.core.util.Context.NONE);
+            .listByResourceTypeRegistrations("Microsoft.Contoso", "employees", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1879,7 +2536,7 @@ public final class SkusListByResourceTypeRegistrationsSamples {
  */
 public final class SkusListByResourceTypeRegistrationsNestedResourceTypeFirstSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeFirst.json
+     * x-ms-original-file: 2026-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeFirst.json
      */
     /**
      * Sample code: Skus_ListByResourceTypeRegistrationsNestedResourceTypeFirst.
@@ -1903,7 +2560,7 @@ public final class SkusListByResourceTypeRegistrationsNestedResourceTypeFirstSam
  */
 public final class SkusListByResourceTypeRegistrationsNestedResourceTypeSecondSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeSecond.json
+     * x-ms-original-file: 2026-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeSecond.json
      */
     /**
      * Sample code: Skus_ListByResourceTypeRegistrationsNestedResourceTypeSecond.
@@ -1927,7 +2584,7 @@ public final class SkusListByResourceTypeRegistrationsNestedResourceTypeSecondSa
  */
 public final class SkusListByResourceTypeRegistrationsNestedResourceTypeThirdSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeThird.json
+     * x-ms-original-file: 2026-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeThird.json
      */
     /**
      * Sample code: Skus_ListByResourceTypeRegistrationsNestedResourceTypeThird.

@@ -164,6 +164,15 @@ public final class ResourceTypeRegistrationPropertiesManagement extends Resource
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResourceTypeRegistrationPropertiesManagement withFeatureApprovalClaims(List<String> featureApprovalClaims) {
+        super.withFeatureApprovalClaims(featureApprovalClaims);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -208,6 +217,8 @@ public final class ResourceTypeRegistrationPropertiesManagement extends Resource
         jsonWriter.writeStringField("pcCode", pcCode());
         jsonWriter.writeStringField("profitCenterProgramId", profitCenterProgramId());
         jsonWriter.writeArrayField("featureManagementOwners", featureManagementOwners(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("featureApprovalClaims", featureApprovalClaims(),
             (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -278,6 +289,10 @@ public final class ResourceTypeRegistrationPropertiesManagement extends Resource
                     List<String> featureManagementOwners = reader.readArray(reader1 -> reader1.getString());
                     deserializedResourceTypeRegistrationPropertiesManagement
                         .withFeatureManagementOwners(featureManagementOwners);
+                } else if ("featureApprovalClaims".equals(fieldName)) {
+                    List<String> featureApprovalClaims = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceTypeRegistrationPropertiesManagement
+                        .withFeatureApprovalClaims(featureApprovalClaims);
                 } else {
                     reader.skipChildren();
                 }

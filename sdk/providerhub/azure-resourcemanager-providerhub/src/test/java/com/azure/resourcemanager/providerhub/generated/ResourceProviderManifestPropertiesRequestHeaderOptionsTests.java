@@ -13,10 +13,11 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceProviderManifestPropertiesRequestHeaderOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderManifestPropertiesRequestHeaderOptions model = BinaryData.fromString(
-            "{\"optInHeaders\":\"UnboundedClientGroupMembership\",\"optOutHeaders\":\"SystemDataCreatedByLastModifiedBy\"}")
+        ResourceProviderManifestPropertiesRequestHeaderOptions model = BinaryData
+            .fromString(
+                "{\"optInHeaders\":\"SignedAuxiliaryTokens\",\"optOutHeaders\":\"SystemDataCreatedByLastModifiedBy\"}")
             .toObject(ResourceProviderManifestPropertiesRequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.UNBOUNDED_CLIENT_GROUP_MEMBERSHIP, model.optInHeaders());
+        Assertions.assertEquals(OptInHeaderType.SIGNED_AUXILIARY_TOKENS, model.optInHeaders());
         Assertions.assertEquals(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY, model.optOutHeaders());
     }
 
@@ -24,10 +25,10 @@ public final class ResourceProviderManifestPropertiesRequestHeaderOptionsTests {
     public void testSerialize() throws Exception {
         ResourceProviderManifestPropertiesRequestHeaderOptions model
             = new ResourceProviderManifestPropertiesRequestHeaderOptions()
-                .withOptInHeaders(OptInHeaderType.UNBOUNDED_CLIENT_GROUP_MEMBERSHIP)
+                .withOptInHeaders(OptInHeaderType.SIGNED_AUXILIARY_TOKENS)
                 .withOptOutHeaders(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY);
         model = BinaryData.fromObject(model).toObject(ResourceProviderManifestPropertiesRequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.UNBOUNDED_CLIENT_GROUP_MEMBERSHIP, model.optInHeaders());
+        Assertions.assertEquals(OptInHeaderType.SIGNED_AUXILIARY_TOKENS, model.optInHeaders());
         Assertions.assertEquals(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY, model.optOutHeaders());
     }
 }

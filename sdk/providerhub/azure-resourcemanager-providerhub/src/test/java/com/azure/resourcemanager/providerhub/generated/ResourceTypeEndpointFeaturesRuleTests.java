@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceTypeEndpointFeaturesRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceTypeEndpointFeaturesRule model = BinaryData.fromString("{\"requiredFeaturesPolicy\":\"Any\"}")
+        ResourceTypeEndpointFeaturesRule model = BinaryData.fromString("{\"requiredFeaturesPolicy\":\"All\"}")
             .toObject(ResourceTypeEndpointFeaturesRule.class);
-        Assertions.assertEquals(FeaturesPolicy.ANY, model.requiredFeaturesPolicy());
+        Assertions.assertEquals(FeaturesPolicy.ALL, model.requiredFeaturesPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeEndpointFeaturesRule model
-            = new ResourceTypeEndpointFeaturesRule().withRequiredFeaturesPolicy(FeaturesPolicy.ANY);
+            = new ResourceTypeEndpointFeaturesRule().withRequiredFeaturesPolicy(FeaturesPolicy.ALL);
         model = BinaryData.fromObject(model).toObject(ResourceTypeEndpointFeaturesRule.class);
-        Assertions.assertEquals(FeaturesPolicy.ANY, model.requiredFeaturesPolicy());
+        Assertions.assertEquals(FeaturesPolicy.ALL, model.requiredFeaturesPolicy());
     }
 }
