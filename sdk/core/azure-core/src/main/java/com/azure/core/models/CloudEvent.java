@@ -296,7 +296,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
                     if (token == JsonToken.START_OBJECT || token == JsonToken.START_ARRAY) {
                         this.data = jsonReader.readChildren();
                     } else if (token == JsonToken.STRING) {
-                        this.data = "\"" + jsonReader.getString() + "\"";
+                        this.data = "\"" + JsonStringEscaper.escape(jsonReader.getString()) + "\"";
                     } else {
                         this.data = jsonReader.getString();
                     }
@@ -672,7 +672,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
                     if (token == JsonToken.START_OBJECT || token == JsonToken.START_ARRAY) {
                         cloudEvent.data = jsonReader.readChildren();
                     } else if (token == JsonToken.STRING) {
-                        cloudEvent.data = "\"" + jsonReader.getRawText() + "\"";
+                        cloudEvent.data = "\"" + JsonStringEscaper.escape(jsonReader.getString()) + "\"";
                     } else {
                         cloudEvent.data = jsonReader.getString();
                     }

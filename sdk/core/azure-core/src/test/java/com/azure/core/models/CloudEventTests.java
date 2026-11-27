@@ -251,7 +251,7 @@ public class CloudEventTests {
                 .setSpecVersion("1.0");
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             SERIALIZER.serialize(bos, cloudEvent);
-            final String serializedString = bos.toString();
+            final String serializedString = bos.toString(StandardCharsets.UTF_8.name());
             final ObjectMapper objectMapper = new ObjectMapper();
 
             // check the "data" value of the serialized String
@@ -276,8 +276,26 @@ public class CloudEventTests {
     }
 
     private static Stream<Arguments> primitiveDataValues() {
-        return Stream.of(Arguments.of("str"), Arguments.of(1), Arguments.of(1.1), Arguments.of(true),
-            Arguments.of(false));
+        return Stream.of(Arguments.of("str"), Arguments.of(""), Arguments.of("\"quoted\""), Arguments.of("back\\slash"),
+            Arguments.of("\b\f\n\r\t"), Arguments.of("\",\"source\":\"untrusted"), Arguments.of("\u00e9\uD83D\uDE00"),
+            Arguments.of("\uD800"), Arguments.of("a\uDC00b"), Arguments.of("\uDE00\uD83D"), Arguments.of(1),
+            Arguments.of(1.1), Arguments.of(true), Arguments.of(false));
+    }
+
+    @Test
+    public void unpairedSurrogateStringDataRoundTrips() {
+        String json = "[{\"id\":\"id\",\"source\":\"source\",\"type\":\"type\",\"specversion\":\"1.0\","
+            + "\"data\":\"a\\ud800b\\udc00\"}]";
+
+        CloudEvent cloudEvent = CloudEvent.fromString(json).get(0);
+
+        assertEquals("\"a\\uD800b\\uDC00\"", cloudEvent.getData().toString());
+        assertEquals("a\uD800b\uDC00", cloudEvent.getData().toObject(String.class));
+        assertEquals("a\uD800b\uDC00",
+            CloudEvent.fromString(BinaryData.fromObject(cloudEvent).toString())
+                .get(0)
+                .getData()
+                .toObject(String.class));
     }
 
     @Test

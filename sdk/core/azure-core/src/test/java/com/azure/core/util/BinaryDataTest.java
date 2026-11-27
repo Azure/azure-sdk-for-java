@@ -47,6 +47,7 @@ import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.Channels;
 import java.nio.channels.CompletionHandler;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
@@ -414,6 +415,60 @@ public class BinaryDataTest {
         BinaryData binaryData = BinaryData.fromString("Hello");
 
         assertThrows(ReadOnlyBufferException.class, () -> binaryData.toByteBuffer().put((byte) 0));
+    }
+
+    /**
+     * Tests that conversions of {@link BinaryData#fromByteBuffer(ByteBuffer)} only use the bytes between the source
+     * buffer's position and limit, and don't change the source buffer's position, limit, or mark.
+     */
+    @ParameterizedTest
+    @MethodSource("byteBufferConversionSupplier")
+    public void fromByteBufferConversionsDoNotChangeSourceBuffer(BinaryDataConversion conversion) throws IOException {
+        // Select "34567" from "0123456789", with a mark set before the selected range.
+        ByteBuffer source = ByteBuffer.wrap("0123456789".getBytes(StandardCharsets.UTF_8));
+        source.position(1);
+        source.mark();
+        source.position(3);
+        source.limit(8);
+        byte[] expected = "34567".getBytes(StandardCharsets.UTF_8);
+
+        BinaryData binaryData = BinaryData.fromByteBuffer(source);
+
+        assertArraysEqual(expected, conversion.convert(binaryData));
+        assertEquals(expected.length, binaryData.getLength());
+        assertEquals(3, source.position());
+        assertEquals(8, source.limit());
+
+        // Check the mark on a duplicate so that resetting doesn't change the source buffer.
+        ByteBuffer markCheck = source.duplicate();
+        markCheck.reset();
+        assertEquals(1, markCheck.position());
+    }
+
+    private static Stream<Arguments> byteBufferConversionSupplier() {
+        return Stream.of(byteBufferConversion("toBytes", BinaryData::toBytes),
+            byteBufferConversion("toString", data -> data.toString().getBytes(StandardCharsets.UTF_8)),
+            byteBufferConversion("toStream", data -> readStream(data.toStream())),
+            byteBufferConversion("toByteBuffer", data -> readByteBuffer(data.toByteBuffer())),
+            byteBufferConversion("toFluxByteBuffer",
+                data -> FluxUtil.collectBytesInByteBufferStream(data.toFluxByteBuffer()).block()),
+            byteBufferConversion("writeTo(OutputStream)", data -> {
+                AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+                data.writeTo(outputStream);
+                return outputStream.toByteArray();
+            }), byteBufferConversion("writeTo(WritableByteChannel)", data -> {
+                AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+                data.writeTo(Channels.newChannel(outputStream));
+                return outputStream.toByteArray();
+            }));
+    }
+
+    private static Arguments byteBufferConversion(String name, BinaryDataConversion conversion) {
+        return Arguments.of(Named.named(name, conversion));
+    }
+
+    private interface BinaryDataConversion {
+        byte[] convert(BinaryData binaryData) throws IOException;
     }
 
     @Test

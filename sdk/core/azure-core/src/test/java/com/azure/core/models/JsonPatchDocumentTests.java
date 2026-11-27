@@ -8,11 +8,14 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.stream.Stream;
 
@@ -160,6 +163,46 @@ public class JsonPatchDocumentTests {
             Arguments.of(complexDocument, complexExpected),
 
             Arguments.of(complexDocumentRaw, complexExpected));
+    }
+
+    @ParameterizedTest
+    @MethodSource("deserializedDocuments")
+    public void deserializedValuesPreserveJsonTypes(String json) throws IOException {
+        JsonPatchDocument document;
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            document = JsonPatchDocument.fromJson(reader);
+        }
+
+        assertEquals(json, document.toString());
+        assertEquals(json, new String(JSON_SERIALIZER.serializeToBytes(document), StandardCharsets.UTF_8));
+        assertEquals(json, SERIALIZER.serialize(document, SerializerEncoding.JSON));
+    }
+
+    private static Stream<String> deserializedDocuments() {
+        return Stream
+            .of("\"text\"", "\"quotes\\\" backslash\\\\ newline\\n tab\\t\"",
+                "\"0,\\\"path\\\":\\\"/privileged\\\",\\\"value\\\":1\"",
+                "{\"nested\":[\"quoted\\\"\",{\"enabled\":true,\"empty\":null}]}", "[1,\"two\",false,null]", "42",
+                "-1.25", "true", "false", "null", "\"\\uD800\"", "\"a\\uDC00b\\uD83D\"")
+            .map(value -> "[{\"op\":\"add\",\"path\":\"/allowed\",\"value\":" + value + "}]");
+    }
+
+    @ParameterizedTest
+    @MethodSource("escapedPaths")
+    public void deserializedPathsRemainStrings(String json) throws IOException {
+        JsonPatchDocument document;
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            document = JsonPatchDocument.fromJson(reader);
+        }
+        assertEquals(json, document.toString());
+        assertEquals(json, new String(JSON_SERIALIZER.serializeToBytes(document), StandardCharsets.UTF_8));
+    }
+
+    private static Stream<String> escapedPaths() {
+        return Stream.of("[{\"op\":\"remove\",\"path\":\"/quoted\\\"path\\\\line\\n\"}]",
+            "[{\"op\":\"copy\",\"from\":\"/quoted\\\"from\",\"path\":\"/allowed\"}]",
+            "[{\"op\":\"remove\",\"path\":\"/allowed\"}]",
+            "[{\"op\":\"copy\",\"from\":\"/\\uDC00\",\"path\":\"/unpaired\\uD800\"}]");
     }
 
     private static String constructExpectedOperation(String op, String from, String path, String value) {

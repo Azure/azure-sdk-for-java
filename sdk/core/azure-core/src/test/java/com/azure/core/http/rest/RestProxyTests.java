@@ -35,6 +35,7 @@ import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -44,6 +45,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -64,6 +66,11 @@ public class RestProxyTests {
         @ExpectedResponses({ 200 })
         Mono<Response<Void>> testMethod(@BodyParam("application/octet-stream") BinaryData data,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength);
+
+        @Post("my/url/path")
+        @ExpectedResponses({ 200 })
+        Response<Void> testMethodSync(@BodyParam("application/octet-stream") BinaryData data,
+            @HeaderParam("Content-Type") String contentType, RequestOptions options);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -154,6 +161,22 @@ public class RestProxyTests {
             Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
             Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length), Arguments
                 .of(Named.of("serializable", BinaryData.fromObject(bytes)), BinaryData.fromObject(bytes).getLength()));
+    }
+
+    @Test
+    public void syncKnownLengthBodyWithoutContentLengthIsNotReframed() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
+        BinaryData data = BinaryData.fromBytes("hello".getBytes(StandardCharsets.UTF_8));
+        RequestOptions options = new RequestOptions()
+            .addRequestCallback(request -> request.getHeaders().remove(HttpHeaderName.CONTENT_LENGTH));
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        Response<Void> response = testInterface.testMethodSync(data, "application/json", options);
+
+        assertEquals(200, response.getStatusCode());
+        assertSame(data, client.getLastHttpRequest().getBodyAsBinaryData());
+        assertNull(client.getLastHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
     }
 
     @ParameterizedTest

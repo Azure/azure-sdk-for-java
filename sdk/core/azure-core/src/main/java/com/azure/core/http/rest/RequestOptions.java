@@ -4,6 +4,7 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.annotation.QueryParam;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.implementation.http.rest.ErrorOptions;
@@ -14,6 +15,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.EnumSet;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -122,7 +124,7 @@ public final class RequestOptions {
 
     private static final EnumSet<ErrorOptions> DEFAULT = EnumSet.of(ErrorOptions.THROW);
 
-    private Consumer<HttpRequest> requestCallback = request -> {
+    private BiConsumer<HttpRequest, ContentLengthState> requestCallback = (request, state) -> {
     };
     private EnumSet<ErrorOptions> errorOptions = DEFAULT;
     private Context context;
@@ -139,7 +141,9 @@ public final class RequestOptions {
      * @return the request callback
      */
     Consumer<HttpRequest> getRequestCallback() {
-        return this.requestCallback;
+        BiConsumer<HttpRequest, ContentLengthState> callback = this.requestCallback;
+        return request -> callback.accept(request,
+            new ContentLengthState(request.getHeaders().get(HttpHeaderName.CONTENT_LENGTH)));
     }
 
     /**
@@ -176,7 +180,8 @@ public final class RequestOptions {
      */
     @Deprecated
     public RequestOptions addHeader(String header, String value) {
-        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header, value));
+        this.requestCallback
+            = this.requestCallback.andThen((request, state) -> request.getHeaders().add(header, value));
         return this;
     }
 
@@ -191,7 +196,8 @@ public final class RequestOptions {
      * @return the modified RequestOptions object
      */
     public RequestOptions addHeader(HttpHeaderName header, String value) {
-        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header, value));
+        this.requestCallback
+            = this.requestCallback.andThen((request, state) -> request.getHeaders().add(header, value));
         return this;
     }
 
@@ -207,7 +213,8 @@ public final class RequestOptions {
      */
     @Deprecated
     public RequestOptions setHeader(String header, String value) {
-        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
+        this.requestCallback
+            = this.requestCallback.andThen((request, state) -> request.getHeaders().set(header, value));
         return this;
     }
 
@@ -221,7 +228,8 @@ public final class RequestOptions {
      * @return the modified RequestOptions object
      */
     public RequestOptions setHeader(HttpHeaderName header, String value) {
-        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
+        this.requestCallback
+            = this.requestCallback.andThen((request, state) -> request.getHeaders().set(header, value));
         return this;
     }
 
@@ -248,7 +256,7 @@ public final class RequestOptions {
      * @return the modified RequestOptions object
      */
     public RequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
-        this.requestCallback = this.requestCallback.andThen(request -> {
+        this.requestCallback = this.requestCallback.andThen((request, state) -> {
             String url = request.getUrl().toString();
             String encodedParameterName = encoded ? parameterName : UrlEscapers.QUERY_ESCAPER.escape(parameterName);
             String encodedParameterValue = encoded ? value : UrlEscapers.QUERY_ESCAPER.escape(value);
@@ -267,12 +275,22 @@ public final class RequestOptions {
      */
     public RequestOptions addRequestCallback(Consumer<HttpRequest> requestCallback) {
         Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
-        this.requestCallback = this.requestCallback.andThen(requestCallback);
+        this.requestCallback = this.requestCallback.andThen((request, state) -> requestCallback.accept(request));
         return this;
     }
 
     /**
      * Sets the body to send as part of the HTTP request.
+     * <p>
+     * If {@code requestBody} has a known length the Content-Length header is set to that length. Otherwise, a
+     * Content-Length header inferred from the body being replaced (including the zero Content-Length of a request
+     * without a body) is removed, as it describes the replaced body. A Content-Length header set explicitly, such as
+     * with {@link #setHeader(HttpHeaderName, String)} or a {@link #addRequestCallback(Consumer) request callback}, is
+     * preserved regardless of its value.
+     * <p>
+     * Before these configurations are applied, a Content-Length matching the existing body's known length (or zero
+     * without a body) is treated as inferred. To preserve an explicit matching length, set it through these options
+     * or a request callback.
      *
      * @param requestBody the request body data
      * @return the modified RequestOptions object
@@ -280,7 +298,7 @@ public final class RequestOptions {
      */
     public RequestOptions setBody(BinaryData requestBody) {
         Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
-        this.requestCallback = this.requestCallback.andThen(request -> request.setBody(requestBody));
+        this.requestCallback = this.requestCallback.andThen((request, state) -> state.setBody(request, requestBody));
         return this;
     }
 
@@ -319,5 +337,36 @@ public final class RequestOptions {
     public RequestOptions setContext(Context context) {
         this.context = context;
         return this;
+    }
+
+    /**
+     * Tracks, for a single application of the request callback, the Content-Length header that was inferred from a
+     * request body rather than set explicitly.
+     */
+    private static final class ContentLengthState {
+        private HttpHeader inferredContentLength;
+
+        private ContentLengthState(HttpHeader inferredContentLength) {
+            this.inferredContentLength = inferredContentLength;
+        }
+
+        private void setBody(HttpRequest request, BinaryData requestBody) {
+            HttpHeader contentLength = request.getHeaders().get(HttpHeaderName.CONTENT_LENGTH);
+            BinaryData replacedBody = request.getBodyAsBinaryData();
+            Long replacedLength = replacedBody == null ? Long.valueOf(0) : replacedBody.getLength();
+            // HttpHeaders.set always creates a new HttpHeader, so an identity match means the header hasn't been
+            // replaced by an explicit override since it was inferred from the original or a previously set body.
+            boolean staleLength = contentLength != null
+                && contentLength == inferredContentLength
+                && replacedLength != null
+                && String.valueOf(replacedLength).equals(contentLength.getValue());
+            request.setBody(requestBody);
+            if (requestBody.getLength() != null) {
+                inferredContentLength = request.getHeaders().get(HttpHeaderName.CONTENT_LENGTH);
+            } else if (staleLength) {
+                request.getHeaders().remove(HttpHeaderName.CONTENT_LENGTH);
+                inferredContentLength = null;
+            }
+        }
     }
 }

@@ -129,10 +129,10 @@ final class JsonPatchOperation implements JsonSerializable<JsonPatchOperation> {
         builder.append("{\"op\":\"").append(op.toString()).append("\"");
 
         if (from != null) {
-            builder.append(",\"from\":\"").append(from).append("\"");
+            builder.append(",\"from\":\"").append(JsonStringEscaper.escape(from)).append("\"");
         }
 
-        builder.append(",\"path\":\"").append(path).append("\"");
+        builder.append(",\"path\":\"").append(JsonStringEscaper.escape(path)).append("\"");
 
         if (value.isInitialized()) {
             builder.append(",\"value\":").append(value.getValue());
@@ -186,7 +186,16 @@ final class JsonPatchOperation implements JsonSerializable<JsonPatchOperation> {
                 } else if ("path".equals(fieldName)) {
                     path = reader.getString();
                 } else if ("value".equals(fieldName)) {
-                    value = Option.of(reader.getString());
+                    JsonToken token = reader.currentToken();
+                    if (token == JsonToken.START_OBJECT || token == JsonToken.START_ARRAY) {
+                        value = Option.of(reader.readChildren());
+                    } else if (token == JsonToken.STRING) {
+                        value = Option.of("\"" + JsonStringEscaper.escape(reader.getString()) + "\"");
+                    } else if (token == JsonToken.NULL) {
+                        value = Option.empty();
+                    } else {
+                        value = Option.of(reader.getRawText());
+                    }
                 } else {
                     reader.skipChildren();
                 }
