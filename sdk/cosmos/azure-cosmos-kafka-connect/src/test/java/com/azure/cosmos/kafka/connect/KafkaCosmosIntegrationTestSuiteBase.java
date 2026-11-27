@@ -66,15 +66,19 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
         JsonNode workerInfo = Utils.getSimpleObjectMapper().readTree(response.body());
         String kafkaVersion = workerInfo.path("version").asText();
         assertThat(kafkaVersion).isNotEmpty();
-        assertThat(new ComparableVersion(kafkaVersion.split("-")[0]).isLessThan("4.2.2"))
-            .as("Connect worker must contain the Kafka 4.2.2 security fixes: %s", kafkaVersion)
-            .isFalse();
+        if (kafkaVersion.endsWith("-ccs")) {
+            assertThat(kafkaVersion).isEqualTo(KafkaCosmosTestConfigurations.CONFLUENT_VERSION + "-ccs");
+        } else {
+            assertThat(new ComparableVersion(kafkaVersion.split("-")[0]).isLessThan("4.2.2"))
+                .as("Connect worker must contain the Kafka 4.2.2 security fixes: %s", kafkaVersion)
+                .isFalse();
+        }
 
         org.testcontainers.containers.Container.ExecResult javaVersion =
             kafkaCosmosConnectContainer.execInContainer("java", "-XshowSettings:properties", "-version");
         assertThat(javaVersion.getExitCode()).isZero();
         assertThat(javaVersion.getStderr()).containsPattern("java.specification.version = (17|21)\\s");
-        logger.info("Verified Connect worker Kafka version {} on Java 17/21", kafkaVersion);
+        logger.info("Verified Connect worker reported version {} on Java 17/21", kafkaVersion);
     }
 
     @AfterSuite(groups = { "kafka-integration" }, timeOut = 10 * SUITE_SETUP_TIMEOUT)

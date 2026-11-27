@@ -23,6 +23,8 @@ mvn -f sdk\cosmos\azure-cosmos-kafka-connect\pom.xml -Pbuild-kafka,unit clean ve
 
 The `kafka-integration` profile creates its own broker, Connect worker, and Schema Registry through [Testcontainers](https://testcontainers.com). It does **not** use the Compose demo. The local broker is KRaft, with Confluent 8.2.5 as the default image version. The cloud variant runs a self-managed worker against external brokers and preserves the configured broker/Schema Registry authentication.
 
+The plugin setup reuses the shaded 3.x JAR produced by the outer Maven build, so CI does not rebuild it against unpublished SDK dependencies. If the JAR is missing, it builds the connector and its SDK dependencies from the repository reactor. Setup failures stop the suite rather than falling back to an older JAR. The test REST helper uses Java's HTTP client and Jackson's current naming strategies; only the SourceLab response DTOs are retained.
+
 Create `kafka-cosmos-local.properties` in your user home directory, outside source control. For tests using the local broker containers:
 
 ```properties
