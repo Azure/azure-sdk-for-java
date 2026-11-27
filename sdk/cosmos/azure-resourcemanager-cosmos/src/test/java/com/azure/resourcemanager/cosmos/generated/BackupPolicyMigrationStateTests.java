@@ -15,22 +15,22 @@ public final class BackupPolicyMigrationStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupPolicyMigrationState model = BinaryData
-            .fromString("{\"status\":\"Invalid\",\"targetType\":\"Periodic\",\"startTime\":\"2021-06-24T13:08:49Z\"}")
+            .fromString("{\"status\":\"Failed\",\"targetType\":\"Periodic\",\"startTime\":\"2021-07-07T11:51:14Z\"}")
             .toObject(BackupPolicyMigrationState.class);
-        Assertions.assertEquals(BackupPolicyMigrationStatus.INVALID, model.status());
+        Assertions.assertEquals(BackupPolicyMigrationStatus.FAILED, model.status());
         Assertions.assertEquals(BackupPolicyType.PERIODIC, model.targetType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-24T13:08:49Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-07T11:51:14Z"), model.startTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupPolicyMigrationState model
-            = new BackupPolicyMigrationState().withStatus(BackupPolicyMigrationStatus.INVALID)
+            = new BackupPolicyMigrationState().withStatus(BackupPolicyMigrationStatus.FAILED)
                 .withTargetType(BackupPolicyType.PERIODIC)
-                .withStartTime(OffsetDateTime.parse("2021-06-24T13:08:49Z"));
+                .withStartTime(OffsetDateTime.parse("2021-07-07T11:51:14Z"));
         model = BinaryData.fromObject(model).toObject(BackupPolicyMigrationState.class);
-        Assertions.assertEquals(BackupPolicyMigrationStatus.INVALID, model.status());
+        Assertions.assertEquals(BackupPolicyMigrationStatus.FAILED, model.status());
         Assertions.assertEquals(BackupPolicyType.PERIODIC, model.targetType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-24T13:08:49Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-07T11:51:14Z"), model.startTime());
     }
 }

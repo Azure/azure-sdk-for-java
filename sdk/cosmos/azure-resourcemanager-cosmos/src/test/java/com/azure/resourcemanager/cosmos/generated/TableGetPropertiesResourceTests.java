@@ -14,13 +14,13 @@ public final class TableGetPropertiesResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TableGetPropertiesResource model = BinaryData.fromString(
-            "{\"_rid\":\"ednwyyshtu\",\"_ts\":56.477654,\"_etag\":\"vuafpwzyifr\",\"id\":\"gwltxeqip\",\"restoreParameters\":{\"restoreSource\":\"dyimsfay\",\"restoreTimestampInUtc\":\"2021-07-01T11:25:11Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Default\"}")
+            "{\"_rid\":\"mbltoo\",\"_ts\":36.390366,\"_etag\":\"qlwxldyka\",\"id\":\"sy\",\"restoreParameters\":{\"restoreSource\":\"lnjpnnbmjksibjgs\",\"restoreTimestampInUtc\":\"2021-02-15T10:10:41Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Restore\"}")
             .toObject(TableGetPropertiesResource.class);
-        Assertions.assertEquals("gwltxeqip", model.id());
-        Assertions.assertEquals("dyimsfay", model.restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-01T11:25:11Z"),
+        Assertions.assertEquals("sy", model.id());
+        Assertions.assertEquals("lnjpnnbmjksibjgs", model.restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-15T10:10:41Z"),
             model.restoreParameters().restoreTimestampInUtc());
-        Assertions.assertFalse(model.restoreParameters().restoreWithTtlDisabled());
-        Assertions.assertEquals(CreateMode.DEFAULT, model.createMode());
+        Assertions.assertTrue(model.restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertEquals(CreateMode.RESTORE, model.createMode());
     }
 }

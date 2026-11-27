@@ -12,14 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class UniqueKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UniqueKey model = BinaryData.fromString("{\"paths\":[\"nxzhcze\",\"rxzbujr\"]}").toObject(UniqueKey.class);
-        Assertions.assertEquals("nxzhcze", model.paths().get(0));
+        UniqueKey model
+            = BinaryData.fromString("{\"paths\":[\"mvmemfnczd\",\"vvbalx\",\"l\",\"chp\"]}").toObject(UniqueKey.class);
+        Assertions.assertEquals("mvmemfnczd", model.paths().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UniqueKey model = new UniqueKey().withPaths(Arrays.asList("nxzhcze", "rxzbujr"));
+        UniqueKey model = new UniqueKey().withPaths(Arrays.asList("mvmemfnczd", "vvbalx", "l", "chp"));
         model = BinaryData.fromObject(model).toObject(UniqueKey.class);
-        Assertions.assertEquals("nxzhcze", model.paths().get(0));
+        Assertions.assertEquals("mvmemfnczd", model.paths().get(0));
     }
 }

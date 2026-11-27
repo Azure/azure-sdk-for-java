@@ -10,9 +10,8 @@ import com.azure.resourcemanager.cosmos.fluent.models.PrivateLinkResourcePropert
 public final class PrivateLinkResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkResourceProperties model = BinaryData
-            .fromString(
-                "{\"groupId\":\"uwod\",\"requiredMembers\":[\"hbkvn\"],\"requiredZoneNames\":[\"j\",\"mvgoqpleh\"]}")
+        PrivateLinkResourceProperties model = BinaryData.fromString(
+            "{\"groupId\":\"ppqib\",\"requiredMembers\":[\"lvzrlrmlcc\",\"etjsczivfqbqna\"],\"requiredZoneNames\":[\"yenzsieuscpl\"]}")
             .toObject(PrivateLinkResourceProperties.class);
     }
 }

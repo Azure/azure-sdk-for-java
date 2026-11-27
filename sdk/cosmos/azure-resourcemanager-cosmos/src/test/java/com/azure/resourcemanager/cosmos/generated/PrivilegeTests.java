@@ -14,21 +14,21 @@ public final class PrivilegeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Privilege model = BinaryData.fromString(
-            "{\"resource\":{\"db\":\"dsmjtgr\",\"collection\":\"dgkkile\"},\"actions\":[\"csmknhwt\",\"baedorvvmqfl\"]}")
+            "{\"resource\":{\"db\":\"jadhqoawj\",\"collection\":\"yueayfbpcmsp\"},\"actions\":[\"rrueqthwmg\",\"mbscbbx\"]}")
             .toObject(Privilege.class);
-        Assertions.assertEquals("dsmjtgr", model.resource().db());
-        Assertions.assertEquals("dgkkile", model.resource().collection());
-        Assertions.assertEquals("csmknhwt", model.actions().get(0));
+        Assertions.assertEquals("jadhqoawj", model.resource().db());
+        Assertions.assertEquals("yueayfbpcmsp", model.resource().collection());
+        Assertions.assertEquals("rrueqthwmg", model.actions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Privilege model
-            = new Privilege().withResource(new PrivilegeResource().withDb("dsmjtgr").withCollection("dgkkile"))
-                .withActions(Arrays.asList("csmknhwt", "baedorvvmqfl"));
+            = new Privilege().withResource(new PrivilegeResource().withDb("jadhqoawj").withCollection("yueayfbpcmsp"))
+                .withActions(Arrays.asList("rrueqthwmg", "mbscbbx"));
         model = BinaryData.fromObject(model).toObject(Privilege.class);
-        Assertions.assertEquals("dsmjtgr", model.resource().db());
-        Assertions.assertEquals("dgkkile", model.resource().collection());
-        Assertions.assertEquals("csmknhwt", model.actions().get(0));
+        Assertions.assertEquals("jadhqoawj", model.resource().db());
+        Assertions.assertEquals("yueayfbpcmsp", model.resource().collection());
+        Assertions.assertEquals("rrueqthwmg", model.actions().get(0));
     }
 }
