@@ -16,6 +16,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot ManagedIdentityCredential authentication issues](#troubleshoot-managedidentitycredential-authentication-issues)
     - [Azure Virtual Machine Managed Identity](#azure-virtual-machine-managed-identity)
     - [Azure App Service and Azure Functions Managed Identity](#azure-app-service-and-azure-functions-managed-identity)
+    - [Managed identity mTLS proof-of-possession](#managed-identity-mtls-proof-of-possession)
 - [Troubleshoot AzureCliCredential authentication issues](#troubleshoot-azureclicredential-authentication-issues)
 - [Troubleshoot AzureDeveloperCliCredential authentication issues](#troubleshoot-azuredeveloperclicredential-authentication-issues)
 - [Troubleshoot AzurePowerShellCredential authentication issues](#troubleshoot-azurepowershellcredential-authentication-issues)
@@ -179,6 +180,28 @@ curl 'http://169.254.169.254/metadata/identity/oauth2/token?resource=https://man
 ```
 > Note that the output of this command will contain a valid access token and SHOULD NOT BE SHARED to avoid compromising account security.
 
+### Managed identity mTLS proof-of-possession
+
+When a client library asks for a proof-of-possession token, `ManagedIdentityCredential` returns a token bound to a TLS
+client certificate if the application and the virtual machine support it. See
+[Managed identity mTLS proof-of-possession](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#managed-identity-mtls-proof-of-possession)
+for its prerequisites. If you get bearer tokens instead, [enable logging](#enable-and-configure-logging): the credential
+logs which prerequisite is missing, or why MSAL found that the virtual machine doesn't support it, at the informational
+level.
+
+`ClientAuthenticationException`
+
+| Error Message |Description| Mitigation |
+|---|---|---|
+|Managed Identity authentication with mTLS proof-of-possession failed.|The prerequisites are met and the virtual machine supports mTLS proof-of-possession, but MSAL couldn't acquire a token bound to a KeyGuard-protected key. For example, `AttestationClientLib.dll` couldn't be loaded, or KeyGuard attestation failed. The credential doesn't fall back to a bearer token.|<ul><li>Check the inner exception, which has MSAL's error. If it has an `AADSTS` error code, look it up in the [Microsoft Entra error codes](https://learn.microsoft.com/entra/identity-platform/reference-error-codes).</li><li>Ensure `MSAL_KEY_ATTESTATION_LIBRARY_PATH` holds the absolute path of `runtimes/win-x64/native/AttestationClientLib.dll` from the [Microsoft.Azure.Security.KeyGuardAttestation](https://www.nuget.org/packages/Microsoft.Azure.Security.KeyGuardAttestation) NuGet package, unmodified so that its signature stays valid, and that the application can read it.</li><li>Ensure the application runs on a 64-bit (x64) JVM.</li><li>To use bearer tokens instead, disable mTLS proof-of-possession with `disableMtlsProofOfPossession()` on `ManagedIdentityCredentialBuilder`, `disableManagedIdentityMtlsProofOfPossession()` on `DefaultAzureCredentialBuilder`, or the `MSAL_MI_DISABLE_IMDS_V2` environment variable set to `true`.</li></ul>|
+|Managed Identity authentication failed. Discovering whether the host supports mTLS proof-of-possession failed.|MSAL failed while discovering whether the virtual machine supports mTLS proof-of-possession.|Check the inner exception, which has MSAL's error.|
+
+`CredentialUnavailableException`
+
+| Error Message |Description| Mitigation |
+|---|---|---|
+|ManagedIdentityCredential authentication unavailable. The host didn't report whether it supports mTLS proof-of-possession within 1000 milliseconds.|In `DefaultAzureCredential`, the managed identity credential waits up to one second for MSAL to discover whether the virtual machine supports mTLS proof-of-possession, and then lets `DefaultAzureCredential` try its next credential. Discovery keeps running, and later requests use its answer.|Retry the request. To wait for discovery, use `ManagedIdentityCredential` directly.|
+|ManagedIdentityCredential authentication unavailable. Discovering whether the host supports mTLS proof-of-possession failed.|In `DefaultAzureCredential`, MSAL failed while discovering whether the virtual machine supports mTLS proof-of-possession, so `DefaultAzureCredential` tries its next credential.|Check the inner exception, which has MSAL's error.|
 
 ## Troubleshoot `AzureCliCredential` authentication issues
 

@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.ProofOfPossessionOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -15,12 +16,16 @@ import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.EmptyEnvironmentConfigurationSource;
 import com.azure.identity.util.ImdsProbeTestServer;
 import com.azure.identity.util.TestUtils;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentityCapabilities;
 import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.MsalServiceException;
+import com.microsoft.aad.msal4j.MtlsBindingStrength;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -39,6 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,8 +54,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.RETURNS_SELF;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -185,6 +194,106 @@ public class DefaultAzureCredentialTest {
             }
             assertEquals(0, tokenRequests.get(), "Unavailable IMDS must not enter token acquisition or retries.");
         }
+    }
+
+    @Test
+    public void testMtlsPopDiscoveryTimeoutFallsBackToDeveloperCredential() {
+        TokenRequestContext request = mtlsPopRequest();
+        AccessToken expectedToken = new AccessToken("developer-token", OffsetDateTime.now().plusHours(1));
+        ManagedIdentityApplication mtlsPopApplication = mock(ManagedIdentityApplication.class);
+        when(mtlsPopApplication.getManagedIdentityCapabilities()).thenReturn(new CompletableFuture<>());
+
+        try (ImdsProbeTestServer imds = new ImdsProbeTestServer((httpRequest, response) -> response.status(200).send());
+            MockedStatic<ManagedIdentityApplication> application = mockMtlsPopApplication(mtlsPopApplication);
+            MockedConstruction<IntelliJCredential> developerCredentials
+                = mockConstruction(IntelliJCredential.class, (credential, context) -> {
+                    when(credential.getToken(request)).thenReturn(Mono.just(expectedToken));
+                })) {
+            DefaultAzureCredential credential
+                = new DefaultAzureCredentialBuilder().configuration(mtlsPopConfiguration(imds)).build();
+
+            StepVerifier.create(credential.getToken(request))
+                .expectNext(expectedToken)
+                .expectComplete()
+                .verify(Duration.ofSeconds(10));
+            application.verify(() -> ManagedIdentityApplication.builder(any()));
+            verify(developerCredentials.constructed().get(0)).getToken(request);
+        }
+    }
+
+    @Test
+    public void testMtlsPopFailureStopsTheChainWithItsCause() throws Exception {
+        TokenRequestContext request = mtlsPopRequest();
+        MsalServiceException failure = new MsalServiceException(
+            "AADSTS3921996: The tenant isn't eligible for token binding.", "invalid_request");
+        ManagedIdentityCapabilities capabilities = mock(ManagedIdentityCapabilities.class);
+        when(capabilities.maxSupportedBindingStrength()).thenReturn(MtlsBindingStrength.KEY_GUARD);
+        CompletableFuture<IAuthenticationResult> failedToken = new CompletableFuture<>();
+        failedToken.completeExceptionally(failure);
+        ManagedIdentityApplication mtlsPopApplication = mock(ManagedIdentityApplication.class);
+        when(mtlsPopApplication.getManagedIdentityCapabilities())
+            .thenReturn(CompletableFuture.completedFuture(capabilities));
+        when(mtlsPopApplication.acquireTokenForManagedIdentity(any())).thenReturn(failedToken);
+
+        try (ImdsProbeTestServer imds = new ImdsProbeTestServer((httpRequest, response) -> response.status(200).send());
+            MockedStatic<ManagedIdentityApplication> application = mockMtlsPopApplication(mtlsPopApplication);
+            MockedConstruction<IntelliJCredential> developerCredentials = mockConstruction(IntelliJCredential.class)) {
+            DefaultAzureCredential credential
+                = new DefaultAzureCredentialBuilder().configuration(mtlsPopConfiguration(imds)).build();
+
+            StepVerifier.create(credential.getToken(request)).expectErrorSatisfies(error -> {
+                assertFalse(error instanceof CredentialUnavailableException);
+                assertTrue(error.getMessage().contains("AADSTS3921996"));
+                Throwable cause = error;
+                while (cause != null && cause != failure) {
+                    cause = cause.getCause();
+                }
+                assertEquals(failure, cause, "MSAL's exception must stay in the cause chain.");
+            }).verify(Duration.ofSeconds(10));
+            application.verify(() -> ManagedIdentityApplication.builder(any()));
+            verify(developerCredentials.constructed().get(0), never()).getToken(any());
+        }
+    }
+
+    @Test
+    public void testDisableManagedIdentityMtlsProofOfPossession() {
+        List<IdentityClientOptions> clientOptions = new ArrayList<>();
+        try (MockedConstruction<IdentityClient> identityClients = mockConstruction(IdentityClient.class,
+            (identityClient, context) -> clientOptions.add((IdentityClientOptions) context.arguments().get(13)))) {
+            new DefaultAzureCredentialBuilder()
+                .configuration(TestUtils.createTestConfiguration(new TestConfigurationSource()))
+                .disableManagedIdentityMtlsProofOfPossession()
+                .build();
+            assertFalse(identityClients.constructed().isEmpty());
+        }
+
+        // Each credential in the chain gets its own copy of the options.
+        clientOptions.forEach(options -> assertTrue(options.isMtlsProofOfPossessionDisabled()));
+    }
+
+    private static TokenRequestContext mtlsPopRequest() {
+        return new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setProofOfPossessionOptions(new ProofOfPossessionOptions());
+    }
+
+    private static Configuration mtlsPopConfiguration(ImdsProbeTestServer imds) {
+        return TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put("AZURE_POD_IDENTITY_AUTHORITY_HOST", imds.getEndpoint())
+                .put("MSAL_KEY_ATTESTATION_LIBRARY_PATH", "C:\\attestation\\AttestationClientLib.dll"));
+    }
+
+    // Makes MSAL build the given application. The tests that use it don't reach managed identity's bearer token path,
+    // which would get the same application.
+    private static MockedStatic<ManagedIdentityApplication>
+        mockMtlsPopApplication(ManagedIdentityApplication mtlsPopApplication) {
+        ManagedIdentityApplication.Builder builder = mock(ManagedIdentityApplication.Builder.class, RETURNS_SELF);
+        when(builder.build()).thenReturn(mtlsPopApplication);
+        MockedStatic<ManagedIdentityApplication> application
+            = mockStatic(ManagedIdentityApplication.class, CALLS_REAL_METHODS);
+        application.when(ManagedIdentityApplication::getManagedIdentitySource)
+            .thenReturn(ManagedIdentitySourceType.DEFAULT_TO_IMDS);
+        application.when(() -> ManagedIdentityApplication.builder(any())).thenReturn(builder);
+        return application;
     }
 
     @ParameterizedTest

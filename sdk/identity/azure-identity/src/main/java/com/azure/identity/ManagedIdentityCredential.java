@@ -51,6 +51,11 @@ import java.time.Duration;
  * {@link ManagedIdentityCredentialBuilder#resourceId(String)}, or
  * {@link ManagedIdentityCredentialBuilder#objectId(String)} to select a user-assigned identity.</p>
  *
+ * <p>On Azure Virtual Machines and Virtual Machine Scale Sets, when a client library asks for a proof-of-possession
+ * token, this credential can return a token bound to a TLS client certificate, for mutual TLS (mTLS)
+ * proof-of-possession. See {@link ManagedIdentityCredentialBuilder#disableMtlsProofOfPossession()} for what it needs
+ * and how to disable it.</p>
+ *
  * <p><strong>Sample: Construct a simple ManagedIdentityCredential</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a ManagedIdentityCredential,

@@ -5,6 +5,14 @@
 ### Features Added
 
 - Added `GitHubActionsCredential` and `GitHubActionsCredentialBuilder` for authentication using GitHub Actions OIDC federation. ([#50916](https://github.com/Azure/azure-sdk-for-java/pull/50916))
+- Added mutual TLS (mTLS) proof-of-possession to `ManagedIdentityCredential` on Azure virtual machines and virtual
+  machine scale sets with KeyGuard, in preview. When a client library asks for a proof-of-possession token, the optional
+  `com.microsoft.azure:msal4j-key-attestation` package is on the class path and `MSAL_KEY_ATTESTATION_LIBRARY_PATH` is
+  set to the path of `AttestationClientLib.dll`, the credential returns a token bound to a TLS client certificate
+  instead of a bearer token. It gets these tokens through MSAL's own HTTP client. ([#51316](https://github.com/Azure/azure-sdk-for-java/pull/51316))
+- Added `ManagedIdentityCredentialBuilder.disableMtlsProofOfPossession()` and
+  `DefaultAzureCredentialBuilder.disableManagedIdentityMtlsProofOfPossession()` to always get bearer tokens from managed
+  identity. ([#51316](https://github.com/Azure/azure-sdk-for-java/pull/51316))
 
 ### Breaking Changes
 
@@ -14,6 +22,12 @@
 - Fixed client-credentials authentication to acquire a new token when handling a Continuous Access Evaluation (CAE) claims challenge. ([#50916](https://github.com/Azure/azure-sdk-for-java/pull/50916))`
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.61.0` to version `1.62.0-beta.1`.
+- Upgraded `azure-core-http-netty` from `1.17.0` to version `1.18.0-beta.1`.
+- Upgraded `msal4j` from `1.26.0` to version `1.26.1-preview1`.
 
 ## 1.19.0 (2026-10-29)
 
