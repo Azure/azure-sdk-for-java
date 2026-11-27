@@ -11,7 +11,7 @@ import com.azure.resourcemanager.managedops.models.ManagedOp;
  */
 public final class ManagedOpsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-28-preview/ManagedOps_Update.json
+     * x-ms-original-file: 2026-01-06-preview/ManagedOps_Update.json
      */
     /**
      * Sample code: ManagedOps_Update.
