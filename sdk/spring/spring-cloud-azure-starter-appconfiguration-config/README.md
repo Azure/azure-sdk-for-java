@@ -64,6 +64,8 @@ Configuration Store Authentication
 
 By default when connecting to Azure App Configuration, if no credential is provided, the `DefaultAzureCredential` will be used.
 
+For endpoint-based authentication, settings under `spring.cloud.azure.appconfiguration.credential` and `spring.cloud.azure.appconfiguration.profile` override the corresponding global Azure settings. Unset service properties inherit the corresponding global settings.
+
 Name | Description | Required | Default
 ---|---|---|---
 spring.cloud.azure.appconfiguration.stores[0].endpoint | When the endpoint of an App Configuration store is specified, the provider authenticates using Spring Cloud Azure credential configuration (for example, `spring.cloud.azure.(appconfiguration.)credential.*`). If no credential is configured, it falls back to `DefaultAzureCredential`. You can also provide a `ConfigurationClientCustomizer` bean to customize the underlying `ConfigurationClientBuilder` (including overriding credentials). An `IllegalArgumentException` will be thrown if the endpoint and connection-string are specified at the same time. | Conditional | null

@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed App Configuration bootstrap so service-specific credentials and tenant IDs are applied when global Azure settings are unset.
+
 ### Other Changes
 
 ## 7.5.0 (2026-11-24)
