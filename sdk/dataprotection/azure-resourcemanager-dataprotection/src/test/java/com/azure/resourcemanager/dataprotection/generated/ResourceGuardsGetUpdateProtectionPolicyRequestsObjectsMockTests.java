@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class ResourceGuardsGetUpdateProtectionPolicyRequestsObjectsMockTests {
     @Test
     public void testGetUpdateProtectionPolicyRequestsObjects() throws Exception {
-        String responseStr = "{\"value\":[{\"id\":\"vf\",\"name\":\"lkvn\",\"type\":\"jlrigjkskyrioovz\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"uwiwtglxxhljfpg\",\"name\":\"icrmnzh\",\"type\":\"gmqgjs\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ResourceGuardsGetUpdateProtectionPolicyRequestsObjectsMockTes
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DppBaseResource> response = manager.resourceGuards()
-            .getUpdateProtectionPolicyRequestsObjects("nzrdpsovwxz", "ptgoeiybbabp", com.azure.core.util.Context.NONE);
+            .getUpdateProtectionPolicyRequestsObjects("qpswokmvkhlggdhb", "mzqkz", com.azure.core.util.Context.NONE);
 
     }
 }

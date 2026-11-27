@@ -22,7 +22,7 @@ public final class FetchSecondaryRecoveryPointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"dbqzolxrzvhqjw\",\"name\":\"rhtgvgzpcrrkol\",\"type\":\"w\"}]}";
+            = "{\"value\":[{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"gcgqyhleseyqrhvy\",\"name\":\"ldotjvdkwisws\",\"type\":\"ukjtasbvwispkxk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,12 @@ public final class FetchSecondaryRecoveryPointsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<AzureBackupRecoveryPointResource> response = manager.fetchSecondaryRecoveryPoints()
-            .list("lkujrllfojui", "jpu", new FetchSecondaryRPsRequestParameters().withSourceRegion("jucejikzoeovvtz")
-                .withSourceBackupInstanceId("et"), "kl", "tikyj", com.azure.core.util.Context.NONE);
+        PagedIterable<AzureBackupRecoveryPointResource> response
+            = manager.fetchSecondaryRecoveryPoints()
+                .list("gkzz", "taf",
+                    new FetchSecondaryRPsRequestParameters().withSourceRegion("zffovwmbjl")
+                        .withSourceBackupInstanceId("sczpgvdwnapfd"),
+                    "wow", "tptnuwjtk", com.azure.core.util.Context.NONE);
 
     }
 }

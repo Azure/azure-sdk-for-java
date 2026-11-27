@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
 public final class BackupInstancesTriggerRestoreMockTests {
     @Test
     public void testTriggerRestore() throws Exception {
-        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"fr\"}";
+        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"jdfqwmkyoqufdvr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,16 +37,17 @@ public final class BackupInstancesTriggerRestoreMockTests {
 
         OperationJobExtendedInfo response
             = manager.backupInstances()
-                .triggerRestore("la", "hnfhqlyvijouwi", "kxoyzunbixxr", new AzureBackupRestoreRequest()
+                .triggerRestore("ttexoqqpwcyyufmh", "uncuw", "qspkcdqzhlctd", new AzureBackupRestoreRequest()
                     .withRestoreTargetInfo(new RestoreTargetInfoBase().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                        .withRestoreLocation("vcpwpgclrc"))
-                    .withSourceDataStoreType(SourceDataStoreType.SNAPSHOT_STORE)
-                    .withSourceResourceId("soxfrken")
-                    .withResourceGuardOperationRequests(Arrays.asList("yyefrpmpdnqqs"))
+                        .withRestoreLocation("qn"))
+                    .withSourceDataStoreType(SourceDataStoreType.ARCHIVE_STORE)
+                    .withSourceResourceId("pchrqbn")
+                    .withResourceGuardOperationRequests(
+                        Arrays.asList("cgegydcwbo", "jumvqqolihrraio", "aubrjtloq", "fuojrngif"))
                     .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
-                        .withUserAssignedIdentityArmUrl("qvmmbn")),
+                        .withUserAssignedIdentityArmUrl("sccbiuimzd")),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fr", response.jobId());
+        Assertions.assertEquals("jdfqwmkyoqufdvr", response.jobId());
     }
 }

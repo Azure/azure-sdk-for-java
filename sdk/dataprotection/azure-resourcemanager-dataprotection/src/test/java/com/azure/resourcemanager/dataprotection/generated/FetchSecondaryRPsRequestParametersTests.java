@@ -12,18 +12,18 @@ public final class FetchSecondaryRPsRequestParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FetchSecondaryRPsRequestParameters model
-            = BinaryData.fromString("{\"sourceRegion\":\"oepry\",\"sourceBackupInstanceId\":\"nwy\"}")
+            = BinaryData.fromString("{\"sourceRegion\":\"mf\",\"sourceBackupInstanceId\":\"uwasqvd\"}")
                 .toObject(FetchSecondaryRPsRequestParameters.class);
-        Assertions.assertEquals("oepry", model.sourceRegion());
-        Assertions.assertEquals("nwy", model.sourceBackupInstanceId());
+        Assertions.assertEquals("mf", model.sourceRegion());
+        Assertions.assertEquals("uwasqvd", model.sourceBackupInstanceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FetchSecondaryRPsRequestParameters model
-            = new FetchSecondaryRPsRequestParameters().withSourceRegion("oepry").withSourceBackupInstanceId("nwy");
+            = new FetchSecondaryRPsRequestParameters().withSourceRegion("mf").withSourceBackupInstanceId("uwasqvd");
         model = BinaryData.fromObject(model).toObject(FetchSecondaryRPsRequestParameters.class);
-        Assertions.assertEquals("oepry", model.sourceRegion());
-        Assertions.assertEquals("nwy", model.sourceBackupInstanceId());
+        Assertions.assertEquals("mf", model.sourceRegion());
+        Assertions.assertEquals("uwasqvd", model.sourceBackupInstanceId());
     }
 }
