@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
@@ -15,8 +16,12 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.AmqpLinkProvider;
+import com.azure.core.amqp.implementation.ReactorDispatcher;
+import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.RetryUtil;
+import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.utils.metrics.TestCounter;
@@ -45,12 +50,17 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Section;
+import org.apache.qpid.proton.amqp.messaging.Target;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -1444,6 +1454,97 @@ class EventHubProducerAsyncClientTest {
         verify(sendLink2, times(1)).send(any(Message.class));
         verifyNoInteractions(sendLink3);
 
+        verifyNoInteractions(onClientClosed);
+    }
+
+    /**
+     * Verifies that a late terminal error from a real sender causes the same event to use a replacement link.
+     */
+    // Requires the freshly built AMQP dependency; the released dependency predates this fix.
+    @Test
+    @EnabledIfSystemProperty(named = "azure.core.amqp.source.tests", matches = "true")
+    void sendRetriesSameEventThroughReplacementLink() throws Exception {
+        // Recovery must precede the enclosing timeout, which can otherwise hide a hung sender.
+        retryOptions.setTryTimeout(Duration.ofMinutes(1)).setDelay(Duration.ofMillis(10));
+        Sinks.Many<AmqpEndpointState> firstConnectionStates
+            = Sinks.many().replay().latestOrDefault(AmqpEndpointState.ACTIVE);
+        Sinks.Many<AmqpEndpointState> secondConnectionStates
+            = Sinks.many().replay().latestOrDefault(AmqpEndpointState.ACTIVE);
+        Sinks.Many<AmqpShutdownSignal> firstShutdownSignals = Sinks.many().unicast().onBackpressureBuffer();
+
+        when(connection.getEndpointStates()).thenReturn(firstConnectionStates.asFlux());
+        when(connection.getShutdownSignals()).thenReturn(firstShutdownSignals.asFlux());
+        when(connection.closeAsync()).thenReturn(Mono.empty());
+        when(connection2.getEndpointStates()).thenReturn(secondConnectionStates.asFlux());
+        when(connection2.getShutdownSignals()).thenReturn(Flux.never());
+        when(connection2.closeAsync()).thenReturn(Mono.empty());
+
+        ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
+        ReactorProvider reactorProvider = mock(ReactorProvider.class);
+        when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
+        doAnswer(invocation -> null).when(dispatcher).invoke(any(Runnable.class));
+
+        Sender protonSender = mock(Sender.class);
+        when(protonSender.getName()).thenReturn("sender-link");
+        when(protonSender.getRemoteTarget()).thenReturn(mock(Target.class));
+        when(protonSender.getRemoteMaxMessageSize()).thenReturn(org.apache.qpid.proton.amqp.UnsignedLong.valueOf(1024));
+        when(protonSender.getCredit()).thenReturn(100);
+        SendLinkHandler firstHandler = new SendLinkHandler("first-connection", HOSTNAME, "sender-link", EVENT_HUB_NAME,
+            com.azure.core.amqp.implementation.AmqpMetricsProvider.noop());
+
+        Message gatedMessage = Mockito.spy(Proton.message());
+        doAnswer(invocation -> {
+            when(protonSender.getLocalState()).thenReturn(EndpointState.CLOSED);
+            when(protonSender.getRemoteState()).thenReturn(EndpointState.CLOSED);
+            Event closeEvent = mock(Event.class);
+            when(closeEvent.getLink()).thenReturn(protonSender);
+            firstHandler.onLinkRemoteClose(closeEvent);
+            firstConnectionStates.emitError(new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR,
+                "connection closed", new AmqpErrorContext(HOSTNAME)), Sinks.EmitFailureHandler.FAIL_FAST);
+            return invocation.callRealMethod();
+        }).when(gatedMessage).encode(any(byte[].class), Mockito.anyInt(), Mockito.anyInt());
+
+        MessageSerializer serializer = mock(MessageSerializer.class);
+        when(serializer.serialize(any(EventData.class))).thenReturn(gatedMessage);
+        when(serializer.getSize(gatedMessage)).thenReturn(10);
+
+        com.azure.core.amqp.AmqpRetryOptions senderRetryOptions = new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED)
+            .setDelay(Duration.ofMillis(1))
+            .setTryTimeout(Duration.ofSeconds(10));
+        AmqpSendLink realFirstLink = new AmqpLinkProvider().createSendLink(connection, EVENT_HUB_NAME, protonSender,
+            firstHandler, reactorProvider, null, serializer, senderRetryOptions, Schedulers.parallel(),
+            com.azure.core.amqp.implementation.AmqpMetricsProvider.noop());
+        Event openEvent = mock(Event.class);
+        when(openEvent.getLink()).thenReturn(protonSender);
+        firstHandler.onLinkRemoteOpen(openEvent);
+
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
+            .thenReturn(Mono.just(realFirstLink));
+        when(
+            connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
+                .thenReturn(Mono.just(sendLink2));
+        when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
+
+        connectionProcessor = createConnectionProcessor(new EventHubReactorAmqpConnection[] { connection, connection2 },
+            connectionOptions.getRetry(), false);
+        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            serializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
+
+        EventDataBatch batch = new EventDataBatch(1024, null, null, () -> null, DEFAULT_INSTRUMENTATION);
+        Assertions.assertTrue(batch.tryAdd(new EventData("test")));
+        try {
+            StepVerifier.create(producer.send(batch)).expectComplete().verify(Duration.ofSeconds(5));
+        } finally {
+            firstHandler.close();
+        }
+
+        verify(connection, times(1)).createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions),
+            eq(CLIENT_IDENTIFIER));
+        verify(connection2, times(1)).createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions),
+            eq(CLIENT_IDENTIFIER));
+        verify(sendLink2, times(1)).send(gatedMessage);
+        verify(gatedMessage, times(1)).encode(any(byte[].class), Mockito.anyInt(), Mockito.anyInt());
+        verifyNoInteractions(sendLink3);
         verifyNoInteractions(onClientClosed);
     }
 

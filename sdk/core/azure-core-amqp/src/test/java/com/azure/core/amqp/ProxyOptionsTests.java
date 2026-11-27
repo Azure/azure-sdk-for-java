@@ -251,8 +251,11 @@ public class ProxyOptionsTests {
 
     @Test
     public void testNullProxyAddress() {
-        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-            new TestConfigurationSource().put(JAVA_NET_USE_SYSTEM_PROXIES, "true")
+        // Explicit nulls prevent falling back to the host's HTTP_PROXY system property or environment variable.
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE,
+            new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, null),
+            new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, null)
+                .put(JAVA_NET_USE_SYSTEM_PROXIES, "true")
                 .put(ProxyOptions.PROXY_AUTHENTICATION_TYPE, AUTH_TYPE)
                 .put(ProxyOptions.PROXY_USERNAME, SOME_USERNAME)
                 .put(ProxyOptions.PROXY_PASSWORD, SOME_PASSWORD)).build();
