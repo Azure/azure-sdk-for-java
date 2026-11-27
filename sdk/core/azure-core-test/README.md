@@ -195,6 +195,27 @@ the recording.
 To run live tests, set the environment variable `AZURE_TEST_MODE` to `LIVE`.
 To run tests in playback, set `AZURE_TEST_MODE` to `PLAYBACK` or leave it unset.
 
+In playback, valid absolute HTTP(S) URLs in `Operation-Location` and `Azure-AsyncOperation` response headers are moved
+onto the host and port of the request that received them, keeping their recorded scheme, path, query, and fragment.
+An absolute non-redirect `Location` header is rewritten the same way only when the response also has one of these
+headers. A response alone can't show whether any other `Location`, such as the resource URL of a 201 create or an
+upload URL, is a polling URL, so other `Location` values, relative `Location` values, and redirect locations are left as
+recorded.
+
+Location-only LROs, including ARM Location-only LROs, therefore need an opt-in for polling to stay on the playback
+endpoint once polling URLs are validated against the request host. Pass a `Context` with
+`TestProxyPlaybackClient.REWRITE_LOCATION_HEADER` set to `Boolean.TRUE` to the LRO operation, for example through
+`RequestOptions.setContext` or a `begin*` overload that accepts a `Context`. Generated clients pass that context to
+both the activation request and `PollingStrategyOptions`, so it reaches every polling and final-result request. Custom
+pollers must also set it on `PollingStrategyOptions`, because synchronous strategies use only that context. Convenience
+overloads that accept neither `RequestOptions` nor `Context`, and `TestProxyPlaybackClient.send(HttpRequest)`, can't
+opt in. Redirect locations are never rewritten, even with this opt-in.
+
+Rewriting drops recorded hosts, ports, and user information, so playback cannot verify validation that rejects these
+recorded values. Such negative tests must use direct mock `HttpClient` responses instead of `TestProxyPlaybackClient`.
+The scheme is kept as recorded: an HTTP polling URL returned to an HTTPS request remains a downgrade. Malformed
+authorities, including invalid or empty ports, are left unchanged rather than repaired.
+
 ## Run and record tests
 
 Set the environment variable `AZURE_TEST_MODE` to `RECORD` to run your test(s) in record mode.

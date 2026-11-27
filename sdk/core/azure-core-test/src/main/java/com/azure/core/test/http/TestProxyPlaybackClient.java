@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.implementation.PlaybackPollingUrlRewriter;
 import com.azure.core.test.models.RecordFilePayload;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
@@ -50,6 +51,15 @@ import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
  * A {@link HttpClient} that plays back test recordings from the external test proxy.
  */
 public class TestProxyPlaybackClient implements HttpClient {
+
+    /**
+     * A {@link Context} key that opts a request into rewriting its non-redirect {@code Location} response header onto
+     * the request host. Without it, {@code Location} is rewritten only alongside {@code Operation-Location} or
+     * {@code Azure-AsyncOperation}. Set its value to {@link Boolean#TRUE} for Location-only LROs, passing the context
+     * to the activation request and the polling strategy (for generated clients, through {@code RequestOptions}).
+     * Leave it unset for non-LRO requests, whose resource or upload locations must retain their recorded values.
+     */
+    public static final String REWRITE_LOCATION_HEADER = "azure-core-test-rewrite-location-header";
 
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyPlaybackClient.class);
     private final HttpClient client;
@@ -183,13 +193,18 @@ public class TestProxyPlaybackClient implements HttpClient {
 
     /**
      * Method is invoked after the response is received.
+     * <p>
+     * Restores the original request URL and moves polling URLs in the response onto the original request's host and
+     * port, keeping long-running operation polling on the playback endpoint.
      *
      * @param response The response received.
+     * @param context The request context, including any opt-in for Location-only LROs.
      * @return The transformed response.
      */
-    private HttpResponse afterReceivedResponse(HttpResponse response) {
+    private HttpResponse afterReceivedResponse(HttpResponse response, Context context) {
         TestProxyUtils.checkForTestProxyErrors(response);
-        return TestProxyUtils.resetTestProxyData(response);
+        return PlaybackPollingUrlRewriter.rewritePollingUrls(TestProxyUtils.resetTestProxyData(response),
+            context != null && Boolean.TRUE.equals(context.getData(REWRITE_LOCATION_HEADER).orElse(false)));
     }
 
     /**
@@ -200,7 +215,7 @@ public class TestProxyPlaybackClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
         beforeSendingRequest(request);
-        return client.send(request).map(this::afterReceivedResponse);
+        return client.send(request).map(response -> afterReceivedResponse(response, Context.NONE));
     }
 
     /**
@@ -212,7 +227,7 @@ public class TestProxyPlaybackClient implements HttpClient {
     public HttpResponse sendSync(HttpRequest request, Context context) {
         beforeSendingRequest(request);
         HttpResponse response = client.sendSync(request, context);
-        return afterReceivedResponse(response);
+        return afterReceivedResponse(response, context);
     }
 
     /**
@@ -296,6 +311,6 @@ public class TestProxyPlaybackClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         beforeSendingRequest(request);
-        return client.send(request, context).map(this::afterReceivedResponse);
+        return client.send(request, context).map(response -> afterReceivedResponse(response, context));
     }
 }
