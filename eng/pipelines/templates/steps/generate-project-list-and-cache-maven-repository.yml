@@ -47,7 +47,6 @@ steps:
   inputs:
     pwsh: true
     filePath: eng/pipelines/scripts/generate-project-list.ps1
-    arguments: -JobType '${{ parameters.JobType }}' -JavaTestVersion '$(JavaTestVersion)'
   env:
     PACKAGEINFODIR: $(Build.ArtifactStagingDirectory)/PackageInfo
 
@@ -55,7 +54,6 @@ steps:
 # Post-Job Cache will fail because there's no .m2/repository
 - ${{ if eq(parameters.UseCache, 'true') }}:
   - task: Cache@2
-    condition: and(succeeded(), ne(variables['SkipTestProjects'], 'true'))
     inputs:
     # Note: CacheSalt is only intended to be used in special cases, as a build is queued, to force a cache miss.
     # This would be set as a variable in the UI when the run is queued.

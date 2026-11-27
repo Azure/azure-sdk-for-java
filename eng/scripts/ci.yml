@@ -11,13 +11,11 @@ trigger:
     include:
       - eng/scripts/*
       - eng/pipelines/pullrequest.yml
-      - eng/pipelines/scripts/generate-project-list.ps1
       - eng/pipelines/scripts/Get-Heap-Dump-Hprofs.ps1
       - eng/pipelines/scripts/Get-Test-Logs.ps1
       - eng/pipelines/scripts/Get-Troubleshooting-Artifacts.ps1
       - eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
       - eng/pipelines/templates/*
-      - sdk/cosmos/kafka-*-matrix.json
     exclude:
       - eng/scripts/typespec
 
@@ -32,13 +30,11 @@ pr:
     include:
       - eng/scripts/*
       - eng/pipelines/pullrequest.yml
-      - eng/pipelines/scripts/generate-project-list.ps1
       - eng/pipelines/scripts/Get-Heap-Dump-Hprofs.ps1
       - eng/pipelines/scripts/Get-Test-Logs.ps1
       - eng/pipelines/scripts/Get-Troubleshooting-Artifacts.ps1
       - eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
       - eng/pipelines/templates/*
-      - sdk/cosmos/kafka-*-matrix.json
 
 extends:
   template: /eng/common/pipelines/templates/stages/archetype-sdk-tool-pwsh.yml

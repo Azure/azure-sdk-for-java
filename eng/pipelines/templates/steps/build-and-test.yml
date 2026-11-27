@@ -62,14 +62,14 @@ steps:
       goals: 'install'
     env:
       VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
-    condition: and(succeeded(), ne(variables['SkipTestProjects'], 'true'), ne(variables['TestFromSource'], 'true'), ne(variables['FirstTestOverrideRan'], 'true'))
+    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'), ne(variables['FirstTestOverrideRan'], 'true'))
 
   - task: PythonScript@0
     displayName: 'Update external dependency versions'
     inputs:
       scriptPath: 'eng/versioning/update_versions.py'
       arguments: '--skip-readme --version-override ${{ parameters.VersionOverride }}'
-    condition: and(succeeded(), ne(variables['SkipTestProjects'], 'true'), eq(variables['TestVersionSupport'], 'true'))
+    condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
   - task: Maven@4
     displayName: '${{ parameters.VersionOverride }} - Re-build for version override run'
@@ -84,7 +84,7 @@ steps:
       goals: 'clean install'
     env:
       VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
-    condition: and(succeeded(), ne(variables['SkipTestProjects'], 'true'), eq(variables['TestVersionSupport'], 'true'))
+    condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
   - task: Maven@4
     displayName: 'Build for From Source run'
@@ -102,7 +102,7 @@ steps:
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-    condition: and(succeeded(), ne(variables['SkipTestProjects'], 'true'), eq(variables['TestFromSource'], 'true'))
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - ${{ parameters.PreTestRunSteps }}
 
@@ -116,7 +116,7 @@ steps:
           -JavaTestVersion $(JavaTestVersion)
 
     - task: AzurePowerShell@5
-      condition: and(succeeded(), ne(variables['SkipTestProjects'], 'true'), ne(variables['TestFromSource'], 'true'))
+      condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
       ${{ if eq(parameters.TestVersionSupport, 'true') }}:
         displayName: '${{ parameters.VersionOverride }} - Run tests (Federated Auth)'
       ${{ else }}:
@@ -141,7 +141,7 @@ steps:
 
   - ${{ else }}:
     - task: Maven@4
-      condition: and(succeeded(), ne(variables['SkipTestProjects'], 'true'), ne(variables['TestFromSource'], 'true'))
+      condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
       ${{ if eq(parameters.TestVersionSupport, 'true') }}:
         displayName: '${{ parameters.VersionOverride }} - Run tests'
       ${{ else }}:
@@ -164,7 +164,7 @@ steps:
       scriptPath: 'eng/scripts/generate_aggregate_pom.py'
       arguments: '--project-list $(ProjectList) --exclude-project-list ${{ parameters.ExcludeProjectList }} --type coverage'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
-    condition: and(ne(variables['SkipTestProjects'], 'true'), eq(variables['RunAggregateReports'], 'true'))
+    condition: eq(variables['RunAggregateReports'], 'true')
 
   - task: Maven@4
     displayName: 'Generate aggregate code coverage report'
@@ -176,7 +176,7 @@ steps:
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       goals: jacoco:report-aggregate
-    condition: and(ne(variables['SkipTestProjects'], 'true'), eq(variables['RunAggregateReports'], 'true'))
+    condition: eq(variables['RunAggregateReports'], 'true')
 
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
     - ${{ if eq(parameters.IsLiveTest, 'true') }}:
@@ -190,7 +190,7 @@ steps:
 
     - task: AzurePowerShell@5
       displayName: 'Run tests for From Source run (Federated Auth)'
-      condition: and(succeeded(), ne(variables['SkipTestProjects'], 'true'), eq(variables['TestFromSource'], 'true'))
+      condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
       inputs:
         azureSubscription: ${{ parameters.ServiceConnection }}
         azurePowerShellVersion: LatestVersion
@@ -233,7 +233,7 @@ steps:
         # compiled and installed in the previous task, this tasks only runs tests.
         goals: ${{ parameters.TestGoals }}
       env: ${{ parameters.TestEnvVars }}
-      condition: and(succeeded(), ne(variables['SkipTestProjects'], 'true'), eq(variables['TestFromSource'], 'true'))
+      condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - ${{ if eq(parameters.TestVersionSupport, 'true') }}:
     - template: /eng/pipelines/templates/steps/retain-troubleshooting-artifacts.yml
@@ -279,4 +279,4 @@ steps:
       summaryFileLocation: target/site/test-coverage/jacoco.xml
       reportDirectory: target/site/test-coverage/
       failIfCoverageEmpty: false
-    condition: and(ne(variables['SkipTestProjects'], 'true'), eq(variables['RunAggregateReports'], 'true'))
+    condition: eq(variables['RunAggregateReports'], 'true')

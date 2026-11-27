@@ -63,7 +63,7 @@ def proj_path_has_yml(proj_path):
     return False
 
 # Function that creates the aggregate POM.
-def create_from_source_pom(artifacts_list: str, additional_modules_list: str, set_skip_linting_projects: str, match_any_version: bool, job_type: str = '', java_test_version: str = ''):
+def create_from_source_pom(artifacts_list: str, additional_modules_list: str, set_skip_linting_projects: str, match_any_version: bool):
     artifacts_list_identifiers = artifacts_list.split(',')
 
     additional_modules_identifiers = []
@@ -100,13 +100,6 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
     add_source_projects(source_projects, artifacts_list_identifiers, projects)
     add_source_projects(source_projects, dependent_modules, projects)
     add_source_projects(source_projects, dependency_modules, projects)
-
-    # FromSource dependent expansion can reintroduce Kafka after project-list filtering.
-    if job_type.lower() == 'test' and java_test_version and java_test_version not in ('1.17', '1.21', '17', '21'):
-        kafka_project = 'com.azure.cosmos.kafka:azure-cosmos-kafka-connect'
-        if any(p.identifier == kafka_project for p in source_projects):
-            print('Excluding {} from Java {} FromSource tests; Kafka tests support Java 17 and 21 only.'.format(kafka_project, java_test_version))
-        source_projects = {p for p in source_projects if p.identifier != kafka_project}
 
     modules = sorted(list(set([p.module_path for p in source_projects])))
     with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
@@ -357,13 +350,11 @@ def main():
     parser.add_argument('--additional-modules-list', '--aml', type=str, required=False, default=None, nargs='?')
     parser.add_argument('--set-skip-linting-projects', type=str)
     parser.add_argument('--match-any-version', action='store_true')
-    parser.add_argument('--job-type', default='')
-    parser.add_argument('--java-test-version', default='')
     args = parser.parse_args()
     if args.artifacts_list == None:
         raise ValueError('Missing artifacts list.')
     start_time = time.time()
-    create_from_source_pom(args.artifacts_list, args.additional_modules_list, args.set_skip_linting_projects, args.match_any_version, args.job_type, args.java_test_version)
+    create_from_source_pom(args.artifacts_list, args.additional_modules_list, args.set_skip_linting_projects, args.match_any_version)
     elapsed_time = time.time() - start_time
 
     print('Effective From Source POM File')

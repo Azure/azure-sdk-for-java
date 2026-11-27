@@ -375,6 +375,16 @@ Licensed under the MIT License.
     </plugins>
   </build>
   <profiles>
+    <!-- Shared SDK CI runs test-only goals on older JDKs; Kafka 4 tests require Java 17. -->
+    <profile>
+      <id>skip-kafka-tests-before-java17</id>
+      <activation>
+        <jdk>(,17)</jdk>
+      </activation>
+      <properties>
+        <maven.test.skip>true</maven.test.skip>
+      </properties>
+    </profile>
     <profile>
       <id>build-kafka</id>
       <activation>

@@ -96,6 +96,10 @@ pr:
       - sdk/cosmos/azure-cosmos-test/pom.xml
       - sdk/cosmos/azure-cosmos-tests/pom.xml
       - sdk/cosmos/azure-cosmos-kafka-connect/pom.xml
+variables:
+  # Kafka Connect 4 cannot run the legacy Java 11 emulator leg.
+  jobMatrixFilter: '^(?!.*Kafka.*Java11).*'
+
 parameters:
   - name: release_azurecosmos
     displayName: 'azure-cosmos'

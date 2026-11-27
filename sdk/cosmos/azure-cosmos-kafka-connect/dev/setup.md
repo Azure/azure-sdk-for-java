@@ -66,6 +66,8 @@ mvn -f sdk\cosmos\azure-cosmos-kafka-connect\pom.xml -Pbuild-kafka,kafka-integra
 
 Existing `kafka-emulator` and `kafka` pipeline profiles remain in use. Integration/image checks require a Docker-capable machine and correctly scoped Cosmos test-account configuration. Verify the actual worker Kafka/JVM versions and plugin/task health; dependency resolution alone does not verify a worker image.
 
+Kafka-specific CI handling stays under `sdk/cosmos`: the two Kafka matrices use Java 17/21, and the Cosmos pipeline excludes only the obsolete Kafka Java 11 emulator leg. The connector POM skips test-only goals on older JDKs; normal builds still enforce Java 17. Shared engineering templates, project selection, and other SDKs' Java matrices are unchanged.
+
 ## Optional local demo (manual only)
 
 Follow [Confluent Platform setup](../docs/Confluent_Platform_Setup.md) to build the shaded 3.x connector and start the three-service KRaft demo. The Bash and PowerShell scripts propagate native-command failures and preserve the demo's named broker volume on restart. Use Connect REST and Kafka CLI, not removed UI services.
