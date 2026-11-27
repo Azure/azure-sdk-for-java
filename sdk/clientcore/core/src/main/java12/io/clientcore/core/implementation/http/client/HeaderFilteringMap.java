@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package io.clientcore.core.implementation.http.client;
 
+import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.implementation.http.ExpectContinueUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.AbstractMap;
@@ -25,6 +27,8 @@ final class HeaderFilteringMap extends AbstractMap<String, List<String>> {
     private final HttpHeaders headers;
     private final Set<String> restrictedHeaders;
     private final ClientLogger logger;
+    private final boolean handledContinueExpectation;
+    private final boolean expectContinue;
 
     /**
      * Creates a new HeaderFilteringMap.
@@ -32,11 +36,16 @@ final class HeaderFilteringMap extends AbstractMap<String, List<String>> {
      * @param headers The headers.
      * @param restrictedHeaders The header filter.
      * @param logger The logger to log any errors.
+     * @param handledContinueExpectation Whether the JDK request handles the {@code 100-continue} expectation.
+     * @param expectContinue Whether the JDK will wait for {@code 100 Continue}.
      */
-    HeaderFilteringMap(HttpHeaders headers, Set<String> restrictedHeaders, ClientLogger logger) {
+    HeaderFilteringMap(HttpHeaders headers, Set<String> restrictedHeaders, ClientLogger logger,
+        boolean handledContinueExpectation, boolean expectContinue) {
         this.headers = headers;
         this.restrictedHeaders = restrictedHeaders;
         this.logger = logger;
+        this.handledContinueExpectation = handledContinueExpectation;
+        this.expectContinue = expectContinue;
     }
 
     @Override
@@ -47,6 +56,22 @@ final class HeaderFilteringMap extends AbstractMap<String, List<String>> {
     @Override
     public void forEach(BiConsumer<? super String, ? super List<String>> action) {
         headers.stream().forEach(header -> {
+            if (handledContinueExpectation && HttpHeaderName.EXPECT.equals(header.getName())) {
+                List<String> otherExpectations = ExpectContinueUtils.otherExpectations(headers);
+                if (!restrictedHeaders.contains(header.getName().getCaseInsensitiveName())) {
+                    if (!otherExpectations.isEmpty()) {
+                        if (expectContinue) {
+                            // User-supplied Expect values override the JDK's generated 100-continue header.
+                            otherExpectations.add("100-continue");
+                        }
+                        action.accept(header.getName().getValue(), otherExpectations);
+                    }
+                    return;
+                } else if (otherExpectations.isEmpty()) {
+                    return;
+                }
+            }
+
             if (restrictedHeaders.contains(header.getName().getCaseInsensitiveName())) {
                 logger.atWarning()
                     .addKeyValue("headerName", header.getName())

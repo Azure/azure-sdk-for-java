@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed `Expect: 100-continue` handling when the header contains multiple expectations.
+- Documented the OkHttp 4.12 limitation for HTTP/2 bodyless final responses following `100 Continue`.
 - Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
   configuration, and finally SDK defaults. Nonpositive call timeouts now disable the timeout instead of rejecting
   negative values.

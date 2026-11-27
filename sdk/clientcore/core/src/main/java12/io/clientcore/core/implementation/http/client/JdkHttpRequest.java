@@ -3,6 +3,7 @@
 package io.clientcore.core.implementation.http.client;
 
 import io.clientcore.core.http.models.HttpMethod;
+import io.clientcore.core.implementation.http.ExpectContinueUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.net.URI;
@@ -30,6 +31,7 @@ final class JdkHttpRequest extends HttpRequest {
     private final URI uri;
     private final HttpHeaders headers;
     private final Optional<Duration> responseTimeout;
+    private final boolean expectContinue;
 
     /**
      * Creates a new instance of the JDK HttpRequest.
@@ -50,7 +52,11 @@ final class JdkHttpRequest extends HttpRequest {
             : BodyPublisherUtils.toBodyPublisher(coreRequest, writeTimeout);
         this.uri = coreRequest.getUri();
 
-        this.headers = HttpHeaders.of(new HeaderFilteringMap(coreRequest.getHeaders(), restrictedHeaders, logger),
+        boolean hasContinueExpectation = ExpectContinueUtils.isExpected(coreRequest.getHeaders());
+        this.expectContinue = hasContinueExpectation && bodyPublisher.contentLength() != 0;
+        this.headers = HttpHeaders.of(
+            new HeaderFilteringMap(coreRequest.getHeaders(), restrictedHeaders, logger, hasContinueExpectation,
+                expectContinue),
             (ignored1, ignored2) -> true);
         this.responseTimeout = Optional.ofNullable(responseTimeout);
     }
@@ -72,7 +78,7 @@ final class JdkHttpRequest extends HttpRequest {
 
     @Override
     public boolean expectContinue() {
-        return false;
+        return expectContinue;
     }
 
     @Override

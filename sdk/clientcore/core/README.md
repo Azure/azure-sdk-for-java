@@ -43,6 +43,19 @@ The key concepts of Core (and therefore all client libraries using Core) include
 
 These will be introduced by way of the examples presented below.
 
+### HTTP 100-continue
+
+To let a server accept or reject a request before the body is sent, set `Expect: 100-continue` on the request:
+
+```java
+request.getHeaders().set(HttpHeaderName.EXPECT, "100-continue");
+```
+
+For requests with a body, the JDK, Netty, and OkHttp transports wait for the server's response before sending it.
+Netty sends the body after one second if the server doesn't respond; the JDK and OkHttp transports use their native
+waiting and timeout behavior. The expectation is omitted for requests with no body. See the
+[OkHttp HTTP/2 limitation](../http-okhttp3/README.md#http2-100-continue-limitation) for a known exception.
+
 ### JDK HTTP client host overrides
 
 The JDK HTTP transport connects to the request URI. By default, the SDK filters out the restricted `Host` header

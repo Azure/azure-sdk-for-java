@@ -22,7 +22,10 @@ import org.junit.jupiter.api.Timeout;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketAddress;
+import java.nio.channels.ServerSocketChannel;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -188,6 +191,34 @@ public class Netty4ConnectionPoolTests {
             assertSame(channel1, channel2);
 
             pool.release(channel2);
+        }
+    }
+
+    @Test
+    public void cancelledConnectionDuringTlsHandshakeReleasesPoolSlot() throws IOException {
+        try (
+            ServerSocket serverSocket = ServerSocketChannel.open().bind(new InetSocketAddress("127.0.0.1", 0)).socket();
+            Netty4ConnectionPool pool = createPool(1, null, null, Duration.ofSeconds(5), 1)) {
+            serverSocket.setSoTimeout(5000);
+            InetSocketAddress address = new InetSocketAddress("127.0.0.1", serverSocket.getLocalPort());
+            Netty4ConnectionPoolKey key = new Netty4ConnectionPoolKey(address, address);
+            Future<Channel> first = pool.acquire(key, true);
+            try (Socket peer = serverSocket.accept()) {
+                peer.setSoTimeout(5000);
+                assertTrue(peer.getInputStream().read() >= 0);
+                assertFalse(first.isDone());
+                assertTrue(first.cancel(false));
+                int nextByte;
+                do {
+                    nextByte = peer.getInputStream().read();
+                } while (nextByte >= 0);
+            }
+
+            Future<Channel> next = pool.acquire(key, true);
+            try (Socket peer = serverSocket.accept()) {
+                assertTrue(peer.isConnected());
+                assertTrue(next.cancel(false));
+            }
         }
     }
 

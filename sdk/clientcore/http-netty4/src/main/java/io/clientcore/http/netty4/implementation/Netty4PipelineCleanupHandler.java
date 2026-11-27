@@ -18,6 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.ALPN;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.CHUNKED_WRITER;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.EAGER_CONSUME;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.EXPECT_CONTINUE;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_CODEC;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_RESPONSE;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROGRESS_AND_TIMEOUT;
@@ -39,6 +40,7 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
 
     static {
         List<String> handlers = new ArrayList<>();
+        handlers.add(EXPECT_CONTINUE);
         handlers.add(PROGRESS_AND_TIMEOUT);
         handlers.add(HTTP_RESPONSE);
         handlers.add(HTTP_CODEC);
@@ -120,7 +122,10 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
             lock.unlock();
         }
 
-        if (closeChannel || !ctx.channel().isActive() || connectionPool == null) {
+        if (closeChannel
+            || Boolean.TRUE.equals(ctx.channel().attr(Netty4ExpectContinueHandler.INCOMPLETE_REQUEST).get())
+            || !ctx.channel().isActive()
+            || connectionPool == null) {
             ctx.channel().close();
         } else {
             connectionPool.release(ctx.channel());

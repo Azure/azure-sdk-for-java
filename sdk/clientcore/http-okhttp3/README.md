@@ -73,6 +73,13 @@ HttpClient client = new OkHttpHttpClientBuilder(
 If you encounter any bugs, please file issues via [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose)
 or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
 
+### HTTP/2 100-continue limitation
+
+OkHttp 4.12 can wait until the read timeout when an HTTP/2 server sends `100 Continue` followed by a final response
+whose headers also end the stream, as with a response with no body. If the read timeout is disabled, the call can wait
+indefinitely. To avoid this limitation for affected requests,
+configure the client with `setMaximumHttpVersion(HttpProtocolVersion.HTTP_1_1)`.
+
 ### Enabling Logging
 
 Client Core libraries for Java provide a consistent logging story to help aid in troubleshooting application errors and

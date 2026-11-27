@@ -90,6 +90,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
         setOrSuppressError(errorReference, cause);
         latch.countDown();
         ctx.fireExceptionCaught(cause);
+        ctx.close();
     }
 
     @Override
