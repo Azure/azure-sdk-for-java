@@ -77,9 +77,7 @@
  */
 public final class CatalogsCountDevicesSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PostCountDevicesCatalog.
-     * json
+     * x-ms-original-file: 2024-04-01/PostCountDevicesCatalog.json
      */
     /**
      * Sample code: Catalogs_CountDevices.
@@ -100,8 +98,7 @@ public final class CatalogsCountDevicesSamples {
  */
 public final class CatalogsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PutCatalog.json
+     * x-ms-original-file: 2024-04-01/PutCatalog.json
      */
     /**
      * Sample code: Catalogs_CreateOrUpdate.
@@ -126,8 +123,7 @@ public final class CatalogsCreateOrUpdateSamples {
  */
 public final class CatalogsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/DeleteCatalog.json
+     * x-ms-original-file: 2024-04-01/DeleteCatalog.json
      */
     /**
      * Sample code: Catalogs_Delete.
@@ -148,8 +144,7 @@ public final class CatalogsDeleteSamples {
  */
 public final class CatalogsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetCatalog.json
+     * x-ms-original-file: 2024-04-01/GetCatalog.json
      */
     /**
      * Sample code: Catalogs_Get.
@@ -171,8 +166,7 @@ public final class CatalogsGetByResourceGroupSamples {
  */
 public final class CatalogsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetCatalogsSub.json
+     * x-ms-original-file: 2024-04-01/GetCatalogsSub.json
      */
     /**
      * Sample code: Catalogs_ListBySubscription.
@@ -193,8 +187,7 @@ public final class CatalogsListSamples {
  */
 public final class CatalogsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetCatalogsRG.json
+     * x-ms-original-file: 2024-04-01/GetCatalogsRG.json
      */
     /**
      * Sample code: Catalogs_ListByResourceGroup.
@@ -215,8 +208,7 @@ public final class CatalogsListByResourceGroupSamples {
  */
 public final class CatalogsListDeploymentsSamples {
     /*
-     * x-ms-original-file: specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/
-     * PostListDeploymentsByCatalog.json
+     * x-ms-original-file: 2024-04-01/PostListDeploymentsByCatalog.json
      */
     /**
      * Sample code: Catalogs_ListDeployments.
@@ -241,8 +233,7 @@ import com.azure.resourcemanager.sphere.models.ListDeviceGroupsRequest;
  */
 public final class CatalogsListDeviceGroupsSamples {
     /*
-     * x-ms-original-file: specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/
-     * PostListDeviceGroupsCatalog.json
+     * x-ms-original-file: 2024-04-01/PostListDeviceGroupsCatalog.json
      */
     /**
      * Sample code: Catalogs_ListDeviceGroups.
@@ -266,8 +257,7 @@ public final class CatalogsListDeviceGroupsSamples {
  */
 public final class CatalogsListDeviceInsightsSamples {
     /*
-     * x-ms-original-file: specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/
-     * PostListDeviceInsightsCatalog.json
+     * x-ms-original-file: 2024-04-01/PostListDeviceInsightsCatalog.json
      */
     /**
      * Sample code: Catalogs_ListDeviceInsights.
@@ -290,9 +280,7 @@ public final class CatalogsListDeviceInsightsSamples {
  */
 public final class CatalogsListDevicesSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PostListDevicesByCatalog.
-     * json
+     * x-ms-original-file: 2024-04-01/PostListDevicesByCatalog.json
      */
     /**
      * Sample code: Catalogs_ListDevices.
@@ -316,8 +304,7 @@ import com.azure.resourcemanager.sphere.models.Catalog;
  */
 public final class CatalogsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PatchCatalog.json
+     * x-ms-original-file: 2024-04-01/PatchCatalog.json
      */
     /**
      * Sample code: Catalogs_Update.
@@ -344,9 +331,7 @@ import com.azure.resourcemanager.sphere.models.ImageProperties;
  */
 public final class CatalogsUploadImageSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PostUploadImageCatalog.
-     * json
+     * x-ms-original-file: 2024-04-01/PostUploadImageCatalog.json
      */
     /**
      * Sample code: Catalogs_UploadImage.
@@ -370,8 +355,7 @@ public final class CatalogsUploadImageSamples {
  */
 public final class CertificatesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetCertificate.json
+     * x-ms-original-file: 2024-04-01/GetCertificate.json
      */
     /**
      * Sample code: Certificates_Get.
@@ -393,8 +377,7 @@ public final class CertificatesGetSamples {
  */
 public final class CertificatesListByCatalogSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetCertificates.json
+     * x-ms-original-file: 2024-04-01/GetCertificates.json
      */
     /**
      * Sample code: Certificates_ListByCatalog.
@@ -416,8 +399,7 @@ public final class CertificatesListByCatalogSamples {
  */
 public final class CertificatesRetrieveCertChainSamples {
     /*
-     * x-ms-original-file: specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/
-     * PostRetrieveCatalogCertChain.json
+     * x-ms-original-file: 2024-04-01/PostRetrieveCatalogCertChain.json
      */
     /**
      * Sample code: Certificates_RetrieveCertChain.
@@ -442,8 +424,7 @@ import com.azure.resourcemanager.sphere.models.ProofOfPossessionNonceRequest;
  */
 public final class CertificatesRetrieveProofOfPossessionNonceSamples {
     /*
-     * x-ms-original-file: specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/
-     * PostRetrieveProofOfPossessionNonce.json
+     * x-ms-original-file: 2024-04-01/PostRetrieveProofOfPossessionNonce.json
      */
     /**
      * Sample code: Certificates_RetrieveProofOfPossessionNonce.
@@ -468,8 +449,7 @@ public final class CertificatesRetrieveProofOfPossessionNonceSamples {
  */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PutDeployment.json
+     * x-ms-original-file: 2024-04-01/PutDeployment.json
      */
     /**
      * Sample code: Deployments_CreateOrUpdate.
@@ -493,8 +473,7 @@ public final class DeploymentsCreateOrUpdateSamples {
  */
 public final class DeploymentsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/DeleteDeployment.json
+     * x-ms-original-file: 2024-04-01/DeleteDeployment.json
      */
     /**
      * Sample code: Deployments_Delete.
@@ -517,8 +496,7 @@ public final class DeploymentsDeleteSamples {
  */
 public final class DeploymentsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetDeployment.json
+     * x-ms-original-file: 2024-04-01/GetDeployment.json
      */
     /**
      * Sample code: Deployments_Get.
@@ -541,8 +519,7 @@ public final class DeploymentsGetSamples {
  */
 public final class DeploymentsListByDeviceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetDeployments.json
+     * x-ms-original-file: 2024-04-01/GetDeployments.json
      */
     /**
      * Sample code: Deployments_ListByDeviceGroup.
@@ -568,8 +545,7 @@ import java.util.Arrays;
  */
 public final class DeviceGroupsClaimDevicesSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PostClaimDevices.json
+     * x-ms-original-file: 2024-04-01/PostClaimDevices.json
      */
     /**
      * Sample code: DeviceGroups_ClaimDevices.
@@ -594,8 +570,7 @@ public final class DeviceGroupsClaimDevicesSamples {
  */
 public final class DeviceGroupsCountDevicesSamples {
     /*
-     * x-ms-original-file: specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/
-     * PostCountDevicesDeviceGroup.json
+     * x-ms-original-file: 2024-04-01/PostCountDevicesDeviceGroup.json
      */
     /**
      * Sample code: DeviceGroups_CountDevices.
@@ -622,8 +597,7 @@ import com.azure.resourcemanager.sphere.models.UpdatePolicy;
  */
 public final class DeviceGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PutDeviceGroup.json
+     * x-ms-original-file: 2024-04-01/PutDeviceGroup.json
      */
     /**
      * Sample code: DeviceGroups_CreateOrUpdate.
@@ -650,8 +624,7 @@ public final class DeviceGroupsCreateOrUpdateSamples {
  */
 public final class DeviceGroupsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/DeleteDeviceGroup.json
+     * x-ms-original-file: 2024-04-01/DeleteDeviceGroup.json
      */
     /**
      * Sample code: DeviceGroups_Delete.
@@ -673,8 +646,7 @@ public final class DeviceGroupsDeleteSamples {
  */
 public final class DeviceGroupsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetDeviceGroup.json
+     * x-ms-original-file: 2024-04-01/GetDeviceGroup.json
      */
     /**
      * Sample code: DeviceGroups_Get.
@@ -697,8 +669,7 @@ public final class DeviceGroupsGetSamples {
  */
 public final class DeviceGroupsListByProductSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetDeviceGroups.json
+     * x-ms-original-file: 2024-04-01/GetDeviceGroups.json
      */
     /**
      * Sample code: DeviceGroups_ListByProduct.
@@ -723,8 +694,7 @@ import com.azure.resourcemanager.sphere.models.DeviceGroup;
  */
 public final class DeviceGroupsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PatchDeviceGroup.json
+     * x-ms-original-file: 2024-04-01/PatchDeviceGroup.json
      */
     /**
      * Sample code: DeviceGroups_Update.
@@ -749,8 +719,7 @@ public final class DeviceGroupsUpdateSamples {
  */
 public final class DevicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PutDevice.json
+     * x-ms-original-file: 2024-04-01/PutDevice.json
      */
     /**
      * Sample code: Devices_CreateOrUpdate.
@@ -775,8 +744,7 @@ public final class DevicesCreateOrUpdateSamples {
  */
 public final class DevicesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/DeleteDevice.json
+     * x-ms-original-file: 2024-04-01/DeleteDevice.json
      */
     /**
      * Sample code: Devices_Delete.
@@ -804,8 +772,7 @@ import java.util.Arrays;
  */
 public final class DevicesGenerateCapabilityImageSamples {
     /*
-     * x-ms-original-file: specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/
-     * PostGenerateDeviceCapabilityImage.json
+     * x-ms-original-file: 2024-04-01/PostGenerateDeviceCapabilityImage.json
      */
     /**
      * Sample code: Devices_GenerateCapabilityImage.
@@ -831,8 +798,7 @@ public final class DevicesGenerateCapabilityImageSamples {
  */
 public final class DevicesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetDevice.json
+     * x-ms-original-file: 2024-04-01/GetDevice.json
      */
     /**
      * Sample code: Devices_Get.
@@ -856,8 +822,7 @@ public final class DevicesGetSamples {
  */
 public final class DevicesListByDeviceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetDevices.json
+     * x-ms-original-file: 2024-04-01/GetDevices.json
      */
     /**
      * Sample code: Devices_ListByDeviceGroup.
@@ -882,8 +847,7 @@ import com.azure.resourcemanager.sphere.models.Device;
  */
 public final class DevicesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PatchDevice.json
+     * x-ms-original-file: 2024-04-01/PatchDevice.json
      */
     /**
      * Sample code: Devices_Update.
@@ -911,8 +875,7 @@ import com.azure.resourcemanager.sphere.models.ImageProperties;
  */
 public final class ImagesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PutImage.json
+     * x-ms-original-file: 2024-04-01/PutImage.json
      */
     /**
      * Sample code: Image_CreateOrUpdate.
@@ -937,8 +900,7 @@ public final class ImagesCreateOrUpdateSamples {
  */
 public final class ImagesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/DeleteImage.json
+     * x-ms-original-file: 2024-04-01/DeleteImage.json
      */
     /**
      * Sample code: Images_Delete.
@@ -961,8 +923,7 @@ public final class ImagesDeleteSamples {
  */
 public final class ImagesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetImage.json
+     * x-ms-original-file: 2024-04-01/GetImage.json
      */
     /**
      * Sample code: Images_Get.
@@ -985,8 +946,7 @@ public final class ImagesGetSamples {
  */
 public final class ImagesListByCatalogSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetImages.json
+     * x-ms-original-file: 2024-04-01/GetImages.json
      */
     /**
      * Sample code: Images_ListByCatalog.
@@ -1008,8 +968,7 @@ public final class ImagesListByCatalogSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetOperations.json
+     * x-ms-original-file: 2024-04-01/GetOperations.json
      */
     /**
      * Sample code: Operations_List.
@@ -1030,9 +989,7 @@ public final class OperationsListSamples {
  */
 public final class ProductsCountDevicesSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PostCountDevicesProduct.
-     * json
+     * x-ms-original-file: 2024-04-01/PostCountDevicesProduct.json
      */
     /**
      * Sample code: Products_CountDevices.
@@ -1054,8 +1011,7 @@ public final class ProductsCountDevicesSamples {
  */
 public final class ProductsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PutProduct.json
+     * x-ms-original-file: 2024-04-01/PutProduct.json
      */
     /**
      * Sample code: Products_CreateOrUpdate.
@@ -1076,8 +1032,7 @@ public final class ProductsCreateOrUpdateSamples {
  */
 public final class ProductsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/DeleteProduct.json
+     * x-ms-original-file: 2024-04-01/DeleteProduct.json
      */
     /**
      * Sample code: Products_Delete.
@@ -1098,8 +1053,7 @@ public final class ProductsDeleteSamples {
  */
 public final class ProductsGenerateDefaultDeviceGroupsSamples {
     /*
-     * x-ms-original-file: specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/
-     * PostGenerateDefaultDeviceGroups.json
+     * x-ms-original-file: 2024-04-01/PostGenerateDefaultDeviceGroups.json
      */
     /**
      * Sample code: Products_GenerateDefaultDeviceGroups.
@@ -1123,8 +1077,7 @@ public final class ProductsGenerateDefaultDeviceGroupsSamples {
  */
 public final class ProductsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetProduct.json
+     * x-ms-original-file: 2024-04-01/GetProduct.json
      */
     /**
      * Sample code: Products_Get.
@@ -1146,8 +1099,7 @@ public final class ProductsGetSamples {
  */
 public final class ProductsListByCatalogSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetProducts.json
+     * x-ms-original-file: 2024-04-01/GetProducts.json
      */
     /**
      * Sample code: Products_ListByCatalog.
@@ -1170,8 +1122,7 @@ import com.azure.resourcemanager.sphere.models.Product;
  */
 public final class ProductsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PatchProduct.json
+     * x-ms-original-file: 2024-04-01/PatchProduct.json
      */
     /**
      * Sample code: Products_Update.
