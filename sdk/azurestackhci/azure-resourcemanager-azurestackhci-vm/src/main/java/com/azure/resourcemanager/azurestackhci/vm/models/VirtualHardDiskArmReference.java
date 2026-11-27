@@ -12,12 +12,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ARM ID for a Virtual Hard Disk.
+ * The Azure Resource ID for a Virtual Hard Disk.
  */
 @Fluent
 public final class VirtualHardDiskArmReference implements JsonSerializable<VirtualHardDiskArmReference> {
     /*
-     * The ARM ID for a Virtual Hard Disk.
+     * The Azure Resource ID for a Virtual Hard Disk.
      */
     private String id;
 
@@ -28,7 +28,7 @@ public final class VirtualHardDiskArmReference implements JsonSerializable<Virtu
     }
 
     /**
-     * Get the id property: The ARM ID for a Virtual Hard Disk.
+     * Get the id property: The Azure Resource ID for a Virtual Hard Disk.
      * 
      * @return the id value.
      */
@@ -37,7 +37,7 @@ public final class VirtualHardDiskArmReference implements JsonSerializable<Virtu
     }
 
     /**
-     * Set the id property: The ARM ID for a Virtual Hard Disk.
+     * Set the id property: The Azure Resource ID for a Virtual Hard Disk.
      * 
      * @param id the id value to set.
      * @return the VirtualHardDiskArmReference object itself.

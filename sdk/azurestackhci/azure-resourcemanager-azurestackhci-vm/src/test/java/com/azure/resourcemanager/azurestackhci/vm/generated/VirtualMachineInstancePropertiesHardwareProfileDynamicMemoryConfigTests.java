@@ -12,24 +12,27 @@ public final class VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryC
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig model = BinaryData.fromString(
-            "{\"maximumMemoryMB\":7813618899616430195,\"minimumMemoryMB\":495933413670136065,\"targetMemoryBuffer\":1754120882}")
+            "{\"maximumMemoryMB\":3901581715856749689,\"minimumMemoryMB\":6799001413428276597,\"targetMemoryBuffer\":1550438212,\"enabled\":false}")
             .toObject(VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig.class);
-        Assertions.assertEquals(7813618899616430195L, model.maximumMemoryMB());
-        Assertions.assertEquals(495933413670136065L, model.minimumMemoryMB());
-        Assertions.assertEquals(1754120882, model.targetMemoryBuffer());
+        Assertions.assertEquals(3901581715856749689L, model.maximumMemoryMB());
+        Assertions.assertEquals(6799001413428276597L, model.minimumMemoryMB());
+        Assertions.assertEquals(1550438212, model.targetMemoryBuffer());
+        Assertions.assertFalse(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig model
             = new VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig()
-                .withMaximumMemoryMB(7813618899616430195L)
-                .withMinimumMemoryMB(495933413670136065L)
-                .withTargetMemoryBuffer(1754120882);
+                .withMaximumMemoryMB(3901581715856749689L)
+                .withMinimumMemoryMB(6799001413428276597L)
+                .withTargetMemoryBuffer(1550438212)
+                .withEnabled(false);
         model = BinaryData.fromObject(model)
             .toObject(VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig.class);
-        Assertions.assertEquals(7813618899616430195L, model.maximumMemoryMB());
-        Assertions.assertEquals(495933413670136065L, model.minimumMemoryMB());
-        Assertions.assertEquals(1754120882, model.targetMemoryBuffer());
+        Assertions.assertEquals(3901581715856749689L, model.maximumMemoryMB());
+        Assertions.assertEquals(6799001413428276597L, model.minimumMemoryMB());
+        Assertions.assertEquals(1550438212, model.targetMemoryBuffer());
+        Assertions.assertFalse(model.enabled());
     }
 }

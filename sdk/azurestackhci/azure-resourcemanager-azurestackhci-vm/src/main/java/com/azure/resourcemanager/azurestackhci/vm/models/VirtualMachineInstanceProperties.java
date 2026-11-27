@@ -57,6 +57,11 @@ public final class VirtualMachineInstanceProperties implements JsonSerializable<
     private Boolean createFromLocal;
 
     /*
+     * HyperV name of the VM. This is only applicable when createFromLocal is true.
+     */
+    private String localVmName;
+
+    /*
      * Provisioning state of the virtual machine instance.
      */
     private ProvisioningStateEnum provisioningState;
@@ -77,7 +82,8 @@ public final class VirtualMachineInstanceProperties implements JsonSerializable<
     private GuestAgentInstallStatus guestAgentInstallStatus;
 
     /*
-     * Unique identifier for the vm resource.
+     * The SMBIOS GUID of the VM (hybrid compute identity). This is null for non-secure VMs and is populated for
+     * TrustedLaunch and ConfidentialVM VMs.
      */
     private String vmId;
 
@@ -285,6 +291,26 @@ public final class VirtualMachineInstanceProperties implements JsonSerializable<
     }
 
     /**
+     * Get the localVmName property: HyperV name of the VM. This is only applicable when createFromLocal is true.
+     * 
+     * @return the localVmName value.
+     */
+    public String localVmName() {
+        return this.localVmName;
+    }
+
+    /**
+     * Set the localVmName property: HyperV name of the VM. This is only applicable when createFromLocal is true.
+     * 
+     * @param localVmName the localVmName value to set.
+     * @return the VirtualMachineInstanceProperties object itself.
+     */
+    public VirtualMachineInstanceProperties withLocalVmName(String localVmName) {
+        this.localVmName = localVmName;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the virtual machine instance.
      * 
      * @return the provisioningState value.
@@ -333,7 +359,8 @@ public final class VirtualMachineInstanceProperties implements JsonSerializable<
     }
 
     /**
-     * Get the vmId property: Unique identifier for the vm resource.
+     * Get the vmId property: The SMBIOS GUID of the VM (hybrid compute identity). This is null for non-secure VMs and
+     * is populated for TrustedLaunch and ConfidentialVM VMs.
      * 
      * @return the vmId value.
      */
@@ -402,6 +429,7 @@ public final class VirtualMachineInstanceProperties implements JsonSerializable<
         jsonWriter.writeJsonField("storageProfile", this.storageProfile);
         jsonWriter.writeJsonField("httpProxyConfig", this.httpProxyConfig);
         jsonWriter.writeBooleanField("createFromLocal", this.createFromLocal);
+        jsonWriter.writeStringField("localVmName", this.localVmName);
         jsonWriter.writeJsonField("guestAgentInstallStatus", this.guestAgentInstallStatus);
         jsonWriter.writeStringField("resourceUid", this.resourceUid);
         return jsonWriter.writeEndObject();
@@ -447,6 +475,8 @@ public final class VirtualMachineInstanceProperties implements JsonSerializable<
                 } else if ("createFromLocal".equals(fieldName)) {
                     deserializedVirtualMachineInstanceProperties.createFromLocal
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("localVmName".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceProperties.localVmName = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVirtualMachineInstanceProperties.provisioningState
                         = ProvisioningStateEnum.fromString(reader.getString());

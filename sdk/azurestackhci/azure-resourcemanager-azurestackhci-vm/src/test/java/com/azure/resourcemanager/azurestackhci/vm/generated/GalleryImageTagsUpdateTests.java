@@ -14,17 +14,17 @@ public final class GalleryImageTagsUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GalleryImageTagsUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"flusarhmof\":\"eupewnwreitjz\",\"he\":\"qhsmyurkdtml\",\"rcryuanzwuxzdxta\":\"uksjtxukcdmp\"}}")
+            "{\"tags\":{\"anzwuxzdxta\":\"y\",\"hfpmrqobmtukknr\":\"rlhm\",\"gnwzsymglzufc\":\"rtihfxtijbpz\",\"hdbihan\":\"zk\"}}")
             .toObject(GalleryImageTagsUpdate.class);
-        Assertions.assertEquals("eupewnwreitjz", model.tags().get("flusarhmof"));
+        Assertions.assertEquals("y", model.tags().get("anzwuxzdxta"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GalleryImageTagsUpdate model = new GalleryImageTagsUpdate()
-            .withTags(mapOf("flusarhmof", "eupewnwreitjz", "he", "qhsmyurkdtml", "rcryuanzwuxzdxta", "uksjtxukcdmp"));
+        GalleryImageTagsUpdate model = new GalleryImageTagsUpdate().withTags(
+            mapOf("anzwuxzdxta", "y", "hfpmrqobmtukknr", "rlhm", "gnwzsymglzufc", "rtihfxtijbpz", "hdbihan", "zk"));
         model = BinaryData.fromObject(model).toObject(GalleryImageTagsUpdate.class);
-        Assertions.assertEquals("eupewnwreitjz", model.tags().get("flusarhmof"));
+        Assertions.assertEquals("y", model.tags().get("anzwuxzdxta"));
     }
 
     // Use "Map.of" if available

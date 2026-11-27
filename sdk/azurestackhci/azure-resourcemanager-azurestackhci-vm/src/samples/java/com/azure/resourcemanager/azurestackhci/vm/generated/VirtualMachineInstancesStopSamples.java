@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.vm.generated;
  */
 public final class VirtualMachineInstancesStopSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/VirtualMachineInstances_Stop.json
+     * x-ms-original-file: 2026-07-01-preview/VirtualMachineInstances_Stop.json
      */
     /**
      * Sample code: StopVirtualMachine.

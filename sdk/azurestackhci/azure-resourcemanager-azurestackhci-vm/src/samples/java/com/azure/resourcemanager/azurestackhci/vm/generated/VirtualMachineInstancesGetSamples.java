@@ -9,7 +9,23 @@ package com.azure.resourcemanager.azurestackhci.vm.generated;
  */
 public final class VirtualMachineInstancesGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/VirtualMachineInstances_Get.json
+     * x-ms-original-file: 2026-07-01-preview/VirtualMachineInstances_Get_OperationFailed.json
+     */
+    /**
+     * Sample code: GetVirtualMachineInstanceWithFailedOperation.
+     * 
+     * @param manager Entry point to AzureStackHciVmManager.
+     */
+    public static void getVirtualMachineInstanceWithFailedOperation(
+        com.azure.resourcemanager.azurestackhci.vm.AzureStackHciVmManager manager) {
+        manager.virtualMachineInstances()
+            .getWithResponse(
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01-preview/VirtualMachineInstances_Get.json
      */
     /**
      * Sample code: GetVirtualMachineInstance.

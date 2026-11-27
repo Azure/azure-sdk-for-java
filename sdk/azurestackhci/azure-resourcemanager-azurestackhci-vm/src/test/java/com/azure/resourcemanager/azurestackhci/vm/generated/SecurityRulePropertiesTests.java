@@ -16,39 +16,39 @@ public final class SecurityRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityRuleProperties model = BinaryData.fromString(
-            "{\"description\":\"aaxdbabphlwrq\",\"protocol\":\"Tcp\",\"sourceAddressPrefixes\":[\"sthsu\",\"ocmnyyazttbtwwrq\",\"uedck\"],\"destinationAddressPrefixes\":[\"biexzfeyu\",\"axibxujw\",\"hqwa\"],\"sourcePortRanges\":[\"zyoxaepdkzjan\",\"ux\"],\"destinationPortRanges\":[\"wbavxbniwdj\"],\"access\":\"Allow\",\"priority\":511976912,\"direction\":\"Inbound\",\"provisioningState\":\"Succeeded\"}")
+            "{\"description\":\"hjdauwhvylwz\",\"protocol\":\"*\",\"sourceAddressPrefixes\":[\"xujznbmpowu\"],\"destinationAddressPrefixes\":[\"zqlveualupjmkhf\",\"obbc\"],\"sourcePortRanges\":[\"rtjriplrbpbew\"],\"destinationPortRanges\":[\"fgb\",\"c\"],\"access\":\"Deny\",\"priority\":1553365340,\"direction\":\"Outbound\",\"provisioningState\":\"Failed\"}")
             .toObject(SecurityRuleProperties.class);
-        Assertions.assertEquals("aaxdbabphlwrq", model.description());
-        Assertions.assertEquals(SecurityRuleProtocol.TCP, model.protocol());
-        Assertions.assertEquals("sthsu", model.sourceAddressPrefixes().get(0));
-        Assertions.assertEquals("biexzfeyu", model.destinationAddressPrefixes().get(0));
-        Assertions.assertEquals("zyoxaepdkzjan", model.sourcePortRanges().get(0));
-        Assertions.assertEquals("wbavxbniwdj", model.destinationPortRanges().get(0));
-        Assertions.assertEquals(SecurityRuleAccess.ALLOW, model.access());
-        Assertions.assertEquals(511976912, model.priority());
-        Assertions.assertEquals(SecurityRuleDirection.INBOUND, model.direction());
+        Assertions.assertEquals("hjdauwhvylwz", model.description());
+        Assertions.assertEquals(SecurityRuleProtocol.ASTERISK, model.protocol());
+        Assertions.assertEquals("xujznbmpowu", model.sourceAddressPrefixes().get(0));
+        Assertions.assertEquals("zqlveualupjmkhf", model.destinationAddressPrefixes().get(0));
+        Assertions.assertEquals("rtjriplrbpbew", model.sourcePortRanges().get(0));
+        Assertions.assertEquals("fgb", model.destinationPortRanges().get(0));
+        Assertions.assertEquals(SecurityRuleAccess.DENY, model.access());
+        Assertions.assertEquals(1553365340, model.priority());
+        Assertions.assertEquals(SecurityRuleDirection.OUTBOUND, model.direction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityRuleProperties model = new SecurityRuleProperties().withDescription("aaxdbabphlwrq")
-            .withProtocol(SecurityRuleProtocol.TCP)
-            .withSourceAddressPrefixes(Arrays.asList("sthsu", "ocmnyyazttbtwwrq", "uedck"))
-            .withDestinationAddressPrefixes(Arrays.asList("biexzfeyu", "axibxujw", "hqwa"))
-            .withSourcePortRanges(Arrays.asList("zyoxaepdkzjan", "ux"))
-            .withDestinationPortRanges(Arrays.asList("wbavxbniwdj"))
-            .withAccess(SecurityRuleAccess.ALLOW)
-            .withPriority(511976912)
-            .withDirection(SecurityRuleDirection.INBOUND);
+        SecurityRuleProperties model = new SecurityRuleProperties().withDescription("hjdauwhvylwz")
+            .withProtocol(SecurityRuleProtocol.ASTERISK)
+            .withSourceAddressPrefixes(Arrays.asList("xujznbmpowu"))
+            .withDestinationAddressPrefixes(Arrays.asList("zqlveualupjmkhf", "obbc"))
+            .withSourcePortRanges(Arrays.asList("rtjriplrbpbew"))
+            .withDestinationPortRanges(Arrays.asList("fgb", "c"))
+            .withAccess(SecurityRuleAccess.DENY)
+            .withPriority(1553365340)
+            .withDirection(SecurityRuleDirection.OUTBOUND);
         model = BinaryData.fromObject(model).toObject(SecurityRuleProperties.class);
-        Assertions.assertEquals("aaxdbabphlwrq", model.description());
-        Assertions.assertEquals(SecurityRuleProtocol.TCP, model.protocol());
-        Assertions.assertEquals("sthsu", model.sourceAddressPrefixes().get(0));
-        Assertions.assertEquals("biexzfeyu", model.destinationAddressPrefixes().get(0));
-        Assertions.assertEquals("zyoxaepdkzjan", model.sourcePortRanges().get(0));
-        Assertions.assertEquals("wbavxbniwdj", model.destinationPortRanges().get(0));
-        Assertions.assertEquals(SecurityRuleAccess.ALLOW, model.access());
-        Assertions.assertEquals(511976912, model.priority());
-        Assertions.assertEquals(SecurityRuleDirection.INBOUND, model.direction());
+        Assertions.assertEquals("hjdauwhvylwz", model.description());
+        Assertions.assertEquals(SecurityRuleProtocol.ASTERISK, model.protocol());
+        Assertions.assertEquals("xujznbmpowu", model.sourceAddressPrefixes().get(0));
+        Assertions.assertEquals("zqlveualupjmkhf", model.destinationAddressPrefixes().get(0));
+        Assertions.assertEquals("rtjriplrbpbew", model.sourcePortRanges().get(0));
+        Assertions.assertEquals("fgb", model.destinationPortRanges().get(0));
+        Assertions.assertEquals(SecurityRuleAccess.DENY, model.access());
+        Assertions.assertEquals(1553365340, model.priority());
+        Assertions.assertEquals(SecurityRuleDirection.OUTBOUND, model.direction());
     }
 }

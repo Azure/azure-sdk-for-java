@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class NetworkSecurityGroupsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/NetworkSecurityGroups_UpdateTags.json
+     * x-ms-original-file: 2026-07-01-preview/NetworkSecurityGroups_UpdateTags.json
      */
     /**
      * Sample code: Update network security group tags.

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.azurestackhci.vm.models.VirtualHardDiskUploadRe
  */
 public final class VirtualHardDisksUploadSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/VirtualHardDisks_Upload.json
+     * x-ms-original-file: 2026-07-01-preview/VirtualHardDisks_Upload.json
      */
     /**
      * Sample code: UploadVirtualHardDisk.

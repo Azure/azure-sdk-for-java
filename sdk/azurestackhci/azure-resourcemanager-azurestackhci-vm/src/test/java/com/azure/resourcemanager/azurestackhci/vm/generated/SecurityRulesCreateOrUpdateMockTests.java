@@ -28,7 +28,7 @@ public final class SecurityRulesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"rywvtylbfpn\",\"protocol\":\"Udp\",\"sourceAddressPrefixes\":[\"oiwiithtywub\",\"cbihwqk\"],\"destinationAddressPrefixes\":[\"ntwjch\",\"dgoihxumwctondzj\",\"uu\"],\"sourcePortRanges\":[\"lwg\",\"ytsbwtovv\",\"gseinq\",\"iufxqknpir\"],\"destinationPortRanges\":[\"pttwqmsn\",\"ffcdmqnrojl\",\"ijnkrxfrdd\"],\"access\":\"Allow\",\"priority\":1110792389,\"direction\":\"Inbound\",\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"ronasxift\",\"type\":\"CustomLocation\"},\"id\":\"zh\",\"name\":\"tw\",\"type\":\"sgogczhonnxk\"}";
+            = "{\"properties\":{\"description\":\"ecwcrojphslhcawj\",\"protocol\":\"Icmp\",\"sourceAddressPrefixes\":[\"dwfmvigorqjb\",\"tzh\",\"aglkafhon\"],\"destinationAddressPrefixes\":[\"jeick\",\"zvcpopm\"],\"sourcePortRanges\":[\"nwcl\",\"yjede\",\"xm\"],\"destinationPortRanges\":[\"kqscazuawxtzx\",\"uamwabzxrvxc\"],\"access\":\"Allow\",\"priority\":986887213,\"direction\":\"Outbound\",\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"v\",\"type\":\"CustomLocation\"},\"id\":\"sflvgsgzwywakoih\",\"name\":\"nsmjbl\",\"type\":\"ljhlnymzotq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,31 +38,31 @@ public final class SecurityRulesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SecurityRule response = manager.securityRules()
-            .define("brnjwmw")
-            .withExistingNetworkSecurityGroup("crpw", "xeznoi")
-            .withProperties(new SecurityRuleProperties().withDescription("bsazejjoqka")
-                .withProtocol(SecurityRuleProtocol.ICMP)
-                .withSourceAddressPrefixes(Arrays.asList("xttaugzxnfaaz", "xdtnkdmkqjjlw"))
-                .withDestinationAddressPrefixes(Arrays.asList("vrkpyouaibreb"))
-                .withSourcePortRanges(Arrays.asList("ysjkixqtnqttez", "wfff", "akpjpqqmtedlt", "mjihyeozphv"))
-                .withDestinationPortRanges(Arrays.asList("y", "ncyg", "p", "vipmdscwxqupevzh"))
+            .define("ault")
+            .withExistingNetworkSecurityGroup("i", "ids")
+            .withProperties(new SecurityRuleProperties().withDescription("jumfqwazlnq")
+                .withProtocol(SecurityRuleProtocol.TCP)
+                .withSourceAddressPrefixes(Arrays.asList("ngz"))
+                .withDestinationAddressPrefixes(Arrays.asList("xtbjwgnyfusfzsv", "uik", "hajqglcfh"))
+                .withSourcePortRanges(Arrays.asList("qryxyn", "nzrdpsovwxz", "ptgoeiybbabp"))
+                .withDestinationPortRanges(Arrays.asList("f"))
                 .withAccess(SecurityRuleAccess.ALLOW)
-                .withPriority(434974760)
+                .withPriority(2128983530)
                 .withDirection(SecurityRuleDirection.OUTBOUND))
             .withExtendedLocation(
-                new ExtendedLocation().withName("jujbypelmcuvhixb").withType(ExtendedLocationTypes.CUSTOM_LOCATION))
+                new ExtendedLocation().withName("rigjkskyrioov").withType(ExtendedLocationTypes.CUSTOM_LOCATION))
             .create();
 
-        Assertions.assertEquals("rywvtylbfpn", response.properties().description());
-        Assertions.assertEquals(SecurityRuleProtocol.UDP, response.properties().protocol());
-        Assertions.assertEquals("oiwiithtywub", response.properties().sourceAddressPrefixes().get(0));
-        Assertions.assertEquals("ntwjch", response.properties().destinationAddressPrefixes().get(0));
-        Assertions.assertEquals("lwg", response.properties().sourcePortRanges().get(0));
-        Assertions.assertEquals("pttwqmsn", response.properties().destinationPortRanges().get(0));
+        Assertions.assertEquals("ecwcrojphslhcawj", response.properties().description());
+        Assertions.assertEquals(SecurityRuleProtocol.ICMP, response.properties().protocol());
+        Assertions.assertEquals("dwfmvigorqjb", response.properties().sourceAddressPrefixes().get(0));
+        Assertions.assertEquals("jeick", response.properties().destinationAddressPrefixes().get(0));
+        Assertions.assertEquals("nwcl", response.properties().sourcePortRanges().get(0));
+        Assertions.assertEquals("kqscazuawxtzx", response.properties().destinationPortRanges().get(0));
         Assertions.assertEquals(SecurityRuleAccess.ALLOW, response.properties().access());
-        Assertions.assertEquals(1110792389, response.properties().priority());
-        Assertions.assertEquals(SecurityRuleDirection.INBOUND, response.properties().direction());
-        Assertions.assertEquals("ronasxift", response.extendedLocation().name());
+        Assertions.assertEquals(986887213, response.properties().priority());
+        Assertions.assertEquals(SecurityRuleDirection.OUTBOUND, response.properties().direction());
+        Assertions.assertEquals("v", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 }

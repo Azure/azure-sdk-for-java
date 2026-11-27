@@ -13,7 +13,7 @@ import com.azure.resourcemanager.azurestackhci.vm.models.VirtualHardDiskProperti
  */
 public final class VirtualHardDisksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/VirtualHardDisks__CreateOrUpdate_CreateFromLocal.json
+     * x-ms-original-file: 2026-07-01-preview/VirtualHardDisks__CreateOrUpdate_CreateFromLocal.json
      */
     /**
      * Sample code: CreateVirtualHardDiskFromLocal.
@@ -23,12 +23,12 @@ public final class VirtualHardDisksCreateOrUpdateSamples {
     public static void
         createVirtualHardDiskFromLocal(com.azure.resourcemanager.azurestackhci.vm.AzureStackHciVmManager manager) {
         manager.virtualHardDisks()
-            .define("test-vhd")
+            .define("rehome-datadisk-1")
             .withRegion("West US2")
             .withExistingResourceGroup("test-rg")
             .withProperties(new VirtualHardDiskProperties().withCreateFromLocal(true)
-                .withContainerId(
-                    "/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/storageContainers/test-storage-container"))
+                .withLocalVhdPath(
+                    "C:\\ClusterStorage\\UserStorage_2\\e35803d0bd82d61\\rehome555-dd1-a95612cb-f1fa-4daa-a4fd-272844fa512c-dogfoodarc.vhdx"))
             .withExtendedLocation(new ExtendedLocation().withName(
                 "/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location")
                 .withType(ExtendedLocationTypes.CUSTOM_LOCATION))
@@ -36,7 +36,7 @@ public final class VirtualHardDisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/VirtualHardDisks_CreateOrUpdate.json
+     * x-ms-original-file: 2026-07-01-preview/VirtualHardDisks_CreateOrUpdate.json
      */
     /**
      * Sample code: PutVirtualHardDisk.
