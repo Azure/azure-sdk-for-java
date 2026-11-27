@@ -1,14 +1,15 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.2 (2026-08-24)
+
+- Azure Resource Manager Playwright client library for Java. This package contains Microsoft Azure SDK for Playwright Management SDK. Playwright Service Management API provides access to Playwright workspace resources and their operations through Azure Resource Manager. Package api-version 2026-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+#### `models.PlaywrightWorkspaceProperties` was modified
 
-### Bugs Fixed
-
-### Other Changes
+* `withSubnetId(java.lang.String)` was added
+* `subnetId()` was added
 
 ## 1.1.0-beta.1 (2026-04-06)
 
