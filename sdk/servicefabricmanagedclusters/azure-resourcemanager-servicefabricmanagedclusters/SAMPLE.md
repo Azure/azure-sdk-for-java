@@ -84,6 +84,7 @@
 - [ListFaultSimulation](#nodetypes_listfaultsimulation)
 - [Redeploy](#nodetypes_redeploy)
 - [Reimage](#nodetypes_reimage)
+- [ReimageAllDisks](#nodetypes_reimagealldisks)
 - [Restart](#nodetypes_restart)
 - [Start](#nodetypes_start)
 - [StartFaultSimulation](#nodetypes_startfaultsimulation)
@@ -110,7 +111,7 @@
  */
 public final class ApplicationTypeVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationTypeVersionPutOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationTypeVersionPutOperation_example.json
      */
     /**
      * Sample code: Put an application type version.
@@ -137,7 +138,7 @@ public final class ApplicationTypeVersionsCreateOrUpdateSamples {
  */
 public final class ApplicationTypeVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationTypeVersionDeleteOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationTypeVersionDeleteOperation_example.json
      */
     /**
      * Sample code: Delete an application type version.
@@ -160,7 +161,7 @@ public final class ApplicationTypeVersionsDeleteSamples {
  */
 public final class ApplicationTypeVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationTypeVersionGetOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationTypeVersionGetOperation_example.json
      */
     /**
      * Sample code: Get an application type version.
@@ -181,9 +182,9 @@ public final class ApplicationTypeVersionsGetSamples {
 /**
  * Samples for ApplicationTypeVersions ListByApplicationTypes.
  */
-public final class ApplicationTypeVersionsListByApplicationTypeSamples {
+public final class ApplicationTypeVersionsListByApplicationTypesSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationTypeVersionListOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationTypeVersionListOperation_example.json
      */
     /**
      * Sample code: Get a list of application type version resources.
@@ -210,7 +211,7 @@ import java.util.Map;
  */
 public final class ApplicationTypeVersionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationTypeVersionPatchOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationTypeVersionPatchOperation_example.json
      */
     /**
      * Sample code: Patch an application type version.
@@ -247,7 +248,7 @@ public final class ApplicationTypeVersionsUpdateSamples {
  */
 public final class ApplicationTypesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationTypeNamePutOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationTypeNamePutOperation_example.json
      */
     /**
      * Sample code: Put an application type.
@@ -273,7 +274,7 @@ public final class ApplicationTypesCreateOrUpdateSamples {
  */
 public final class ApplicationTypesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationTypeNameDeleteOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationTypeNameDeleteOperation_example.json
      */
     /**
      * Sample code: Delete an application type.
@@ -295,7 +296,7 @@ public final class ApplicationTypesDeleteSamples {
  */
 public final class ApplicationTypesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationTypeNameGetOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationTypeNameGetOperation_example.json
      */
     /**
      * Sample code: Get an application type.
@@ -317,7 +318,7 @@ public final class ApplicationTypesGetSamples {
  */
 public final class ApplicationTypesListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationTypeNameListOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationTypeNameListOperation_example.json
      */
     /**
      * Sample code: Get a list of application type name resources.
@@ -343,7 +344,7 @@ import java.util.Map;
  */
 public final class ApplicationTypesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationTypeNamePatchOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationTypeNamePatchOperation_example.json
      */
     /**
      * Sample code: Patch an application type.
@@ -389,7 +390,7 @@ import java.util.Map;
  */
 public final class ApplicationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationPutOperation_example_max.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationPutOperation_example_max.json
      */
     /**
      * Sample code: Put an application with maximum parameters.
@@ -432,7 +433,7 @@ public final class ApplicationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationPutOperation_example_min.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationPutOperation_example_min.json
      */
     /**
      * Sample code: Put an application with minimum parameters.
@@ -472,7 +473,7 @@ public final class ApplicationsCreateOrUpdateSamples {
  */
 public final class ApplicationsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationDeleteOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationDeleteOperation_example.json
      */
     /**
      * Sample code: Delete an application.
@@ -497,7 +498,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.HealthFilte
  */
 public final class ApplicationsFetchHealthSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationActionFetchHealth_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationActionFetchHealth_example.json
      */
     /**
      * Sample code: Fetch application health.
@@ -526,7 +527,7 @@ public final class ApplicationsFetchHealthSamples {
  */
 public final class ApplicationsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationGetOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationGetOperation_example.json
      */
     /**
      * Sample code: Get an application.
@@ -548,7 +549,7 @@ public final class ApplicationsGetSamples {
  */
 public final class ApplicationsListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationListOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationListOperation_example.json
      */
     /**
      * Sample code: Get a list of application resources.
@@ -570,7 +571,7 @@ public final class ApplicationsListSamples {
  */
 public final class ApplicationsReadUpgradeSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationActionGetUpgrade_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationActionGetUpgrade_example.json
      */
     /**
      * Sample code: Get an application upgrade.
@@ -594,7 +595,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.RestartDepl
  */
 public final class ApplicationsRestartDeployedCodePackageSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationActionRestartDeployedCodePackage_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationActionRestartDeployedCodePackage_example.json
      */
     /**
      * Sample code: Restart deployed code package.
@@ -625,7 +626,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.RuntimeResu
  */
 public final class ApplicationsResumeUpgradeSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationActionResumeUpgrade_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationActionResumeUpgrade_example.json
      */
     /**
      * Sample code: Resume upgrade.
@@ -650,7 +651,7 @@ public final class ApplicationsResumeUpgradeSamples {
  */
 public final class ApplicationsStartRollbackSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationActionStartRollback_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationActionStartRollback_example.json
      */
     /**
      * Sample code: Start an application upgrade rollback.
@@ -677,7 +678,7 @@ import java.util.Map;
  */
 public final class ApplicationsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationPatchOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationPatchOperation_example.json
      */
     /**
      * Sample code: Patch an application.
@@ -728,7 +729,7 @@ import java.util.Map;
  */
 public final class ApplicationsUpdateUpgradeSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationActionUpdateUpgrade_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationActionUpdateUpgrade_example.json
      */
     /**
      * Sample code: Update an application upgrade.
@@ -787,7 +788,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplyMainte
  */
 public final class ManagedApplyMaintenanceWindowPostSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ManagedApplyMaintenanceWindowPost_example.json
+     * x-ms-original-file: 2026-09-01-preview/ManagedApplyMaintenanceWindowPost_example.json
      */
     /**
      * Sample code: Apply Maintenance Window Status.
@@ -814,7 +815,7 @@ public final class ManagedApplyMaintenanceWindowPostSamples {
  */
 public final class ManagedAzResiliencyStatusesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/managedAzResiliencyStatusGet_example.json
+     * x-ms-original-file: 2026-09-01-preview/managedAzResiliencyStatusGet_example.json
      */
     /**
      * Sample code: Az Resiliency status of Base Resources.
@@ -837,7 +838,7 @@ public final class ManagedAzResiliencyStatusesGetSamples {
  */
 public final class ManagedClusterVersionGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ManagedClusterVersionGet_example.json
+     * x-ms-original-file: 2026-09-01-preview/ManagedClusterVersionGet_example.json
      */
     /**
      * Sample code: Get cluster version.
@@ -861,7 +862,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedClus
  */
 public final class ManagedClusterVersionGetByEnvironmentSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ManagedClusterVersionGetByEnvironment_example.json
+     * x-ms-original-file: 2026-09-01-preview/ManagedClusterVersionGetByEnvironment_example.json
      */
     /**
      * Sample code: Get cluster version by environment.
@@ -885,7 +886,7 @@ public final class ManagedClusterVersionGetByEnvironmentSamples {
  */
 public final class ManagedClusterVersionListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ManagedClusterVersionList_example.json
+     * x-ms-original-file: 2026-09-01-preview/ManagedClusterVersionList_example.json
      */
     /**
      * Sample code: List cluster versions.
@@ -909,7 +910,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedClus
  */
 public final class ManagedClusterVersionListByEnvironmentSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ManagedClusterVersionListByEnvironment.json
+     * x-ms-original-file: 2026-09-01-preview/ManagedClusterVersionListByEnvironment.json
      */
     /**
      * Sample code: List cluster versions by environment.
@@ -963,7 +964,7 @@ import java.util.Map;
  */
 public final class ManagedClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ManagedClusterPutOperation_example_max.json
+     * x-ms-original-file: 2026-09-01-preview/ManagedClusterPutOperation_example_max.json
      */
     /**
      * Sample code: Put a cluster with maximum parameters.
@@ -1073,7 +1074,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/ManagedClusterPutOperation_example_min.json
+     * x-ms-original-file: 2026-09-01-preview/ManagedClusterPutOperation_example_min.json
      */
     /**
      * Sample code: Put a cluster with minimum parameters.
@@ -1120,7 +1121,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
  */
 public final class ManagedClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ManagedClusterDeleteOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ManagedClusterDeleteOperation_example.json
      */
     /**
      * Sample code: Delete a cluster.
@@ -1142,7 +1143,7 @@ public final class ManagedClustersDeleteSamples {
  */
 public final class ManagedClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ManagedClusterGetOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ManagedClusterGetOperation_example.json
      */
     /**
      * Sample code: Get a cluster.
@@ -1167,7 +1168,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimula
  */
 public final class ManagedClustersGetFaultSimulationSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/faultSimulation/ManagedClusterGetFaultSimulation_example.json
+     * x-ms-original-file: 2026-09-01-preview/faultSimulation/ManagedClusterGetFaultSimulation_example.json
      */
     /**
      * Sample code: Get Managed Cluster Fault Simulation.
@@ -1192,7 +1193,7 @@ public final class ManagedClustersGetFaultSimulationSamples {
  */
 public final class ManagedClustersListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ManagedClusterListBySubscriptionOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ManagedClusterListBySubscriptionOperation_example.json
      */
     /**
      * Sample code: List managed clusters.
@@ -1214,7 +1215,7 @@ public final class ManagedClustersListSamples {
  */
 public final class ManagedClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ManagedClusterListByResourceGroupOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ManagedClusterListByResourceGroupOperation_example.json
      */
     /**
      * Sample code: List cluster by resource group.
@@ -1236,7 +1237,7 @@ public final class ManagedClustersListByResourceGroupSamples {
  */
 public final class ManagedClustersListFaultSimulationSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/faultSimulation/ManagedClusterListFaultSimulation_example.json
+     * x-ms-original-file: 2026-09-01-preview/faultSimulation/ManagedClusterListFaultSimulation_example.json
      */
     /**
      * Sample code: List Managed Cluster Fault Simulation.
@@ -1262,7 +1263,7 @@ import java.util.Arrays;
  */
 public final class ManagedClustersStartFaultSimulationSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/faultSimulation/ManagedClusterStartFaultSimulation_example.json
+     * x-ms-original-file: 2026-09-01-preview/faultSimulation/ManagedClusterStartFaultSimulation_example.json
      */
     /**
      * Sample code: Start Managed Cluster Fault Simulation.
@@ -1288,7 +1289,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimula
  */
 public final class ManagedClustersStopFaultSimulationSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/faultSimulation/ManagedClusterStopFaultSimulation_example.json
+     * x-ms-original-file: 2026-09-01-preview/faultSimulation/ManagedClusterStopFaultSimulation_example.json
      */
     /**
      * Sample code: Stop Managed Cluster Fault Simulation.
@@ -1317,7 +1318,7 @@ import java.util.Map;
  */
 public final class ManagedClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ManagedClusterPatchOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ManagedClusterPatchOperation_example.json
      */
     /**
      * Sample code: Patch a managed cluster.
@@ -1354,7 +1355,7 @@ public final class ManagedClustersUpdateSamples {
  */
 public final class ManagedMaintenanceWindowStatusesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ManagedMaintenanceWindowStatusGet_example.json
+     * x-ms-original-file: 2026-09-01-preview/ManagedMaintenanceWindowStatusGet_example.json
      */
     /**
      * Sample code: Get Maintenance Window Status.
@@ -1377,7 +1378,7 @@ public final class ManagedMaintenanceWindowStatusesGetSamples {
  */
 public final class ManagedUnsupportedVMSizesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/managedUnsupportedVMSizesGet_example.json
+     * x-ms-original-file: 2026-09-01-preview/managedUnsupportedVMSizesGet_example.json
      */
     /**
      * Sample code: Get unsupported vm sizes.
@@ -1400,7 +1401,7 @@ public final class ManagedUnsupportedVMSizesGetSamples {
  */
 public final class ManagedUnsupportedVMSizesListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/managedUnsupportedVMSizesList_example.json
+     * x-ms-original-file: 2026-09-01-preview/managedUnsupportedVMSizesList_example.json
      */
     /**
      * Sample code: List unsupported vm sizes.
@@ -1422,7 +1423,7 @@ public final class ManagedUnsupportedVMSizesListSamples {
  */
 public final class NodeTypeSkusListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypeSkusListOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypeSkusListOperation_example.json
      */
     /**
      * Sample code: List a node type SKUs.
@@ -1443,6 +1444,8 @@ import com.azure.core.management.SubResource;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.AdditionalNetworkInterfaceConfiguration;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.AllocationStrategy;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.DiskCachingType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.DiskType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.EvictionPolicyType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FrontendConfiguration;
@@ -1457,6 +1460,8 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.ScaleInPoli
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ScaleInPolicyMode;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityEncryptionType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityType;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.SkuProfile;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.SkuProfileVmSize;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VaultCertificate;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VaultSecretGroup;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmApplication;
@@ -1476,7 +1481,7 @@ import java.util.Map;
  */
 public final class NodeTypesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationStateless_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePutOperationStateless_example.json
      */
     /**
      * Sample code: Put an stateless node type with temporary disk for service fabric.
@@ -1511,7 +1516,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperation_example_max.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePutOperation_example_max.json
      */
     /**
      * Sample code: Put a node type with maximum parameters.
@@ -1531,7 +1536,7 @@ public final class NodeTypesCreateOrUpdateSamples {
             .withDataDiskLetter("S")
             .withPlacementProperties(mapOf("HasSSD", "true", "NodeColor", "green", "SomeProperty", "5"))
             .withCapacities(mapOf("ClientConnections", "65536"))
-            .withVmSize("Standard_DS3")
+            .withVmSize("Mix")
             .withVmImagePublisher("MicrosoftWindowsServer")
             .withVmImageOffer("WindowsServer")
             .withVmImageSku("2016-Datacenter-Server-Core")
@@ -1567,11 +1572,19 @@ public final class NodeTypesCreateOrUpdateSamples {
                 new VmssDataDisk().withLun(1)
                     .withDiskSizeGB(256)
                     .withDiskType(DiskType.STANDARD_SSD_LRS)
-                    .withDiskLetter("F"),
+                    .withDiskLetter("F")
+                    .withCaching(DiskCachingType.READ_ONLY)
+                    .withWriteAcceleratorEnabled(false)
+                    .withDiskIOPSReadWrite(3000)
+                    .withDiskMBpsReadWrite(125),
                 new VmssDataDisk().withLun(2)
                     .withDiskSizeGB(150)
                     .withDiskType(DiskType.PREMIUM_LRS)
-                    .withDiskLetter("G")))
+                    .withDiskLetter("G")
+                    .withCaching(DiskCachingType.READ_ONLY)
+                    .withWriteAcceleratorEnabled(false)
+                    .withDiskIOPSReadWrite(3000)
+                    .withDiskMBpsReadWrite(125)))
             .withEnableEncryptionAtHost(true)
             .withEnableAcceleratedNetworking(true)
             .withUseDefaultPublicLoadBalancer(true)
@@ -1632,11 +1645,19 @@ public final class NodeTypesCreateOrUpdateSamples {
                 .withImds(new HostEndpointSettings().withMode("Audit")
                     .withInVMAccessControlProfileReferenceId("someReferenceId"))
                 .withAddProxyAgentExtension(true))
+            .withSkuProfile(new SkuProfile()
+                .withVmSizes(Arrays.asList(new SkuProfileVmSize().withName("Standard_D2s_v3").withRank(1),
+                    new SkuProfileVmSize().withName("Standard_D4s_v3").withRank(2)))
+                .withAllocationStrategy(AllocationStrategy.PRIORITIZED))
+            .withDataDiskCaching(DiskCachingType.READ_ONLY)
+            .withDataDiskWriteAcceleratorEnabled(false)
+            .withDataDiskIOPSReadWrite(5000)
+            .withDataDiskMBpsReadWrite(200)
             .create();
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationAutoScale_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePutOperationAutoScale_example.json
      */
     /**
      * Sample code: Put a node type with auto-scale parameters.
@@ -1682,7 +1703,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperation_example_min.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePutOperation_example_min.json
      */
     /**
      * Sample code: Put a node type with minimum parameters.
@@ -1706,7 +1727,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationDedicatedHost_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePutOperationDedicatedHost_example.json
      */
     /**
      * Sample code: Put node type with dedicated hosts.
@@ -1736,7 +1757,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationVmImagePlan_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePutOperationVmImagePlan_example.json
      */
     /**
      * Sample code: Put node type with vm image plan.
@@ -1763,7 +1784,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationCustomSharedGalleriesImage_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePutOperationCustomSharedGalleriesImage_example.json
      */
     /**
      * Sample code: Put node type with shared galleries custom vm image.
@@ -1785,7 +1806,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationCustomImage_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePutOperationCustomImage_example.json
      */
     /**
      * Sample code: Put node type with custom vm image.
@@ -1831,7 +1852,7 @@ import java.util.Arrays;
  */
 public final class NodeTypesDeallocateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/DeallocateNodes_example.json
+     * x-ms-original-file: 2026-09-01-preview/DeallocateNodes_example.json
      */
     /**
      * Sample code: Deallocate nodes.
@@ -1856,7 +1877,7 @@ public final class NodeTypesDeallocateSamples {
  */
 public final class NodeTypesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypeDeleteOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypeDeleteOperation_example.json
      */
     /**
      * Sample code: Delete a node type.
@@ -1881,7 +1902,7 @@ import java.util.Arrays;
  */
 public final class NodeTypesDeleteNodeSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/DeleteNodes_example.json
+     * x-ms-original-file: 2026-09-01-preview/DeleteNodes_example.json
      */
     /**
      * Sample code: Delete nodes.
@@ -1906,7 +1927,7 @@ public final class NodeTypesDeleteNodeSamples {
  */
 public final class NodeTypesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypeGetOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypeGetOperation_example.json
      */
     /**
      * Sample code: Get a node type.
@@ -1930,7 +1951,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimula
  */
 public final class NodeTypesGetFaultSimulationSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/faultSimulation/NodeTypeGetFaultSimulation_example.json
+     * x-ms-original-file: 2026-09-01-preview/faultSimulation/NodeTypeGetFaultSimulation_example.json
      */
     /**
      * Sample code: Get Node Type Fault Simulation.
@@ -1955,7 +1976,7 @@ public final class NodeTypesGetFaultSimulationSamples {
  */
 public final class NodeTypesListByManagedClustersSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypeListOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypeListOperation_example.json
      */
     /**
      * Sample code: List node type of the specified managed cluster.
@@ -1977,7 +1998,7 @@ public final class NodeTypesListByManagedClustersSamples {
  */
 public final class NodeTypesListFaultSimulationSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/faultSimulation/NodeTypeListFaultSimulation_example.json
+     * x-ms-original-file: 2026-09-01-preview/faultSimulation/NodeTypeListFaultSimulation_example.json
      */
     /**
      * Sample code: List Node Type Fault Simulation.
@@ -2003,7 +2024,7 @@ import java.util.Arrays;
  */
 public final class NodeTypesRedeploySamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/RedeployNodes_UD_example.json
+     * x-ms-original-file: 2026-09-01-preview/RedeployNodes_UD_example.json
      */
     /**
      * Sample code: Redeploy all nodes by upgrade domain.
@@ -2019,7 +2040,7 @@ public final class NodeTypesRedeploySamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/RedeployNodes_example.json
+     * x-ms-original-file: 2026-09-01-preview/RedeployNodes_example.json
      */
     /**
      * Sample code: Redeploy nodes.
@@ -2048,7 +2069,7 @@ import java.util.Arrays;
  */
 public final class NodeTypesReimageSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ReimageNodes_example.json
+     * x-ms-original-file: 2026-09-01-preview/ReimageNodes_example.json
      */
     /**
      * Sample code: Reimage nodes.
@@ -2064,7 +2085,7 @@ public final class NodeTypesReimageSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/ReimageNodes_UD_example.json
+     * x-ms-original-file: 2026-09-01-preview/ReimageNodes_UD_example.json
      */
     /**
      * Sample code: Reimage all nodes by upgrade domain.
@@ -2081,6 +2102,34 @@ public final class NodeTypesReimageSamples {
 }
 ```
 
+### NodeTypes_ReimageAllDisks
+
+```java
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ReimageAllDisksParameters;
+import java.util.Arrays;
+
+/**
+ * Samples for NodeTypes ReimageAllDisks.
+ */
+public final class NodeTypesReimageAllDisksSamples {
+    /*
+     * x-ms-original-file: 2026-09-01-preview/ReimageAllDisks_example.json
+     */
+    /**
+     * Sample code: Reimage all disks on a node.
+     * 
+     * @param manager Entry point to ServiceFabricManagedClustersManager.
+     */
+    public static void reimageAllDisksOnANode(
+        com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager manager) {
+        manager.nodeTypes()
+            .reimageAllDisks("resRg", "myCluster", "BE",
+                new ReimageAllDisksParameters().withNodes(Arrays.asList("BE_0")).withForce(false),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### NodeTypes_Restart
 
 ```java
@@ -2092,7 +2141,7 @@ import java.util.Arrays;
  */
 public final class NodeTypesRestartSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/RestartNodes_example.json
+     * x-ms-original-file: 2026-09-01-preview/RestartNodes_example.json
      */
     /**
      * Sample code: Restart nodes.
@@ -2120,7 +2169,7 @@ import java.util.Arrays;
  */
 public final class NodeTypesStartSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StartNodes_example.json
+     * x-ms-original-file: 2026-09-01-preview/StartNodes_example.json
      */
     /**
      * Sample code: Start nodes.
@@ -2148,7 +2197,7 @@ import java.util.Arrays;
  */
 public final class NodeTypesStartFaultSimulationSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/faultSimulation/NodeTypeStartFaultSimulation_example.json
+     * x-ms-original-file: 2026-09-01-preview/faultSimulation/NodeTypeStartFaultSimulation_example.json
      */
     /**
      * Sample code: Start Node Type Fault Simulation.
@@ -2174,7 +2223,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimula
  */
 public final class NodeTypesStopFaultSimulationSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/faultSimulation/NodeTypeStopFaultSimulation_example.json
+     * x-ms-original-file: 2026-09-01-preview/faultSimulation/NodeTypeStopFaultSimulation_example.json
      */
     /**
      * Sample code: Stop Node Type Fault Simulation.
@@ -2204,7 +2253,7 @@ import java.util.Map;
  */
 public final class NodeTypesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePatchOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePatchOperation_example.json
      */
     /**
      * Sample code: Patch a node type.
@@ -2220,7 +2269,7 @@ public final class NodeTypesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePatchOperationAutoScale_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePatchOperationAutoScale_example.json
      */
     /**
      * Sample code: Patch a node type while auto-scaling.
@@ -2260,7 +2309,7 @@ public final class NodeTypesUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/OperationsList_example.json
+     * x-ms-original-file: 2026-09-01-preview/OperationsList_example.json
      */
     /**
      * Sample code: List the operations for the provider.
@@ -2298,7 +2347,7 @@ import java.util.Map;
  */
 public final class ServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ServicePutOperation_example_min.json
+     * x-ms-original-file: 2026-09-01-preview/ServicePutOperation_example_min.json
      */
     /**
      * Sample code: Put a service with minimum parameters.
@@ -2318,7 +2367,7 @@ public final class ServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/ServicePutOperation_example_max.json
+     * x-ms-original-file: 2026-09-01-preview/ServicePutOperation_example_max.json
      */
     /**
      * Sample code: Put a service with maximum parameters.
@@ -2382,7 +2431,7 @@ public final class ServicesCreateOrUpdateSamples {
  */
 public final class ServicesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ServiceDeleteOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ServiceDeleteOperation_example.json
      */
     /**
      * Sample code: Delete a service.
@@ -2404,7 +2453,7 @@ public final class ServicesDeleteSamples {
  */
 public final class ServicesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ServiceGetOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ServiceGetOperation_example.json
      */
     /**
      * Sample code: Get a service.
@@ -2427,7 +2476,7 @@ public final class ServicesGetSamples {
  */
 public final class ServicesListByApplicationsSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ServiceListOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ServiceListOperation_example.json
      */
     /**
      * Sample code: Get a list of service resources.
@@ -2453,7 +2502,7 @@ import java.util.Arrays;
  */
 public final class ServicesRestartReplicaSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ServiceActionRestartReplica_example.json
+     * x-ms-original-file: 2026-09-01-preview/ServiceActionRestartReplica_example.json
      */
     /**
      * Sample code: Restart replicas.
@@ -2486,7 +2535,7 @@ import java.util.Map;
  */
 public final class ServicesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ServicePatchOperation_example.json
+     * x-ms-original-file: 2026-09-01-preview/ServicePatchOperation_example.json
      */
     /**
      * Sample code: Patch a service.

@@ -14,23 +14,23 @@ public final class ApplicationTypeVersionResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationTypeVersionResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"yvjusrtslhsp\",\"appPackageUrl\":\"deemao\"},\"tags\":{\"vt\":\"ag\",\"hahvljuahaq\":\"elmqk\",\"exq\":\"hcdhmdual\",\"crgvxpvgom\":\"vfadmws\"},\"location\":\"fmisg\",\"id\":\"nbbelda\",\"name\":\"k\",\"type\":\"baliourqhakauha\"}")
+            "{\"properties\":{\"provisioningState\":\"lmqkrhahvlj\",\"appPackageUrl\":\"ahaquh\"},\"tags\":{\"aex\":\"mdua\",\"vxpvgomz\":\"pvfadmwsrcr\"},\"location\":\"misgwbnb\",\"id\":\"ldawkzbaliourqha\",\"name\":\"auhashsfwx\",\"type\":\"sowzxcugi\"}")
             .toObject(ApplicationTypeVersionResourceInner.class);
-        Assertions.assertEquals("ag", model.tags().get("vt"));
-        Assertions.assertEquals("fmisg", model.location());
-        Assertions.assertEquals("deemao", model.appPackageUrl());
+        Assertions.assertEquals("mdua", model.tags().get("aex"));
+        Assertions.assertEquals("misgwbnb", model.location());
+        Assertions.assertEquals("ahaquh", model.appPackageUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationTypeVersionResourceInner model = new ApplicationTypeVersionResourceInner()
-            .withTags(mapOf("vt", "ag", "hahvljuahaq", "elmqk", "exq", "hcdhmdual", "crgvxpvgom", "vfadmws"))
-            .withLocation("fmisg")
-            .withAppPackageUrl("deemao");
+        ApplicationTypeVersionResourceInner model
+            = new ApplicationTypeVersionResourceInner().withTags(mapOf("aex", "mdua", "vxpvgomz", "pvfadmwsrcr"))
+                .withLocation("misgwbnb")
+                .withAppPackageUrl("ahaquh");
         model = BinaryData.fromObject(model).toObject(ApplicationTypeVersionResourceInner.class);
-        Assertions.assertEquals("ag", model.tags().get("vt"));
-        Assertions.assertEquals("fmisg", model.location());
-        Assertions.assertEquals("deemao", model.appPackageUrl());
+        Assertions.assertEquals("mdua", model.tags().get("aex"));
+        Assertions.assertEquals("misgwbnb", model.location());
+        Assertions.assertEquals("ahaquh", model.appPackageUrl());
     }
 
     // Use "Map.of" if available

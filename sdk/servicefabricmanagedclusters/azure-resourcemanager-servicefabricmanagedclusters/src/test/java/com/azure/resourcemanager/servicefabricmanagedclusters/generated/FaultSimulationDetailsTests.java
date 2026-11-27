@@ -15,16 +15,16 @@ public final class FaultSimulationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FaultSimulationDetails model = BinaryData.fromString(
-            "{\"clusterId\":\"wabm\",\"operationId\":\"efkifr\",\"nodeTypeFaultSimulation\":[{\"nodeTypeName\":\"qujmqlgkf\",\"status\":\"StopFailed\",\"operationId\":\"oaongbjc\",\"operationStatus\":\"Failed\"},{\"nodeTypeName\":\"i\",\"status\":\"Stopping\",\"operationId\":\"df\",\"operationStatus\":\"Created\"},{\"nodeTypeName\":\"ezkojvdcp\",\"status\":\"Active\",\"operationId\":\"ouicybxarzgszu\",\"operationStatus\":\"Created\"},{\"nodeTypeName\":\"iqopidoamciod\",\"status\":\"Starting\",\"operationId\":\"zxkhnzbonlwnto\",\"operationStatus\":\"Aborted\"}],\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":false,\"constraints\":{\"expirationTime\":\"2021-09-24T01:53:24Z\"}}}")
+            "{\"clusterId\":\"uhqlbjbsybbqwrvt\",\"operationId\":\"gmfpgvmp\",\"nodeTypeFaultSimulation\":[{\"nodeTypeName\":\"ltha\",\"status\":\"Done\",\"operationId\":\"smwutwbdsrezpd\",\"operationStatus\":\"Canceled\"}],\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":true,\"constraints\":{\"expirationTime\":\"2021-03-08T01:01:24Z\"}}}")
             .toObject(FaultSimulationDetails.class);
-        Assertions.assertEquals("wabm", model.clusterId());
-        Assertions.assertEquals("efkifr", model.operationId());
-        Assertions.assertEquals("qujmqlgkf", model.nodeTypeFaultSimulation().get(0).nodeTypeName());
-        Assertions.assertEquals(FaultSimulationStatus.STOP_FAILED, model.nodeTypeFaultSimulation().get(0).status());
-        Assertions.assertEquals("oaongbjc", model.nodeTypeFaultSimulation().get(0).operationId());
-        Assertions.assertEquals(SfmcOperationStatus.FAILED, model.nodeTypeFaultSimulation().get(0).operationStatus());
-        Assertions.assertFalse(model.parameters().force());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-24T01:53:24Z"),
+        Assertions.assertEquals("uhqlbjbsybbqwrvt", model.clusterId());
+        Assertions.assertEquals("gmfpgvmp", model.operationId());
+        Assertions.assertEquals("ltha", model.nodeTypeFaultSimulation().get(0).nodeTypeName());
+        Assertions.assertEquals(FaultSimulationStatus.DONE, model.nodeTypeFaultSimulation().get(0).status());
+        Assertions.assertEquals("smwutwbdsrezpd", model.nodeTypeFaultSimulation().get(0).operationId());
+        Assertions.assertEquals(SfmcOperationStatus.CANCELED, model.nodeTypeFaultSimulation().get(0).operationStatus());
+        Assertions.assertTrue(model.parameters().force());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-08T01:01:24Z"),
             model.parameters().constraints().expirationTime());
     }
 }

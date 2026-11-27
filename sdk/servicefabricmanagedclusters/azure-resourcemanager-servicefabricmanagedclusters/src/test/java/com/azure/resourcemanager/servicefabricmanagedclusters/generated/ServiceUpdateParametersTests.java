@@ -13,18 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceUpdateParameters model = BinaryData
-            .fromString("{\"tags\":{\"wlrbqtkoievseo\":\"dxunkbebxmubyyn\",\"wzizxbmpgcjefuzm\":\"gqrlltmuwla\"}}")
+        ServiceUpdateParameters model = BinaryData.fromString("{\"tags\":{\"pnppfuf\":\"dkzzewkfvhqcrail\"}}")
             .toObject(ServiceUpdateParameters.class);
-        Assertions.assertEquals("dxunkbebxmubyyn", model.tags().get("wlrbqtkoievseo"));
+        Assertions.assertEquals("dkzzewkfvhqcrail", model.tags().get("pnppfuf"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceUpdateParameters model = new ServiceUpdateParameters()
-            .withTags(mapOf("wlrbqtkoievseo", "dxunkbebxmubyyn", "wzizxbmpgcjefuzm", "gqrlltmuwla"));
+        ServiceUpdateParameters model = new ServiceUpdateParameters().withTags(mapOf("pnppfuf", "dkzzewkfvhqcrail"));
         model = BinaryData.fromObject(model).toObject(ServiceUpdateParameters.class);
-        Assertions.assertEquals("dxunkbebxmubyyn", model.tags().get("wlrbqtkoievseo"));
+        Assertions.assertEquals("dkzzewkfvhqcrail", model.tags().get("pnppfuf"));
     }
 
     // Use "Map.of" if available

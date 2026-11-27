@@ -14,39 +14,39 @@ public final class VMSSExtensionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VMSSExtensionProperties model = BinaryData.fromString(
-            "{\"publisher\":\"brnjwmw\",\"type\":\"pn\",\"typeHandlerVersion\":\"saz\",\"autoUpgradeMinorVersion\":true,\"settings\":\"\\\"dataqkagfhsxt\\\"\",\"protectedSettings\":\"\\\"dataugzxnf\\\"\",\"forceUpdateTag\":\"zpxdt\",\"provisionAfterExtensions\":[\"mkqjj\"],\"provisioningState\":\"uenvrkp\",\"enableAutomaticUpgrade\":true,\"setupOrder\":[\"BeforeSFRuntime\",\"BeforeSFRuntime\"]}")
+            "{\"publisher\":\"hbejdznxcvdsrhnj\",\"type\":\"volvtn\",\"typeHandlerVersion\":\"v\",\"autoUpgradeMinorVersion\":true,\"settings\":\"\\\"dataemjdftul\\\"\",\"protectedSettings\":\"\\\"datatduceamt\\\"\",\"forceUpdateTag\":\"zuo\",\"provisionAfterExtensions\":[\"wcw\"],\"provisioningState\":\"ioknssxmoj\",\"enableAutomaticUpgrade\":false,\"setupOrder\":[\"BeforeSFRuntime\",\"BeforeSFRuntime\"]}")
             .toObject(VMSSExtensionProperties.class);
-        Assertions.assertEquals("brnjwmw", model.publisher());
-        Assertions.assertEquals("pn", model.type());
-        Assertions.assertEquals("saz", model.typeHandlerVersion());
+        Assertions.assertEquals("hbejdznxcvdsrhnj", model.publisher());
+        Assertions.assertEquals("volvtn", model.type());
+        Assertions.assertEquals("v", model.typeHandlerVersion());
         Assertions.assertTrue(model.autoUpgradeMinorVersion());
-        Assertions.assertEquals("zpxdt", model.forceUpdateTag());
-        Assertions.assertEquals("mkqjj", model.provisionAfterExtensions().get(0));
-        Assertions.assertTrue(model.enableAutomaticUpgrade());
+        Assertions.assertEquals("zuo", model.forceUpdateTag());
+        Assertions.assertEquals("wcw", model.provisionAfterExtensions().get(0));
+        Assertions.assertFalse(model.enableAutomaticUpgrade());
         Assertions.assertEquals(VmssExtensionSetupOrder.BEFORE_SFRUNTIME, model.setupOrder().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMSSExtensionProperties model = new VMSSExtensionProperties().withPublisher("brnjwmw")
-            .withType("pn")
-            .withTypeHandlerVersion("saz")
+        VMSSExtensionProperties model = new VMSSExtensionProperties().withPublisher("hbejdznxcvdsrhnj")
+            .withType("volvtn")
+            .withTypeHandlerVersion("v")
             .withAutoUpgradeMinorVersion(true)
-            .withSettings("\"dataqkagfhsxt\"")
-            .withProtectedSettings("\"dataugzxnf\"")
-            .withForceUpdateTag("zpxdt")
-            .withProvisionAfterExtensions(Arrays.asList("mkqjj"))
-            .withEnableAutomaticUpgrade(true)
+            .withSettings("\"dataemjdftul\"")
+            .withProtectedSettings("\"datatduceamt\"")
+            .withForceUpdateTag("zuo")
+            .withProvisionAfterExtensions(Arrays.asList("wcw"))
+            .withEnableAutomaticUpgrade(false)
             .withSetupOrder(
                 Arrays.asList(VmssExtensionSetupOrder.BEFORE_SFRUNTIME, VmssExtensionSetupOrder.BEFORE_SFRUNTIME));
         model = BinaryData.fromObject(model).toObject(VMSSExtensionProperties.class);
-        Assertions.assertEquals("brnjwmw", model.publisher());
-        Assertions.assertEquals("pn", model.type());
-        Assertions.assertEquals("saz", model.typeHandlerVersion());
+        Assertions.assertEquals("hbejdznxcvdsrhnj", model.publisher());
+        Assertions.assertEquals("volvtn", model.type());
+        Assertions.assertEquals("v", model.typeHandlerVersion());
         Assertions.assertTrue(model.autoUpgradeMinorVersion());
-        Assertions.assertEquals("zpxdt", model.forceUpdateTag());
-        Assertions.assertEquals("mkqjj", model.provisionAfterExtensions().get(0));
-        Assertions.assertTrue(model.enableAutomaticUpgrade());
+        Assertions.assertEquals("zuo", model.forceUpdateTag());
+        Assertions.assertEquals("wcw", model.provisionAfterExtensions().get(0));
+        Assertions.assertFalse(model.enableAutomaticUpgrade());
         Assertions.assertEquals(VmssExtensionSetupOrder.BEFORE_SFRUNTIME, model.setupOrder().get(0));
     }
 }

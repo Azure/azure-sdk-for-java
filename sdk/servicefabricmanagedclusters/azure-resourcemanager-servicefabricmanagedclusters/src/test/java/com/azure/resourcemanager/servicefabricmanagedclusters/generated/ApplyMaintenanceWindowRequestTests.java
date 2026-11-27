@@ -11,22 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplyMaintenanceWindowRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplyMaintenanceWindowRequest model
-            = BinaryData.fromString("{\"startDateTime\":\"krefajpjo\",\"duration\":\"kqnyh\",\"timeZone\":\"ij\"}")
-                .toObject(ApplyMaintenanceWindowRequest.class);
-        Assertions.assertEquals("krefajpjo", model.startDateTime());
-        Assertions.assertEquals("kqnyh", model.duration());
-        Assertions.assertEquals("ij", model.timeZone());
+        ApplyMaintenanceWindowRequest model = BinaryData
+            .fromString(
+                "{\"startDateTime\":\"oqrvqqaatjin\",\"duration\":\"goupmfiibfg\",\"timeZone\":\"ioolvrwxkvtkkgll\"}")
+            .toObject(ApplyMaintenanceWindowRequest.class);
+        Assertions.assertEquals("oqrvqqaatjin", model.startDateTime());
+        Assertions.assertEquals("goupmfiibfg", model.duration());
+        Assertions.assertEquals("ioolvrwxkvtkkgll", model.timeZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplyMaintenanceWindowRequest model = new ApplyMaintenanceWindowRequest().withStartDateTime("krefajpjo")
-            .withDuration("kqnyh")
-            .withTimeZone("ij");
+        ApplyMaintenanceWindowRequest model = new ApplyMaintenanceWindowRequest().withStartDateTime("oqrvqqaatjin")
+            .withDuration("goupmfiibfg")
+            .withTimeZone("ioolvrwxkvtkkgll");
         model = BinaryData.fromObject(model).toObject(ApplyMaintenanceWindowRequest.class);
-        Assertions.assertEquals("krefajpjo", model.startDateTime());
-        Assertions.assertEquals("kqnyh", model.duration());
-        Assertions.assertEquals("ij", model.timeZone());
+        Assertions.assertEquals("oqrvqqaatjin", model.startDateTime());
+        Assertions.assertEquals("goupmfiibfg", model.duration());
+        Assertions.assertEquals("ioolvrwxkvtkkgll", model.timeZone());
     }
 }

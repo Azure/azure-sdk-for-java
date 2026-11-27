@@ -21,7 +21,7 @@ public final class ApplicationTypeVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"prhptillu\",\"appPackageUrl\":\"biqtgdq\"},\"tags\":{\"etpwbralll\":\"cwsldri\",\"p\":\"bphbqzmizakakank\",\"zhajoylhjlmuo\":\"n\",\"eecjmeis\":\"xprimrsop\"},\"location\":\"tvasy\",\"id\":\"xdza\",\"name\":\"mweoohgu\",\"type\":\"fuzboyjathwtzolb\"}";
+            = "{\"properties\":{\"provisioningState\":\"prot\",\"appPackageUrl\":\"ypundmbxhugc\"},\"tags\":{\"rb\":\"avlg\"},\"location\":\"tp\",\"id\":\"tzfjltf\",\"name\":\"nzcyjtotp\",\"type\":\"opv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,11 @@ public final class ApplicationTypeVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplicationTypeVersionResource response = manager.applicationTypeVersions()
-            .getWithResponse("ifhpf", "oajvgcxtxjcs", "eafidltugsresm", "ssjhoiftxfkf",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("stgnl", "hnmgixhcm", "vmqfoud", "rhc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cwsldri", response.tags().get("etpwbralll"));
-        Assertions.assertEquals("tvasy", response.location());
-        Assertions.assertEquals("biqtgdq", response.appPackageUrl());
+        Assertions.assertEquals("avlg", response.tags().get("rb"));
+        Assertions.assertEquals("tp", response.location());
+        Assertions.assertEquals("ypundmbxhugc", response.appPackageUrl());
     }
 }

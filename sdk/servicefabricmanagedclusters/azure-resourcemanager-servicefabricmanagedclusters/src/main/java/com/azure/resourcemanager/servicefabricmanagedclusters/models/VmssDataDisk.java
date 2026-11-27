@@ -37,6 +37,26 @@ public final class VmssDataDisk implements JsonSerializable<VmssDataDisk> {
      */
     private String diskLetter;
 
+    /*
+     * Specifies the caching requirements for the managed data disk. Possible values include: None, ReadOnly, ReadWrite.
+     */
+    private DiskCachingType caching;
+
+    /*
+     * Specifies whether write accelerator should be enabled or disabled on the managed data disk.
+     */
+    private Boolean writeAcceleratorEnabled;
+
+    /*
+     * Specifies the Read-Write IOPS for the managed data disk.
+     */
+    private Integer diskIOPSReadWrite;
+
+    /*
+     * Specifies the bandwidth in MB per second for the managed data disk.
+     */
+    private Integer diskMBpsReadWrite;
+
     /**
      * Creates an instance of VmssDataDisk class.
      */
@@ -130,6 +150,90 @@ public final class VmssDataDisk implements JsonSerializable<VmssDataDisk> {
     }
 
     /**
+     * Get the caching property: Specifies the caching requirements for the managed data disk. Possible values include:
+     * None, ReadOnly, ReadWrite.
+     * 
+     * @return the caching value.
+     */
+    public DiskCachingType caching() {
+        return this.caching;
+    }
+
+    /**
+     * Set the caching property: Specifies the caching requirements for the managed data disk. Possible values include:
+     * None, ReadOnly, ReadWrite.
+     * 
+     * @param caching the caching value to set.
+     * @return the VmssDataDisk object itself.
+     */
+    public VmssDataDisk withCaching(DiskCachingType caching) {
+        this.caching = caching;
+        return this;
+    }
+
+    /**
+     * Get the writeAcceleratorEnabled property: Specifies whether write accelerator should be enabled or disabled on
+     * the managed data disk.
+     * 
+     * @return the writeAcceleratorEnabled value.
+     */
+    public Boolean writeAcceleratorEnabled() {
+        return this.writeAcceleratorEnabled;
+    }
+
+    /**
+     * Set the writeAcceleratorEnabled property: Specifies whether write accelerator should be enabled or disabled on
+     * the managed data disk.
+     * 
+     * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
+     * @return the VmssDataDisk object itself.
+     */
+    public VmssDataDisk withWriteAcceleratorEnabled(Boolean writeAcceleratorEnabled) {
+        this.writeAcceleratorEnabled = writeAcceleratorEnabled;
+        return this;
+    }
+
+    /**
+     * Get the diskIOPSReadWrite property: Specifies the Read-Write IOPS for the managed data disk.
+     * 
+     * @return the diskIOPSReadWrite value.
+     */
+    public Integer diskIOPSReadWrite() {
+        return this.diskIOPSReadWrite;
+    }
+
+    /**
+     * Set the diskIOPSReadWrite property: Specifies the Read-Write IOPS for the managed data disk.
+     * 
+     * @param diskIOPSReadWrite the diskIOPSReadWrite value to set.
+     * @return the VmssDataDisk object itself.
+     */
+    public VmssDataDisk withDiskIOPSReadWrite(Integer diskIOPSReadWrite) {
+        this.diskIOPSReadWrite = diskIOPSReadWrite;
+        return this;
+    }
+
+    /**
+     * Get the diskMBpsReadWrite property: Specifies the bandwidth in MB per second for the managed data disk.
+     * 
+     * @return the diskMBpsReadWrite value.
+     */
+    public Integer diskMBpsReadWrite() {
+        return this.diskMBpsReadWrite;
+    }
+
+    /**
+     * Set the diskMBpsReadWrite property: Specifies the bandwidth in MB per second for the managed data disk.
+     * 
+     * @param diskMBpsReadWrite the diskMBpsReadWrite value to set.
+     * @return the VmssDataDisk object itself.
+     */
+    public VmssDataDisk withDiskMBpsReadWrite(Integer diskMBpsReadWrite) {
+        this.diskMBpsReadWrite = diskMBpsReadWrite;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -139,6 +243,10 @@ public final class VmssDataDisk implements JsonSerializable<VmssDataDisk> {
         jsonWriter.writeIntField("diskSizeGB", this.diskSizeGB);
         jsonWriter.writeStringField("diskType", this.diskType == null ? null : this.diskType.toString());
         jsonWriter.writeStringField("diskLetter", this.diskLetter);
+        jsonWriter.writeStringField("caching", this.caching == null ? null : this.caching.toString());
+        jsonWriter.writeBooleanField("writeAcceleratorEnabled", this.writeAcceleratorEnabled);
+        jsonWriter.writeNumberField("diskIOPSReadWrite", this.diskIOPSReadWrite);
+        jsonWriter.writeNumberField("diskMBpsReadWrite", this.diskMBpsReadWrite);
         return jsonWriter.writeEndObject();
     }
 
@@ -166,6 +274,14 @@ public final class VmssDataDisk implements JsonSerializable<VmssDataDisk> {
                     deserializedVmssDataDisk.diskType = DiskType.fromString(reader.getString());
                 } else if ("diskLetter".equals(fieldName)) {
                     deserializedVmssDataDisk.diskLetter = reader.getString();
+                } else if ("caching".equals(fieldName)) {
+                    deserializedVmssDataDisk.caching = DiskCachingType.fromString(reader.getString());
+                } else if ("writeAcceleratorEnabled".equals(fieldName)) {
+                    deserializedVmssDataDisk.writeAcceleratorEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("diskIOPSReadWrite".equals(fieldName)) {
+                    deserializedVmssDataDisk.diskIOPSReadWrite = reader.getNullable(JsonReader::getInt);
+                } else if ("diskMBpsReadWrite".equals(fieldName)) {
+                    deserializedVmssDataDisk.diskMBpsReadWrite = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

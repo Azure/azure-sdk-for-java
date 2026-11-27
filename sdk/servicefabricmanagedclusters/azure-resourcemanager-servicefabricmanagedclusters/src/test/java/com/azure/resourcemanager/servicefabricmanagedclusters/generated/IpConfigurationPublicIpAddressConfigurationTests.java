@@ -15,24 +15,27 @@ public final class IpConfigurationPublicIpAddressConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpConfigurationPublicIpAddressConfiguration model = BinaryData.fromString(
-            "{\"name\":\"yklyhpluodpvruud\",\"ipTags\":[{\"ipTagType\":\"ibthostgktstvd\",\"tag\":\"eclze\"}],\"publicIPAddressVersion\":\"IPv6\"}")
+            "{\"name\":\"db\",\"ipTags\":[{\"ipTagType\":\"wrd\",\"tag\":\"hfuk\"},{\"ipTagType\":\"vsjcswsmystuluqy\",\"tag\":\"fcvlerch\"},{\"ipTagType\":\"qbmfpjbabwidf\",\"tag\":\"xsspuunnoxyhk\"},{\"ipTagType\":\"g\",\"tag\":\"ddrihpf\"}],\"publicIPAddressVersion\":\"IPv6\"}")
             .toObject(IpConfigurationPublicIpAddressConfiguration.class);
-        Assertions.assertEquals("yklyhpluodpvruud", model.name());
-        Assertions.assertEquals("ibthostgktstvd", model.ipTags().get(0).ipTagType());
-        Assertions.assertEquals("eclze", model.ipTags().get(0).tag());
+        Assertions.assertEquals("db", model.name());
+        Assertions.assertEquals("wrd", model.ipTags().get(0).ipTagType());
+        Assertions.assertEquals("hfuk", model.ipTags().get(0).tag());
         Assertions.assertEquals(PublicIpAddressVersion.IPV6, model.publicIpAddressVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IpConfigurationPublicIpAddressConfiguration model
-            = new IpConfigurationPublicIpAddressConfiguration().withName("yklyhpluodpvruud")
-                .withIpTags(Arrays.asList(new IpTag().withIpTagType("ibthostgktstvd").withTag("eclze")))
+            = new IpConfigurationPublicIpAddressConfiguration().withName("db")
+                .withIpTags(Arrays.asList(new IpTag().withIpTagType("wrd").withTag("hfuk"),
+                    new IpTag().withIpTagType("vsjcswsmystuluqy").withTag("fcvlerch"),
+                    new IpTag().withIpTagType("qbmfpjbabwidf").withTag("xsspuunnoxyhk"),
+                    new IpTag().withIpTagType("g").withTag("ddrihpf")))
                 .withPublicIpAddressVersion(PublicIpAddressVersion.IPV6);
         model = BinaryData.fromObject(model).toObject(IpConfigurationPublicIpAddressConfiguration.class);
-        Assertions.assertEquals("yklyhpluodpvruud", model.name());
-        Assertions.assertEquals("ibthostgktstvd", model.ipTags().get(0).ipTagType());
-        Assertions.assertEquals("eclze", model.ipTags().get(0).tag());
+        Assertions.assertEquals("db", model.name());
+        Assertions.assertEquals("wrd", model.ipTags().get(0).ipTagType());
+        Assertions.assertEquals("hfuk", model.ipTags().get(0).tag());
         Assertions.assertEquals(PublicIpAddressVersion.IPV6, model.publicIpAddressVersion());
     }
 }

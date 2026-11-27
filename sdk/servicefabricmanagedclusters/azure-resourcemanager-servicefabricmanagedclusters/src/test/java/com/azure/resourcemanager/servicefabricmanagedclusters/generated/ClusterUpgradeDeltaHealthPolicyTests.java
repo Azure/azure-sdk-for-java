@@ -12,22 +12,22 @@ public final class ClusterUpgradeDeltaHealthPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterUpgradeDeltaHealthPolicy model = BinaryData.fromString(
-            "{\"maxPercentDeltaUnhealthyNodes\":1464984840,\"maxPercentUpgradeDomainDeltaUnhealthyNodes\":866904084,\"maxPercentDeltaUnhealthyApplications\":966805028}")
+            "{\"maxPercentDeltaUnhealthyNodes\":171161135,\"maxPercentUpgradeDomainDeltaUnhealthyNodes\":1054348500,\"maxPercentDeltaUnhealthyApplications\":1837933103}")
             .toObject(ClusterUpgradeDeltaHealthPolicy.class);
-        Assertions.assertEquals(1464984840, model.maxPercentDeltaUnhealthyNodes());
-        Assertions.assertEquals(866904084, model.maxPercentUpgradeDomainDeltaUnhealthyNodes());
-        Assertions.assertEquals(966805028, model.maxPercentDeltaUnhealthyApplications());
+        Assertions.assertEquals(171161135, model.maxPercentDeltaUnhealthyNodes());
+        Assertions.assertEquals(1054348500, model.maxPercentUpgradeDomainDeltaUnhealthyNodes());
+        Assertions.assertEquals(1837933103, model.maxPercentDeltaUnhealthyApplications());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterUpgradeDeltaHealthPolicy model
-            = new ClusterUpgradeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyNodes(1464984840)
-                .withMaxPercentUpgradeDomainDeltaUnhealthyNodes(866904084)
-                .withMaxPercentDeltaUnhealthyApplications(966805028);
+            = new ClusterUpgradeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyNodes(171161135)
+                .withMaxPercentUpgradeDomainDeltaUnhealthyNodes(1054348500)
+                .withMaxPercentDeltaUnhealthyApplications(1837933103);
         model = BinaryData.fromObject(model).toObject(ClusterUpgradeDeltaHealthPolicy.class);
-        Assertions.assertEquals(1464984840, model.maxPercentDeltaUnhealthyNodes());
-        Assertions.assertEquals(866904084, model.maxPercentUpgradeDomainDeltaUnhealthyNodes());
-        Assertions.assertEquals(966805028, model.maxPercentDeltaUnhealthyApplications());
+        Assertions.assertEquals(171161135, model.maxPercentDeltaUnhealthyNodes());
+        Assertions.assertEquals(1054348500, model.maxPercentUpgradeDomainDeltaUnhealthyNodes());
+        Assertions.assertEquals(1837933103, model.maxPercentDeltaUnhealthyApplications());
     }
 }

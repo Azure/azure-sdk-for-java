@@ -14,33 +14,33 @@ public final class LoadBalancingRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LoadBalancingRule model = BinaryData.fromString(
-            "{\"frontendPort\":772691250,\"backendPort\":1695810733,\"protocol\":\"udp\",\"probePort\":976430532,\"probeProtocol\":\"http\",\"probeRequestPath\":\"tfudxepx\",\"loadDistribution\":\"qagvrvm\"}")
+            "{\"frontendPort\":1019657066,\"backendPort\":1765730251,\"protocol\":\"udp\",\"probePort\":1158924531,\"probeProtocol\":\"https\",\"probeRequestPath\":\"kwyfzqwhxxbuyqax\",\"loadDistribution\":\"eqz\"}")
             .toObject(LoadBalancingRule.class);
-        Assertions.assertEquals(772691250, model.frontendPort());
-        Assertions.assertEquals(1695810733, model.backendPort());
+        Assertions.assertEquals(1019657066, model.frontendPort());
+        Assertions.assertEquals(1765730251, model.backendPort());
         Assertions.assertEquals(Protocol.UDP, model.protocol());
-        Assertions.assertEquals(976430532, model.probePort());
-        Assertions.assertEquals(ProbeProtocol.HTTP, model.probeProtocol());
-        Assertions.assertEquals("tfudxepx", model.probeRequestPath());
-        Assertions.assertEquals("qagvrvm", model.loadDistribution());
+        Assertions.assertEquals(1158924531, model.probePort());
+        Assertions.assertEquals(ProbeProtocol.HTTPS, model.probeProtocol());
+        Assertions.assertEquals("kwyfzqwhxxbuyqax", model.probeRequestPath());
+        Assertions.assertEquals("eqz", model.loadDistribution());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LoadBalancingRule model = new LoadBalancingRule().withFrontendPort(772691250)
-            .withBackendPort(1695810733)
+        LoadBalancingRule model = new LoadBalancingRule().withFrontendPort(1019657066)
+            .withBackendPort(1765730251)
             .withProtocol(Protocol.UDP)
-            .withProbePort(976430532)
-            .withProbeProtocol(ProbeProtocol.HTTP)
-            .withProbeRequestPath("tfudxepx")
-            .withLoadDistribution("qagvrvm");
+            .withProbePort(1158924531)
+            .withProbeProtocol(ProbeProtocol.HTTPS)
+            .withProbeRequestPath("kwyfzqwhxxbuyqax")
+            .withLoadDistribution("eqz");
         model = BinaryData.fromObject(model).toObject(LoadBalancingRule.class);
-        Assertions.assertEquals(772691250, model.frontendPort());
-        Assertions.assertEquals(1695810733, model.backendPort());
+        Assertions.assertEquals(1019657066, model.frontendPort());
+        Assertions.assertEquals(1765730251, model.backendPort());
         Assertions.assertEquals(Protocol.UDP, model.protocol());
-        Assertions.assertEquals(976430532, model.probePort());
-        Assertions.assertEquals(ProbeProtocol.HTTP, model.probeProtocol());
-        Assertions.assertEquals("tfudxepx", model.probeRequestPath());
-        Assertions.assertEquals("qagvrvm", model.loadDistribution());
+        Assertions.assertEquals(1158924531, model.probePort());
+        Assertions.assertEquals(ProbeProtocol.HTTPS, model.probeProtocol());
+        Assertions.assertEquals("kwyfzqwhxxbuyqax", model.probeRequestPath());
+        Assertions.assertEquals("eqz", model.loadDistribution());
     }
 }

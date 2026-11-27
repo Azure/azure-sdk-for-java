@@ -14,11 +14,11 @@ public final class NodeTypeFaultSimulationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeTypeFaultSimulation model = BinaryData.fromString(
-            "{\"nodeTypeName\":\"szzcmrvexztv\",\"status\":\"StopFailed\",\"operationId\":\"sfraoyzko\",\"operationStatus\":\"Aborted\"}")
+            "{\"nodeTypeName\":\"d\",\"status\":\"Stopping\",\"operationId\":\"sibircgpi\",\"operationStatus\":\"Failed\"}")
             .toObject(NodeTypeFaultSimulation.class);
-        Assertions.assertEquals("szzcmrvexztv", model.nodeTypeName());
-        Assertions.assertEquals(FaultSimulationStatus.STOP_FAILED, model.status());
-        Assertions.assertEquals("sfraoyzko", model.operationId());
-        Assertions.assertEquals(SfmcOperationStatus.ABORTED, model.operationStatus());
+        Assertions.assertEquals("d", model.nodeTypeName());
+        Assertions.assertEquals(FaultSimulationStatus.STOPPING, model.status());
+        Assertions.assertEquals("sibircgpi", model.operationId());
+        Assertions.assertEquals(SfmcOperationStatus.FAILED, model.operationStatus());
     }
 }

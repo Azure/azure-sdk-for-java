@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationTypeUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationTypeUpdateParameters model = BinaryData.fromString(
-            "{\"tags\":{\"bavxbniwdjswzt\":\"d\",\"xbzpfzab\":\"dbpgnxytxhp\",\"ovplw\":\"lcuhxwtctyqiklb\",\"gu\":\"bhvgy\"}}")
+        ApplicationTypeUpdateParameters model = BinaryData
+            .fromString("{\"tags\":{\"uhxwtctyqiklbbov\":\"abgl\",\"svmkfssxquk\":\"lwzbhvgyugu\",\"mg\":\"fpl\"}}")
             .toObject(ApplicationTypeUpdateParameters.class);
-        Assertions.assertEquals("d", model.tags().get("bavxbniwdjswzt"));
+        Assertions.assertEquals("abgl", model.tags().get("uhxwtctyqiklbbov"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationTypeUpdateParameters model = new ApplicationTypeUpdateParameters().withTags(
-            mapOf("bavxbniwdjswzt", "d", "xbzpfzab", "dbpgnxytxhp", "ovplw", "lcuhxwtctyqiklb", "gu", "bhvgy"));
+        ApplicationTypeUpdateParameters model = new ApplicationTypeUpdateParameters()
+            .withTags(mapOf("uhxwtctyqiklbbov", "abgl", "svmkfssxquk", "lwzbhvgyugu", "mg", "fpl"));
         model = BinaryData.fromObject(model).toObject(ApplicationTypeUpdateParameters.class);
-        Assertions.assertEquals("d", model.tags().get("bavxbniwdjswzt"));
+        Assertions.assertEquals("abgl", model.tags().get("uhxwtctyqiklbbov"));
     }
 
     // Use "Map.of" if available

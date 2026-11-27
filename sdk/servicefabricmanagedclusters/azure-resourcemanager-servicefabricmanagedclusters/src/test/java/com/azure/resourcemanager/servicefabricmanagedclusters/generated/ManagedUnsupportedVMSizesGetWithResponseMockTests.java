@@ -19,8 +19,7 @@ import reactor.core.publisher.Mono;
 public final class ManagedUnsupportedVMSizesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        String responseStr
-            = "{\"properties\":{\"size\":\"onmpqoxwdof\"},\"id\":\"xiqxeiiqbimh\",\"name\":\"wwinhehf\",\"type\":\"ofvwbcb\"}";
+        String responseStr = "{\"properties\":{\"size\":\"y\"},\"id\":\"unjqh\",\"name\":\"nxaulk\",\"type\":\"kdk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +29,7 @@ public final class ManagedUnsupportedVMSizesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedVMSize response = manager.managedUnsupportedVMSizes()
-            .getWithResponse("cvsql", "nzoibgsxgnx", com.azure.core.util.Context.NONE)
+            .getWithResponse("lbfjkwr", "snkq", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

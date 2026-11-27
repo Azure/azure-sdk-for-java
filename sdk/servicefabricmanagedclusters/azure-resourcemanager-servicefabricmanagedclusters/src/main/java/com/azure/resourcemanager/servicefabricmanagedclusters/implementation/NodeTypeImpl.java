@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.NodeTypeInner;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.AdditionalNetworkInterfaceConfiguration;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.DiskCachingType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.DiskType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.EndpointRangeDescription;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.EvictionPolicyType;
@@ -25,9 +26,11 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeNat
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeSku;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeUpdateParameters;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ProxyAgentSettings;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ReimageAllDisksParameters;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ScaleInPolicy;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityEncryptionType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityType;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.SkuProfile;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VaultSecretGroup;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmApplication;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmImagePlan;
@@ -358,6 +361,26 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
         return this.innerModel().proxyAgentSettings();
     }
 
+    public SkuProfile skuProfile() {
+        return this.innerModel().skuProfile();
+    }
+
+    public DiskCachingType dataDiskCaching() {
+        return this.innerModel().dataDiskCaching();
+    }
+
+    public Boolean dataDiskWriteAcceleratorEnabled() {
+        return this.innerModel().dataDiskWriteAcceleratorEnabled();
+    }
+
+    public Integer dataDiskIOPSReadWrite() {
+        return this.innerModel().dataDiskIOPSReadWrite();
+    }
+
+    public Integer dataDiskMBpsReadWrite() {
+        return this.innerModel().dataDiskMBpsReadWrite();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -475,6 +498,14 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
 
     public void reimage(NodeTypeActionParameters parameters, Context context) {
         serviceManager.nodeTypes().reimage(resourceGroupName, clusterName, nodeTypeName, parameters, context);
+    }
+
+    public void reimageAllDisks(ReimageAllDisksParameters parameters) {
+        serviceManager.nodeTypes().reimageAllDisks(resourceGroupName, clusterName, nodeTypeName, parameters);
+    }
+
+    public void reimageAllDisks(ReimageAllDisksParameters parameters, Context context) {
+        serviceManager.nodeTypes().reimageAllDisks(resourceGroupName, clusterName, nodeTypeName, parameters, context);
     }
 
     public void restart(NodeTypeActionParameters parameters) {
@@ -823,6 +854,31 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
 
     public NodeTypeImpl withProxyAgentSettings(ProxyAgentSettings proxyAgentSettings) {
         this.innerModel().withProxyAgentSettings(proxyAgentSettings);
+        return this;
+    }
+
+    public NodeTypeImpl withSkuProfile(SkuProfile skuProfile) {
+        this.innerModel().withSkuProfile(skuProfile);
+        return this;
+    }
+
+    public NodeTypeImpl withDataDiskCaching(DiskCachingType dataDiskCaching) {
+        this.innerModel().withDataDiskCaching(dataDiskCaching);
+        return this;
+    }
+
+    public NodeTypeImpl withDataDiskWriteAcceleratorEnabled(Boolean dataDiskWriteAcceleratorEnabled) {
+        this.innerModel().withDataDiskWriteAcceleratorEnabled(dataDiskWriteAcceleratorEnabled);
+        return this;
+    }
+
+    public NodeTypeImpl withDataDiskIOPSReadWrite(Integer dataDiskIOPSReadWrite) {
+        this.innerModel().withDataDiskIOPSReadWrite(dataDiskIOPSReadWrite);
+        return this;
+    }
+
+    public NodeTypeImpl withDataDiskMBpsReadWrite(Integer dataDiskMBpsReadWrite) {
+        this.innerModel().withDataDiskMBpsReadWrite(dataDiskMBpsReadWrite);
         return this;
     }
 

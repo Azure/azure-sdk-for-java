@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class ApplicationsUpdateUpgradeSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ApplicationActionUpdateUpgrade_example.json
+     * x-ms-original-file: 2026-09-01-preview/ApplicationActionUpdateUpgrade_example.json
      */
     /**
      * Sample code: Update an application upgrade.

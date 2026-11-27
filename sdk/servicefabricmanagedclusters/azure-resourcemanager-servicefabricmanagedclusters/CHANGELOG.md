@@ -1,14 +1,62 @@
 # Release History
 
-## 1.2.0-beta.3 (Unreleased)
+## 1.2.0-beta.3 (2026-11-23)
+
+- Azure Resource Manager Service Fabric Managed Clusters client library for Java. This package contains Microsoft Azure SDK for Service Fabric Managed Clusters Management SDK. Service Fabric Managed Clusters Management Client. Package api-version 2026-09-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.DiskCachingType` was added
 
-### Bugs Fixed
+* `models.AllocationStrategy` was added
 
-### Other Changes
+* `models.ReimageAllDisksParameters` was added
+
+* `models.SkuProfileVmSize` was added
+
+* `models.SkuProfile` was added
+
+#### `models.NodeType$Definition` was modified
+
+* `withDataDiskIOPSReadWrite(java.lang.Integer)` was added
+* `withDataDiskCaching(models.DiskCachingType)` was added
+* `withDataDiskMBpsReadWrite(java.lang.Integer)` was added
+* `withDataDiskWriteAcceleratorEnabled(java.lang.Boolean)` was added
+* `withSkuProfile(models.SkuProfile)` was added
+
+#### `models.NodeTypes` was modified
+
+* `reimageAllDisks(java.lang.String,java.lang.String,java.lang.String,models.ReimageAllDisksParameters)` was added
+* `reimageAllDisks(java.lang.String,java.lang.String,java.lang.String,models.ReimageAllDisksParameters,com.azure.core.util.Context)` was added
+
+#### `models.StatefulServiceProperties` was modified
+
+* `provisioningState()` was added
+
+#### `models.NodeType` was modified
+
+* `dataDiskCaching()` was added
+* `dataDiskMBpsReadWrite()` was added
+* `skuProfile()` was added
+* `reimageAllDisks(models.ReimageAllDisksParameters,com.azure.core.util.Context)` was added
+* `reimageAllDisks(models.ReimageAllDisksParameters)` was added
+* `dataDiskIOPSReadWrite()` was added
+* `dataDiskWriteAcceleratorEnabled()` was added
+
+#### `models.StatelessServiceProperties` was modified
+
+* `provisioningState()` was added
+
+#### `models.VmssDataDisk` was modified
+
+* `diskIOPSReadWrite()` was added
+* `writeAcceleratorEnabled()` was added
+* `withWriteAcceleratorEnabled(java.lang.Boolean)` was added
+* `withDiskIOPSReadWrite(java.lang.Integer)` was added
+* `withDiskMBpsReadWrite(java.lang.Integer)` was added
+* `caching()` was added
+* `withCaching(models.DiskCachingType)` was added
+* `diskMBpsReadWrite()` was added
 
 ## 1.2.0-beta.2 (2026-08-31)
 

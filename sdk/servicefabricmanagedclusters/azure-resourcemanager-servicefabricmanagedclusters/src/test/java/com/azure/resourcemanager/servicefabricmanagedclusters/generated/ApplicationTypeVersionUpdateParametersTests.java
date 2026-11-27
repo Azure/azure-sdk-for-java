@@ -13,17 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationTypeVersionUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationTypeVersionUpdateParameters model = BinaryData.fromString("{\"tags\":{\"ecivyh\":\"cwwfvovbvme\"}}")
+        ApplicationTypeVersionUpdateParameters model = BinaryData
+            .fromString(
+                "{\"tags\":{\"wfvovbv\":\"oxdjebwpuc\",\"jrwjueiotwm\":\"euecivyhzceuoj\",\"rjaw\":\"dytdxwitx\"}}")
             .toObject(ApplicationTypeVersionUpdateParameters.class);
-        Assertions.assertEquals("cwwfvovbvme", model.tags().get("ecivyh"));
+        Assertions.assertEquals("oxdjebwpuc", model.tags().get("wfvovbv"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationTypeVersionUpdateParameters model
-            = new ApplicationTypeVersionUpdateParameters().withTags(mapOf("ecivyh", "cwwfvovbvme"));
+        ApplicationTypeVersionUpdateParameters model = new ApplicationTypeVersionUpdateParameters()
+            .withTags(mapOf("wfvovbv", "oxdjebwpuc", "jrwjueiotwm", "euecivyhzceuoj", "rjaw", "dytdxwitx"));
         model = BinaryData.fromObject(model).toObject(ApplicationTypeVersionUpdateParameters.class);
-        Assertions.assertEquals("cwwfvovbvme", model.tags().get("ecivyh"));
+        Assertions.assertEquals("oxdjebwpuc", model.tags().get("wfvovbv"));
     }
 
     // Use "Map.of" if available

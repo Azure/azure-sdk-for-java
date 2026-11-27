@@ -14,27 +14,28 @@ public final class RestartReplicaRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestartReplicaRequest model = BinaryData.fromString(
-            "{\"partitionId\":\"iwbwoenwashrtdtk\",\"replicaIds\":[3530483379804377024,8545363856594134553],\"restartKind\":\"Simultaneous\",\"forceRestart\":true,\"timeout\":8644340540999896271}")
+            "{\"partitionId\":\"kfcktqum\",\"replicaIds\":[8833737654987642365,1480057858076827624,5669658247927404642,3802934058793911141],\"restartKind\":\"Simultaneous\",\"forceRestart\":false,\"timeout\":8347972535078571246}")
             .toObject(RestartReplicaRequest.class);
-        Assertions.assertEquals("iwbwoenwashrtdtk", model.partitionId());
-        Assertions.assertEquals(3530483379804377024L, model.replicaIds().get(0));
+        Assertions.assertEquals("kfcktqum", model.partitionId());
+        Assertions.assertEquals(8833737654987642365L, model.replicaIds().get(0));
         Assertions.assertEquals(RestartKind.SIMULTANEOUS, model.restartKind());
-        Assertions.assertTrue(model.forceRestart());
-        Assertions.assertEquals(8644340540999896271L, model.timeout());
+        Assertions.assertFalse(model.forceRestart());
+        Assertions.assertEquals(8347972535078571246L, model.timeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestartReplicaRequest model = new RestartReplicaRequest().withPartitionId("iwbwoenwashrtdtk")
-            .withReplicaIds(Arrays.asList(3530483379804377024L, 8545363856594134553L))
+        RestartReplicaRequest model = new RestartReplicaRequest().withPartitionId("kfcktqum")
+            .withReplicaIds(
+                Arrays.asList(8833737654987642365L, 1480057858076827624L, 5669658247927404642L, 3802934058793911141L))
             .withRestartKind(RestartKind.SIMULTANEOUS)
-            .withForceRestart(true)
-            .withTimeout(8644340540999896271L);
+            .withForceRestart(false)
+            .withTimeout(8347972535078571246L);
         model = BinaryData.fromObject(model).toObject(RestartReplicaRequest.class);
-        Assertions.assertEquals("iwbwoenwashrtdtk", model.partitionId());
-        Assertions.assertEquals(3530483379804377024L, model.replicaIds().get(0));
+        Assertions.assertEquals("kfcktqum", model.partitionId());
+        Assertions.assertEquals(8833737654987642365L, model.replicaIds().get(0));
         Assertions.assertEquals(RestartKind.SIMULTANEOUS, model.restartKind());
-        Assertions.assertTrue(model.forceRestart());
-        Assertions.assertEquals(8644340540999896271L, model.timeout());
+        Assertions.assertFalse(model.forceRestart());
+        Assertions.assertEquals(8347972535078571246L, model.timeout());
     }
 }

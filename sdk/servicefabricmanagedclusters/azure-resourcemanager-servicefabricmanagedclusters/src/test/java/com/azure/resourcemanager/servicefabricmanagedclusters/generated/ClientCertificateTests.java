@@ -11,26 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ClientCertificateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClientCertificate model = BinaryData
-            .fromString(
-                "{\"isAdmin\":true,\"thumbprint\":\"yf\",\"commonName\":\"dgqggebdu\",\"issuerThumbprint\":\"g\"}")
+        ClientCertificate model = BinaryData.fromString(
+            "{\"isAdmin\":false,\"thumbprint\":\"bjcntujitc\",\"commonName\":\"df\",\"issuerThumbprint\":\"waezkojvd\"}")
             .toObject(ClientCertificate.class);
-        Assertions.assertTrue(model.isAdmin());
-        Assertions.assertEquals("yf", model.thumbprint());
-        Assertions.assertEquals("dgqggebdu", model.commonName());
-        Assertions.assertEquals("g", model.issuerThumbprint());
+        Assertions.assertFalse(model.isAdmin());
+        Assertions.assertEquals("bjcntujitc", model.thumbprint());
+        Assertions.assertEquals("df", model.commonName());
+        Assertions.assertEquals("waezkojvd", model.issuerThumbprint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientCertificate model = new ClientCertificate().withIsAdmin(true)
-            .withThumbprint("yf")
-            .withCommonName("dgqggebdu")
-            .withIssuerThumbprint("g");
+        ClientCertificate model = new ClientCertificate().withIsAdmin(false)
+            .withThumbprint("bjcntujitc")
+            .withCommonName("df")
+            .withIssuerThumbprint("waezkojvd");
         model = BinaryData.fromObject(model).toObject(ClientCertificate.class);
-        Assertions.assertTrue(model.isAdmin());
-        Assertions.assertEquals("yf", model.thumbprint());
-        Assertions.assertEquals("dgqggebdu", model.commonName());
-        Assertions.assertEquals("g", model.issuerThumbprint());
+        Assertions.assertFalse(model.isAdmin());
+        Assertions.assertEquals("bjcntujitc", model.thumbprint());
+        Assertions.assertEquals("df", model.commonName());
+        Assertions.assertEquals("waezkojvd", model.issuerThumbprint());
     }
 }

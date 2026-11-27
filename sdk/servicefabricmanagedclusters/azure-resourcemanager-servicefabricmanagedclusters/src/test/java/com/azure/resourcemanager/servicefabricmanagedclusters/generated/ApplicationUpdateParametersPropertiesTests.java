@@ -13,17 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationUpdateParametersPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationUpdateParametersProperties model = BinaryData.fromString("{\"parameters\":{\"ljavbqid\":\"qcjm\"}}")
-            .toObject(ApplicationUpdateParametersProperties.class);
-        Assertions.assertEquals("qcjm", model.parameters().get("ljavbqid"));
+        ApplicationUpdateParametersProperties model
+            = BinaryData.fromString("{\"parameters\":{\"fidfvzw\":\"ckyfih\",\"nteiwaopv\":\"zuhtymwisdkfthwx\"}}")
+                .toObject(ApplicationUpdateParametersProperties.class);
+        Assertions.assertEquals("ckyfih", model.parameters().get("fidfvzw"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationUpdateParametersProperties model
-            = new ApplicationUpdateParametersProperties().withParameters(mapOf("ljavbqid", "qcjm"));
+        ApplicationUpdateParametersProperties model = new ApplicationUpdateParametersProperties()
+            .withParameters(mapOf("fidfvzw", "ckyfih", "nteiwaopv", "zuhtymwisdkfthwx"));
         model = BinaryData.fromObject(model).toObject(ApplicationUpdateParametersProperties.class);
-        Assertions.assertEquals("qcjm", model.parameters().get("ljavbqid"));
+        Assertions.assertEquals("ckyfih", model.parameters().get("fidfvzw"));
     }
 
     // Use "Map.of" if available
