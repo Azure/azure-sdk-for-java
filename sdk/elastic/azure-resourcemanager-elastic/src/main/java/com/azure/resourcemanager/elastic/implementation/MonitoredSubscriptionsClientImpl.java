@@ -246,8 +246,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * Add subscriptions to be monitored by the Elastic monitor resource, enabling observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param configurationName The configurationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configuration name. Only 'default' value is supported.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -270,8 +270,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * Add subscriptions to be monitored by the Elastic monitor resource, enabling observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param configurationName The configurationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configuration name. Only 'default' value is supported.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -289,8 +289,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * Add subscriptions to be monitored by the Elastic monitor resource, enabling observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param configurationName The configurationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configuration name. Only 'default' value is supported.
      * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -311,8 +311,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * Add subscriptions to be monitored by the Elastic monitor resource, enabling observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param configurationName The configurationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configuration name. Only 'default' value is supported.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -335,8 +335,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * Add subscriptions to be monitored by the Elastic monitor resource, enabling observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param configurationName The configurationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configuration name. Only 'default' value is supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -358,8 +358,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * Add subscriptions to be monitored by the Elastic monitor resource, enabling observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param configurationName The configurationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configuration name. Only 'default' value is supported.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -397,8 +397,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * Add subscriptions to be monitored by the Elastic monitor resource, enabling observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param configurationName The configurationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configuration name. Only 'default' value is supported.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -417,8 +417,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * Add subscriptions to be monitored by the Elastic monitor resource, enabling observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param configurationName The configurationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configuration name. Only 'default' value is supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -454,8 +454,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param configurationName The configurationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configuration name. Only 'default' value is supported.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -477,8 +477,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param configurationName The configurationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configuration name. Only 'default' value is supported.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -497,8 +497,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param configurationName The configurationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configuration name. Only 'default' value is supported.
      * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -520,8 +520,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param configurationName The configurationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configuration name. Only 'default' value is supported.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -545,8 +545,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param configurationName The configurationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configuration name. Only 'default' value is supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -569,8 +569,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param configurationName The configurationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configuration name. Only 'default' value is supported.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -609,8 +609,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param configurationName The configurationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configuration name. Only 'default' value is supported.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -630,8 +630,8 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param configurationName The configurationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configuration name. Only 'default' value is supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

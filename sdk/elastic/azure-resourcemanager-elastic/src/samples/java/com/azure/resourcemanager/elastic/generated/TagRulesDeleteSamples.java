@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class TagRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01/TagRules_Delete.json
+     * x-ms-original-file: 2026-03-15-preview/TagRules_Delete.json
      */
     /**
      * Sample code: TagRules_Delete.

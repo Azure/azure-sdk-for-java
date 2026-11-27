@@ -221,8 +221,8 @@ public final class TagRulesClientImpl implements TagRulesClient {
      * observability based on resource tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param ruleSetName The ruleSetName parameter.
+     * @param monitorName Monitor resource name.
+     * @param ruleSetName Tag Rule Set resource name.
      * @param body request body of MonitoringTagRules.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -245,8 +245,8 @@ public final class TagRulesClientImpl implements TagRulesClient {
      * observability based on resource tags.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param ruleSetName The ruleSetName parameter.
+     * @param monitorName Monitor resource name.
+     * @param ruleSetName Tag Rule Set resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

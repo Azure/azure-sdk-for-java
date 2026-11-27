@@ -43,12 +43,12 @@ public final class MonitorsImpl implements Monitors {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String monitorName) {
-        this.delete(resourceGroupName, monitorName, Context.NONE);
+    public void delete(String resourceGroupName, String monitorName) {
+        this.serviceClient().delete(resourceGroupName, monitorName);
     }
 
-    public void delete(String resourceGroupName, String monitorName, Context context) {
-        this.serviceClient().delete(resourceGroupName, monitorName, context);
+    public void delete(String resourceGroupName, String monitorName, Boolean softDelete, Context context) {
+        this.serviceClient().delete(resourceGroupName, monitorName, softDelete, context);
     }
 
     public PagedIterable<ElasticMonitorResource> listByResourceGroup(String resourceGroupName) {
@@ -85,17 +85,18 @@ public final class MonitorsImpl implements Monitors {
     }
 
     public void deleteById(String id) {
-        this.deleteByIdWithResponse(id, Context.NONE);
+        Boolean localSoftDelete = null;
+        this.deleteByIdWithResponse(id, localSoftDelete, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Boolean softDelete, Context context) {
         String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}",
             "resourceGroupName", "resourceGroups", LOGGER);
         String monitorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}",
             "monitorName", "monitors", LOGGER);
-        this.delete(resourceGroupName, monitorName, context);
+        this.delete(resourceGroupName, monitorName, softDelete, context);
     }
 
     private MonitorsClient serviceClient() {

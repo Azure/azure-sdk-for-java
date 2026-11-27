@@ -87,7 +87,7 @@ public interface OpenAIIntegrationRPModel {
              * Specifies resourceGroupName, monitorName.
              * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param monitorName The monitorName parameter.
+             * @param monitorName Monitor resource name.
              * @return the next definition stage.
              */
             WithCreate withExistingMonitor(String resourceGroupName, String monitorName);
