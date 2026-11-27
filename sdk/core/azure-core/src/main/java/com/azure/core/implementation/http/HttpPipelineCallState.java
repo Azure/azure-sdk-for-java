@@ -3,9 +3,11 @@
 
 package com.azure.core.implementation.http;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Contexts;
 import com.azure.core.util.logging.ClientLogger;
 
 /**
@@ -74,6 +76,25 @@ public class HttpPipelineCallState {
      */
     public HttpPipelineCallContext getCallContext() {
         return this.callContext;
+    }
+
+    /**
+     * Gets the error for a request whose access token is bound to a TLS client certificate that the pipeline's HTTP
+     * client can't present, so that the request fails before it's sent.
+     *
+     * @return The error, or null if the HTTP client can send the request.
+     */
+    public IllegalStateException getClientCertificateBindingError() {
+        HttpClient httpClient = this.pipeline.getHttpClient();
+        if (httpClient.supportsClientCertificateBinding()
+            || Contexts.with(this.callContext.getContext()).getClientCertificateBinding() == null) {
+            return null;
+        }
+
+        return new IllegalStateException("The request's access token is bound to a TLS client certificate (mTLS "
+            + "proof-of-possession), but the HTTP client '" + httpClient.getClass().getName() + "' can't present the "
+            + "certificate, so the request wasn't sent. Use an HTTP client that supports certificate binding, such as "
+            + "the one in azure-core-http-netty, or turn off mTLS proof-of-possession in the credential.");
     }
 
     @Override

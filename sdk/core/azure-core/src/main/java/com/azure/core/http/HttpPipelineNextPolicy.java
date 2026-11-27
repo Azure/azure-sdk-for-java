@@ -74,6 +74,11 @@ public class HttpPipelineNextPolicy {
 
             HttpPipelinePolicy nextPolicy = state.getNextPolicy();
             if (nextPolicy == null) {
+                IllegalStateException bindingError = this.state.getClientCertificateBindingError();
+                if (bindingError != null) {
+                    return Mono.error(LOGGER.logExceptionAsError(bindingError));
+                }
+
                 return this.state.getPipeline()
                     .getHttpClient()
                     .send(this.state.getCallContext().getHttpRequest(), this.state.getCallContext().getContext());

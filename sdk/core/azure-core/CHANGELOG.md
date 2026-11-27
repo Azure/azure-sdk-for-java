@@ -7,11 +7,28 @@
 - Added `HttpProtocolVersion` for configuring the maximum HTTP protocol version in HTTP client builders.
 - Added `HttpClientOptions.getMaximumHttpVersion` and `setMaximumHttpVersion` for transport-independent HTTP protocol
   configuration. An unset or cleared maximum preserves the selected transport's existing default.
+- Added `ClientCertificateBinding` and `AccessToken.getClientCertificateBinding()` for access tokens bound to a TLS
+  client certificate, used for mutual TLS (mTLS) proof-of-possession.
+- Added `HttpClient.supportsClientCertificateBinding()` and `Contexts.setClientCertificateBinding` and
+  `getClientCertificateBinding`, so that HTTP clients can send a request only over a TLS connection that presents the
+  certificate its access token is bound to. The HTTP pipeline fails a request that carries a binding, without sending
+  it, when its HTTP client doesn't support certificate binding.
+- Added proof-of-possession support to `BearerTokenAuthenticationPolicy`. When the token request asks for a
+  proof-of-possession token, or the token is bound to a TLS client certificate, the policy uses the token's type as the
+  authorization scheme, such as `mtls_pop`, and passes the certificate binding to the HTTP client with the request.
+  Other requests keep sending `Bearer`, whatever type the credential sets. A token bound to a certificate isn't sent
+  when `RedirectPolicy` redirects the request to another host.
+- `AccessTokenCache` now keeps bearer and proof-of-possession tokens apart when comparing token request contexts. It
+  replaces a proof-of-possession token signed over a request when the request URL, method or nonce changes, and reuses
+  a token bound to a TLS client certificate across requests.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Fixed `AccessTokenCache` returning its cached token for a token request context it had just failed to acquire a
+  token for, such as a new tenant, claims from a challenge or a proof-of-possession request. It now tries to acquire a
+  token for that context again.
 - Fixed `RetryPolicy` synchronous retry backoff not restoring the thread's interrupt status after catching
   `InterruptedException`, which caused callers to silently lose the interruption signal.
 - Fixed `FluxUtil.toFluxByteBuffer` emitting each partial read backed by an array of the full chunk size, which caused

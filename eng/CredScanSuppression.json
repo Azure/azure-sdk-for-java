@@ -76,6 +76,15 @@
               "sdk/core/azure-core/src/test/resources/keystore.jks"
             ],
             "_justification": "Dummy keystore to enable HTTPS testing with LocalTestServer. Contains no real secrets."
+        },
+        {
+            "file": [
+                "sdk/core/azure-core/src/test/resources/mtls-client-a.jks",
+                "sdk/core/azure-core/src/test/resources/mtls-client-b.jks",
+                "sdk/core/azure-core/target/test-classes/mtls-client-a.jks",
+                "sdk/core/azure-core/target/test-classes/mtls-client-b.jks"
+            ],
+            "_justification": "Self-signed test client certificates for mutual TLS testing with LocalTestServer. Contain no real secrets."
         }
     ]
 }

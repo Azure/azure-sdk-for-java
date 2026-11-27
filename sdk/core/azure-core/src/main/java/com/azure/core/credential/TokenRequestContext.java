@@ -171,6 +171,9 @@ public class TokenRequestContext {
 
     /**
      * Sets the proof of possession options.
+     * <p>
+     * Setting them asks the credential for a proof-of-possession token instead of a bearer token. See
+     * {@link ProofOfPossessionOptions} for the kinds of proof-of-possession tokens a credential may return.
      *
      * @param proofOfPossessionOptions An instance of ProofOfPossessionOptions to be set.
      * @return The updated instance of TokenRequestContext.
