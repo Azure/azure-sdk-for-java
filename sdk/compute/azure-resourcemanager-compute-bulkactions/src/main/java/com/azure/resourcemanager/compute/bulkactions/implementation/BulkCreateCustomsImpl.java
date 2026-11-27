@@ -12,7 +12,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.bulkactions.fluent.BulkCreateCustomsClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateCustomInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.OperationStatusResultInner;
-import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustoms;
 import com.azure.resourcemanager.compute.bulkactions.models.LocationBasedBulkCreateCustom;
 import com.azure.resourcemanager.compute.bulkactions.models.OperationStatusResult;
@@ -65,23 +64,6 @@ public final class BulkCreateCustomsImpl implements BulkCreateCustoms {
         }
     }
 
-    public void delete(String resourceGroupName, String location, String name) {
-        this.serviceClient().delete(resourceGroupName, location, name);
-    }
-
-    public void delete(String resourceGroupName, String location, String name, Boolean deleteInstances,
-        Context context) {
-        this.serviceClient().delete(resourceGroupName, location, name, deleteInstances, context);
-    }
-
-    public void cancel(String resourceGroupName, String location, String name) {
-        this.cancel(resourceGroupName, location, name, Context.NONE);
-    }
-
-    public void cancel(String resourceGroupName, String location, String name, Context context) {
-        this.serviceClient().cancel(resourceGroupName, location, name, context);
-    }
-
     public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
         String name) {
         return this.virtualMachinesGetOperationStatus(resourceGroupName, location, name, Context.NONE);
@@ -89,9 +71,7 @@ public final class BulkCreateCustomsImpl implements BulkCreateCustoms {
 
     public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
         String name, Context context) {
-        PagedIterable<ResourceOperationInner> inner
-            = this.serviceClient().virtualMachinesGetOperationStatus(resourceGroupName, location, name, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceOperationImpl(inner1, this.manager()));
+        return this.serviceClient().virtualMachinesGetOperationStatus(resourceGroupName, location, name, context);
     }
 
     public PagedIterable<LocationBasedBulkCreateCustom> listByResourceGroup(String resourceGroupName, String location) {
@@ -132,24 +112,6 @@ public final class BulkCreateCustomsImpl implements BulkCreateCustoms {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}",
             "name", "bulkCreateCustom", LOGGER);
         return this.getWithResponse(resourceGroupName, location, name, context);
-    }
-
-    public void deleteById(String id) {
-        Boolean localDeleteInstances = null;
-        this.deleteByIdWithResponse(id, localDeleteInstances, Context.NONE);
-    }
-
-    public void deleteByIdWithResponse(String id, Boolean deleteInstances, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}",
-            "resourceGroupName", "resourceGroups", LOGGER);
-        String location = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}",
-            "location", "locations", LOGGER);
-        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}",
-            "name", "bulkCreateCustom", LOGGER);
-        this.delete(resourceGroupName, location, name, deleteInstances, context);
     }
 
     private BulkCreateCustomsClient serviceClient() {

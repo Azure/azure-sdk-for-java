@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineBulkOperationsBulkDeallocateOperationSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkDeallocate_BasicSuccess.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkDeallocate_BasicSuccess.json
      */
     /**
      * Sample code: 01 - Deallocate multiple virtual machines.
@@ -35,7 +35,7 @@ public final class VirtualMachineBulkOperationsBulkDeallocateOperationSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkDeallocate_VmNotFoundError.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkDeallocate_VmNotFoundError.json
      */
     /**
      * Sample code: 02 - Response when a virtual machine does not exist.

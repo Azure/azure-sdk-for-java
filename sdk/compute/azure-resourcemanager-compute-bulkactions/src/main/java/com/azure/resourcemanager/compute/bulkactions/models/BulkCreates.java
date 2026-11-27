@@ -67,57 +67,6 @@ public interface BulkCreates {
     OperationStatusResult getAsyncOperationStatus(String location, String asyncOperationId);
 
     /**
-     * Deletes BulkCreates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreate. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String location, String name);
-
-    /**
-     * Deletes BulkCreates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreate. The value must be an UUID.
-     * @param deleteInstances When true, deletes all virtual machines created by this BulkAction Operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String location, String name, Boolean deleteInstances, Context context);
-
-    /**
-     * Cancels BulkCreate instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreate. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void cancel(String resourceGroupName, String location, String name);
-
-    /**
-     * Cancels BulkCreate instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreate. The value must be an UUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void cancel(String resourceGroupName, String location, String name, Context context);
-
-    /**
      * Gets the operation status for virtual machines in a BulkCreate operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -219,28 +168,6 @@ public interface BulkCreates {
      * @return an instance of BulkCreates along with {@link Response}.
      */
     Response<LocationBasedBulkCreate> getByIdWithResponse(String id, Context context);
-
-    /**
-     * Deletes BulkCreates.
-     * 
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteById(String id);
-
-    /**
-     * Deletes BulkCreates.
-     * 
-     * @param id the resource ID.
-     * @param deleteInstances When true, deletes all virtual machines created by this BulkAction Operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteByIdWithResponse(String id, Boolean deleteInstances, Context context);
 
     /**
      * Begins definition for a new LocationBasedBulkCreate resource.

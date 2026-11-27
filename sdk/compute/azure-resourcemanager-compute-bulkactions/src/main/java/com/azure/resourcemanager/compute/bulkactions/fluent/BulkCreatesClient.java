@@ -13,7 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.OperationStatusResultInner;
-import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
+import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperation;
 
 /**
  * An instance of this class provides access to all the operations defined in BulkCreatesClient.
@@ -78,7 +78,7 @@ public interface BulkCreatesClient {
     OperationStatusResultInner getAsyncOperationStatus(String location, String asyncOperationId);
 
     /**
-     * Creates or updates BulkCreates.
+     * Creates virtual machines in bulk.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
@@ -90,11 +90,11 @@ public interface BulkCreatesClient {
      * @return the {@link SyncPoller} for polling of location based BulkCreate resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LocationBasedBulkCreateInner>, LocationBasedBulkCreateInner> beginCreateOrUpdate(
-        String resourceGroupName, String location, String name, LocationBasedBulkCreateInner resource);
+    SyncPoller<PollResult<LocationBasedBulkCreateInner>, LocationBasedBulkCreateInner>
+        beginCreate(String resourceGroupName, String location, String name, LocationBasedBulkCreateInner resource);
 
     /**
-     * Creates or updates BulkCreates.
+     * Creates virtual machines in bulk.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
@@ -107,11 +107,11 @@ public interface BulkCreatesClient {
      * @return the {@link SyncPoller} for polling of location based BulkCreate resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LocationBasedBulkCreateInner>, LocationBasedBulkCreateInner> beginCreateOrUpdate(
+    SyncPoller<PollResult<LocationBasedBulkCreateInner>, LocationBasedBulkCreateInner> beginCreate(
         String resourceGroupName, String location, String name, LocationBasedBulkCreateInner resource, Context context);
 
     /**
-     * Creates or updates BulkCreates.
+     * Creates virtual machines in bulk.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
@@ -123,11 +123,11 @@ public interface BulkCreatesClient {
      * @return location based BulkCreate resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LocationBasedBulkCreateInner createOrUpdate(String resourceGroupName, String location, String name,
+    LocationBasedBulkCreateInner create(String resourceGroupName, String location, String name,
         LocationBasedBulkCreateInner resource);
 
     /**
-     * Creates or updates BulkCreates.
+     * Creates virtual machines in bulk.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
@@ -140,124 +140,8 @@ public interface BulkCreatesClient {
      * @return location based BulkCreate resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LocationBasedBulkCreateInner createOrUpdate(String resourceGroupName, String location, String name,
+    LocationBasedBulkCreateInner create(String resourceGroupName, String location, String name,
         LocationBasedBulkCreateInner resource, Context context);
-
-    /**
-     * Deletes BulkCreates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreate. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String location, String name);
-
-    /**
-     * Deletes BulkCreates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreate. The value must be an UUID.
-     * @param deleteInstances When true, deletes all virtual machines created by this BulkAction Operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String location, String name,
-        Boolean deleteInstances, Context context);
-
-    /**
-     * Deletes BulkCreates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreate. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String location, String name);
-
-    /**
-     * Deletes BulkCreates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreate. The value must be an UUID.
-     * @param deleteInstances When true, deletes all virtual machines created by this BulkAction Operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String location, String name, Boolean deleteInstances, Context context);
-
-    /**
-     * Cancels BulkCreate instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreate. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String location, String name);
-
-    /**
-     * Cancels BulkCreate instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreate. The value must be an UUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String location, String name,
-        Context context);
-
-    /**
-     * Cancels BulkCreate instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreate. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancel(String resourceGroupName, String location, String name);
-
-    /**
-     * Cancels BulkCreate instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreate. The value must be an UUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancel(String resourceGroupName, String location, String name, Context context);
 
     /**
      * Gets the operation status for virtual machines in a BulkCreate operation.
@@ -272,7 +156,7 @@ public interface BulkCreatesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ResourceOperationInner> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
+    PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
         String name);
 
     /**
@@ -289,7 +173,7 @@ public interface BulkCreatesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ResourceOperationInner> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
+    PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
         String name, Context context);
 
     /**

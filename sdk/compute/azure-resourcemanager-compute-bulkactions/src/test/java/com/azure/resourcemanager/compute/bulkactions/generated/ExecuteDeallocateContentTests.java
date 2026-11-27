@@ -9,9 +9,7 @@ import com.azure.resourcemanager.compute.bulkactions.models.CapacityRecommendati
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteDeallocateContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
-import com.azure.resourcemanager.compute.bulkactions.models.ResourceWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.Resources;
-import com.azure.resourcemanager.compute.bulkactions.models.ResourcesWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -23,7 +21,7 @@ public final class ExecuteDeallocateContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteDeallocateContent model = BinaryData.fromString(
-            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":1273684509,\"retryWindowInMinutes\":2000849582,\"onFailureAction\":\"Start\"},\"verifyVmAgentHealth\":false,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"ymglzufcyz\",\"ohdbihanufh\",\"cbjy\"],\"desiredSizes\":[\"ithxqhabifpi\"],\"availabilityZones\":false},\"additionalCreateParameters\":{\"x\":\"\\\"databyscnp\\\"\"}},\"resources\":{\"ids\":[\"vyq\",\"iwbybrkxvdumjg\",\"tfwvukxgaudc\",\"snhsjcnyejhkryh\"]},\"resourcesWithContext\":{\"resources\":[{\"resourceId\":\"pczwlo\",\"resourceContext\":\"jye\"}]}}")
+            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":1273684509,\"retryWindowInMinutes\":2000849582,\"onFailureAction\":\"Start\"},\"verifyVmAgentHealth\":false,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"ymglzufcyz\",\"ohdbihanufh\",\"cbjy\"],\"desiredSizes\":[\"ithxqhabifpi\"],\"availabilityZones\":false},\"additionalCreateParameters\":{\"x\":\"\\\"databyscnp\\\"\"}},\"resources\":{\"ids\":[\"ivyqniwbybrkxvd\"]}}")
             .toObject(ExecuteDeallocateContent.class);
         Assertions.assertEquals(1273684509, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(2000849582, model.executionParameters().retryPolicy().retryWindowInMinutes());
@@ -35,9 +33,7 @@ public final class ExecuteDeallocateContentTests {
         Assertions.assertEquals("ithxqhabifpi",
             model.executionParameters().capacityRecommendationParameters().desiredSizes().get(0));
         Assertions.assertFalse(model.executionParameters().capacityRecommendationParameters().availabilityZones());
-        Assertions.assertEquals("vyq", model.resources().ids().get(0));
-        Assertions.assertEquals("pczwlo", model.resourcesWithContext().resources().get(0).resourceId());
-        Assertions.assertEquals("jye", model.resourcesWithContext().resources().get(0).resourceContext());
+        Assertions.assertEquals("ivyqniwbybrkxvd", model.resources().ids().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -54,10 +50,7 @@ public final class ExecuteDeallocateContentTests {
                     .withAvailabilityZones(false))
                 .withAdditionalCreateParameters(
                     mapOf("x", BinaryData.fromBytes("\"databyscnp\"".getBytes(StandardCharsets.UTF_8)))))
-            .withResources(
-                new Resources().withIds(Arrays.asList("vyq", "iwbybrkxvdumjg", "tfwvukxgaudc", "snhsjcnyejhkryh")))
-            .withResourcesWithContext(new ResourcesWithContext().withResources(
-                Arrays.asList(new ResourceWithContext().withResourceId("pczwlo").withResourceContext("jye"))));
+            .withResources(new Resources().withIds(Arrays.asList("ivyqniwbybrkxvd")));
         model = BinaryData.fromObject(model).toObject(ExecuteDeallocateContent.class);
         Assertions.assertEquals(1273684509, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(2000849582, model.executionParameters().retryPolicy().retryWindowInMinutes());
@@ -69,9 +62,7 @@ public final class ExecuteDeallocateContentTests {
         Assertions.assertEquals("ithxqhabifpi",
             model.executionParameters().capacityRecommendationParameters().desiredSizes().get(0));
         Assertions.assertFalse(model.executionParameters().capacityRecommendationParameters().availabilityZones());
-        Assertions.assertEquals("vyq", model.resources().ids().get(0));
-        Assertions.assertEquals("pczwlo", model.resourcesWithContext().resources().get(0).resourceId());
-        Assertions.assertEquals("jye", model.resourcesWithContext().resources().get(0).resourceContext());
+        Assertions.assertEquals("ivyqniwbybrkxvd", model.resources().ids().get(0));
     }
 
     // Use "Map.of" if available

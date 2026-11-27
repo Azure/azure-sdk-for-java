@@ -12,7 +12,7 @@ public final class ResourceNotificationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceNotificationDetails model
-            = BinaryData.fromString("{\"resourceContext\":\"mgxsab\"}").toObject(ResourceNotificationDetails.class);
-        Assertions.assertEquals("mgxsab", model.resourceContext());
+            = BinaryData.fromString("{\"resourceContext\":\"e\"}").toObject(ResourceNotificationDetails.class);
+        Assertions.assertEquals("e", model.resourceContext());
     }
 }

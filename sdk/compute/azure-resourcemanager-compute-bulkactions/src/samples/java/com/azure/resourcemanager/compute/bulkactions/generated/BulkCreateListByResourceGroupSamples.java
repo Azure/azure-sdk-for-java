@@ -9,15 +9,15 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class BulkCreateListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/BulkCreate_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-16/BulkCreate_ListByResourceGroup.json
      */
     /**
-     * Sample code: BulkCreate_ListByResourceGroup_MaximumSet.
+     * Sample code: List bulk create operations in a resource group and region.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void bulkCreateListByResourceGroupMaximumSet(
+    public static void listBulkCreateOperationsInAResourceGroupAndRegion(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
-        manager.bulkCreates().listByResourceGroup("rgBulkactions", "eastus", com.azure.core.util.Context.NONE);
+        manager.bulkCreates().listByResourceGroup("rg-bulk-create", "eastus", com.azure.core.util.Context.NONE);
     }
 }

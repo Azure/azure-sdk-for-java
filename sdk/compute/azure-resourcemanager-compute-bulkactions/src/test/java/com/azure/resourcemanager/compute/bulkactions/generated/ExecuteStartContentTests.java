@@ -9,9 +9,7 @@ import com.azure.resourcemanager.compute.bulkactions.models.CapacityRecommendati
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteStartContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
-import com.azure.resourcemanager.compute.bulkactions.models.ResourceWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.Resources;
-import com.azure.resourcemanager.compute.bulkactions.models.ResourcesWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -23,58 +21,51 @@ public final class ExecuteStartContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteStartContent model = BinaryData.fromString(
-            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":623997191,\"retryWindowInMinutes\":1234306466,\"onFailureAction\":\"Deallocate\"},\"verifyVmAgentHealth\":true,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"gqexzlocxs\",\"paierh\"],\"desiredSizes\":[\"sglumma\",\"tjaodxobnb\"],\"availabilityZones\":false},\"additionalCreateParameters\":{\"ajionpimexgstxg\":\"\\\"dataxo\\\"\",\"gmaajrm\":\"\\\"datapo\\\"\",\"clwhijcoejctbz\":\"\\\"datadjwzrlov\\\"\"}},\"resources\":{\"ids\":[\"qsycbkbfkgu\"]},\"resourcesWithContext\":{\"resources\":[{\"resourceId\":\"exxppofmxaxcfjp\",\"resourceContext\":\"ddtocjjxhvp\"},{\"resourceId\":\"o\",\"resourceContext\":\"exhd\"}]}}")
+            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":1274470316,\"retryWindowInMinutes\":1409516732,\"onFailureAction\":\"Delete\"},\"verifyVmAgentHealth\":true,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"ejctbzaqsqsycb\",\"bfkgukdkex\",\"ppofmxaxcfjpgdd\",\"ocjjxhvpmouexh\"],\"desiredSizes\":[\"i\",\"qeojnxqbzvddntw\",\"deicbtwnpzao\"],\"availabilityZones\":true},\"additionalCreateParameters\":{\"wpyeicxmqciwqvh\":\"\\\"datahcffcyddglmjthjq\\\"\",\"igdtopbob\":\"\\\"datahix\\\"\",\"m\":\"\\\"dataog\\\"\"}},\"resources\":{\"ids\":[\"u\"]}}")
             .toObject(ExecuteStartContent.class);
-        Assertions.assertEquals(623997191, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(1234306466, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.DEALLOCATE,
+        Assertions.assertEquals(1274470316, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1409516732, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DELETE,
             model.executionParameters().retryPolicy().onFailureAction());
         Assertions.assertTrue(model.executionParameters().verifyVmAgentHealth());
-        Assertions.assertEquals("gqexzlocxs",
+        Assertions.assertEquals("ejctbzaqsqsycb",
             model.executionParameters().capacityRecommendationParameters().desiredLocations().get(0));
-        Assertions.assertEquals("sglumma",
+        Assertions.assertEquals("i",
             model.executionParameters().capacityRecommendationParameters().desiredSizes().get(0));
-        Assertions.assertFalse(model.executionParameters().capacityRecommendationParameters().availabilityZones());
-        Assertions.assertEquals("qsycbkbfkgu", model.resources().ids().get(0));
-        Assertions.assertEquals("exxppofmxaxcfjp", model.resourcesWithContext().resources().get(0).resourceId());
-        Assertions.assertEquals("ddtocjjxhvp", model.resourcesWithContext().resources().get(0).resourceContext());
+        Assertions.assertTrue(model.executionParameters().capacityRecommendationParameters().availabilityZones());
+        Assertions.assertEquals("u", model.resources().ids().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecuteStartContent model
-            = new ExecuteStartContent()
-                .withExecutionParameters(new ExecutionParameters()
-                    .withRetryPolicy(new RetryPolicy().withRetryCount(623997191)
-                        .withRetryWindowInMinutes(1234306466)
-                        .withOnFailureAction(ResourceOperationType.DEALLOCATE))
-                    .withVerifyVmAgentHealth(true)
-                    .withCapacityRecommendationParameters(new CapacityRecommendationParameters()
-                        .withDesiredLocations(Arrays.asList("gqexzlocxs", "paierh"))
-                        .withDesiredSizes(Arrays.asList("sglumma", "tjaodxobnb"))
-                        .withAvailabilityZones(false))
-                    .withAdditionalCreateParameters(mapOf("ajionpimexgstxg",
-                        BinaryData.fromBytes("\"dataxo\"".getBytes(StandardCharsets.UTF_8)), "gmaajrm",
-                        BinaryData.fromBytes("\"datapo\"".getBytes(StandardCharsets.UTF_8)), "clwhijcoejctbz",
-                        BinaryData.fromBytes("\"datadjwzrlov\"".getBytes(StandardCharsets.UTF_8)))))
-                .withResources(new Resources().withIds(Arrays.asList("qsycbkbfkgu")))
-                .withResourcesWithContext(new ResourcesWithContext().withResources(Arrays.asList(
-                    new ResourceWithContext().withResourceId("exxppofmxaxcfjp").withResourceContext("ddtocjjxhvp"),
-                    new ResourceWithContext().withResourceId("o").withResourceContext("exhd"))));
+        ExecuteStartContent model = new ExecuteStartContent()
+            .withExecutionParameters(new ExecutionParameters()
+                .withRetryPolicy(new RetryPolicy().withRetryCount(1274470316)
+                    .withRetryWindowInMinutes(1409516732)
+                    .withOnFailureAction(ResourceOperationType.DELETE))
+                .withVerifyVmAgentHealth(true)
+                .withCapacityRecommendationParameters(new CapacityRecommendationParameters()
+                    .withDesiredLocations(
+                        Arrays.asList("ejctbzaqsqsycb", "bfkgukdkex", "ppofmxaxcfjpgdd", "ocjjxhvpmouexh"))
+                    .withDesiredSizes(Arrays.asList("i", "qeojnxqbzvddntw", "deicbtwnpzao"))
+                    .withAvailabilityZones(true))
+                .withAdditionalCreateParameters(mapOf("wpyeicxmqciwqvh",
+                    BinaryData.fromBytes("\"datahcffcyddglmjthjq\"".getBytes(StandardCharsets.UTF_8)), "igdtopbob",
+                    BinaryData.fromBytes("\"datahix\"".getBytes(StandardCharsets.UTF_8)), "m",
+                    BinaryData.fromBytes("\"dataog\"".getBytes(StandardCharsets.UTF_8)))))
+            .withResources(new Resources().withIds(Arrays.asList("u")));
         model = BinaryData.fromObject(model).toObject(ExecuteStartContent.class);
-        Assertions.assertEquals(623997191, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(1234306466, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.DEALLOCATE,
+        Assertions.assertEquals(1274470316, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1409516732, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DELETE,
             model.executionParameters().retryPolicy().onFailureAction());
         Assertions.assertTrue(model.executionParameters().verifyVmAgentHealth());
-        Assertions.assertEquals("gqexzlocxs",
+        Assertions.assertEquals("ejctbzaqsqsycb",
             model.executionParameters().capacityRecommendationParameters().desiredLocations().get(0));
-        Assertions.assertEquals("sglumma",
+        Assertions.assertEquals("i",
             model.executionParameters().capacityRecommendationParameters().desiredSizes().get(0));
-        Assertions.assertFalse(model.executionParameters().capacityRecommendationParameters().availabilityZones());
-        Assertions.assertEquals("qsycbkbfkgu", model.resources().ids().get(0));
-        Assertions.assertEquals("exxppofmxaxcfjp", model.resourcesWithContext().resources().get(0).resourceId());
-        Assertions.assertEquals("ddtocjjxhvp", model.resourcesWithContext().resources().get(0).resourceContext());
+        Assertions.assertTrue(model.executionParameters().capacityRecommendationParameters().availabilityZones());
+        Assertions.assertEquals("u", model.resources().ids().get(0));
     }
 
     // Use "Map.of" if available

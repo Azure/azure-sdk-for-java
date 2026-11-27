@@ -73,39 +73,4 @@ public interface ComputeBulkActionsManagementClient {
      * @return the BulkCreatesClient object.
      */
     BulkCreatesClient getBulkCreates();
-
-    /**
-     * Gets the ScheduledActionsClient object to access its operations.
-     * 
-     * @return the ScheduledActionsClient object.
-     */
-    ScheduledActionsClient getScheduledActions();
-
-    /**
-     * Gets the ScheduledActionExtensionsClient object to access its operations.
-     * 
-     * @return the ScheduledActionExtensionsClient object.
-     */
-    ScheduledActionExtensionsClient getScheduledActionExtensions();
-
-    /**
-     * Gets the ScheduledActionOperationStatusClient object to access its operations.
-     * 
-     * @return the ScheduledActionOperationStatusClient object.
-     */
-    ScheduledActionOperationStatusClient getScheduledActionOperationStatus();
-
-    /**
-     * Gets the OccurrencesClient object to access its operations.
-     * 
-     * @return the OccurrencesClient object.
-     */
-    OccurrencesClient getOccurrences();
-
-    /**
-     * Gets the OccurrenceExtensionsClient object to access its operations.
-     * 
-     * @return the OccurrenceExtensionsClient object.
-     */
-    OccurrenceExtensionsClient getOccurrenceExtensions();
 }

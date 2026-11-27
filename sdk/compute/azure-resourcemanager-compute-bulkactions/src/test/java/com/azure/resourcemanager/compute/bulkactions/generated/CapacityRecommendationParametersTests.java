@@ -13,22 +13,22 @@ public final class CapacityRecommendationParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapacityRecommendationParameters model = BinaryData.fromString(
-            "{\"desiredLocations\":[\"zakljlahbc\",\"yffdfdos\"],\"desiredSizes\":[\"xpaojakhmsbz\"],\"availabilityZones\":true}")
+            "{\"desiredLocations\":[\"njaqwixjspro\",\"vcputegj\"],\"desiredSizes\":[\"fdatsc\",\"dvpjhulsuuvmk\",\"ozkrwfndiodjpslw\"],\"availabilityZones\":true}")
             .toObject(CapacityRecommendationParameters.class);
-        Assertions.assertEquals("zakljlahbc", model.desiredLocations().get(0));
-        Assertions.assertEquals("xpaojakhmsbz", model.desiredSizes().get(0));
+        Assertions.assertEquals("njaqwixjspro", model.desiredLocations().get(0));
+        Assertions.assertEquals("fdatsc", model.desiredSizes().get(0));
         Assertions.assertTrue(model.availabilityZones());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CapacityRecommendationParameters model
-            = new CapacityRecommendationParameters().withDesiredLocations(Arrays.asList("zakljlahbc", "yffdfdos"))
-                .withDesiredSizes(Arrays.asList("xpaojakhmsbz"))
+            = new CapacityRecommendationParameters().withDesiredLocations(Arrays.asList("njaqwixjspro", "vcputegj"))
+                .withDesiredSizes(Arrays.asList("fdatsc", "dvpjhulsuuvmk", "ozkrwfndiodjpslw"))
                 .withAvailabilityZones(true);
         model = BinaryData.fromObject(model).toObject(CapacityRecommendationParameters.class);
-        Assertions.assertEquals("zakljlahbc", model.desiredLocations().get(0));
-        Assertions.assertEquals("xpaojakhmsbz", model.desiredSizes().get(0));
+        Assertions.assertEquals("njaqwixjspro", model.desiredLocations().get(0));
+        Assertions.assertEquals("fdatsc", model.desiredSizes().get(0));
         Assertions.assertTrue(model.availabilityZones());
     }
 }

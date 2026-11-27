@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.bulkactions.implementation;
 
 import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -36,9 +35,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.bulkactions.fluent.BulkCreateCustomsClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateCustomInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.OperationStatusResultInner;
-import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
 import com.azure.resourcemanager.compute.bulkactions.implementation.models.BulkCreateCustomListResult;
 import com.azure.resourcemanager.compute.bulkactions.implementation.models.BulkCreateCustomOperationStatusListResult;
+import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperation;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -114,7 +113,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
             @PathParam("name") String name, @HeaderParam("Content-Type") String contentType,
@@ -124,48 +123,12 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> createSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
             @PathParam("name") String name, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept,
             @BodyParam("application/json") LocationBasedBulkCreateCustomInner resource, Context context);
-
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}")
-        @ExpectedResponses({ 202, 204 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
-            @PathParam("name") String name, @QueryParam("deleteInstances") Boolean deleteInstances, Context context);
-
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}")
-        @ExpectedResponses({ 202, 204 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
-            @PathParam("name") String name, @QueryParam("deleteInstances") Boolean deleteInstances, Context context);
-
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}/cancel")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> cancel(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
-            @PathParam("name") String name, Context context);
-
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}/cancel")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<BinaryData> cancelSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
-            @PathParam("name") String name, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}/virtualMachinesGetOperationStatus")
@@ -376,7 +339,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
     }
 
     /**
-     * Creates or updates BulkCreateCustoms.
+     * Creates virtual machines in bulk with custom settings.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
@@ -389,19 +352,17 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String location,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String location,
         String name, LocationBasedBulkCreateCustomInner resource) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, location, name, contentType, accept, resource,
-                context))
+        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, location, name, contentType, accept, resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Creates or updates BulkCreateCustoms.
+     * Creates virtual machines in bulk with custom settings.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
@@ -413,13 +374,13 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * @return location based BulkCreateCustom resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String location, String name,
+    private Response<BinaryData> createWithResponse(String resourceGroupName, String location, String name,
         LocationBasedBulkCreateCustomInner resource) {
-        return createOrUpdateWithResponse(resourceGroupName, location, name, resource, Context.NONE);
+        return createWithResponse(resourceGroupName, location, name, resource, Context.NONE);
     }
 
     /**
-     * Creates or updates BulkCreateCustoms.
+     * Creates virtual machines in bulk with custom settings.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
@@ -432,16 +393,16 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * @return location based BulkCreateCustom resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String location, String name,
+    private Response<BinaryData> createWithResponse(String resourceGroupName, String location, String name,
         LocationBasedBulkCreateCustomInner resource, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, location, name, contentType, accept, resource, context);
     }
 
     /**
-     * Creates or updates BulkCreateCustoms.
+     * Creates virtual machines in bulk with custom settings.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
@@ -454,10 +415,9 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LocationBasedBulkCreateCustomInner>, LocationBasedBulkCreateCustomInner>
-        beginCreateOrUpdateAsync(String resourceGroupName, String location, String name,
+        beginCreateAsync(String resourceGroupName, String location, String name,
             LocationBasedBulkCreateCustomInner resource) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, location, name, resource);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, location, name, resource);
         return this.client.<LocationBasedBulkCreateCustomInner, LocationBasedBulkCreateCustomInner>getLroResult(mono,
             this.client.getHttpPipeline(), LocationBasedBulkCreateCustomInner.class,
             LocationBasedBulkCreateCustomInner.class, this.client.getContext());
@@ -465,25 +425,23 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LocationBasedBulkCreateCustomInner>, LocationBasedBulkCreateCustomInner>
-        beginCreateOrUpdate(String resourceGroupName, String location, String name,
-            LocationBasedBulkCreateCustomInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, location, name, resource, Context.NONE);
+    public SyncPoller<PollResult<LocationBasedBulkCreateCustomInner>, LocationBasedBulkCreateCustomInner> beginCreate(
+        String resourceGroupName, String location, String name, LocationBasedBulkCreateCustomInner resource) {
+        return beginCreate(resourceGroupName, location, name, resource, Context.NONE);
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LocationBasedBulkCreateCustomInner>, LocationBasedBulkCreateCustomInner>
-        beginCreateOrUpdate(String resourceGroupName, String location, String name,
-            LocationBasedBulkCreateCustomInner resource, Context context) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, location, name, resource, context);
+    public SyncPoller<PollResult<LocationBasedBulkCreateCustomInner>, LocationBasedBulkCreateCustomInner> beginCreate(
+        String resourceGroupName, String location, String name, LocationBasedBulkCreateCustomInner resource,
+        Context context) {
+        Response<BinaryData> response = createWithResponse(resourceGroupName, location, name, resource, context);
         return this.client.<LocationBasedBulkCreateCustomInner, LocationBasedBulkCreateCustomInner>getLroResult(
             response, LocationBasedBulkCreateCustomInner.class, LocationBasedBulkCreateCustomInner.class, context);
     }
 
     /**
-     * Creates or updates BulkCreateCustoms.
+     * Creates virtual machines in bulk with custom settings.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
@@ -495,326 +453,24 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * @return location based BulkCreateCustom resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LocationBasedBulkCreateCustomInner> createOrUpdateAsync(String resourceGroupName, String location,
-        String name, LocationBasedBulkCreateCustomInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, location, name, resource).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    @Override
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LocationBasedBulkCreateCustomInner createOrUpdate(String resourceGroupName, String location, String name,
+    private Mono<LocationBasedBulkCreateCustomInner> createAsync(String resourceGroupName, String location, String name,
         LocationBasedBulkCreateCustomInner resource) {
-        return createOrUpdate(resourceGroupName, location, name, resource, Context.NONE);
+        return beginCreateAsync(resourceGroupName, location, name, resource).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LocationBasedBulkCreateCustomInner createOrUpdate(String resourceGroupName, String location, String name,
+    public LocationBasedBulkCreateCustomInner create(String resourceGroupName, String location, String name,
+        LocationBasedBulkCreateCustomInner resource) {
+        return create(resourceGroupName, location, name, resource, Context.NONE);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LocationBasedBulkCreateCustomInner create(String resourceGroupName, String location, String name,
         LocationBasedBulkCreateCustomInner resource, Context context) {
-        return this.client
-            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, location, name, resource, context));
-    }
-
-    /**
-     * Deletes BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param deleteInstances When true, deletes all virtual machines created by this BulkAction Operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String location,
-        String name, Boolean deleteInstances) {
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, location, name, deleteInstances, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Deletes BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param deleteInstances When true, deletes all virtual machines created by this BulkAction Operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String location, String name,
-        Boolean deleteInstances) {
-        return deleteWithResponse(resourceGroupName, location, name, deleteInstances, Context.NONE);
-    }
-
-    /**
-     * Deletes BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param deleteInstances When true, deletes all virtual machines created by this BulkAction Operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String location, String name,
-        Boolean deleteInstances, Context context) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, location, name, deleteInstances, context);
-    }
-
-    /**
-     * Deletes BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param deleteInstances When true, deletes all virtual machines created by this BulkAction Operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String location, String name,
-        Boolean deleteInstances) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, location, name, deleteInstances);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Deletes BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String location,
-        String name) {
-        final Boolean deleteInstances = null;
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, location, name, deleteInstances);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Deletes BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param deleteInstances When true, deletes all virtual machines created by this BulkAction Operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String location, String name,
-        Boolean deleteInstances) {
-        return beginDelete(resourceGroupName, location, name, deleteInstances, Context.NONE);
-    }
-
-    @Override
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String location, String name) {
-        final Boolean deleteInstances = null;
-        return beginDelete(resourceGroupName, location, name, deleteInstances, Context.NONE);
-    }
-
-    @Override
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String location, String name,
-        Boolean deleteInstances, Context context) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, location, name, deleteInstances, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
-    }
-
-    /**
-     * Deletes BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param deleteInstances When true, deletes all virtual machines created by this BulkAction Operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String location, String name, Boolean deleteInstances) {
-        return beginDeleteAsync(resourceGroupName, location, name, deleteInstances).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes BulkCreateCustoms.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String location, String name) {
-        final Boolean deleteInstances = null;
-        return beginDeleteAsync(resourceGroupName, location, name, deleteInstances).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    @Override
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String location, String name) {
-        final Boolean deleteInstances = null;
-        delete(resourceGroupName, location, name, deleteInstances, Context.NONE);
-    }
-
-    @Override
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String location, String name, Boolean deleteInstances,
-        Context context) {
-        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, location, name, deleteInstances, context));
-    }
-
-    /**
-     * Cancels BulkCreateCustom instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(String resourceGroupName, String location,
-        String name) {
-        return FluxUtil
-            .withContext(context -> service.cancel(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, location, name, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Cancels BulkCreateCustom instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> cancelWithResponse(String resourceGroupName, String location, String name) {
-        return cancelWithResponse(resourceGroupName, location, name, Context.NONE);
-    }
-
-    /**
-     * Cancels BulkCreateCustom instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> cancelWithResponse(String resourceGroupName, String location, String name,
-        Context context) {
-        return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, location, name, context);
-    }
-
-    /**
-     * Cancels BulkCreateCustom instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCancelAsync(String resourceGroupName, String location,
-        String name) {
-        Mono<Response<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, location, name);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    @Override
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String location, String name) {
-        return beginCancel(resourceGroupName, location, name, Context.NONE);
-    }
-
-    @Override
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String location, String name,
-        Context context) {
-        Response<BinaryData> response = cancelWithResponse(resourceGroupName, location, name, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
-    }
-
-    /**
-     * Cancels BulkCreateCustom instances that have not yet launched.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param name The name of the BulkCreateCustom. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cancelAsync(String resourceGroupName, String location, String name) {
-        return beginCancelAsync(resourceGroupName, location, name).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    @Override
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(String resourceGroupName, String location, String name) {
-        cancel(resourceGroupName, location, name, Context.NONE);
-    }
-
-    @Override
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(String resourceGroupName, String location, String name, Context context) {
-        this.client.getLroFinalResultOrError(beginCancel(resourceGroupName, location, name, context));
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, location, name, resource, context));
     }
 
     /**
@@ -830,15 +486,15 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceOperationInner>>
+    private Mono<PagedResponse<ResourceOperation>>
         virtualMachinesGetOperationStatusSinglePageAsync(String resourceGroupName, String location, String name) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.virtualMachinesGetOperationStatus(this.client.getEndpoint(),
                 this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, location, name, accept,
                 context))
-            .<PagedResponse<ResourceOperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().results(), res.getValue().nextLink(), null))
+            .<PagedResponse<ResourceOperation>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().results(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -855,7 +511,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ResourceOperationInner> virtualMachinesGetOperationStatusAsync(String resourceGroupName,
+    private PagedFlux<ResourceOperation> virtualMachinesGetOperationStatusAsync(String resourceGroupName,
         String location, String name) {
         return new PagedFlux<>(
             () -> virtualMachinesGetOperationStatusSinglePageAsync(resourceGroupName, location, name),
@@ -875,7 +531,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusSinglePage(String resourceGroupName,
+    private PagedResponse<ResourceOperation> virtualMachinesGetOperationStatusSinglePage(String resourceGroupName,
         String location, String name) {
         return virtualMachinesGetOperationStatusSinglePage(resourceGroupName, location, name, Context.NONE);
     }
@@ -894,7 +550,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusSinglePage(String resourceGroupName,
+    private PagedResponse<ResourceOperation> virtualMachinesGetOperationStatusSinglePage(String resourceGroupName,
         String location, String name, Context context) {
         final String accept = "application/json";
         Response<BulkCreateCustomOperationStatusListResult> res
@@ -906,15 +562,15 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
 
     @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceOperationInner> virtualMachinesGetOperationStatus(String resourceGroupName,
-        String location, String name) {
+    public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
+        String name) {
         return virtualMachinesGetOperationStatus(resourceGroupName, location, name, Context.NONE);
     }
 
     @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceOperationInner> virtualMachinesGetOperationStatus(String resourceGroupName,
-        String location, String name, Context context) {
+    public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
+        String name, Context context) {
         return new PagedIterable<>(
             () -> virtualMachinesGetOperationStatusSinglePage(resourceGroupName, location, name, context),
             nextLink -> virtualMachinesGetOperationStatusNextSinglePage(nextLink, context));
@@ -1106,14 +762,14 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceOperationInner>>
+    private Mono<PagedResponse<ResourceOperation>>
         virtualMachinesGetOperationStatusNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.virtualMachinesGetOperationStatusNext(nextLink, this.client.getEndpoint(),
                 accept, context))
-            .<PagedResponse<ResourceOperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().results(), res.getValue().nextLink(), null))
+            .<PagedResponse<ResourceOperation>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().results(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1128,7 +784,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusNextSinglePage(String nextLink) {
+    private PagedResponse<ResourceOperation> virtualMachinesGetOperationStatusNextSinglePage(String nextLink) {
         return virtualMachinesGetOperationStatusNextSinglePage(nextLink, Context.NONE);
     }
 
@@ -1144,7 +800,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusNextSinglePage(String nextLink,
+    private PagedResponse<ResourceOperation> virtualMachinesGetOperationStatusNextSinglePage(String nextLink,
         Context context) {
         final String accept = "application/json";
         Response<BulkCreateCustomOperationStatusListResult> res

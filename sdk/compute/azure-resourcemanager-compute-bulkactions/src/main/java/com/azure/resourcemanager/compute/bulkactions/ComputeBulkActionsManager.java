@@ -28,21 +28,11 @@ import com.azure.resourcemanager.compute.bulkactions.fluent.ComputeBulkActionsMa
 import com.azure.resourcemanager.compute.bulkactions.implementation.BulkCreateCustomsImpl;
 import com.azure.resourcemanager.compute.bulkactions.implementation.BulkCreatesImpl;
 import com.azure.resourcemanager.compute.bulkactions.implementation.ComputeBulkActionsManagementClientBuilder;
-import com.azure.resourcemanager.compute.bulkactions.implementation.OccurrenceExtensionsImpl;
-import com.azure.resourcemanager.compute.bulkactions.implementation.OccurrencesImpl;
 import com.azure.resourcemanager.compute.bulkactions.implementation.OperationsImpl;
-import com.azure.resourcemanager.compute.bulkactions.implementation.ScheduledActionExtensionsImpl;
-import com.azure.resourcemanager.compute.bulkactions.implementation.ScheduledActionOperationStatusImpl;
-import com.azure.resourcemanager.compute.bulkactions.implementation.ScheduledActionsImpl;
 import com.azure.resourcemanager.compute.bulkactions.implementation.VirtualMachineBulkOperationsImpl;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustoms;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreates;
-import com.azure.resourcemanager.compute.bulkactions.models.OccurrenceExtensions;
-import com.azure.resourcemanager.compute.bulkactions.models.Occurrences;
 import com.azure.resourcemanager.compute.bulkactions.models.Operations;
-import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionExtensions;
-import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionOperationStatus;
-import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActions;
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineBulkOperations;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -63,16 +53,6 @@ public final class ComputeBulkActionsManager {
     private BulkCreateCustoms bulkCreateCustoms;
 
     private BulkCreates bulkCreates;
-
-    private ScheduledActions scheduledActions;
-
-    private ScheduledActionExtensions scheduledActionExtensions;
-
-    private ScheduledActionOperationStatus scheduledActionOperationStatus;
-
-    private Occurrences occurrences;
-
-    private OccurrenceExtensions occurrenceExtensions;
 
     private final ComputeBulkActionsManagementClient clientObject;
 
@@ -336,68 +316,6 @@ public final class ComputeBulkActionsManager {
             this.bulkCreates = new BulkCreatesImpl(clientObject.getBulkCreates(), this);
         }
         return bulkCreates;
-    }
-
-    /**
-     * Gets the resource collection API of ScheduledActions. It manages ScheduledAction.
-     * 
-     * @return Resource collection API of ScheduledActions.
-     */
-    public ScheduledActions scheduledActions() {
-        if (this.scheduledActions == null) {
-            this.scheduledActions = new ScheduledActionsImpl(clientObject.getScheduledActions(), this);
-        }
-        return scheduledActions;
-    }
-
-    /**
-     * Gets the resource collection API of ScheduledActionExtensions.
-     * 
-     * @return Resource collection API of ScheduledActionExtensions.
-     */
-    public ScheduledActionExtensions scheduledActionExtensions() {
-        if (this.scheduledActionExtensions == null) {
-            this.scheduledActionExtensions
-                = new ScheduledActionExtensionsImpl(clientObject.getScheduledActionExtensions(), this);
-        }
-        return scheduledActionExtensions;
-    }
-
-    /**
-     * Gets the resource collection API of ScheduledActionOperationStatus.
-     * 
-     * @return Resource collection API of ScheduledActionOperationStatus.
-     */
-    public ScheduledActionOperationStatus scheduledActionOperationStatus() {
-        if (this.scheduledActionOperationStatus == null) {
-            this.scheduledActionOperationStatus
-                = new ScheduledActionOperationStatusImpl(clientObject.getScheduledActionOperationStatus(), this);
-        }
-        return scheduledActionOperationStatus;
-    }
-
-    /**
-     * Gets the resource collection API of Occurrences.
-     * 
-     * @return Resource collection API of Occurrences.
-     */
-    public Occurrences occurrences() {
-        if (this.occurrences == null) {
-            this.occurrences = new OccurrencesImpl(clientObject.getOccurrences(), this);
-        }
-        return occurrences;
-    }
-
-    /**
-     * Gets the resource collection API of OccurrenceExtensions.
-     * 
-     * @return Resource collection API of OccurrenceExtensions.
-     */
-    public OccurrenceExtensions occurrenceExtensions() {
-        if (this.occurrenceExtensions == null) {
-            this.occurrenceExtensions = new OccurrenceExtensionsImpl(clientObject.getOccurrenceExtensions(), this);
-        }
-        return occurrenceExtensions;
     }
 
     /**

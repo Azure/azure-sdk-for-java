@@ -17,7 +17,6 @@ import com.azure.resourcemanager.compute.bulkactions.models.Placement;
 import com.azure.resourcemanager.compute.bulkactions.models.Plan;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Location based BulkCreate resource. The location is part of the resource path.
@@ -43,11 +42,6 @@ public final class LocationBasedBulkCreateInner extends ProxyResource {
      * The availability zone placement constraints applied to the virtual machines created by the BulkCreate operation.
      */
     private Placement placement;
-
-    /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
 
     /*
      * The managed service identities assigned to this resource.
@@ -170,26 +164,6 @@ public final class LocationBasedBulkCreateInner extends ProxyResource {
     }
 
     /**
-     * Get the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     * 
-     * @param tags the tags value to set.
-     * @return the LocationBasedBulkCreateInner object itself.
-     */
-    public LocationBasedBulkCreateInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
      * Get the identity property: The managed service identities assigned to this resource.
      * 
      * @return the identity value.
@@ -278,7 +252,6 @@ public final class LocationBasedBulkCreateInner extends ProxyResource {
         jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         jsonWriter.writeJsonField("placement", this.placement);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("plan", this.plan);
         return jsonWriter.writeEndObject();
@@ -315,9 +288,6 @@ public final class LocationBasedBulkCreateInner extends ProxyResource {
                     deserializedLocationBasedBulkCreateInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("placement".equals(fieldName)) {
                     deserializedLocationBasedBulkCreateInner.placement = Placement.fromJson(reader);
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedLocationBasedBulkCreateInner.tags = tags;
                 } else if ("identity".equals(fieldName)) {
                     deserializedLocationBasedBulkCreateInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("plan".equals(fieldName)) {

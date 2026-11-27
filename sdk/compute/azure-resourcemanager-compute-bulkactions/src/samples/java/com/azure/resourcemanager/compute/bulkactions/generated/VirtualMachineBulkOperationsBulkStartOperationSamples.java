@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineBulkOperationsBulkStartOperationSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkStart_BasicSuccess.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkStart_BasicSuccess.json
      */
     /**
      * Sample code: 01 - Start multiple virtual machines.
@@ -35,7 +35,7 @@ public final class VirtualMachineBulkOperationsBulkStartOperationSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkStart_WithVmAgentHealthVerification.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkStart_WithVmAgentHealthVerification.json
      */
     /**
      * Sample code: 02 - Start virtual machines with VM agent health verification.
@@ -57,7 +57,7 @@ public final class VirtualMachineBulkOperationsBulkStartOperationSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkStart_WithCapacityRecommendations.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkStart_WithCapacityRecommendations.json
      */
     /**
      * Sample code: 03 - Start virtual machines with capacity recommendations.
@@ -82,7 +82,7 @@ public final class VirtualMachineBulkOperationsBulkStartOperationSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkStart_VmNotFoundError.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkStart_VmNotFoundError.json
      */
     /**
      * Sample code: 04 - Response when a virtual machine does not exist.

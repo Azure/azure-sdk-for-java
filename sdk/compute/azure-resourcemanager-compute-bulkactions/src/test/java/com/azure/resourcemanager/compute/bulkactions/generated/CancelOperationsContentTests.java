@@ -12,16 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CancelOperationsContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CancelOperationsContent model = BinaryData.fromString("{\"operationIds\":[\"umasxazjpq\",\"e\"]}")
-            .toObject(CancelOperationsContent.class);
-        Assertions.assertEquals("umasxazjpq", model.operationIds().get(0));
+        CancelOperationsContent model
+            = BinaryData.fromString("{\"operationIds\":[\"ggd\",\"jixhbk\",\"ofqweykhmenevfye\"]}")
+                .toObject(CancelOperationsContent.class);
+        Assertions.assertEquals("ggd", model.operationIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CancelOperationsContent model
-            = new CancelOperationsContent().withOperationIds(Arrays.asList("umasxazjpq", "e"));
+            = new CancelOperationsContent().withOperationIds(Arrays.asList("ggd", "jixhbk", "ofqweykhmenevfye"));
         model = BinaryData.fromObject(model).toObject(CancelOperationsContent.class);
-        Assertions.assertEquals("umasxazjpq", model.operationIds().get(0));
+        Assertions.assertEquals("ggd", model.operationIds().get(0));
     }
 }

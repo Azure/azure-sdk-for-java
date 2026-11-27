@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-16/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_Minimum_Gen_Example.
@@ -22,7 +22,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/Operations_List_MaximumSet_Gen copy.json
+     * x-ms-original-file: 2026-10-16/Operations_List_MaximumSet_Gen copy.json
      */
     /**
      * Sample code: 02 - Operations_List_MaximumSet_Gen_Example.
@@ -35,7 +35,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-16/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen_Example.
