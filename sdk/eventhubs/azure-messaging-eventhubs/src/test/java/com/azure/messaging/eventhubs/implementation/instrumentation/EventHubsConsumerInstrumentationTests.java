@@ -32,6 +32,7 @@ import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.common.Clock;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
@@ -84,6 +85,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class EventHubsConsumerInstrumentationTests {
     private static final String FQDN = "fqdn";
@@ -103,14 +106,18 @@ public class EventHubsConsumerInstrumentationTests {
     @BeforeEach
     public void setup(TestInfo testInfo) {
         spanProcessor = new TestSpanProcessor(FQDN, ENTITY_NAME, testInfo.getDisplayName());
+        tracer = createTracer(Clock.getDefault());
+        meter = new TestMeter();
+        checkpointStore = new SampleCheckpointStore();
+    }
+
+    private Tracer createTracer(Clock clock) {
         OpenTelemetry otel = OpenTelemetrySdk.builder()
-            .setTracerProvider(SdkTracerProvider.builder().addSpanProcessor(spanProcessor).build())
+            .setTracerProvider(SdkTracerProvider.builder().setClock(clock).addSpanProcessor(spanProcessor).build())
             .build();
 
         TracingOptions tracingOptions = new OpenTelemetryTracingOptions().setOpenTelemetry(otel);
-        tracer = TracerProvider.getDefaultProvider().createTracer("test", null, "Microsoft.EventHub", tracingOptions);
-        meter = new TestMeter();
-        checkpointStore = new SampleCheckpointStore();
+        return TracerProvider.getDefaultProvider().createTracer("test", null, "Microsoft.EventHub", tracingOptions);
     }
 
     @AfterEach
@@ -218,15 +225,20 @@ public class EventHubsConsumerInstrumentationTests {
 
     @Test
     @SuppressWarnings("try")
-    public void asyncConsumerSpansHaveLinks() throws InterruptedException {
+    public void asyncConsumerSpansHaveLinks() {
+        Clock clock = mock(Clock.class);
+        when(clock.now()).thenReturn(1_000_000_000L);
+        when(clock.nanoTime()).thenReturn(0L);
+        Tracer testTracer = createTracer(clock);
         EventHubsConsumerInstrumentation instrumentation
-            = new EventHubsConsumerInstrumentation(tracer, meter, FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+            = new EventHubsConsumerInstrumentation(testTracer, meter, FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
 
         Instant enqueuedTime = Instant.now();
         Message message = createMessage(enqueuedTime, TRACEPARENT1);
-        int durationMillis = 100;
+        long durationNanos = Duration.ofMillis(100).toNanos();
         try (InstrumentationScope scope = instrumentation.startAsyncConsume(message, "0")) {
-            Thread.sleep(100);
+            // Advance the span's monotonic clock without depending on the platform's sleep precision.
+            when(clock.nanoTime()).thenReturn(durationNanos);
             assertEquals(TRACEID1, Span.current().getSpanContext().getTraceId());
         }
 
@@ -236,7 +248,7 @@ public class EventHubsConsumerInstrumentationTests {
         assertEquals(getSpanName(PROCESS, ENTITY_NAME), span.getName());
         assertEquals(CONSUMER, span.getKind());
         assertEquals(SPANID1, span.getParentSpanId());
-        assertTrue(span.getEndEpochNanos() - span.getStartEpochNanos() >= durationMillis * 1_000_000);
+        assertEquals(durationNanos, span.getEndEpochNanos() - span.getStartEpochNanos());
 
         Map<String, Object> attributes = attributesToMap(span.getAttributes());
         assertAllAttributes(FQDN, ENTITY_NAME, "0", CONSUMER_GROUP, null, PROCESS, attributes);
