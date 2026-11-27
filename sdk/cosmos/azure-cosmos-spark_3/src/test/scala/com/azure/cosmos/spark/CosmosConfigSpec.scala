@@ -14,7 +14,7 @@ import org.apache.spark.sql.types.{NumericType, StructType}
 
 import java.text.SimpleDateFormat
 import java.time.{Duration, Instant}
-import java.util.UUID
+import java.util.{Locale, UUID}
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
@@ -29,6 +29,44 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
   private val testServicePrincipalClientId = UUID.randomUUID().toString
   private val testServicePrincipalClientSecret = "test-secret"
   private val testServicePrincipalClientCert = "PEMBase64"
+
+  "Config names" should "validate known settings independently of case and logging safety" in {
+    val classifications = Map(
+      CosmosConfigNames.AccountEndpoint -> true,
+      CosmosConfigNames.ThroughputControlAccountEndpoint -> true,
+      CosmosConfigNames.Database -> true,
+      CosmosConfigNames.ReadCustomQuery -> true,
+      CosmosConfigNames.AccountKey -> false,
+      CosmosConfigNames.ClientSecret -> false,
+      CosmosConfigNames.ClientCertPemBase64 -> false,
+      CosmosConfigNames.ThroughputControlAccountKey -> false,
+      CosmosConfigNames.DiagnosticsAzureMonitorConnectionString -> false,
+      CosmosConfigNames.MetricsAzureMonitorConnectionString -> false,
+      CosmosConfigNames.AdditionalHeaders -> false)
+
+    for ((name, safeToLog) <- classifications; candidate <- Array(name, name.toUpperCase(Locale.ROOT))) {
+      CosmosConfigNames.validateConfigName(candidate)
+      CosmosConfigNames.isSafeToLog(candidate) shouldEqual safeToLog
+    }
+  }
+
+  it should "reject unknown Cosmos names without allowing unrelated Spark names to be logged" in {
+    val unknownName = "spark.cosmos.unknownSetting"
+    for (candidate <- Array(unknownName, unknownName.toUpperCase(Locale.ROOT))) {
+      intercept[IllegalArgumentException] {
+        CosmosConfigNames.validateConfigName(candidate)
+      }
+      CosmosConfigNames.isSafeToLog(candidate) shouldBe false
+    }
+
+    for (name <- Array(
+      "application.accessToken",
+      CosmosConfigNames.SparkExecutorCount,
+      s"spark.sql.catalog.testCatalog.${CosmosConfigNames.AccountEndpoint}")) {
+      CosmosConfigNames.validateConfigName(name)
+      CosmosConfigNames.isSafeToLog(name) shouldBe false
+    }
+  }
 
   "Config Parser" should "parse account credentials" in {
     val userConfig = Map(
