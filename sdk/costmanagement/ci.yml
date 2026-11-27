@@ -10,9 +10,11 @@ trigger:
     include:
       - sdk/costmanagement/ci.yml
       - sdk/costmanagement/azure-resourcemanager-costmanagement/
+      - sdk/costmanagement/azure-resourcemanager-costmanagement-priceestimation/
     exclude:
       - sdk/costmanagement/pom.xml
       - sdk/costmanagement/azure-resourcemanager-costmanagement/pom.xml
+      - sdk/costmanagement/azure-resourcemanager-costmanagement-priceestimation/pom.xml
 
 pr:
   branches:
@@ -25,9 +27,11 @@ pr:
     include:
       - sdk/costmanagement/ci.yml
       - sdk/costmanagement/azure-resourcemanager-costmanagement/
+      - sdk/costmanagement/azure-resourcemanager-costmanagement-priceestimation/
     exclude:
       - sdk/costmanagement/pom.xml
       - sdk/costmanagement/azure-resourcemanager-costmanagement/pom.xml
+      - sdk/costmanagement/azure-resourcemanager-costmanagement-priceestimation/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -37,3 +41,6 @@ extends:
       - name: azure-resourcemanager-costmanagement
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercostmanagement
+      - name: azure-resourcemanager-costmanagement-priceestimation
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercostmanagementpriceestimation
