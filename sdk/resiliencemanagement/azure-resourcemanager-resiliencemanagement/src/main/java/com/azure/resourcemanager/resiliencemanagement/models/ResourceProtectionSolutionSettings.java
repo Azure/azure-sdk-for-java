@@ -23,6 +23,11 @@ public final class ResourceProtectionSolutionSettings implements JsonSerializabl
     private ResourceProtectionSolutionType protectionSolutionType;
 
     /*
+     * Replication mode configured for the protected resource.
+     */
+    private ReplicationMode replicationMode;
+
+    /*
      * A status that indicates the protection status of a resource with an Azure solution for regional or zonal
      * recovery.
      */
@@ -101,6 +106,15 @@ public final class ResourceProtectionSolutionSettings implements JsonSerializabl
      */
     public ResourceProtectionSolutionType protectionSolutionType() {
         return this.protectionSolutionType;
+    }
+
+    /**
+     * Get the replicationMode property: Replication mode configured for the protected resource.
+     * 
+     * @return the replicationMode value.
+     */
+    public ReplicationMode replicationMode() {
+        return this.replicationMode;
     }
 
     /**
@@ -222,6 +236,8 @@ public final class ResourceProtectionSolutionSettings implements JsonSerializabl
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("replicationMode",
+            this.replicationMode == null ? null : this.replicationMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -247,6 +263,9 @@ public final class ResourceProtectionSolutionSettings implements JsonSerializabl
                 } else if ("protectionSolutionType".equals(fieldName)) {
                     deserializedResourceProtectionSolutionSettings.protectionSolutionType
                         = ResourceProtectionSolutionType.fromString(reader.getString());
+                } else if ("replicationMode".equals(fieldName)) {
+                    deserializedResourceProtectionSolutionSettings.replicationMode
+                        = ReplicationMode.fromString(reader.getString());
                 } else if ("protectionStatus".equals(fieldName)) {
                     deserializedResourceProtectionSolutionSettings.protectionStatus
                         = ResourceProtectionStatus.fromString(reader.getString());

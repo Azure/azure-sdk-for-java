@@ -28,6 +28,12 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
     private ResiliencyProperties zonalResiliency;
 
     /*
+     * The regional resiliency posture for the ARM resource, including participation, attestation, exclusion reason, and
+     * user confirmations.
+     */
+    private ResiliencyProperties regionalResiliency;
+
+    /*
      * The provisioning state of the goal resource.
      */
     private ProvisioningState provisioningState;
@@ -81,6 +87,28 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
     }
 
     /**
+     * Get the regionalResiliency property: The regional resiliency posture for the ARM resource, including
+     * participation, attestation, exclusion reason, and user confirmations.
+     * 
+     * @return the regionalResiliency value.
+     */
+    public ResiliencyProperties regionalResiliency() {
+        return this.regionalResiliency;
+    }
+
+    /**
+     * Set the regionalResiliency property: The regional resiliency posture for the ARM resource, including
+     * participation, attestation, exclusion reason, and user confirmations.
+     * 
+     * @param regionalResiliency the regionalResiliency value to set.
+     * @return the GoalResourceProperties object itself.
+     */
+    public GoalResourceProperties withRegionalResiliency(ResiliencyProperties regionalResiliency) {
+        this.regionalResiliency = regionalResiliency;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the goal resource.
      * 
      * @return the provisioningState value.
@@ -97,6 +125,7 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("resourceArmId", this.resourceArmId);
         jsonWriter.writeJsonField("zonalResiliency", this.zonalResiliency);
+        jsonWriter.writeJsonField("regionalResiliency", this.regionalResiliency);
         return jsonWriter.writeEndObject();
     }
 
@@ -120,6 +149,8 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
                     deserializedGoalResourceProperties.resourceArmId = reader.getString();
                 } else if ("zonalResiliency".equals(fieldName)) {
                     deserializedGoalResourceProperties.zonalResiliency = ResiliencyProperties.fromJson(reader);
+                } else if ("regionalResiliency".equals(fieldName)) {
+                    deserializedGoalResourceProperties.regionalResiliency = ResiliencyProperties.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedGoalResourceProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

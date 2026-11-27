@@ -107,6 +107,23 @@ public class DrillResourceProperties implements JsonSerializable<DrillResourcePr
      */
     private ProvisioningState provisioningState;
 
+    /*
+     * Normal fault eligibility for a drill resource. Currently populated for regional resources only.
+     * Omitted until evaluated. Eligibility does not indicate inclusion or readiness,
+     * and force inclusion does not change this value.
+     */
+    private FaultEligibility faultEligibility;
+
+    /*
+     * Reason the resource is ineligible under normal fault inclusion policy. Currently populated for regional resources
+     * only.
+     * Contains the single applicable recovery-plan reason when Ineligible.
+     * Omitted when Eligible, Unknown, or not yet evaluated. Failed or incomplete recovery-plan reads do not establish
+     * non-inclusion.
+     * Binding and permission errors are reported separately in attentionReason and error fields.
+     */
+    private FaultIneligibleReason faultIneligibleReason;
+
     /**
      * Creates an instance of DrillResourceProperties class.
      */
@@ -467,6 +484,62 @@ public class DrillResourceProperties implements JsonSerializable<DrillResourcePr
     }
 
     /**
+     * Get the faultEligibility property: Normal fault eligibility for a drill resource. Currently populated for
+     * regional resources only.
+     * Omitted until evaluated. Eligibility does not indicate inclusion or readiness,
+     * and force inclusion does not change this value.
+     * 
+     * @return the faultEligibility value.
+     */
+    public FaultEligibility faultEligibility() {
+        return this.faultEligibility;
+    }
+
+    /**
+     * Set the faultEligibility property: Normal fault eligibility for a drill resource. Currently populated for
+     * regional resources only.
+     * Omitted until evaluated. Eligibility does not indicate inclusion or readiness,
+     * and force inclusion does not change this value.
+     * 
+     * @param faultEligibility the faultEligibility value to set.
+     * @return the DrillResourceProperties object itself.
+     */
+    DrillResourceProperties withFaultEligibility(FaultEligibility faultEligibility) {
+        this.faultEligibility = faultEligibility;
+        return this;
+    }
+
+    /**
+     * Get the faultIneligibleReason property: Reason the resource is ineligible under normal fault inclusion policy.
+     * Currently populated for regional resources only.
+     * Contains the single applicable recovery-plan reason when Ineligible.
+     * Omitted when Eligible, Unknown, or not yet evaluated. Failed or incomplete recovery-plan reads do not establish
+     * non-inclusion.
+     * Binding and permission errors are reported separately in attentionReason and error fields.
+     * 
+     * @return the faultIneligibleReason value.
+     */
+    public FaultIneligibleReason faultIneligibleReason() {
+        return this.faultIneligibleReason;
+    }
+
+    /**
+     * Set the faultIneligibleReason property: Reason the resource is ineligible under normal fault inclusion policy.
+     * Currently populated for regional resources only.
+     * Contains the single applicable recovery-plan reason when Ineligible.
+     * Omitted when Eligible, Unknown, or not yet evaluated. Failed or incomplete recovery-plan reads do not establish
+     * non-inclusion.
+     * Binding and permission errors are reported separately in attentionReason and error fields.
+     * 
+     * @param faultIneligibleReason the faultIneligibleReason value to set.
+     * @return the DrillResourceProperties object itself.
+     */
+    DrillResourceProperties withFaultIneligibleReason(FaultIneligibleReason faultIneligibleReason) {
+        this.faultIneligibleReason = faultIneligibleReason;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -569,6 +642,12 @@ public class DrillResourceProperties implements JsonSerializable<DrillResourcePr
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDrillResourceProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("faultEligibility".equals(fieldName)) {
+                    deserializedDrillResourceProperties.faultEligibility
+                        = FaultEligibility.fromString(reader.getString());
+                } else if ("faultIneligibleReason".equals(fieldName)) {
+                    deserializedDrillResourceProperties.faultIneligibleReason
+                        = FaultIneligibleReason.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

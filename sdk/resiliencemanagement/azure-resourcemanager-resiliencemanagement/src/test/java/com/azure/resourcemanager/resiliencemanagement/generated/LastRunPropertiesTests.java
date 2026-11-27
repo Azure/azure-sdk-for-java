@@ -11,7 +11,7 @@ public final class LastRunPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LastRunProperties model = BinaryData.fromString(
-            "{\"lastRunTime\":\"2021-07-03T12:52:54Z\",\"lastRunState\":\"Failed\",\"lastRunDuration\":\"PT41H57M47S\",\"lastRunAttestation\":\"Success\"}")
+            "{\"lastRunTime\":\"2021-04-20T01:39:51Z\",\"lastRunState\":\"Pending\",\"lastRunDuration\":\"PT139H1M44S\",\"lastRunAttestation\":\"Success\",\"lastRunRecoveryTimeActual\":\"PT144H41M29S\"}")
             .toObject(LastRunProperties.class);
     }
 }

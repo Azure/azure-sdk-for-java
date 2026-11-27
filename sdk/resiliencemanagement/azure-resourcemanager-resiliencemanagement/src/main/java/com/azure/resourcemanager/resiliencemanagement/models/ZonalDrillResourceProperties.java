@@ -170,6 +170,12 @@ public final class ZonalDrillResourceProperties extends DrillResourceProperties 
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedZonalDrillResourceProperties
                         .withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                } else if ("faultEligibility".equals(fieldName)) {
+                    deserializedZonalDrillResourceProperties
+                        .withFaultEligibility(FaultEligibility.fromString(reader.getString()));
+                } else if ("faultIneligibleReason".equals(fieldName)) {
+                    deserializedZonalDrillResourceProperties
+                        .withFaultIneligibleReason(FaultIneligibleReason.fromString(reader.getString()));
                 } else if ("drillType".equals(fieldName)) {
                     deserializedZonalDrillResourceProperties.drillType = DrillType.fromString(reader.getString());
                 } else if ("activePhysicalZones".equals(fieldName)) {

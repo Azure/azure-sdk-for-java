@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class EnrollmentsListSamples {
     /*
-     * x-ms-original-file: 2026-10-01/Enrollments_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-11-30-preview/Enrollments_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Enrollments_List_MaximumSet.

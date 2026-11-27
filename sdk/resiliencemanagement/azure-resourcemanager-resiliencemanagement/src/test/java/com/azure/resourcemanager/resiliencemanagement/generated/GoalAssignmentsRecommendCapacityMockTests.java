@@ -30,8 +30,9 @@ public final class GoalAssignmentsRecommendCapacityMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.goalAssignments()
-            .recommendCapacity("qmp", "zruwn", new RecommendCapacityRequest().withResourceIds(
-                Arrays.asList("xpxiwfcngjs", "asi", "xtmkzjvkviir", "gfgrwsdp")), com.azure.core.util.Context.NONE);
+            .recommendCapacity("mlikytw", "czcswka",
+                new RecommendCapacityRequest().withResourceIds(Arrays.asList("ejyfdvlvhbwrnfx")),
+                com.azure.core.util.Context.NONE);
 
     }
 }

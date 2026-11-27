@@ -10,8 +10,8 @@ import com.azure.resourcemanager.resiliencemanagement.fluent.models.ListReportDo
 public final class ListReportDownloadUrlResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListReportDownloadUrlResponseInner model = BinaryData
-            .fromString("{\"format\":\"Html\",\"downloadUrl\":\"gny\",\"expiryTimestamp\":\"2021-07-24T19:14:36Z\"}")
+        ListReportDownloadUrlResponseInner model = BinaryData.fromString(
+            "{\"format\":\"Html\",\"downloadUrl\":\"gkhnmgbrouxddbh\",\"expiryTimestamp\":\"2021-05-27T10:43:03Z\"}")
             .toObject(ListReportDownloadUrlResponseInner.class);
     }
 }

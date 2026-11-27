@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
 
 import com.azure.resourcemanager.resiliencemanagement.fluent.models.RecoveryPlanInner;
 import com.azure.resourcemanager.resiliencemanagement.models.AssociatedIdentity;
+import com.azure.resourcemanager.resiliencemanagement.models.CyberResiliencyPlanProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryGroup;
@@ -13,6 +14,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.RecoveryGroupCustom
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryGroupProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryGroupsSetting;
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryPlanProperties;
+import com.azure.resourcemanager.resiliencemanagement.models.TargetEnvironment;
 import com.azure.resourcemanager.resiliencemanagement.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,7 +25,7 @@ import java.util.Map;
  */
 public final class RecoveryPlansUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-01/RecoveryPlans_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-11-30-preview/RecoveryPlans_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlans_Update_MaximumSet.
@@ -1252,6 +1254,27 @@ public final class RecoveryPlansUpdateSamples {
                                                 "/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1")))))))))
                 .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                     .withUserAssignedIdentities(mapOf("key7088", new UserAssignedIdentity()))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-30-preview/RecoveryPlans_Update_CyberRecovery.json
+     */
+    /**
+     * Sample code: RecoveryPlans_Update_CyberRecovery.
+     * 
+     * @param manager Entry point to ResilienceManagementManager.
+     */
+    public static void recoveryPlansUpdateCyberRecovery(
+        com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
+        manager.recoveryPlans()
+            .update("contoso-service-group", "cyber-plan",
+                new RecoveryPlanInner()
+                    .withProperties(new RecoveryPlanProperties().withPlanDescription("Updated cyber plan")
+                        .withResiliencyPlanProperties(
+                            new CyberResiliencyPlanProperties().withTargetEnvironment(new TargetEnvironment()
+                                .withTargetSubscriptionIds(Arrays.asList("12345678-1234-1234-1234-123456789012"))
+                                .withTargetLocations(Arrays.asList("eastus2"))))),
                 com.azure.core.util.Context.NONE);
     }
 

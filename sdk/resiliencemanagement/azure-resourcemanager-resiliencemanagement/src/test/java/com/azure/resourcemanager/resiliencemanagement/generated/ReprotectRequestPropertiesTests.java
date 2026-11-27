@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ReprotectRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReprotectRequestProperties model
-            = BinaryData.fromString("{\"selectedResourceIds\":[\"fbtndoaong\",\"jcntuj\",\"tcje\",\"ftwwaezkojvdc\"]}")
-                .toObject(ReprotectRequestProperties.class);
-        Assertions.assertEquals("fbtndoaong", model.selectedResourceIds().get(0));
+        ReprotectRequestProperties model = BinaryData.fromString("{\"selectedResourceIds\":[\"xifqjzgxm\",\"hu\"]}")
+            .toObject(ReprotectRequestProperties.class);
+        Assertions.assertEquals("xifqjzgxm", model.selectedResourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReprotectRequestProperties model = new ReprotectRequestProperties()
-            .withSelectedResourceIds(Arrays.asList("fbtndoaong", "jcntuj", "tcje", "ftwwaezkojvdc"));
+        ReprotectRequestProperties model
+            = new ReprotectRequestProperties().withSelectedResourceIds(Arrays.asList("xifqjzgxm", "hu"));
         model = BinaryData.fromObject(model).toObject(ReprotectRequestProperties.class);
-        Assertions.assertEquals("fbtndoaong", model.selectedResourceIds().get(0));
+        Assertions.assertEquals("xifqjzgxm", model.selectedResourceIds().get(0));
     }
 }

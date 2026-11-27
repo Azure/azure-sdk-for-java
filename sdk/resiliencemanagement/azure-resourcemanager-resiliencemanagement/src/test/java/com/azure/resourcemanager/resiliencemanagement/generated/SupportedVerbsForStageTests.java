@@ -13,10 +13,10 @@ import org.junit.jupiter.api.Assertions;
 public final class SupportedVerbsForStageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SupportedVerbsForStage model
-            = BinaryData.fromString("{\"drillRunStage\":\"FaultInjection\",\"supportedVerbs\":[\"Retry\",\"Start\"]}")
-                .toObject(SupportedVerbsForStage.class);
-        Assertions.assertEquals(DrillRunSubtasks.FAULT_INJECTION, model.drillRunStage());
-        Assertions.assertEquals(DrillRunOperationVerbs.RETRY, model.supportedVerbs().get(0));
+        SupportedVerbsForStage model = BinaryData
+            .fromString("{\"drillRunStage\":\"Failover\",\"supportedVerbs\":[\"MarkAsComplete\",\"Start\",\"Retry\"]}")
+            .toObject(SupportedVerbsForStage.class);
+        Assertions.assertEquals(DrillRunSubtasks.FAILOVER, model.drillRunStage());
+        Assertions.assertEquals(DrillRunOperationVerbs.MARK_AS_COMPLETE, model.supportedVerbs().get(0));
     }
 }

@@ -19,14 +19,14 @@ public final class DrillRunFailoverRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DrillRunFailoverRequest model = BinaryData.fromString(
-            "{\"autoFailover\":\"Disable\",\"failoverProperties\":{\"failoverDirection\":\"FromSpecificLocations\",\"failoverRequestProperties\":{\"sourceLocations\":[\"bpudcdab\"],\"selectedResourceIds\":[\"pwyawbz\",\"sqbuc\"],\"executionConfigurations\":{\"userConsent\":\"Allowed\"}}}}")
+            "{\"autoFailover\":\"Disable\",\"failoverProperties\":{\"failoverDirection\":\"FromSpecificLocations\",\"failoverRequestProperties\":{\"sourceLocations\":[\"yuel\",\"etndnbfqyggagf\",\"nlgmtrwahzjmu\"],\"selectedResourceIds\":[\"byrplrohkpig\"],\"executionConfigurations\":{\"userConsent\":\"Allowed\"}}}}")
             .toObject(DrillRunFailoverRequest.class);
         Assertions.assertEquals(AutoFailover.DISABLE, model.autoFailover());
         Assertions.assertEquals(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS,
             model.failoverProperties().failoverDirection());
-        Assertions.assertEquals("bpudcdab",
+        Assertions.assertEquals("yuel",
             model.failoverProperties().failoverRequestProperties().sourceLocations().get(0));
-        Assertions.assertEquals("pwyawbz",
+        Assertions.assertEquals("byrplrohkpig",
             model.failoverProperties().failoverRequestProperties().selectedResourceIds().get(0));
         Assertions.assertEquals(UserConsent.ALLOWED,
             model.failoverProperties().failoverRequestProperties().executionConfigurations().userConsent());
@@ -38,16 +38,16 @@ public final class DrillRunFailoverRequestTests {
             .withFailoverProperties(new FailoverRequest()
                 .withFailoverDirection(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS)
                 .withFailoverRequestProperties(new FailoverRequestProperties()
-                    .withSourceLocations(Arrays.asList("bpudcdab"))
-                    .withSelectedResourceIds(Arrays.asList("pwyawbz", "sqbuc"))
+                    .withSourceLocations(Arrays.asList("yuel", "etndnbfqyggagf", "nlgmtrwahzjmu"))
+                    .withSelectedResourceIds(Arrays.asList("byrplrohkpig"))
                     .withExecutionConfigurations(new ExecutionConfigurations().withUserConsent(UserConsent.ALLOWED))));
         model = BinaryData.fromObject(model).toObject(DrillRunFailoverRequest.class);
         Assertions.assertEquals(AutoFailover.DISABLE, model.autoFailover());
         Assertions.assertEquals(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS,
             model.failoverProperties().failoverDirection());
-        Assertions.assertEquals("bpudcdab",
+        Assertions.assertEquals("yuel",
             model.failoverProperties().failoverRequestProperties().sourceLocations().get(0));
-        Assertions.assertEquals("pwyawbz",
+        Assertions.assertEquals("byrplrohkpig",
             model.failoverProperties().failoverRequestProperties().selectedResourceIds().get(0));
         Assertions.assertEquals(UserConsent.ALLOWED,
             model.failoverProperties().failoverRequestProperties().executionConfigurations().userConsent());
