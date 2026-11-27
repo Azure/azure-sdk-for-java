@@ -13,22 +13,22 @@ public final class MonitoringDestinationPatchModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MonitoringDestinationPatchModel model = BinaryData.fromString(
-            "{\"destinationType\":\"CommunityWorkspace\",\"customWorkspaceResourceId\":\"n\",\"diagnosticSettingsName\":\"glzpswiydm\"}")
+            "{\"destinationType\":\"CommunityWorkspace\",\"customWorkspaceResourceId\":\"qjhhkxbpv\",\"diagnosticSettingsName\":\"mjh\"}")
             .toObject(MonitoringDestinationPatchModel.class);
         Assertions.assertEquals(MonitoringDestinationType.COMMUNITY_WORKSPACE, model.destinationType());
-        Assertions.assertEquals("n", model.customWorkspaceResourceId());
-        Assertions.assertEquals("glzpswiydm", model.diagnosticSettingsName());
+        Assertions.assertEquals("qjhhkxbpv", model.customWorkspaceResourceId());
+        Assertions.assertEquals("mjh", model.diagnosticSettingsName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MonitoringDestinationPatchModel model
             = new MonitoringDestinationPatchModel().withDestinationType(MonitoringDestinationType.COMMUNITY_WORKSPACE)
-                .withCustomWorkspaceResourceId("n")
-                .withDiagnosticSettingsName("glzpswiydm");
+                .withCustomWorkspaceResourceId("qjhhkxbpv")
+                .withDiagnosticSettingsName("mjh");
         model = BinaryData.fromObject(model).toObject(MonitoringDestinationPatchModel.class);
         Assertions.assertEquals(MonitoringDestinationType.COMMUNITY_WORKSPACE, model.destinationType());
-        Assertions.assertEquals("n", model.customWorkspaceResourceId());
-        Assertions.assertEquals("glzpswiydm", model.diagnosticSettingsName());
+        Assertions.assertEquals("qjhhkxbpv", model.customWorkspaceResourceId());
+        Assertions.assertEquals("mjh", model.diagnosticSettingsName());
     }
 }

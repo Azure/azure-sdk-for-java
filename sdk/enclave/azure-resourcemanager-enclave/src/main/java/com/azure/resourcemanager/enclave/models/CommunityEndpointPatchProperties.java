@@ -27,6 +27,12 @@ public final class CommunityEndpointPatchProperties implements JsonSerializable<
      */
     private UpdateMode updateMode;
 
+    /*
+     * Array of ARM resource IDs of destination communities to synchronize this endpoint's rules to. The RP creates and
+     * manages the destination CEPs automatically within each community. Maximum 100 destinations per source endpoint.
+     */
+    private List<String> syncTo;
+
     /**
      * Creates an instance of CommunityEndpointPatchProperties class.
      */
@@ -74,6 +80,30 @@ public final class CommunityEndpointPatchProperties implements JsonSerializable<
     }
 
     /**
+     * Get the syncTo property: Array of ARM resource IDs of destination communities to synchronize this endpoint's
+     * rules to. The RP creates and manages the destination CEPs automatically within each community. Maximum 100
+     * destinations per source endpoint.
+     * 
+     * @return the syncTo value.
+     */
+    public List<String> syncTo() {
+        return this.syncTo;
+    }
+
+    /**
+     * Set the syncTo property: Array of ARM resource IDs of destination communities to synchronize this endpoint's
+     * rules to. The RP creates and manages the destination CEPs automatically within each community. Maximum 100
+     * destinations per source endpoint.
+     * 
+     * @param syncTo the syncTo value to set.
+     * @return the CommunityEndpointPatchProperties object itself.
+     */
+    public CommunityEndpointPatchProperties withSyncTo(List<String> syncTo) {
+        this.syncTo = syncTo;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -82,6 +112,7 @@ public final class CommunityEndpointPatchProperties implements JsonSerializable<
         jsonWriter.writeArrayField("ruleCollection", this.ruleCollection,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("updateMode", this.updateMode == null ? null : this.updateMode.toString());
+        jsonWriter.writeArrayField("syncTo", this.syncTo, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -108,6 +139,9 @@ public final class CommunityEndpointPatchProperties implements JsonSerializable<
                     deserializedCommunityEndpointPatchProperties.ruleCollection = ruleCollection;
                 } else if ("updateMode".equals(fieldName)) {
                     deserializedCommunityEndpointPatchProperties.updateMode = UpdateMode.fromString(reader.getString());
+                } else if ("syncTo".equals(fieldName)) {
+                    List<String> syncTo = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCommunityEndpointPatchProperties.syncTo = syncTo;
                 } else {
                     reader.skipChildren();
                 }

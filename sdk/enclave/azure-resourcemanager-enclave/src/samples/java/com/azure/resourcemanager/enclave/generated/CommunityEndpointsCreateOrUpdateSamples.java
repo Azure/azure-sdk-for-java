@@ -8,6 +8,7 @@ import com.azure.resourcemanager.enclave.models.CommunityEndpointDestinationRule
 import com.azure.resourcemanager.enclave.models.CommunityEndpointProperties;
 import com.azure.resourcemanager.enclave.models.CommunityEndpointProtocol;
 import com.azure.resourcemanager.enclave.models.DestinationType;
+import com.azure.resourcemanager.enclave.models.RuleDirection;
 import com.azure.resourcemanager.enclave.models.UpdateMode;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import java.util.Map;
  */
 public final class CommunityEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/CommunityEndpoints_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/CommunityEndpoints_CreateOrUpdate.json
      */
     /**
      * Sample code: CommunityEndpoints_CreateOrUpdate.
@@ -36,6 +37,7 @@ public final class CommunityEndpointsCreateOrUpdateSamples {
                     .withProtocols(Arrays.asList(CommunityEndpointProtocol.TCP))
                     .withTransitHubResourceId(
                         "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName")
+                    .withDirection(RuleDirection.OUTBOUND)
                     .withDestination("foo.example.com")
                     .withPorts("443")))
                 .withUpdateMode(UpdateMode.AUTOMATIC))

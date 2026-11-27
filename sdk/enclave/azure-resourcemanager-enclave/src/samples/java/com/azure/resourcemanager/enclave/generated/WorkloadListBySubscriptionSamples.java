@@ -9,7 +9,7 @@ package com.azure.resourcemanager.enclave.generated;
  */
 public final class WorkloadListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Workload_ListBySubscription.json
+     * x-ms-original-file: 2026-10-01-preview/Workload_ListBySubscription.json
      */
     /**
      * Sample code: Workload_ListBySubscription.

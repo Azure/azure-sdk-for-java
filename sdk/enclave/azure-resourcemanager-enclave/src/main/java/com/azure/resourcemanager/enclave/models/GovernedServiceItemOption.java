@@ -8,26 +8,26 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for GovernedServiceItemOption.
+ * The governance option for a governed service.
  */
 public final class GovernedServiceItemOption extends ExpandableStringEnum<GovernedServiceItemOption> {
     /**
-     * Static value Allow for GovernedServiceItemOption.
+     * Allow the governed service.
      */
     public static final GovernedServiceItemOption ALLOW = fromString("Allow");
 
     /**
-     * Static value Deny for GovernedServiceItemOption.
+     * Deny the governed service.
      */
     public static final GovernedServiceItemOption DENY = fromString("Deny");
 
     /**
-     * Static value ExceptionOnly for GovernedServiceItemOption.
+     * Allow only configured exceptions for the governed service.
      */
     public static final GovernedServiceItemOption EXCEPTION_ONLY = fromString("ExceptionOnly");
 
     /**
-     * Static value NotApplicable for GovernedServiceItemOption.
+     * The governance option does not apply to the governed service.
      */
     public static final GovernedServiceItemOption NOT_APPLICABLE = fromString("NotApplicable");
 

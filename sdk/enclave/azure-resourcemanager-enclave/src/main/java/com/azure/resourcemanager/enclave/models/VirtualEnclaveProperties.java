@@ -23,16 +23,6 @@ public final class VirtualEnclaveProperties implements JsonSerializable<VirtualE
     private ProvisioningState provisioningState;
 
     /*
-     * Virtual Network.
-     */
-    private EnclaveVirtualNetworkModel enclaveVirtualNetwork;
-
-    /*
-     * Enclave Address Spaces
-     */
-    private EnclaveAddressSpacesModel enclaveAddressSpaces;
-
-    /*
      * Community Resource Id.
      */
     private String communityResourceId;
@@ -83,6 +73,34 @@ public final class VirtualEnclaveProperties implements JsonSerializable<VirtualE
     private List<GovernedServiceItem> governedServiceList;
 
     /*
+     * Customer-requested address spaces for the enclave. Supports multiple entries. Each entry specifies a prefixLength
+     * for the RP to allocate, or a custom addressSpace CIDR. The RP returns these entries exactly as provided;
+     * allocated values are reported in computedAddressSpaces.
+     */
+    private List<AddressSpaceEntry> addressSpaces;
+
+    /*
+     * Address spaces computed by the RP for the enclave. Contains an entry for each customer-requested address space
+     * with its allocated CIDR, followed by the product-managed address space.
+     */
+    private List<ComputedAddressSpaceEntry> computedAddressSpaces;
+
+    /*
+     * The name of the enclave's virtual network.
+     */
+    private String networkName;
+
+    /*
+     * Subnet configurations for the enclave network.
+     */
+    private List<SubnetConfiguration> subnetConfigurations;
+
+    /*
+     * Whether subnets within the enclave can communicate with each other.
+     */
+    private Boolean allowSubnetCommunication;
+
+    /*
      * Enclave default settings.
      */
     private EnclaveDefaultSettingsModel enclaveDefaultSettings;
@@ -120,35 +138,6 @@ public final class VirtualEnclaveProperties implements JsonSerializable<VirtualE
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Get the enclaveVirtualNetwork property: Virtual Network.
-     * 
-     * @return the enclaveVirtualNetwork value.
-     */
-    public EnclaveVirtualNetworkModel enclaveVirtualNetwork() {
-        return this.enclaveVirtualNetwork;
-    }
-
-    /**
-     * Set the enclaveVirtualNetwork property: Virtual Network.
-     * 
-     * @param enclaveVirtualNetwork the enclaveVirtualNetwork value to set.
-     * @return the VirtualEnclaveProperties object itself.
-     */
-    public VirtualEnclaveProperties withEnclaveVirtualNetwork(EnclaveVirtualNetworkModel enclaveVirtualNetwork) {
-        this.enclaveVirtualNetwork = enclaveVirtualNetwork;
-        return this;
-    }
-
-    /**
-     * Get the enclaveAddressSpaces property: Enclave Address Spaces.
-     * 
-     * @return the enclaveAddressSpaces value.
-     */
-    public EnclaveAddressSpacesModel enclaveAddressSpaces() {
-        return this.enclaveAddressSpaces;
     }
 
     /**
@@ -323,6 +312,89 @@ public final class VirtualEnclaveProperties implements JsonSerializable<VirtualE
     }
 
     /**
+     * Get the addressSpaces property: Customer-requested address spaces for the enclave. Supports multiple entries.
+     * Each entry specifies a prefixLength for the RP to allocate, or a custom addressSpace CIDR. The RP returns these
+     * entries exactly as provided; allocated values are reported in computedAddressSpaces.
+     * 
+     * @return the addressSpaces value.
+     */
+    public List<AddressSpaceEntry> addressSpaces() {
+        return this.addressSpaces;
+    }
+
+    /**
+     * Set the addressSpaces property: Customer-requested address spaces for the enclave. Supports multiple entries.
+     * Each entry specifies a prefixLength for the RP to allocate, or a custom addressSpace CIDR. The RP returns these
+     * entries exactly as provided; allocated values are reported in computedAddressSpaces.
+     * 
+     * @param addressSpaces the addressSpaces value to set.
+     * @return the VirtualEnclaveProperties object itself.
+     */
+    public VirtualEnclaveProperties withAddressSpaces(List<AddressSpaceEntry> addressSpaces) {
+        this.addressSpaces = addressSpaces;
+        return this;
+    }
+
+    /**
+     * Get the computedAddressSpaces property: Address spaces computed by the RP for the enclave. Contains an entry for
+     * each customer-requested address space with its allocated CIDR, followed by the product-managed address space.
+     * 
+     * @return the computedAddressSpaces value.
+     */
+    public List<ComputedAddressSpaceEntry> computedAddressSpaces() {
+        return this.computedAddressSpaces;
+    }
+
+    /**
+     * Get the networkName property: The name of the enclave's virtual network.
+     * 
+     * @return the networkName value.
+     */
+    public String networkName() {
+        return this.networkName;
+    }
+
+    /**
+     * Get the subnetConfigurations property: Subnet configurations for the enclave network.
+     * 
+     * @return the subnetConfigurations value.
+     */
+    public List<SubnetConfiguration> subnetConfigurations() {
+        return this.subnetConfigurations;
+    }
+
+    /**
+     * Set the subnetConfigurations property: Subnet configurations for the enclave network.
+     * 
+     * @param subnetConfigurations the subnetConfigurations value to set.
+     * @return the VirtualEnclaveProperties object itself.
+     */
+    public VirtualEnclaveProperties withSubnetConfigurations(List<SubnetConfiguration> subnetConfigurations) {
+        this.subnetConfigurations = subnetConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the allowSubnetCommunication property: Whether subnets within the enclave can communicate with each other.
+     * 
+     * @return the allowSubnetCommunication value.
+     */
+    public Boolean allowSubnetCommunication() {
+        return this.allowSubnetCommunication;
+    }
+
+    /**
+     * Set the allowSubnetCommunication property: Whether subnets within the enclave can communicate with each other.
+     * 
+     * @param allowSubnetCommunication the allowSubnetCommunication value to set.
+     * @return the VirtualEnclaveProperties object itself.
+     */
+    public VirtualEnclaveProperties withAllowSubnetCommunication(Boolean allowSubnetCommunication) {
+        this.allowSubnetCommunication = allowSubnetCommunication;
+        return this;
+    }
+
+    /**
      * Get the enclaveDefaultSettings property: Enclave default settings.
      * 
      * @return the enclaveDefaultSettings value.
@@ -431,7 +503,6 @@ public final class VirtualEnclaveProperties implements JsonSerializable<VirtualE
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("enclaveVirtualNetwork", this.enclaveVirtualNetwork);
         jsonWriter.writeStringField("communityResourceId", this.communityResourceId);
         jsonWriter.writeBooleanField("bastionEnabled", this.bastionEnabled);
         jsonWriter.writeStringField("workloadResourceVisibility",
@@ -444,6 +515,10 @@ public final class VirtualEnclaveProperties implements JsonSerializable<VirtualE
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("governedServiceList", this.governedServiceList,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("addressSpaces", this.addressSpaces, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("subnetConfigurations", this.subnetConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("allowSubnetCommunication", this.allowSubnetCommunication);
         jsonWriter.writeJsonField("enclaveDefaultSettings", this.enclaveDefaultSettings);
         jsonWriter.writeJsonField("maintenanceModeConfiguration", this.maintenanceModeConfiguration);
         jsonWriter.writeStringField("dedicatedHubResourceId", this.dedicatedHubResourceId);
@@ -468,17 +543,11 @@ public final class VirtualEnclaveProperties implements JsonSerializable<VirtualE
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("enclaveVirtualNetwork".equals(fieldName)) {
-                    deserializedVirtualEnclaveProperties.enclaveVirtualNetwork
-                        = EnclaveVirtualNetworkModel.fromJson(reader);
-                } else if ("communityResourceId".equals(fieldName)) {
+                if ("communityResourceId".equals(fieldName)) {
                     deserializedVirtualEnclaveProperties.communityResourceId = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVirtualEnclaveProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
-                } else if ("enclaveAddressSpaces".equals(fieldName)) {
-                    deserializedVirtualEnclaveProperties.enclaveAddressSpaces
-                        = EnclaveAddressSpacesModel.fromJson(reader);
                 } else if ("resourceCollection".equals(fieldName)) {
                     List<String> resourceCollection = reader.readArray(reader1 -> reader1.getString());
                     deserializedVirtualEnclaveProperties.resourceCollection = resourceCollection;
@@ -507,6 +576,23 @@ public final class VirtualEnclaveProperties implements JsonSerializable<VirtualE
                     List<GovernedServiceItem> governedServiceList
                         = reader.readArray(reader1 -> GovernedServiceItem.fromJson(reader1));
                     deserializedVirtualEnclaveProperties.governedServiceList = governedServiceList;
+                } else if ("addressSpaces".equals(fieldName)) {
+                    List<AddressSpaceEntry> addressSpaces
+                        = reader.readArray(reader1 -> AddressSpaceEntry.fromJson(reader1));
+                    deserializedVirtualEnclaveProperties.addressSpaces = addressSpaces;
+                } else if ("computedAddressSpaces".equals(fieldName)) {
+                    List<ComputedAddressSpaceEntry> computedAddressSpaces
+                        = reader.readArray(reader1 -> ComputedAddressSpaceEntry.fromJson(reader1));
+                    deserializedVirtualEnclaveProperties.computedAddressSpaces = computedAddressSpaces;
+                } else if ("networkName".equals(fieldName)) {
+                    deserializedVirtualEnclaveProperties.networkName = reader.getString();
+                } else if ("subnetConfigurations".equals(fieldName)) {
+                    List<SubnetConfiguration> subnetConfigurations
+                        = reader.readArray(reader1 -> SubnetConfiguration.fromJson(reader1));
+                    deserializedVirtualEnclaveProperties.subnetConfigurations = subnetConfigurations;
+                } else if ("allowSubnetCommunication".equals(fieldName)) {
+                    deserializedVirtualEnclaveProperties.allowSubnetCommunication
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enclaveDefaultSettings".equals(fieldName)) {
                     deserializedVirtualEnclaveProperties.enclaveDefaultSettings
                         = EnclaveDefaultSettingsModel.fromJson(reader);

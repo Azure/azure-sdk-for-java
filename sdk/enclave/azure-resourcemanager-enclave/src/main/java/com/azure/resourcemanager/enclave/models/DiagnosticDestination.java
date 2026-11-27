@@ -27,6 +27,11 @@ public final class DiagnosticDestination extends ExpandableStringEnum<Diagnostic
     public static final DiagnosticDestination BOTH = fromString("Both");
 
     /**
+     * DiagnosticDestination Type Unspecified.
+     */
+    public static final DiagnosticDestination UNSPECIFIED = fromString("Unspecified");
+
+    /**
      * Creates a new instance of DiagnosticDestination value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

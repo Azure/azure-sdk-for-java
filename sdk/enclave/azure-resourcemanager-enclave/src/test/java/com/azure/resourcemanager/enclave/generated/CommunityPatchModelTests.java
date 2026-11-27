@@ -29,6 +29,7 @@ import com.azure.resourcemanager.enclave.models.Principal;
 import com.azure.resourcemanager.enclave.models.PrincipalType;
 import com.azure.resourcemanager.enclave.models.RoleAssignmentItem;
 import com.azure.resourcemanager.enclave.models.ServiceIdentifier;
+import com.azure.resourcemanager.enclave.models.SubnetJoinPolicyMode;
 import com.azure.resourcemanager.enclave.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -39,30 +40,32 @@ public final class CommunityPatchModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommunityPatchModel model = BinaryData.fromString(
-            "{\"properties\":{\"dnsServers\":[\"qiatkzwpcnp\",\"zcjaesgvvsccy\",\"jguq\"],\"governedServiceList\":[{\"serviceId\":\"PrivateDNSZones\",\"serviceName\":\"zlvdnkfxusemdw\",\"option\":\"NotApplicable\",\"enforcement\":\"Disabled\",\"policyAction\":\"AuditOnly\",\"initiatives\":[\"qdpsqxqvpsvu\",\"ymgc\",\"elvezrypq\",\"mfe\"]},{\"serviceId\":\"CosmosDB\",\"serviceName\":\"rqwky\",\"option\":\"Allow\",\"enforcement\":\"Disabled\",\"policyAction\":\"None\",\"initiatives\":[\"dkow\",\"pbqpcrfkbwccsn\",\"vcdwxlpqekftn\",\"htjsying\"]},{\"serviceId\":\"KeyVault\",\"serviceName\":\"atmtdhtmdvy\",\"option\":\"ExceptionOnly\",\"enforcement\":\"Disabled\",\"policyAction\":\"None\",\"initiatives\":[\"w\",\"birryuzhl\",\"kj\",\"qrvqq\"]},{\"serviceId\":\"KeyVault\",\"serviceName\":\"jinrvgoupmfiibfg\",\"option\":\"NotApplicable\",\"enforcement\":\"Enabled\",\"policyAction\":\"AuditOnly\",\"initiatives\":[\"x\",\"v\",\"kkgll\"]}],\"policyOverride\":\"None\",\"communityRoleAssignments\":[{\"roleDefinitionId\":\"vjayvblmhvkzu\",\"principals\":[{\"id\":\"vvyhg\",\"type\":\"User\"}],\"condition\":\"byrqufeg\"},{\"roleDefinitionId\":\"uvwzfbnh\",\"principals\":[{\"id\":\"tlpdn\",\"type\":\"Group\"},{\"id\":\"tvgbmhrixkwmy\",\"type\":\"User\"},{\"id\":\"ejvegrhbpnaixex\",\"type\":\"ServicePrincipal\"}],\"condition\":\"dreaxh\"},{\"roleDefinitionId\":\"exdrrvqahqkg\",\"principals\":[{\"id\":\"wijnh\",\"type\":\"ServicePrincipal\"},{\"id\":\"svfycxzbfv\",\"type\":\"Group\"}],\"condition\":\"vrvmtgjqppyost\"}],\"firewallSku\":\"Standard\",\"approvalSettings\":{\"communityEndpointUpdate\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":1320458581,\"mandatoryApprovers\":[{\"approverEntraId\":\"nsxkmcwaekrrjr\"},{\"approverEntraId\":\"afxtsgum\"},{\"approverEntraId\":\"jglikkxwslolb\"}]},\"enclaveEndpointUpdate\":{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":613388775,\"mandatoryApprovers\":[{\"approverEntraId\":\"felfktg\"},{\"approverEntraId\":\"lcrpw\"},{\"approverEntraId\":\"xeznoi\"},{\"approverEntraId\":\"brnjwmw\"}]},\"enclaveCreation\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":808609813,\"mandatoryApprovers\":[{\"approverEntraId\":\"jjoqkagf\"},{\"approverEntraId\":\"sxtta\"},{\"approverEntraId\":\"gzxnfaazpxdtnk\"},{\"approverEntraId\":\"mkqjj\"}]},\"connectionCreation\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":1206033090,\"mandatoryApprovers\":[{\"approverEntraId\":\"pyouaibrebqaays\"},{\"approverEntraId\":\"kixqtnqtt\"},{\"approverEntraId\":\"zlwfffiakp\"},{\"approverEntraId\":\"pqqmted\"}]},\"connectionUpdate\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":508950619,\"mandatoryApprovers\":[{\"approverEntraId\":\"eozphv\"},{\"approverEntraId\":\"auyqncygupkv\"},{\"approverEntraId\":\"p\"},{\"approverEntraId\":\"dscwxqupevzhf\"}]},\"communityMaintenanceMode\":{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":1386174682,\"mandatoryApprovers\":[{\"approverEntraId\":\"ujbypelmcuvhixb\"},{\"approverEntraId\":\"xyfwnylrcool\"},{\"approverEntraId\":\"ttpkiwkkbnujrywv\"},{\"approverEntraId\":\"y\"}]},\"enclaveMaintenanceMode\":{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":1062747402,\"mandatoryApprovers\":[{\"approverEntraId\":\"doiwi\"}]}},\"maintenanceModeConfiguration\":{\"mode\":\"CanNotDelete\",\"principals\":[{\"id\":\"wubxc\",\"type\":\"ServicePrincipal\"}],\"justification\":\"Networking\"},\"monitoringSettings\":{\"diagnosticDestinations\":[{\"destinationType\":\"EnclaveWorkspace\",\"customWorkspaceResourceId\":\"ntwjch\",\"diagnosticSettingsName\":\"goihx\"}],\"flowLogDestination\":{\"destinationType\":\"CommunityWorkspace\",\"customWorkspaceResourceId\":\"ton\",\"diagnosticSettingsName\":\"jl\"}},\"addressSpaces\":[\"fdlwg\",\"ytsbwtovv\",\"gseinq\"]},\"tags\":{\"qmsniffcdmqnro\":\"fxqknpirgneptt\",\"hcrat\":\"lpijnkrxfrd\",\"ft\":\"zzronasx\",\"zh\":\"zq\"},\"identity\":{\"principalId\":\"esgogc\",\"tenantId\":\"onnxkrlgnyhm\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"svbuswdvzyy\":{\"principalId\":\"kgthrrghxjbd\",\"clientId\":\"xvcxgfrpdsofbshr\"}}}}")
+            "{\"properties\":{\"dnsServers\":[\"pj\"],\"governedServiceList\":[{\"serviceId\":\"AppService\",\"serviceName\":\"lhflsjcdhszfjvf\",\"option\":\"Allow\",\"enforcement\":\"Enabled\",\"policyAction\":\"Enforce\",\"initiatives\":[\"rqmq\",\"ldvriiiojnalghfk\",\"tvsexsowuel\"]},{\"serviceId\":\"AzureLocal\",\"serviceName\":\"hahhxvrhmzkwpj\",\"option\":\"NotApplicable\",\"enforcement\":\"Disabled\",\"policyAction\":\"None\",\"initiatives\":[\"tqs\",\"hqxujxukndxdi\",\"rjguufzdmsyqtf\",\"hwhbotzingamv\"]},{\"serviceId\":\"Insights\",\"serviceName\":\"o\",\"option\":\"Deny\",\"enforcement\":\"Disabled\",\"policyAction\":\"AuditOnly\",\"initiatives\":[\"amvdkfwynwcvtbv\",\"ayhmtnvyqiatkz\",\"pcnp\",\"zcjaesgvvsccy\"]}],\"policyOverride\":\"Enclave\",\"communityRoleAssignments\":[{\"roleDefinitionId\":\"fhwygzlvdnkfxus\",\"principals\":[{\"id\":\"wzrmuh\",\"type\":\"User\"},{\"id\":\"fcqdpsq\",\"type\":\"Group\"}],\"condition\":\"psvuoymgc\"},{\"roleDefinitionId\":\"elvezrypq\",\"principals\":[{\"id\":\"eokerqwkyhkobopg\",\"type\":\"ServicePrincipal\"}],\"condition\":\"k\"}],\"firewallSku\":\"Standard\",\"subnetJoinPolicyMode\":\"Deny\",\"approvalSettings\":{\"communityEndpointUpdate\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":1318988279,\"mandatoryApprovers\":[{\"approverEntraId\":\"ccsnjvcdwxlpq\"},{\"approverEntraId\":\"kftnkhtjsyin\"},{\"approverEntraId\":\"wfqatmtd\"},{\"approverEntraId\":\"tmdvypgikdgs\"}]},\"enclaveEndpointUpdate\":{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":257648591,\"mandatoryApprovers\":[{\"approverEntraId\":\"yuzhlhkjoqrvq\"},{\"approverEntraId\":\"aatjinrvgoupmfi\"}]},\"enclaveCreation\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":366208637,\"mandatoryApprovers\":[{\"approverEntraId\":\"olvrw\"}]},\"connectionCreation\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":46928565,\"mandatoryApprovers\":[{\"approverEntraId\":\"lqwjygvjayvblm\"},{\"approverEntraId\":\"vkzuhbxvvyhgso\"},{\"approverEntraId\":\"byrqufeg\"},{\"approverEntraId\":\"uvwzfbnh\"}]},\"connectionUpdate\":{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":25336970,\"mandatoryApprovers\":[{\"approverEntraId\":\"gitvg\"},{\"approverEntraId\":\"mhrixkwmyijejve\"},{\"approverEntraId\":\"rh\"},{\"approverEntraId\":\"pna\"}]},\"communityMaintenanceMode\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":963603452,\"mandatoryApprovers\":[{\"approverEntraId\":\"reaxhcexdr\"},{\"approverEntraId\":\"vqahqkghtpwi\"}]},\"enclaveMaintenanceMode\":{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":441495179,\"mandatoryApprovers\":[{\"approverEntraId\":\"ycxzbfvoo\"}]}},\"maintenanceModeConfiguration\":{\"mode\":\"Advanced\",\"principals\":[{\"id\":\"t\",\"type\":\"ServicePrincipal\"}],\"justification\":\"Off\"},\"monitoringSettings\":{\"diagnosticDestinations\":[{\"destinationType\":\"CommunityWorkspace\",\"customWorkspaceResourceId\":\"ronzmyhgfip\",\"diagnosticSettingsName\":\"xkmcwaekrrjre\"},{\"destinationType\":\"EnclaveWorkspace\",\"customWorkspaceResourceId\":\"tsgumhj\",\"diagnosticSettingsName\":\"ikkx\"}],\"flowLogDestination\":{\"destinationType\":\"CustomWorkspace\",\"customWorkspaceResourceId\":\"lbqpvuzlmvfelf\",\"diagnosticSettingsName\":\"gplcrpwjxeznoigb\"}},\"addressSpaces\":[\"w\",\"wkpnbsaz\",\"jjoqkagf\"]},\"tags\":{\"dtnkdmkq\":\"ttaugzxnfaazp\",\"ou\":\"jlwuenvrkp\",\"aays\":\"ibreb\",\"zlwfffiakp\":\"kixqtnqtt\"},\"identity\":{\"principalId\":\"qmt\",\"tenantId\":\"ltmm\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"stotxh\":{\"principalId\":\"ozphvwauyqncygu\",\"clientId\":\"vipmdscwxqupevzh\"},\"ool\":{\"principalId\":\"ujbypelmcuvhixb\",\"clientId\":\"yfwnylr\"},\"ithtywu\":{\"principalId\":\"tpkiwkkbnujry\",\"clientId\":\"tylbfpncurdoiw\"},\"hxumwctondzj\":{\"principalId\":\"cbihwqk\",\"clientId\":\"dntwjchrdgo\"}}}}")
             .toObject(CommunityPatchModel.class);
-        Assertions.assertEquals("qiatkzwpcnp", model.properties().dnsServers().get(0));
-        Assertions.assertEquals(ServiceIdentifier.PRIVATE_DNSZONES,
+        Assertions.assertEquals("pj", model.properties().dnsServers().get(0));
+        Assertions.assertEquals(ServiceIdentifier.APP_SERVICE,
             model.properties().governedServiceList().get(0).serviceId());
-        Assertions.assertEquals(GovernedServiceItemOption.NOT_APPLICABLE,
+        Assertions.assertEquals(GovernedServiceItemOption.ALLOW,
             model.properties().governedServiceList().get(0).option());
-        Assertions.assertEquals(GovernedServiceItemEnforcement.DISABLED,
+        Assertions.assertEquals(GovernedServiceItemEnforcement.ENABLED,
             model.properties().governedServiceList().get(0).enforcement());
-        Assertions.assertEquals(GovernedServiceItemPolicyAction.AUDIT_ONLY,
+        Assertions.assertEquals(GovernedServiceItemPolicyAction.ENFORCE,
             model.properties().governedServiceList().get(0).policyAction());
-        Assertions.assertEquals(CommunityPropertiesPolicyOverride.NONE, model.properties().policyOverride());
-        Assertions.assertEquals("vjayvblmhvkzu",
+        Assertions.assertEquals(CommunityPropertiesPolicyOverride.ENCLAVE, model.properties().policyOverride());
+        Assertions.assertEquals("fhwygzlvdnkfxus",
             model.properties().communityRoleAssignments().get(0).roleDefinitionId());
-        Assertions.assertEquals("vvyhg", model.properties().communityRoleAssignments().get(0).principals().get(0).id());
+        Assertions.assertEquals("wzrmuh",
+            model.properties().communityRoleAssignments().get(0).principals().get(0).id());
         Assertions.assertEquals(PrincipalType.USER,
             model.properties().communityRoleAssignments().get(0).principals().get(0).type());
-        Assertions.assertEquals("byrqufeg", model.properties().communityRoleAssignments().get(0).condition());
+        Assertions.assertEquals("psvuoymgc", model.properties().communityRoleAssignments().get(0).condition());
         Assertions.assertEquals(FirewallSKU.STANDARD, model.properties().firewallSku());
+        Assertions.assertEquals(SubnetJoinPolicyMode.DENY, model.properties().subnetJoinPolicyMode());
         Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
             model.properties().granularApprovalSettings().communityEndpointUpdate().approvalPolicy());
-        Assertions.assertEquals(1320458581,
+        Assertions.assertEquals(1318988279,
             model.properties().granularApprovalSettings().communityEndpointUpdate().minimumApproversRequired());
-        Assertions.assertEquals("nsxkmcwaekrrjr",
+        Assertions.assertEquals("ccsnjvcdwxlpq",
             model.properties()
                 .granularApprovalSettings()
                 .communityEndpointUpdate()
@@ -71,9 +74,9 @@ public final class CommunityPatchModelTests {
                 .approverEntraId());
         Assertions.assertEquals(ApprovalPolicy.REQUIRED,
             model.properties().granularApprovalSettings().enclaveEndpointUpdate().approvalPolicy());
-        Assertions.assertEquals(613388775,
+        Assertions.assertEquals(257648591,
             model.properties().granularApprovalSettings().enclaveEndpointUpdate().minimumApproversRequired());
-        Assertions.assertEquals("felfktg",
+        Assertions.assertEquals("yuzhlhkjoqrvq",
             model.properties()
                 .granularApprovalSettings()
                 .enclaveEndpointUpdate()
@@ -82,9 +85,9 @@ public final class CommunityPatchModelTests {
                 .approverEntraId());
         Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
             model.properties().granularApprovalSettings().enclaveCreation().approvalPolicy());
-        Assertions.assertEquals(808609813,
+        Assertions.assertEquals(366208637,
             model.properties().granularApprovalSettings().enclaveCreation().minimumApproversRequired());
-        Assertions.assertEquals("jjoqkagf",
+        Assertions.assertEquals("olvrw",
             model.properties()
                 .granularApprovalSettings()
                 .enclaveCreation()
@@ -93,31 +96,31 @@ public final class CommunityPatchModelTests {
                 .approverEntraId());
         Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
             model.properties().granularApprovalSettings().connectionCreation().approvalPolicy());
-        Assertions.assertEquals(1206033090,
+        Assertions.assertEquals(46928565,
             model.properties().granularApprovalSettings().connectionCreation().minimumApproversRequired());
-        Assertions.assertEquals("pyouaibrebqaays",
+        Assertions.assertEquals("lqwjygvjayvblm",
             model.properties()
                 .granularApprovalSettings()
                 .connectionCreation()
                 .mandatoryApprovers()
                 .get(0)
                 .approverEntraId());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
+        Assertions.assertEquals(ApprovalPolicy.REQUIRED,
             model.properties().granularApprovalSettings().connectionUpdate().approvalPolicy());
-        Assertions.assertEquals(508950619,
+        Assertions.assertEquals(25336970,
             model.properties().granularApprovalSettings().connectionUpdate().minimumApproversRequired());
-        Assertions.assertEquals("eozphv",
+        Assertions.assertEquals("gitvg",
             model.properties()
                 .granularApprovalSettings()
                 .connectionUpdate()
                 .mandatoryApprovers()
                 .get(0)
                 .approverEntraId());
-        Assertions.assertEquals(ApprovalPolicy.REQUIRED,
+        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
             model.properties().granularApprovalSettings().communityMaintenanceMode().approvalPolicy());
-        Assertions.assertEquals(1386174682,
+        Assertions.assertEquals(963603452,
             model.properties().granularApprovalSettings().communityMaintenanceMode().minimumApproversRequired());
-        Assertions.assertEquals("ujbypelmcuvhixb",
+        Assertions.assertEquals("reaxhcexdr",
             model.properties()
                 .granularApprovalSettings()
                 .communityMaintenanceMode()
@@ -126,170 +129,164 @@ public final class CommunityPatchModelTests {
                 .approverEntraId());
         Assertions.assertEquals(ApprovalPolicy.REQUIRED,
             model.properties().granularApprovalSettings().enclaveMaintenanceMode().approvalPolicy());
-        Assertions.assertEquals(1062747402,
+        Assertions.assertEquals(441495179,
             model.properties().granularApprovalSettings().enclaveMaintenanceMode().minimumApproversRequired());
-        Assertions.assertEquals("doiwi",
+        Assertions.assertEquals("ycxzbfvoo",
             model.properties()
                 .granularApprovalSettings()
                 .enclaveMaintenanceMode()
                 .mandatoryApprovers()
                 .get(0)
                 .approverEntraId());
-        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.CAN_NOT_DELETE,
+        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.ADVANCED,
             model.properties().maintenanceModeConfiguration().mode());
-        Assertions.assertEquals("wubxc", model.properties().maintenanceModeConfiguration().principals().get(0).id());
+        Assertions.assertEquals("t", model.properties().maintenanceModeConfiguration().principals().get(0).id());
         Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL,
             model.properties().maintenanceModeConfiguration().principals().get(0).type());
-        Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.NETWORKING,
+        Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.OFF,
             model.properties().maintenanceModeConfiguration().justification());
-        Assertions.assertEquals(MonitoringDestinationType.ENCLAVE_WORKSPACE,
-            model.properties().monitoringSettings().diagnosticDestinations().get(0).destinationType());
-        Assertions.assertEquals("ntwjch",
-            model.properties().monitoringSettings().diagnosticDestinations().get(0).customWorkspaceResourceId());
-        Assertions.assertEquals("goihx",
-            model.properties().monitoringSettings().diagnosticDestinations().get(0).diagnosticSettingsName());
         Assertions.assertEquals(MonitoringDestinationType.COMMUNITY_WORKSPACE,
+            model.properties().monitoringSettings().diagnosticDestinations().get(0).destinationType());
+        Assertions.assertEquals("ronzmyhgfip",
+            model.properties().monitoringSettings().diagnosticDestinations().get(0).customWorkspaceResourceId());
+        Assertions.assertEquals("xkmcwaekrrjre",
+            model.properties().monitoringSettings().diagnosticDestinations().get(0).diagnosticSettingsName());
+        Assertions.assertEquals(MonitoringDestinationType.CUSTOM_WORKSPACE,
             model.properties().monitoringSettings().flowLogDestination().destinationType());
-        Assertions.assertEquals("ton",
+        Assertions.assertEquals("lbqpvuzlmvfelf",
             model.properties().monitoringSettings().flowLogDestination().customWorkspaceResourceId());
-        Assertions.assertEquals("jl",
+        Assertions.assertEquals("gplcrpwjxeznoigb",
             model.properties().monitoringSettings().flowLogDestination().diagnosticSettingsName());
-        Assertions.assertEquals("fdlwg", model.properties().addressSpaces().get(0));
-        Assertions.assertEquals("fxqknpirgneptt", model.tags().get("qmsniffcdmqnro"));
+        Assertions.assertEquals("w", model.properties().addressSpaces().get(0));
+        Assertions.assertEquals("ttaugzxnfaazp", model.tags().get("dtnkdmkq"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommunityPatchModel model = new CommunityPatchModel()
-            .withProperties(
-                new CommunityPatchProperties().withDnsServers(Arrays.asList("qiatkzwpcnp", "zcjaesgvvsccy", "jguq"))
-                    .withGovernedServiceList(Arrays.asList(
-                        new GovernedServiceItem().withServiceId(ServiceIdentifier.PRIVATE_DNSZONES)
-                            .withOption(GovernedServiceItemOption.NOT_APPLICABLE)
-                            .withEnforcement(GovernedServiceItemEnforcement.DISABLED)
-                            .withPolicyAction(GovernedServiceItemPolicyAction.AUDIT_ONLY),
-                        new GovernedServiceItem().withServiceId(ServiceIdentifier.COSMOS_DB)
-                            .withOption(GovernedServiceItemOption.ALLOW)
-                            .withEnforcement(GovernedServiceItemEnforcement.DISABLED)
-                            .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                        new GovernedServiceItem().withServiceId(ServiceIdentifier.KEY_VAULT)
-                            .withOption(GovernedServiceItemOption.EXCEPTION_ONLY)
-                            .withEnforcement(GovernedServiceItemEnforcement.DISABLED)
-                            .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                        new GovernedServiceItem().withServiceId(ServiceIdentifier.KEY_VAULT)
-                            .withOption(GovernedServiceItemOption.NOT_APPLICABLE)
-                            .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                            .withPolicyAction(GovernedServiceItemPolicyAction.AUDIT_ONLY)))
-                    .withPolicyOverride(CommunityPropertiesPolicyOverride.NONE)
-                    .withCommunityRoleAssignments(Arrays.asList(
-                        new RoleAssignmentItem().withRoleDefinitionId("vjayvblmhvkzu")
-                            .withPrincipals(Arrays.asList(new Principal().withId("vvyhg").withType(PrincipalType.USER)))
-                            .withCondition("byrqufeg"),
-                        new RoleAssignmentItem().withRoleDefinitionId("uvwzfbnh")
-                            .withPrincipals(Arrays.asList(new Principal().withId("tlpdn").withType(PrincipalType.GROUP),
-                                new Principal().withId("tvgbmhrixkwmy").withType(PrincipalType.USER),
-                                new Principal().withId("ejvegrhbpnaixex").withType(PrincipalType.SERVICE_PRINCIPAL)))
-                            .withCondition("dreaxh"),
-                        new RoleAssignmentItem().withRoleDefinitionId("exdrrvqahqkg")
-                            .withPrincipals(
-                                Arrays.asList(new Principal().withId("wijnh").withType(PrincipalType.SERVICE_PRINCIPAL),
-                                    new Principal().withId("svfycxzbfv").withType(PrincipalType.GROUP)))
-                            .withCondition("vrvmtgjqppyost")))
-                    .withFirewallSku(FirewallSKU.STANDARD)
-                    .withGranularApprovalSettings(new ApprovalSettingsPatchProperties()
-                        .withCommunityEndpointUpdate(new ApprovalSettingConfiguration()
-                            .withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)
-                            .withMinimumApproversRequired(1320458581)
-                            .withMandatoryApprovers(
-                                Arrays.asList(new MandatoryApprover().withApproverEntraId("nsxkmcwaekrrjr"),
-                                    new MandatoryApprover().withApproverEntraId("afxtsgum"),
-                                    new MandatoryApprover().withApproverEntraId("jglikkxwslolb"))))
-                        .withEnclaveEndpointUpdate(
-                            new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
-                                .withMinimumApproversRequired(613388775)
-                                .withMandatoryApprovers(
-                                    Arrays.asList(new MandatoryApprover().withApproverEntraId("felfktg"),
-                                        new MandatoryApprover().withApproverEntraId("lcrpw"),
-                                        new MandatoryApprover().withApproverEntraId("xeznoi"),
-                                        new MandatoryApprover().withApproverEntraId("brnjwmw"))))
-                        .withEnclaveCreation(
-                            new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)
-                                .withMinimumApproversRequired(808609813)
-                                .withMandatoryApprovers(
-                                    Arrays.asList(new MandatoryApprover().withApproverEntraId("jjoqkagf"),
-                                        new MandatoryApprover().withApproverEntraId("sxtta"),
-                                        new MandatoryApprover().withApproverEntraId("gzxnfaazpxdtnk"),
-                                        new MandatoryApprover().withApproverEntraId("mkqjj"))))
-                        .withConnectionCreation(
-                            new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)
-                                .withMinimumApproversRequired(1206033090)
-                                .withMandatoryApprovers(
-                                    Arrays.asList(new MandatoryApprover().withApproverEntraId("pyouaibrebqaays"),
-                                        new MandatoryApprover().withApproverEntraId("kixqtnqtt"),
-                                        new MandatoryApprover().withApproverEntraId("zlwfffiakp"),
-                                        new MandatoryApprover().withApproverEntraId("pqqmted"))))
-                        .withConnectionUpdate(new ApprovalSettingConfiguration()
-                            .withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)
-                            .withMinimumApproversRequired(508950619)
-                            .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("eozphv"),
-                                new MandatoryApprover().withApproverEntraId("auyqncygupkv"),
-                                new MandatoryApprover().withApproverEntraId("p"),
-                                new MandatoryApprover().withApproverEntraId("dscwxqupevzhf"))))
-                        .withCommunityMaintenanceMode(
-                            new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
-                                .withMinimumApproversRequired(1386174682)
-                                .withMandatoryApprovers(
-                                    Arrays.asList(new MandatoryApprover().withApproverEntraId("ujbypelmcuvhixb"),
-                                        new MandatoryApprover().withApproverEntraId("xyfwnylrcool"),
-                                        new MandatoryApprover().withApproverEntraId("ttpkiwkkbnujrywv"),
-                                        new MandatoryApprover().withApproverEntraId("y"))))
-                        .withEnclaveMaintenanceMode(
-                            new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
-                                .withMinimumApproversRequired(1062747402)
-                                .withMandatoryApprovers(
-                                    Arrays.asList(new MandatoryApprover().withApproverEntraId("doiwi")))))
-                    .withMaintenanceModeConfiguration(new MaintenanceModeConfigurationPatchModel()
-                        .withMode(MaintenanceModeConfigurationModelMode.CAN_NOT_DELETE)
+            .withProperties(new CommunityPatchProperties().withDnsServers(Arrays.asList("pj"))
+                .withGovernedServiceList(Arrays.asList(
+                    new GovernedServiceItem().withServiceId(ServiceIdentifier.APP_SERVICE)
+                        .withOption(GovernedServiceItemOption.ALLOW)
+                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                        .withPolicyAction(GovernedServiceItemPolicyAction.ENFORCE),
+                    new GovernedServiceItem().withServiceId(ServiceIdentifier.AZURE_LOCAL)
+                        .withOption(GovernedServiceItemOption.NOT_APPLICABLE)
+                        .withEnforcement(GovernedServiceItemEnforcement.DISABLED)
+                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                    new GovernedServiceItem().withServiceId(ServiceIdentifier.INSIGHTS)
+                        .withOption(GovernedServiceItemOption.DENY)
+                        .withEnforcement(GovernedServiceItemEnforcement.DISABLED)
+                        .withPolicyAction(GovernedServiceItemPolicyAction.AUDIT_ONLY)))
+                .withPolicyOverride(CommunityPropertiesPolicyOverride.ENCLAVE)
+                .withCommunityRoleAssignments(Arrays.asList(
+                    new RoleAssignmentItem().withRoleDefinitionId("fhwygzlvdnkfxus")
+                        .withPrincipals(Arrays.asList(new Principal().withId("wzrmuh").withType(PrincipalType.USER),
+                            new Principal().withId("fcqdpsq").withType(PrincipalType.GROUP)))
+                        .withCondition("psvuoymgc"),
+                    new RoleAssignmentItem()
+                        .withRoleDefinitionId("elvezrypq")
                         .withPrincipals(
-                            Arrays.asList(new Principal().withId("wubxc").withType(PrincipalType.SERVICE_PRINCIPAL)))
-                        .withJustification(MaintenanceModeConfigurationModelJustification.NETWORKING))
-                    .withMonitoringSettings(new MonitoringSettingsPatchModel()
-                        .withDiagnosticDestinations(Arrays.asList(new MonitoringDestinationPatchModel()
-                            .withDestinationType(MonitoringDestinationType.ENCLAVE_WORKSPACE)
-                            .withCustomWorkspaceResourceId("ntwjch")
-                            .withDiagnosticSettingsName("goihx")))
-                        .withFlowLogDestination(new MonitoringDestinationPatchModel()
+                            Arrays.asList(
+                                new Principal().withId("eokerqwkyhkobopg").withType(PrincipalType.SERVICE_PRINCIPAL)))
+                        .withCondition("k")))
+                .withFirewallSku(FirewallSKU.STANDARD)
+                .withSubnetJoinPolicyMode(SubnetJoinPolicyMode.DENY)
+                .withGranularApprovalSettings(new ApprovalSettingsPatchProperties()
+                    .withCommunityEndpointUpdate(
+                        new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)
+                            .withMinimumApproversRequired(1318988279)
+                            .withMandatoryApprovers(
+                                Arrays.asList(new MandatoryApprover().withApproverEntraId("ccsnjvcdwxlpq"),
+                                    new MandatoryApprover().withApproverEntraId("kftnkhtjsyin"),
+                                    new MandatoryApprover().withApproverEntraId("wfqatmtd"),
+                                    new MandatoryApprover().withApproverEntraId("tmdvypgikdgs"))))
+                    .withEnclaveEndpointUpdate(
+                        new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                            .withMinimumApproversRequired(257648591)
+                            .withMandatoryApprovers(
+                                Arrays.asList(new MandatoryApprover().withApproverEntraId("yuzhlhkjoqrvq"),
+                                    new MandatoryApprover().withApproverEntraId("aatjinrvgoupmfi"))))
+                    .withEnclaveCreation(new ApprovalSettingConfiguration()
+                        .withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)
+                        .withMinimumApproversRequired(366208637)
+                        .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("olvrw"))))
+                    .withConnectionCreation(
+                        new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)
+                            .withMinimumApproversRequired(46928565)
+                            .withMandatoryApprovers(
+                                Arrays.asList(new MandatoryApprover().withApproverEntraId("lqwjygvjayvblm"),
+                                    new MandatoryApprover().withApproverEntraId("vkzuhbxvvyhgso"),
+                                    new MandatoryApprover().withApproverEntraId("byrqufeg"),
+                                    new MandatoryApprover().withApproverEntraId("uvwzfbnh"))))
+                    .withConnectionUpdate(new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                        .withMinimumApproversRequired(25336970)
+                        .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("gitvg"),
+                            new MandatoryApprover().withApproverEntraId("mhrixkwmyijejve"),
+                            new MandatoryApprover().withApproverEntraId("rh"),
+                            new MandatoryApprover().withApproverEntraId("pna"))))
+                    .withCommunityMaintenanceMode(new ApprovalSettingConfiguration()
+                        .withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)
+                        .withMinimumApproversRequired(963603452)
+                        .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("reaxhcexdr"),
+                            new MandatoryApprover().withApproverEntraId("vqahqkghtpwi"))))
+                    .withEnclaveMaintenanceMode(
+                        new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                            .withMinimumApproversRequired(441495179)
+                            .withMandatoryApprovers(
+                                Arrays.asList(new MandatoryApprover().withApproverEntraId("ycxzbfvoo")))))
+                .withMaintenanceModeConfiguration(new MaintenanceModeConfigurationPatchModel()
+                    .withMode(MaintenanceModeConfigurationModelMode.ADVANCED)
+                    .withPrincipals(
+                        Arrays.asList(new Principal().withId("t").withType(PrincipalType.SERVICE_PRINCIPAL)))
+                    .withJustification(MaintenanceModeConfigurationModelJustification.OFF))
+                .withMonitoringSettings(new MonitoringSettingsPatchModel()
+                    .withDiagnosticDestinations(Arrays.asList(
+                        new MonitoringDestinationPatchModel()
                             .withDestinationType(MonitoringDestinationType.COMMUNITY_WORKSPACE)
-                            .withCustomWorkspaceResourceId("ton")
-                            .withDiagnosticSettingsName("jl")))
-                    .withAddressSpaces(Arrays.asList("fdlwg", "ytsbwtovv", "gseinq")))
-            .withTags(mapOf("qmsniffcdmqnro", "fxqknpirgneptt", "hcrat", "lpijnkrxfrd", "ft", "zzronasx", "zh", "zq"))
+                            .withCustomWorkspaceResourceId("ronzmyhgfip")
+                            .withDiagnosticSettingsName("xkmcwaekrrjre"),
+                        new MonitoringDestinationPatchModel()
+                            .withDestinationType(MonitoringDestinationType.ENCLAVE_WORKSPACE)
+                            .withCustomWorkspaceResourceId("tsgumhj")
+                            .withDiagnosticSettingsName("ikkx")))
+                    .withFlowLogDestination(new MonitoringDestinationPatchModel()
+                        .withDestinationType(MonitoringDestinationType.CUSTOM_WORKSPACE)
+                        .withCustomWorkspaceResourceId("lbqpvuzlmvfelf")
+                        .withDiagnosticSettingsName("gplcrpwjxeznoigb")))
+                .withAddressSpaces(Arrays.asList("w", "wkpnbsaz", "jjoqkagf")))
+            .withTags(
+                mapOf("dtnkdmkq", "ttaugzxnfaazp", "ou", "jlwuenvrkp", "aays", "ibreb", "zlwfffiakp", "kixqtnqtt"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("svbuswdvzyy", new UserAssignedIdentity())));
+                .withUserAssignedIdentities(
+                    mapOf("stotxh", new UserAssignedIdentity(), "ool", new UserAssignedIdentity(), "ithtywu",
+                        new UserAssignedIdentity(), "hxumwctondzj", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(CommunityPatchModel.class);
-        Assertions.assertEquals("qiatkzwpcnp", model.properties().dnsServers().get(0));
-        Assertions.assertEquals(ServiceIdentifier.PRIVATE_DNSZONES,
+        Assertions.assertEquals("pj", model.properties().dnsServers().get(0));
+        Assertions.assertEquals(ServiceIdentifier.APP_SERVICE,
             model.properties().governedServiceList().get(0).serviceId());
-        Assertions.assertEquals(GovernedServiceItemOption.NOT_APPLICABLE,
+        Assertions.assertEquals(GovernedServiceItemOption.ALLOW,
             model.properties().governedServiceList().get(0).option());
-        Assertions.assertEquals(GovernedServiceItemEnforcement.DISABLED,
+        Assertions.assertEquals(GovernedServiceItemEnforcement.ENABLED,
             model.properties().governedServiceList().get(0).enforcement());
-        Assertions.assertEquals(GovernedServiceItemPolicyAction.AUDIT_ONLY,
+        Assertions.assertEquals(GovernedServiceItemPolicyAction.ENFORCE,
             model.properties().governedServiceList().get(0).policyAction());
-        Assertions.assertEquals(CommunityPropertiesPolicyOverride.NONE, model.properties().policyOverride());
-        Assertions.assertEquals("vjayvblmhvkzu",
+        Assertions.assertEquals(CommunityPropertiesPolicyOverride.ENCLAVE, model.properties().policyOverride());
+        Assertions.assertEquals("fhwygzlvdnkfxus",
             model.properties().communityRoleAssignments().get(0).roleDefinitionId());
-        Assertions.assertEquals("vvyhg", model.properties().communityRoleAssignments().get(0).principals().get(0).id());
+        Assertions.assertEquals("wzrmuh",
+            model.properties().communityRoleAssignments().get(0).principals().get(0).id());
         Assertions.assertEquals(PrincipalType.USER,
             model.properties().communityRoleAssignments().get(0).principals().get(0).type());
-        Assertions.assertEquals("byrqufeg", model.properties().communityRoleAssignments().get(0).condition());
+        Assertions.assertEquals("psvuoymgc", model.properties().communityRoleAssignments().get(0).condition());
         Assertions.assertEquals(FirewallSKU.STANDARD, model.properties().firewallSku());
+        Assertions.assertEquals(SubnetJoinPolicyMode.DENY, model.properties().subnetJoinPolicyMode());
         Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
             model.properties().granularApprovalSettings().communityEndpointUpdate().approvalPolicy());
-        Assertions.assertEquals(1320458581,
+        Assertions.assertEquals(1318988279,
             model.properties().granularApprovalSettings().communityEndpointUpdate().minimumApproversRequired());
-        Assertions.assertEquals("nsxkmcwaekrrjr",
+        Assertions.assertEquals("ccsnjvcdwxlpq",
             model.properties()
                 .granularApprovalSettings()
                 .communityEndpointUpdate()
@@ -298,9 +295,9 @@ public final class CommunityPatchModelTests {
                 .approverEntraId());
         Assertions.assertEquals(ApprovalPolicy.REQUIRED,
             model.properties().granularApprovalSettings().enclaveEndpointUpdate().approvalPolicy());
-        Assertions.assertEquals(613388775,
+        Assertions.assertEquals(257648591,
             model.properties().granularApprovalSettings().enclaveEndpointUpdate().minimumApproversRequired());
-        Assertions.assertEquals("felfktg",
+        Assertions.assertEquals("yuzhlhkjoqrvq",
             model.properties()
                 .granularApprovalSettings()
                 .enclaveEndpointUpdate()
@@ -309,9 +306,9 @@ public final class CommunityPatchModelTests {
                 .approverEntraId());
         Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
             model.properties().granularApprovalSettings().enclaveCreation().approvalPolicy());
-        Assertions.assertEquals(808609813,
+        Assertions.assertEquals(366208637,
             model.properties().granularApprovalSettings().enclaveCreation().minimumApproversRequired());
-        Assertions.assertEquals("jjoqkagf",
+        Assertions.assertEquals("olvrw",
             model.properties()
                 .granularApprovalSettings()
                 .enclaveCreation()
@@ -320,31 +317,31 @@ public final class CommunityPatchModelTests {
                 .approverEntraId());
         Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
             model.properties().granularApprovalSettings().connectionCreation().approvalPolicy());
-        Assertions.assertEquals(1206033090,
+        Assertions.assertEquals(46928565,
             model.properties().granularApprovalSettings().connectionCreation().minimumApproversRequired());
-        Assertions.assertEquals("pyouaibrebqaays",
+        Assertions.assertEquals("lqwjygvjayvblm",
             model.properties()
                 .granularApprovalSettings()
                 .connectionCreation()
                 .mandatoryApprovers()
                 .get(0)
                 .approverEntraId());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
+        Assertions.assertEquals(ApprovalPolicy.REQUIRED,
             model.properties().granularApprovalSettings().connectionUpdate().approvalPolicy());
-        Assertions.assertEquals(508950619,
+        Assertions.assertEquals(25336970,
             model.properties().granularApprovalSettings().connectionUpdate().minimumApproversRequired());
-        Assertions.assertEquals("eozphv",
+        Assertions.assertEquals("gitvg",
             model.properties()
                 .granularApprovalSettings()
                 .connectionUpdate()
                 .mandatoryApprovers()
                 .get(0)
                 .approverEntraId());
-        Assertions.assertEquals(ApprovalPolicy.REQUIRED,
+        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED,
             model.properties().granularApprovalSettings().communityMaintenanceMode().approvalPolicy());
-        Assertions.assertEquals(1386174682,
+        Assertions.assertEquals(963603452,
             model.properties().granularApprovalSettings().communityMaintenanceMode().minimumApproversRequired());
-        Assertions.assertEquals("ujbypelmcuvhixb",
+        Assertions.assertEquals("reaxhcexdr",
             model.properties()
                 .granularApprovalSettings()
                 .communityMaintenanceMode()
@@ -353,36 +350,36 @@ public final class CommunityPatchModelTests {
                 .approverEntraId());
         Assertions.assertEquals(ApprovalPolicy.REQUIRED,
             model.properties().granularApprovalSettings().enclaveMaintenanceMode().approvalPolicy());
-        Assertions.assertEquals(1062747402,
+        Assertions.assertEquals(441495179,
             model.properties().granularApprovalSettings().enclaveMaintenanceMode().minimumApproversRequired());
-        Assertions.assertEquals("doiwi",
+        Assertions.assertEquals("ycxzbfvoo",
             model.properties()
                 .granularApprovalSettings()
                 .enclaveMaintenanceMode()
                 .mandatoryApprovers()
                 .get(0)
                 .approverEntraId());
-        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.CAN_NOT_DELETE,
+        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.ADVANCED,
             model.properties().maintenanceModeConfiguration().mode());
-        Assertions.assertEquals("wubxc", model.properties().maintenanceModeConfiguration().principals().get(0).id());
+        Assertions.assertEquals("t", model.properties().maintenanceModeConfiguration().principals().get(0).id());
         Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL,
             model.properties().maintenanceModeConfiguration().principals().get(0).type());
-        Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.NETWORKING,
+        Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.OFF,
             model.properties().maintenanceModeConfiguration().justification());
-        Assertions.assertEquals(MonitoringDestinationType.ENCLAVE_WORKSPACE,
-            model.properties().monitoringSettings().diagnosticDestinations().get(0).destinationType());
-        Assertions.assertEquals("ntwjch",
-            model.properties().monitoringSettings().diagnosticDestinations().get(0).customWorkspaceResourceId());
-        Assertions.assertEquals("goihx",
-            model.properties().monitoringSettings().diagnosticDestinations().get(0).diagnosticSettingsName());
         Assertions.assertEquals(MonitoringDestinationType.COMMUNITY_WORKSPACE,
+            model.properties().monitoringSettings().diagnosticDestinations().get(0).destinationType());
+        Assertions.assertEquals("ronzmyhgfip",
+            model.properties().monitoringSettings().diagnosticDestinations().get(0).customWorkspaceResourceId());
+        Assertions.assertEquals("xkmcwaekrrjre",
+            model.properties().monitoringSettings().diagnosticDestinations().get(0).diagnosticSettingsName());
+        Assertions.assertEquals(MonitoringDestinationType.CUSTOM_WORKSPACE,
             model.properties().monitoringSettings().flowLogDestination().destinationType());
-        Assertions.assertEquals("ton",
+        Assertions.assertEquals("lbqpvuzlmvfelf",
             model.properties().monitoringSettings().flowLogDestination().customWorkspaceResourceId());
-        Assertions.assertEquals("jl",
+        Assertions.assertEquals("gplcrpwjxeznoigb",
             model.properties().monitoringSettings().flowLogDestination().diagnosticSettingsName());
-        Assertions.assertEquals("fdlwg", model.properties().addressSpaces().get(0));
-        Assertions.assertEquals("fxqknpirgneptt", model.tags().get("qmsniffcdmqnro"));
+        Assertions.assertEquals("w", model.properties().addressSpaces().get(0));
+        Assertions.assertEquals("ttaugzxnfaazp", model.tags().get("dtnkdmkq"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 

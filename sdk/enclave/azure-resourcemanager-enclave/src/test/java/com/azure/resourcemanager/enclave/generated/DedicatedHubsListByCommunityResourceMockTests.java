@@ -23,7 +23,7 @@ public final class DedicatedHubsListByCommunityResourceMockTests {
     @Test
     public void testListByCommunityResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"vHubResourceId\":\"svkolru\",\"firewallResourceId\":\"ovmozsayebraz\",\"firewallPolicyResourceId\":\"lpzbtzuykykipf\",\"designation\":\"Pooled\",\"provisioningState\":\"Canceled\"},\"location\":\"noc\",\"tags\":{\"qejg\":\"zacfpztgazw\",\"gkqzkcyzmffngdyf\":\"aokctgkp\",\"qvhoej\":\"ixrhl\"},\"id\":\"oiutgwrmkahpq\",\"name\":\"azyntacihncogm\",\"type\":\"pnmliq\"}]}";
+            = "{\"value\":[{\"properties\":{\"vHubResourceId\":\"ezolgjzm\",\"firewallResourceId\":\"uydoccnx\",\"firewallPolicyResourceId\":\"anzbui\",\"designation\":\"Reserved\",\"provisioningState\":\"Deleting\"},\"location\":\"ecaatsdohzniuc\",\"tags\":{\"jdllwktle\":\"ombwii\",\"lynkgfcfdruw\":\"owavvqxuajgcqw\",\"xxtclhuulri\":\"i\"},\"id\":\"byokvjgbzsxe\",\"name\":\"rsltt\",\"type\":\"yhcdjwsuoardnag\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class DedicatedHubsListByCommunityResourceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<DedicatedHubResource> response
-            = manager.dedicatedHubs().listByCommunityResource("vdgxly", "kxitds", com.azure.core.util.Context.NONE);
+        PagedIterable<DedicatedHubResource> response = manager.dedicatedHubs()
+            .listByCommunityResource("lwynpbbfqvzfj", "spugzfeuzjljmph", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("noc", response.iterator().next().location());
-        Assertions.assertEquals("zacfpztgazw", response.iterator().next().tags().get("qejg"));
-        Assertions.assertEquals(Designation.POOLED, response.iterator().next().properties().designation());
+        Assertions.assertEquals("ecaatsdohzniuc", response.iterator().next().location());
+        Assertions.assertEquals("ombwii", response.iterator().next().tags().get("jdllwktle"));
+        Assertions.assertEquals(Designation.RESERVED, response.iterator().next().properties().designation());
     }
 }

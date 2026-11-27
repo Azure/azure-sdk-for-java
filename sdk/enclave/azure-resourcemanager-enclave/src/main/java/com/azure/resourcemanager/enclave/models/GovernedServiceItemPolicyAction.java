@@ -8,21 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for GovernedServiceItemPolicyAction.
+ * The policy action for a governed service.
  */
 public final class GovernedServiceItemPolicyAction extends ExpandableStringEnum<GovernedServiceItemPolicyAction> {
     /**
-     * Static value AuditOnly for GovernedServiceItemPolicyAction.
+     * Audit policy violations without enforcing the policy.
      */
     public static final GovernedServiceItemPolicyAction AUDIT_ONLY = fromString("AuditOnly");
 
     /**
-     * Static value Enforce for GovernedServiceItemPolicyAction.
+     * Enforce the policy.
      */
     public static final GovernedServiceItemPolicyAction ENFORCE = fromString("Enforce");
 
     /**
-     * Static value None for GovernedServiceItemPolicyAction.
+     * Do not apply a policy action.
      */
     public static final GovernedServiceItemPolicyAction NONE = fromString("None");
 

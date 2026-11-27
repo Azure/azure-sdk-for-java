@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PrincipalTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Principal model = BinaryData.fromString("{\"id\":\"ajiwkuo\",\"type\":\"User\"}").toObject(Principal.class);
-        Assertions.assertEquals("ajiwkuo", model.id());
+        Principal model = BinaryData.fromString("{\"id\":\"gnzscxaqwo\",\"type\":\"User\"}").toObject(Principal.class);
+        Assertions.assertEquals("gnzscxaqwo", model.id());
         Assertions.assertEquals(PrincipalType.USER, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Principal model = new Principal().withId("ajiwkuo").withType(PrincipalType.USER);
+        Principal model = new Principal().withId("gnzscxaqwo").withType(PrincipalType.USER);
         model = BinaryData.fromObject(model).toObject(Principal.class);
-        Assertions.assertEquals("ajiwkuo", model.id());
+        Assertions.assertEquals("gnzscxaqwo", model.id());
         Assertions.assertEquals(PrincipalType.USER, model.type());
     }
 }

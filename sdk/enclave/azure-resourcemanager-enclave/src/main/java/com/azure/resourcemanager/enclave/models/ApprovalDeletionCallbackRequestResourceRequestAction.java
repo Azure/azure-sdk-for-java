@@ -8,22 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for ApprovalDeletionCallbackRequestResourceRequestAction.
+ * The resource action for an approval deletion callback.
  */
 public final class ApprovalDeletionCallbackRequestResourceRequestAction
     extends ExpandableStringEnum<ApprovalDeletionCallbackRequestResourceRequestAction> {
     /**
-     * Static value Create for ApprovalDeletionCallbackRequestResourceRequestAction.
+     * Create the resource.
      */
     public static final ApprovalDeletionCallbackRequestResourceRequestAction CREATE = fromString("Create");
 
     /**
-     * Static value Delete for ApprovalDeletionCallbackRequestResourceRequestAction.
+     * Delete the resource.
      */
     public static final ApprovalDeletionCallbackRequestResourceRequestAction DELETE = fromString("Delete");
 
     /**
-     * Static value Update for ApprovalDeletionCallbackRequestResourceRequestAction.
+     * Update the resource.
      */
     public static final ApprovalDeletionCallbackRequestResourceRequestAction UPDATE = fromString("Update");
 

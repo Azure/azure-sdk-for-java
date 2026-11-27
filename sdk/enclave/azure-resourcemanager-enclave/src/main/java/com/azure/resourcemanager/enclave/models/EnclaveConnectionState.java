@@ -47,6 +47,16 @@ public final class EnclaveConnectionState extends ExpandableStringEnum<EnclaveCo
     public static final EnclaveConnectionState DISCONNECTED = fromString("Disconnected");
 
     /**
+     * A topology reconciliation is applying NSG rule changes for this connection.
+     */
+    public static final EnclaveConnectionState RECONCILING = fromString("Reconciling");
+
+    /**
+     * Sticky health state after at least 3 consecutive non-full-success reconciliations.
+     */
+    public static final EnclaveConnectionState DEGRADED = fromString("Degraded");
+
+    /**
      * Creates a new instance of EnclaveConnectionState value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

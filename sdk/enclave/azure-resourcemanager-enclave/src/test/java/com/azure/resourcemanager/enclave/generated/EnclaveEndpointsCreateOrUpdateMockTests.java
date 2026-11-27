@@ -28,7 +28,7 @@ public final class EnclaveEndpointsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ruleCollection\":[{\"protocols\":[\"AH\",\"ICMP\",\"ANY\",\"AH\"],\"endpointRuleName\":\"umvpsimioyoigl\",\"destination\":\"iqwnnraclibbfq\",\"ports\":\"pkl\"},{\"protocols\":[\"ESP\",\"ICMP\"],\"endpointRuleName\":\"hautw\",\"destination\":\"exzgpmnmabedd\",\"ports\":\"lwgdfpfqfpcvs\"}],\"resourceCollection\":[\"gq\"],\"provisioningState\":\"Succeeded\",\"updateMode\":\"Manual\"},\"location\":\"wxbsmtbl\",\"tags\":{\"ci\":\"h\",\"ekqhs\":\"kwdvbtb\",\"ejuwyqwdqigmghgi\":\"htfpwpqb\"},\"id\":\"z\",\"name\":\"xlujkhnjcm\",\"type\":\"nkfm\"}";
+            = "{\"properties\":{\"ruleCollection\":[{\"protocols\":[\"UDP\",\"ESP\",\"ANY\"],\"endpointRuleName\":\"bbvto\",\"destination\":\"rpogwphchg\",\"ports\":\"nhtukfacihmbf\"},{\"protocols\":[\"ESP\",\"UDP\",\"ESP\"],\"endpointRuleName\":\"bxvqxbnuvw\",\"destination\":\"asgom\",\"ports\":\"jzwxuqgovsxpwwz\"},{\"protocols\":[\"ICMP\"],\"endpointRuleName\":\"khtgfredmlscgrll\",\"destination\":\"na\",\"ports\":\"jowazhpab\"},{\"protocols\":[\"ANY\"],\"endpointRuleName\":\"yotgkwsxnsrqorc\",\"destination\":\"nmvceb\",\"ports\":\"etqujxcxxq\"}],\"resourceCollection\":[\"qjkedwqurc\",\"ojmrvvxwjongzse\",\"qqrsil\"],\"provisioningState\":\"Succeeded\",\"updateMode\":\"Automatic\"},\"location\":\"xk\",\"tags\":{\"tejrthc\":\"bvriaqgvtojrulfu\"},\"id\":\"jzhxlyubqjrost\",\"name\":\"rjeqmtzzbeqrztr\",\"type\":\"alx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,26 +38,28 @@ public final class EnclaveEndpointsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EnclaveEndpointResource response = manager.enclaveEndpoints()
-            .define("angp")
-            .withRegion("xxij")
-            .withExistingVirtualEnclave("h", "whlpuzjpceezn")
-            .withTags(mapOf("gkjgya", "ws", "fcvoinwoqar", "wrasekw"))
-            .withProperties(new EnclaveEndpointProperties().withRuleCollection(Arrays
-                .asList(new EnclaveEndpointDestinationRule().withProtocols(Arrays.asList(EnclaveEndpointProtocol.TCP))
-                    .withEndpointRuleName("zlbciphmse")
-                    .withDestination("oqrndktxfvonfeeq")
-                    .withPorts("krie")))
-                .withUpdateMode(UpdateMode.MANUAL))
+            .define("ghmp")
+            .withRegion("svalpnptwtrkxgpa")
+            .withExistingVirtualEnclave("zmijajwo", "xfsv")
+            .withTags(mapOf("lhld", "gxyqvnjobf", "giudjpxpq", "uhzzgqlmfaew", "xheq", "ttqhnmhkrezsds", "qgwokmikp",
+                "gcruxspinym"))
+            .withProperties(
+                new EnclaveEndpointProperties().withRuleCollection(Arrays.asList(new EnclaveEndpointDestinationRule()
+                    .withProtocols(Arrays.asList(EnclaveEndpointProtocol.ANY, EnclaveEndpointProtocol.AH,
+                        EnclaveEndpointProtocol.AH))
+                    .withEndpointRuleName("gtzjcv")
+                    .withDestination("qlapsnsso")
+                    .withPorts("xpavid"))).withUpdateMode(UpdateMode.AUTOMATIC))
             .create();
 
-        Assertions.assertEquals("wxbsmtbl", response.location());
-        Assertions.assertEquals("h", response.tags().get("ci"));
-        Assertions.assertEquals(EnclaveEndpointProtocol.AH,
+        Assertions.assertEquals("xk", response.location());
+        Assertions.assertEquals("bvriaqgvtojrulfu", response.tags().get("tejrthc"));
+        Assertions.assertEquals(EnclaveEndpointProtocol.UDP,
             response.properties().ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("umvpsimioyoigl", response.properties().ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("iqwnnraclibbfq", response.properties().ruleCollection().get(0).destination());
-        Assertions.assertEquals("pkl", response.properties().ruleCollection().get(0).ports());
-        Assertions.assertEquals(UpdateMode.MANUAL, response.properties().updateMode());
+        Assertions.assertEquals("bbvto", response.properties().ruleCollection().get(0).endpointRuleName());
+        Assertions.assertEquals("rpogwphchg", response.properties().ruleCollection().get(0).destination());
+        Assertions.assertEquals("nhtukfacihmbf", response.properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals(UpdateMode.AUTOMATIC, response.properties().updateMode());
     }
 
     // Use "Map.of" if available

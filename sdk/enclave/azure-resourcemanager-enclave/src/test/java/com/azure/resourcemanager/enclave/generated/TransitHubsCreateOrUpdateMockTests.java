@@ -29,7 +29,7 @@ public final class TransitHubsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"state\":\"PendingUpdate\",\"transitOption\":{\"type\":\"Peering\",\"params\":{\"scaleUnits\":2544439438941624393,\"remoteVirtualNetworkId\":\"zp\"}},\"resourceCollection\":[\"mskxknp\",\"gzigjsugswhgsaod\",\"wwnbafoctohz\",\"aquvwsxbgnvkervq\"],\"securityProvider\":\"AzureFirewall\"},\"location\":\"dhrsxqvzvsp\",\"tags\":{\"fajglzrsubklrxhj\":\"sr\",\"eqq\":\"ltcetjdvqyd\"},\"id\":\"wa\",\"name\":\"uwdxvqzxoebwgj\",\"type\":\"bibanbau\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"state\":\"Approved\",\"transitOption\":{\"type\":\"ExpressRoute\",\"params\":{\"scaleUnits\":6282947498031082528,\"remoteVirtualNetworkId\":\"thqkkwhbgxvellv\"}},\"resourceCollection\":[\"xdm\",\"itmujdtvm\",\"lyymffhmjpddny\",\"fzuvrzmz\"],\"securityProvider\":\"None\"},\"location\":\"qrbrpvnmdyfoeboj\",\"tags\":{\"qk\":\"pglaoh\"},\"id\":\"jtnqjil\",\"name\":\"ywkdcwmqsy\",\"type\":\"ilm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,24 +39,25 @@ public final class TransitHubsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TransitHubResource response = manager.transitHubs()
-            .define("yszekbhwlka")
-            .withRegion("kpsimsfeypofqp")
-            .withExistingCommunity("scrdp", "bfdyjduss")
-            .withTags(mapOf("rmmttjxop", "yqgs", "htwzmqilr", "gerhsmvg", "fni", "xy", "aedrympmlqoin", "sqywwwmhkru"))
+            .define("rzwnyk")
+            .withRegion("qnt")
+            .withExistingCommunity("eboywhczzqrhm", "gqbedygi")
+            .withTags(mapOf("eamc", "awthvmaxgnu", "cpqtwloesq", "hudfjecehok"))
             .withProperties(new TransitHubProperties().withState(TransitHubState.PENDING_UPDATE)
-                .withTransitOption(new TransitOption().withType(TransitOptionType.EXPRESS_ROUTE)
-                    .withParams(new TransitOptionParams().withScaleUnits(2410155714006502989L)
-                        .withRemoteVirtualNetworkId("ff")))
-                .withSecurityProvider(SecurityProvider.NONE))
+                .withTransitOption(new TransitOption().withType(TransitOptionType.PEERING)
+                    .withParams(new TransitOptionParams().withScaleUnits(8754841771146058252L)
+                        .withRemoteVirtualNetworkId("fldseacdhz")))
+                .withSecurityProvider(SecurityProvider.AZURE_FIREWALL))
             .create();
 
-        Assertions.assertEquals("dhrsxqvzvsp", response.location());
-        Assertions.assertEquals("sr", response.tags().get("fajglzrsubklrxhj"));
-        Assertions.assertEquals(TransitHubState.PENDING_UPDATE, response.properties().state());
-        Assertions.assertEquals(TransitOptionType.PEERING, response.properties().transitOption().type());
-        Assertions.assertEquals(2544439438941624393L, response.properties().transitOption().params().scaleUnits());
-        Assertions.assertEquals("zp", response.properties().transitOption().params().remoteVirtualNetworkId());
-        Assertions.assertEquals(SecurityProvider.AZURE_FIREWALL, response.properties().securityProvider());
+        Assertions.assertEquals("qrbrpvnmdyfoeboj", response.location());
+        Assertions.assertEquals("pglaoh", response.tags().get("qk"));
+        Assertions.assertEquals(TransitHubState.APPROVED, response.properties().state());
+        Assertions.assertEquals(TransitOptionType.EXPRESS_ROUTE, response.properties().transitOption().type());
+        Assertions.assertEquals(6282947498031082528L, response.properties().transitOption().params().scaleUnits());
+        Assertions.assertEquals("thqkkwhbgxvellv",
+            response.properties().transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(SecurityProvider.NONE, response.properties().securityProvider());
     }
 
     // Use "Map.of" if available

@@ -37,6 +37,34 @@ public final class CommunityEndpointProperties implements JsonSerializable<Commu
      */
     private UpdateMode updateMode;
 
+    /*
+     * Array of ARM resource IDs of destination communities to synchronize this endpoint's rules to. The RP creates and
+     * manages the destination CEPs automatically within each community. Maximum 100 destinations per source endpoint.
+     */
+    private List<String> syncTo;
+
+    /*
+     * ARM resource ID of the source Community Endpoint that manages this endpoint's rules via synchronization. This
+     * property is read-only and set by the RP on destination CEPs created by the sync process.
+     */
+    private String syncFrom;
+
+    /*
+     * The synchronization status of this Community Endpoint. Tracks sync state independently of provisioningState.
+     */
+    private SyncStatus syncStatus;
+
+    /*
+     * Per-destination synchronization status. Only populated on source CEPs that have syncTo configured.
+     */
+    private List<SyncDestinationStatus> syncDestinationStatuses;
+
+    /*
+     * Information about the principal who last configured or modified syncTo. Set by the RP and surfaced for audit
+     * transparency.
+     */
+    private SyncPerformedBy syncPerformedBy;
+
     /**
      * Creates an instance of CommunityEndpointProperties class.
      */
@@ -102,6 +130,71 @@ public final class CommunityEndpointProperties implements JsonSerializable<Commu
     }
 
     /**
+     * Get the syncTo property: Array of ARM resource IDs of destination communities to synchronize this endpoint's
+     * rules to. The RP creates and manages the destination CEPs automatically within each community. Maximum 100
+     * destinations per source endpoint.
+     * 
+     * @return the syncTo value.
+     */
+    public List<String> syncTo() {
+        return this.syncTo;
+    }
+
+    /**
+     * Set the syncTo property: Array of ARM resource IDs of destination communities to synchronize this endpoint's
+     * rules to. The RP creates and manages the destination CEPs automatically within each community. Maximum 100
+     * destinations per source endpoint.
+     * 
+     * @param syncTo the syncTo value to set.
+     * @return the CommunityEndpointProperties object itself.
+     */
+    public CommunityEndpointProperties withSyncTo(List<String> syncTo) {
+        this.syncTo = syncTo;
+        return this;
+    }
+
+    /**
+     * Get the syncFrom property: ARM resource ID of the source Community Endpoint that manages this endpoint's rules
+     * via synchronization. This property is read-only and set by the RP on destination CEPs created by the sync
+     * process.
+     * 
+     * @return the syncFrom value.
+     */
+    public String syncFrom() {
+        return this.syncFrom;
+    }
+
+    /**
+     * Get the syncStatus property: The synchronization status of this Community Endpoint. Tracks sync state
+     * independently of provisioningState.
+     * 
+     * @return the syncStatus value.
+     */
+    public SyncStatus syncStatus() {
+        return this.syncStatus;
+    }
+
+    /**
+     * Get the syncDestinationStatuses property: Per-destination synchronization status. Only populated on source CEPs
+     * that have syncTo configured.
+     * 
+     * @return the syncDestinationStatuses value.
+     */
+    public List<SyncDestinationStatus> syncDestinationStatuses() {
+        return this.syncDestinationStatuses;
+    }
+
+    /**
+     * Get the syncPerformedBy property: Information about the principal who last configured or modified syncTo. Set by
+     * the RP and surfaced for audit transparency.
+     * 
+     * @return the syncPerformedBy value.
+     */
+    public SyncPerformedBy syncPerformedBy() {
+        return this.syncPerformedBy;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -110,6 +203,7 @@ public final class CommunityEndpointProperties implements JsonSerializable<Commu
         jsonWriter.writeArrayField("ruleCollection", this.ruleCollection,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("updateMode", this.updateMode == null ? null : this.updateMode.toString());
+        jsonWriter.writeArrayField("syncTo", this.syncTo, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -141,6 +235,19 @@ public final class CommunityEndpointProperties implements JsonSerializable<Commu
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("updateMode".equals(fieldName)) {
                     deserializedCommunityEndpointProperties.updateMode = UpdateMode.fromString(reader.getString());
+                } else if ("syncTo".equals(fieldName)) {
+                    List<String> syncTo = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCommunityEndpointProperties.syncTo = syncTo;
+                } else if ("syncFrom".equals(fieldName)) {
+                    deserializedCommunityEndpointProperties.syncFrom = reader.getString();
+                } else if ("syncStatus".equals(fieldName)) {
+                    deserializedCommunityEndpointProperties.syncStatus = SyncStatus.fromString(reader.getString());
+                } else if ("syncDestinationStatuses".equals(fieldName)) {
+                    List<SyncDestinationStatus> syncDestinationStatuses
+                        = reader.readArray(reader1 -> SyncDestinationStatus.fromJson(reader1));
+                    deserializedCommunityEndpointProperties.syncDestinationStatuses = syncDestinationStatuses;
+                } else if ("syncPerformedBy".equals(fieldName)) {
+                    deserializedCommunityEndpointProperties.syncPerformedBy = SyncPerformedBy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

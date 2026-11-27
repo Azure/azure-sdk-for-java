@@ -111,6 +111,22 @@ public final class CommunityEndpointsImpl implements CommunityEndpoints {
         }
     }
 
+    public CommunityEndpointResource sync(String resourceGroupName, String communityName,
+        String communityEndpointName) {
+        return this.sync(resourceGroupName, communityName, communityEndpointName, Context.NONE);
+    }
+
+    public CommunityEndpointResource sync(String resourceGroupName, String communityName, String communityEndpointName,
+        Context context) {
+        CommunityEndpointResourceInner inner
+            = this.serviceClient().sync(resourceGroupName, communityName, communityEndpointName, context);
+        if (inner != null) {
+            return new CommunityEndpointResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public CommunityEndpointResource getById(String id) {
         return this.getByIdWithResponse(id, Context.NONE).getValue();
     }

@@ -8,21 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for PrincipalType.
+ * The type of a virtual enclave principal.
  */
 public final class PrincipalType extends ExpandableStringEnum<PrincipalType> {
     /**
-     * Static value User for PrincipalType.
+     * A user principal.
      */
     public static final PrincipalType USER = fromString("User");
 
     /**
-     * Static value Group for PrincipalType.
+     * A group principal.
      */
     public static final PrincipalType GROUP = fromString("Group");
 
     /**
-     * Static value ServicePrincipal for PrincipalType.
+     * A service principal.
      */
     public static final PrincipalType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
 

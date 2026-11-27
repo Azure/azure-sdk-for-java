@@ -8,32 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for MaintenanceModeConfigurationModelMode.
+ * The maintenance mode for a virtual enclave.
  */
 public final class MaintenanceModeConfigurationModelMode
     extends ExpandableStringEnum<MaintenanceModeConfigurationModelMode> {
     /**
-     * Static value On for MaintenanceModeConfigurationModelMode.
+     * Maintenance mode is on.
      */
     public static final MaintenanceModeConfigurationModelMode ON = fromString("On");
 
     /**
-     * Static value CanNotDelete for MaintenanceModeConfigurationModelMode.
+     * Resources cannot be deleted while maintenance mode is active.
      */
     public static final MaintenanceModeConfigurationModelMode CAN_NOT_DELETE = fromString("CanNotDelete");
 
     /**
-     * Static value Off for MaintenanceModeConfigurationModelMode.
+     * Maintenance mode is off.
      */
     public static final MaintenanceModeConfigurationModelMode OFF = fromString("Off");
 
     /**
-     * Static value General for MaintenanceModeConfigurationModelMode.
+     * General maintenance mode is active.
      */
     public static final MaintenanceModeConfigurationModelMode GENERAL = fromString("General");
 
     /**
-     * Static value Advanced for MaintenanceModeConfigurationModelMode.
+     * Advanced maintenance mode is active.
      */
     public static final MaintenanceModeConfigurationModelMode ADVANCED = fromString("Advanced");
 

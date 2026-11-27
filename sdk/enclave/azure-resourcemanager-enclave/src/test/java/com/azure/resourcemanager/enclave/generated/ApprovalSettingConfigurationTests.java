@@ -15,24 +15,24 @@ public final class ApprovalSettingConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApprovalSettingConfiguration model = BinaryData.fromString(
-            "{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":324478949,\"mandatoryApprovers\":[{\"approverEntraId\":\"ipwhonowk\"},{\"approverEntraId\":\"shwankixzbinje\"},{\"approverEntraId\":\"uttmrywnuzoqft\"}]}")
+            "{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":1223642392,\"mandatoryApprovers\":[{\"approverEntraId\":\"nqecanoaeup\"},{\"approverEntraId\":\"hy\"},{\"approverEntraId\":\"ltrpmopj\"}]}")
             .toObject(ApprovalSettingConfiguration.class);
         Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.approvalPolicy());
-        Assertions.assertEquals(324478949, model.minimumApproversRequired());
-        Assertions.assertEquals("ipwhonowk", model.mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(1223642392, model.minimumApproversRequired());
+        Assertions.assertEquals("nqecanoaeup", model.mandatoryApprovers().get(0).approverEntraId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApprovalSettingConfiguration model
             = new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
-                .withMinimumApproversRequired(324478949)
-                .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("ipwhonowk"),
-                    new MandatoryApprover().withApproverEntraId("shwankixzbinje"),
-                    new MandatoryApprover().withApproverEntraId("uttmrywnuzoqft")));
+                .withMinimumApproversRequired(1223642392)
+                .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("nqecanoaeup"),
+                    new MandatoryApprover().withApproverEntraId("hy"),
+                    new MandatoryApprover().withApproverEntraId("ltrpmopj")));
         model = BinaryData.fromObject(model).toObject(ApprovalSettingConfiguration.class);
         Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.approvalPolicy());
-        Assertions.assertEquals(324478949, model.minimumApproversRequired());
-        Assertions.assertEquals("ipwhonowk", model.mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(1223642392, model.minimumApproversRequired());
+        Assertions.assertEquals("nqecanoaeup", model.mandatoryApprovers().get(0).approverEntraId());
     }
 }

@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.enclave.generated;
 
+import com.azure.resourcemanager.enclave.models.AddressSpaceEntry;
 import com.azure.resourcemanager.enclave.models.ApprovalPolicy;
 import com.azure.resourcemanager.enclave.models.ApprovalSettingConfiguration;
 import com.azure.resourcemanager.enclave.models.DiagnosticDestination;
 import com.azure.resourcemanager.enclave.models.EnclaveDefaultSettingsPatchModel;
 import com.azure.resourcemanager.enclave.models.EnclaveResource;
-import com.azure.resourcemanager.enclave.models.EnclaveVirtualNetworkModel;
 import com.azure.resourcemanager.enclave.models.MaintenanceModeConfigurationModelJustification;
 import com.azure.resourcemanager.enclave.models.MaintenanceModeConfigurationModelMode;
 import com.azure.resourcemanager.enclave.models.MaintenanceModeConfigurationPatchModel;
@@ -31,7 +31,7 @@ import java.util.Map;
  */
 public final class VirtualEnclaveUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/VirtualEnclave_Update.json
+     * x-ms-original-file: 2026-10-01-preview/VirtualEnclave_Update.json
      */
     /**
      * Sample code: VirtualEnclave_Update.
@@ -44,13 +44,7 @@ public final class VirtualEnclaveUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("Tag1", "Value1"))
-            .withProperties(new VirtualEnclavePatchProperties()
-                .withEnclaveVirtualNetwork(new EnclaveVirtualNetworkModel().withNetworkSize("small")
-                    .withCustomCidrRange("10.0.0.0/24")
-                    .withSubnetConfigurations(
-                        Arrays.asList(new SubnetConfiguration().withSubnetName("test").withNetworkPrefixSize(26)))
-                    .withAllowSubnetCommunication(true))
-                .withBastionEnabled(true)
+            .withProperties(new VirtualEnclavePatchProperties().withBastionEnabled(true)
                 .withWorkloadResourceVisibility(ResourceVisibilityMode.DISABLED)
                 .withRbacInheritance(RbacInheritanceMode.DISABLED)
                 .withEnclaveRoleAssignments(Arrays.asList(
@@ -71,6 +65,10 @@ public final class VirtualEnclaveUpdateSamples {
                     new RoleAssignmentItem().withRoleDefinitionId("fb879df8-f326-4884-b1cf-06f3ad86be52")
                         .withPrincipals(Arrays.asList(new Principal().withId("01234567-89ab-ef01-2345-0123456789ab")
                             .withType(PrincipalType.GROUP)))))
+                .withAddressSpaces(
+                    Arrays.asList(new AddressSpaceEntry().withPrefixLength(23).withAddressSpace("10.1.0.0/23")))
+                .withSubnetConfigurations(
+                    Arrays.asList(new SubnetConfiguration().withSubnetName("test").withNetworkPrefixSize(26)))
                 .withEnclaveDefaultSettings(
                     new EnclaveDefaultSettingsPatchModel().withDiagnosticDestination(DiagnosticDestination.BOTH))
                 .withMaintenanceModeConfiguration(new MaintenanceModeConfigurationPatchModel()

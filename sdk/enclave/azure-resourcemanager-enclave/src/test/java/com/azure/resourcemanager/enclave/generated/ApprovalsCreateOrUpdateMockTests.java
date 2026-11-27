@@ -27,7 +27,7 @@ public final class ApprovalsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"parentResourceId\":\"yolcaymjchtvsnv\",\"grandparentResourceId\":\"qdnzyza\",\"approvers\":[{\"approverEntraId\":\"uwq\",\"actionPerformed\":\"Rejected\",\"lastUpdatedAt\":\"2021-07-01T20:09:44Z\",\"mandatoryApprovalGroupMembershipIds\":[\"othymgobl\",\"msn\"]},{\"approverEntraId\":\"gwi\",\"actionPerformed\":\"Approved\",\"lastUpdatedAt\":\"2021-07-16T13:43:06Z\",\"mandatoryApprovalGroupMembershipIds\":[\"khtmhobcyanrfv\",\"tvkhgvo\",\"gxkfnaoaqymhccto\",\"uowyrnskbyhqu\"]}],\"ticketId\":\"zygxvha\",\"createdAt\":\"2021-06-17T05:14:13Z\",\"stateChangedAt\":\"2021-01-06T14:36:28Z\",\"mandatoryApprovers\":[{\"approverEntraId\":\"nwh\"},{\"approverEntraId\":\"cozawmvgxsmpknpw\"},{\"approverEntraId\":\"rfljfewxq\"},{\"approverEntraId\":\"uoxudnmckaprh\"}],\"minimumApproversRequired\":8896060612884983388,\"approversApprovedCount\":3891438902995854547,\"mandatoryApproversApprovedCount\":1445415706917041010,\"approvedByEntraIds\":[\"moqueqihkkyow\"],\"requestMetadata\":{\"resourceAction\":\"tjouwhldxwhi\",\"approvalCallbackRoute\":\"roqksmfxm\",\"approvalCallbackPayload\":\"prstvkitbfj\",\"approvalStatus\":\"Approved\"}},\"id\":\"tnp\",\"name\":\"facqo\",\"type\":\"cqrq\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"parentResourceId\":\"vprstv\",\"grandparentResourceId\":\"tbfjtdyotnplf\",\"approvers\":[{\"approverEntraId\":\"occqrqxw\",\"actionPerformed\":\"Approved\",\"lastUpdatedAt\":\"2021-03-18T00:14:55Z\",\"mandatoryApprovalGroupMembershipIds\":[\"hutfdoadtxopge\",\"padkmdzgsszxvct\"]},{\"approverEntraId\":\"bbxuharlsirn\",\"actionPerformed\":\"Rejected\",\"lastUpdatedAt\":\"2020-12-25T08:52:57Z\",\"mandatoryApprovalGroupMembershipIds\":[\"oyn\"]},{\"approverEntraId\":\"suxxc\",\"actionPerformed\":\"Approved\",\"lastUpdatedAt\":\"2021-11-27T09:02:04Z\",\"mandatoryApprovalGroupMembershipIds\":[\"ogh\",\"saidjan\"]},{\"approverEntraId\":\"rmov\",\"actionPerformed\":\"Approved\",\"lastUpdatedAt\":\"2021-06-23T22:42:47Z\",\"mandatoryApprovalGroupMembershipIds\":[\"tujmoil\",\"nwemhdeeljslkyo\",\"d\",\"fzjuegrhrhtsl\"]}],\"ticketId\":\"tv\",\"createdAt\":\"2021-08-29T18:39:01Z\",\"stateChangedAt\":\"2021-08-27T13:47:53Z\",\"mandatoryApprovers\":[{\"approverEntraId\":\"bfiobpnjodfc\"},{\"approverEntraId\":\"jqqwmtqsmoxsazu\"},{\"approverEntraId\":\"ejgwe\"}],\"minimumApproversRequired\":3303882085585283704,\"approversApprovedCount\":4041177155994271229,\"mandatoryApproversApprovedCount\":2066749169619537627,\"approvedByEntraIds\":[\"sinqbdnddbbozsyv\",\"mkjmyitrchwudlxe\",\"ihtpmnoejhql\"],\"requestMetadata\":{\"resourceAction\":\"msibzo\",\"approvalCallbackRoute\":\"fgxkydpmypgf\",\"approvalCallbackPayload\":\"mtywhla\",\"approvalStatus\":\"Expired\"}},\"id\":\"jpewpyjlfx\",\"name\":\"m\",\"type\":\"qcrzgeuqxbpia\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,41 +37,34 @@ public final class ApprovalsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApprovalResource response = manager.approvals()
-            .define("imyfpqdo")
-            .withExistingResourceUri("ujktzb")
-            .withProperties(new ApprovalProperties().withParentResourceId("wyytfvpctf")
-                .withGrandparentResourceId("kffffgkuh")
-                .withApprovers(Arrays.asList(
-                    new Approver().withApproverEntraId("h")
-                        .withActionPerformed(ActionPerformed.REJECTED)
-                        .withLastUpdatedAt(OffsetDateTime.parse("2021-02-24T14:38:53Z")),
-                    new Approver().withApproverEntraId("jigawgaz")
-                        .withActionPerformed(ActionPerformed.REJECTED)
-                        .withLastUpdatedAt(OffsetDateTime.parse("2021-10-22T20:34:13Z")),
-                    new Approver().withApproverEntraId("jjsbcmlzaahzbhur")
-                        .withActionPerformed(ActionPerformed.REJECTED)
-                        .withLastUpdatedAt(OffsetDateTime.parse("2021-06-05T21:09:09Z"))))
-                .withTicketId("su")
-                .withCreatedAt(OffsetDateTime.parse("2021-05-19T14:09:12Z"))
-                .withStateChangedAt(OffsetDateTime.parse("2021-05-04T11:13:55Z"))
-                .withRequestMetadata(new RequestMetadata().withResourceAction("yjmqrf")
-                    .withApprovalCallbackRoute("ocuselqk")
-                    .withApprovalCallbackPayload("azrhxudd")
+            .define("ag")
+            .withExistingResourceUri("dlgyqixokwtjawh")
+            .withProperties(new ApprovalProperties().withParentResourceId("dlcvmyo")
+                .withGrandparentResourceId("aymjchtvsnvlaq")
+                .withApprovers(Arrays.asList(new Approver().withApproverEntraId("yzawatu")
+                    .withActionPerformed(ActionPerformed.APPROVED)
+                    .withLastUpdatedAt(OffsetDateTime.parse("2021-10-01T08:55:38Z"))))
+                .withTicketId("an")
+                .withCreatedAt(OffsetDateTime.parse("2021-07-23T13:59:42Z"))
+                .withStateChangedAt(OffsetDateTime.parse("2021-04-27T20:23:51Z"))
+                .withRequestMetadata(new RequestMetadata().withResourceAction("npwirfljf")
+                    .withApprovalCallbackRoute("xqou")
+                    .withApprovalCallbackPayload("ud")
                     .withApprovalStatus(ApprovalStatus.EXPIRED)))
             .create();
 
-        Assertions.assertEquals("yolcaymjchtvsnv", response.properties().parentResourceId());
-        Assertions.assertEquals("qdnzyza", response.properties().grandparentResourceId());
-        Assertions.assertEquals("uwq", response.properties().approvers().get(0).approverEntraId());
-        Assertions.assertEquals(ActionPerformed.REJECTED, response.properties().approvers().get(0).actionPerformed());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-01T20:09:44Z"),
+        Assertions.assertEquals("vprstv", response.properties().parentResourceId());
+        Assertions.assertEquals("tbfjtdyotnplf", response.properties().grandparentResourceId());
+        Assertions.assertEquals("occqrqxw", response.properties().approvers().get(0).approverEntraId());
+        Assertions.assertEquals(ActionPerformed.APPROVED, response.properties().approvers().get(0).actionPerformed());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-18T00:14:55Z"),
             response.properties().approvers().get(0).lastUpdatedAt());
-        Assertions.assertEquals("zygxvha", response.properties().ticketId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T05:14:13Z"), response.properties().createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-06T14:36:28Z"), response.properties().stateChangedAt());
-        Assertions.assertEquals("tjouwhldxwhi", response.properties().requestMetadata().resourceAction());
-        Assertions.assertEquals("roqksmfxm", response.properties().requestMetadata().approvalCallbackRoute());
-        Assertions.assertEquals("prstvkitbfj", response.properties().requestMetadata().approvalCallbackPayload());
-        Assertions.assertEquals(ApprovalStatus.APPROVED, response.properties().requestMetadata().approvalStatus());
+        Assertions.assertEquals("tv", response.properties().ticketId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-29T18:39:01Z"), response.properties().createdAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-27T13:47:53Z"), response.properties().stateChangedAt());
+        Assertions.assertEquals("msibzo", response.properties().requestMetadata().resourceAction());
+        Assertions.assertEquals("fgxkydpmypgf", response.properties().requestMetadata().approvalCallbackRoute());
+        Assertions.assertEquals("mtywhla", response.properties().requestMetadata().approvalCallbackPayload());
+        Assertions.assertEquals(ApprovalStatus.EXPIRED, response.properties().requestMetadata().approvalStatus());
     }
 }

@@ -13,15 +13,15 @@ public final class DedicatedHubPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DedicatedHubProperties model = BinaryData.fromString(
-            "{\"vHubResourceId\":\"hbotzingamvppho\",\"firewallResourceId\":\"qzudphq\",\"firewallPolicyResourceId\":\"vdkfwynwcvtbvk\",\"designation\":\"Pooled\",\"provisioningState\":\"Running\"}")
+            "{\"vHubResourceId\":\"jq\",\"firewallResourceId\":\"rgz\",\"firewallPolicyResourceId\":\"rlazszrnw\",\"designation\":\"Reserved\",\"provisioningState\":\"Succeeded\"}")
             .toObject(DedicatedHubProperties.class);
-        Assertions.assertEquals(Designation.POOLED, model.designation());
+        Assertions.assertEquals(Designation.RESERVED, model.designation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DedicatedHubProperties model = new DedicatedHubProperties().withDesignation(Designation.POOLED);
+        DedicatedHubProperties model = new DedicatedHubProperties().withDesignation(Designation.RESERVED);
         model = BinaryData.fromObject(model).toObject(DedicatedHubProperties.class);
-        Assertions.assertEquals(Designation.POOLED, model.designation());
+        Assertions.assertEquals(Designation.RESERVED, model.designation());
     }
 }

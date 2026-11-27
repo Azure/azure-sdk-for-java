@@ -14,22 +14,22 @@ public final class ApprovalCallbackRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApprovalCallbackRequest model = BinaryData.fromString(
-            "{\"resourceRequestAction\":\"Delete\",\"approvalStatus\":\"Rejected\",\"approvalCallbackPayload\":\"bzdopcj\"}")
+            "{\"resourceRequestAction\":\"Delete\",\"approvalStatus\":\"Approved\",\"approvalCallbackPayload\":\"osggbhc\"}")
             .toObject(ApprovalCallbackRequest.class);
         Assertions.assertEquals(ApprovalCallbackRequestResourceRequestAction.DELETE, model.resourceRequestAction());
-        Assertions.assertEquals(ApprovalCallbackRequestApprovalStatus.REJECTED, model.approvalStatus());
-        Assertions.assertEquals("bzdopcj", model.approvalCallbackPayload());
+        Assertions.assertEquals(ApprovalCallbackRequestApprovalStatus.APPROVED, model.approvalStatus());
+        Assertions.assertEquals("osggbhc", model.approvalCallbackPayload());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApprovalCallbackRequest model = new ApprovalCallbackRequest()
             .withResourceRequestAction(ApprovalCallbackRequestResourceRequestAction.DELETE)
-            .withApprovalStatus(ApprovalCallbackRequestApprovalStatus.REJECTED)
-            .withApprovalCallbackPayload("bzdopcj");
+            .withApprovalStatus(ApprovalCallbackRequestApprovalStatus.APPROVED)
+            .withApprovalCallbackPayload("osggbhc");
         model = BinaryData.fromObject(model).toObject(ApprovalCallbackRequest.class);
         Assertions.assertEquals(ApprovalCallbackRequestResourceRequestAction.DELETE, model.resourceRequestAction());
-        Assertions.assertEquals(ApprovalCallbackRequestApprovalStatus.REJECTED, model.approvalStatus());
-        Assertions.assertEquals("bzdopcj", model.approvalCallbackPayload());
+        Assertions.assertEquals(ApprovalCallbackRequestApprovalStatus.APPROVED, model.approvalStatus());
+        Assertions.assertEquals("osggbhc", model.approvalCallbackPayload());
     }
 }

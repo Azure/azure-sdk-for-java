@@ -18,11 +18,6 @@ import java.util.List;
 @Fluent
 public final class VirtualEnclavePatchProperties implements JsonSerializable<VirtualEnclavePatchProperties> {
     /*
-     * Virtual Network.
-     */
-    private EnclaveVirtualNetworkModel enclaveVirtualNetwork;
-
-    /*
      * Deploy Bastion service (True or False).
      */
     private Boolean bastionEnabled;
@@ -53,6 +48,18 @@ public final class VirtualEnclavePatchProperties implements JsonSerializable<Vir
     private List<GovernedServiceItem> governedServiceList;
 
     /*
+     * Customer-requested address spaces for the enclave. Supports multiple entries. Each entry specifies a prefixLength
+     * for the RP to allocate, or a custom addressSpace CIDR. The RP returns these entries exactly as provided;
+     * allocated values are reported in computedAddressSpaces.
+     */
+    private List<AddressSpaceEntry> addressSpaces;
+
+    /*
+     * Subnet configurations for the enclave network.
+     */
+    private List<SubnetConfiguration> subnetConfigurations;
+
+    /*
      * Enclave default settings.
      */
     private EnclaveDefaultSettingsPatchModel enclaveDefaultSettings;
@@ -81,26 +88,6 @@ public final class VirtualEnclavePatchProperties implements JsonSerializable<Vir
      * Creates an instance of VirtualEnclavePatchProperties class.
      */
     public VirtualEnclavePatchProperties() {
-    }
-
-    /**
-     * Get the enclaveVirtualNetwork property: Virtual Network.
-     * 
-     * @return the enclaveVirtualNetwork value.
-     */
-    public EnclaveVirtualNetworkModel enclaveVirtualNetwork() {
-        return this.enclaveVirtualNetwork;
-    }
-
-    /**
-     * Set the enclaveVirtualNetwork property: Virtual Network.
-     * 
-     * @param enclaveVirtualNetwork the enclaveVirtualNetwork value to set.
-     * @return the VirtualEnclavePatchProperties object itself.
-     */
-    public VirtualEnclavePatchProperties withEnclaveVirtualNetwork(EnclaveVirtualNetworkModel enclaveVirtualNetwork) {
-        this.enclaveVirtualNetwork = enclaveVirtualNetwork;
-        return this;
     }
 
     /**
@@ -229,6 +216,50 @@ public final class VirtualEnclavePatchProperties implements JsonSerializable<Vir
     }
 
     /**
+     * Get the addressSpaces property: Customer-requested address spaces for the enclave. Supports multiple entries.
+     * Each entry specifies a prefixLength for the RP to allocate, or a custom addressSpace CIDR. The RP returns these
+     * entries exactly as provided; allocated values are reported in computedAddressSpaces.
+     * 
+     * @return the addressSpaces value.
+     */
+    public List<AddressSpaceEntry> addressSpaces() {
+        return this.addressSpaces;
+    }
+
+    /**
+     * Set the addressSpaces property: Customer-requested address spaces for the enclave. Supports multiple entries.
+     * Each entry specifies a prefixLength for the RP to allocate, or a custom addressSpace CIDR. The RP returns these
+     * entries exactly as provided; allocated values are reported in computedAddressSpaces.
+     * 
+     * @param addressSpaces the addressSpaces value to set.
+     * @return the VirtualEnclavePatchProperties object itself.
+     */
+    public VirtualEnclavePatchProperties withAddressSpaces(List<AddressSpaceEntry> addressSpaces) {
+        this.addressSpaces = addressSpaces;
+        return this;
+    }
+
+    /**
+     * Get the subnetConfigurations property: Subnet configurations for the enclave network.
+     * 
+     * @return the subnetConfigurations value.
+     */
+    public List<SubnetConfiguration> subnetConfigurations() {
+        return this.subnetConfigurations;
+    }
+
+    /**
+     * Set the subnetConfigurations property: Subnet configurations for the enclave network.
+     * 
+     * @param subnetConfigurations the subnetConfigurations value to set.
+     * @return the VirtualEnclavePatchProperties object itself.
+     */
+    public VirtualEnclavePatchProperties withSubnetConfigurations(List<SubnetConfiguration> subnetConfigurations) {
+        this.subnetConfigurations = subnetConfigurations;
+        return this;
+    }
+
+    /**
      * Get the enclaveDefaultSettings property: Enclave default settings.
      * 
      * @return the enclaveDefaultSettings value.
@@ -339,7 +370,6 @@ public final class VirtualEnclavePatchProperties implements JsonSerializable<Vir
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("enclaveVirtualNetwork", this.enclaveVirtualNetwork);
         jsonWriter.writeBooleanField("bastionEnabled", this.bastionEnabled);
         jsonWriter.writeStringField("workloadResourceVisibility",
             this.workloadResourceVisibility == null ? null : this.workloadResourceVisibility.toString());
@@ -350,6 +380,9 @@ public final class VirtualEnclavePatchProperties implements JsonSerializable<Vir
         jsonWriter.writeArrayField("workloadRoleAssignments", this.workloadRoleAssignments,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("governedServiceList", this.governedServiceList,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("addressSpaces", this.addressSpaces, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("subnetConfigurations", this.subnetConfigurations,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("enclaveDefaultSettings", this.enclaveDefaultSettings);
         jsonWriter.writeJsonField("maintenanceModeConfiguration", this.maintenanceModeConfiguration);
@@ -365,7 +398,6 @@ public final class VirtualEnclavePatchProperties implements JsonSerializable<Vir
      * @param jsonReader The JsonReader being read.
      * @return An instance of VirtualEnclavePatchProperties if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VirtualEnclavePatchProperties.
      */
     public static VirtualEnclavePatchProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -376,10 +408,7 @@ public final class VirtualEnclavePatchProperties implements JsonSerializable<Vir
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("enclaveVirtualNetwork".equals(fieldName)) {
-                    deserializedVirtualEnclavePatchProperties.enclaveVirtualNetwork
-                        = EnclaveVirtualNetworkModel.fromJson(reader);
-                } else if ("bastionEnabled".equals(fieldName)) {
+                if ("bastionEnabled".equals(fieldName)) {
                     deserializedVirtualEnclavePatchProperties.bastionEnabled
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("workloadResourceVisibility".equals(fieldName)) {
@@ -400,6 +429,14 @@ public final class VirtualEnclavePatchProperties implements JsonSerializable<Vir
                     List<GovernedServiceItem> governedServiceList
                         = reader.readArray(reader1 -> GovernedServiceItem.fromJson(reader1));
                     deserializedVirtualEnclavePatchProperties.governedServiceList = governedServiceList;
+                } else if ("addressSpaces".equals(fieldName)) {
+                    List<AddressSpaceEntry> addressSpaces
+                        = reader.readArray(reader1 -> AddressSpaceEntry.fromJson(reader1));
+                    deserializedVirtualEnclavePatchProperties.addressSpaces = addressSpaces;
+                } else if ("subnetConfigurations".equals(fieldName)) {
+                    List<SubnetConfiguration> subnetConfigurations
+                        = reader.readArray(reader1 -> SubnetConfiguration.fromJson(reader1));
+                    deserializedVirtualEnclavePatchProperties.subnetConfigurations = subnetConfigurations;
                 } else if ("enclaveDefaultSettings".equals(fieldName)) {
                     deserializedVirtualEnclavePatchProperties.enclaveDefaultSettings
                         = EnclaveDefaultSettingsPatchModel.fromJson(reader);
