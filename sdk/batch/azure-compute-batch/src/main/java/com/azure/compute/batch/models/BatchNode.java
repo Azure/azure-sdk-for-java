@@ -456,6 +456,10 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
                     deserializedBatchNode.virtualMachineDetails = VirtualMachineDetails.fromJson(reader);
                 } else if ("schedulingState".equals(fieldName)) {
                     deserializedBatchNode.schedulingState = SchedulingState.fromString(reader.getString());
+                } else if ("publicIPAddress".equals(fieldName)) {
+                    deserializedBatchNode.publicIpAddress = reader.getString();
+                } else if ("publicIPv6Address".equals(fieldName)) {
+                    deserializedBatchNode.publicIpv6Address = reader.getString();
                 } else if ("runningTasksCount".equals(fieldName)) {
                     deserializedBatchNode.runningTasksCount = reader.getNullable(JsonReader::getInt);
                 } else if ("runningTaskSlotsCount".equals(fieldName)) {
@@ -523,5 +527,50 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
     @Generated
     public VirtualMachineDetails getVirtualMachineDetails() {
         return this.virtualMachineDetails;
+    }
+
+    /*
+     * The public IPv4 address (load balancer front-end VIP) used to reach this Compute Node from outside the virtual
+     * network. For Pools that use the Batch-managed or User-managed public load balancer, this is the load balancer's
+     * front-end public IPv4 address. The value is present regardless of whether SSH or RDP remote access is enabled, so
+     * callers can perform IP-based validation even when remote login is disabled. The property is omitted when the Pool
+     * is configured with no public IP addresses (for example, private link or BYO VNet with NoPublicIPAddresses).
+     */
+    @Generated
+    private String publicIpAddress;
+
+    /*
+     * The public IPv6 address (load balancer front-end VIP) used to reach this Compute Node from outside the virtual
+     * network. Populated only when the Pool is configured for IPv6 / dual-stack public networking. The property is
+     * omitted otherwise.
+     */
+    @Generated
+    private String publicIpv6Address;
+
+    /**
+     * Get the publicIpAddress property: The public IPv4 address (load balancer front-end VIP) used to reach this
+     * Compute Node from outside the virtual network. For Pools that use the Batch-managed or User-managed public load
+     * balancer, this is the load balancer's front-end public IPv4 address. The value is present regardless of whether
+     * SSH or RDP remote access is enabled, so callers can perform IP-based validation even when remote login is
+     * disabled. The property is omitted when the Pool is configured with no public IP addresses (for example, private
+     * link or BYO VNet with NoPublicIPAddresses).
+     *
+     * @return the publicIpAddress value.
+     */
+    @Generated
+    public String getPublicIpAddress() {
+        return this.publicIpAddress;
+    }
+
+    /**
+     * Get the publicIpv6Address property: The public IPv6 address (load balancer front-end VIP) used to reach this
+     * Compute Node from outside the virtual network. Populated only when the Pool is configured for IPv6 / dual-stack
+     * public networking. The property is omitted otherwise.
+     *
+     * @return the publicIpv6Address value.
+     */
+    @Generated
+    public String getPublicIpv6Address() {
+        return this.publicIpv6Address;
     }
 }
