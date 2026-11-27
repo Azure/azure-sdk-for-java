@@ -27,8 +27,7 @@ public final class StorageInsightConfigsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.storageInsightConfigs()
-            .deleteWithResponse("zuu", "ljcirvpefycdvei", "itjn", com.azure.core.util.Context.NONE);
+        manager.storageInsightConfigs().deleteWithResponse("jy", "iqswbqer", "w", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class WorkspacePurgesGetPurgeStatusWithResponseMockTests {
     @Test
     public void testGetPurgeStatusWithResponse() throws Exception {
-        String responseStr = "{\"status\":\"completed\"}";
+        String responseStr = "{\"status\":\"pending\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class WorkspacePurgesGetPurgeStatusWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkspacePurgeStatusResponse response = manager.workspacePurges()
-            .getPurgeStatusWithResponse("yjmfczlfsyqkfr", "zgowox", "mj", com.azure.core.util.Context.NONE)
+            .getPurgeStatusWithResponse("ocnhzqrottjzcfyj", "pt", "rl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PurgeState.COMPLETED, response.status());
+        Assertions.assertEquals(PurgeState.PENDING, response.status());
     }
 }

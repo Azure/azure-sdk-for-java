@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/OperationsListByTenant.json
+     * x-ms-original-file: 2026-03-01/OperationsListByTenant.json
      */
     /**
      * Sample code: Get specific operation status.

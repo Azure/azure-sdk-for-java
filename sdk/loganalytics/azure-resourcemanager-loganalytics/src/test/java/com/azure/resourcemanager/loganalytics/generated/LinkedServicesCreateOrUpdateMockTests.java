@@ -24,7 +24,7 @@ public final class LinkedServicesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceId\":\"jtcdxabbujftaben\",\"writeAccessResourceId\":\"klqpx\",\"provisioningState\":\"Succeeded\"},\"tags\":{\"dwwnl\":\"e\",\"wxudgn\":\"a\",\"gpbemeluclvdjju\":\"gookrtalvnb\"},\"id\":\"rdnqodxahhxhqf\",\"name\":\"qnvzoqgyipemch\",\"type\":\"avsczuejdtxp\"}";
+            = "{\"properties\":{\"resourceId\":\"bwwg\",\"writeAccessResourceId\":\"vibidmhmwffpl\",\"provisioningState\":\"Succeeded\"},\"tags\":{\"rrvwey\":\"pckc\",\"ukphaimmoiroq\":\"xoy\",\"mfsvbpav\":\"oshbragapyy\"},\"id\":\"pfppd\",\"name\":\"wnupgahxku\",\"type\":\"asjcaacfdmmcpu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,17 +34,18 @@ public final class LinkedServicesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LinkedService response = manager.linkedServices()
-            .define("qzvs")
-            .withExistingWorkspace("ypsjoq", "jenkyh")
-            .withTags(mapOf("sjsz", "cacoyvivbsiz", "lzijiufehgmvflnw", "bscm"))
-            .withResourceId("fxjelg")
-            .withWriteAccessResourceId("pzqjhhhq")
-            .withProvisioningState(LinkedServiceEntityStatus.SUCCEEDED)
+            .define("tddmf")
+            .withExistingWorkspace("ninvudbchaqdt", "qecrqctmxx")
+            .withTags(mapOf("asbcrymodizrx", "ytlyokrrrouuxvn", "pmkmlmvevfx", "lobdxna", "hbzxli", "op", "tfgxqbawpcb",
+                "hrdd"))
+            .withResourceId("uytxzvtznapxban")
+            .withWriteAccessResourceId("vvoxczytprwnw")
+            .withProvisioningState(LinkedServiceEntityStatus.PROVISIONING_ACCOUNT)
             .create();
 
-        Assertions.assertEquals("e", response.tags().get("dwwnl"));
-        Assertions.assertEquals("jtcdxabbujftaben", response.resourceId());
-        Assertions.assertEquals("klqpx", response.writeAccessResourceId());
+        Assertions.assertEquals("pckc", response.tags().get("rrvwey"));
+        Assertions.assertEquals("bwwg", response.resourceId());
+        Assertions.assertEquals("vibidmhmwffpl", response.writeAccessResourceId());
         Assertions.assertEquals(LinkedServiceEntityStatus.SUCCEEDED, response.provisioningState());
     }
 
