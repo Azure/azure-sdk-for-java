@@ -29,8 +29,6 @@ import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.t
 @SuppressWarnings("deprecation")
 public abstract class AbstractQueryGenerator {
 
-    private static String tableName = "";
-
     private static final String CONSTANT_TABLE_NAME = "r";
 
     /**
@@ -239,7 +237,7 @@ public abstract class AbstractQueryGenerator {
         return Pair.of(queryString, parameters);
     }
 
-    private static String getParameter(@NonNull Sort.Order order) {
+    private static String getParameter(@NonNull Sort.Order order, @NonNull String tableName) {
         Assert.isTrue(!order.isIgnoreCase(), "Ignore case is not supported");
 
         final String direction = order.isDescending() ? "DESC" : "ASC";
@@ -247,14 +245,13 @@ public abstract class AbstractQueryGenerator {
         return String.format("%s.%s %s", tableName, order.getProperty(), direction);
     }
 
-    static String generateQuerySort(@NonNull Sort sort, @NonNull String inputTableName) {
+    static String generateQuerySort(@NonNull Sort sort, @NonNull String tableName) {
         if (sort.isUnsorted()) {
             return "";
         }
-        tableName = inputTableName;
-
         final String queryTail = "ORDER BY";
-        final List<String> subjects = sort.stream().map(AbstractQueryGenerator::getParameter).collect(Collectors.toList());
+        final List<String> subjects = sort.stream().map(order -> getParameter(order, tableName))
+            .collect(Collectors.toList());
 
         return queryTail
             + " "
