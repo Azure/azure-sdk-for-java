@@ -46,6 +46,15 @@ public final class ConfigTemplateVersionsImpl implements ConfigTemplateVersions 
         }
     }
 
+    public void delete(String resourceGroupName, String configTemplateName, String configTemplateVersionName) {
+        this.delete(resourceGroupName, configTemplateName, configTemplateVersionName, Context.NONE);
+    }
+
+    public void delete(String resourceGroupName, String configTemplateName, String configTemplateVersionName,
+        Context context) {
+        this.serviceClient().delete(resourceGroupName, configTemplateName, configTemplateVersionName, context);
+    }
+
     public PagedIterable<ConfigTemplateVersion> listByConfigTemplate(String resourceGroupName,
         String configTemplateName) {
         return this.listByConfigTemplate(resourceGroupName, configTemplateName, Context.NONE);
@@ -58,11 +67,49 @@ public final class ConfigTemplateVersionsImpl implements ConfigTemplateVersions 
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigTemplateVersionImpl(inner1, this.manager()));
     }
 
+    public ConfigTemplateVersion getById(String id) {
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
+    }
+
+    public Response<ConfigTemplateVersion> getByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/versions/{configTemplateVersionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String configTemplateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/versions/{configTemplateVersionName}",
+            "configTemplateName", "configTemplates", LOGGER);
+        String configTemplateVersionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/versions/{configTemplateVersionName}",
+            "configTemplateVersionName", "versions", LOGGER);
+        return this.getWithResponse(resourceGroupName, configTemplateName, configTemplateVersionName, context);
+    }
+
+    public void deleteById(String id) {
+        this.deleteByIdWithResponse(id, Context.NONE);
+    }
+
+    public void deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/versions/{configTemplateVersionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String configTemplateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/versions/{configTemplateVersionName}",
+            "configTemplateName", "configTemplates", LOGGER);
+        String configTemplateVersionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/versions/{configTemplateVersionName}",
+            "configTemplateVersionName", "versions", LOGGER);
+        this.delete(resourceGroupName, configTemplateName, configTemplateVersionName, context);
+    }
+
     private ConfigTemplateVersionsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager manager() {
         return this.serviceManager;
+    }
+
+    public ConfigTemplateVersionImpl define(String name) {
+        return new ConfigTemplateVersionImpl(name, this.manager());
     }
 }

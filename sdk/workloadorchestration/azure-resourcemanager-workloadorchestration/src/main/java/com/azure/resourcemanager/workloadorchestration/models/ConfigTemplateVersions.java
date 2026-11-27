@@ -41,6 +41,31 @@ public interface ConfigTemplateVersions {
     ConfigTemplateVersion get(String resourceGroupName, String configTemplateName, String configTemplateVersionName);
 
     /**
+     * Delete a Config Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String configTemplateName, String configTemplateVersionName);
+
+    /**
+     * Delete a Config Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String configTemplateName, String configTemplateVersionName, Context context);
+
+    /**
      * List Config Template Version Resources.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -65,4 +90,56 @@ public interface ConfigTemplateVersions {
      */
     PagedIterable<ConfigTemplateVersion> listByConfigTemplate(String resourceGroupName, String configTemplateName,
         Context context);
+
+    /**
+     * Get a Config Template Version Resource.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Config Template Version Resource along with {@link Response}.
+     */
+    ConfigTemplateVersion getById(String id);
+
+    /**
+     * Get a Config Template Version Resource.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Config Template Version Resource along with {@link Response}.
+     */
+    Response<ConfigTemplateVersion> getByIdWithResponse(String id, Context context);
+
+    /**
+     * Delete a Config Template Version Resource.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteById(String id);
+
+    /**
+     * Delete a Config Template Version Resource.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByIdWithResponse(String id, Context context);
+
+    /**
+     * Begins definition for a new ConfigTemplateVersion resource.
+     * 
+     * @param name resource name.
+     * @return the first stage of the new ConfigTemplateVersion definition.
+     */
+    ConfigTemplateVersion.DefinitionStages.Blank define(String name);
 }

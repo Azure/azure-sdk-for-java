@@ -13,16 +13,16 @@ public final class ExtendedLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtendedLocation model
-            = BinaryData.fromString("{\"name\":\"kix\",\"type\":\"EdgeZone\"}").toObject(ExtendedLocation.class);
-        Assertions.assertEquals("kix", model.name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.type());
+            = BinaryData.fromString("{\"name\":\"vpa\",\"type\":\"CustomLocation\"}").toObject(ExtendedLocation.class);
+        Assertions.assertEquals("vpa", model.name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExtendedLocation model = new ExtendedLocation().withName("kix").withType(ExtendedLocationType.EDGE_ZONE);
+        ExtendedLocation model = new ExtendedLocation().withName("vpa").withType(ExtendedLocationType.CUSTOM_LOCATION);
         model = BinaryData.fromObject(model).toObject(ExtendedLocation.class);
-        Assertions.assertEquals("kix", model.name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.type());
+        Assertions.assertEquals("vpa", model.name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.type());
     }
 }

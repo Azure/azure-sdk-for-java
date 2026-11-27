@@ -13,6 +13,7 @@ import com.azure.resourcemanager.workloadorchestration.fluent.SolutionTemplateVe
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionTemplateVersionInner;
 import com.azure.resourcemanager.workloadorchestration.models.BulkDeploySolutionParameter;
 import com.azure.resourcemanager.workloadorchestration.models.BulkPublishSolutionParameter;
+import com.azure.resourcemanager.workloadorchestration.models.BulkReviewSolutionParameter;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateVersion;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateVersions;
 
@@ -46,6 +47,15 @@ public final class SolutionTemplateVersionsImpl implements SolutionTemplateVersi
         } else {
             return null;
         }
+    }
+
+    public void delete(String resourceGroupName, String solutionTemplateName, String solutionTemplateVersionName) {
+        this.delete(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, Context.NONE);
+    }
+
+    public void delete(String resourceGroupName, String solutionTemplateName, String solutionTemplateVersionName,
+        Context context) {
+        this.serviceClient().delete(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, context);
     }
 
     public PagedIterable<SolutionTemplateVersion> listBySolutionTemplate(String resourceGroupName,
@@ -84,11 +94,61 @@ public final class SolutionTemplateVersionsImpl implements SolutionTemplateVersi
             .bulkPublishSolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body, context);
     }
 
+    public void bulkReviewSolution(String resourceGroupName, String solutionTemplateName,
+        String solutionTemplateVersionName, BulkReviewSolutionParameter body) {
+        this.bulkReviewSolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body,
+            Context.NONE);
+    }
+
+    public void bulkReviewSolution(String resourceGroupName, String solutionTemplateName,
+        String solutionTemplateVersionName, BulkReviewSolutionParameter body, Context context) {
+        this.serviceClient()
+            .bulkReviewSolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body, context);
+    }
+
+    public SolutionTemplateVersion getById(String id) {
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
+    }
+
+    public Response<SolutionTemplateVersion> getByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String solutionTemplateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}",
+            "solutionTemplateName", "solutionTemplates", LOGGER);
+        String solutionTemplateVersionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}",
+            "solutionTemplateVersionName", "versions", LOGGER);
+        return this.getWithResponse(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, context);
+    }
+
+    public void deleteById(String id) {
+        this.deleteByIdWithResponse(id, Context.NONE);
+    }
+
+    public void deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String solutionTemplateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}",
+            "solutionTemplateName", "solutionTemplates", LOGGER);
+        String solutionTemplateVersionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}",
+            "solutionTemplateVersionName", "versions", LOGGER);
+        this.delete(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, context);
+    }
+
     private SolutionTemplateVersionsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager manager() {
         return this.serviceManager;
+    }
+
+    public SolutionTemplateVersionImpl define(String name) {
+        return new SolutionTemplateVersionImpl(name, this.manager());
     }
 }

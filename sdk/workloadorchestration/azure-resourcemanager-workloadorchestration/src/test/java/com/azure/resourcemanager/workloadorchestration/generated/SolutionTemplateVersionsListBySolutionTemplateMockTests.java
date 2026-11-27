@@ -23,7 +23,7 @@ public final class SolutionTemplateVersionsListBySolutionTemplateMockTests {
     @Test
     public void testListBySolutionTemplate() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"configurations\":\"fjrqpjiyr\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Canceled\"},\"eTag\":\"wmzwdfkbnrzorpdl\",\"id\":\"qctqjfg\",\"name\":\"xsaetg\",\"type\":\"dgvpyig\"}]}";
+            = "{\"value\":[{\"properties\":{\"configurations\":\"\\\"datatdahneaoovtyjzti\\\"\",\"specification\":{\"uklajvcfoc\":\"\\\"datawjlofzekfsrm\\\"\",\"kwxnhwhhnoyrza\":\"\\\"datahapejov\\\"\"},\"orchestratorType\":\"TO\",\"internalState\":\"PendingValidation\",\"provisioningState\":\"Failed\"},\"eTag\":\"envjeateaxxc\",\"id\":\"oxdjxldnaryy\",\"name\":\"nzkdolrndwdbvxvz\",\"type\":\"ledoyqxlunkft\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,8 @@ public final class SolutionTemplateVersionsListBySolutionTemplateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SolutionTemplateVersion> response = manager.solutionTemplateVersions()
-            .listBySolutionTemplate("qwaafrqulhm", "yqbhd", com.azure.core.util.Context.NONE);
+            .listBySolutionTemplate("oyqyxyjrcbqpb", "spglq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fjrqpjiyr", response.iterator().next().properties().configurations());
         Assertions.assertEquals(OrchestratorType.TO, response.iterator().next().properties().orchestratorType());
     }
 }

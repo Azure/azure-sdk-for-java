@@ -11,7 +11,9 @@ import com.azure.resourcemanager.workloadorchestration.models.SolutionUpdateProp
 public final class SolutionUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SolutionUpdate model = BinaryData.fromString("{\"properties\":{}}").toObject(SolutionUpdate.class);
+        SolutionUpdate model = BinaryData.fromString(
+            "{\"properties\":{\"solutionTemplateId\":\"vdff\",\"displayName\":\"afqr\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"aspavehhr\",\"latestConfigRevision\":\"kbunzoz\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"hcxgkmoyx\",\"latestConfigRevision\":\"dyuib\",\"isConfigured\":false},{\"solutionTemplateVersion\":\"fdn\",\"latestConfigRevision\":\"zydvfvf\",\"isConfigured\":false}],\"provisioningState\":\"Deleting\"}}")
+            .toObject(SolutionUpdate.class);
     }
 
     @org.junit.jupiter.api.Test

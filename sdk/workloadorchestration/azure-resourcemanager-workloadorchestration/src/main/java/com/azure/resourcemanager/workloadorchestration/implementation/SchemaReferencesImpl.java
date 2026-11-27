@@ -43,6 +43,14 @@ public final class SchemaReferencesImpl implements SchemaReferences {
         }
     }
 
+    public void deleteByResourceGroup(String resourceUri, String schemaReferenceName) {
+        this.delete(resourceUri, schemaReferenceName, Context.NONE);
+    }
+
+    public void delete(String resourceUri, String schemaReferenceName, Context context) {
+        this.serviceClient().delete(resourceUri, schemaReferenceName, context);
+    }
+
     public PagedIterable<SchemaReference> listByResourceGroup(String resourceUri) {
         return this.listByResourceGroup(resourceUri, Context.NONE);
     }
@@ -52,11 +60,43 @@ public final class SchemaReferencesImpl implements SchemaReferences {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new SchemaReferenceImpl(inner1, this.manager()));
     }
 
+    public SchemaReference getById(String id) {
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
+    }
+
+    public Response<SchemaReference> getByIdWithResponse(String id, Context context) {
+        String resourceUri = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}", "resourceUri",
+            "resourceUri", LOGGER);
+        String schemaReferenceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}", "schemaReferenceName",
+            "schemaReferences", LOGGER);
+        return this.getWithResponse(resourceUri, schemaReferenceName, context);
+    }
+
+    public void deleteById(String id) {
+        this.deleteByIdWithResponse(id, Context.NONE);
+    }
+
+    public void deleteByIdWithResponse(String id, Context context) {
+        String resourceUri = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}", "resourceUri",
+            "resourceUri", LOGGER);
+        String schemaReferenceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}", "schemaReferenceName",
+            "schemaReferences", LOGGER);
+        this.delete(resourceUri, schemaReferenceName, context);
+    }
+
     private SchemaReferencesClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager manager() {
         return this.serviceManager;
+    }
+
+    public SchemaReferenceImpl define(String name) {
+        return new SchemaReferenceImpl(name, this.manager());
     }
 }

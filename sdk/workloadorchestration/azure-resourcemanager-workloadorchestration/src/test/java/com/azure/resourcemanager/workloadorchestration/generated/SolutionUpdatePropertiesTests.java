@@ -10,7 +10,9 @@ import com.azure.resourcemanager.workloadorchestration.models.SolutionUpdateProp
 public final class SolutionUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SolutionUpdateProperties model = BinaryData.fromString("{}").toObject(SolutionUpdateProperties.class);
+        SolutionUpdateProperties model = BinaryData.fromString(
+            "{\"solutionTemplateId\":\"oisrvhmgorffu\",\"displayName\":\"scvwmzhwplef\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"xilcbtgnhnzey\",\"latestConfigRevision\":\"xtjjfzqlqhycav\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"ggxdb\",\"latestConfigRevision\":\"esmi\",\"isConfigured\":true}],\"provisioningState\":\"Deleting\"}")
+            .toObject(SolutionUpdateProperties.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -23,7 +23,7 @@ public final class SolutionTemplatesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"rvxisimjceagbj\",\"capabilities\":[\"lsumywzashx\"],\"latestVersion\":\"noy\",\"state\":\"active\",\"enableExternalValidation\":false,\"provisioningState\":\"InProgress\"},\"eTag\":\"znclkfkeebgv\",\"location\":\"e\",\"tags\":{\"gflqqbtnyjp\":\"oqujlyegqavn\",\"baevwjcnkottl\":\"lxdbfvabmvms\",\"zwjiqullq\":\"uhvajmailfemjjza\"},\"id\":\"bdmvrscmqerndbr\",\"name\":\"yeofltfnnxrkad\",\"type\":\"fynn\"}]}";
+            = "{\"value\":[{\"properties\":{\"uniqueIdentifier\":\"iqikvllr\",\"description\":\"tpmglxkoikmtr\",\"capabilities\":[\"rqkzawbunmpak\",\"wzlweeprn\"],\"latestVersion\":\"zltkaszfj\",\"state\":\"inactive\",\"enableExternalValidation\":true,\"provisioningState\":\"Initialized\"},\"eTag\":\"apgrcqe\",\"location\":\"vrdjomln\",\"tags\":{\"dls\":\"v\",\"gzancoinmphy\":\"lxkqesdfeds\",\"e\":\"cqidkltvdhqnufbx\",\"ntojovfnybydhuih\":\"i\"},\"id\":\"ouwudhuaorh\",\"name\":\"kehwvumosqirca\",\"type\":\"qprlobruge\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class SolutionTemplatesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SolutionTemplate> response
-            = manager.solutionTemplates().listByResourceGroup("ajcxnyqgxhl", com.azure.core.util.Context.NONE);
+            = manager.solutionTemplates().listByResourceGroup("h", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("e", response.iterator().next().location());
-        Assertions.assertEquals("oqujlyegqavn", response.iterator().next().tags().get("gflqqbtnyjp"));
-        Assertions.assertEquals("rvxisimjceagbj", response.iterator().next().properties().description());
-        Assertions.assertEquals("lsumywzashx", response.iterator().next().properties().capabilities().get(0));
-        Assertions.assertEquals(ResourceState.ACTIVE, response.iterator().next().properties().state());
-        Assertions.assertFalse(response.iterator().next().properties().enableExternalValidation());
+        Assertions.assertEquals("vrdjomln", response.iterator().next().location());
+        Assertions.assertEquals("v", response.iterator().next().tags().get("dls"));
+        Assertions.assertEquals("tpmglxkoikmtr", response.iterator().next().properties().description());
+        Assertions.assertEquals("rqkzawbunmpak", response.iterator().next().properties().capabilities().get(0));
+        Assertions.assertEquals(ResourceState.INACTIVE, response.iterator().next().properties().state());
+        Assertions.assertTrue(response.iterator().next().properties().enableExternalValidation());
     }
 }

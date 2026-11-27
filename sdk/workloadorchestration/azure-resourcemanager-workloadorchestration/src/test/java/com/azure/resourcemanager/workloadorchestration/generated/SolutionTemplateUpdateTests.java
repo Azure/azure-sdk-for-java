@@ -17,29 +17,28 @@ public final class SolutionTemplateUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTemplateUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"rrvqa\":\"xccbdreaxhcex\",\"svfycxzbfv\":\"qkghtpwijnhy\",\"ronzmyhgfip\":\"owvrvmtgjqppyos\",\"waekrrjreafxtsgu\":\"sxkm\"},\"properties\":{\"description\":\"glikkxwslolb\",\"capabilities\":[\"uzlm\",\"felfktg\"],\"state\":\"active\",\"enableExternalValidation\":false}}")
+            "{\"tags\":{\"d\":\"tozipqwj\",\"ylkmqp\":\"urrxxgewpktv\",\"hlfbcgwgc\":\"o\"},\"properties\":{\"description\":\"oebqinjipn\",\"capabilities\":[\"ujqlafcbahh\",\"zpofoiyjwpfilk\",\"kkholvdndvia\"],\"state\":\"inactive\",\"enableExternalValidation\":false}}")
             .toObject(SolutionTemplateUpdate.class);
-        Assertions.assertEquals("xccbdreaxhcex", model.tags().get("rrvqa"));
-        Assertions.assertEquals("glikkxwslolb", model.properties().description());
-        Assertions.assertEquals("uzlm", model.properties().capabilities().get(0));
-        Assertions.assertEquals(ResourceState.ACTIVE, model.properties().state());
+        Assertions.assertEquals("tozipqwj", model.tags().get("d"));
+        Assertions.assertEquals("oebqinjipn", model.properties().description());
+        Assertions.assertEquals("ujqlafcbahh", model.properties().capabilities().get(0));
+        Assertions.assertEquals(ResourceState.INACTIVE, model.properties().state());
         Assertions.assertFalse(model.properties().enableExternalValidation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionTemplateUpdate model = new SolutionTemplateUpdate()
-            .withTags(mapOf("rrvqa", "xccbdreaxhcex", "svfycxzbfv", "qkghtpwijnhy", "ronzmyhgfip", "owvrvmtgjqppyos",
-                "waekrrjreafxtsgu", "sxkm"))
-            .withProperties(new SolutionTemplateUpdateProperties().withDescription("glikkxwslolb")
-                .withCapabilities(Arrays.asList("uzlm", "felfktg"))
-                .withState(ResourceState.ACTIVE)
-                .withEnableExternalValidation(false));
+        SolutionTemplateUpdate model
+            = new SolutionTemplateUpdate().withTags(mapOf("d", "tozipqwj", "ylkmqp", "urrxxgewpktv", "hlfbcgwgc", "o"))
+                .withProperties(new SolutionTemplateUpdateProperties().withDescription("oebqinjipn")
+                    .withCapabilities(Arrays.asList("ujqlafcbahh", "zpofoiyjwpfilk", "kkholvdndvia"))
+                    .withState(ResourceState.INACTIVE)
+                    .withEnableExternalValidation(false));
         model = BinaryData.fromObject(model).toObject(SolutionTemplateUpdate.class);
-        Assertions.assertEquals("xccbdreaxhcex", model.tags().get("rrvqa"));
-        Assertions.assertEquals("glikkxwslolb", model.properties().description());
-        Assertions.assertEquals("uzlm", model.properties().capabilities().get(0));
-        Assertions.assertEquals(ResourceState.ACTIVE, model.properties().state());
+        Assertions.assertEquals("tozipqwj", model.tags().get("d"));
+        Assertions.assertEquals("oebqinjipn", model.properties().description());
+        Assertions.assertEquals("ujqlafcbahh", model.properties().capabilities().get(0));
+        Assertions.assertEquals(ResourceState.INACTIVE, model.properties().state());
         Assertions.assertFalse(model.properties().enableExternalValidation());
     }
 

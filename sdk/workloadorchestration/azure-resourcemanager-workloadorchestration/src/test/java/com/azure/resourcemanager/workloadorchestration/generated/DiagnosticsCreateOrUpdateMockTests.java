@@ -26,7 +26,7 @@ public final class DiagnosticsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"psimioy\",\"type\":\"CustomLocation\"},\"eTag\":\"l\",\"location\":\"iqwnnraclibbfq\",\"tags\":{\"hautw\":\"kladydg\"},\"id\":\"kexzgpmnmabeddqi\",\"name\":\"wg\",\"type\":\"fpfqf\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"qubotbvuf\",\"type\":\"CustomLocation\"},\"eTag\":\"jiemimdtnpo\",\"location\":\"wjskr\",\"tags\":{\"fquulpclhs\":\"dddrf\",\"qyxfed\":\"igeeuwbr\"},\"id\":\"netdqw\",\"name\":\"nxoqgv\",\"type\":\"zp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,17 +36,17 @@ public final class DiagnosticsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Diagnostic response = manager.diagnostics()
-            .define("gpkrie")
-            .withRegion("wnwpiwxeii")
-            .withExistingResourceGroup("nfee")
-            .withTags(mapOf("pk", "p", "xxij", "dm", "yacwrasekwefc", "skwsdgkj", "nwoqartwy", "o"))
+            .define("gwahcrxo")
+            .withRegion("hzghhhkvn")
+            .withExistingResourceGroup("zkdiuvflgzhcw")
+            .withTags(mapOf("mzs", "tujqzvhnjvpmxnh"))
             .withProperties(new DiagnosticProperties())
-            .withExtendedLocation(new ExtendedLocation().withName("xx").withType(ExtendedLocationType.EDGE_ZONE))
+            .withExtendedLocation(new ExtendedLocation().withName("vnpcc").withType(ExtendedLocationType.EDGE_ZONE))
             .create();
 
-        Assertions.assertEquals("iqwnnraclibbfq", response.location());
-        Assertions.assertEquals("kladydg", response.tags().get("hautw"));
-        Assertions.assertEquals("psimioy", response.extendedLocation().name());
+        Assertions.assertEquals("wjskr", response.location());
+        Assertions.assertEquals("dddrf", response.tags().get("fquulpclhs"));
+        Assertions.assertEquals("qubotbvuf", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 

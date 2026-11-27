@@ -17,6 +17,11 @@ import java.io.IOException;
 @Immutable
 public final class DynamicSchemaProperties implements JsonSerializable<DynamicSchemaProperties> {
     /*
+     * Display name of the dynamic schema
+     */
+    private String displayName;
+
+    /*
      * Type of configuration
      */
     private ConfigurationType configurationType;
@@ -35,6 +40,15 @@ public final class DynamicSchemaProperties implements JsonSerializable<DynamicSc
      * Creates an instance of DynamicSchemaProperties class.
      */
     public DynamicSchemaProperties() {
+    }
+
+    /**
+     * Get the displayName property: Display name of the dynamic schema.
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
     }
 
     /**
@@ -88,7 +102,9 @@ public final class DynamicSchemaProperties implements JsonSerializable<DynamicSc
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("configurationType".equals(fieldName)) {
+                if ("displayName".equals(fieldName)) {
+                    deserializedDynamicSchemaProperties.displayName = reader.getString();
+                } else if ("configurationType".equals(fieldName)) {
                     deserializedDynamicSchemaProperties.configurationType
                         = ConfigurationType.fromString(reader.getString());
                 } else if ("configurationModel".equals(fieldName)) {

@@ -23,7 +23,7 @@ public final class WorkflowVersionsListByWorkflowMockTests {
     @Test
     public void testListByWorkflow() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"revision\":1765036901,\"configuration\":\"fsbw\",\"stageSpec\":[{\"name\":\"ivbvzi\",\"specification\":{},\"tasks\":[{\"name\":\"oooxzpradmskxk\",\"specification\":{}},{\"name\":\"pdgzigjsugswhg\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1295634213,\"errorAction\":{}}},{\"name\":\"wwnbafoctohz\",\"specification\":{},\"tasks\":[{\"name\":\"wsxbgnvkervqc\",\"specification\":{}}],\"taskOption\":{\"concurrency\":690805625,\"errorAction\":{}}}],\"reviewId\":\"sxqvzvspabdsrg\",\"state\":\"Undeployed\",\"specification\":{},\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"ubklrxhj\",\"type\":\"CustomLocation\"},\"eTag\":\"cetjdvq\",\"id\":\"ie\",\"name\":\"qkwaruwd\",\"type\":\"vqzxoebwg\"}]}";
+            = "{\"value\":[{\"properties\":{\"revision\":1146855013,\"configuration\":\"z\",\"stageSpec\":[{\"name\":\"wcahdkmbjsmihr\",\"specification\":{\"bgukbsvbwyoty\":\"\\\"datazbfsjwfczglk\\\"\",\"nhjgclxaxwcffasp\":\"\\\"datanb\\\"\"},\"tasks\":[{\"name\":\"k\",\"specification\":{}},{\"name\":\"cszghdoaqip\",\"specification\":{}},{\"name\":\"nxclfrsbzrnmuv\",\"specification\":{}},{\"name\":\"vp\",\"specification\":{}}],\"taskOption\":{\"concurrency\":2075935666,\"errorAction\":{}}}],\"reviewId\":\"bf\",\"state\":\"Staging\",\"specification\":{\"inxd\":\"\\\"datan\\\"\",\"yxzmx\":\"\\\"datamaoyqxfv\\\"\",\"dnzujsj\":\"\\\"datanofxlttxoqx\\\"\"},\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"pskcjhmm\",\"type\":\"CustomLocation\"},\"eTag\":\"nivdqtkyk\",\"id\":\"xnlsf\",\"name\":\"nyscaccpt\",\"type\":\"zetxygxxiceecvj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,13 @@ public final class WorkflowVersionsListByWorkflowMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<WorkflowVersion> response = manager.workflowVersions()
-            .listByWorkflow("hzdue", "ihapfjiiknjdiq", "liejhpc", com.azure.core.util.Context.NONE);
+            .listByWorkflow("chefpgeed", "ybruhola", "mwcgimmrimaabsq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ivbvzi", response.iterator().next().properties().stageSpec().get(0).name());
-        Assertions.assertEquals("oooxzpradmskxk",
-            response.iterator().next().properties().stageSpec().get(0).tasks().get(0).name());
-        Assertions.assertEquals(1295634213,
+        Assertions.assertEquals("wcahdkmbjsmihr", response.iterator().next().properties().stageSpec().get(0).name());
+        Assertions.assertEquals("k", response.iterator().next().properties().stageSpec().get(0).tasks().get(0).name());
+        Assertions.assertEquals(2075935666,
             response.iterator().next().properties().stageSpec().get(0).taskOption().concurrency());
-        Assertions.assertEquals("ubklrxhj", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("pskcjhmm", response.iterator().next().extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
             response.iterator().next().extendedLocation().type());
     }

@@ -12,16 +12,16 @@ public final class HierarchyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Hierarchy model
-            = BinaryData.fromString("{\"name\":\"grwsdp\",\"description\":\"ra\"}").toObject(Hierarchy.class);
-        Assertions.assertEquals("grwsdp", model.name());
-        Assertions.assertEquals("ra", model.description());
+            = BinaryData.fromString("{\"name\":\"sqdtiwlwxlbon\",\"description\":\"qba\"}").toObject(Hierarchy.class);
+        Assertions.assertEquals("sqdtiwlwxlbon", model.name());
+        Assertions.assertEquals("qba", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Hierarchy model = new Hierarchy().withName("grwsdp").withDescription("ra");
+        Hierarchy model = new Hierarchy().withName("sqdtiwlwxlbon").withDescription("qba");
         model = BinaryData.fromObject(model).toObject(Hierarchy.class);
-        Assertions.assertEquals("grwsdp", model.name());
-        Assertions.assertEquals("ra", model.description());
+        Assertions.assertEquals("sqdtiwlwxlbon", model.name());
+        Assertions.assertEquals("qba", model.description());
     }
 }

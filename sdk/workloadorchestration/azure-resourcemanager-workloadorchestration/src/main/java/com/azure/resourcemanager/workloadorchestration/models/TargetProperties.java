@@ -262,6 +262,8 @@ public final class TargetProperties implements JsonSerializable<TargetProperties
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("contextId", this.contextId);
+        jsonWriter.writeArrayField("capabilities", this.capabilities, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("hierarchyLevel", this.hierarchyLevel);
         jsonWriter.writeMapField("targetSpecification", this.targetSpecification, (writer, element) -> {
             if (element == null) {
                 writer.writeNull();
@@ -269,8 +271,6 @@ public final class TargetProperties implements JsonSerializable<TargetProperties
                 element.writeTo(writer);
             }
         });
-        jsonWriter.writeArrayField("capabilities", this.capabilities, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("hierarchyLevel", this.hierarchyLevel);
         jsonWriter.writeStringField("solutionScope", this.solutionScope);
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         return jsonWriter.writeEndObject();
@@ -298,15 +298,15 @@ public final class TargetProperties implements JsonSerializable<TargetProperties
                     deserializedTargetProperties.displayName = reader.getString();
                 } else if ("contextId".equals(fieldName)) {
                     deserializedTargetProperties.contextId = reader.getString();
-                } else if ("targetSpecification".equals(fieldName)) {
-                    Map<String, BinaryData> targetSpecification = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                    deserializedTargetProperties.targetSpecification = targetSpecification;
                 } else if ("capabilities".equals(fieldName)) {
                     List<String> capabilities = reader.readArray(reader1 -> reader1.getString());
                     deserializedTargetProperties.capabilities = capabilities;
                 } else if ("hierarchyLevel".equals(fieldName)) {
                     deserializedTargetProperties.hierarchyLevel = reader.getString();
+                } else if ("targetSpecification".equals(fieldName)) {
+                    Map<String, BinaryData> targetSpecification = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    deserializedTargetProperties.targetSpecification = targetSpecification;
                 } else if ("status".equals(fieldName)) {
                     deserializedTargetProperties.status = DeploymentStatus.fromJson(reader);
                 } else if ("solutionScope".equals(fieldName)) {

@@ -42,6 +42,32 @@ public interface SolutionTemplateVersions {
         String solutionTemplateVersionName);
 
     /**
+     * Delete a Solution Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String solutionTemplateName, String solutionTemplateVersionName);
+
+    /**
+     * Delete a Solution Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String solutionTemplateName, String solutionTemplateVersionName,
+        Context context);
+
+    /**
      * List Solution Template Version Resources.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -127,4 +153,85 @@ public interface SolutionTemplateVersions {
      */
     void bulkPublishSolution(String resourceGroupName, String solutionTemplateName, String solutionTemplateVersionName,
         BulkPublishSolutionParameter body, Context context);
+
+    /**
+     * Post request for bulk review.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void bulkReviewSolution(String resourceGroupName, String solutionTemplateName, String solutionTemplateVersionName,
+        BulkReviewSolutionParameter body);
+
+    /**
+     * Post request for bulk review.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param solutionTemplateName The name of the SolutionTemplate.
+     * @param solutionTemplateVersionName The name of the SolutionTemplateVersion.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void bulkReviewSolution(String resourceGroupName, String solutionTemplateName, String solutionTemplateVersionName,
+        BulkReviewSolutionParameter body, Context context);
+
+    /**
+     * Get a Solution Template Version Resource.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Solution Template Version Resource along with {@link Response}.
+     */
+    SolutionTemplateVersion getById(String id);
+
+    /**
+     * Get a Solution Template Version Resource.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Solution Template Version Resource along with {@link Response}.
+     */
+    Response<SolutionTemplateVersion> getByIdWithResponse(String id, Context context);
+
+    /**
+     * Delete a Solution Template Version Resource.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteById(String id);
+
+    /**
+     * Delete a Solution Template Version Resource.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByIdWithResponse(String id, Context context);
+
+    /**
+     * Begins definition for a new SolutionTemplateVersion resource.
+     * 
+     * @param name resource name.
+     * @return the first stage of the new SolutionTemplateVersion definition.
+     */
+    SolutionTemplateVersion.DefinitionStages.Blank define(String name);
 }
