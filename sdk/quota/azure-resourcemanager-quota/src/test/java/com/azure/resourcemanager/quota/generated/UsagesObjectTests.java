@@ -13,8 +13,8 @@ public final class UsagesObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsagesObject model
-            = BinaryData.fromString("{\"value\":338198941,\"usagesType\":\"Individual\"}").toObject(UsagesObject.class);
-        Assertions.assertEquals(338198941, model.value());
-        Assertions.assertEquals(UsagesTypes.INDIVIDUAL, model.usagesType());
+            = BinaryData.fromString("{\"value\":722282959,\"usagesType\":\"Combined\"}").toObject(UsagesObject.class);
+        Assertions.assertEquals(722282959, model.value());
+        Assertions.assertEquals(UsagesTypes.COMBINED, model.usagesType());
     }
 }

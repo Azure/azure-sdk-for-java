@@ -26,7 +26,7 @@ public final class GroupQuotaLimitsRequestsUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"value\":[{\"properties\":{\"resourceName\":\"xunkbebxmubyynt\",\"limit\":8620058010530474402,\"comment\":\"tkoievseotgq\",\"unit\":\"ltmuwlauwzizx\",\"name\":{},\"availableLimit\":2676034725139393325,\"allocatedToSubscriptions\":{}}},{\"properties\":{\"resourceName\":\"u\",\"limit\":4123846884146341556,\"comment\":\"bttdumorppxe\",\"unit\":\"nzbtbhj\",\"name\":{},\"availableLimit\":2177073592568993957,\"allocatedToSubscriptions\":{}}}],\"nextLink\":\"hdneuelfph\"},\"id\":\"yhtozfikdowwqu\",\"name\":\"v\",\"type\":\"zx\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"value\":[{\"properties\":{\"resourceName\":\"xqtnq\",\"limit\":2784974934686338692,\"comment\":\"wfff\",\"unit\":\"kpj\",\"name\":{},\"availableLimit\":167842444741645493,\"allocatedToSubscriptions\":{}}}],\"nextLink\":\"ltmm\"},\"id\":\"hyeozphvwau\",\"name\":\"qncygupkvi\",\"type\":\"mdscwxqupev\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,19 +37,15 @@ public final class GroupQuotaLimitsRequestsUpdateMockTests {
 
         GroupQuotaLimitList response
             = manager.groupQuotaLimitsRequests()
-                .update("mcwyhzdxssadb", "mnvdfzn", "daodvxzbncblyl", "stdbhhxsrzdzu", new GroupQuotaLimitListInner()
+                .update("wslolbqp", "uzlm", "felfktg", "lcrpw", new GroupQuotaLimitListInner()
                     .withProperties(new GroupQuotaLimitListProperties().withValue(Arrays.asList(
-                        new GroupQuotaLimit().withProperties(new GroupQuotaLimitProperties().withResourceName("nevf")
-                            .withLimit(8847902145663699815L)
-                            .withComment("gtdsslswt")),
-                        new GroupQuotaLimit()
-                            .withProperties(new GroupQuotaLimitProperties().withResourceName("shhszhedplvwiw")
-                                .withLimit(5954256470924053465L)
-                                .withComment("besldnkwwtppjflc"))))),
+                        new GroupQuotaLimit().withProperties(new GroupQuotaLimitProperties().withResourceName("brnjwmw")
+                            .withLimit(5636439164832410067L)
+                            .withComment("azej"))))),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xunkbebxmubyynt", response.properties().value().get(0).properties().resourceName());
-        Assertions.assertEquals(8620058010530474402L, response.properties().value().get(0).properties().limit());
-        Assertions.assertEquals("tkoievseotgq", response.properties().value().get(0).properties().comment());
+        Assertions.assertEquals("xqtnq", response.properties().value().get(0).properties().resourceName());
+        Assertions.assertEquals(2784974934686338692L, response.properties().value().get(0).properties().limit());
+        Assertions.assertEquals("wfff", response.properties().value().get(0).properties().comment());
     }
 }

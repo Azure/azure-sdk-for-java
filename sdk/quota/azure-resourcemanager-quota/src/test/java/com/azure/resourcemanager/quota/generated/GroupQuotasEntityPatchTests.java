@@ -13,16 +13,16 @@ public final class GroupQuotasEntityPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotasEntityPatch model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"uuvmkjozkrwfnd\",\"provisioningState\":\"Invalid\"},\"id\":\"pslwejdpvw\",\"name\":\"yoqpsoaccta\",\"type\":\"akl\"}")
+            "{\"properties\":{\"displayName\":\"owgujjugwdkcglhs\",\"provisioningState\":\"Accepted\"},\"id\":\"dyggdtjixhbku\",\"name\":\"fqweykhmene\",\"type\":\"fyexfwhy\"}")
             .toObject(GroupQuotasEntityPatch.class);
-        Assertions.assertEquals("uuvmkjozkrwfnd", model.properties().displayName());
+        Assertions.assertEquals("owgujjugwdkcglhs", model.properties().displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GroupQuotasEntityPatch model = new GroupQuotasEntityPatch()
-            .withProperties(new GroupQuotasEntityPatchProperties().withDisplayName("uuvmkjozkrwfnd"));
+            .withProperties(new GroupQuotasEntityPatchProperties().withDisplayName("owgujjugwdkcglhs"));
         model = BinaryData.fromObject(model).toObject(GroupQuotasEntityPatch.class);
-        Assertions.assertEquals("uuvmkjozkrwfnd", model.properties().displayName());
+        Assertions.assertEquals("owgujjugwdkcglhs", model.properties().displayName());
     }
 }

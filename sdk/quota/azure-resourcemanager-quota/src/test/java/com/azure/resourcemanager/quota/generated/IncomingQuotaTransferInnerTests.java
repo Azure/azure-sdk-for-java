@@ -11,7 +11,7 @@ public final class IncomingQuotaTransferInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IncomingQuotaTransferInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"transferStatus\":\"Failed\",\"transferId\":\"dxob\",\"transferRef\":\"dxkqpx\",\"sourceSubscriptionId\":\"ajionpimexgstxg\",\"sourceTenantId\":\"odgmaajrmvdjwz\",\"billingAccountId\":\"ovmclwhijcoejct\",\"resourceName\":\"aqsqsycbkbfk\",\"amount\":6954441473774697621,\"sourceEtag\":\"exxppofmxaxcfjp\",\"approval\":{\"comment\":\"toc\",\"actor\":\"j\",\"occurredAt\":\"2021-04-14T06:41:07Z\"},\"rejection\":{\"reason\":\"mouexhdzx\",\"actor\":\"bqe\",\"occurredAt\":\"2021-05-02T06:52:14Z\"}},\"etag\":\"xqbzvddntwnd\",\"id\":\"cbtwnpzaoqvuh\",\"name\":\"hcffcyddglmjthjq\",\"type\":\"wpyeicxmqciwqvh\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"transferStatus\":\"Rejected\",\"transferId\":\"ouqfprwz\",\"transferRef\":\"nguitnwuizgazxu\",\"sourceSubscriptionId\":\"zuckyfi\",\"sourceTenantId\":\"fidfvzw\",\"billingAccountId\":\"uht\",\"resourceName\":\"wisdkft\",\"amount\":1735908186849769210,\"sourceEtag\":\"t\",\"approval\":{\"comment\":\"aop\",\"actor\":\"km\",\"occurredAt\":\"2021-09-18T09:57:46Z\"},\"rejection\":{\"reason\":\"mxdcufufsrp\",\"actor\":\"mzidnsezcxtb\",\"occurredAt\":\"2021-03-29T14:50:19Z\"}},\"etag\":\"fycc\",\"id\":\"ewmdw\",\"name\":\"jeiachboosfl\",\"type\":\"ro\"}")
             .toObject(IncomingQuotaTransferInner.class);
     }
 }

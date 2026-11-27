@@ -22,7 +22,7 @@ public final class QuotaTransfersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"transferStatus\":\"Completed\",\"transferId\":\"uzkopbminrfd\",\"displayName\":\"oyuhhziui\",\"comment\":\"ozbhdmsmlmzq\",\"destinationSubscriptionId\":\"oftrmaequia\",\"destinationTenantId\":\"icslfaoq\",\"billingAccountId\":\"piyylhalnswhccsp\",\"resourceName\":\"kaivwit\",\"amount\":5403952490171525009,\"autoApprove\":false,\"createdAt\":\"2021-11-24T11:26:12Z\",\"expiresAt\":\"2021-10-03T06:29:22Z\",\"createdBy\":\"luhczbw\",\"approval\":{\"comment\":\"ai\",\"actor\":\"sbrgz\",\"occurredAt\":\"2021-02-08T08:17:57Z\"},\"cancellation\":{\"reason\":\"weyp\",\"actor\":\"w\",\"occurredAt\":\"2021-02-27T06:45:47Z\"}},\"etag\":\"gicccnxqhuex\",\"id\":\"ttlstvlzywemhz\",\"name\":\"ncsdtclusiyp\",\"type\":\"sfgytguslfead\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"transferStatus\":\"Accepted\",\"transferId\":\"xbuy\",\"displayName\":\"a\",\"comment\":\"feqztppriol\",\"destinationSubscriptionId\":\"or\",\"destinationTenantId\":\"lt\",\"billingAccountId\":\"mncwsobqwcsdb\",\"resourceName\":\"wdcfhucqdpfuv\",\"amount\":4151473900020159199,\"autoApprove\":true,\"createdAt\":\"2021-05-13T14:00:03Z\",\"expiresAt\":\"2021-04-26T22:23:10Z\",\"createdBy\":\"xbvtvudu\",\"approval\":{\"comment\":\"ormrlxqtvcofudfl\",\"actor\":\"kgjubgdknnqvsazn\",\"occurredAt\":\"2020-12-25T00:58:06Z\"},\"cancellation\":{\"reason\":\"rudsg\",\"actor\":\"a\",\"occurredAt\":\"2021-01-11T17:32:03Z\"}},\"etag\":\"yc\",\"id\":\"auwjuetaebu\",\"name\":\"u\",\"type\":\"dmovsm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,23 +32,21 @@ public final class QuotaTransfersCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         QuotaTransfer response = manager.quotaTransfers()
-            .define("ybxarzgszu")
-            .withExistingLocation("dcpzfoqo", "i")
-            .withProperties(new QuotaTransferProperties().withDisplayName("doamciodhkha")
-                .withComment("khnzbonlw")
-                .withDestinationSubscriptionId("toego")
-                .withBillingAccountId("kszzcmrvexztv")
-                .withResourceName("t")
-                .withAmount(4260556874996196928L)
-                .withAutoApprove(false))
+            .define("l")
+            .withExistingLocation("tdqoaxoruzfgsq", "yfxrx")
+            .withProperties(new QuotaTransferProperties().withDisplayName("uqlcvydy")
+                .withComment("tdooaoj")
+                .withDestinationSubscriptionId("niodkooeb")
+                .withResourceName("lfoakg")
+                .withAmount(7330216529333408125L)
+                .withAutoApprove(true))
             .create();
 
-        Assertions.assertEquals("oyuhhziui", response.properties().displayName());
-        Assertions.assertEquals("ozbhdmsmlmzq", response.properties().comment());
-        Assertions.assertEquals("oftrmaequia", response.properties().destinationSubscriptionId());
-        Assertions.assertEquals("piyylhalnswhccsp", response.properties().billingAccountId());
-        Assertions.assertEquals("kaivwit", response.properties().resourceName());
-        Assertions.assertEquals(5403952490171525009L, response.properties().amount());
-        Assertions.assertFalse(response.properties().autoApprove());
+        Assertions.assertEquals("a", response.properties().displayName());
+        Assertions.assertEquals("feqztppriol", response.properties().comment());
+        Assertions.assertEquals("or", response.properties().destinationSubscriptionId());
+        Assertions.assertEquals("wdcfhucqdpfuv", response.properties().resourceName());
+        Assertions.assertEquals(4151473900020159199L, response.properties().amount());
+        Assertions.assertTrue(response.properties().autoApprove());
     }
 }
