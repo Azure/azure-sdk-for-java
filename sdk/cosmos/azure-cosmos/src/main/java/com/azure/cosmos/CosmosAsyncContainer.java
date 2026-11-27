@@ -424,12 +424,13 @@ public class CosmosAsyncContainer {
 
     private <T> Mono<CosmosItemResponse<T>> replaceItemWithTrackingId(Class<T> itemType,
                                                                       String itemId,
+                                                                      String itemLink,
                                                                       Object item,
                                                                       RequestOptions requestOptions,
                                                                       String trackingId) {
 
         checkNotNull(trackingId, "Argument 'trackingId' must not be null.");
-        return replaceItemInternalCore(itemType, itemId, item, requestOptions, trackingId)
+        return replaceItemInternalCore(itemType, itemId, itemLink, item, requestOptions, trackingId)
             .onErrorResume(throwable -> {
                 Throwable error = throwable instanceof CompletionException ? throwable.getCause() : throwable;
 
@@ -449,7 +450,7 @@ public class CosmosAsyncContainer {
 
                 Mono<CosmosItemResponse<T>> readMono =
                     this.getDatabase().getDocClientWrapper()
-                        .readDocument(getItemLink(itemId), itemId, requestOptions)
+                        .readDocument(itemLink, itemId, requestOptions)
                         .map(response -> {
                             mergeDiagnostics(response, cosmosException);
                             return itemResponseAccessor()
@@ -2207,6 +2208,9 @@ public class CosmosAsyncContainer {
     }
 
     private String getItemLink(String itemId) {
+        checkArgument(StringUtils.isNotEmpty(itemId), "Item id must not be null or empty.");
+        checkArgument(itemId.indexOf('/') == -1 && itemId.indexOf('\\') == -1,
+            "Item id must not contain a slash or backslash.");
         String builder = this.getLink()
             + "/"
             + Paths.DOCUMENTS_PATH_SEGMENT
@@ -2424,6 +2428,7 @@ public class CosmosAsyncContainer {
         CosmosItemRequestOptions options,
         Context context) {
 
+        String itemLink = getItemLink(itemId);
         RequestOptions requestOptions =
             itemOptionsAccessor().toRequestOptions(options);
         applyPolicies(OperationType.Delete, ResourceType.Document, requestOptions, this.deleteItemSpanName);
@@ -2436,17 +2441,18 @@ public class CosmosAsyncContainer {
 
         effectiveOptions.setEffectiveItemSerializer(this.database.getClient().getEffectiveItemSerializer(effectiveOptions.getEffectiveItemSerializer()));
 
-        return this.deleteItemInternalCore(itemId, internalObjectNode, effectiveOptions, context);
+        return this.deleteItemInternalCore(itemId, itemLink, internalObjectNode, effectiveOptions, context);
     }
 
     private Mono<CosmosItemResponse<Object>> deleteItemInternalCore(
         String itemId,
+        String itemLink,
         InternalObjectNode internalObjectNode,
         RequestOptions requestOptions,
         Context context) {
         Mono<CosmosItemResponse<Object>> responseMono = this.getDatabase()
             .getDocClientWrapper()
-            .deleteDocument(getItemLink(itemId), itemId, internalObjectNode, requestOptions)
+            .deleteDocument(itemLink, itemId, internalObjectNode, requestOptions)
             .map(response -> itemResponseAccessor().createCosmosItemResponse(response, Object.class, CosmosItemSerializer.DEFAULT_SERIALIZER))
             .single();
         CosmosAsyncClient client = database.getClient();
@@ -2495,6 +2501,7 @@ public class CosmosAsyncContainer {
     private <T> Mono<CosmosItemResponse<T>> replaceItemInternalCore(
         Class<T> itemType,
         String itemId,
+        String itemLink,
         Object item,
         RequestOptions requestOptions,
         String trackingId) {
@@ -2503,7 +2510,7 @@ public class CosmosAsyncContainer {
 
         return this.getDatabase()
                    .getDocClientWrapper()
-                   .replaceDocument(getItemLink(itemId), itemId, item, requestOptions)
+                   .replaceDocument(itemLink, itemId, item, requestOptions)
                    .map(response -> itemResponseAccessor().createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer()))
                    .single();
     }
@@ -2533,6 +2540,7 @@ public class CosmosAsyncContainer {
         Context context) {
 
         checkNotNull(options, "Argument 'options' must not be null.");
+        String itemLink = getItemLink(itemId);
         RequestOptions requestOptions =
             itemOptionsAccessor().toRequestOptions(options);
         applyPolicies(OperationType.Replace, ResourceType.Document, requestOptions, this.replaceItemSpanName);
@@ -2547,9 +2555,9 @@ public class CosmosAsyncContainer {
         String trackingId = null;
         if (nonIdempotentWriteRetryPolicy.isEnabled() && nonIdempotentWriteRetryPolicy.useTrackingIdProperty()) {
             trackingId = UUIDs.nonBlockingRandomUUID().toString();
-            responseMono = this.replaceItemWithTrackingId(itemType, itemId, item, requestOptions, trackingId);
+            responseMono = this.replaceItemWithTrackingId(itemType, itemId, itemLink, item, requestOptions, trackingId);
         } else {
-            responseMono = this.replaceItemInternalCore(itemType, itemId, item, requestOptions, null);
+            responseMono = this.replaceItemInternalCore(itemType, itemId, itemLink, item, requestOptions, null);
         }
 
         CosmosAsyncClient client = database
@@ -2577,6 +2585,7 @@ public class CosmosAsyncContainer {
         Context context,
         Class<T> itemType) {
 
+        String itemLink = getItemLink(itemId);
         RequestOptions requestOptions = itemOptionsAccessor().toRequestOptions(options);
         applyPolicies(OperationType.Patch, ResourceType.Document, requestOptions, this.patchItemSpanName);
 
@@ -2592,7 +2601,7 @@ public class CosmosAsyncContainer {
 
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase()
             .getDocClientWrapper()
-            .patchDocument(getItemLink(itemId), itemId, cosmosPatchOperations, requestOptions)
+            .patchDocument(itemLink, itemId, cosmosPatchOperations, requestOptions)
             .map(response -> itemResponseAccessor().createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer()));
 
         CosmosAsyncClient client = database
@@ -2657,12 +2666,13 @@ public class CosmosAsyncContainer {
         String itemId,
         CosmosItemRequestOptions options, Class<T> itemType,
         Context context) {
+        String itemLink = getItemLink(itemId);
         RequestOptions requestOptions =
             itemOptionsAccessor().toRequestOptions(options);
         requestOptions.setEffectiveItemSerializer(database.getClient().getEffectiveItemSerializer(requestOptions.getEffectiveItemSerializer()));
         applyPolicies(OperationType.Read, ResourceType.Document, requestOptions, this.readItemSpanName);
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase().getDocClientWrapper()
-            .readDocument(getItemLink(itemId), itemId, requestOptions)
+            .readDocument(itemLink, itemId, requestOptions)
             .map(response -> itemResponseAccessor().createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer()))
             .single();
         CosmosAsyncClient client = database
