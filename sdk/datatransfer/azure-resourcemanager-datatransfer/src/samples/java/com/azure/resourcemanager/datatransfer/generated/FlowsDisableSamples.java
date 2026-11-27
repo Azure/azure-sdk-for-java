@@ -9,7 +9,7 @@ package com.azure.resourcemanager.datatransfer.generated;
  */
 public final class FlowsDisableSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/disableFlow.json
+     * x-ms-original-file: 2026-06-29-preview/disableFlow.json
      */
     /**
      * Sample code: Disables the specified flow.

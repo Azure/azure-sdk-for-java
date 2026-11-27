@@ -9,7 +9,7 @@ package com.azure.resourcemanager.datatransfer.generated;
  */
 public final class FlowsEnableSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/enableFlow.json
+     * x-ms-original-file: 2026-06-29-preview/enableFlow.json
      */
     /**
      * Sample code: Enables the specified flow.

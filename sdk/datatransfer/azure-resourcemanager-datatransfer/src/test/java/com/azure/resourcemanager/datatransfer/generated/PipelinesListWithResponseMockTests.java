@@ -24,7 +24,7 @@ public final class PipelinesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"cfxhikkflrmy\",\"flows\":[{\"properties\":{},\"plan\":{\"name\":\"qlhris\",\"publisher\":\"sl\",\"product\":\"iiiovgqcgxuugq\"},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\"},\"location\":\"tiowlx\",\"tags\":{\"wphqlkccuzgygqw\":\"dptjgwdtgukranb\"},\"id\":\"hoi\",\"name\":\"lwgniiprglvawu\",\"type\":\"z\"},{\"properties\":{},\"plan\":{\"name\":\"ypivlsbb\",\"publisher\":\"pmcubkmifoxxkub\",\"product\":\"phavpmhbrb\"},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\"},\"location\":\"ovpbbttefjoknssq\",\"tags\":{\"rjgeih\":\"edikdfrdbiq\",\"zcxmjpbyep\":\"qlggwfi\",\"rc\":\"mgtvlj\"},\"id\":\"yfqi\",\"name\":\"gxhnpomyqwcabv\",\"type\":\"ui\"},{\"properties\":{},\"plan\":{\"name\":\"yaswlpaugmr\",\"publisher\":\"fjlrxwtoauk\",\"product\":\"fkvcisi\"},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\"},\"location\":\"eds\",\"tags\":{\"psmgo\":\"uivedwcgyeewxeiq\",\"l\":\"guamlj\"},\"id\":\"gmsplzgaufcshhv\",\"name\":\"ewgnxkympqanxrj\",\"type\":\"ixt\"}]},{\"id\":\"taoypnyghshxc\",\"flows\":[{\"properties\":{},\"plan\":{\"name\":\"mnsghpxycphdr\",\"publisher\":\"jjkhvyomaclu\",\"product\":\"vxnqmhrpqpd\"},\"identity\":{\"type\":\"UserAssigned\"},\"location\":\"oi\",\"tags\":{\"ypobkdqzr\":\"ssffxuifmc\"},\"id\":\"zsylollgt\",\"name\":\"czzydmxzjij\",\"type\":\"vuaurk\"},{\"properties\":{},\"plan\":{\"name\":\"irldefxr\",\"publisher\":\"c\",\"product\":\"xnbkkj\"},\"identity\":{\"type\":\"UserAssigned\"},\"location\":\"nnqbnqbp\",\"tags\":{\"gypxrxvbfihwuhvc\":\"qltgrd\",\"s\":\"a\"},\"id\":\"bxrblmliowxihspn\",\"name\":\"wqagnepzwa\",\"type\":\"lsbs\"}]},{\"id\":\"qqagwwr\",\"flows\":[{\"properties\":{},\"plan\":{\"name\":\"isglrrc\",\"publisher\":\"ezkhhltnjadhqo\",\"product\":\"wjqo\"},\"identity\":{\"type\":\"UserAssigned\"},\"location\":\"yfbpcmsplb\",\"tags\":{\"hwmgnmbscbbxig\":\"ueq\",\"dpyqyybxubmd\":\"hxiidlopedb\"},\"id\":\"afcbqw\",\"name\":\"e\",\"type\":\"jelaqacigele\"},{\"properties\":{},\"plan\":{\"name\":\"bvqvwzkjopwbeo\",\"publisher\":\"r\",\"product\":\"kwzdqybxcea\"},\"identity\":{\"type\":\"UserAssigned\"},\"location\":\"tsoqfyiaseqchk\",\"tags\":{\"uem\":\"zrazisgyk\",\"klinhmdptysprq\":\"anbwzohmnrxxbso\",\"pli\":\"gnzxojpslsvj\"},\"id\":\"fiqwoy\",\"name\":\"qvapcohhoucq\",\"type\":\"q\"},{\"properties\":{},\"plan\":{\"name\":\"cxzrzdcgdzben\",\"publisher\":\"ibcawetzqddtjw\",\"product\":\"ljhznamtuatmzwcj\"},\"identity\":{\"type\":\"SystemAssigned\"},\"location\":\"tjzmi\",\"tags\":{\"vbxngr\":\"bgatzu\",\"lswva\":\"bwggahtt\",\"zasunwqrjzfrgq\":\"qfutlxjo\"},\"id\":\"aohcmbuocn\",\"name\":\"r\",\"type\":\"hmbpyryxamebly\"}]}]}";
+            = "{\"value\":[{\"id\":\"xreuquowtlj\",\"flows\":[{\"properties\":{},\"plan\":{\"name\":\"eagk\",\"publisher\":\"yxvrqtvbczsul\",\"product\":\"dgglmepjpfs\"},\"identity\":{\"type\":\"UserAssigned\"},\"location\":\"sa\",\"tags\":{\"vecjujcn\":\"szngafpgyl\",\"dm\":\"oady\"},\"id\":\"rgjfoknubnoi\",\"name\":\"pkpztrg\",\"type\":\"gxvcoqrasw\"},{\"properties\":{},\"plan\":{\"name\":\"xpqitweialwvs\",\"publisher\":\"buhzacaq\",\"product\":\"yltcoqcuj\"},\"identity\":{\"type\":\"UserAssigned\"},\"location\":\"zakuejk\",\"tags\":{\"cvovjufyc\":\"iztjof\"},\"id\":\"jmlbemyejiriux\",\"name\":\"gthortudaw\",\"type\":\"pjfe\"},{\"properties\":{},\"plan\":{\"name\":\"rpptcbgqnzmnhiil\",\"publisher\":\"alwcjgckbb\",\"product\":\"ccgzpraoxnyu\"},\"identity\":{\"type\":\"None\"},\"location\":\"sgftipwc\",\"tags\":{\"pnuhzafccnu\":\"ubhiqdxyur\",\"yl\":\"iig\"},\"id\":\"ui\",\"name\":\"vxva\",\"type\":\"vcrk\"},{\"properties\":{},\"plan\":{\"name\":\"nbqxvhcsyhzlwxae\",\"publisher\":\"ov\",\"product\":\"rexdndsbd\"},\"identity\":{\"type\":\"SystemAssigned\"},\"location\":\"e\",\"tags\":{\"tmvmmagoaqylkjz\":\"wntopag\",\"mxitpfinzcpd\":\"jiuazjc\",\"vcqguefzh\":\"tkrlgjmtbd\",\"lyujlfyoump\":\"mpheqdur\"},\"id\":\"kyeclcdigpta\",\"name\":\"brzmqxucycijoclx\",\"type\":\"utgjcyz\"}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,19 +34,18 @@ public final class PipelinesListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ListFlowsByPipelineResult response = manager.pipelines()
-            .listWithResponse("fykhvuhxepmru", "znabaobns",
-                new ConnectionIdList().withValue(Arrays.asList("djltymkm", "guihywar", "spphk", "xkykxdssjp")),
+            .listWithResponse("zvyfijdkzuqnwsi", "huqol",
+                new ConnectionIdList().withValue(Arrays.asList("luqw", "ulsutrjbhxy", "fhyqezvqqugdrft")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cfxhikkflrmy", response.value().get(0).id());
-        Assertions.assertEquals("tiowlx", response.value().get(0).flows().get(0).location());
-        Assertions.assertEquals("dptjgwdtgukranb",
-            response.value().get(0).flows().get(0).tags().get("wphqlkccuzgygqw"));
-        Assertions.assertEquals("qlhris", response.value().get(0).flows().get(0).plan().name());
-        Assertions.assertEquals("sl", response.value().get(0).flows().get(0).plan().publisher());
-        Assertions.assertEquals("iiiovgqcgxuugq", response.value().get(0).flows().get(0).plan().product());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+        Assertions.assertEquals("xreuquowtlj", response.value().get(0).id());
+        Assertions.assertEquals("sa", response.value().get(0).flows().get(0).location());
+        Assertions.assertEquals("szngafpgyl", response.value().get(0).flows().get(0).tags().get("vecjujcn"));
+        Assertions.assertEquals("eagk", response.value().get(0).flows().get(0).plan().name());
+        Assertions.assertEquals("yxvrqtvbczsul", response.value().get(0).flows().get(0).plan().publisher());
+        Assertions.assertEquals("dgglmepjpfs", response.value().get(0).flows().get(0).plan().product());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED,
             response.value().get(0).flows().get(0).identity().type());
     }
 }

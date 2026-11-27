@@ -12,14 +12,14 @@ public final class ListPipelineMetadataRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListPipelineMetadataRequest model
-            = BinaryData.fromString("{\"pipeline\":\"muaslzkw\"}").toObject(ListPipelineMetadataRequest.class);
-        Assertions.assertEquals("muaslzkw", model.pipeline());
+            = BinaryData.fromString("{\"pipeline\":\"khlg\"}").toObject(ListPipelineMetadataRequest.class);
+        Assertions.assertEquals("khlg", model.pipeline());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListPipelineMetadataRequest model = new ListPipelineMetadataRequest().withPipeline("muaslzkw");
+        ListPipelineMetadataRequest model = new ListPipelineMetadataRequest().withPipeline("khlg");
         model = BinaryData.fromObject(model).toObject(ListPipelineMetadataRequest.class);
-        Assertions.assertEquals("muaslzkw", model.pipeline());
+        Assertions.assertEquals("khlg", model.pipeline());
     }
 }

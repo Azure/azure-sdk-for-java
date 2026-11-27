@@ -9,7 +9,7 @@ package com.azure.resourcemanager.datatransfer.generated;
  */
 public final class ConnectionsListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/listConnectionsBySubscription.json
+     * x-ms-original-file: 2026-06-29-preview/listConnectionsBySubscription.json
      */
     /**
      * Sample code: Gets connections in a subscription.

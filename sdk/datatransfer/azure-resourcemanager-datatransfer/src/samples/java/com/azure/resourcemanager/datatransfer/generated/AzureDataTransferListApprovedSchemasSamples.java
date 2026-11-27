@@ -12,7 +12,7 @@ import com.azure.resourcemanager.datatransfer.models.ListApprovedSchemasRequest;
  */
 public final class AzureDataTransferListApprovedSchemasSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/postListApprovedSchemas.json
+     * x-ms-original-file: 2026-06-29-preview/postListApprovedSchemas.json
      */
     /**
      * Sample code: Performs action request.

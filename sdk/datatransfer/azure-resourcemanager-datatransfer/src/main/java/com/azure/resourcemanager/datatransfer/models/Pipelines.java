@@ -159,6 +159,35 @@ public interface Pipelines {
         Context context);
 
     /**
+     * Approves pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference.
+     */
+    TransferFlowResponseBody approveTransferFlow(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body);
+
+    /**
+     * Approves pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference.
+     */
+    TransferFlowResponseBody approveTransferFlow(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body, Context context);
+
+    /**
      * Executes a privileged or administrative action on the specified Pipeline.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -211,6 +240,41 @@ public interface Pipelines {
      * @return an array of flow resources.
      */
     ListFlowsByPipelineResult list(String resourceGroupName, String pipelineName);
+
+    /**
+     * Lists the storage and messaging transfer flows that use the specified Pipeline, across all subscriptions and
+     * tenants that use it. This is the pipeline approver view; it differs from the subscription and resource group list
+     * operations, which only return the caller's own transfer flows. Results do not cross clouds; the remote side of
+     * each flow is referenced only through remoteTransferFlowResourceId.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of transfer flow summaries associated with a pipeline as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<TransferFlowSummary> listTransferFlows(String resourceGroupName, String pipelineName);
+
+    /**
+     * Lists the storage and messaging transfer flows that use the specified Pipeline, across all subscriptions and
+     * tenants that use it. This is the pipeline approver view; it differs from the subscription and resource group list
+     * operations, which only return the caller's own transfer flows. Results do not cross clouds; the remote side of
+     * each flow is referenced only through remoteTransferFlowResourceId.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body Filters used to select the flow resources to be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of transfer flow summaries associated with a pipeline as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<TransferFlowSummary> listTransferFlows(String resourceGroupName, String pipelineName,
+        ListTransferFlowsByPipelineRequestBody body, Context context);
 
     /**
      * Lists the schemas associated with a specific connection in the Pipeline. This operation has reached end of life
@@ -269,6 +333,35 @@ public interface Pipelines {
      */
     Connection rejectConnection(String resourceGroupName, String pipelineName, ResourceBody connection,
         Context context);
+
+    /**
+     * Rejects pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference.
+     */
+    TransferFlowResponseBody rejectTransferFlow(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body);
+
+    /**
+     * Rejects pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference.
+     */
+    TransferFlowResponseBody rejectTransferFlow(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body, Context context);
 
     /**
      * Retrieves the specified Pipeline resource.

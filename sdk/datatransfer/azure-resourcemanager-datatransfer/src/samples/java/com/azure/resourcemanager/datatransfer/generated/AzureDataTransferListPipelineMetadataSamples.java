@@ -11,7 +11,7 @@ import com.azure.resourcemanager.datatransfer.models.ListPipelineMetadataRequest
  */
 public final class AzureDataTransferListPipelineMetadataSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/AzureDataTransfer_ListPipelineMetadata.json
+     * x-ms-original-file: 2026-06-29-preview/AzureDataTransfer_ListPipelineMetadata.json
      */
     /**
      * Sample code: AzureDataTransfer_ListPipelineMetadata.

@@ -15,24 +15,24 @@ public final class ActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Action model = BinaryData.fromString(
-            "{\"actionType\":\"ForceDisable\",\"targetType\":\"Connection\",\"targets\":[\"pgvmpipaslthaqfx\"],\"justification\":\"mwutwbdsre\"}")
+            "{\"actionType\":\"AllowUpdates\",\"targetType\":\"FlowType\",\"targets\":[\"ib\",\"rcgp\",\"kpzi\"],\"justification\":\"j\"}")
             .toObject(Action.class);
-        Assertions.assertEquals(DateTransferActionType.FORCE_DISABLE, model.actionType());
-        Assertions.assertEquals(TargetType.CONNECTION, model.targetType());
-        Assertions.assertEquals("pgvmpipaslthaqfx", model.targets().get(0));
-        Assertions.assertEquals("mwutwbdsre", model.justification());
+        Assertions.assertEquals(DateTransferActionType.ALLOW_UPDATES, model.actionType());
+        Assertions.assertEquals(TargetType.FLOW_TYPE, model.targetType());
+        Assertions.assertEquals("ib", model.targets().get(0));
+        Assertions.assertEquals("j", model.justification());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Action model = new Action().withActionType(DateTransferActionType.FORCE_DISABLE)
-            .withTargetType(TargetType.CONNECTION)
-            .withTargets(Arrays.asList("pgvmpipaslthaqfx"))
-            .withJustification("mwutwbdsre");
+        Action model = new Action().withActionType(DateTransferActionType.ALLOW_UPDATES)
+            .withTargetType(TargetType.FLOW_TYPE)
+            .withTargets(Arrays.asList("ib", "rcgp", "kpzi"))
+            .withJustification("j");
         model = BinaryData.fromObject(model).toObject(Action.class);
-        Assertions.assertEquals(DateTransferActionType.FORCE_DISABLE, model.actionType());
-        Assertions.assertEquals(TargetType.CONNECTION, model.targetType());
-        Assertions.assertEquals("pgvmpipaslthaqfx", model.targets().get(0));
-        Assertions.assertEquals("mwutwbdsre", model.justification());
+        Assertions.assertEquals(DateTransferActionType.ALLOW_UPDATES, model.actionType());
+        Assertions.assertEquals(TargetType.FLOW_TYPE, model.targetType());
+        Assertions.assertEquals("ib", model.targets().get(0));
+        Assertions.assertEquals("j", model.justification());
     }
 }

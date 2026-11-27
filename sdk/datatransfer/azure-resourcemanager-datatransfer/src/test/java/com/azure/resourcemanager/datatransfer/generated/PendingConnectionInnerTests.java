@@ -18,35 +18,35 @@ public final class PendingConnectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PendingConnectionInner model = BinaryData.fromString(
-            "{\"subscriptionId\":\"gketwzhhzjhf\",\"pipeline\":\"mhv\",\"direction\":\"Send\",\"justification\":\"gpmuneqsxvmhfbuz\",\"status\":\"Approved\",\"forceDisabledStatus\":[\"ConnectionForceDisabled\",\"FlowTypeForceDisabled\"],\"statusReason\":\"hudypohyuemsl\",\"linkStatus\":\"Linked\",\"linkedConnectionId\":\"yrpfoobrlttymsj\",\"flowTypes\":[\"Opaque\",\"Mission\",\"MissionOpaqueXML\"],\"flowProfileList\":[{\"pipeline\":\"qzdz\",\"name\":\"tilaxh\",\"replicationScenario\":\"Files\",\"flowProfileId\":\"hqlyvijo\",\"status\":\"Disabled\",\"description\":\"iv\"},{\"pipeline\":\"xoyzunbix\",\"name\":\"rtikvcpwpg\",\"replicationScenario\":\"Stream\",\"flowProfileId\":\"rc\",\"status\":\"Enabled\",\"description\":\"tso\"},{\"pipeline\":\"frkenxpmyyefrp\",\"name\":\"pdnqqskawaoqvmmb\",\"replicationScenario\":\"Complex\",\"flowProfileId\":\"qfr\",\"status\":\"Enabled\",\"description\":\"lkzmegnitgvkxl\"},{\"pipeline\":\"yqdrf\",\"name\":\"gcealzxwh\",\"replicationScenario\":\"Stream\",\"flowProfileId\":\"nsymoyqhlwigd\",\"status\":\"Enabled\",\"description\":\"bkbxgomfa\"}],\"requirementId\":\"wasqvdaeyyg\",\"remoteSubscriptionId\":\"akjsqz\",\"approver\":\"bezkgimsidxasic\",\"pin\":\"yvvjskgfmo\",\"dateSubmitted\":\"2021-07-09T10:32:32Z\",\"primaryContact\":\"pqg\",\"secondaryContacts\":[\"eaahhvjhhn\",\"kzyb\",\"jjidjk\"],\"provisioningState\":\"Canceled\",\"policies\":[\"xvxevblbjednljla\",\"euaulxu\",\"smjbnkppxyn\"],\"schemas\":[{\"id\":\"vxei\",\"connectionId\":\"gwklnsr\",\"status\":\"Approved\",\"name\":\"ycxcktpiym\",\"content\":\"teeammxqiekkkzd\",\"direction\":\"Receive\",\"schemaUri\":\"g\",\"schemaType\":\"Zip\"},{\"id\":\"mxvavrefdee\",\"connectionId\":\"ecuijpxtxs\",\"status\":\"Approved\",\"name\":\"tujwsawdd\",\"content\":\"babxvitit\",\"direction\":\"Receive\",\"schemaUri\":\"exavoxt\",\"schemaType\":\"Zip\"}],\"schemaUris\":[\"dmdqb\"],\"apiHostname\":\"ypq\",\"tags\":{\"vodhtn\":\"fjacbslhhxudb\"},\"location\":\"irudh\",\"id\":\"mes\",\"name\":\"dlpagzrcxfail\",\"type\":\"xwmdboxd\"}")
+            "{\"subscriptionId\":\"drf\",\"pipeline\":\"gcealzxwh\",\"direction\":\"Receive\",\"justification\":\"ymo\",\"status\":\"Accepted\",\"forceDisabledStatus\":[\"PipelineForceDisabled\",\"PipelineForceDisabled\"],\"statusReason\":\"ivbkbxgomfaj\",\"linkStatus\":\"Linked\",\"linkedConnectionId\":\"qvdaeyyguxakjsq\",\"flowTypes\":[\"Messaging\",\"MissionOpaqueXML\",\"BasicFiles\",\"MissionOpaqueXML\"],\"flowProfileList\":[{\"pipeline\":\"msidxasicddyvv\",\"name\":\"skgfmocwahpq\",\"replicationScenario\":\"Messaging\",\"flowProfileId\":\"tjeaahhvjhh\",\"status\":\"Disabled\",\"description\":\"kzyb\"},{\"pipeline\":\"jjidjk\",\"name\":\"yxkyxvx\",\"replicationScenario\":\"Stream\",\"flowProfileId\":\"blbjedn\",\"status\":\"Enabled\",\"description\":\"lageuaulxun\"},{\"pipeline\":\"mjbnk\",\"name\":\"pxynenlsvxeizzg\",\"replicationScenario\":\"SoftwareArtifacts\",\"flowProfileId\":\"lnsrmffe\",\"status\":\"Disabled\",\"description\":\"xcktpiymerteeamm\"},{\"pipeline\":\"qiekkkzddrt\",\"name\":\"g\",\"replicationScenario\":\"API\",\"flowProfileId\":\"jbmxvavre\",\"status\":\"Disabled\",\"description\":\"eesvecu\"}],\"requirementId\":\"pxtxsuwp\",\"remoteSubscriptionId\":\"ujwsawddjibabxvi\",\"approver\":\"tvtzeexavoxtfg\",\"pin\":\"cd\",\"dateSubmitted\":\"2021-07-23T09:21:39Z\",\"primaryContact\":\"wpypqtgsfj\",\"secondaryContacts\":[\"slhhxudbxv\"],\"provisioningState\":\"Failed\",\"policies\":[\"sirudhzmmesckdlp\",\"gzrcxfailcfxwmdb\"],\"schemas\":[{\"id\":\"gsftufqobrjlnacg\",\"connectionId\":\"kknhxkizvytnrzv\",\"status\":\"Approved\",\"name\":\"aaeranokqgukk\",\"content\":\"nvbroylaxx\",\"direction\":\"Send\",\"schemaUri\":\"isdos\",\"schemaType\":\"Xsd\"},{\"id\":\"svgjrwhryvy\",\"connectionId\":\"t\",\"status\":\"Approved\",\"name\":\"gc\",\"content\":\"nfnw\",\"direction\":\"Receive\",\"schemaUri\":\"vpdvjdhttzae\",\"schemaType\":\"Xsd\"},{\"id\":\"ihchrphkmcrjdqn\",\"connectionId\":\"fzpbgtgkyl\",\"status\":\"Approved\",\"name\":\"rjeuut\",\"content\":\"xezw\",\"direction\":\"Receive\",\"schemaUri\":\"vbwnhhtq\",\"schemaType\":\"Xsd\"},{\"id\":\"gppipifh\",\"connectionId\":\"e\",\"status\":\"New\",\"name\":\"gcxtxj\",\"content\":\"heafidlt\",\"direction\":\"Send\",\"schemaUri\":\"esmkssjhoiftxfkf\",\"schemaType\":\"Xsd\"}],\"schemaUris\":[\"hpt\",\"llu\",\"biqtgdq\"],\"apiHostname\":\"mcwsldrizetpwb\",\"tags\":{\"kan\":\"llibphbqzmizak\",\"zhajoylhjlmuo\":\"jpdn\"},\"location\":\"xprimrsop\",\"id\":\"ecj\",\"name\":\"islstv\",\"type\":\"ylw\"}")
             .toObject(PendingConnectionInner.class);
-        Assertions.assertEquals("mhv", model.pipeline());
-        Assertions.assertEquals(Direction.SEND, model.direction());
-        Assertions.assertEquals("gpmuneqsxvmhfbuz", model.justification());
-        Assertions.assertEquals(FlowType.OPAQUE, model.flowTypes().get(0));
-        Assertions.assertEquals("qzdz", model.flowProfileList().get(0).pipeline());
-        Assertions.assertEquals("tilaxh", model.flowProfileList().get(0).name());
-        Assertions.assertEquals(DataClassType.FILES, model.flowProfileList().get(0).replicationScenario());
-        Assertions.assertEquals("hqlyvijo", model.flowProfileList().get(0).flowProfileId());
+        Assertions.assertEquals("gcealzxwh", model.pipeline());
+        Assertions.assertEquals(Direction.RECEIVE, model.direction());
+        Assertions.assertEquals("ymo", model.justification());
+        Assertions.assertEquals(FlowType.MESSAGING, model.flowTypes().get(0));
+        Assertions.assertEquals("msidxasicddyvv", model.flowProfileList().get(0).pipeline());
+        Assertions.assertEquals("skgfmocwahpq", model.flowProfileList().get(0).name());
+        Assertions.assertEquals(DataClassType.MESSAGING, model.flowProfileList().get(0).replicationScenario());
+        Assertions.assertEquals("tjeaahhvjhh", model.flowProfileList().get(0).flowProfileId());
         Assertions.assertEquals(FlowProfileStatus.DISABLED, model.flowProfileList().get(0).status());
-        Assertions.assertEquals("iv", model.flowProfileList().get(0).description());
-        Assertions.assertEquals("wasqvdaeyyg", model.requirementId());
-        Assertions.assertEquals("akjsqz", model.remoteSubscriptionId());
-        Assertions.assertEquals("yvvjskgfmo", model.pin());
-        Assertions.assertEquals("pqg", model.primaryContact());
-        Assertions.assertEquals("eaahhvjhhn", model.secondaryContacts().get(0));
-        Assertions.assertEquals("xvxevblbjednljla", model.policies().get(0));
-        Assertions.assertEquals("vxei", model.schemas().get(0).id());
-        Assertions.assertEquals("gwklnsr", model.schemas().get(0).connectionId());
+        Assertions.assertEquals("kzyb", model.flowProfileList().get(0).description());
+        Assertions.assertEquals("pxtxsuwp", model.requirementId());
+        Assertions.assertEquals("ujwsawddjibabxvi", model.remoteSubscriptionId());
+        Assertions.assertEquals("cd", model.pin());
+        Assertions.assertEquals("wpypqtgsfj", model.primaryContact());
+        Assertions.assertEquals("slhhxudbxv", model.secondaryContacts().get(0));
+        Assertions.assertEquals("sirudhzmmesckdlp", model.policies().get(0));
+        Assertions.assertEquals("gsftufqobrjlnacg", model.schemas().get(0).id());
+        Assertions.assertEquals("kknhxkizvytnrzv", model.schemas().get(0).connectionId());
         Assertions.assertEquals(SchemaStatus.APPROVED, model.schemas().get(0).status());
-        Assertions.assertEquals("ycxcktpiym", model.schemas().get(0).name());
-        Assertions.assertEquals("teeammxqiekkkzd", model.schemas().get(0).content());
-        Assertions.assertEquals(Direction.RECEIVE, model.schemas().get(0).direction());
-        Assertions.assertEquals("g", model.schemas().get(0).schemaUri());
-        Assertions.assertEquals(SchemaType.ZIP, model.schemas().get(0).schemaType());
-        Assertions.assertEquals("dmdqb", model.schemaUris().get(0));
-        Assertions.assertEquals("ypq", model.apiHostname());
-        Assertions.assertEquals("fjacbslhhxudb", model.tags().get("vodhtn"));
-        Assertions.assertEquals("irudh", model.location());
+        Assertions.assertEquals("aaeranokqgukk", model.schemas().get(0).name());
+        Assertions.assertEquals("nvbroylaxx", model.schemas().get(0).content());
+        Assertions.assertEquals(Direction.SEND, model.schemas().get(0).direction());
+        Assertions.assertEquals("isdos", model.schemas().get(0).schemaUri());
+        Assertions.assertEquals(SchemaType.XSD, model.schemas().get(0).schemaType());
+        Assertions.assertEquals("hpt", model.schemaUris().get(0));
+        Assertions.assertEquals("mcwsldrizetpwb", model.apiHostname());
+        Assertions.assertEquals("llibphbqzmizak", model.tags().get("kan"));
+        Assertions.assertEquals("xprimrsop", model.location());
     }
 }

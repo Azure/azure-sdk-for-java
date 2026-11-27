@@ -9,7 +9,7 @@ package com.azure.resourcemanager.datatransfer.generated;
  */
 public final class FlowsGetSourceAddressesSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/getFlowSourceAddresses.json
+     * x-ms-original-file: 2026-06-29-preview/getFlowSourceAddresses.json
      */
     /**
      * Sample code: Get the flow stream source addresses.

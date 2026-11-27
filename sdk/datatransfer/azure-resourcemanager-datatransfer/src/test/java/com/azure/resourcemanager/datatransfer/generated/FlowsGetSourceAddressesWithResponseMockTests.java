@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class FlowsGetSourceAddressesWithResponseMockTests {
     @Test
     public void testGetSourceAddressesWithResponse() throws Exception {
-        String responseStr = "{\"sourceAddresses\":[\"hlqtxnrflkn\"]}";
+        String responseStr = "{\"sourceAddresses\":[\"uerkjddvrg\",\"iegftc\",\"biiftksdwgdnk\",\"fgmwd\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +30,9 @@ public final class FlowsGetSourceAddressesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StreamSourceAddresses response = manager.flows()
-            .getSourceAddressesWithResponse("iekoif", "vnyttzgi", "gyrihlgm", com.azure.core.util.Context.NONE)
+            .getSourceAddressesWithResponse("wcpjqduqgi", "exkydfb", "lj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hlqtxnrflkn", response.sourceAddresses().get(0));
+        Assertions.assertEquals("uerkjddvrg", response.sourceAddresses().get(0));
     }
 }

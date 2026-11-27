@@ -34,11 +34,13 @@ public final class ConnectionsUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.connections()
-            .update("wrzregzgyufu", "rw",
+            .update("cfsrhkhgsn", "uww",
                 new ConnectionsPatch()
                     .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("n", new UserAssignedIdentity())))
-                    .withTags(mapOf("jpnwynudql", "i", "lxeehuxiq", "zsauzp", "xls", "zlrayme")),
+                        .withUserAssignedIdentities(mapOf("oyfpuq", new UserAssignedIdentity(), "ybmrzoepnxwd",
+                            new UserAssignedIdentity(), "yibuyvpirfqjpnqn", new UserAssignedIdentity(), "cnulgmnhjevdy",
+                            new UserAssignedIdentity())))
+                    .withTags(mapOf("kmq", "ajsvk")),
                 com.azure.core.util.Context.NONE);
 
     }

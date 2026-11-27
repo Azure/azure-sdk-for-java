@@ -15,36 +15,36 @@ public final class AuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Authentication model = BinaryData.fromString(
-            "{\"type\":\"None\",\"instance\":\"m\",\"tenantId\":\"elfk\",\"authority\":\"plcrpwjxeznoig\",\"applicationIds\":[\"jwmwkpnbs\",\"zejjoqk\",\"gfhsxttaugzxn\",\"aa\"],\"audience\":\"xdtnkdmkqjjlw\",\"clientIdOverride\":\"nvrk\",\"identityTranslation\":\"UserIdentity\"}")
+            "{\"type\":\"JWT\",\"instance\":\"nfaazpxdtnkdmkq\",\"tenantId\":\"lwuenvrkp\",\"authority\":\"uaibrebqaaysj\",\"applicationIds\":[\"qtnqtt\",\"zlwfffiakp\"],\"audience\":\"qqmtedltmmji\",\"clientIdOverride\":\"eozphv\",\"identityTranslation\":\"ServiceIdentity\"}")
             .toObject(Authentication.class);
-        Assertions.assertEquals(AuthenticationType.NONE, model.type());
-        Assertions.assertEquals("m", model.instance());
-        Assertions.assertEquals("elfk", model.tenantId());
-        Assertions.assertEquals("plcrpwjxeznoig", model.authority());
-        Assertions.assertEquals("jwmwkpnbs", model.applicationIds().get(0));
-        Assertions.assertEquals("xdtnkdmkqjjlw", model.audience());
-        Assertions.assertEquals("nvrk", model.clientIdOverride());
-        Assertions.assertEquals(IdentityTranslation.USER_IDENTITY, model.identityTranslation());
+        Assertions.assertEquals(AuthenticationType.JWT, model.type());
+        Assertions.assertEquals("nfaazpxdtnkdmkq", model.instance());
+        Assertions.assertEquals("lwuenvrkp", model.tenantId());
+        Assertions.assertEquals("uaibrebqaaysj", model.authority());
+        Assertions.assertEquals("qtnqtt", model.applicationIds().get(0));
+        Assertions.assertEquals("qqmtedltmmji", model.audience());
+        Assertions.assertEquals("eozphv", model.clientIdOverride());
+        Assertions.assertEquals(IdentityTranslation.SERVICE_IDENTITY, model.identityTranslation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Authentication model = new Authentication().withType(AuthenticationType.NONE)
-            .withInstance("m")
-            .withTenantId("elfk")
-            .withAuthority("plcrpwjxeznoig")
-            .withApplicationIds(Arrays.asList("jwmwkpnbs", "zejjoqk", "gfhsxttaugzxn", "aa"))
-            .withAudience("xdtnkdmkqjjlw")
-            .withClientIdOverride("nvrk")
-            .withIdentityTranslation(IdentityTranslation.USER_IDENTITY);
+        Authentication model = new Authentication().withType(AuthenticationType.JWT)
+            .withInstance("nfaazpxdtnkdmkq")
+            .withTenantId("lwuenvrkp")
+            .withAuthority("uaibrebqaaysj")
+            .withApplicationIds(Arrays.asList("qtnqtt", "zlwfffiakp"))
+            .withAudience("qqmtedltmmji")
+            .withClientIdOverride("eozphv")
+            .withIdentityTranslation(IdentityTranslation.SERVICE_IDENTITY);
         model = BinaryData.fromObject(model).toObject(Authentication.class);
-        Assertions.assertEquals(AuthenticationType.NONE, model.type());
-        Assertions.assertEquals("m", model.instance());
-        Assertions.assertEquals("elfk", model.tenantId());
-        Assertions.assertEquals("plcrpwjxeznoig", model.authority());
-        Assertions.assertEquals("jwmwkpnbs", model.applicationIds().get(0));
-        Assertions.assertEquals("xdtnkdmkqjjlw", model.audience());
-        Assertions.assertEquals("nvrk", model.clientIdOverride());
-        Assertions.assertEquals(IdentityTranslation.USER_IDENTITY, model.identityTranslation());
+        Assertions.assertEquals(AuthenticationType.JWT, model.type());
+        Assertions.assertEquals("nfaazpxdtnkdmkq", model.instance());
+        Assertions.assertEquals("lwuenvrkp", model.tenantId());
+        Assertions.assertEquals("uaibrebqaaysj", model.authority());
+        Assertions.assertEquals("qtnqtt", model.applicationIds().get(0));
+        Assertions.assertEquals("qqmtedltmmji", model.audience());
+        Assertions.assertEquals("eozphv", model.clientIdOverride());
+        Assertions.assertEquals(IdentityTranslation.SERVICE_IDENTITY, model.identityTranslation());
     }
 }

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.datatransfer.models.FlowsPatch;
  */
 public final class FlowsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/patchFlow.json
+     * x-ms-original-file: 2026-06-29-preview/patchFlow.json
      */
     /**
      * Sample code: Updates the flow resource.

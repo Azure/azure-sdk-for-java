@@ -12,16 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class StreamSourceAddressesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StreamSourceAddressesInner model = BinaryData.fromString("{\"sourceAddresses\":[\"thtywub\",\"cbihwqk\"]}")
-            .toObject(StreamSourceAddressesInner.class);
-        Assertions.assertEquals("thtywub", model.sourceAddresses().get(0));
+        StreamSourceAddressesInner model
+            = BinaryData.fromString("{\"sourceAddresses\":[\"ujrywvtyl\",\"fpncurdo\",\"wiithtywub\"]}")
+                .toObject(StreamSourceAddressesInner.class);
+        Assertions.assertEquals("ujrywvtyl", model.sourceAddresses().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StreamSourceAddressesInner model
-            = new StreamSourceAddressesInner().withSourceAddresses(Arrays.asList("thtywub", "cbihwqk"));
+        StreamSourceAddressesInner model = new StreamSourceAddressesInner()
+            .withSourceAddresses(Arrays.asList("ujrywvtyl", "fpncurdo", "wiithtywub"));
         model = BinaryData.fromObject(model).toObject(StreamSourceAddressesInner.class);
-        Assertions.assertEquals("thtywub", model.sourceAddresses().get(0));
+        Assertions.assertEquals("ujrywvtyl", model.sourceAddresses().get(0));
     }
 }

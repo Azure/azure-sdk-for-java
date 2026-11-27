@@ -26,7 +26,7 @@ public final class AzureDataTransfersListPipelineMetadataWithResponseMockTests {
     @Test
     public void testListPipelineMetadataWithResponse() throws Exception {
         String responseStr
-            = "{\"send\":{\"completeLinking\":\"Disabled\",\"connectionApprovals\":\"Disabled\",\"flowApprovals\":\"Enabled\",\"flowTypesAvailable\":[\"Standard\",\"Unknown\",\"BasicFiles\",\"MicrosoftInternal\"],\"messagingFlowTypeSchemaValidation\":\"Enabled\",\"flowProfileDataClassesAvailable\":[\"API\",\"Files\"],\"messagingFlowsPricingOptions\":[\"Standard\"]},\"receive\":{\"completeLinking\":\"Disabled\",\"connectionApprovals\":\"Disabled\",\"flowApprovals\":\"Enabled\",\"flowTypesAvailable\":[\"Opaque\",\"Messaging\",\"StreamingVideo\",\"API\"],\"messagingFlowTypeSchemaValidation\":\"Enabled\",\"flowProfileDataClassesAvailable\":[\"API\",\"Stream\",\"SoftwareArtifacts\"],\"messagingFlowsPricingOptions\":[\"BlobTransport\",\"BlobTransport\",\"Standard\"]}}";
+            = "{\"send\":{\"completeLinking\":\"Disabled\",\"connectionApprovals\":\"Enabled\",\"flowApprovals\":\"Enabled\",\"flowTypesAvailable\":[\"API\",\"DevSecOps\",\"DiskImages\",\"MissionOpaqueXML\"],\"messagingFlowTypeSchemaValidation\":\"Enabled\",\"flowProfileDataClassesAvailable\":[\"SoftwareArtifacts\",\"API\",\"Files\",\"Files\"],\"messagingFlowsPricingOptions\":[\"Standard\",\"BlobTransport\"],\"storageLocationMappings\":[{\"location\":\"qhrlmcskykpfu\",\"pairedLocation\":\"fixcnpcfykkpy\"},{\"location\":\"cpawmp\",\"pairedLocation\":\"prdpwrpc\"},{\"location\":\"pcf\",\"pairedLocation\":\"fwzlgzawkgyepeya\"}],\"messagingLocationMappings\":[{\"location\":\"idmdiawpzxkzrntm\",\"pairedLocation\":\"ctdhuosgwq\"},{\"location\":\"sq\",\"pairedLocation\":\"zihqod\"}]},\"receive\":{\"completeLinking\":\"Disabled\",\"connectionApprovals\":\"Enabled\",\"flowApprovals\":\"Enabled\",\"flowTypesAvailable\":[\"Opaque\",\"MissionOpaqueXML\",\"Standard\",\"API\"],\"messagingFlowTypeSchemaValidation\":\"Enabled\",\"flowProfileDataClassesAvailable\":[\"Complex\"],\"messagingFlowsPricingOptions\":[\"BlobTransport\"],\"storageLocationMappings\":[{\"location\":\"xjmf\",\"pairedLocation\":\"eftvhkmoog\"},{\"location\":\"rh\",\"pairedLocation\":\"kbwg\"},{\"location\":\"jgrulcfogxhcxnwj\",\"pairedLocation\":\"pfdzxcouzfwofw\"},{\"location\":\"k\",\"pairedLocation\":\"kzkdtzxsoednlwg\"}],\"messagingLocationMappings\":[{\"location\":\"ezomu\",\"pairedLocation\":\"mqgisnion\"},{\"location\":\"tb\",\"pairedLocation\":\"dr\"},{\"location\":\"puenx\",\"pairedLocation\":\"gtlzlmtrlxcznn\"},{\"location\":\"zkbnbmxl\",\"pairedLocation\":\"mwt\"}]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,24 +36,33 @@ public final class AzureDataTransfersListPipelineMetadataWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ListPipelineMetadataResult response = manager.azureDataTransfers()
-            .listPipelineMetadataWithResponse(new ListPipelineMetadataRequest().withPipeline("aiossscyvaifp"),
+            .listPipelineMetadataWithResponse(new ListPipelineMetadataRequest().withPipeline("tmvecdhdyswcrptv"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(EnablementStatus.DISABLED, response.send().completeLinking());
-        Assertions.assertEquals(EnablementStatus.DISABLED, response.send().connectionApprovals());
+        Assertions.assertEquals(EnablementStatus.ENABLED, response.send().connectionApprovals());
         Assertions.assertEquals(EnablementStatus.ENABLED, response.send().flowApprovals());
-        Assertions.assertEquals(FlowType.STANDARD, response.send().flowTypesAvailable().get(0));
+        Assertions.assertEquals(FlowType.API, response.send().flowTypesAvailable().get(0));
         Assertions.assertEquals(EnablementStatus.ENABLED, response.send().messagingFlowTypeSchemaValidation());
-        Assertions.assertEquals(DataClassType.API, response.send().flowProfileDataClassesAvailable().get(0));
+        Assertions.assertEquals(DataClassType.SOFTWARE_ARTIFACTS,
+            response.send().flowProfileDataClassesAvailable().get(0));
         Assertions.assertEquals(FlowBillingTier.STANDARD, response.send().messagingFlowsPricingOptions().get(0));
+        Assertions.assertEquals("qhrlmcskykpfu", response.send().storageLocationMappings().get(0).location());
+        Assertions.assertEquals("fixcnpcfykkpy", response.send().storageLocationMappings().get(0).pairedLocation());
+        Assertions.assertEquals("idmdiawpzxkzrntm", response.send().messagingLocationMappings().get(0).location());
+        Assertions.assertEquals("ctdhuosgwq", response.send().messagingLocationMappings().get(0).pairedLocation());
         Assertions.assertEquals(EnablementStatus.DISABLED, response.receive().completeLinking());
-        Assertions.assertEquals(EnablementStatus.DISABLED, response.receive().connectionApprovals());
+        Assertions.assertEquals(EnablementStatus.ENABLED, response.receive().connectionApprovals());
         Assertions.assertEquals(EnablementStatus.ENABLED, response.receive().flowApprovals());
         Assertions.assertEquals(FlowType.OPAQUE, response.receive().flowTypesAvailable().get(0));
         Assertions.assertEquals(EnablementStatus.ENABLED, response.receive().messagingFlowTypeSchemaValidation());
-        Assertions.assertEquals(DataClassType.API, response.receive().flowProfileDataClassesAvailable().get(0));
+        Assertions.assertEquals(DataClassType.COMPLEX, response.receive().flowProfileDataClassesAvailable().get(0));
         Assertions.assertEquals(FlowBillingTier.BLOB_TRANSPORT,
             response.receive().messagingFlowsPricingOptions().get(0));
+        Assertions.assertEquals("xjmf", response.receive().storageLocationMappings().get(0).location());
+        Assertions.assertEquals("eftvhkmoog", response.receive().storageLocationMappings().get(0).pairedLocation());
+        Assertions.assertEquals("ezomu", response.receive().messagingLocationMappings().get(0).location());
+        Assertions.assertEquals("mqgisnion", response.receive().messagingLocationMappings().get(0).pairedLocation());
     }
 }

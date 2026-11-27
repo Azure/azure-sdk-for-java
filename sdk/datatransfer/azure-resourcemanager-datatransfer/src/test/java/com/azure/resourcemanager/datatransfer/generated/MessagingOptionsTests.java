@@ -14,18 +14,18 @@ public final class MessagingOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MessagingOptions model
-            = BinaryData.fromString("{\"billingTier\":\"BlobTransport\",\"performancePriority\":\"Enabled\"}")
+            = BinaryData.fromString("{\"billingTier\":\"Premium\",\"performancePriority\":\"Disabled\"}")
                 .toObject(MessagingOptions.class);
-        Assertions.assertEquals(FlowBillingTier.BLOB_TRANSPORT, model.billingTier());
-        Assertions.assertEquals(EnablementStatus.ENABLED, model.performancePriority());
+        Assertions.assertEquals(FlowBillingTier.PREMIUM, model.billingTier());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.performancePriority());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MessagingOptions model = new MessagingOptions().withBillingTier(FlowBillingTier.BLOB_TRANSPORT)
-            .withPerformancePriority(EnablementStatus.ENABLED);
+        MessagingOptions model = new MessagingOptions().withBillingTier(FlowBillingTier.PREMIUM)
+            .withPerformancePriority(EnablementStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(MessagingOptions.class);
-        Assertions.assertEquals(FlowBillingTier.BLOB_TRANSPORT, model.billingTier());
-        Assertions.assertEquals(EnablementStatus.ENABLED, model.performancePriority());
+        Assertions.assertEquals(FlowBillingTier.PREMIUM, model.billingTier());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.performancePriority());
     }
 }

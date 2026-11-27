@@ -9,7 +9,7 @@ package com.azure.resourcemanager.datatransfer.generated;
  */
 public final class FlowsGetStreamConnectionStringSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/getStreamConnectionString.json
+     * x-ms-original-file: 2026-06-29-preview/getStreamConnectionString.json
      */
     /**
      * Sample code: Get the flow stream connection string.

@@ -16,14 +16,18 @@ public final class DirectionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DirectionSettings model = BinaryData.fromString(
-            "{\"completeLinking\":\"Disabled\",\"connectionApprovals\":\"Enabled\",\"flowApprovals\":\"Disabled\",\"flowTypesAvailable\":[\"Unknown\",\"Complex\"],\"messagingFlowTypeSchemaValidation\":\"Enabled\",\"flowProfileDataClassesAvailable\":[\"Files\",\"Stream\",\"Messaging\"],\"messagingFlowsPricingOptions\":[\"BlobTransport\",\"Standard\",\"Premium\"]}")
+            "{\"completeLinking\":\"Enabled\",\"connectionApprovals\":\"Enabled\",\"flowApprovals\":\"Enabled\",\"flowTypesAvailable\":[\"Data\",\"API\",\"Data\"],\"messagingFlowTypeSchemaValidation\":\"Enabled\",\"flowProfileDataClassesAvailable\":[\"Messaging\",\"SoftwareArtifacts\",\"Complex\"],\"messagingFlowsPricingOptions\":[\"BlobTransport\",\"Standard\"],\"storageLocationMappings\":[{\"location\":\"iukyefchnmna\",\"pairedLocation\":\"mnxhkxjqirwrweo\"},{\"location\":\"xffi\",\"pairedLocation\":\"hx\"}],\"messagingLocationMappings\":[{\"location\":\"newmozqvb\",\"pairedLocation\":\"bqmamhsycxhxzgaz\"},{\"location\":\"taboidvmf\",\"pairedLocation\":\"hppubowsepdfgkmt\"},{\"location\":\"herngb\",\"pairedLocation\":\"c\"}]}")
             .toObject(DirectionSettings.class);
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.completeLinking());
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.completeLinking());
         Assertions.assertEquals(EnablementStatus.ENABLED, model.connectionApprovals());
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.flowApprovals());
-        Assertions.assertEquals(FlowType.UNKNOWN, model.flowTypesAvailable().get(0));
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.flowApprovals());
+        Assertions.assertEquals(FlowType.DATA, model.flowTypesAvailable().get(0));
         Assertions.assertEquals(EnablementStatus.ENABLED, model.messagingFlowTypeSchemaValidation());
-        Assertions.assertEquals(DataClassType.FILES, model.flowProfileDataClassesAvailable().get(0));
+        Assertions.assertEquals(DataClassType.MESSAGING, model.flowProfileDataClassesAvailable().get(0));
         Assertions.assertEquals(FlowBillingTier.BLOB_TRANSPORT, model.messagingFlowsPricingOptions().get(0));
+        Assertions.assertEquals("iukyefchnmna", model.storageLocationMappings().get(0).location());
+        Assertions.assertEquals("mnxhkxjqirwrweo", model.storageLocationMappings().get(0).pairedLocation());
+        Assertions.assertEquals("newmozqvb", model.messagingLocationMappings().get(0).location());
+        Assertions.assertEquals("bqmamhsycxhxzgaz", model.messagingLocationMappings().get(0).pairedLocation());
     }
 }

@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class PipelinesListSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/listFlowsByPipeline.json
+     * x-ms-original-file: 2026-06-29-preview/listFlowsByPipeline.json
      */
     /**
      * Sample code: Lists flows for a pipeline.

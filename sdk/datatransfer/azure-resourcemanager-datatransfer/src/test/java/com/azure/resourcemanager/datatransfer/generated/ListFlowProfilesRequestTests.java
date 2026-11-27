@@ -12,14 +12,14 @@ public final class ListFlowProfilesRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListFlowProfilesRequest model
-            = BinaryData.fromString("{\"pipeline\":\"i\"}").toObject(ListFlowProfilesRequest.class);
-        Assertions.assertEquals("i", model.pipeline());
+            = BinaryData.fromString("{\"pipeline\":\"ps\"}").toObject(ListFlowProfilesRequest.class);
+        Assertions.assertEquals("ps", model.pipeline());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListFlowProfilesRequest model = new ListFlowProfilesRequest().withPipeline("i");
+        ListFlowProfilesRequest model = new ListFlowProfilesRequest().withPipeline("ps");
         model = BinaryData.fromObject(model).toObject(ListFlowProfilesRequest.class);
-        Assertions.assertEquals("i", model.pipeline());
+        Assertions.assertEquals("ps", model.pipeline());
     }
 }
