@@ -14,6 +14,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.Enforce;
 import com.azure.resourcemanager.security.models.Extension;
 import com.azure.resourcemanager.security.models.Inherited;
+import com.azure.resourcemanager.security.models.OriginatedFrom;
 import com.azure.resourcemanager.security.models.PricingTier;
 import com.azure.resourcemanager.security.models.ResourcesCoverageStatus;
 import java.io.IOException;
@@ -94,6 +95,21 @@ public final class PricingProperties implements JsonSerializable<PricingProperti
      * Optional. List of plans that replace this plan. This property exists only if this plan is deprecated.
      */
     private List<String> replacedBy;
+
+    /*
+     * Resource ID of the security operator associated with the pricing configuration.
+     */
+    private String securityOperatorResourceId;
+
+    /*
+     * Indicates the origin of the most recent configuration change.
+     */
+    private OriginatedFrom originatedFrom;
+
+    /*
+     * Indicates who exclusively manages the pricing configuration.
+     */
+    private String managedBy;
 
     /**
      * Creates an instance of PricingProperties class.
@@ -274,6 +290,46 @@ public final class PricingProperties implements JsonSerializable<PricingProperti
     }
 
     /**
+     * Get the securityOperatorResourceId property: Resource ID of the security operator associated with the pricing
+     * configuration.
+     * 
+     * @return the securityOperatorResourceId value.
+     */
+    public String securityOperatorResourceId() {
+        return this.securityOperatorResourceId;
+    }
+
+    /**
+     * Set the securityOperatorResourceId property: Resource ID of the security operator associated with the pricing
+     * configuration.
+     * 
+     * @param securityOperatorResourceId the securityOperatorResourceId value to set.
+     * @return the PricingProperties object itself.
+     */
+    public PricingProperties withSecurityOperatorResourceId(String securityOperatorResourceId) {
+        this.securityOperatorResourceId = securityOperatorResourceId;
+        return this;
+    }
+
+    /**
+     * Get the originatedFrom property: Indicates the origin of the most recent configuration change.
+     * 
+     * @return the originatedFrom value.
+     */
+    public OriginatedFrom originatedFrom() {
+        return this.originatedFrom;
+    }
+
+    /**
+     * Get the managedBy property: Indicates who exclusively manages the pricing configuration.
+     * 
+     * @return the managedBy value.
+     */
+    public String managedBy() {
+        return this.managedBy;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -300,6 +356,7 @@ public final class PricingProperties implements JsonSerializable<PricingProperti
         jsonWriter.writeStringField("subPlan", this.subPlan);
         jsonWriter.writeStringField("enforce", this.enforce == null ? null : this.enforce.toString());
         jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("securityOperatorResourceId", this.securityOperatorResourceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -346,6 +403,12 @@ public final class PricingProperties implements JsonSerializable<PricingProperti
                 } else if ("replacedBy".equals(fieldName)) {
                     List<String> replacedBy = reader.readArray(reader1 -> reader1.getString());
                     deserializedPricingProperties.replacedBy = replacedBy;
+                } else if ("securityOperatorResourceId".equals(fieldName)) {
+                    deserializedPricingProperties.securityOperatorResourceId = reader.getString();
+                } else if ("originatedFrom".equals(fieldName)) {
+                    deserializedPricingProperties.originatedFrom = OriginatedFrom.fromString(reader.getString());
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedPricingProperties.managedBy = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

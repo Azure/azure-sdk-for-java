@@ -50,6 +50,16 @@ public final class DefenderCspmAwsOffering extends CloudOffering {
      */
     private DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S mdcContainersAgentlessDiscoveryK8S;
 
+    /*
+     * The Microsoft Defender serverless containers configuration
+     */
+    private DefenderCspmAwsOfferingServerlessContainers serverlessContainers;
+
+    /*
+     * The Microsoft Defender agentless serverless posture configuration
+     */
+    private DefenderCspmAwsOfferingAgentlessServerlessPosture agentlessServerlessPosture;
+
     /**
      * Creates an instance of DefenderCspmAwsOffering class.
      */
@@ -192,6 +202,48 @@ public final class DefenderCspmAwsOffering extends CloudOffering {
     }
 
     /**
+     * Get the serverlessContainers property: The Microsoft Defender serverless containers configuration.
+     * 
+     * @return the serverlessContainers value.
+     */
+    public DefenderCspmAwsOfferingServerlessContainers serverlessContainers() {
+        return this.serverlessContainers;
+    }
+
+    /**
+     * Set the serverlessContainers property: The Microsoft Defender serverless containers configuration.
+     * 
+     * @param serverlessContainers the serverlessContainers value to set.
+     * @return the DefenderCspmAwsOffering object itself.
+     */
+    public DefenderCspmAwsOffering
+        withServerlessContainers(DefenderCspmAwsOfferingServerlessContainers serverlessContainers) {
+        this.serverlessContainers = serverlessContainers;
+        return this;
+    }
+
+    /**
+     * Get the agentlessServerlessPosture property: The Microsoft Defender agentless serverless posture configuration.
+     * 
+     * @return the agentlessServerlessPosture value.
+     */
+    public DefenderCspmAwsOfferingAgentlessServerlessPosture agentlessServerlessPosture() {
+        return this.agentlessServerlessPosture;
+    }
+
+    /**
+     * Set the agentlessServerlessPosture property: The Microsoft Defender agentless serverless posture configuration.
+     * 
+     * @param agentlessServerlessPosture the agentlessServerlessPosture value to set.
+     * @return the DefenderCspmAwsOffering object itself.
+     */
+    public DefenderCspmAwsOffering
+        withAgentlessServerlessPosture(DefenderCspmAwsOfferingAgentlessServerlessPosture agentlessServerlessPosture) {
+        this.agentlessServerlessPosture = agentlessServerlessPosture;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -216,6 +268,12 @@ public final class DefenderCspmAwsOffering extends CloudOffering {
         if (mdcContainersAgentlessDiscoveryK8S() != null) {
             mdcContainersAgentlessDiscoveryK8S().validate();
         }
+        if (serverlessContainers() != null) {
+            serverlessContainers().validate();
+        }
+        if (agentlessServerlessPosture() != null) {
+            agentlessServerlessPosture().validate();
+        }
     }
 
     /**
@@ -231,6 +289,8 @@ public final class DefenderCspmAwsOffering extends CloudOffering {
         jsonWriter.writeJsonField("ciem", this.ciem);
         jsonWriter.writeJsonField("mdcContainersImageAssessment", this.mdcContainersImageAssessment);
         jsonWriter.writeJsonField("mdcContainersAgentlessDiscoveryK8s", this.mdcContainersAgentlessDiscoveryK8S);
+        jsonWriter.writeJsonField("serverlessContainers", this.serverlessContainers);
+        jsonWriter.writeJsonField("agentlessServerlessPosture", this.agentlessServerlessPosture);
         return jsonWriter.writeEndObject();
     }
 
@@ -269,6 +329,12 @@ public final class DefenderCspmAwsOffering extends CloudOffering {
                 } else if ("mdcContainersAgentlessDiscoveryK8s".equals(fieldName)) {
                     deserializedDefenderCspmAwsOffering.mdcContainersAgentlessDiscoveryK8S
                         = DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S.fromJson(reader);
+                } else if ("serverlessContainers".equals(fieldName)) {
+                    deserializedDefenderCspmAwsOffering.serverlessContainers
+                        = DefenderCspmAwsOfferingServerlessContainers.fromJson(reader);
+                } else if ("agentlessServerlessPosture".equals(fieldName)) {
+                    deserializedDefenderCspmAwsOffering.agentlessServerlessPosture
+                        = DefenderCspmAwsOfferingAgentlessServerlessPosture.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

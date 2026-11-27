@@ -22,6 +22,12 @@ public final class SensitiveDataDiscoveryProperties implements JsonSerializable<
     private Boolean isEnabled;
 
     /*
+     * Optional. Resource id of the scanner resource (e.g., securityOperator or dataScanner) whose identity will be used
+     * for sensitive data discovery.
+     */
+    private String scannerResourceId;
+
+    /*
      * Upon failure or partial success. Additional data describing Sensitive Data Discovery enable/disable operation.
      */
     private OperationStatus operationStatus;
@@ -53,6 +59,28 @@ public final class SensitiveDataDiscoveryProperties implements JsonSerializable<
     }
 
     /**
+     * Get the scannerResourceId property: Optional. Resource id of the scanner resource (e.g., securityOperator or
+     * dataScanner) whose identity will be used for sensitive data discovery.
+     * 
+     * @return the scannerResourceId value.
+     */
+    public String scannerResourceId() {
+        return this.scannerResourceId;
+    }
+
+    /**
+     * Set the scannerResourceId property: Optional. Resource id of the scanner resource (e.g., securityOperator or
+     * dataScanner) whose identity will be used for sensitive data discovery.
+     * 
+     * @param scannerResourceId the scannerResourceId value to set.
+     * @return the SensitiveDataDiscoveryProperties object itself.
+     */
+    public SensitiveDataDiscoveryProperties withScannerResourceId(String scannerResourceId) {
+        this.scannerResourceId = scannerResourceId;
+        return this;
+    }
+
+    /**
      * Get the operationStatus property: Upon failure or partial success. Additional data describing Sensitive Data
      * Discovery enable/disable operation.
      * 
@@ -80,6 +108,7 @@ public final class SensitiveDataDiscoveryProperties implements JsonSerializable<
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeStringField("scannerResourceId", this.scannerResourceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -101,6 +130,8 @@ public final class SensitiveDataDiscoveryProperties implements JsonSerializable<
 
                 if ("isEnabled".equals(fieldName)) {
                     deserializedSensitiveDataDiscoveryProperties.isEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("scannerResourceId".equals(fieldName)) {
+                    deserializedSensitiveDataDiscoveryProperties.scannerResourceId = reader.getString();
                 } else if ("operationStatus".equals(fieldName)) {
                     deserializedSensitiveDataDiscoveryProperties.operationStatus = OperationStatus.fromJson(reader);
                 } else {

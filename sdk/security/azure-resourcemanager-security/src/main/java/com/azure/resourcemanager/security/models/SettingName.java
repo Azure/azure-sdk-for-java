@@ -8,37 +8,37 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for SettingName.
+ * The name of a Microsoft.Security integration or Defender for Storage setting.
  */
 public final class SettingName extends ExpandableStringEnum<SettingName> {
     /**
-     * MCAS.
+     * Integration with Microsoft Defender for Cloud Apps (formerly Microsoft Cloud App Security).
      */
     public static final SettingName MCAS = fromString("MCAS");
 
     /**
-     * WDATP.
+     * Integration with Microsoft Defender for Endpoint (formerly Windows Defender ATP).
      */
     public static final SettingName WDATP = fromString("WDATP");
 
     /**
-     * WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW.
+     * Microsoft Defender for Endpoint integration that excludes the Linux public preview.
      */
     public static final SettingName WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW
         = fromString("WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW");
 
     /**
-     * WDATP_UNIFIED_SOLUTION.
+     * Integration with the Microsoft Defender for Endpoint unified agent solution.
      */
     public static final SettingName WDATP_UNIFIED_SOLUTION = fromString("WDATP_UNIFIED_SOLUTION");
 
     /**
-     * Sentinel.
+     * Integration with Microsoft Sentinel.
      */
     public static final SettingName SENTINEL = fromString("Sentinel");
 
     /**
-     * Name of the Defender for Storage Settings name.
+     * The current Defender for Storage setting for the resource.
      */
     public static final SettingName CURRENT = fromString("current");
 

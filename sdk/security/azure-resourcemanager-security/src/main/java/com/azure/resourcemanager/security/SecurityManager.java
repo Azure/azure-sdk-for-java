@@ -39,6 +39,7 @@ import com.azure.resourcemanager.security.implementation.AutomationsImpl;
 import com.azure.resourcemanager.security.implementation.AzureDevOpsOrgsImpl;
 import com.azure.resourcemanager.security.implementation.AzureDevOpsProjectsImpl;
 import com.azure.resourcemanager.security.implementation.AzureDevOpsReposImpl;
+import com.azure.resourcemanager.security.implementation.BatchPricingsImpl;
 import com.azure.resourcemanager.security.implementation.ComplianceResultsImpl;
 import com.azure.resourcemanager.security.implementation.CompliancesImpl;
 import com.azure.resourcemanager.security.implementation.CustomRecommendationsImpl;
@@ -115,6 +116,7 @@ import com.azure.resourcemanager.security.models.Automations;
 import com.azure.resourcemanager.security.models.AzureDevOpsOrgs;
 import com.azure.resourcemanager.security.models.AzureDevOpsProjects;
 import com.azure.resourcemanager.security.models.AzureDevOpsRepos;
+import com.azure.resourcemanager.security.models.BatchPricings;
 import com.azure.resourcemanager.security.models.ComplianceResults;
 import com.azure.resourcemanager.security.models.Compliances;
 import com.azure.resourcemanager.security.models.CustomRecommendations;
@@ -202,6 +204,8 @@ public final class SecurityManager {
     private Automations automations;
 
     private SecurityContacts securityContacts;
+
+    private BatchPricings batchPricings;
 
     private ComplianceResults complianceResults;
 
@@ -637,6 +641,18 @@ public final class SecurityManager {
             this.securityContacts = new SecurityContactsImpl(clientObject.getSecurityContacts(), this);
         }
         return securityContacts;
+    }
+
+    /**
+     * Gets the resource collection API of BatchPricings. It manages PricingBatch.
+     * 
+     * @return Resource collection API of BatchPricings.
+     */
+    public BatchPricings batchPricings() {
+        if (this.batchPricings == null) {
+            this.batchPricings = new BatchPricingsImpl(clientObject.getBatchPricings(), this);
+        }
+        return batchPricings;
     }
 
     /**

@@ -72,6 +72,11 @@ public final class Extension implements JsonSerializable<Extension> {
      */
     private OperationStatus operationStatus;
 
+    /*
+     * Resource ID of the security operator associated with the extension.
+     */
+    private String securityOperatorResourceId;
+
     /**
      * Creates an instance of Extension class.
      */
@@ -221,6 +226,26 @@ public final class Extension implements JsonSerializable<Extension> {
     }
 
     /**
+     * Get the securityOperatorResourceId property: Resource ID of the security operator associated with the extension.
+     * 
+     * @return the securityOperatorResourceId value.
+     */
+    public String securityOperatorResourceId() {
+        return this.securityOperatorResourceId;
+    }
+
+    /**
+     * Set the securityOperatorResourceId property: Resource ID of the security operator associated with the extension.
+     * 
+     * @param securityOperatorResourceId the securityOperatorResourceId value to set.
+     * @return the Extension object itself.
+     */
+    public Extension withSecurityOperatorResourceId(String securityOperatorResourceId) {
+        this.securityOperatorResourceId = securityOperatorResourceId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -251,6 +276,7 @@ public final class Extension implements JsonSerializable<Extension> {
         jsonWriter.writeStringField("isEnabled", this.isEnabled == null ? null : this.isEnabled.toString());
         jsonWriter.writeMapField("additionalExtensionProperties", this.additionalExtensionProperties,
             (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("securityOperatorResourceId", this.securityOperatorResourceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -280,6 +306,8 @@ public final class Extension implements JsonSerializable<Extension> {
                     deserializedExtension.additionalExtensionProperties = additionalExtensionProperties;
                 } else if ("operationStatus".equals(fieldName)) {
                     deserializedExtension.operationStatus = OperationStatus.fromJson(reader);
+                } else if ("securityOperatorResourceId".equals(fieldName)) {
+                    deserializedExtension.securityOperatorResourceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

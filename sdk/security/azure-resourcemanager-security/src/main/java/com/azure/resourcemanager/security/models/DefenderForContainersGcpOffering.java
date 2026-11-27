@@ -36,6 +36,21 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
     private Boolean enableAuditLogsAutoProvisioning;
 
     /*
+     * The installation method for the Defender for Containers agent.
+     */
+    private InstallationMethod installationMethod;
+
+    /*
+     * Is security gating enabled
+     */
+    private Boolean securityGatingEnabled;
+
+    /*
+     * Is defender anti-malware enabled
+     */
+    private Boolean containerAntiMalwareEnabled;
+
+    /*
      * Is Microsoft Defender for Cloud Kubernetes agent auto provisioning enabled
      */
     private Boolean enableDefenderAgentAutoProvisioning;
@@ -136,6 +151,66 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
     public DefenderForContainersGcpOffering
         withEnableAuditLogsAutoProvisioning(Boolean enableAuditLogsAutoProvisioning) {
         this.enableAuditLogsAutoProvisioning = enableAuditLogsAutoProvisioning;
+        return this;
+    }
+
+    /**
+     * Get the installationMethod property: The installation method for the Defender for Containers agent.
+     * 
+     * @return the installationMethod value.
+     */
+    public InstallationMethod installationMethod() {
+        return this.installationMethod;
+    }
+
+    /**
+     * Set the installationMethod property: The installation method for the Defender for Containers agent.
+     * 
+     * @param installationMethod the installationMethod value to set.
+     * @return the DefenderForContainersGcpOffering object itself.
+     */
+    public DefenderForContainersGcpOffering withInstallationMethod(InstallationMethod installationMethod) {
+        this.installationMethod = installationMethod;
+        return this;
+    }
+
+    /**
+     * Get the securityGatingEnabled property: Is security gating enabled.
+     * 
+     * @return the securityGatingEnabled value.
+     */
+    public Boolean securityGatingEnabled() {
+        return this.securityGatingEnabled;
+    }
+
+    /**
+     * Set the securityGatingEnabled property: Is security gating enabled.
+     * 
+     * @param securityGatingEnabled the securityGatingEnabled value to set.
+     * @return the DefenderForContainersGcpOffering object itself.
+     */
+    public DefenderForContainersGcpOffering withSecurityGatingEnabled(Boolean securityGatingEnabled) {
+        this.securityGatingEnabled = securityGatingEnabled;
+        return this;
+    }
+
+    /**
+     * Get the containerAntiMalwareEnabled property: Is defender anti-malware enabled.
+     * 
+     * @return the containerAntiMalwareEnabled value.
+     */
+    public Boolean containerAntiMalwareEnabled() {
+        return this.containerAntiMalwareEnabled;
+    }
+
+    /**
+     * Set the containerAntiMalwareEnabled property: Is defender anti-malware enabled.
+     * 
+     * @param containerAntiMalwareEnabled the containerAntiMalwareEnabled value to set.
+     * @return the DefenderForContainersGcpOffering object itself.
+     */
+    public DefenderForContainersGcpOffering withContainerAntiMalwareEnabled(Boolean containerAntiMalwareEnabled) {
+        this.containerAntiMalwareEnabled = containerAntiMalwareEnabled;
         return this;
     }
 
@@ -281,6 +356,10 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
         jsonWriter.writeJsonField("nativeCloudConnection", this.nativeCloudConnection);
         jsonWriter.writeJsonField("dataPipelineNativeCloudConnection", this.dataPipelineNativeCloudConnection);
         jsonWriter.writeBooleanField("enableAuditLogsAutoProvisioning", this.enableAuditLogsAutoProvisioning);
+        jsonWriter.writeStringField("installationMethod",
+            this.installationMethod == null ? null : this.installationMethod.toString());
+        jsonWriter.writeBooleanField("securityGatingEnabled", this.securityGatingEnabled);
+        jsonWriter.writeBooleanField("containerAntiMalwareEnabled", this.containerAntiMalwareEnabled);
         jsonWriter.writeBooleanField("enableDefenderAgentAutoProvisioning", this.enableDefenderAgentAutoProvisioning);
         jsonWriter.writeBooleanField("enablePolicyAgentAutoProvisioning", this.enablePolicyAgentAutoProvisioning);
         jsonWriter.writeJsonField("mdcContainersImageAssessment", this.mdcContainersImageAssessment);
@@ -318,6 +397,15 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
                         = DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection.fromJson(reader);
                 } else if ("enableAuditLogsAutoProvisioning".equals(fieldName)) {
                     deserializedDefenderForContainersGcpOffering.enableAuditLogsAutoProvisioning
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("installationMethod".equals(fieldName)) {
+                    deserializedDefenderForContainersGcpOffering.installationMethod
+                        = InstallationMethod.fromString(reader.getString());
+                } else if ("securityGatingEnabled".equals(fieldName)) {
+                    deserializedDefenderForContainersGcpOffering.securityGatingEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("containerAntiMalwareEnabled".equals(fieldName)) {
+                    deserializedDefenderForContainersGcpOffering.containerAntiMalwareEnabled
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableDefenderAgentAutoProvisioning".equals(fieldName)) {
                     deserializedDefenderForContainersGcpOffering.enableDefenderAgentAutoProvisioning

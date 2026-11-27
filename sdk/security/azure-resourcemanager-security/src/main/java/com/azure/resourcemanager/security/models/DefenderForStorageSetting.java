@@ -138,13 +138,14 @@ public interface DefenderForStorageSetting {
      * Initiate a Defender for Storage malware scan for the specified storage account. Blobs and Files will be scanned
      * for malware.
      * 
+     * @param body Optional request body to filter which blobs and files to scan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the state of a malware scan operation along with {@link Response}.
      */
-    Response<MalwareScan> startMalwareScanWithResponse(Context context);
+    Response<MalwareScan> startMalwareScanWithResponse(StartMalwareScanRequest body, Context context);
 
     /**
      * Initiate a Defender for Storage malware scan for the specified storage account. Blobs and Files will be scanned

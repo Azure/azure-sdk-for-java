@@ -89,6 +89,13 @@ public interface SecurityCenter {
     SecurityContactsClient getSecurityContacts();
 
     /**
+     * Gets the BatchPricingsClient object to access its operations.
+     * 
+     * @return the BatchPricingsClient object.
+     */
+    BatchPricingsClient getBatchPricings();
+
+    /**
      * Gets the ComplianceResultsClient object to access its operations.
      * 
      * @return the ComplianceResultsClient object.

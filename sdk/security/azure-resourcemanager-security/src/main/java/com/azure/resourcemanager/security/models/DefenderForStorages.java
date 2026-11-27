@@ -16,26 +16,26 @@ public interface DefenderForStorages {
      * Gets the Defender for Storage settings for the specified storage account.
      * 
      * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param settingName The defender for storage setting name.
+     * @param settingName The Defender for Storage setting name. Only 'current' is supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Defender for Storage settings for the specified storage account along with {@link Response}.
      */
-    Response<DefenderForStorageSetting> getWithResponse(String resourceId, SettingName settingName, Context context);
+    Response<DefenderForStorageSetting> getWithResponse(String resourceId, String settingName, Context context);
 
     /**
      * Gets the Defender for Storage settings for the specified storage account.
      * 
      * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param settingName The defender for storage setting name.
+     * @param settingName The Defender for Storage setting name. Only 'current' is supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Defender for Storage settings for the specified storage account.
      */
-    DefenderForStorageSetting get(String resourceId, SettingName settingName);
+    DefenderForStorageSetting get(String resourceId, String settingName);
 
     /**
      * Lists the Defender for Storage settings for the specified storage account.
@@ -61,37 +61,10 @@ public interface DefenderForStorages {
     PagedIterable<DefenderForStorageSetting> list(String resourceId, Context context);
 
     /**
-     * Initiate a Defender for Storage malware scan for the specified storage account. Blobs and Files will be scanned
-     * for malware.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param settingName The defender for storage setting name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the state of a malware scan operation along with {@link Response}.
-     */
-    Response<MalwareScan> startMalwareScanWithResponse(String resourceId, SettingName settingName, Context context);
-
-    /**
-     * Initiate a Defender for Storage malware scan for the specified storage account. Blobs and Files will be scanned
-     * for malware.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param settingName The defender for storage setting name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the state of a malware scan operation.
-     */
-    MalwareScan startMalwareScan(String resourceId, SettingName settingName);
-
-    /**
      * Cancels a Defender for Storage malware scan for the specified storage account.
      * 
      * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param settingName The defender for storage setting name.
+     * @param settingName The Defender for Storage setting name. Only 'current' is supported.
      * @param scanId The identifier of the scan. Can be either 'latest' or a GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,27 +72,56 @@ public interface DefenderForStorages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the state of a malware scan operation along with {@link Response}.
      */
-    Response<MalwareScan> cancelMalwareScanWithResponse(String resourceId, SettingName settingName, String scanId,
+    Response<MalwareScan> cancelMalwareScanWithResponse(String resourceId, String settingName, String scanId,
         Context context);
 
     /**
      * Cancels a Defender for Storage malware scan for the specified storage account.
      * 
      * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param settingName The defender for storage setting name.
+     * @param settingName The Defender for Storage setting name. Only 'current' is supported.
      * @param scanId The identifier of the scan. Can be either 'latest' or a GUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the state of a malware scan operation.
      */
-    MalwareScan cancelMalwareScan(String resourceId, SettingName settingName, String scanId);
+    MalwareScan cancelMalwareScan(String resourceId, String settingName, String scanId);
+
+    /**
+     * Initiate a Defender for Storage malware scan for the specified storage account. Blobs and Files will be scanned
+     * for malware.
+     * 
+     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
+     * @param settingName The Defender for Storage setting name. Only 'current' is supported.
+     * @param body Optional request body to filter which blobs and files to scan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the state of a malware scan operation along with {@link Response}.
+     */
+    Response<MalwareScan> startMalwareScanWithResponse(String resourceId, String settingName,
+        StartMalwareScanRequest body, Context context);
+
+    /**
+     * Initiate a Defender for Storage malware scan for the specified storage account. Blobs and Files will be scanned
+     * for malware.
+     * 
+     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
+     * @param settingName The Defender for Storage setting name. Only 'current' is supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the state of a malware scan operation.
+     */
+    MalwareScan startMalwareScan(String resourceId, String settingName);
 
     /**
      * Gets the Defender for Storage malware scan for the specified storage resource.
      * 
      * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param settingName The defender for storage setting name.
+     * @param settingName The Defender for Storage setting name. Only 'current' is supported.
      * @param scanId The identifier of the scan. Can be either 'latest' or a GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -127,21 +129,21 @@ public interface DefenderForStorages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Defender for Storage malware scan for the specified storage resource along with {@link Response}.
      */
-    Response<MalwareScan> getMalwareScanWithResponse(String resourceId, SettingName settingName, String scanId,
+    Response<MalwareScan> getMalwareScanWithResponse(String resourceId, String settingName, String scanId,
         Context context);
 
     /**
      * Gets the Defender for Storage malware scan for the specified storage resource.
      * 
      * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param settingName The defender for storage setting name.
+     * @param settingName The Defender for Storage setting name. Only 'current' is supported.
      * @param scanId The identifier of the scan. Can be either 'latest' or a GUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Defender for Storage malware scan for the specified storage resource.
      */
-    MalwareScan getMalwareScan(String resourceId, SettingName settingName, String scanId);
+    MalwareScan getMalwareScan(String resourceId, String settingName, String scanId);
 
     /**
      * Gets the Defender for Storage settings for the specified storage account.
@@ -172,5 +174,5 @@ public interface DefenderForStorages {
      * @param name resource name.
      * @return the first stage of the new DefenderForStorageSetting definition.
      */
-    DefenderForStorageSetting.DefinitionStages.Blank define(SettingName name);
+    DefenderForStorageSetting.DefinitionStages.Blank define(String name);
 }

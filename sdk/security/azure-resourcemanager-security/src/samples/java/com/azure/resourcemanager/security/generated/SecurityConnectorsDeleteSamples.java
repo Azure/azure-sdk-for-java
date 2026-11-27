@@ -9,7 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class SecurityConnectorsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-08-01-preview/SecurityConnectors/DeleteSecurityConnector_example.json
+     * x-ms-original-file: 2026-08-01-preview/SecurityConnectors/DeleteSecurityConnector_example.json
      */
     /**
      * Sample code: Delete a security connector.

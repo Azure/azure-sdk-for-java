@@ -9,7 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class PricingsGetSamples {
     /*
-     * x-ms-original-file: 2024-01-01/Pricings/GetPricingByNameCloudPosture_example.json
+     * x-ms-original-file: 2026-07-01/Pricings/GetPricingByNameCloudPosture_example.json
      */
     /**
      * Sample code: Get pricings on subscription - CloudPosture plan.
@@ -24,7 +24,7 @@ public final class PricingsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-01-01/Pricings/GetResourcePricingByNameVirtualMachines_example.json
+     * x-ms-original-file: 2026-07-01/Pricings/GetResourcePricingByNameVirtualMachines_example.json
      */
     /**
      * Sample code: Get pricings on resource - VirtualMachines plan.
@@ -40,7 +40,7 @@ public final class PricingsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-01-01/Pricings/GetPricingByNameDns_example.json
+     * x-ms-original-file: 2026-07-01/Pricings/GetPricingByNameDns_example.json
      */
     /**
      * Sample code: Get pricings on subscription - Dns plan.
@@ -54,7 +54,7 @@ public final class PricingsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-01-01/Pricings/GetPricingByNameContainers_example.json
+     * x-ms-original-file: 2026-07-01/Pricings/GetPricingByNameContainers_example.json
      */
     /**
      * Sample code: Get pricings on subscription - Containers plan.
@@ -69,7 +69,7 @@ public final class PricingsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-01-01/Pricings/GetResourcePricingByNameContainers_example.json
+     * x-ms-original-file: 2026-07-01/Pricings/GetResourcePricingByNameContainers_example.json
      */
     /**
      * Sample code: Get pricings on resource - Containers plan.
@@ -84,7 +84,7 @@ public final class PricingsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-01-01/Pricings/GetPricingByNameStorageAccounts_example.json
+     * x-ms-original-file: 2026-07-01/Pricings/GetPricingByNameStorageAccounts_example.json
      */
     /**
      * Sample code: Get pricings on subscription - StorageAccounts plan.
@@ -99,7 +99,7 @@ public final class PricingsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-01-01/Pricings/GetPricingByNameVirtualMachines_example.json
+     * x-ms-original-file: 2026-07-01/Pricings/GetPricingByNameVirtualMachines_example.json
      */
     /**
      * Sample code: Get pricings on subscription - VirtualMachines plan.
@@ -110,6 +110,21 @@ public final class PricingsGetSamples {
         getPricingsOnSubscriptionVirtualMachinesPlan(com.azure.resourcemanager.security.SecurityManager manager) {
         manager.pricings()
             .getWithResponse("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "VirtualMachines",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01/Pricings/GetPricingByNameExternallyUpdated_example.json
+     */
+    /**
+     * Sample code: Get pricings on subscription - Managed by M365 security rule.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        getPricingsOnSubscriptionManagedByM365SecurityRule(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.pricings()
+            .getWithResponse("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "CloudPosture",
                 com.azure.core.util.Context.NONE);
     }
 }

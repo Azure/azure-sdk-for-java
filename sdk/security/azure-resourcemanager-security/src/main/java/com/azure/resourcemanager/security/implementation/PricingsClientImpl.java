@@ -117,7 +117,7 @@ public final class PricingsClientImpl implements PricingsClient {
         if (pricingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter pricingName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2026-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -150,7 +150,7 @@ public final class PricingsClientImpl implements PricingsClient {
         if (pricingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter pricingName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2026-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, scopeId, pricingName, accept, context);
@@ -217,7 +217,7 @@ public final class PricingsClientImpl implements PricingsClient {
         } else {
             pricing.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2026-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -259,7 +259,7 @@ public final class PricingsClientImpl implements PricingsClient {
         } else {
             pricing.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2026-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -322,7 +322,7 @@ public final class PricingsClientImpl implements PricingsClient {
         if (pricingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter pricingName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2026-07-01";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, scopeId, pricingName, context))
@@ -353,7 +353,7 @@ public final class PricingsClientImpl implements PricingsClient {
         if (pricingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter pricingName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2026-07-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, scopeId, pricingName, context);
     }
@@ -410,7 +410,7 @@ public final class PricingsClientImpl implements PricingsClient {
         if (scopeId == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeId is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2026-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -443,7 +443,7 @@ public final class PricingsClientImpl implements PricingsClient {
         if (scopeId == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeId is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2026-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, scopeId, filter, accept, context);

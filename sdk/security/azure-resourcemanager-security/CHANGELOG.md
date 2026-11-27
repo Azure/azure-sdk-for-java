@@ -1,14 +1,264 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.2 (2026-11-18)
 
-### Features Added
+- Azure Resource Manager Security client library for Java. This package contains Microsoft Azure SDK for Security Management SDK. API spec for Microsoft.Security (Azure Security Center) alerts resource provider. Package api-version AlertsAPI: 2022-01-01, AlertsSuppressionRulesAPI: 2019-01-01-preview, ApiCollectionsAPI: 2023-11-15, ApplicationsAPI: 2022-07-01-preview, AssessmentAPI: 2025-05-04, ATPSettingsAPI: 2019-01-01, AutomationsAPI: 2023-12-01-preview, BatchPricingsAPI: 2026-07-01, ComplianceResultsAPI: 2017-08-01, DefenderForStorageAPI: 2026-09-01, GovernanceAPI: 2022-01-01-preview, HealthReportsAPI: 2023-05-01-preview, IoTSecurityAPI: 2019-08-01, LegacySettingsAPI: 2017-08-01-preview, LocationsAPI: 2015-06-01-preview, MdeOnboardingAPI: 2021-10-01-preview, OperationsAPI: 2025-10-01-preview, PricingsAPI: 2026-07-01, PrivateLinksAPI: 2026-01-01, RegulatoryComplianceAPI: 2019-01-01-preview, SecureScoreAPI: 2020-01-01, SecurityConnectorsAPI: 2026-08-01-preview, SecurityConnectorsDevOpsAPI: 2025-11-01-preview, SecurityOperatorsAPI: 2023-01-01-preview, SecuritySolutionsAPI: 2020-01-01, SecurityStandardsAPI: 2024-08-01, SensitivitySettingsAPI: 2023-02-15-preview, ServerVulnerabilityAssessmentsSettingsAPI: 2023-05-01, SettingsAPI: 2022-05-01, SqlVulnerabilityAssessmentsAPI: 2026-04-01-preview, StandardsAPI: 2021-08-01-preview, SubAssessmentsAPI: 2019-01-01-preview, TasksAPI: 2015-06-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ServerVulnerabilityAssessmentsSettingProperties` was removed
 
-### Other Changes
+#### `models.SettingProperties` was removed
+
+#### `models.DefenderCspmAwsOfferingCiemDiscovery` was removed
+
+#### `models.MalwareScanProperties` was modified
+
+* `java.lang.String scanStartTime()` -> `java.time.OffsetDateTime scanStartTime()`
+* `java.lang.String scanEndTime()` -> `java.time.OffsetDateTime scanEndTime()`
+* `java.lang.String scanStatus()` -> `models.MalwareScanStatus scanStatus()`
+
+#### `models.AzureServersSetting` was modified
+
+* `withProperties(models.ServerVulnerabilityAssessmentsSettingProperties)` was removed
+
+#### `models.AlertSyncSettings` was modified
+
+* `withProperties(models.SettingProperties)` was removed
+
+#### `models.OnUploadFilters` was modified
+
+* `java.lang.Object excludeBlobsLargerThan()` -> `java.lang.Long excludeBlobsLargerThan()`
+* `withExcludeBlobsLargerThan(java.lang.Object)` was removed
+
+#### `models.DefenderForStorages` was modified
+
+* `getMalwareScan(java.lang.String,models.SettingName,java.lang.String)` was removed
+* `get(java.lang.String,models.SettingName)` was removed
+* `define(models.SettingName)` was removed
+* `getMalwareScanWithResponse(java.lang.String,models.SettingName,java.lang.String,com.azure.core.util.Context)` was removed
+* `cancelMalwareScan(java.lang.String,models.SettingName,java.lang.String)` was removed
+* `getWithResponse(java.lang.String,models.SettingName,com.azure.core.util.Context)` was removed
+* `startMalwareScan(java.lang.String,models.SettingName)` was removed
+* `cancelMalwareScanWithResponse(java.lang.String,models.SettingName,java.lang.String,com.azure.core.util.Context)` was removed
+* `startMalwareScanWithResponse(java.lang.String,models.SettingName,com.azure.core.util.Context)` was removed
+
+#### `models.DataExportSettings` was modified
+
+* `withProperties(models.SettingProperties)` was removed
+
+#### `models.DefenderCspmAwsOfferingCiem` was modified
+
+* `withCiemDiscovery(models.DefenderCspmAwsOfferingCiemDiscovery)` was removed
+* `ciemDiscovery()` was removed
+
+#### `models.ServerVulnerabilityAssessmentsSetting` was modified
+
+* `properties()` was removed
+
+#### `models.DefenderForStorageSetting` was modified
+
+* `startMalwareScanWithResponse(com.azure.core.util.Context)` was removed
+
+#### `models.Setting` was modified
+
+* `properties()` was removed
+
+#### `models.Topologies` was modified
+
+* `listByHomeRegion(java.lang.String,com.azure.core.util.Context)` was removed
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `get(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `listByHomeRegion(java.lang.String)` was removed
+
+### Features Added
+
+* `models.MalwareScanFilters` was added
+
+* `models.PricingBatch$DefinitionStages` was added
+
+* `models.PricingPropertiesReference` was added
+
+* `models.BatchPricings` was added
+
+* `models.GcpLoggingResourceSet` was added
+
+* `models.PricingPlanOperationStatus` was added
+
+* `models.FileScanFilter` was added
+
+* `models.TopologyResources` was added
+
+* `models.MatchType` was added
+
+* `models.PricingPlanOperationStatusCode` was added
+
+* `models.MatchFilter` was added
+
+* `models.AwsCloudTrailResourceSet` was added
+
+* `models.PricingBatch$UpdateStages` was added
+
+* `models.AwsCloudTrailProvisioningType` was added
+
+* `models.BlobScanFilter` was added
+
+* `models.PricingBatch$Definition` was added
+
+* `models.MalwareScanStatus` was added
+
+* `models.DefenderCspmAwsOfferingServerlessContainers` was added
+
+* `models.DefenderCspmGcpOfferingCiem` was added
+
+* `models.PricingBatchPlanItem` was added
+
+* `models.StartMalwareScanRequest` was added
+
+* `models.GcpLoggingProvisioningType` was added
+
+* `models.PricingBatchProperties` was added
+
+* `models.DefenderCspmAwsOfferingAgentlessServerlessPosture` was added
+
+* `models.DefenderCspmGcpOfferingCiemOidc` was added
+
+* `models.StartMalwareScanRequestProperties` was added
+
+* `models.InstallationMethod` was added
+
+* `models.ManagedByType` was added
+
+* `models.AwsCloudTrailConfiguration` was added
+
+* `models.OriginatedFrom` was added
+
+* `models.PricingBatch$Update` was added
+
+* `models.PricingBatch` was added
+
+* `models.GcpAuditLogConfiguration` was added
+
+* `models.DefenderCspmAwsOfferingCiemLogCollectionOidc` was added
+
+#### `models.Extension` was modified
+
+* `securityOperatorResourceId()` was added
+* `withSecurityOperatorResourceId(java.lang.String)` was added
+
+#### `models.DefenderForContainersAwsOfferingMdcContainersImageAssessment` was modified
+
+* `withSecurityFindingsEnabled(java.lang.Boolean)` was added
+* `securityFindingsEnabled()` was added
+
+#### `models.DefenderCspmGcpOfferingMdcContainersImageAssessment` was modified
+
+* `withSecurityFindingsEnabled(java.lang.Boolean)` was added
+* `securityFindingsEnabled()` was added
+
+#### `models.Pricing` was modified
+
+* `originatedFrom()` was added
+* `securityOperatorResourceId()` was added
+* `managedBy()` was added
+
+#### `models.MalwareScan` was modified
+
+* `systemData()` was added
+* `name()` was added
+* `type()` was added
+* `id()` was added
+
+#### `models.OnUploadFilters` was modified
+
+* `withExcludeBlobsLargerThan(java.lang.Long)` was added
+
+#### `models.DefenderForStorageSettingProperties` was modified
+
+* `managedBy()` was added
+
+#### `models.MalwareScanningProperties` was modified
+
+* `withScannerResourceId(java.lang.String)` was added
+* `scannerResourceId()` was added
+
+#### `SecurityManager` was modified
+
+* `batchPricings()` was added
+* `topologyResources()` was added
+
+#### `models.DefenderForStorages` was modified
+
+* `cancelMalwareScanWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getMalwareScan(java.lang.String,java.lang.String,java.lang.String)` was added
+* `get(java.lang.String,java.lang.String)` was added
+* `startMalwareScan(java.lang.String,java.lang.String)` was added
+* `cancelMalwareScan(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `define(java.lang.String)` was added
+* `getMalwareScanWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `startMalwareScanWithResponse(java.lang.String,java.lang.String,models.StartMalwareScanRequest,com.azure.core.util.Context)` was added
+
+#### `models.DefenderForContainersGcpOfferingMdcContainersImageAssessment` was modified
+
+* `securityFindingsEnabled()` was added
+* `withSecurityFindingsEnabled(java.lang.Boolean)` was added
+
+#### `models.SensitiveDataDiscoveryProperties` was modified
+
+* `withScannerResourceId(java.lang.String)` was added
+* `scannerResourceId()` was added
+
+#### `models.DefenderCspmAwsOfferingCiem` was modified
+
+* `withLogCollectionOidc(models.DefenderCspmAwsOfferingCiemLogCollectionOidc)` was added
+* `cloudTrailAuditLogIngestion()` was added
+* `logCollectionOidc()` was added
+* `withCloudTrailAuditLogIngestion(models.AwsCloudTrailConfiguration)` was added
+
+#### `models.DefenderForStorageSetting` was modified
+
+* `startMalwareScanWithResponse(models.StartMalwareScanRequest,com.azure.core.util.Context)` was added
+
+#### `models.DefenderCspmGcpOfferingCiemDiscovery` was modified
+
+* `enableAuditLogIngestion()` was added
+* `withEnableAuditLogIngestion(java.lang.Boolean)` was added
+
+#### `models.DefenderForContainersAwsOffering` was modified
+
+* `containerAntiMalwareEnabled()` was added
+* `withContainerAntiMalwareEnabled(java.lang.Boolean)` was added
+* `withSecurityGatingEnabled(java.lang.Boolean)` was added
+* `withInstallationMethod(models.InstallationMethod)` was added
+* `installationMethod()` was added
+* `securityGatingEnabled()` was added
+
+#### `models.DefenderForContainersGcpOffering` was modified
+
+* `securityGatingEnabled()` was added
+* `installationMethod()` was added
+* `withInstallationMethod(models.InstallationMethod)` was added
+* `withContainerAntiMalwareEnabled(java.lang.Boolean)` was added
+* `withSecurityGatingEnabled(java.lang.Boolean)` was added
+* `containerAntiMalwareEnabled()` was added
+
+#### `models.DefenderCspmAwsOffering` was modified
+
+* `serverlessContainers()` was added
+* `withServerlessContainers(models.DefenderCspmAwsOfferingServerlessContainers)` was added
+* `agentlessServerlessPosture()` was added
+* `withAgentlessServerlessPosture(models.DefenderCspmAwsOfferingAgentlessServerlessPosture)` was added
+
+#### `models.DefenderCspmAwsOfferingMdcContainersImageAssessment` was modified
+
+* `withSecurityFindingsEnabled(java.lang.Boolean)` was added
+* `securityFindingsEnabled()` was added
+
+#### `models.DefenderCspmGcpOffering` was modified
+
+* `ciem()` was added
+* `withCiem(models.DefenderCspmGcpOfferingCiem)` was added
 
 ## 1.1.0-beta.1 (2026-05-10)
 
