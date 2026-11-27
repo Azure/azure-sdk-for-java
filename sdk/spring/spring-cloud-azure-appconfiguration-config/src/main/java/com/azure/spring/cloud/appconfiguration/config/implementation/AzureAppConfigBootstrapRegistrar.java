@@ -34,12 +34,11 @@ class AzureAppConfigurationBootstrapRegistrar {
         AzureGlobalProperties globalProperties = binder
             .bind(AzureGlobalProperties.PREFIX, Bindable.of(AzureGlobalProperties.class))
             .orElseGet(AzureGlobalProperties::new);
-        AzureAppConfigurationProperties appConfigurationProperties = binder
-            .bind(AzureAppConfigurationProperties.PREFIX, Bindable.of(AzureAppConfigurationProperties.class))
-            .orElseGet(AzureAppConfigurationProperties::new);
-        // the properties are used to custom the ConfigurationClientBuilder
-        AzureAppConfigurationProperties loadedProperties = AzureGlobalPropertiesUtils.loadProperties(globalProperties,
-            appConfigurationProperties);
+        AzureAppConfigurationProperties propertiesFromGlobalDefaults =
+            AzureGlobalPropertiesUtils.loadProperties(globalProperties, new AzureAppConfigurationProperties());
+        AzureAppConfigurationProperties loadedProperties = binder
+            .bind(AzureAppConfigurationProperties.PREFIX, Bindable.ofInstance(propertiesFromGlobalDefaults))
+            .orElse(propertiesFromGlobalDefaults);
 
         boolean isCredentialConfigured = isCredentialConfigured(loadedProperties);
 
