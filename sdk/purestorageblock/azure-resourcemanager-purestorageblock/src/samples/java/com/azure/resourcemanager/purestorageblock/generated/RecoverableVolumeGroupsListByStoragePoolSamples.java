@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class RecoverableVolumeGroupsListByStoragePoolSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/RecoverableVolumeGroups_ListByStoragePool_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/RecoverableVolumeGroups_ListByStoragePool_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoverableVolumeGroups_ListByStoragePool.

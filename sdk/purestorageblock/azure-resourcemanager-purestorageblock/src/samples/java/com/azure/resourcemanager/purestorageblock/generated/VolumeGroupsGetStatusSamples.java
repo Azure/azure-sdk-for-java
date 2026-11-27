@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class VolumeGroupsGetStatusSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_GetStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroups_GetStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_GetStatus.

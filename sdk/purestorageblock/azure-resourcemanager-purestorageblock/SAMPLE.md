@@ -109,7 +109,7 @@
  */
 public final class AvsStorageContainerVolumesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsStorageContainerVolumes_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsStorageContainerVolumes_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainerVolumes_Delete.
@@ -133,7 +133,7 @@ public final class AvsStorageContainerVolumesDeleteSamples {
  */
 public final class AvsStorageContainerVolumesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsStorageContainerVolumes_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsStorageContainerVolumes_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainerVolumes_Get.
@@ -157,7 +157,7 @@ public final class AvsStorageContainerVolumesGetSamples {
  */
 public final class AvsStorageContainerVolumesListByAvsStorageContainerSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsStorageContainerVolumes_ListByAvsStorageContainer_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsStorageContainerVolumes_ListByAvsStorageContainer_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainerVolumes_ListByAvsStorageContainer.
@@ -185,7 +185,7 @@ import com.azure.resourcemanager.purestorageblock.models.SoftDeletion;
  */
 public final class AvsStorageContainerVolumesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsStorageContainerVolumes_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsStorageContainerVolumes_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainerVolumes_Update.
@@ -211,7 +211,7 @@ public final class AvsStorageContainerVolumesUpdateSamples {
  */
 public final class AvsStorageContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsStorageContainers_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsStorageContainers_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainers_Delete.
@@ -234,7 +234,7 @@ public final class AvsStorageContainersDeleteSamples {
  */
 public final class AvsStorageContainersGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsStorageContainers_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsStorageContainers_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainers_Get.
@@ -257,7 +257,7 @@ public final class AvsStorageContainersGetSamples {
  */
 public final class AvsStorageContainersListByStoragePoolSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsStorageContainers_ListByStoragePool_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsStorageContainers_ListByStoragePool_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainers_ListByStoragePool.
@@ -279,7 +279,7 @@ public final class AvsStorageContainersListByStoragePoolSamples {
  */
 public final class AvsVmVolumesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsVmVolumes_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsVmVolumes_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVmVolumes_Delete.
@@ -302,7 +302,7 @@ public final class AvsVmVolumesDeleteSamples {
  */
 public final class AvsVmVolumesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsVmVolumes_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsVmVolumes_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVmVolumes_Get.
@@ -325,7 +325,7 @@ public final class AvsVmVolumesGetSamples {
  */
 public final class AvsVmVolumesListByAvsVmSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsVmVolumes_ListByAvsVm_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsVmVolumes_ListByAvsVm_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVmVolumes_ListByAvsVm.
@@ -352,7 +352,7 @@ import com.azure.resourcemanager.purestorageblock.models.SoftDeletion;
  */
 public final class AvsVmVolumesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsVmVolumes_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsVmVolumes_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVmVolumes_Update.
@@ -377,7 +377,7 @@ public final class AvsVmVolumesUpdateSamples {
  */
 public final class AvsVmsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsVms_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsVms_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVms_Delete.
@@ -398,7 +398,7 @@ public final class AvsVmsDeleteSamples {
  */
 public final class AvsVmsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsVms_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsVms_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVms_Get.
@@ -420,7 +420,7 @@ public final class AvsVmsGetSamples {
  */
 public final class AvsVmsListByStoragePoolSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsVms_ListByStoragePool_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsVms_ListByStoragePool_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVms_ListByStoragePool.
@@ -446,7 +446,7 @@ import com.azure.resourcemanager.purestorageblock.models.SoftDeletion;
  */
 public final class AvsVmsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsVms_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsVms_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVms_Update.
@@ -471,7 +471,7 @@ public final class AvsVmsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List.
@@ -483,7 +483,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumGen_Set.
@@ -505,7 +505,7 @@ public final class OperationsListSamples {
  */
 public final class RecoverableVolumeGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/RecoverableVolumeGroups_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/RecoverableVolumeGroups_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoverableVolumeGroups_Delete.
@@ -528,7 +528,7 @@ public final class RecoverableVolumeGroupsDeleteSamples {
  */
 public final class RecoverableVolumeGroupsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/RecoverableVolumeGroups_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/RecoverableVolumeGroups_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoverableVolumeGroups_Get.
@@ -551,7 +551,7 @@ public final class RecoverableVolumeGroupsGetSamples {
  */
 public final class RecoverableVolumeGroupsListByStoragePoolSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/RecoverableVolumeGroups_ListByStoragePool_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/RecoverableVolumeGroups_ListByStoragePool_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoverableVolumeGroups_ListByStoragePool.
@@ -584,7 +584,7 @@ import java.util.Map;
  */
 public final class ReservationsCreateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Reservations_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Reservations_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_Create.
@@ -643,7 +643,7 @@ public final class ReservationsCreateSamples {
  */
 public final class ReservationsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Reservations_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Reservations_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_Delete.
@@ -664,7 +664,7 @@ public final class ReservationsDeleteSamples {
  */
 public final class ReservationsGetBillingReportSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Reservations_GetBillingReport_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Reservations_GetBillingReport_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_GetBillingReport_MaximumSet.
@@ -687,7 +687,7 @@ public final class ReservationsGetBillingReportSamples {
  */
 public final class ReservationsGetBillingStatusSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Reservations_GetBillingStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Reservations_GetBillingStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_GetBillingStatus_MaximumSet.
@@ -710,7 +710,7 @@ public final class ReservationsGetBillingStatusSamples {
  */
 public final class ReservationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Reservations_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Reservations_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_Get.
@@ -732,7 +732,7 @@ public final class ReservationsGetByResourceGroupSamples {
  */
 public final class ReservationsGetResourceLimitsSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Reservations_GetResourceLimits_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Reservations_GetResourceLimits_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_GetResourceLimits.
@@ -755,7 +755,7 @@ public final class ReservationsGetResourceLimitsSamples {
  */
 public final class ReservationsLatestLinkedSaaSSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Reservations_LatestLinkedSaaS_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Reservations_LatestLinkedSaaS_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_LatestLinkedSaaS.
@@ -780,7 +780,7 @@ import com.azure.resourcemanager.purestorageblock.models.LinkSaaSRequest;
  */
 public final class ReservationsLinkSaaSSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Reservations_LinkSaaS_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Reservations_LinkSaaS_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_LinkSaaS.
@@ -805,7 +805,7 @@ public final class ReservationsLinkSaaSSamples {
  */
 public final class ReservationsListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Reservations_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Reservations_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_ListBySubscription.
@@ -827,7 +827,7 @@ public final class ReservationsListSamples {
  */
 public final class ReservationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Reservations_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Reservations_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_ListByResourceGroup.
@@ -857,7 +857,7 @@ import java.util.Map;
  */
 public final class ReservationsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Reservations_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Reservations_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_Update.
@@ -910,7 +910,7 @@ import com.azure.resourcemanager.purestorageblock.models.ActivateSaaSRequest;
  */
 public final class SaaSOperationGroupActivateResourceSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/SaaSOperationGroup_ActivateSaaS_MaximumSet.json
+     * x-ms-original-file: 2026-10-01/SaaSOperationGroup_ActivateSaaS_MaximumSet.json
      */
     /**
      * Sample code: SaaSOperationGroup_ActivateResource.
@@ -937,7 +937,7 @@ import com.azure.resourcemanager.purestorageblock.models.SshPlatformConsoleAuthC
  */
 public final class StoragePoolsConfigurePlatformConsoleAuthSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_ConfigurePlatformConsoleAuth_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_ConfigurePlatformConsoleAuth_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_ConfigurePlatformConsoleAuth.
@@ -972,7 +972,7 @@ import java.util.Map;
  */
 public final class StoragePoolsCreateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_Create.
@@ -1020,7 +1020,7 @@ public final class StoragePoolsCreateSamples {
  */
 public final class StoragePoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_Delete.
@@ -1041,7 +1041,7 @@ public final class StoragePoolsDeleteSamples {
  */
 public final class StoragePoolsDisableAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_DisableAvsConnection_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_DisableAvsConnection_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_DisableAvsConnection.
@@ -1066,7 +1066,7 @@ import com.azure.resourcemanager.purestorageblock.models.StoragePoolEnableAvsCon
  */
 public final class StoragePoolsEnableAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_EnableAvsConnection_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_EnableAvsConnection_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_EnableAvsConnection.
@@ -1094,7 +1094,7 @@ import com.azure.resourcemanager.purestorageblock.models.StoragePoolFinalizeAvsC
  */
 public final class StoragePoolsFinalizeAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_FinalizeAvsConnection_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_FinalizeAvsConnection_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_FinalizeAvsConnection.
@@ -1123,7 +1123,7 @@ public final class StoragePoolsFinalizeAvsConnectionSamples {
  */
 public final class StoragePoolsGetAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_GetAvsConnection_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_GetAvsConnection_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_GetAvsConnection.
@@ -1146,7 +1146,7 @@ public final class StoragePoolsGetAvsConnectionSamples {
  */
 public final class StoragePoolsGetAvsStatusSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_GetAvsStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_GetAvsStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_GetAvsStatus.
@@ -1169,7 +1169,7 @@ public final class StoragePoolsGetAvsStatusSamples {
  */
 public final class StoragePoolsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_Get.
@@ -1191,7 +1191,7 @@ public final class StoragePoolsGetByResourceGroupSamples {
  */
 public final class StoragePoolsGetHealthStatusSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_GetHealthStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_GetHealthStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_GetHealthStatus.
@@ -1214,7 +1214,7 @@ public final class StoragePoolsGetHealthStatusSamples {
  */
 public final class StoragePoolsListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_ListBySubscription.
@@ -1236,7 +1236,7 @@ public final class StoragePoolsListSamples {
  */
 public final class StoragePoolsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_ListByResourceGroup.
@@ -1258,7 +1258,7 @@ public final class StoragePoolsListByResourceGroupSamples {
  */
 public final class StoragePoolsListPlatformConsoleActivationCodeSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_ListPlatformConsoleActivationCode_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_ListPlatformConsoleActivationCode_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_ListPlatformConsoleActivationCode.
@@ -1282,7 +1282,7 @@ public final class StoragePoolsListPlatformConsoleActivationCodeSamples {
  */
 public final class StoragePoolsRepairAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_RepairAvsConnection_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_RepairAvsConnection_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_RepairAvsConnection.
@@ -1312,7 +1312,7 @@ import java.util.Map;
  */
 public final class StoragePoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_Update.
@@ -1355,7 +1355,7 @@ import com.azure.resourcemanager.purestorageblock.models.VolumeGroupSnapshotProp
  */
 public final class VolumeGroupSnapshotsCreateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroupSnapshots_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroupSnapshots_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroupSnapshots_Create.
@@ -1382,7 +1382,7 @@ public final class VolumeGroupSnapshotsCreateSamples {
  */
 public final class VolumeGroupSnapshotsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroupSnapshots_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroupSnapshots_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroupSnapshots_Delete.
@@ -1406,7 +1406,7 @@ public final class VolumeGroupSnapshotsDeleteSamples {
  */
 public final class VolumeGroupSnapshotsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroupSnapshots_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroupSnapshots_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroupSnapshots_Get.
@@ -1430,7 +1430,7 @@ public final class VolumeGroupSnapshotsGetSamples {
  */
 public final class VolumeGroupSnapshotsListByVolumeGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroupSnapshots_ListByVolumeGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroupSnapshots_ListByVolumeGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroupSnapshots_ListByVolumeGroup.
@@ -1456,7 +1456,7 @@ import com.azure.resourcemanager.purestorageblock.models.VolumeGroupSnapshotList
  */
 public final class VolumeGroupSnapshotsListSnapshotsSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroupSnapshots_ListSnapshots_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroupSnapshots_ListSnapshots_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroupSnapshots_ListSnapshots.
@@ -1492,7 +1492,7 @@ import java.util.Map;
  */
 public final class VolumeGroupsCreateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroups_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Create.
@@ -1537,7 +1537,7 @@ public final class VolumeGroupsCreateSamples {
  */
 public final class VolumeGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroups_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Delete.
@@ -1559,7 +1559,7 @@ public final class VolumeGroupsDeleteSamples {
  */
 public final class VolumeGroupsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroups_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Get.
@@ -1581,7 +1581,7 @@ public final class VolumeGroupsGetSamples {
  */
 public final class VolumeGroupsGetStatusSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_GetStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroups_GetStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_GetStatus.
@@ -1605,7 +1605,7 @@ public final class VolumeGroupsGetStatusSamples {
  */
 public final class VolumeGroupsListByStoragePoolSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_ListByStoragePool_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroups_ListByStoragePool_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_ListByStoragePool.
@@ -1627,7 +1627,7 @@ public final class VolumeGroupsListByStoragePoolSamples {
  */
 public final class VolumeGroupsListConnectionParametersSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_ListConnectionParameters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroups_ListConnectionParameters_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_ListConnectionParameters.
@@ -1653,7 +1653,7 @@ import com.azure.resourcemanager.purestorageblock.models.VolumeGroupOverwriteReq
  */
 public final class VolumeGroupsOverwriteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_Overwrite_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroups_Overwrite_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Overwrite.
@@ -1689,7 +1689,7 @@ import java.util.Map;
  */
 public final class VolumeGroupsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroups_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Update.
@@ -1735,7 +1735,7 @@ import com.azure.resourcemanager.purestorageblock.models.VolumeSourceType;
  */
 public final class VolumesCreateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Volumes_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: Volumes_Create.
@@ -1763,7 +1763,7 @@ public final class VolumesCreateSamples {
  */
 public final class VolumesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Volumes_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Volumes_Delete.
@@ -1785,7 +1785,7 @@ public final class VolumesDeleteSamples {
  */
 public final class VolumesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Volumes_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Volumes_Get.
@@ -1808,7 +1808,7 @@ public final class VolumesGetSamples {
  */
 public final class VolumesListByVolumeGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_ListByVolumeGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Volumes_ListByVolumeGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Volumes_ListByVolumeGroup.
@@ -1835,7 +1835,7 @@ import com.azure.resourcemanager.purestorageblock.models.VolumeSourceType;
  */
 public final class VolumesOverwriteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_Overwrite_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Volumes_Overwrite_MaximumSet_Gen.json
      */
     /**
      * Sample code: Volumes_Overwrite.
@@ -1867,7 +1867,7 @@ import com.azure.resourcemanager.purestorageblock.models.VolumeUpdateProperties;
  */
 public final class VolumesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Volumes_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Volumes_Update.

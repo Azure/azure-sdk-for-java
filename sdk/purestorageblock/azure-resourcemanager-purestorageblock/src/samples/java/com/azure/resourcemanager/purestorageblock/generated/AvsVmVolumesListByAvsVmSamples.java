@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class AvsVmVolumesListByAvsVmSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsVmVolumes_ListByAvsVm_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsVmVolumes_ListByAvsVm_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVmVolumes_ListByAvsVm.
