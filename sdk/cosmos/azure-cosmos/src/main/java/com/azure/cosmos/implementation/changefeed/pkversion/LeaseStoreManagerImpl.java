@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.changefeed.LeaseStoreManagerSettings;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLeaseUpdater;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedQueryFilter;
 import com.azure.cosmos.implementation.changefeed.epkversion.ServiceItemLeaseV1;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
@@ -56,6 +57,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     private RequestOptionsFactory requestOptionsFactory;
     private ServiceItemLeaseUpdater leaseUpdater;
     private LeaseStore leaseStore;
+    private String queryFingerprint;
 
     public static LeaseStoreManagerBuilderDefinition builder() {
         return new LeaseStoreManagerImpl();
@@ -106,6 +108,12 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     }
 
     @Override
+    public LeaseStoreManagerBuilderDefinition query(String query) {
+        this.queryFingerprint = ChangeFeedQueryFilter.fingerprint(query);
+        return this;
+    }
+
+    @Override
     public LeaseStoreManager build() {
         checkNotNull(this.settings, "settings can not be null");
         checkNotNull(this.settings.getContainerNamePrefix(), "settings.containerNamePrefix can not be null");
@@ -122,7 +130,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             this.leaseDocumentClient,
             this.settings.getContainerNamePrefix(),
             this.settings.getLeaseCollectionLink(),
-            this.requestOptionsFactory);
+            this.requestOptionsFactory,
+            this.queryFingerprint);
 
         return this;
     }
@@ -130,12 +139,14 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     @Override
     public Flux<Lease> getAllLeases() {
         return this.listDocuments(this.getPartitionLeasePrefix())
+            .doOnNext(lease -> ChangeFeedQueryFilter.validateProperties(this.queryFingerprint, lease.getProperties()))
             .map(documentServiceLease -> documentServiceLease);
     }
 
     @Override
     public Flux<Lease> getTopLeases(int topCount) {
         return this.listDocuments(this.getPartitionLeasePrefix(), topCount)
+            .doOnNext(lease -> ChangeFeedQueryFilter.validateProperties(this.queryFingerprint, lease.getProperties()))
             .map(documentServiceLease -> documentServiceLease);
     }
 
@@ -171,7 +182,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             .withId(leaseDocId)
             .withLeaseToken(leaseToken)
             .withContinuationToken(continuationToken)
-            .withProperties(properties);
+            .withProperties(ChangeFeedQueryFilter.withFingerprint(properties, this.queryFingerprint));
 
         return this.leaseDocumentClient.createItem(
             this.settings.getLeaseCollectionLink(),

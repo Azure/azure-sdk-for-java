@@ -74,6 +74,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
     private volatile String collectionId;
     private PartitionLoadBalancingStrategy loadBalancingStrategy;
     private LeaseStoreManager leaseStoreManager;
+    private final String query;
     private HealthMonitor healthMonitor;
     private volatile PartitionManager partitionManager;
 
@@ -97,6 +98,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
 
         this.hostName = hostName;
         this.changeFeedProcessorOptions = changeFeedProcessorOptions;
+        this.query = changeFeedProcessorOptions.getQuery();
         this.feedContextClient = new ChangeFeedContextClientImpl(feedContainer);
         this.leaseContextClient = new ChangeFeedContextClientImpl(leaseContainer);
         this.scheduler = this.changeFeedProcessorOptions.getScheduler();
@@ -124,6 +126,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
 
         this.hostName = hostName;
         this.changeFeedProcessorOptions = changeFeedProcessorOptions;
+        this.query = changeFeedProcessorOptions.getQuery();
         this.feedContextClient = new ChangeFeedContextClientImpl(feedContainer);
         this.leaseContextClient = new ChangeFeedContextClientImpl(leaseContainer);
         this.scheduler = this.changeFeedProcessorOptions.getScheduler();
@@ -317,6 +320,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                                     .leaseContextClient(this.leaseContextClient)
                                     .requestOptionsFactory(requestOptionsFactory)
                                     .hostName(this.hostName)
+                                    .query(this.query)
                                     .build();
 
                         return Mono.just(this.leaseStoreManager);
@@ -395,6 +399,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 .leaseContextClient(this.leaseContextClient)
                 .requestOptionsFactory(requestOptionsFactory)
                 .hostName(this.hostName)
+                .query(this.query)
                 .build();
 
         if (this.canBootstrapFromPkRangeIdVersionLeaseStore()) {
@@ -432,7 +437,8 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                         this.feedContextClient.getContainerClient(),
                         this.collectionResourceId,
                         this.changeFeedMode,
-                        feedRangeThroughputControlConfigManager),
+                        feedRangeThroughputControlConfigManager,
+                        this.query),
                 this.changeFeedProcessorOptions,
                 this.scheduler,
                 this.getPartitionProcessorItemType()

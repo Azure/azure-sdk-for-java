@@ -94,6 +94,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
     private final ChangeFeedContextClient leaseContextClient;
     private PartitionLoadBalancingStrategy loadBalancingStrategy;
     private LeaseStoreManager leaseStoreManager;
+    private final String query;
     private HealthMonitor healthMonitor;
     private volatile PartitionManager partitionManager;
     private final Scheduler scheduler;
@@ -117,6 +118,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
 
         this.hostName = hostName;
         this.changeFeedProcessorOptions = changeFeedProcessorOptions;
+        this.query = changeFeedProcessorOptions.getQuery();
         this.feedContextClient = new ChangeFeedContextClientImpl(feedContainer);
         this.leaseContextClient = new ChangeFeedContextClientImpl(leaseContainer);
         this.scheduler = this.changeFeedProcessorOptions.getScheduler();
@@ -392,6 +394,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                             .leaseContextClient(this.leaseContextClient)
                             .requestOptionsFactory(requestOptionsFactory)
                             .hostName(this.hostName)
+                            .query(this.query)
                             .build();
 
                     return Mono.just(this.leaseStoreManager);
@@ -441,6 +444,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                 .leaseContextClient(this.leaseContextClient)
                 .requestOptionsFactory(requestOptionsFactory)
                 .hostName(this.hostName)
+                .query(this.query)
                 .build();
 
         Bootstrapper bootstrapper = new BootstrapperImpl(
@@ -462,7 +466,8 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                 leaseStoreManager,
                 this.feedContextClient.getContainerClient(),
                 this.collectionId,
-                feedRangeThroughputControlConfigManager),
+                feedRangeThroughputControlConfigManager,
+                this.query),
             this.changeFeedProcessorOptions,
             this.scheduler
         );

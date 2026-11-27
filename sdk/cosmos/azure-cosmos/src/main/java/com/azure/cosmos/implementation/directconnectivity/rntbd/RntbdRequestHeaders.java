@@ -1118,6 +1118,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
             case ReadFeed:
                 match = headers.get(HttpHeaders.IF_NONE_MATCH);
                 break;
+            case Query:
+                match = headers.containsKey(HttpHeaders.A_IM)
+                    ? headers.get(HttpHeaders.IF_NONE_MATCH) : headers.get(HttpHeaders.IF_MATCH);
+                break;
             default:
                 match = headers.get(HttpHeaders.IF_MATCH);
                 break;

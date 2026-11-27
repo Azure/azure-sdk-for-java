@@ -15,6 +15,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class ProcessorSettings {
     private Integer maxItemCount;
     private Duration feedPollDelay;
+    private String query;
     private final ChangeFeedState startState;
     private final CosmosAsyncContainer collectionSelfLink;
 
@@ -49,6 +50,15 @@ public class ProcessorSettings {
 
     public ChangeFeedState getStartState() {
         return this.startState;
+    }
+
+    public String getQuery() {
+        return this.query;
+    }
+
+    public ProcessorSettings withQuery(String query) {
+        this.query = query;
+        return this;
     }
 
     public CosmosAsyncContainer getCollectionSelfLink() {

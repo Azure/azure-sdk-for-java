@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedQueryFilter;
 import com.azure.cosmos.implementation.changefeed.epkversion.ServiceItemLeaseV1;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
@@ -30,17 +31,28 @@ class LeaseStoreImpl implements LeaseStore {
     private final CosmosAsyncContainer leaseCollectionLink;
     private final RequestOptionsFactory requestOptionsFactory;
     private volatile String lockETag;
+    private final String queryFingerprint;
 
     public LeaseStoreImpl(
             ChangeFeedContextClient client,
             String containerNamePrefix,
             CosmosAsyncContainer leaseCollectionLink,
             RequestOptionsFactory requestOptionsFactory) {
+        this(client, containerNamePrefix, leaseCollectionLink, requestOptionsFactory, null);
+    }
+
+    LeaseStoreImpl(
+            ChangeFeedContextClient client,
+            String containerNamePrefix,
+            CosmosAsyncContainer leaseCollectionLink,
+            RequestOptionsFactory requestOptionsFactory,
+            String queryFingerprint) {
 
         this.client = client;
         this.containerNamePrefix = containerNamePrefix;
         this.leaseCollectionLink = leaseCollectionLink;
         this.requestOptionsFactory = requestOptionsFactory;
+        this.queryFingerprint = queryFingerprint;
     }
 
     @Override
@@ -54,7 +66,14 @@ class LeaseStoreImpl implements LeaseStore {
             ServiceItemLease.fromDocument(doc));
 
         return this.client.readItem(markerDocId, new PartitionKey(markerDocId), requestOptions, InternalObjectNode.class)
-            .flatMap(documentResourceResponse -> Mono.just(BridgeInternal.getProperties(documentResourceResponse) != null))
+            .map(documentResourceResponse -> {
+                InternalObjectNode marker = BridgeInternal.getProperties(documentResourceResponse);
+                if (marker != null) {
+                    ChangeFeedQueryFilter.validate(this.queryFingerprint,
+                        marker.getString(ChangeFeedQueryFilter.PROPERTY_NAME));
+                }
+                return marker != null;
+            })
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosException) {
                     CosmosException e = (CosmosException) throwable;
@@ -73,6 +92,9 @@ class LeaseStoreImpl implements LeaseStore {
         String markerDocId = this.getStoreMarkerName();
         InternalObjectNode containerDocument = new InternalObjectNode();
         containerDocument.setId(markerDocId);
+        if (this.queryFingerprint != null) {
+            containerDocument.set(ChangeFeedQueryFilter.PROPERTY_NAME, this.queryFingerprint);
+        }
 
         return this.client.createItem(
             this.leaseCollectionLink,
@@ -85,11 +107,11 @@ class LeaseStoreImpl implements LeaseStore {
                     CosmosException e = (CosmosException) throwable;
                     if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT) {
                         logger.info("Lease synchronization document was created by a different instance");
-                        return Mono.just(true);
+                        return this.isInitialized();
                     }
                 }
                 logger.error("Unexpected exception thrown", throwable);
-                return Mono.just(false);
+                return Mono.error(throwable);
             });
     }
 

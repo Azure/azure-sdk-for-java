@@ -31,6 +31,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory<JsonNod
     private final LeaseCheckpointer leaseCheckpointer;
     private final CosmosAsyncContainer collectionSelfLink;
     private final String collectionResourceId;
+    private final String query;
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
 
     public PartitionProcessorFactoryImpl(
@@ -40,6 +41,18 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory<JsonNod
         CosmosAsyncContainer collectionSelfLink,
         String collectionResourceId,
         FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager) {
+        this(documentClient, changeFeedProcessorOptions, leaseCheckpointer, collectionSelfLink,
+            collectionResourceId, feedRangeThroughputControlConfigManager, changeFeedProcessorOptions.getQuery());
+    }
+
+    PartitionProcessorFactoryImpl(
+        ChangeFeedContextClient documentClient,
+        ChangeFeedProcessorOptions changeFeedProcessorOptions,
+        LeaseCheckpointer leaseCheckpointer,
+        CosmosAsyncContainer collectionSelfLink,
+        String collectionResourceId,
+        FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager,
+        String query) {
 
         checkNotNull(documentClient, "Argument 'documentClient' can not be null");
         checkNotNull(changeFeedProcessorOptions, "Argument 'changeFeedProcessorOptions' can not be null");
@@ -52,6 +65,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory<JsonNod
         this.leaseCheckpointer = leaseCheckpointer;
         this.collectionSelfLink = collectionSelfLink;
         this.collectionResourceId = collectionResourceId;
+        this.query = query;
         this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
     }
 
@@ -100,7 +114,8 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory<JsonNod
         ProcessorSettings settings =
             new ProcessorSettings(state, this.collectionSelfLink)
                 .withFeedPollDelay(this.changeFeedProcessorOptions.getFeedPollDelay())
-                .withMaxItemCount(this.changeFeedProcessorOptions.getMaxItemCount());
+                .withMaxItemCount(this.changeFeedProcessorOptions.getMaxItemCount())
+                .withQuery(this.query);
 
         PartitionCheckpointer checkpointer = new PartitionCheckpointerImpl(this.leaseCheckpointer, lease);
         return new PartitionProcessorImpl(
