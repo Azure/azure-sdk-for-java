@@ -26,6 +26,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import org.apache.kafka.common.metrics.PluginMetrics;
 import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTaskContext;
@@ -46,6 +47,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
     private final int CONTAINER_THROUGHPUT_FOR_SPLIT = 10100;
@@ -818,6 +820,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
     public static class TestSourceTaskContext implements SourceTaskContext {
         private final Map<String, String> map;
         private final OffsetStorageReader offsetStorageReader;
+        private final PluginMetrics pluginMetrics = mock(PluginMetrics.class);
 
         public TestSourceTaskContext(Map<String, String> map) {
             this.map = map;
@@ -832,6 +835,11 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         @Override
         public OffsetStorageReader offsetStorageReader() {
             return this.offsetStorageReader;
+        }
+
+        @Override
+        public PluginMetrics pluginMetrics() {
+            return this.pluginMetrics;
         }
     }
 }

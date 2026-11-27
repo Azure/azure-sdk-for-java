@@ -6,12 +6,12 @@ The Azure Cosmos DB connectors allow moving data between Azure Cosmos DB and Kaf
 ## Getting started
 ### Include the package
 
-[//]: # ({x-version-update-start;com.azure.kafka-connect:azure-cosmos-kafka-connect;current})
+[//]: # ({x-version-update-start;com.azure.cosmos.kafka:azure-cosmos-kafka-connect;current})
 ```xml
 <dependency>
-  <groupId>com.azure.kafka.connect</groupId>
+  <groupId>com.azure.cosmos.kafka</groupId>
   <artifactId>azure-cosmos-kafka-connect</artifactId>
-  <version>2.0.0-beta.1</version>
+  <version>3.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -20,22 +20,27 @@ Refer to maven central for previous [releases][cosmos_kafka_maven]
 
 ### Prerequisites
 
-- [Java Development Kit (JDK) with version 8 or above][jdk]
+- [Java Development Kit (JDK) 17 or newer][jdk]; Java 21 is recommended. Connector builds and tests cover JDK 17 and 21.
+- Kafka Connect 4.2.2 is the validated worker target for connector 3.x. The local demo and automated worker containers use Confluent Platform 8.2.5 (Kafka 4.2.2).
 - An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator](https://learn.microsoft.com/azure/cosmos-db/local-emulator) for development and testing. As emulator HTTPS certificate is self-signed, you need to import its certificate to java trusted cert store as [explained here](https://learn.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates)
-- (Optional) SLF4J is a logging facade.
-- (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
 - (Optional) [Maven][maven]
 
-SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](https://www.slf4j.org/manual.html) for more information.
+For a Kafka Connect deployment, use the worker's logging implementation; do not install another SLF4J binding in the connector plugin directory. Confluent Platform 8.2 uses Log4j2. See the [SLF4J user manual](https://www.slf4j.org/manual.html) for standalone Java logging information.
+
+Install the shaded connector JAR in an isolated directory on the worker's `plugin.path`; the Maven dependency alone does not install or upgrade a worker. The Kafka `connect-api` dependency is **provided** by the worker; `connect-runtime` and Log4j dependencies are **test** dependencies, not a bundled worker or broker. Upgrading this artifact does not patch a customer's Kafka services.
+
+For existing deployments, read the [2.x-to-3.x migration guide](docs/migration-2-to-3.md) before changing Java, worker images, or plugins. The Maven coordinates, connector classes, configuration keys, and offset/metadata formats remain unchanged.
 
 The SDK provides Reactor Core-based async APIs. You can read more about Reactor Core and [Flux/Mono types here](https://projectreactor.io/docs/core/release/api/)
 
 ## Key concepts
 
-TBD
+- [Source connector quickstart](docs/README_Source.md): publish Cosmos DB change feed data to Kafka.
+- [Sink connector quickstart](docs/README_Sink.md): write Kafka records to Cosmos DB.
+- [Connector configuration reference](docs/configuration-reference.md).
 
 ## Examples
-TBD
+Start the three-service [local Confluent Platform demo](docs/Confluent_Platform_Setup.md), then follow the source and sink REST API quickstarts above. The demo is development-only and is not a production broker migration procedure.
 
 ## Troubleshooting
 
@@ -54,6 +59,8 @@ However, because Azure Cosmos DB is accessed via network calls there are client-
 
 - Quick start of Cosmos DB core java sdk [quickstart][quickstart] - Building a java app to manage Cosmos DB SQL API data
 - [Read more about Azure Cosmos DB Service][cosmos_docs]
+- [Contributor setup and Testcontainers validation](dev/setup.md)
+- [Migrating connector 2.x to 3.x](docs/migration-2-to-3.md)
 
 ## Contributing
 
@@ -74,7 +81,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [cosmos_docs]: https://learn.microsoft.com/azure/cosmos-db/introduction
 [jdk]: https://learn.microsoft.com/java/azure/jdk/
 [maven]: https://maven.apache.org/
-[cosmos_kafka_maven]: https://central.sonatype.com/artifact/com.azure.kafka.connect/azure-cosmos-kafka-connect
+[cosmos_kafka_maven]: https://central.sonatype.com/artifact/com.azure.cosmos.kafka/azure-cosmos-kafka-connect
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

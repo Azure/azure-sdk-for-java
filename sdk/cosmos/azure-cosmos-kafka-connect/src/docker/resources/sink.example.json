@@ -10,7 +10,7 @@
     "key.converter.schemas.enable": "false",
     "azure.cosmos.account.endpoint":"{endpoint}",
     "azure.cosmos.account.key":"{masterKey}",
-    "azure.cosmos.applicationName": "{applicationName}",
+    "azure.cosmos.application.name": "{applicationName}",
     "azure.cosmos.sink.database.name":"{databaseName}",
     "azure.cosmos.sink.containers.topicMap":"{topic}#{container}"
   }

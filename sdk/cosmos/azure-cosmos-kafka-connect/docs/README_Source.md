@@ -6,18 +6,17 @@ The Azure Cosmos DB Source connector provides the capability to read data from t
 
 - [Quickstart](#quickstart)
 - [Source configuration properties](#source-configuration-properties)
-- [Supported Data Types](#supported-data-types)
+- [Migrating from 2.x](migration-2-to-3.md)
 
 ## Quickstart
 
 ### Prerequisites
 
-- It is recommended to start with the Confluent Platform (recommended to use this setup) as this gives you a complete environment to work with.
-    - If you do not wish to use Confluent Platform, then you need to install and configure Zookeper, Apache Kafka, Kafka Connect, yourself. You will also need to install and configure the Cosmos DB connectors manually.
-- Cosmos DB Instance ([setup guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/docs/CosmosDB_Setup.md)
+- Start with the three-service [Confluent Platform 8.2.5 demo](Confluent_Platform_Setup.md), or install a compatible Kafka Connect 4.2.2 worker and configure its Kafka broker access and connector plugins yourself.
+- Cosmos DB instance ([setup guide](CosmosDB_Setup.md)).
 - Bash shell
   - Will not work in Cloud Shell or WSL1
-- Java 11+ ([download](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html))
+- Java 17+; Java 21 is recommended ([download](https://learn.microsoft.com/java/azure/jdk/)).
 - Maven ([download](https://maven.apache.org/download.cgi))
 
 ### Install source connector
@@ -29,23 +28,25 @@ Otherwise, you can use JAR file from latest [Release](https://mvnrepository.com/
 You can also package a new JAR file from the source code.
 
 ```bash
-# clone the azure-cosmos repo if you haven't done so already
+# clone the repository if you haven't done so already
 git clone https://github.com/Azure/azure-sdk-for-java.git
-cd sdk/cosmos
+cd azure-sdk-for-java
+mvn -f sdk/cosmos/azure-cosmos-kafka-connect/pom.xml -Pbuild-kafka clean package -DskipTests=true
 
-mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos,azure-cosmos-tests -am clean install
-mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos-kafka-connect clean install
-
-# include the following JAR file in Kafka Connect installation
-ls target/azure-cosmos-kafka-connect-*.jar
+# install only the shaded connector JAR, not sources, javadoc, or original-* JARs
+ls sdk/cosmos/azure-cosmos-kafka-connect/target/azure-cosmos-kafka-connect-3*.jar
 
 ```
 
 ### Create Kafka topic
 
-Create a Kafka topic using Confluent Control Center. For this quickstart, we will create a Kafka topic named `apparels` and will write JSON data (non-schema embedded) to the topic.
+For this quickstart, create a Kafka topic named `apparels` for JSON data (without an embedded schema). Run from the demo's `src/docker` directory:
 
-To create a topic inside Control Center, see [here](https://docs.confluent.io/platform/current/quickstart/ce-docker-quickstart.html#step-2-create-ak-topics).
+```bash
+docker compose exec -T broker kafka-topics --bootstrap-server broker:29092 --create --if-not-exists --replication-factor 1 --partitions 1 --topic apparels
+```
+
+For another cluster, use its Kafka CLI with `--bootstrap-server` and the appropriate client authentication configuration.
 
 ### Create the source connector
 
@@ -85,16 +86,6 @@ Refer to the [source properties](#source-configuration-properties) section for m
 
 Once you have all the values filled out, save the JSON file somewhere locally. You can use this file to create the connector using the REST API.
 
-#### Create connector using Control Center
-
-An easy option to create the connector is by going through the Control Center webpage.
-
-Follow this [guide](https://docs.confluent.io/platform/current/quickstart/ce-docker-quickstart.html#step-3-install-a-ak-connector-and-generate-sample-data) to create a connector from Control Center but instead of using the `DatagenConnector` option, use the `CosmosSourceConnector` tile instead. When configuring the source connector, fill out the values as you have filled in the JSON file.
-
-Alternatively, in the connectors page, you can upload the JSON file from earlier by using the `Upload connector config file` option.
-
-![Upload connector config](images/upload-connector-config.png "Upload connector config")
-
 #### Create connector using REST API
 
 Create the source connector using the Connect REST API
@@ -102,9 +93,12 @@ Create the source connector using the Connect REST API
 ```bash
 
 # Curl to Kafka connect service
-curl -H "Content-Type: application/json" -X POST -d @<path-to-JSON-config-file> http://localhost:8083/connectors
+curl --fail --silent --show-error -H "Content-Type: application/json" -X POST --data-binary @source.json http://localhost:8083/connectors
+curl --fail --silent --show-error http://localhost:8083/connectors/cosmosdb-source-connector-v2/status
 
 ```
+
+Save the completed JSON body above as `source.json` (protect the account key). Confirm both the connector and its tasks are RUNNING. The `-v2` name is retained for continuity and does not select connector 2.x; for an existing deployment follow the [migration guide](migration-2-to-3.md) rather than creating another connector.
 
 ### Insert document in to Cosmos DB
 
@@ -142,22 +136,22 @@ Use [Cosmos DB setup guide](https://github.com/Azure/azure-sdk-for-java/blob/mai
 
 ### Confirm data written to Kafka Topic
 
-- Open Kafka Topic UI on <http://localhost:9000>
-- Select the Kafka topic `apparels` you created
-- Verify that the document inserted in to Cosmos DB earlier appears in the Kafka topic.
+From the demo's `src/docker` directory, consume the topic and verify that the document inserted into Cosmos DB appears:
+
+```bash
+docker compose exec -T broker kafka-console-consumer --bootstrap-server broker:29092 --topic apparels --from-beginning --timeout-ms 30000
+```
+
+The consumer exits on timeout if no more records arrive. `--from-beginning` here is only a read-only demonstration consumer, not a connector offset reset.
 
 ### Cleanup
 
-To delete the connector from the Control Center, navigate to the source connector you created and click the `Delete` icon.
-
-![Delete connector](images/delete-source-connector.png "Delete connector")
-
-Alternatively, use the Connect REST API.
+Delete only the connector created for this quickstart using the Connect REST API. This is demo cleanup, not an upgrade step.
 
 ```bash
 
 # Curl to Kafka connect service
-curl -X DELETE http://localhost:8083/connectors/cosmosdb-source-connector
+curl --fail --silent --show-error -X DELETE http://localhost:8083/connectors/cosmosdb-source-connector-v2
 
 ```
 

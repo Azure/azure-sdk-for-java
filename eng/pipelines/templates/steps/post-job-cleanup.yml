@@ -21,7 +21,7 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'clean'
-    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
+    condition: and(succeeded(), ne(variables['SkipTestProjects'], 'true'), ne(variables['TestFromSource'], 'true'))
 
   - task: Maven@4
     displayName: 'Clean after tests for From Source run'
@@ -34,7 +34,7 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'clean'
-    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+    condition: and(succeeded(), ne(variables['SkipTestProjects'], 'true'), eq(variables['TestFromSource'], 'true'))
 
   # Clean up .assets folder to reduce scope of what may be scanned. .assets come another repository with scanning and
   # don't need to waste time during scanning.

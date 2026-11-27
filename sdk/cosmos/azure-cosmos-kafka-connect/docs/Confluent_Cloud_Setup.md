@@ -1,14 +1,14 @@
 # Confluent Cloud Setup
 
-This guide walks through setting up Confluent Cloud using Docker containers.
+This guide connects a self-managed Kafka Connect worker to Confluent Cloud. Connector 3.x uses a Java 17+ worker and targets Kafka Connect 4.2.2; Confluent Platform 8.2.5 is the pinned worker distribution. Confluent Cloud manages the brokers independently. For an existing connector, follow the [migration guide](migration-2-to-3.md) without recreating its name or offset state.
 
 ## Prerequisites
 
 - Bash shell
     - Will not work in Cloud Shell or WSL1
-- Java 11+ ([download](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html))
+- Java 17+; Java 21 is recommended ([download](https://learn.microsoft.com/java/azure/jdk/)).
 - Maven ([download](https://maven.apache.org/download.cgi))
-- Docker ([download](https://www.docker.com/products/docker-desktop))
+- An existing Docker daemon with Linux containers for Testcontainers integration tests; a locally installed worker can run without Docker.
 - CosmosDB [Setting up an Azure Cosmos DB Instance](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/docs/CosmosDB_Setup.md)
 
 ## Setup
@@ -49,13 +49,8 @@ Select default which is an environment automatically setup by confluent.
 ![Name and Launch](images/select-name-launch.png)
 
 
-### Create ksqlDB Cluster
-From inside the cluster select ksqlDB. Select add cluster. Select continue, name the cluster, and then select launch.
-
-![ksqlDB](images/select-ksqlDB.png)
-
 ### Update Configurations
-- The cluster key and secret can be found under api keys in the cluster. Choose the one for ksqlDB. Or generate client config using the CLI and Tools. ![CLI and Tools](images/cli-and-tools.png)
+- Create a Kafka cluster API key with the permissions required by the worker and connector. Generate client configuration using CLI and Tools; a separate query-engine cluster is not required. ![CLI and Tools](images/cli-and-tools.png)
 - The `BOOTSTRAP_SERVERS` endpoint can be found in the cluster under cluster settings and end endpoints. Or generate client config using the CLI and Tools. ![CLI and Tools](images/cli-and-tools.png)
 - The schema registry key and secret can be found on the bottom of the right panel inside the confluent environment under credentials.
 - The schema registry url can be found on the bottom of the right panel inside the confluent environment under Endpoint.
@@ -66,7 +61,7 @@ From inside the cluster select ksqlDB. Select add cluster. Select continue, name
 ### Run Integration Tests
 To run the integration tests against a confluent cloud cluster, create ~/kafka-cosmos-local.properties with the following content:
 ```
-ACCOUNT_HOST=[emulator endpoint or you cosmos masterKey]
+ACCOUNT_HOST=[emulator or Cosmos account HTTPS endpoint]
 ACCOUNT_KEY=[emulator masterKey or your cosmos masterKey]
 ACCOUNT_TENANT_ID=[update if AAD auth is required in the integration tests]
 ACCOUNT_AAD_CLIENT_ID=[update if AAD auth is required in the integration tests]
@@ -80,24 +75,23 @@ CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR=3
 CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR=3
 CONNECT_STATUS_STORAGE_REPLICATION_FACTOR=3
 ```
-Integration tests are having ITest suffix. Use following command to run integration tests([create the topic ahead of time](#create-topic-in-confluent-cloud-ui) )
+Integration tests have an ITest suffix and use Failsafe; `mvn test` alone does not run them. From the repository root, use the following command after [creating required topics](#create-topic-in-confluent-cloud-ui). Run on host JDK 17 and 21; the stock 8.2 worker container uses Java 21 in both cases.
 ```bash
-mvn -e -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos-kafka-connect test package -Pkafka-integration
+mvn -f sdk/cosmos/azure-cosmos-kafka-connect/pom.xml -Pbuild-kafka,kafka-integration clean verify
 ```
 
 ### Run a local sink/source workload by using confluent platform locally
-- Following [Install Confluent Platform using ZIP and TAR](https://docs.confluent.io/platform/current/installation/installing_cp/zip-tar.html#prod-kafka-cli-install) to download the library
+- Follow [Install Confluent Platform using ZIP and TAR](https://docs.confluent.io/platform/8.2/installation/installing_cp/zip-tar.html) for Confluent Platform 8.2.5 with Java 17+.
 - Copy src/docker/resources/sink.example.json to the above unzipped confluent folder
 - Copy src/docker/resources/source.example.json to the above unzipped confluent folder
 - Update the sink.example.json and source.example.json with your cosmos endpoint
-- Build the cosmos kafka connector jar
+- From the repository root, build the shaded Cosmos Kafka connector JAR:
 ```bash
-mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos,azure-cosmos-tests -am clean install
-mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos-kafka-connect clean install
+mvn -f sdk/cosmos/azure-cosmos-kafka-connect/pom.xml -Pbuild-kafka clean package -DskipTests=true
 ```
-- Copy the built cosmos kafka connector jar to the plugin path folder (you can find from the etc/distributed.properties plugin.path config)
+- Copy only the shaded `azure-cosmos-kafka-connect-3*.jar` (not sources, javadoc, tests, or `original-*`) from the module's `target` into an isolated worker `plugin.path` directory. Do not leave both 2.x and 3.x JARs installed.
 - ```cd unzipped confluent folder```
-- Update the etc/distributed.properties file with your confluent cloud cluster config
+- Update the etc/distributed.properties file with your Confluent Cloud cluster configuration, including SASL/TLS and converter Schema Registry authentication. For an existing deployment, preserve `group.id`, internal topics, consumer identity, and metadata as described in the migration guide.
 - Run ./bin/connect-distributed ./etc/distributed.properties
 - Start your sink connector or source connector: ```curl -s -H "Content-Type: application/json" -X POST -d @<path-to-JSON-config-file> http://localhost:8083/connectors/ | jq .```
 - Monitor the logs and check any exceptions, and also monitor the throughput and other metrics from your confluent cloud cluster

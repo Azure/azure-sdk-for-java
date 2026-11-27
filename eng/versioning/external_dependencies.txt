@@ -274,17 +274,21 @@ cosmos_org.scalastyle:scalastyle-maven-plugin;1.0.0
 
 ## Cosmos Kafka connector under sdk\cosmos\azure-cosmos-kafka-connect\pom.xml
 # Cosmos Kafka connector runtime dependencies
-cosmos_org.apache.kafka:connect-api;3.6.0
+cosmos_org.apache.kafka:connect-api;4.2.2
+cosmos-kafka_com.fasterxml.jackson.core:jackson-annotations;2.21
+cosmos-kafka_com.fasterxml.jackson.core:jackson-core;2.21.6
+cosmos-kafka_com.fasterxml.jackson.core:jackson-databind;2.21.6
+cosmos-kafka_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.21.6
 cosmos_com.jayway.jsonpath:json-path;2.9.0
 # Cosmos Kafka connector tests only
-cosmos_org.apache.kafka:connect-runtime;3.6.0
+cosmos_org.apache.kafka:connect-runtime;4.2.2
 cosmos_org.testcontainers:testcontainers;1.21.4
 cosmos_org.testcontainers:kafka;1.21.4
 cosmos_org.sourcelab:kafka-connect-client;4.0.4
 cosmos_org.apache.avro:avro;1.11.4
-cosmos_org.apache.logging.log4j:log4j-api;2.25.3
-cosmos_org.apache.logging.log4j:log4j-core;2.25.3
-cosmos_org.apache.logging.log4j:log4j-slf4j-impl;2.25.3
+cosmos_org.apache.logging.log4j:log4j-api;2.25.5
+cosmos_org.apache.logging.log4j:log4j-core;2.25.5
+cosmos_org.apache.logging.log4j:log4j-slf4j-impl;2.25.5
 # Maven Tools for Cosmos Kafka connector only
 
 # sdk\resourcemanager\azure-resourcemanager\pom.xml

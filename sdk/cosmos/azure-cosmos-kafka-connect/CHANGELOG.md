@@ -1,11 +1,13 @@
 ## Release History
 
-### 2.13.0-beta.1 (Unreleased)
+### 3.0.0-beta.1 (Unreleased)
 
 #### Features Added
 * Added `azure.cosmos.source.changeFeed.poll.delay.ms` to space polls after no change-feed changes are found. - See [PR 51149](https://github.com/Azure/azure-sdk-for-java/pull/51149)
 
 #### Breaking Changes
+
+* Requires Java 17 or newer and Kafka Connect 4.2.2 or newer. Integration tests target Confluent Platform 8.2.5. See the [2.x to 3.x migration guide](docs/migration-2-to-3.md).
 
 #### Bugs Fixed
 
@@ -14,6 +16,10 @@
 * Prevented blocked source change-feed polls from retaining task and Cosmos client generations during connector restarts. - See [PR 50560](https://github.com/Azure/azure-sdk-for-java/pull/50560)
 
 #### Other Changes
+
+* Updated Kafka Connect API/runtime to 4.2.2 and test Log4j dependencies to 2.25.5.
+* Aligned shaded Jackson dependencies with the Kafka 4.2.2 runtime's 2.21 line to avoid incompatible serializers in connector tests.
+* Updated integration-test containers and the contributor Docker sample to Confluent Platform 8.2.5 with KRaft.
 
 ### 2.12.0 (2026-09-22)
 

@@ -1,6 +1,12 @@
+param(
+  [string]$JobType = '',
+  [string]$JavaTestVersion = ''
+)
+
 $projectList = @()
 $artifactsList = @()
 $additionalModulesList = @()
+$useOverride = $false
 
 . "${PSScriptRoot}/../../common/scripts/common.ps1"
 
@@ -13,21 +19,14 @@ if ($env:PROJECTLISTOVERRIDE -and $env:PROJECTLISTOVERRIDE -notlike '*ProjectLis
   if ($env:TESTFROMSOURCE -eq 'true') {
     Write-Host "Ignoring ProjectListOverride for FromSource run (TestFromSource=true)"
   } else {
-    $projects = $env:PROJECTLISTOVERRIDE
-    Write-Host "Using ProjectListOverride = $projects"
-    Write-Host "##vso[task.setvariable variable=ProjectList;]$projects"
-    Write-Host "##vso[task.setvariable variable=ArtifactsList;]$projects"
-    Write-Host "##vso[task.setvariable variable=AdditionalModulesList;]"
-
-    $sha256 = new-object -TypeName System.Security.Cryptography.SHA256Managed
-    $utf8 = new-object -TypeName System.Text.UTF8Encoding
-    $projectListSha256 = [Convert]::ToBase64String($sha256.ComputeHash($utf8.GetBytes($projects)))
-    Write-Host "##vso[task.setvariable variable=ProjectListSha256;]$projectListSha256"
-    return
+    $projectList = $env:PROJECTLISTOVERRIDE.Split(',')
+    $artifactsList = $projectList
+    $useOverride = $true
+    Write-Host "Using ProjectListOverride = $env:PROJECTLISTOVERRIDE"
   }
 }
 
-if ($env:ARTIFACTSJSON -and $env:ARTIFACTSJSON -notlike '*ArtifactsJson*') {
+if (-not $useOverride -and $env:ARTIFACTSJSON -and $env:ARTIFACTSJSON -notlike '*ArtifactsJson*') {
   $artifacts = $env:ARTIFACTSJSON | ConvertFrom-Json
   foreach ($artifact in $artifacts) {
     $projectList += "$($artifact.groupId):$($artifact.name)"
@@ -36,7 +35,7 @@ if ($env:ARTIFACTSJSON -and $env:ARTIFACTSJSON -notlike '*ArtifactsJson*') {
 }
 
 # Check if empty or still a literal devops variable reference $(<var name>)
-if ($env:ADDITIONALMODULESJSON -and $env:ADDITIONALMODULESJSON -notlike '*AdditionalModulesJson*') {
+if (-not $useOverride -and $env:ADDITIONALMODULESJSON -and $env:ADDITIONALMODULESJSON -notlike '*AdditionalModulesJson*') {
   $additionalModules = $env:ADDITIONALMODULESJSON | ConvertFrom-Json
   foreach ($artifact in $additionalModules) {
     $projectList += "$($artifact.groupId):$($artifact.name)"
@@ -47,7 +46,7 @@ if ($env:ADDITIONALMODULESJSON -and $env:ADDITIONALMODULESJSON -notlike '*Additi
 # If the project list is empty this is because the Artifacts and AdditionalModules are both empty
 # which means this is running as part of the pullrequest pipeline and the project list needs to
 # be figured out from the packageInfo files.
-if ($projectList.Length -eq 0 -and $ENV:PACKAGEINFODIR) {
+if (-not $useOverride -and $projectList.Length -eq 0 -and $ENV:PACKAGEINFODIR) {
   $packageInfoFiles = @()
   # This is the case where this is being called as part of the set of test matrix runs.
   # The ArtifactPackageNames environment variable will be set if this is being called
@@ -87,9 +86,33 @@ if ($projectList.Length -eq 0 -and $ENV:PACKAGEINFODIR) {
   }
 }
 
+$skipTestProjects = 'false'
+if ($JobType -eq 'test' -and $JavaTestVersion -and $JavaTestVersion -notin @('1.17', '1.21', '17', '21')) {
+  if ($useOverride) {
+    $invalidSelectors = @($projectList | Where-Object { $_.Trim() -notmatch '^[A-Za-z0-9_.-]+:[A-Za-z0-9_.-]+$' })
+    if ($invalidSelectors.Count -gt 0) {
+      throw "Java $JavaTestVersion test selection cannot safely filter Kafka aliases or paths in ProjectListOverride. Use fully qualified groupId:artifactId coordinates instead: $($invalidSelectors -join ',')."
+    }
+    $projectList = @($projectList | ForEach-Object { $_.Trim() })
+    $artifactsList = $projectList
+  }
+  $kafkaProject = 'com.azure.cosmos.kafka:azure-cosmos-kafka-connect'
+  if ($projectList -contains $kafkaProject) {
+    Write-Host "Excluding $kafkaProject from Java $JavaTestVersion tests; Kafka tests support Java 17 and 21 only."
+    $projectList = @($projectList | Where-Object { $_ -ne $kafkaProject })
+    $artifactsList = @($artifactsList | Where-Object { $_ -ne $kafkaProject })
+    $additionalModulesList = @($additionalModulesList | Where-Object { $_ -ne $kafkaProject })
+    if ($projectList.Count -eq 0) {
+      $skipTestProjects = 'true'
+      Write-Host "Skipping tests: no projects remain after excluding Kafka for Java $JavaTestVersion."
+    }
+  }
+}
+Write-Host "##vso[task.setvariable variable=SkipTestProjects;]$skipTestProjects"
+
 $projectList = $projectList | Select-Object -Unique
 $projects = $projectList -join ','
-if (!$projects) {
+if (!$projects -and $skipTestProjects -ne 'true') {
     throw "parameters.Artifacts cannot be empty"
 }
 

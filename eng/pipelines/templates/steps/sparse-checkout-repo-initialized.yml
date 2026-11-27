@@ -7,6 +7,7 @@ steps:
   - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
     - task: PowerShell@2
       displayName: 'Prepare computed sparse checkout paths'
+      condition: and(succeeded(), ne(variables['SkipTestProjects'], 'true'))
       inputs:
         pwsh: true
         filePath: eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1

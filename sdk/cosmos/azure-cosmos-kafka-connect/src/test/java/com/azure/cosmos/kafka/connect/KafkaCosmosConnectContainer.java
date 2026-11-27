@@ -18,7 +18,7 @@ import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.rest.exceptions.InvalidRequestException;
 import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ResourceNotFoundException;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.kafka.ConfluentKafkaContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
@@ -145,10 +145,10 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
         return self();
     }
 
-    public KafkaCosmosConnectContainer withLocalKafkaContainer(final KafkaContainer kafkaContainer) {
+    public KafkaCosmosConnectContainer withLocalKafkaContainer(final ConfluentKafkaContainer kafkaContainer) {
         withNetwork(kafkaContainer.getNetwork());
 
-        withEnv("CONNECT_BOOTSTRAP_SERVERS", kafkaContainer.getNetworkAliases().get(0) + ":9092");
+        withEnv("CONNECT_BOOTSTRAP_SERVERS", "broker:19092");
         this.consumerProperties.put("bootstrap.servers", kafkaContainer.getBootstrapServers());
         this.producerProperties.put("bootstrap.servers", kafkaContainer.getBootstrapServers());
 
