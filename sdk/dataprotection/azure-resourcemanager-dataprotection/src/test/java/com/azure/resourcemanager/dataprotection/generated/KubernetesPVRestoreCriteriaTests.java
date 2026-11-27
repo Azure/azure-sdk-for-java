@@ -12,18 +12,18 @@ public final class KubernetesPVRestoreCriteriaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KubernetesPVRestoreCriteria model = BinaryData.fromString(
-            "{\"objectType\":\"KubernetesPVRestoreCriteria\",\"name\":\"zahmgkbrpyydhibn\",\"storageClassName\":\"qkpikadrgvtqagnb\"}")
+            "{\"objectType\":\"KubernetesPVRestoreCriteria\",\"name\":\"aln\",\"storageClassName\":\"xisxyawjoyaqcsl\"}")
             .toObject(KubernetesPVRestoreCriteria.class);
-        Assertions.assertEquals("zahmgkbrpyydhibn", model.name());
-        Assertions.assertEquals("qkpikadrgvtqagnb", model.storageClassName());
+        Assertions.assertEquals("aln", model.name());
+        Assertions.assertEquals("xisxyawjoyaqcsl", model.storageClassName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         KubernetesPVRestoreCriteria model
-            = new KubernetesPVRestoreCriteria().withName("zahmgkbrpyydhibn").withStorageClassName("qkpikadrgvtqagnb");
+            = new KubernetesPVRestoreCriteria().withName("aln").withStorageClassName("xisxyawjoyaqcsl");
         model = BinaryData.fromObject(model).toObject(KubernetesPVRestoreCriteria.class);
-        Assertions.assertEquals("zahmgkbrpyydhibn", model.name());
-        Assertions.assertEquals("qkpikadrgvtqagnb", model.storageClassName());
+        Assertions.assertEquals("aln", model.name());
+        Assertions.assertEquals("xisxyawjoyaqcsl", model.storageClassName());
     }
 }

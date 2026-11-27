@@ -14,16 +14,16 @@ public final class GenericBackupDatasourceParametersTests {
     public void testDeserialize() throws Exception {
         GenericBackupDatasourceParameters model = BinaryData
             .fromString(
-                "{\"objectType\":\"GenericBackupDatasourceParameters\",\"resourceSelectors\":[\"jeiachboosfl\"]}")
+                "{\"objectType\":\"GenericBackupDatasourceParameters\",\"resourceSelectors\":[\"ocxscpaierhhbcs\"]}")
             .toObject(GenericBackupDatasourceParameters.class);
-        Assertions.assertEquals("jeiachboosfl", model.resourceSelectors().get(0));
+        Assertions.assertEquals("ocxscpaierhhbcs", model.resourceSelectors().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GenericBackupDatasourceParameters model
-            = new GenericBackupDatasourceParameters().withResourceSelectors(Arrays.asList("jeiachboosfl"));
+            = new GenericBackupDatasourceParameters().withResourceSelectors(Arrays.asList("ocxscpaierhhbcs"));
         model = BinaryData.fromObject(model).toObject(GenericBackupDatasourceParameters.class);
-        Assertions.assertEquals("jeiachboosfl", model.resourceSelectors().get(0));
+        Assertions.assertEquals("ocxscpaierhhbcs", model.resourceSelectors().get(0));
     }
 }

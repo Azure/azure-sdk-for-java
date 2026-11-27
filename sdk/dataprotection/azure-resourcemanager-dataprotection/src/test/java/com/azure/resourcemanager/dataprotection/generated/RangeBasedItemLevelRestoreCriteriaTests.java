@@ -12,19 +12,19 @@ public final class RangeBasedItemLevelRestoreCriteriaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RangeBasedItemLevelRestoreCriteria model = BinaryData.fromString(
-            "{\"objectType\":\"RangeBasedItemLevelRestoreCriteria\",\"minMatchingValue\":\"zoqftiyqzrnkcqvy\",\"maxMatchingValue\":\"whzlsicohoq\"}")
+            "{\"objectType\":\"RangeBasedItemLevelRestoreCriteria\",\"minMatchingValue\":\"sgzvahapjyzhpv\",\"maxMatchingValue\":\"zcjrvxdjzlmwlx\"}")
             .toObject(RangeBasedItemLevelRestoreCriteria.class);
-        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.minMatchingValue());
-        Assertions.assertEquals("whzlsicohoq", model.maxMatchingValue());
+        Assertions.assertEquals("sgzvahapjyzhpv", model.minMatchingValue());
+        Assertions.assertEquals("zcjrvxdjzlmwlx", model.maxMatchingValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RangeBasedItemLevelRestoreCriteria model
-            = new RangeBasedItemLevelRestoreCriteria().withMinMatchingValue("zoqftiyqzrnkcqvy")
-                .withMaxMatchingValue("whzlsicohoq");
+            = new RangeBasedItemLevelRestoreCriteria().withMinMatchingValue("sgzvahapjyzhpv")
+                .withMaxMatchingValue("zcjrvxdjzlmwlx");
         model = BinaryData.fromObject(model).toObject(RangeBasedItemLevelRestoreCriteria.class);
-        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.minMatchingValue());
-        Assertions.assertEquals("whzlsicohoq", model.maxMatchingValue());
+        Assertions.assertEquals("sgzvahapjyzhpv", model.minMatchingValue());
+        Assertions.assertEquals("zcjrvxdjzlmwlx", model.maxMatchingValue());
     }
 }

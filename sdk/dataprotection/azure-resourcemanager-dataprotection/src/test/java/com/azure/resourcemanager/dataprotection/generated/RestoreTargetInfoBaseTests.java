@@ -13,18 +13,18 @@ public final class RestoreTargetInfoBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestoreTargetInfoBase model = BinaryData.fromString(
-            "{\"objectType\":\"RestoreTargetInfoBase\",\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"hfmvfaxkffe\"}")
+            "{\"objectType\":\"RestoreTargetInfoBase\",\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"ngmtsavjcb\"}")
             .toObject(RestoreTargetInfoBase.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS, model.recoveryOption());
-        Assertions.assertEquals("hfmvfaxkffe", model.restoreLocation());
+        Assertions.assertEquals("ngmtsavjcb", model.restoreLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RestoreTargetInfoBase model = new RestoreTargetInfoBase().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-            .withRestoreLocation("hfmvfaxkffe");
+            .withRestoreLocation("ngmtsavjcb");
         model = BinaryData.fromObject(model).toObject(RestoreTargetInfoBase.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS, model.recoveryOption());
-        Assertions.assertEquals("hfmvfaxkffe", model.restoreLocation());
+        Assertions.assertEquals("ngmtsavjcb", model.restoreLocation());
     }
 }

@@ -15,23 +15,22 @@ public final class ResourceListSelectionCriteriaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceListSelectionCriteria model = BinaryData.fromString(
-            "{\"objectType\":\"nkymuctqhjfbebrj\",\"resourceIdentifiers\":[\"erfuwuttt\"],\"resourceNameOverrides\":{\"hfnljkyq\":\"jrbirphxepcyv\",\"uujqgidokgjljyo\":\"j\",\"bgsncghkjeszzhb\":\"gvcl\",\"mpvecxgodebfqk\":\"jhtxfvgxbfsmxne\"}}")
+            "{\"objectType\":\"mwmbes\",\"resourceIdentifiers\":[\"nkww\",\"pp\",\"flcxoga\",\"konzmnsik\"],\"resourceNameOverrides\":{\"hvhgureod\":\"qzeqqkdltfzxm\"}}")
             .toObject(ResourceListSelectionCriteria.class);
-        Assertions.assertEquals("nkymuctqhjfbebrj", model.objectType());
-        Assertions.assertEquals("erfuwuttt", model.resourceIdentifiers().get(0));
-        Assertions.assertEquals("jrbirphxepcyv", model.resourceNameOverrides().get("hfnljkyq"));
+        Assertions.assertEquals("mwmbes", model.objectType());
+        Assertions.assertEquals("nkww", model.resourceIdentifiers().get(0));
+        Assertions.assertEquals("qzeqqkdltfzxm", model.resourceNameOverrides().get("hvhgureod"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceListSelectionCriteria model = new ResourceListSelectionCriteria().withObjectType("nkymuctqhjfbebrj")
-            .withResourceIdentifiers(Arrays.asList("erfuwuttt"))
-            .withResourceNameOverrides(mapOf("hfnljkyq", "jrbirphxepcyv", "uujqgidokgjljyo", "j", "bgsncghkjeszzhb",
-                "gvcl", "mpvecxgodebfqk", "jhtxfvgxbfsmxne"));
+        ResourceListSelectionCriteria model = new ResourceListSelectionCriteria().withObjectType("mwmbes")
+            .withResourceIdentifiers(Arrays.asList("nkww", "pp", "flcxoga", "konzmnsik"))
+            .withResourceNameOverrides(mapOf("hvhgureod", "qzeqqkdltfzxm"));
         model = BinaryData.fromObject(model).toObject(ResourceListSelectionCriteria.class);
-        Assertions.assertEquals("nkymuctqhjfbebrj", model.objectType());
-        Assertions.assertEquals("erfuwuttt", model.resourceIdentifiers().get(0));
-        Assertions.assertEquals("jrbirphxepcyv", model.resourceNameOverrides().get("hfnljkyq"));
+        Assertions.assertEquals("mwmbes", model.objectType());
+        Assertions.assertEquals("nkww", model.resourceIdentifiers().get(0));
+        Assertions.assertEquals("qzeqqkdltfzxm", model.resourceNameOverrides().get("hvhgureod"));
     }
 
     // Use "Map.of" if available

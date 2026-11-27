@@ -13,24 +13,24 @@ public final class TargetDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetDetails model = BinaryData.fromString(
-            "{\"filePrefix\":\"melmqkrha\",\"restoreTargetLocationType\":\"Invalid\",\"url\":\"ljuahaquhcdh\",\"targetResourceArmId\":\"ualaexqpvfadmw\"}")
+            "{\"filePrefix\":\"wobdagxtibqdx\",\"restoreTargetLocationType\":\"Invalid\",\"url\":\"wakbogqxndl\",\"targetResourceArmId\":\"gxhuriplbp\"}")
             .toObject(TargetDetails.class);
-        Assertions.assertEquals("melmqkrha", model.filePrefix());
+        Assertions.assertEquals("wobdagxtibqdx", model.filePrefix());
         Assertions.assertEquals(RestoreTargetLocationType.INVALID, model.restoreTargetLocationType());
-        Assertions.assertEquals("ljuahaquhcdh", model.url());
-        Assertions.assertEquals("ualaexqpvfadmw", model.targetResourceArmId());
+        Assertions.assertEquals("wakbogqxndl", model.url());
+        Assertions.assertEquals("gxhuriplbp", model.targetResourceArmId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetDetails model = new TargetDetails().withFilePrefix("melmqkrha")
+        TargetDetails model = new TargetDetails().withFilePrefix("wobdagxtibqdx")
             .withRestoreTargetLocationType(RestoreTargetLocationType.INVALID)
-            .withUrl("ljuahaquhcdh")
-            .withTargetResourceArmId("ualaexqpvfadmw");
+            .withUrl("wakbogqxndl")
+            .withTargetResourceArmId("gxhuriplbp");
         model = BinaryData.fromObject(model).toObject(TargetDetails.class);
-        Assertions.assertEquals("melmqkrha", model.filePrefix());
+        Assertions.assertEquals("wobdagxtibqdx", model.filePrefix());
         Assertions.assertEquals(RestoreTargetLocationType.INVALID, model.restoreTargetLocationType());
-        Assertions.assertEquals("ljuahaquhcdh", model.url());
-        Assertions.assertEquals("ualaexqpvfadmw", model.targetResourceArmId());
+        Assertions.assertEquals("wakbogqxndl", model.url());
+        Assertions.assertEquals("gxhuriplbp", model.targetResourceArmId());
     }
 }

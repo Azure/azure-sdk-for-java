@@ -12,18 +12,18 @@ public final class ResourceGuardOperationDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceGuardOperationDetail model
-            = BinaryData.fromString("{\"vaultCriticalOperation\":\"kyrk\",\"defaultResourceRequest\":\"dg\"}")
+            = BinaryData.fromString("{\"vaultCriticalOperation\":\"fi\",\"defaultResourceRequest\":\"dieuzaofj\"}")
                 .toObject(ResourceGuardOperationDetail.class);
-        Assertions.assertEquals("kyrk", model.vaultCriticalOperation());
-        Assertions.assertEquals("dg", model.defaultResourceRequest());
+        Assertions.assertEquals("fi", model.vaultCriticalOperation());
+        Assertions.assertEquals("dieuzaofj", model.defaultResourceRequest());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceGuardOperationDetail model
-            = new ResourceGuardOperationDetail().withVaultCriticalOperation("kyrk").withDefaultResourceRequest("dg");
+        ResourceGuardOperationDetail model = new ResourceGuardOperationDetail().withVaultCriticalOperation("fi")
+            .withDefaultResourceRequest("dieuzaofj");
         model = BinaryData.fromObject(model).toObject(ResourceGuardOperationDetail.class);
-        Assertions.assertEquals("kyrk", model.vaultCriticalOperation());
-        Assertions.assertEquals("dg", model.defaultResourceRequest());
+        Assertions.assertEquals("fi", model.vaultCriticalOperation());
+        Assertions.assertEquals("dieuzaofj", model.defaultResourceRequest());
     }
 }

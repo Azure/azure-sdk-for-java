@@ -16,21 +16,21 @@ public final class ImmutabilitySettingsTests {
     public void testDeserialize() throws Exception {
         ImmutabilitySettings model = BinaryData
             .fromString(
-                "{\"state\":\"Locked\",\"configuration\":{\"type\":\"TimeBased\",\"durationInDays\":1895244941}}")
+                "{\"state\":\"Locked\",\"configuration\":{\"type\":\"AsPerPolicy\",\"durationInDays\":2128432962}}")
             .toObject(ImmutabilitySettings.class);
         Assertions.assertEquals(ImmutabilityState.LOCKED, model.state());
-        Assertions.assertEquals(ImmutabilityType.TIME_BASED, model.configuration().type());
-        Assertions.assertEquals(1895244941, model.configuration().durationInDays());
+        Assertions.assertEquals(ImmutabilityType.AS_PER_POLICY, model.configuration().type());
+        Assertions.assertEquals(2128432962, model.configuration().durationInDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ImmutabilitySettings model = new ImmutabilitySettings().withState(ImmutabilityState.LOCKED)
-            .withConfiguration(
-                new ImmutabilityConfiguration().withType(ImmutabilityType.TIME_BASED).withDurationInDays(1895244941));
+            .withConfiguration(new ImmutabilityConfiguration().withType(ImmutabilityType.AS_PER_POLICY)
+                .withDurationInDays(2128432962));
         model = BinaryData.fromObject(model).toObject(ImmutabilitySettings.class);
         Assertions.assertEquals(ImmutabilityState.LOCKED, model.state());
-        Assertions.assertEquals(ImmutabilityType.TIME_BASED, model.configuration().type());
-        Assertions.assertEquals(1895244941, model.configuration().durationInDays());
+        Assertions.assertEquals(ImmutabilityType.AS_PER_POLICY, model.configuration().type());
+        Assertions.assertEquals(2128432962, model.configuration().durationInDays());
     }
 }

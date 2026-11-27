@@ -18,30 +18,34 @@ public final class SourceLifeCycleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SourceLifeCycle model = BinaryData.fromString(
-            "{\"deleteAfter\":{\"objectType\":\"DeleteOption\",\"duration\":\"xgfpelolppv\"},\"sourceDataStore\":{\"dataStoreType\":\"OperationalStore\",\"objectType\":\"r\"},\"targetDataStoreCopySettings\":[{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"OperationalStore\",\"objectType\":\"jzraehtwdwrf\"}}]}")
+            "{\"deleteAfter\":{\"objectType\":\"DeleteOption\",\"duration\":\"tfih\"},\"sourceDataStore\":{\"dataStoreType\":\"ArchiveStore\",\"objectType\":\"botzingamvppho\"},\"targetDataStoreCopySettings\":[{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"udphqamvdkfwyn\"}},{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"ArchiveStore\",\"objectType\":\"vtbvkayh\"}}]}")
             .toObject(SourceLifeCycle.class);
-        Assertions.assertEquals("xgfpelolppv", model.deleteAfter().duration());
-        Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE, model.sourceDataStore().dataStoreType());
-        Assertions.assertEquals("r", model.sourceDataStore().objectType());
-        Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE,
+        Assertions.assertEquals("tfih", model.deleteAfter().duration());
+        Assertions.assertEquals(DataStoreTypes.ARCHIVE_STORE, model.sourceDataStore().dataStoreType());
+        Assertions.assertEquals("botzingamvppho", model.sourceDataStore().objectType());
+        Assertions.assertEquals(DataStoreTypes.VAULT_STORE,
             model.targetDataStoreCopySettings().get(0).dataStore().dataStoreType());
-        Assertions.assertEquals("jzraehtwdwrf", model.targetDataStoreCopySettings().get(0).dataStore().objectType());
+        Assertions.assertEquals("udphqamvdkfwyn", model.targetDataStoreCopySettings().get(0).dataStore().objectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SourceLifeCycle model = new SourceLifeCycle().withDeleteAfter(new DeleteOption().withDuration("xgfpelolppv"))
-            .withSourceDataStore(
-                new DataStoreInfoBase().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE).withObjectType("r"))
-            .withTargetDataStoreCopySettings(Arrays.asList(new TargetCopySetting().withCopyAfter(new CopyOption())
-                .withDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE)
-                    .withObjectType("jzraehtwdwrf"))));
+        SourceLifeCycle model = new SourceLifeCycle().withDeleteAfter(new DeleteOption().withDuration("tfih"))
+            .withSourceDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.ARCHIVE_STORE)
+                .withObjectType("botzingamvppho"))
+            .withTargetDataStoreCopySettings(Arrays.asList(
+                new TargetCopySetting().withCopyAfter(new CopyOption())
+                    .withDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE)
+                        .withObjectType("udphqamvdkfwyn")),
+                new TargetCopySetting().withCopyAfter(new CopyOption())
+                    .withDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.ARCHIVE_STORE)
+                        .withObjectType("vtbvkayh"))));
         model = BinaryData.fromObject(model).toObject(SourceLifeCycle.class);
-        Assertions.assertEquals("xgfpelolppv", model.deleteAfter().duration());
-        Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE, model.sourceDataStore().dataStoreType());
-        Assertions.assertEquals("r", model.sourceDataStore().objectType());
-        Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE,
+        Assertions.assertEquals("tfih", model.deleteAfter().duration());
+        Assertions.assertEquals(DataStoreTypes.ARCHIVE_STORE, model.sourceDataStore().dataStoreType());
+        Assertions.assertEquals("botzingamvppho", model.sourceDataStore().objectType());
+        Assertions.assertEquals(DataStoreTypes.VAULT_STORE,
             model.targetDataStoreCopySettings().get(0).dataStore().dataStoreType());
-        Assertions.assertEquals("jzraehtwdwrf", model.targetDataStoreCopySettings().get(0).dataStore().objectType());
+        Assertions.assertEquals("udphqamvdkfwyn", model.targetDataStoreCopySettings().get(0).dataStore().objectType());
     }
 }

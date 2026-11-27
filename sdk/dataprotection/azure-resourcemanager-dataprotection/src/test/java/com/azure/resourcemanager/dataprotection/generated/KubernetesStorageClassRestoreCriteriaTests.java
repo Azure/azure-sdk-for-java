@@ -12,19 +12,19 @@ public final class KubernetesStorageClassRestoreCriteriaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KubernetesStorageClassRestoreCriteria model = BinaryData.fromString(
-            "{\"objectType\":\"KubernetesStorageClassRestoreCriteria\",\"selectedStorageClassName\":\"bmpukgriwflz\",\"provisioner\":\"bxzpuzycisp\"}")
+            "{\"objectType\":\"KubernetesStorageClassRestoreCriteria\",\"selectedStorageClassName\":\"ekqvkeln\",\"provisioner\":\"vbxwyjsflhh\"}")
             .toObject(KubernetesStorageClassRestoreCriteria.class);
-        Assertions.assertEquals("bmpukgriwflz", model.selectedStorageClassName());
-        Assertions.assertEquals("bxzpuzycisp", model.provisioner());
+        Assertions.assertEquals("ekqvkeln", model.selectedStorageClassName());
+        Assertions.assertEquals("vbxwyjsflhh", model.provisioner());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         KubernetesStorageClassRestoreCriteria model
-            = new KubernetesStorageClassRestoreCriteria().withSelectedStorageClassName("bmpukgriwflz")
-                .withProvisioner("bxzpuzycisp");
+            = new KubernetesStorageClassRestoreCriteria().withSelectedStorageClassName("ekqvkeln")
+                .withProvisioner("vbxwyjsflhh");
         model = BinaryData.fromObject(model).toObject(KubernetesStorageClassRestoreCriteria.class);
-        Assertions.assertEquals("bmpukgriwflz", model.selectedStorageClassName());
-        Assertions.assertEquals("bxzpuzycisp", model.provisioner());
+        Assertions.assertEquals("ekqvkeln", model.selectedStorageClassName());
+        Assertions.assertEquals("vbxwyjsflhh", model.provisioner());
     }
 }

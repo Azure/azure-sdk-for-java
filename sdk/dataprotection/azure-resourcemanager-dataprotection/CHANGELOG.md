@@ -1,14 +1,30 @@
 # Release History
 
-## 1.7.0-beta.2 (Unreleased)
+## 1.7.0 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
+* Stable release for API version `2026-07-01`.
 
-### Bugs Fixed
+* `models.ImmutabilityConfiguration` was added
 
-### Other Changes
+* `models.PostgreSqlFlexibleServerBackupDatasourceParameters` was added
+
+* `models.ImmutabilityType` was added
+
+* `models.BackupSolutionType` was added
+
+* `models.RecoveryPointImmutabilityProperties` was added
+
+#### `models.ImmutabilitySettings` was modified
+
+* `configuration()` was added
+* `withConfiguration(models.ImmutabilityConfiguration)` was added
+
+#### `models.AzureBackupDiscreteRecoveryPoint` was modified
+
+* `immutabilityProperties()` was added
+
 
 ## 1.7.0-beta.1 (2026-09-28)
 
@@ -2249,4 +2265,3 @@
 ## 1.0.0-beta.1 (2021-11-10)
 
 - Azure Resource Manager DataProtection client library for Java. This package contains Microsoft Azure SDK for DataProtection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package tag package-2021-07. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
-

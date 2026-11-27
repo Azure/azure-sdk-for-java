@@ -13,25 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class BlobBackupAutoProtectionRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BlobBackupAutoProtectionRule model = BinaryData.fromString(
-            "{\"objectType\":\"kfthwxmntei\",\"mode\":\"Exclude\",\"type\":\"Prefix\",\"pattern\":\"pvkmijcmmxdcuf\"}")
+        BlobBackupAutoProtectionRule model = BinaryData
+            .fromString("{\"objectType\":\"jctbza\",\"mode\":\"Exclude\",\"type\":\"Prefix\",\"pattern\":\"sycbkbfk\"}")
             .toObject(BlobBackupAutoProtectionRule.class);
-        Assertions.assertEquals("kfthwxmntei", model.objectType());
+        Assertions.assertEquals("jctbza", model.objectType());
         Assertions.assertEquals(BlobBackupRuleMode.EXCLUDE, model.mode());
         Assertions.assertEquals(BlobBackupPatternType.PREFIX, model.type());
-        Assertions.assertEquals("pvkmijcmmxdcuf", model.pattern());
+        Assertions.assertEquals("sycbkbfk", model.pattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BlobBackupAutoProtectionRule model = new BlobBackupAutoProtectionRule().withObjectType("kfthwxmntei")
+        BlobBackupAutoProtectionRule model = new BlobBackupAutoProtectionRule().withObjectType("jctbza")
             .withMode(BlobBackupRuleMode.EXCLUDE)
             .withType(BlobBackupPatternType.PREFIX)
-            .withPattern("pvkmijcmmxdcuf");
+            .withPattern("sycbkbfk");
         model = BinaryData.fromObject(model).toObject(BlobBackupAutoProtectionRule.class);
-        Assertions.assertEquals("kfthwxmntei", model.objectType());
+        Assertions.assertEquals("jctbza", model.objectType());
         Assertions.assertEquals(BlobBackupRuleMode.EXCLUDE, model.mode());
         Assertions.assertEquals(BlobBackupPatternType.PREFIX, model.type());
-        Assertions.assertEquals("pvkmijcmmxdcuf", model.pattern());
+        Assertions.assertEquals("sycbkbfk", model.pattern());
     }
 }
