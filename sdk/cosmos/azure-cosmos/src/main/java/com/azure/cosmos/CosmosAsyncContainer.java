@@ -2207,6 +2207,9 @@ public class CosmosAsyncContainer {
     }
 
     private String getItemLink(String itemId) {
+        checkArgument(StringUtils.isNotEmpty(itemId), "Item id must not be null or empty.");
+        checkArgument(itemId.indexOf('/') == -1 && itemId.indexOf('\\') == -1,
+            "Item id must not contain a slash or backslash.");
         String builder = this.getLink()
             + "/"
             + Paths.DOCUMENTS_PATH_SEGMENT
@@ -2657,12 +2660,13 @@ public class CosmosAsyncContainer {
         String itemId,
         CosmosItemRequestOptions options, Class<T> itemType,
         Context context) {
+        String itemLink = getItemLink(itemId);
         RequestOptions requestOptions =
             itemOptionsAccessor().toRequestOptions(options);
         requestOptions.setEffectiveItemSerializer(database.getClient().getEffectiveItemSerializer(requestOptions.getEffectiveItemSerializer()));
         applyPolicies(OperationType.Read, ResourceType.Document, requestOptions, this.readItemSpanName);
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase().getDocClientWrapper()
-            .readDocument(getItemLink(itemId), itemId, requestOptions)
+            .readDocument(itemLink, itemId, requestOptions)
             .map(response -> itemResponseAccessor().createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer()))
             .single();
         CosmosAsyncClient client = database

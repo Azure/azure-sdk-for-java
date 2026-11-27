@@ -645,27 +645,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
             new TestScenarioExpectations(
                 ConnectionMode.GATEWAY.toString(),
                 HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
+                -1, // Rejected by point item ID validation.
+                -1,
+                -1,
                 HttpConstants.StatusCodes.OK,
                 -1,
                 HttpConstants.StatusCodes.UNAUTHORIZED),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
+                -1, // Rejected by point item ID validation.
+                -1,
+                -1,
                 HttpConstants.StatusCodes.OK,
                 -1,
                 HttpConstants.StatusCodes.UNAUTHORIZED),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
+                -1, // Rejected by point item ID validation.
+                -1,
+                -1,
                 HttpConstants.StatusCodes.OK,
                 -1,
                 HttpConstants.StatusCodes.UNAUTHORIZED));
