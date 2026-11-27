@@ -3,12 +3,17 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 public class CosmosItemIdValidationTest {
     @DataProvider
@@ -22,9 +27,50 @@ public class CosmosItemIdValidationTest {
 
     @Test(groups = "unit", dataProvider = "invalidItemIds")
     public void readItemRejectsInvalidId(String itemId, String expectedMessage) {
-        CosmosAsyncContainer container = new CosmosAsyncContainer("container", mock(CosmosAsyncDatabase.class));
+        CosmosAsyncDatabase database = mock(CosmosAsyncDatabase.class);
+        CosmosAsyncContainer container = new CosmosAsyncContainer("container", database);
+        PartitionKey partitionKey = new PartitionKey("partition");
 
-        StepVerifier.create(container.readItem(itemId, new PartitionKey("partition"), Object.class))
+        assertInvalidId(container.readItem(itemId, partitionKey, Object.class), expectedMessage);
+        verify(database, never()).getDocClientWrapper();
+    }
+
+    @Test(groups = "unit", dataProvider = "invalidItemIds")
+    public void deleteItemRejectsInvalidId(String itemId, String expectedMessage) {
+        CosmosAsyncDatabase database = mock(CosmosAsyncDatabase.class);
+        CosmosAsyncContainer container = new CosmosAsyncContainer("container", database);
+        PartitionKey partitionKey = new PartitionKey("partition");
+
+        assertInvalidId(container.deleteItem(itemId, partitionKey), expectedMessage);
+        verify(database, never()).getDocClientWrapper();
+    }
+
+    @Test(groups = "unit", dataProvider = "invalidItemIds")
+    public void replaceItemRejectsInvalidId(String itemId, String expectedMessage) {
+        CosmosAsyncDatabase database = mock(CosmosAsyncDatabase.class);
+        CosmosAsyncContainer container = new CosmosAsyncContainer("container", database);
+        PartitionKey partitionKey = new PartitionKey("partition");
+
+        assertInvalidId(
+            container.replaceItem(JsonNodeFactory.instance.objectNode().put("id", itemId), itemId, partitionKey),
+            expectedMessage);
+        verify(database, never()).getDocClientWrapper();
+    }
+
+    @Test(groups = "unit", dataProvider = "invalidItemIds")
+    public void patchItemRejectsInvalidId(String itemId, String expectedMessage) {
+        CosmosAsyncDatabase database = mock(CosmosAsyncDatabase.class);
+        CosmosAsyncContainer container = new CosmosAsyncContainer("container", database);
+        PartitionKey partitionKey = new PartitionKey("partition");
+
+        assertInvalidId(
+            container.patchItem(itemId, partitionKey, CosmosPatchOperations.create().set("/name", "value"), Object.class),
+            expectedMessage);
+        verify(database, never()).getDocClientWrapper();
+    }
+
+    private static void assertInvalidId(Mono<?> operation, String expectedMessage) {
+        StepVerifier.create(operation)
             .expectErrorMatches(error -> error instanceof IllegalArgumentException
                 && expectedMessage.equals(error.getMessage()))
             .verify();
