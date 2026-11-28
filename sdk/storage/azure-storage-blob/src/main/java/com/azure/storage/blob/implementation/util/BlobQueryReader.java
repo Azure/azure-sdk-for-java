@@ -4,10 +4,11 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.models.ArrowConfiguration;
-import com.azure.storage.blob.implementation.models.ArrowField;
+import com.azure.storage.blob.implementation.models.ArrowTextConfigurationInternal;
+import com.azure.storage.blob.implementation.models.ArrowFieldInternal;
 import com.azure.storage.blob.implementation.models.DelimitedTextConfiguration;
-import com.azure.storage.blob.implementation.models.JsonTextConfiguration;
+import com.azure.storage.blob.implementation.models.JsonTextConfigurationInternal;
+import com.azure.storage.blob.implementation.models.ParquetTextConfiguration;
 import com.azure.storage.blob.implementation.models.QueryFormat;
 import com.azure.storage.blob.implementation.models.QueryFormatType;
 import com.azure.storage.blob.implementation.models.QuerySerialization;
@@ -223,22 +224,20 @@ public class BlobQueryReader {
             return null;
         }
 
-        QueryFormat generatedFormat = new QueryFormat();
+        QueryFormat generatedFormat;
         if (userSerialization instanceof BlobQueryDelimitedSerialization) {
 
-            generatedFormat.setType(QueryFormatType.DELIMITED);
-            generatedFormat
+            generatedFormat = new QueryFormat(QueryFormatType.DELIMITED)
                 .setDelimitedTextConfiguration(transformDelimited((BlobQueryDelimitedSerialization) userSerialization));
 
         } else if (userSerialization instanceof BlobQueryJsonSerialization) {
 
-            generatedFormat.setType(QueryFormatType.JSON);
-            generatedFormat.setJsonTextConfiguration(transformJson((BlobQueryJsonSerialization) userSerialization));
+            generatedFormat = new QueryFormat(QueryFormatType.JSON)
+                .setJsonTextConfiguration(transformJson((BlobQueryJsonSerialization) userSerialization));
 
         } else if (userSerialization instanceof BlobQueryParquetSerialization) {
 
-            generatedFormat.setType(QueryFormatType.PARQUET);
-            generatedFormat
+            generatedFormat = new QueryFormat(QueryFormatType.PARQUET)
                 .setParquetTextConfiguration(transformParquet((BlobQueryParquetSerialization) userSerialization));
 
         } else {
@@ -246,7 +245,7 @@ public class BlobQueryReader {
                 new IllegalArgumentException("Please see values of valid input serialization in the documentation "
                     + "(https://docs.microsoft.com/rest/api/storageservices/query-blob-contents#request-body)."));
         }
-        return new QuerySerialization().setFormat(generatedFormat);
+        return new QuerySerialization(generatedFormat);
     }
 
     /**
@@ -261,29 +260,28 @@ public class BlobQueryReader {
             return null;
         }
 
-        QueryFormat generatedFormat = new QueryFormat();
+        QueryFormat generatedFormat;
         if (userSerialization instanceof BlobQueryDelimitedSerialization) {
 
-            generatedFormat.setType(QueryFormatType.DELIMITED);
-            generatedFormat
+            generatedFormat = new QueryFormat(QueryFormatType.DELIMITED)
                 .setDelimitedTextConfiguration(transformDelimited((BlobQueryDelimitedSerialization) userSerialization));
 
         } else if (userSerialization instanceof BlobQueryJsonSerialization) {
 
-            generatedFormat.setType(QueryFormatType.JSON);
-            generatedFormat.setJsonTextConfiguration(transformJson((BlobQueryJsonSerialization) userSerialization));
+            generatedFormat = new QueryFormat(QueryFormatType.JSON)
+                .setJsonTextConfiguration(transformJson((BlobQueryJsonSerialization) userSerialization));
 
         } else if (userSerialization instanceof BlobQueryArrowSerialization) {
 
-            generatedFormat.setType(QueryFormatType.ARROW);
-            generatedFormat.setArrowConfiguration(transformArrow((BlobQueryArrowSerialization) userSerialization));
+            generatedFormat = new QueryFormat(QueryFormatType.ARROW)
+                .setArrowConfiguration(transformArrow((BlobQueryArrowSerialization) userSerialization));
 
         } else {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Please see values of valid output serialization in the documentation "
                     + "(https://docs.microsoft.com/rest/api/storageservices/query-blob-contents#request-body)."));
         }
-        return new QuerySerialization().setFormat(generatedFormat);
+        return new QuerySerialization(generatedFormat);
     }
 
     /**
@@ -306,58 +304,57 @@ public class BlobQueryReader {
     }
 
     /**
-     * Transforms a BlobQueryJsonSerialization into a JsonTextConfiguration.
+     * Transforms a BlobQueryJsonSerialization into a JsonTextConfigurationInternal.
      *
      * @param jsonSerialization {@link BlobQueryJsonSerialization}
-     * @return {@link JsonTextConfiguration}
+     * @return {@link JsonTextConfigurationInternal}
      */
-    private static JsonTextConfiguration transformJson(BlobQueryJsonSerialization jsonSerialization) {
+    private static JsonTextConfigurationInternal transformJson(BlobQueryJsonSerialization jsonSerialization) {
         if (jsonSerialization == null) {
             return null;
         }
-        return new JsonTextConfiguration().setRecordSeparator(charToString(jsonSerialization.getRecordSeparator()));
+        return new JsonTextConfigurationInternal()
+            .setRecordSeparator(charToString(jsonSerialization.getRecordSeparator()));
     }
 
     /**
-     * Transforms a BlobQueryParquetSerialization into an Object.
+     * Transforms a BlobQueryParquetSerialization into a ParquetTextConfiguration. Parquet serialization has no
+     * configurable properties, so this is always an empty configuration.
      *
      * @param parquetSerialization {@link BlobQueryParquetSerialization}
-     * @return {@link JsonTextConfiguration}
+     * @return {@link ParquetTextConfiguration}
      */
-    private static Object transformParquet(BlobQueryParquetSerialization parquetSerialization) {
-        /* This method returns an Object since the ParquetConfiguration currently accepts no options. This results in
-        the generator generating ParquetConfiguration as an Object. */
+    private static ParquetTextConfiguration transformParquet(BlobQueryParquetSerialization parquetSerialization) {
         if (parquetSerialization == null) {
             return null;
         }
-        return new Object();
+        return new ParquetTextConfiguration();
     }
 
     /**
-     * Transforms a BlobQueryArrowSerialization into a ArrowConfiguration.
+     * Transforms a BlobQueryArrowSerialization into a ArrowTextConfigurationInternal.
      *
      * @param arrowSerialization {@link BlobQueryArrowSerialization}
-     * @return {@link ArrowConfiguration}
+     * @return {@link ArrowTextConfigurationInternal}
      */
-    private static ArrowConfiguration transformArrow(BlobQueryArrowSerialization arrowSerialization) {
+    private static ArrowTextConfigurationInternal transformArrow(BlobQueryArrowSerialization arrowSerialization) {
         if (arrowSerialization == null) {
             return null;
         }
-        List<ArrowField> schema
+        List<ArrowFieldInternal> schema
             = arrowSerialization.getSchema() == null ? null : new ArrayList<>(arrowSerialization.getSchema().size());
         if (schema != null) {
             for (BlobQueryArrowField field : arrowSerialization.getSchema()) {
                 if (field == null) {
                     schema.add(null);
                 } else {
-                    schema.add(new ArrowField().setName(field.getName())
+                    schema.add(new ArrowFieldInternal(field.getType().toString()).setName(field.getName())
                         .setPrecision(field.getPrecision())
-                        .setScale(field.getScale())
-                        .setType(field.getType().toString()));
+                        .setScale(field.getScale()));
                 }
             }
         }
-        return new ArrowConfiguration().setSchema(schema);
+        return new ArrowTextConfigurationInternal(schema);
     }
 
     private static String charToString(char c) {

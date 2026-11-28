@@ -5,6 +5,10 @@
 ### Features Added
 
 ### Breaking Changes
+- When no root element name is passed, `toXml`/`fromXml` on `BlobAccessPolicy`, `BlobAnalyticsLogging`,
+  `BlobContainerItemProperties`, `BlobMetrics` and `BlobRetentionPolicy` now default to the service's element names
+  (`AccessPolicy`, `Logging`, `ContainerProperties`, `Metrics` and `RetentionPolicy`) instead of the class names.
+  Requests and responses sent through the clients are unaffected.
 
 ### Bugs Fixed
 - Fixed `createIfNotExists` on `BlobContainerClient` and `BlobContainerAsyncClient`, and
@@ -17,6 +21,8 @@
   blob of a different type already exists. 
 
 ### Other Changes
+- Migrated code generation from AutoRest (Swagger) to TypeSpec. The public API is unchanged apart from the items listed
+  in this release.
 
 ## 12.38.0-beta.1 (2026-11-05)
 

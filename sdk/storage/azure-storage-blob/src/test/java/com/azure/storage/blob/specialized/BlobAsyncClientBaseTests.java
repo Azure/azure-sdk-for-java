@@ -314,6 +314,16 @@ class BlobAsyncClientBaseLayoutPaginationTests {
     }
 
     @Test
+    public void getLayoutEmptyBlobNoContentReturnsNoRanges() {
+        // An empty blob answers Get Blob Layout with 204 and no body.
+        HttpClient httpClient = request -> Mono.just(new MockHttpResponse(request, 204,
+            new HttpHeaders().set(HttpHeaderName.ETAG, FIRST_PAGE_ETAG), new byte[0]));
+        BlobAsyncClientBase client = client(httpClient);
+
+        StepVerifier.create(client.getLayout(null).count()).expectNext(0L).verifyComplete();
+    }
+
+    @Test
     public void getLayoutContinuationUsesFirstPageETag() {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
         BlobAsyncClientBase client = client(httpClient);

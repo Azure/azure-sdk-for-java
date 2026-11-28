@@ -7,18 +7,15 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.models.BlobLayoutEndpoints;
-import com.azure.storage.blob.implementation.models.BlobLayoutEndpointsEndpointItem;
+import com.azure.xml.XmlReader;
 import com.azure.storage.blob.implementation.models.BlobLayoutInternal;
-import com.azure.storage.blob.implementation.models.BlobLayoutRanges;
-import com.azure.storage.blob.implementation.models.BlobLayoutRangesRangeItem;
 import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.policy.DataLocalityPolicy;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+import javax.xml.stream.XMLStreamException;
 import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -69,16 +66,17 @@ public class ModelHelperTests {
     }
 
     @Test
-    public void transformBlobLayoutRangesConvertsEndpointValuesToUris() {
-        BlobLayoutInternal layout = new BlobLayoutInternal()
-            .setRanges(new BlobLayoutRanges()
-                .setRange(Arrays.asList(new BlobLayoutRangesRangeItem().setStart(0).setEnd(99).setEndpointIndex(0),
-                    new BlobLayoutRangesRangeItem().setStart(100).setEnd(199).setEndpointIndex(1),
-                    new BlobLayoutRangesRangeItem().setStart(200).setEnd(299).setEndpointIndex(2))))
-            .setEndpoints(new BlobLayoutEndpoints()
-                .setEndpoint(Arrays.asList(new BlobLayoutEndpointsEndpointItem().setIndex(0).setValue("host-a:443"),
-                    new BlobLayoutEndpointsEndpointItem().setIndex(1).setValue("https://host-b:443"),
-                    new BlobLayoutEndpointsEndpointItem().setIndex(2).setValue("invalid endpoint"))));
+    public void transformBlobLayoutRangesConvertsEndpointValuesToUris() throws XMLStreamException {
+        // The layout models are response-only, so build one the way the service sends it.
+        String xml = "<BlobLayout><Ranges>" + "<Range Start=\"0\" End=\"99\" EndpointIndex=\"0\"/>"
+            + "<Range Start=\"100\" End=\"199\" EndpointIndex=\"1\"/>"
+            + "<Range Start=\"200\" End=\"299\" EndpointIndex=\"2\"/></Ranges><Endpoints>"
+            + "<Endpoint Index=\"0\" Value=\"host-a:443\"/>" + "<Endpoint Index=\"1\" Value=\"https://host-b:443\"/>"
+            + "<Endpoint Index=\"2\" Value=\"invalid endpoint\"/></Endpoints></BlobLayout>";
+        BlobLayoutInternal layout;
+        try (XmlReader reader = XmlReader.fromString(xml)) {
+            layout = BlobLayoutInternal.fromXml(reader);
+        }
 
         List<BlobLayoutRange> ranges = ModelHelper.transformBlobLayoutRanges(layout);
 

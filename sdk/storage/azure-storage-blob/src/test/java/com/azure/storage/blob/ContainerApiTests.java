@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.implementation.util.RequestOptionsHelper;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
@@ -80,12 +81,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
-import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
+import com.azure.storage.blob.implementation.BlobContainerClientInternal;
 import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
-import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
-import com.azure.core.http.rest.ResponseBase;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -2432,22 +2430,21 @@ public class ContainerApiTests extends BlobTestBase {
             .getBlockBlobClient()
             .uploadWithResponse(DATA.getDefaultInputStream(), 7, null, metadata, null, null, null, null, null);
 
-        AzureBlobStorageImpl impl = new AzureBlobStorageImplBuilder().pipeline(cc.getHttpPipeline())
-            .url(cc.getAccountUrl())
-            .version(BlobServiceVersion.getLatest().getVersion())
-            .buildClient();
+        AzureBlobStorageImpl impl
+            = new AzureBlobStorageImpl(cc.getHttpPipeline(), cc.getAccountUrl(), BlobServiceVersion.getLatest());
 
         // Call the Arrow endpoint
         ArrayList<ListBlobsIncludeItem> include = new ArrayList<>();
         include.add(ListBlobsIncludeItem.METADATA);
 
-        ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream> response = impl.getContainers()
-            .listBlobFlatSegmentApacheArrowWithResponse(containerName, null, null, null, include, null, null, null,
-                null, com.azure.core.util.Context.NONE);
+        Response<BinaryData> response
+            = new BlobContainerClientInternal(impl.getContainers()).listBlobFlatSegmentApacheArrowWithResponse(null,
+                null, null, include, null, null, null, RequestOptionsHelper
+                    .containerRequestOptions(com.azure.core.util.Context.NONE, impl.getUrl(), containerName));
 
         ArrowBlobListDeserializer.ArrowListBlobsResult result;
-        try (InputStream body = response.getValue()) {
-            String contentType = response.getDeserializedHeaders().getContentType();
+        try (InputStream body = response.getValue().toStream()) {
+            String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
             assertTrue(
                 StorageImplUtils.hasMatchingHeaderValue(contentType,
                     Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),
@@ -2464,11 +2461,10 @@ public class ContainerApiTests extends BlobTestBase {
         // Verify we got exactly one blob
         assertEquals(1, result.getBlobItems().size());
 
-        com.azure.storage.blob.implementation.models.BlobItemInternal item = result.getBlobItems().get(0);
+        BlobItem item = result.getBlobItems().get(0);
 
         // Name
-        assertNotNull(item.getName());
-        assertEquals(blobName, item.getName().getContent());
+        assertEquals(blobName, item.getName());
 
         // Properties
         assertNotNull(item.getProperties());
@@ -2488,11 +2484,6 @@ public class ContainerApiTests extends BlobTestBase {
         // Metadata
         assertNotNull(item.getMetadata());
         assertEquals("testvalue", item.getMetadata().get("testkey"));
-
-        // Verify ModelHelper can convert to public BlobItem
-        BlobItem publicItem = ModelHelper.populateBlobItem(item);
-        assertEquals(blobName, publicItem.getName());
-        assertEquals(7L, (long) publicItem.getProperties().getContentLength());
     }
 
     @Test

@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.implementation.util.RequestOptionsHelper;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
@@ -18,14 +19,11 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
-import com.azure.storage.blob.implementation.models.BlobItemInternal;
+import com.azure.storage.blob.implementation.BlobContainerAsyncClientInternal;
 import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
-import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.*;
 import com.azure.storage.blob.SessionContext.SessionMode;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
@@ -2424,27 +2422,26 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
 
-        AzureBlobStorageImpl impl = new AzureBlobStorageImplBuilder().pipeline(ccAsync.getHttpPipeline())
-            .url(ccAsync.getAccountUrl())
-            .version(BlobServiceVersion.getLatest().getVersion())
-            .buildClient();
+        AzureBlobStorageImpl impl = new AzureBlobStorageImpl(ccAsync.getHttpPipeline(), ccAsync.getAccountUrl(),
+            BlobServiceVersion.getLatest());
 
         List<ListBlobsIncludeItem> include = new ArrayList<>();
         include.add(ListBlobsIncludeItem.METADATA);
 
-        Mono<ArrowBlobListDeserializer.ArrowListBlobsResult> testMono
-            = bc.uploadWithResponse(DATA.getDefaultFlux(), 7, null, metadata, null, null, null)
-                .then(impl.getContainers()
-                    .listBlobFlatSegmentApacheArrowWithResponseAsync(containerName, null, null, null, include, null,
-                        null, null, null))
-                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(bytes -> {
-                    String contentType = response.getDeserializedHeaders().getContentType();
-                    assertTrue(
-                        StorageImplUtils.hasMatchingHeaderValue(contentType,
-                            Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),
-                        "Expected Arrow content type but got: " + contentType);
-                    return ArrowBlobListDeserializer.deserialize(new ByteArrayInputStream(bytes));
-                }));
+        Mono<ArrowBlobListDeserializer.ArrowListBlobsResult> testMono = bc
+            .uploadWithResponse(DATA.getDefaultFlux(), 7, null, metadata, null, null, null)
+            .then(new BlobContainerAsyncClientInternal(impl.getContainers()).listBlobFlatSegmentApacheArrowWithResponse(
+                null, null, null, include, null, null, null,
+                RequestOptionsHelper.containerRequestOptions(com.azure.core.util.Context.NONE, impl.getUrl(),
+                    containerName)))
+            .flatMap(response -> Mono.fromCallable(() -> response.getValue().toBytes()).map(bytes -> {
+                String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+                assertTrue(
+                    StorageImplUtils.hasMatchingHeaderValue(contentType,
+                        Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),
+                    "Expected Arrow content type but got: " + contentType);
+                return ArrowBlobListDeserializer.deserialize(new ByteArrayInputStream(bytes));
+            }));
 
         StepVerifier.create(testMono.zipWhen(result -> bc.getProperties())).assertNext(response -> {
             ArrowBlobListDeserializer.ArrowListBlobsResult result = response.getT1();
@@ -2457,11 +2454,10 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             // Verify we got exactly one blob
             assertEquals(1, result.getBlobItems().size());
 
-            BlobItemInternal item = result.getBlobItems().get(0);
+            BlobItem item = result.getBlobItems().get(0);
 
             // Name
-            assertNotNull(item.getName());
-            assertEquals(blobName, item.getName().getContent());
+            assertEquals(blobName, item.getName());
 
             // Properties
             assertNotNull(item.getProperties());
@@ -2481,11 +2477,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             // Metadata
             assertNotNull(item.getMetadata());
             assertEquals("testvalue", item.getMetadata().get("testkey"));
-
-            // Verify ModelHelper can convert to public BlobItem
-            BlobItem publicItem = ModelHelper.populateBlobItem(item);
-            assertEquals(blobName, publicItem.getName());
-            assertEquals(7L, (long) publicItem.getProperties().getContentLength());
         }).verifyComplete();
     }
 

@@ -74,8 +74,7 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
 
     private static BlobDownloadHeaders extractHeaders(StreamResponse response) {
         HttpHeaders headers = response.getHeaders();
-        return ModelHelper.populateBlobDownloadHeaders(new BlobsDownloadHeaders(headers),
-            ModelHelper.getErrorCode(headers));
+        return ModelHelper.populateBlobDownloadHeaders(new BlobsDownloadHeaders(headers), headers);
     }
 
     private static Flux<ByteBuffer> createResponseFlux(StreamResponse sourceResponse,

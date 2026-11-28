@@ -241,13 +241,17 @@ public class BlobTestBase extends TestProxyTestBase {
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
         // in SAS tokens.
+        // The 'Accept' header is excluded from matching because the TypeSpec-generated protocol layer omits it (sending
+        // the default '*/*') on operations without a response body, whereas the AutoRest recordings captured
+        // 'application/xml'. This mirrors the .NET migration, which added Accept to its LegacyExcludedHeaders.
         interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setComparingBodies(false)
             .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since",
                 "If-Unmodified-Since", "x-ms-expiry-time", "x-ms-source-if-modified-since",
                 "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256",
                 "x-ms-blob-if-modified-since", "x-ms-blob-if-unmodified-since"))
             .setQueryOrderingIgnored(true)
-            .setIgnoredQueryParameters(Collections.singletonList("sv"))));
+            .setIgnoredQueryParameters(Collections.singletonList("sv"))
+            .setExcludedHeaders(Collections.singletonList("Accept"))));
 
         primaryBlobServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
         primaryBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount());
