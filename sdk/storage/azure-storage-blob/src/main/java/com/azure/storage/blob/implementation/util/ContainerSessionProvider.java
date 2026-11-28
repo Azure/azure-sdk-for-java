@@ -4,7 +4,6 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -73,10 +72,7 @@ final class ContainerSessionProvider extends SessionProvider {
             return null;
         }
 
-        if (request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-structured-body")) == null) {
-            return parts;
-        }
-        return null;
+        return parts;
     }
 
     @Override

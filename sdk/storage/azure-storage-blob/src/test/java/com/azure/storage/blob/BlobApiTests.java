@@ -71,6 +71,7 @@ import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -3316,6 +3317,38 @@ public class BlobApiTests extends BlobTestBase {
             "Expected multiple chunked download ranges; saw " + downloadAuthSchemesByRange);
         assertTrue(downloadAuthSchemesByRange.values().stream().allMatch(schemes -> schemes.contains("Session")),
             "Expected every chunked blob download range to attempt Session auth; saw " + downloadAuthSchemesByRange);
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    public void downloadBlobToFileInChunksWithContentValidationOverSessionAuth() throws IOException {
+        String blobName = generateBlobName();
+        byte[] data = getRandomByteArray(4 * Constants.KB + 17);
+        int downloadBlockSize = Constants.KB;
+
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(new ByteArrayInputStream(data), data.length);
+
+        Map<String, List<String>> downloadAttemptsByRange = Collections.synchronizedMap(new HashMap<>());
+        BlobClient sessionBlob = getOAuthServiceClient(new SessionContext().setSessionMode(SessionMode.ENABLED),
+            getBlobDownloadAttemptRecorder(blobName, downloadAttemptsByRange))
+                .getBlobContainerClient(cc.getBlobContainerName())
+                .getBlobClient(blobName);
+
+        File outFile = new File(prefix + "-session-cv-download.tmp");
+        createdFiles.add(outFile);
+        Files.deleteIfExists(outFile.toPath());
+
+        sessionBlob
+            .downloadToFileWithResponse(
+                new BlobDownloadToFileOptions(outFile.toPath().toString()).setParallelTransferOptions(
+                    new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize)
+                        .setMaxConcurrency(2))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
+                null, null);
+
+        assertArrayEquals(data, Files.readAllBytes(outFile.toPath()));
+        assertEveryRangeServedBySessionStructuredMessage(downloadAttemptsByRange);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
