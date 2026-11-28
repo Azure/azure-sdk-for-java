@@ -55,6 +55,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Pattern;
 
 import static com.azure.core.http.vertx.implementation.VertxUtils.resetRequest;
 
@@ -90,6 +91,8 @@ class VertxHttpClient implements HttpClient {
 
     final io.vertx.core.http.HttpClient client;
     final HttpClientOptions buildOptions;
+    private final io.vertx.core.net.ProxyOptions proxyOptions;
+    private final Pattern nonProxyHosts;
     private final Duration responseTimeout;
     private final Duration writeTimeout;
     private final ScheduledExecutorService writeTimeoutExecutor;
@@ -101,12 +104,18 @@ class VertxHttpClient implements HttpClient {
      * @param client The Vert.x {@link io.vertx.core.http.HttpClient}
      */
     VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout) {
-        this(client, buildOptions, responseTimeout, Duration.ZERO);
+        this(client, buildOptions, null, null, responseTimeout, Duration.ZERO);
     }
 
-    VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout,
+    /*
+     * proxyOptions is set on each request whose host doesn't match nonProxyHosts. When it's null, requests use the
+     * proxy configured in buildOptions, if any.
+     */
+    VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions,
+        io.vertx.core.net.ProxyOptions proxyOptions, Pattern nonProxyHosts, Duration responseTimeout,
         Duration writeTimeout) {
-        this(client, buildOptions, responseTimeout, writeTimeout, SharedExecutorService.getInstance());
+        this(client, buildOptions, proxyOptions, nonProxyHosts, responseTimeout, writeTimeout,
+            SharedExecutorService.getInstance(), EXPECT_CONTINUE_TIMEOUT);
     }
 
     VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout,
@@ -117,8 +126,17 @@ class VertxHttpClient implements HttpClient {
     // Visible for testing, so tests can make the body follow 100 Continue regardless of how slow the agent is.
     VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout,
         Duration writeTimeout, ScheduledExecutorService writeTimeoutExecutor, Duration expectContinueTimeout) {
+        this(client, buildOptions, null, null, responseTimeout, writeTimeout, writeTimeoutExecutor,
+            expectContinueTimeout);
+    }
+
+    private VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions,
+        io.vertx.core.net.ProxyOptions proxyOptions, Pattern nonProxyHosts, Duration responseTimeout,
+        Duration writeTimeout, ScheduledExecutorService writeTimeoutExecutor, Duration expectContinueTimeout) {
         this.client = Objects.requireNonNull(client, "client cannot be null");
         this.buildOptions = buildOptions;
+        this.proxyOptions = proxyOptions;
+        this.nonProxyHosts = nonProxyHosts;
         this.responseTimeout = responseTimeout;
         this.writeTimeout = writeTimeout;
         this.writeTimeoutExecutor = Objects.requireNonNull(writeTimeoutExecutor, "writeTimeoutExecutor cannot be null");
@@ -171,7 +189,8 @@ class VertxHttpClient implements HttpClient {
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
         RequestOptions options = new RequestOptions().setMethod(HttpMethod.valueOf(request.getHttpMethod().name()))
-            .setAbsoluteURI(request.getUrl());
+            .setAbsoluteURI(request.getUrl())
+            .setProxyOptions(getProxyOptions(request.getUrl().getHost()));
 
         // This is the shared design for sending a request and receiving a response in Vert.x. The design relies on
         // using a Vert.x Promise and the handler methods to control the flow of the request-response cycle. The Promise
@@ -267,6 +286,18 @@ class VertxHttpClient implements HttpClient {
         });
 
         return requestFuture;
+    }
+
+    /*
+     * Gets the proxy for a request to the host, or null to use the proxy configured in buildOptions, if any. Hosts are
+     * matched the same way as the other HTTP clients: the whole host, ignoring case.
+     */
+    io.vertx.core.net.ProxyOptions getProxyOptions(String host) {
+        if (proxyOptions == null || (nonProxyHosts != null && nonProxyHosts.matcher(host).matches())) {
+            return null;
+        }
+
+        return proxyOptions;
     }
 
     private void sendBody(ContextView contextView, HttpRequest azureRequest, ProgressReporter progressReporter,

@@ -8,6 +8,7 @@ import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.ReflectiveInvoker;
+import com.azure.core.implementation.util.ProxyOptionsAccessHelper;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -271,6 +272,8 @@ public class VertxHttpClientBuilder {
         }
 
         HttpClientOptions buildOptions = this.httpClientOptions;
+        io.vertx.core.net.ProxyOptions requestProxyOptions = null;
+        Pattern nonProxyHostsPattern = null;
         Duration writeTimeout = Duration.ZERO;
         if (buildOptions == null) {
             writeTimeout = getTimeout(this.writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
@@ -318,13 +321,21 @@ public class VertxHttpClientBuilder {
                 }
 
                 String nonProxyHosts = buildProxyOptions.getNonProxyHosts();
-                if (!CoreUtils.isNullOrEmpty(nonProxyHosts)) {
+                if (CoreUtils.isNullOrEmpty(nonProxyHosts)) {
+                    buildOptions.setProxyOptions(vertxProxyOptions);
+                } else if (ProxyOptionsAccessHelper.getNonProxyHostsParserVersion(buildProxyOptions) == 2) {
+                    // Vert.x can't match the non-proxy hosts regex, and a request can't opt out of a proxy set on
+                    // HttpClientOptions. Instead, VertxHttpClient sets the proxy on each request whose host doesn't
+                    // match.
+                    requestProxyOptions = vertxProxyOptions;
+                    nonProxyHostsPattern = Pattern.compile(nonProxyHosts, Pattern.CASE_INSENSITIVE);
+                } else {
                     for (String nonProxyHost : removeNonProxyHostsSanitation(nonProxyHosts)) {
                         buildOptions.addNonProxyHost(nonProxyHost);
                     }
-                }
 
-                buildOptions.setProxyOptions(vertxProxyOptions);
+                    buildOptions.setProxyOptions(vertxProxyOptions);
+                }
             }
         }
 
@@ -342,8 +353,10 @@ public class VertxHttpClientBuilder {
         }
 
         io.vertx.core.http.HttpClient client = VERTX_HTTP_CLIENT_FACTORY.apply(configuredVertx, buildOptions);
-        return new VertxHttpClient(client, buildOptions, getTimeout(this.responseTimeout, configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, DEFAULT_RESPONSE_TIMEOUT), writeTimeout);
+        return new VertxHttpClient(client, buildOptions, requestProxyOptions, nonProxyHostsPattern,
+            getTimeout(this.responseTimeout, configuration, PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
+                DEFAULT_RESPONSE_TIMEOUT),
+            writeTimeout);
     }
 
     static Vertx getVertx(Iterator<VertxProvider> iterator) {
@@ -368,7 +381,8 @@ public class VertxHttpClientBuilder {
     /**
      * Reverses non-proxy host string sanitization applied by {@link ProxyOptions}.
      * <p>
-     * This is necessary as Vert.x will apply its own sanitization logic.
+     * This is necessary as Vert.x will apply its own sanitization logic. It's only used for non-proxy hosts converted
+     * by version 1 of the {@link ProxyOptions} parser.
      *
      * @param nonProxyHosts The list of non-proxy hosts
      * @return String array of proxy host strings without sanitation.

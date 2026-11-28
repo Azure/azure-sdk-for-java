@@ -7,6 +7,14 @@
 - Added `HttpProtocolVersion` for configuring the maximum HTTP protocol version in HTTP client builders.
 - Added `HttpClientOptions.getMaximumHttpVersion` and `setMaximumHttpVersion` for transport-independent HTTP protocol
   configuration. An unset or cleared maximum preserves the selected transport's existing default.
+- Added the `AZURE_NON_PROXY_PARSER_VERSION` environment variable and system property to opt in to corrected
+  `ProxyOptions` non-proxy host matching. ([#51341](https://github.com/Azure/azure-sdk-for-java/issues/51341)) The
+  default, `1`, keeps the current matching, and `2` will become the default in a future release. Version `2` applies to
+  `setNonProxyHosts`, `http.nonProxyHosts`, `http.proxy.non-proxy-hosts`, and `NO_PROXY`. With it:
+  - `storage1*` no longer matches `storage2.example.com`, and `10.*` no longer matches `100.64.0.1`.
+  - `192.168.` no longer matches `192.1689.0.1`.
+  - `.example.com` matches `example.com` and its subdomains, but not `badexample.com`.
+  - Bracketed IPv6 addresses such as `[::1]` are matched literally instead of as a regex character class.
 
 ### Breaking Changes
 
@@ -18,6 +26,7 @@
   consumers that retain the emitted buffers, such as uploads from an `InputStream` returning small reads, to use many
   times more memory than the data read and fail with `OutOfMemoryError`. Emitted buffers are now sized to the data
   read.
+- Fixed `ProxyOptions` throwing `StringIndexOutOfBoundsException` for non-proxy hosts such as `.*`.
 
 ### Other Changes
 

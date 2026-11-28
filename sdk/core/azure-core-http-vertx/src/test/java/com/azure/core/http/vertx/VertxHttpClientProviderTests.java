@@ -37,14 +37,7 @@ public class VertxHttpClientProviderTests extends HttpClientOptionsProviderTests
     public void nullOptionsReturnsBaseClient() {
         VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientProvider().createInstance(null);
 
-        ProxyOptions environmentProxy = loadEnvironmentProxy();
-        io.vertx.core.net.ProxyOptions proxyOptions = httpClient.buildOptions.getProxyOptions();
-        if (environmentProxy == null) {
-            assertNull(proxyOptions);
-        } else {
-            assertNotNull(proxyOptions);
-            assertEquals(environmentProxy.getAddress().getHostName(), proxyOptions.getHost());
-        }
+        assertUsesEnvironmentProxy(httpClient);
     }
 
     @Test
@@ -52,13 +45,27 @@ public class VertxHttpClientProviderTests extends HttpClientOptionsProviderTests
         VertxHttpClient httpClient
             = (VertxHttpClient) new VertxHttpClientProvider().createInstance(new HttpClientOptions());
 
-        ProxyOptions environmentProxy = loadEnvironmentProxy();
+        assertUsesEnvironmentProxy(httpClient);
+    }
+
+    /*
+     * Checks that the client uses the environment proxy, which CI agents set but most dev machines don't. The proxy is
+     * set on each request instead of on the Vert.x options when the environment's non-proxy hosts are converted by
+     * AZURE_NON_PROXY_PARSER_VERSION 2.
+     */
+    private static void assertUsesEnvironmentProxy(VertxHttpClient httpClient) {
         io.vertx.core.net.ProxyOptions proxyOptions = httpClient.buildOptions.getProxyOptions();
+        if (proxyOptions == null) {
+            proxyOptions = httpClient.getProxyOptions("example.com");
+        }
+
+        ProxyOptions environmentProxy = loadEnvironmentProxy();
         if (environmentProxy == null) {
             assertNull(proxyOptions);
         } else {
             assertNotNull(proxyOptions);
             assertEquals(environmentProxy.getAddress().getHostName(), proxyOptions.getHost());
+            assertEquals(environmentProxy.getAddress().getPort(), proxyOptions.getPort());
         }
     }
 
