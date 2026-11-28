@@ -48,8 +48,9 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String DEFAULT_ACCOUNT_TENANT_ID = Strings.Emtpy;
 
     private static final String AUTH_TYPE = "azure.cosmos.auth.type";
-    private static final String AUTH_TYPE_DOC = "There are two auth types are supported currently: "
-        + "`MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrincipal`";
+    private static final String AUTH_TYPE_DOC = "There are three auth types are supported currently: "
+        + "`MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrincipal`, "
+        + "`AccessTokenProvider`";
     private static final String AUTH_TYPE_DISPLAY = "Cosmos Auth type.";
     private static final String DEFAULT_AUTH_TYPE = CosmosAuthType.MASTER_KEY.getName();
 
@@ -75,6 +76,14 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String AAD_AUTH_ENDPOINT_OVERRIDE_DISPLAY =
         "The Azure Active Directory (AAD) authentication endpoint override. Set this if you are using a cloud environment other than public Azure.";
     private static final String DEFAULT_AAD_AUTH_ENDPOINT_OVERRIDE = Strings.Emtpy;
+
+    private static final String ACCESS_TOKEN_PROVIDER_CLASS = "azure.cosmos.auth.accessTokenProvider.class";
+    private static final String ACCESS_TOKEN_PROVIDER_CLASS_DOC = "Fully qualified class name of a "
+        + "`com.azure.cosmos.kafka.connect.CosmosAccessTokenProvider` implementation that supplies Microsoft Entra ID "
+        + "access tokens. Required for `AccessTokenProvider` authentication. The class must have a public no-argument "
+        + "constructor. It receives all connector configurations and is called whenever a token is needed or refreshed.";
+    private static final String ACCESS_TOKEN_PROVIDER_CLASS_DISPLAY = "Access token provider class.";
+    private static final String DEFAULT_ACCESS_TOKEN_PROVIDER_CLASS = Strings.Emtpy;
 
     private static final String USE_GATEWAY_MODE = "azure.cosmos.mode.gateway";
     private static final String USE_GATEWAY_MODE_DOC = "Flag to indicate whether to use gateway mode. By default it is false, means SDK uses direct mode. https://learn.microsoft.com/azure/cosmos-db/nosql/sdk-connection-modes";
@@ -114,8 +123,9 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String DEFAULT_THROUGHPUT_CONTROL_ACCOUNT_TENANT_ID = Strings.Emtpy;
 
     private static final String THROUGHPUT_CONTROL_AUTH_TYPE = "azure.cosmos.throughputControl.auth.type";
-    private static final String THROUGHPUT_CONTROL_AUTH_TYPE_DOC = "There are two auth types are supported currently: "
-        + "`MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrincipal`";
+    private static final String THROUGHPUT_CONTROL_AUTH_TYPE_DOC = "There are three auth types are supported currently: "
+        + "`MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrincipal`, "
+        + "`AccessTokenProvider`";
     private static final String THROUGHPUT_CONTROL_AUTH_TYPE_DISPLAY = "Cosmos Auth type.";
     private static final String DEFAULT_THROUGHPUT_CONTROL_AUTH_TYPE = CosmosAuthType.MASTER_KEY.getName();
 
@@ -133,6 +143,13 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String THROUGHPUT_CONTROL_AAD_CLIENT_SECRET_DOC = "The client secret/password of the service principal. Required for `ServicePrincipal` authentication.";
     private static final String THROUGHPUT_CONTROL_AAD_CLIENT_SECRET_DISPLAY = "The client secret/password of the service principal.";
     private static final String DEFAULT_THROUGHPUT_CONTROL_AAD_CLIENT_SECRET = Strings.Emtpy;
+
+    private static final String THROUGHPUT_CONTROL_ACCESS_TOKEN_PROVIDER_CLASS = "azure.cosmos.throughputControl.auth.accessTokenProvider.class";
+    private static final String THROUGHPUT_CONTROL_ACCESS_TOKEN_PROVIDER_CLASS_DOC = "Fully qualified class name of a "
+        + "`com.azure.cosmos.kafka.connect.CosmosAccessTokenProvider` implementation that supplies Microsoft Entra ID "
+        + "access tokens. Required for `AccessTokenProvider` authentication.";
+    private static final String THROUGHPUT_CONTROL_ACCESS_TOKEN_PROVIDER_CLASS_DISPLAY = "Access token provider class.";
+    private static final String DEFAULT_THROUGHPUT_CONTROL_ACCESS_TOKEN_PROVIDER_CLASS = Strings.Emtpy;
 
     private static final String THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST = "azure.cosmos.throughputControl.preferredRegionList";
     private static final String THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST_DOC = "Preferred regions list to be used for a multi region Cosmos DB account. "
@@ -224,6 +241,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
             AAD_CLIENT_ID,
             AAD_CLIENT_SECRET,
             AAD_AUTH_ENDPOINT_OVERRIDE,
+            ACCESS_TOKEN_PROVIDER_CLASS,
             APPLICATION_NAME,
             USE_GATEWAY_MODE,
             PREFERRED_REGIONS_LIST);
@@ -238,6 +256,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
         String clientIdConfig,
         String clientSecretConfig,
         String authEndpointOverrideConfig,
+        String accessTokenProviderClassConfig,
         String applicationNameConfig,
         String useGatewayModeConfig,
         String preferredRegionListConfig) {
@@ -250,7 +269,16 @@ public class KafkaCosmosConfig extends AbstractConfig {
         String clientId = this.getString(clientIdConfig);
         String clientSecret = this.getPassword(clientSecretConfig).value();
         String authEndpointOverride = this.getString(authEndpointOverrideConfig);
-        CosmosAuthConfig authConfig = getAuthConfig(azureEnvironment, tenantId, authType, masterKey, clientId, clientSecret, authEndpointOverride);
+        String accessTokenProviderClass = this.getString(accessTokenProviderClassConfig);
+        CosmosAuthConfig authConfig = getAuthConfig(
+            azureEnvironment,
+            tenantId,
+            authType,
+            masterKey,
+            clientId,
+            clientSecret,
+            authEndpointOverride,
+            accessTokenProviderClass);
 
         String applicationName = this.getString(applicationNameConfig);
         boolean useGatewayMode = this.getBoolean(useGatewayModeConfig);
@@ -271,12 +299,16 @@ public class KafkaCosmosConfig extends AbstractConfig {
         String masterKey,
         String clientId,
         String clientSecret,
-        String authEndpointOverride) {
+        String authEndpointOverride,
+        String accessTokenProviderClass) {
         switch (authType) {
             case MASTER_KEY:
                 return new CosmosMasterKeyAuthConfig(masterKey);
             case SERVICE_PRINCIPAL:
                 return new CosmosAadAuthConfig(clientId, clientSecret, authEndpointOverride, tenantId, azureEnvironment);
+            case ACCESS_TOKEN_PROVIDER:
+                // The provider receives all connector configs so it can read its own settings.
+                return new CosmosAccessTokenProviderAuthConfig(accessTokenProviderClass, this.originals());
             default:
                 throw new IllegalArgumentException("AuthType " + authType + " is not supported");
         }
@@ -318,6 +350,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 THROUGHPUT_CONTROL_AAD_CLIENT_ID,
                 THROUGHPUT_CONTROL_AAD_CLIENT_SECRET,
                 AAD_AUTH_ENDPOINT_OVERRIDE,
+                THROUGHPUT_CONTROL_ACCESS_TOKEN_PROVIDER_CLASS,
                 APPLICATION_NAME,
                 THROUGHPUT_CONTROL_USE_GATEWAY_MODE,
                 THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST);
@@ -459,6 +492,17 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 AAD_AUTH_ENDPOINT_OVERRIDE_DISPLAY
             )
             .define(
+                ACCESS_TOKEN_PROVIDER_CLASS,
+                ConfigDef.Type.STRING,
+                DEFAULT_ACCESS_TOKEN_PROVIDER_CLASS,
+                ConfigDef.Importance.MEDIUM,
+                ACCESS_TOKEN_PROVIDER_CLASS_DOC,
+                accountGroupName,
+                accountGroupOrder++,
+                ConfigDef.Width.LONG,
+                ACCESS_TOKEN_PROVIDER_CLASS_DISPLAY
+            )
+            .define(
                 APPLICATION_NAME,
                 ConfigDef.Type.STRING,
                 Strings.Emtpy,
@@ -588,6 +632,17 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 throughputControlGroupOrder++,
                 ConfigDef.Width.MEDIUM,
                 THROUGHPUT_CONTROL_AAD_CLIENT_SECRET_DISPLAY
+            )
+            .define(
+                THROUGHPUT_CONTROL_ACCESS_TOKEN_PROVIDER_CLASS,
+                ConfigDef.Type.STRING,
+                DEFAULT_THROUGHPUT_CONTROL_ACCESS_TOKEN_PROVIDER_CLASS,
+                ConfigDef.Importance.LOW,
+                THROUGHPUT_CONTROL_ACCESS_TOKEN_PROVIDER_CLASS_DOC,
+                throughputControlGroupName,
+                throughputControlGroupOrder++,
+                ConfigDef.Width.LONG,
+                THROUGHPUT_CONTROL_ACCESS_TOKEN_PROVIDER_CLASS_DISPLAY
             )
             .define(
                 THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST,
@@ -826,15 +881,17 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 THROUGHPUT_CONTROL_ACCOUNT_KEY,
                 THROUGHPUT_CONTROL_AAD_CLIENT_ID,
                 THROUGHPUT_CONTROL_AAD_CLIENT_SECRET,
-                AAD_AUTH_ENDPOINT_OVERRIDE);
+                AAD_AUTH_ENDPOINT_OVERRIDE,
+                THROUGHPUT_CONTROL_ACCESS_TOKEN_PROVIDER_CLASS);
         }
 
-        // if throughput control is using aad auth, then only targetThroughput is supported
+        // if throughput control is using aad auth (service principal or access token provider), then only targetThroughput is supported
         String throughputControlAuthTypeString =
             StringUtils.isNotEmpty(throughputControlAccountEndpoint)
                 ? configValueMap.get(THROUGHPUT_CONTROL_AUTH_TYPE).value().toString() : configValueMap.get(AUTH_TYPE).value().toString();
         CosmosAuthType throughputControlAuthType = CosmosAuthType.fromName(throughputControlAuthTypeString);
-        if (throughputControlAuthType == CosmosAuthType.SERVICE_PRINCIPAL) {
+        if (throughputControlAuthType == CosmosAuthType.SERVICE_PRINCIPAL
+            || throughputControlAuthType == CosmosAuthType.ACCESS_TOKEN_PROVIDER) {
             if (targetThroughputThreshold > 0) {
                 configValueMap
                     .get(THROUGHPUT_CONTROL_TARGET_THROUGHPUT_THRESHOLD)
@@ -852,7 +909,8 @@ public class KafkaCosmosConfig extends AbstractConfig {
             ACCOUNT_KEY,
             AAD_CLIENT_ID,
             AAD_CLIENT_SECRET,
-            AAD_AUTH_ENDPOINT_OVERRIDE);
+            AAD_AUTH_ENDPOINT_OVERRIDE,
+            ACCESS_TOKEN_PROVIDER_CLASS);
     }
 
     public static void validateAccountAuthConfigCore(
@@ -862,7 +920,8 @@ public class KafkaCosmosConfig extends AbstractConfig {
         String accountKeyConfig,
         String clientIdConfig,
         String clientSecretConfig,
-        String authEndpointOverrideConfig) {
+        String authEndpointOverrideConfig,
+        String accessTokenProviderClassConfig) {
 
         CosmosAuthType authType = CosmosAuthType.fromName(configValueMap.get(authTypeConfig).value().toString());
         switch (authType) {
@@ -905,6 +964,16 @@ public class KafkaCosmosConfig extends AbstractConfig {
                             .get(authEndpointOverrideConfig)
                             .addErrorMessage("AuthEndpointOverride need to be valid URI format for Service Principal auth type");
                     }
+                }
+
+                break;
+            case ACCESS_TOKEN_PROVIDER:
+                String providerClassError = CosmosAccessTokenProviderAuthConfig.validateProviderClass(
+                    configValueMap.get(accessTokenProviderClassConfig).value().toString());
+                if (providerClassError != null) {
+                    configValueMap
+                        .get(accessTokenProviderClassConfig)
+                        .addErrorMessage(providerClassError);
                 }
 
                 break;
@@ -1011,7 +1080,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
 
             CosmosAuthType authType = CosmosAuthType.fromName(authTypeString);
             if (authType == null) {
-                throw new ConfigException(name, o, "Invalid AuthType, only allow MasterKey or ServicePrincipal");
+                throw new ConfigException(name, o, "Invalid AuthType, only allow MasterKey, ServicePrincipal or AccessTokenProvider");
             }
         }
 

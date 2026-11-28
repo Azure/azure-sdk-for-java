@@ -5,7 +5,8 @@ package com.azure.cosmos.kafka.connect.implementation;
 
 public enum CosmosAuthType {
     MASTER_KEY("MasterKey"),
-    SERVICE_PRINCIPAL("ServicePrincipal");
+    SERVICE_PRINCIPAL("ServicePrincipal"),
+    ACCESS_TOKEN_PROVIDER("AccessTokenProvider");
 
     private final String name;
 
