@@ -14,6 +14,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.FixedDelay;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
@@ -28,15 +30,18 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -148,6 +153,296 @@ public class KeyVaultCredentialPolicyTest {
     }
 
     @SyncAsyncTest
+    public void failedAcquisitionCannotReuseAnotherOriginsToken() {
+        for (boolean sameTenant : new boolean[] { false, true }) {
+            for (boolean sameScope : new boolean[] { false, true }) {
+                KeyVaultCredentialPolicy.clearCache();
+                AtomicBoolean failAcquisition = new AtomicBoolean();
+                AtomicInteger tokenRequests = new AtomicInteger();
+                AtomicInteger foreignAuthorizedSends = new AtomicInteger();
+                String secondTenant = sameTenant ? "first" : "second";
+                String secondScope = sameScope ? "https://vault.azure.net/.default" : "https://azure.net/.default";
+                KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(context -> Mono.fromSupplier(() -> {
+                    tokenRequests.incrementAndGet();
+                    if (failAcquisition.get()) {
+                        assertEquals(secondTenant, context.getTenantId());
+                        assertEquals(Arrays.asList(secondScope), context.getScopes());
+                        throw new IllegalStateException("Token acquisition failed.");
+                    }
+                    return new AccessToken("first-origin-token", OffsetDateTime.now().plusHours(1));
+                }), false);
+                HttpPipeline pipeline = new HttpPipelineBuilder()
+                    .policies(new RetryPolicy(new FixedDelay(2, Duration.ofMillis(1))), policy)
+                    .httpClient(request -> {
+                        boolean second = request.getUrl().getHost().equals("second.vault.azure.net");
+                        String authorization = request.getHeaders().getValue(AUTHORIZATION);
+                        if (authorization == null) {
+                            return Mono.just(tokenCacheChallenge(request, second ? secondTenant : "first",
+                                second ? secondScope : "https://vault.azure.net/.default", null));
+                        }
+                        if (second) {
+                            foreignAuthorizedSends.incrementAndGet();
+                        }
+                        return Mono.just(new MockHttpResponse(request, 200));
+                    })
+                    .build();
+
+                sendTokenCacheRequest(pipeline, "https://first.vault.azure.net");
+                assertEquals(1, tokenRequests.get());
+                failAcquisition.set(true);
+                assertThrows(IllegalStateException.class,
+                    () -> sendTokenCacheRequest(pipeline, "https://second.vault.azure.net"));
+                assertEquals(0, foreignAuthorizedSends.get());
+                assertEquals(4, tokenRequests.get());
+
+                failAcquisition.set(false);
+                sendTokenCacheRequest(pipeline, "HTTPS://FIRST.VAULT.AZURE.NET:443/secrets");
+                assertEquals(4, tokenRequests.get(),
+                    "A failed acquisition for another origin must not evict this token.");
+            }
+        }
+    }
+
+    @SyncAsyncTest
+    public void failedContextChangeCannotReusePreviousToken() {
+        for (String change : Arrays.asList("tenant", "scope", "claims")) {
+            KeyVaultCredentialPolicy.clearCache();
+            AtomicBoolean changedChallenge = new AtomicBoolean();
+            AtomicInteger tokenRequests = new AtomicInteger();
+            AtomicInteger staleAuthorizedSends = new AtomicInteger();
+            String tenant = "tenant".equals(change) ? "second" : "first";
+            String scope = "scope".equals(change) ? "https://azure.net/.default" : "https://vault.azure.net/.default";
+            String claims = "claims".equals(change) ? DECODED_CLAIMS : null;
+            KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(context -> Mono.fromSupplier(() -> {
+                tokenRequests.incrementAndGet();
+                if (changedChallenge.get()) {
+                    assertEquals(tenant, context.getTenantId());
+                    assertEquals(Arrays.asList(scope), context.getScopes());
+                    assertEquals(claims, context.getClaims());
+                    assertTrue(context.isCaeEnabled());
+                    throw new IllegalStateException("Token acquisition failed.");
+                }
+                return new AccessToken("previous-context-token", OffsetDateTime.now().plusHours(1));
+            }), false);
+            HttpPipeline pipeline
+                = new HttpPipelineBuilder().policies(new RetryPolicy(new FixedDelay(2, Duration.ofMillis(1))), policy)
+                    .httpClient(request -> {
+                        String authorization = request.getHeaders().getValue(AUTHORIZATION);
+                        if (changedChallenge.get() && authorization != null) {
+                            staleAuthorizedSends.incrementAndGet();
+                            return Mono.just(new MockHttpResponse(request, 200));
+                        }
+                        if ("/changed".equals(request.getUrl().getPath())) {
+                            changedChallenge.set(true);
+                            return Mono.just(tokenCacheChallenge(request, tenant, scope, claims));
+                        }
+                        return Mono.just(authorization == null
+                            ? tokenCacheChallenge(request, "first", "https://vault.azure.net/.default", null)
+                            : new MockHttpResponse(request, 200));
+                    })
+                    .build();
+
+            sendTokenCacheRequest(pipeline, "https://first.vault.azure.net");
+            assertThrows(IllegalStateException.class,
+                () -> sendTokenCacheRequest(pipeline, "https://first.vault.azure.net/changed"));
+            assertEquals(0, staleAuthorizedSends.get());
+            assertEquals(4, tokenRequests.get());
+        }
+    }
+
+    @SyncAsyncTest
+    public void originScopedTokensSupportRetriesAndNormalization() {
+        AtomicInteger firstTokenRequests = new AtomicInteger();
+        AtomicInteger secondTokenRequests = new AtomicInteger();
+        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(context -> Mono.fromSupplier(() -> {
+            if ("first".equals(context.getTenantId())) {
+                firstTokenRequests.incrementAndGet();
+                return new AccessToken("first-origin-token", OffsetDateTime.now().plusHours(1));
+            }
+            if (secondTokenRequests.incrementAndGet() == 1) {
+                throw new IllegalStateException("Transient token acquisition failure.");
+            }
+            return new AccessToken("second-origin-token", OffsetDateTime.now().plusHours(1));
+        }), false);
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new RetryPolicy(new FixedDelay(2, Duration.ofMillis(1))), policy)
+                .httpClient(request -> {
+                    String tenant
+                        = request.getUrl().getHost().equalsIgnoreCase("first.vault.azure.net") ? "first" : "second";
+                    String authorization = request.getHeaders().getValue(AUTHORIZATION);
+                    if (authorization == null) {
+                        return Mono
+                            .just(tokenCacheChallenge(request, tenant, "https://vault.azure.net/.default", null));
+                    }
+                    assertEquals("Bearer " + tenant + "-origin-token", authorization);
+                    return Mono.just(new MockHttpResponse(request, 200));
+                })
+                .build();
+
+        for (String url : Arrays.asList("https://first.vault.azure.net", "https://second.vault.azure.net",
+            "HTTPS://FIRST.VAULT.AZURE.NET:443/secrets", "HTTPS://SECOND.VAULT.AZURE.NET:443/secrets")) {
+            assertEquals(200, sendTokenCacheRequest(pipeline, url).getStatusCode());
+        }
+        assertEquals(1, firstTokenRequests.get());
+        assertEquals(2, secondTokenRequests.get());
+    }
+
+    @Test
+    public void concurrentTokenAcquisitionsKeepIndependentCacheState() {
+        for (boolean sameOrigin : new boolean[] { false, true }) {
+            Sinks.One<AccessToken> firstToken = Sinks.one();
+            Sinks.One<AccessToken> secondToken = Sinks.one();
+            AtomicInteger firstTokenRequests = new AtomicInteger();
+            AtomicInteger secondTokenRequests = new AtomicInteger();
+            KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(context -> {
+                if ("first".equals(context.getTenantId())) {
+                    firstTokenRequests.incrementAndGet();
+                    return firstToken.asMono();
+                }
+                if (secondTokenRequests.incrementAndGet() == 1) {
+                    return Mono.error(new IllegalStateException("Transient token acquisition failure."));
+                }
+                return secondToken.asMono();
+            }, false);
+            HttpPipelineCallContext firstContext
+                = createCallContext(new HttpRequest(HttpMethod.GET, "https://first.vault.azure.net"), Context.NONE);
+            HttpPipelineCallContext secondContext = createCallContext(new HttpRequest(HttpMethod.GET,
+                sameOrigin ? "https://first.vault.azure.net" : "https://second.vault.azure.net"), Context.NONE);
+            TokenRequestContext firstRequest = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+                .setTenantId("first")
+                .setCaeEnabled(true);
+            TokenRequestContext secondRequest = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+                .setTenantId("second")
+                .setCaeEnabled(true);
+
+            StepVerifier.create(Mono.when(policy.setAuthorizationHeader(firstContext, firstRequest),
+                policy.setAuthorizationHeader(secondContext, secondRequest).retry(1))).then(() -> {
+                    assertEquals(1, firstTokenRequests.get());
+                    assertEquals(2, secondTokenRequests.get());
+                    secondToken.tryEmitValue(new AccessToken("second-token", OffsetDateTime.now().plusHours(1)));
+                    firstToken.tryEmitValue(new AccessToken("first-token", OffsetDateTime.now().plusHours(1)));
+                }).expectComplete().verify(Duration.ofSeconds(5));
+            assertEquals("Bearer first-token", firstContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION));
+            assertEquals("Bearer second-token", secondContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION));
+            StepVerifier.create(policy.setAuthorizationHeader(secondContext, secondRequest)).verifyComplete();
+            assertEquals(2, secondTokenRequests.get());
+        }
+    }
+
+    private static HttpResponse sendTokenCacheRequest(HttpPipeline pipeline, String url) {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        return SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE),
+            () -> pipeline.send(request, Context.NONE));
+    }
+
+    @SyncAsyncTest
+    public void challengedContextSurvivesFailedAcquisitionAndRetry() {
+        for (boolean disableVerification : new boolean[] { false, true }) {
+            for (boolean changeTenantAndScope : new boolean[] { false, true }) {
+                KeyVaultCredentialPolicy.clearCache();
+                AtomicBoolean challenged = new AtomicBoolean();
+                AtomicBoolean independentRequest = new AtomicBoolean();
+                AtomicInteger tokenRequests = new AtomicInteger();
+                AtomicInteger challengedTokenRequests = new AtomicInteger();
+                String tenant = changeTenantAndScope ? "second" : "first";
+                String scope = changeTenantAndScope ? "https://azure.net/.default" : "https://vault.azure.net/.default";
+                KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(context -> Mono.fromSupplier(() -> {
+                    tokenRequests.incrementAndGet();
+                    assertEquals(challenged.get() ? tenant : "first", context.getTenantId());
+                    assertEquals(Arrays.asList(challenged.get() ? scope : "https://vault.azure.net/.default"),
+                        context.getScopes());
+                    assertTrue(context.isCaeEnabled());
+                    assertEquals(challenged.get() && !independentRequest.get() ? DECODED_CLAIMS : null,
+                        context.getClaims());
+                    if (challenged.get() && !independentRequest.get()) {
+                        if (challengedTokenRequests.incrementAndGet() == 1) {
+                            context.getScopes().clear();
+                            context.setTenantId("credential-mutated").setClaims("mutated").setCaeEnabled(false);
+                            throw new IllegalStateException("Transient challenged token acquisition failure.");
+                        }
+                        return new AccessToken("claims-token", OffsetDateTime.now().plusHours(1));
+                    }
+                    return new AccessToken("ordinary-token", OffsetDateTime.now().plusHours(1));
+                }), disableVerification);
+                HttpPipeline pipeline = new HttpPipelineBuilder()
+                    .policies(new RetryPolicy(new FixedDelay(2, Duration.ofMillis(1))), policy)
+                    .httpClient(request -> {
+                        String authorization = request.getHeaders().getValue(AUTHORIZATION);
+                        if ("/changed".equals(request.getUrl().getPath())) {
+                            if (challenged.compareAndSet(false, true)) {
+                                assertEquals("Bearer ordinary-token", authorization);
+                                return Mono.just(tokenCacheChallenge(request, tenant, scope, DECODED_CLAIMS));
+                            }
+                            assertEquals("Bearer claims-token", authorization);
+                        } else if (authorization == null) {
+                            return Mono
+                                .just(tokenCacheChallenge(request, "first", "https://vault.azure.net/.default", null));
+                        } else {
+                            assertEquals("Bearer ordinary-token", authorization);
+                        }
+                        return Mono.just(new MockHttpResponse(request, 200));
+                    })
+                    .build();
+
+                assertEquals(200, sendTokenCacheRequest(pipeline, "https://first.vault.azure.net").getStatusCode());
+                assertEquals(200,
+                    sendTokenCacheRequest(pipeline, "https://first.vault.azure.net/changed").getStatusCode());
+                assertEquals(2, challengedTokenRequests.get());
+                assertEquals(3, tokenRequests.get());
+
+                independentRequest.set(true);
+                assertEquals(200,
+                    sendTokenCacheRequest(pipeline, "https://first.vault.azure.net/independent").getStatusCode());
+                assertEquals(4, tokenRequests.get(), "Claims must not leak into a separate request.");
+            }
+        }
+    }
+
+    private static HttpResponse tokenCacheChallenge(HttpRequest request, String tenant, String scope, String claims) {
+        String challenge = "Bearer authorization=\"https://login.example/" + tenant + "\", scope=\"" + scope + "\"";
+        if (claims != null) {
+            challenge += ", error=\"insufficient_claims\", claims=\""
+                + Base64Util.encodeToString(claims.getBytes(StandardCharsets.UTF_8)) + "\"";
+        }
+        return new MockHttpResponse(request, 401, new HttpHeaders().set(HttpHeaderName.WWW_AUTHENTICATE, challenge));
+    }
+
+    @SyncAsyncTest
+    public void cachedChallengeIsBoundToRequestOrigin() {
+        AtomicInteger tokenRequests = new AtomicInteger();
+        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(context -> {
+            tokenRequests.incrementAndGet();
+            return credential.getToken(context);
+        }, false);
+        SyncAsyncExtension.execute(
+            () -> policy.authorizeRequestOnChallengeSync(callContext, unauthorizedHttpResponseWithHeader),
+            () -> policy.authorizeRequestOnChallenge(callContext, unauthorizedHttpResponseWithHeader));
+        assertEquals(1, tokenRequests.get());
+
+        for (KeyVaultCredentialPolicy cachedPolicy : Arrays.asList(policy, new KeyVaultCredentialPolicy(context -> {
+            tokenRequests.incrementAndGet();
+            return credential.getToken(context);
+        }, false))) {
+            for (String endpoint : Arrays.asList("https://other.vault.azure.net", "https://kvtest.vault.azure.net:8443",
+                "http://kvtest.vault.azure.net")) {
+                HttpPipelineCallContext foreignContext
+                    = createCallContext(new HttpRequest(HttpMethod.GET, endpoint), Context.NONE);
+                int previousTokenRequests = tokenRequests.get();
+                SyncAsyncExtension.execute(() -> cachedPolicy.authorizeRequestSync(foreignContext),
+                    () -> cachedPolicy.authorizeRequest(foreignContext));
+                assertNull(foreignContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION));
+                assertEquals(previousTokenRequests, tokenRequests.get());
+            }
+
+            HttpPipelineCallContext normalizedContext = createCallContext(
+                new HttpRequest(HttpMethod.GET, "HTTPS://KVTEST.VAULT.AZURE.NET:443/keys"), Context.NONE);
+            SyncAsyncExtension.execute(() -> cachedPolicy.authorizeRequestSync(normalizedContext),
+                () -> cachedPolicy.authorizeRequest(normalizedContext));
+            assertNotNull(normalizedContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION));
+        }
+    }
+
+    @SyncAsyncTest
     public void onNon401ErrorResponse() {
         KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, false);
 
@@ -162,6 +457,75 @@ public class KeyVaultCredentialPolicyTest {
         assertNull(this.callContext.getHttpRequest().getHeaders().get(AUTHORIZATION));
 
         KeyVaultCredentialPolicy.clearCache();
+    }
+
+    @SyncAsyncTest
+    public void requestOriginIsRevalidatedDuringTokenAcquisition() {
+        for (boolean disableVerification : new boolean[] { false, true }) {
+            for (boolean cachedChallenge : new boolean[] { false, true }) {
+                for (String destination : Arrays.asList("https://other.example/keys",
+                    "https://other.vault.azure.net/keys", "https://kvtest.vault.azure.net:8443/keys",
+                    "http://kvtest.vault.azure.net/keys", "https://user@kvtest.vault.azure.net/keys")) {
+                    KeyVaultCredentialPolicy.clearCache();
+                    if (cachedChallenge) {
+                        KeyVaultCredentialPolicy seed = new KeyVaultCredentialPolicy(credential, false);
+                        SyncAsyncExtension.execute(
+                            () -> seed.authorizeRequestOnChallengeSync(callContext, unauthorizedHttpResponseWithHeader),
+                            () -> seed.authorizeRequestOnChallenge(callContext, unauthorizedHttpResponseWithHeader));
+                    }
+                    HttpRequest request = new HttpRequest(HttpMethod.GET, "https://kvtest.vault.azure.net/keys");
+                    AtomicInteger tokenRequests = new AtomicInteger();
+                    AtomicInteger sends = new AtomicInteger();
+                    TokenCredential mutatingCredential = context -> Mono.fromSupplier(() -> {
+                        tokenRequests.incrementAndGet();
+                        request.setUrl(destination);
+                        return new AccessToken("fake-token", OffsetDateTime.now().plusHours(1));
+                    });
+                    HttpPipeline pipeline = new HttpPipelineBuilder()
+                        .policies(new KeyVaultCredentialPolicy(mutatingCredential, disableVerification))
+                        .httpClient(ignored -> {
+                            sends.incrementAndGet();
+                            return Mono.just(request.getHeaders().getValue(AUTHORIZATION) == null
+                                ? unauthorizedHttpResponseWithHeader
+                                : simpleResponse);
+                        })
+                        .build();
+
+                    assertThrows(IllegalArgumentException.class,
+                        () -> SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE),
+                            () -> pipeline.send(request, Context.NONE)));
+                    assertEquals(1, tokenRequests.get());
+                    assertEquals(cachedChallenge ? 0 : 1, sends.get());
+                    assertNull(request.getHeaders().getValue(AUTHORIZATION));
+                }
+            }
+        }
+    }
+
+    @SyncAsyncTest
+    public void requestOriginIsRevalidatedBeforeCaeTokenAcquisition() {
+        for (boolean disableVerification : new boolean[] { false, true }) {
+            KeyVaultCredentialPolicy.clearCache();
+            HttpRequest request = new HttpRequest(HttpMethod.GET, "https://kvtest.vault.azure.net/keys");
+            AtomicInteger tokenRequests = new AtomicInteger();
+            AtomicInteger sends = new AtomicInteger();
+            HttpPipeline pipeline = new HttpPipelineBuilder().policies(new KeyVaultCredentialPolicy(context -> {
+                tokenRequests.incrementAndGet();
+                return credential.getToken(context);
+            }, disableVerification)).httpClient(ignored -> {
+                if (sends.incrementAndGet() == 1) {
+                    return Mono.just(unauthorizedHttpResponseWithHeader);
+                }
+                request.setUrl("https://other.vault.azure.net/keys");
+                return Mono.just(unauthorizedHttpResponseWithHeaderAndClaims);
+            }).build();
+
+            assertThrows(IllegalArgumentException.class, () -> SyncAsyncExtension
+                .execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request, Context.NONE)));
+            assertEquals(1, tokenRequests.get());
+            assertEquals(2, sends.get());
+            assertNull(request.getHeaders().getValue(AUTHORIZATION));
+        }
     }
 
     @SyncAsyncTest

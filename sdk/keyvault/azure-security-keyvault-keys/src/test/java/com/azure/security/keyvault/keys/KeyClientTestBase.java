@@ -17,6 +17,8 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -47,6 +49,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -139,6 +142,8 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
             .httpClient(httpClient);
 
         if (interceptorManager.isPlaybackMode()) {
+            interceptorManager
+                .addSanitizers(Collections.singletonList(playbackNextLinkSanitizer(endpoint, runManagedHsmTest)));
             return builder.retryOptions(PLAYBACK_RETRY_OPTIONS);
         } else {
             builder.retryOptions(LIVE_RETRY_OPTIONS);
@@ -147,6 +152,14 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
                 ? builder.addPolicy(interceptorManager.getRecordPolicy())
                 : builder;
         }
+    }
+
+    static TestProxySanitizer playbackNextLinkSanitizer(String endpoint, boolean managedHsm) {
+        // Match the pinned recording's vault, not every vault or HSM host.
+        String host
+            = managedHsm ? "externalkeysdkhsm[.]managedhsm[.]azure[.]net" : "externalkeysdk[.]vault[.]azure[.]net";
+        return new TestProxySanitizer("$.nextLink", "(?i)^https://" + host + "(?::443)?/",
+            URI.create(endpoint).resolve("/").toString(), TestProxySanitizerType.BODY_KEY);
     }
 
     @Test
